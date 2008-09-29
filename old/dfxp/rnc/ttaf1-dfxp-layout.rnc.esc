@@ -1,0 +1,52 @@
+﻿# .......................................................................
+# TT-AF 1.0 DFXP Layout Module ..........................................
+# .......................................................................
+
+# region reference attribute; must reference /head/layout/region
+TTAF.region.attrib
+  = attribute region { xsd:IDREF }?
+
+# region binding attribute class
+TTAF.RegionBinding.attrib.class &amp;=
+  TTAF.region.attrib
+
+# layout - generic layout container
+TTAF.layout =
+  element layout {
+    TTAF.layout.attlist,
+    TTAF.layout.content
+  }
+
+TTAF.layout.attlist &amp;=
+  TTAF.Core.attrib.class
+
+TTAF.layout.content.extra = empty
+TTAF.layout.content =
+  (TTAF.Metadata.class*,
+   TTAF.layout.region*,
+   TTAF.layout.content.extra*)
+
+# region - region declaration
+TTAF.layout.region =
+  element region {
+    TTAF.layout.region.attlist,
+    TTAF.layout.region.content
+  }
+
+TTAF.layout.region.attlist &amp;=
+  TTAF.Core.attrib.class,
+  TTAF.TimedContainer.attrib.class,
+  TTAF.style.attrib,
+  (TTAF.Styling.attrib.class |
+   TTAF.Styling.ForeignExtension.attrib+ )
+
+TTAF.layout.region.content.extra = empty
+TTAF.layout.region.content =
+  (TTAF.Metadata.class*,
+   TTAF.Animation.class*,
+   TTAF.styling.style*,
+   TTAF.layout.region.content.extra*)
+
+# .......................................................................
+# .......................................................................
+# .......................................................................

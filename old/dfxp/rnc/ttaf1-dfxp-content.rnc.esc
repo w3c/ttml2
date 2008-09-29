@@ -1,0 +1,121 @@
+﻿# .......................................................................
+# TT-AF 1.0 DFXP Content Module .........................................
+# .......................................................................
+
+# body - content body
+TTAF.body =
+  element body {
+    TTAF.body.attlist,
+    TTAF.body.content
+  }
+
+TTAF.body.attlist &amp;=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.RegionBinding.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.TimedContainer.attrib.class
+
+TTAF.body.content.extra = empty
+TTAF.body.content =
+  (TTAF.Metadata.class*,
+   TTAF.Animation.class*,
+   (TTAF.Block.class | TTAF.body.content.extra)*)
+
+# div - division
+TTAF.div =
+  element div {
+    TTAF.div.attlist,
+    TTAF.div.content
+  }
+
+TTAF.div.attlist &amp;=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.RegionBinding.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.TimedContainer.attrib.class
+
+TTAF.div.content.extra = empty
+TTAF.div.content =
+  (TTAF.Metadata.class*,
+   TTAF.Animation.class*,
+   (TTAF.Block.class | TTAF.div.content.extra)*)
+
+# p - paragraph
+TTAF.p =
+  element p {
+    TTAF.p.attlist,
+    TTAF.p.content
+  }
+
+TTAF.p.attlist &amp;=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.RegionBinding.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.TimedContainer.attrib.class
+
+TTAF.p.content.extra = empty
+TTAF.p.content =
+  (TTAF.Metadata.class*,
+   TTAF.Animation.class*,
+   (TTAF.Inline.class |
+    TTAF.p.content.extra)*)
+
+# span - intra-paragraph inline span
+TTAF.span =
+  element span {
+    TTAF.span.attlist,
+    TTAF.span.content
+  }
+
+TTAF.span.attlist &amp;=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.RegionBinding.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.TimedContainer.attrib.class
+
+TTAF.span.content.extra = empty
+TTAF.span.content =
+  (TTAF.Metadata.class*,
+   TTAF.Animation.class*,
+   (TTAF.Inline.class |
+    TTAF.span.content.extra)*)
+
+# br - manual line break
+TTAF.br =
+  element br {
+    TTAF.br.attlist,
+    TTAF.br.content
+  }
+
+TTAF.br.attlist &amp;=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.Styled.attrib.class
+
+TTAF.br.content.extra = empty
+TTAF.br.content =
+  (TTAF.Metadata.class*,
+   TTAF.Animation.class*,
+   TTAF.br.content.extra*)
+
+# Block.class
+TTAF.Block.extra = empty
+TTAF.BlockNoDiv.class |=
+  TTAF.p | TTAF.Block.extra
+TTAF.Block.class |=
+  TTAF.div | TTAF.BlockNoDiv.class
+
+# Inline.class
+TTAF.Inline.extra = empty
+TTAF.InlineNoSpan.class |=
+  text | TTAF.br | TTAF.Inline.extra
+TTAF.Inline.class |=
+  TTAF.span | TTAF.InlineNoSpan.class
+
+# .......................................................................
+# .......................................................................
+# .......................................................................

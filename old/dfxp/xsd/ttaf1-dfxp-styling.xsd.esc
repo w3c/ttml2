@@ -1,0 +1,39 @@
+﻿&lt;xs:schema targetNamespace="http://www.w3.org/2006/10/ttaf1" xml:lang="en"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tt="http://www.w3.org/2006/10/ttaf1"
+  xmlns:ttm="http://www.w3.org/2006/10/ttaf1#metadata"
+  xmlns:tts="http://www.w3.org/2006/10/ttaf1#style"&gt;
+  &lt;xs:include schemaLocation="ttaf1-dfxp-core-attribs.xsd"/&gt;
+  &lt;xs:include schemaLocation="ttaf1-dfxp-metadata.xsd"/&gt;
+  &lt;xs:import namespace="http://www.w3.org/2006/10/ttaf1#style"
+    schemaLocation="ttaf1-dfxp-styling-attribs.xsd"/&gt;
+  &lt;xs:attributeGroup name="StyleBinding.attrib.class"&gt;
+    &lt;xs:attribute name="style" type="xs:IDREFS"/&gt;
+  &lt;/xs:attributeGroup&gt;
+  &lt;xs:attributeGroup name="Styled.attrib.class"&gt;
+    &lt;xs:attributeGroup ref="tt:StyleBinding.attrib.class"/&gt;
+    &lt;xs:attributeGroup ref="tts:Styling.attrib.class"/&gt;
+  &lt;/xs:attributeGroup&gt;
+  &lt;xs:attributeGroup name="styling.attlist"&gt;
+    &lt;xs:attributeGroup ref="tt:Core.attrib.class"/&gt;
+  &lt;/xs:attributeGroup&gt;
+  &lt;xs:attributeGroup name="style.attlist"&gt;
+    &lt;xs:attributeGroup ref="tt:Core.attrib.class"/&gt;
+    &lt;xs:attributeGroup ref="tt:Styled.attrib.class"/&gt;
+  &lt;/xs:attributeGroup&gt;
+  &lt;xs:complexType name="styling.eltype"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:group ref="tt:Metadata.class" minOccurs="0" maxOccurs="unbounded"/&gt;
+      &lt;xs:element ref="tt:style" minOccurs="0" maxOccurs="unbounded"/&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attributeGroup ref="tt:styling.attlist"/&gt;
+  &lt;/xs:complexType&gt;
+  &lt;xs:complexType name="style.eltype"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:group ref="tt:Metadata.class" minOccurs="0" maxOccurs="unbounded"/&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attributeGroup ref="tt:style.attlist"/&gt;
+  &lt;/xs:complexType&gt;
+  &lt;xs:element name="styling" type="tt:styling.eltype"/&gt;
+  &lt;xs:element name="style" type="tt:style.eltype"/&gt;
+&lt;/xs:schema&gt;

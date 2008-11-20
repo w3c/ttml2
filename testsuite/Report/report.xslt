@@ -29,6 +29,7 @@ table { font-size: 90%; margin-top: 2em; }
     </style>
     </head>
     <body>
+      <xsl:variable name='files' select='/files/file'/>
       <xsl:variable name='tests'>
 	<xsl:for-each select='/files/file'>
 	  <xsl:apply-templates select='document(text())' mode='copy'/>
@@ -45,7 +46,14 @@ table { font-size: 90%; margin-top: 2em; }
 </tr>
 </thead>
 <tbody>
-  <xsl:apply-templates select='$tests/tt:tt'/>
+  <xsl:for-each select='$tests/tt:tt'>
+    <xsl:variable name='doc_number' select='position()'/>
+    <xsl:variable name='doc' select='$files[position()=$doc_number]'/>
+    <tr>
+      <th><a href='{concat("../", $doc)}'><xsl:value-of select='tt:head/tt:metadata/ttm:title'/></a></th>
+      <td><xsl:value-of select='tt:head/tt:metadata/ttm:descr'/></td>	
+    </tr>
+  </xsl:for-each>
 </tbody>
 </table>
 
@@ -1247,13 +1255,6 @@ table { font-size: 90%; margin-top: 2em; }
 </table>
     </body>
 </html>
-    </xsl:template>
-
-    <xsl:template match="tt:tt">
-      <tr>
-	<th><xsl:value-of select='tt:head/tt:metadata/ttm:title'/></th>
-	<td><xsl:value-of select='tt:head/tt:metadata/ttm:descr'/></td>	
-      </tr>
     </xsl:template>
 
     <xsl:template match="@*|node()">

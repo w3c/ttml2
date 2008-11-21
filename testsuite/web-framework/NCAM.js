@@ -1,21 +1,14 @@
-// Display a video with the specified DFXP captioning document
-// 1. Create one function with no parameter to start your player.
-// 2. Create a function to activate your player with a test, as follows:
-//    a. the function takes five parameters:
-//       1. integer: The test unique number [inte
-//       2. string: filename of the test
-//       3. boolean: if autostart should be on or off
-//       4. DOM Element: the DOM div element containing your player object
-//    b. the player goes in <div id="testarea">
-// 3. Create one function with no parameter to stop your player.
-// 4. Invoke addPlayer("name of the player", "YourActivateFunctionName", "YourStopFunctionName") to add your player
-
-addPlayer("NCAM Player 3.0.1", "startNCAMPlayer", "activeNCAMTest", "stopNCAMPlayer");
+addPlayer("NCAM Player 3.0.1", 
+	  "startNCAMPlayer", 
+	  "startNCAMTest", 
+	  "stopNCAMTest", 
+	  "stopNCAMPlayer");
 
 function startNCAMPlayer() {
+    // nothing needs to be done
 }
 
-function activeNCAMTest(test_number, filename, autostart, div) {
+function startNCAMTest(test_number, filename, autostart, div) {
 
     var value = "ccPlayer.swf?ccVideoName=dfxp_movie.flv&ccVideoAutoStart="
 		   + autostart
@@ -29,10 +22,10 @@ function activeNCAMTest(test_number, filename, autostart, div) {
 	    + 'codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" type="application/x-shockwave-flash">'
 	    + '<PARAM name="movie" class="object" value="'
 	    + value
-	    + '/><PARAM name="bgcolor" value="#cccccc"/><PARAM name="allowScriptAccess" value="sameDomain"/>'
+	    + '/><PARAM name="bgcolor" value="#cccccc"/><PARAM name="allowScriptAccess" value="always"/>'
 	    + '<EMBED width="340" height="376" src="'
 	    + value
-	    + '" bgcolor="#cccccc" allowscriptaccess="sameDomain" type="application/x-shockwave-flash"/></OBJECT>';
+	    + '" bgcolor="#cccccc" allowscriptaccess="always" type="application/x-shockwave-flash"/></OBJECT>';
     } else {
 	div.innerHTML = '';
 	// Create the object
@@ -70,7 +63,12 @@ function activeNCAMTest(test_number, filename, autostart, div) {
 
 }
 
-function stopNCAMPlayer(test_number)
+function stopNCAMTest(test_number)
 {
-    // nothing can be done?
+    // nothing needs to be done
+}
+
+function stopNCAMPlayer()
+{
+    // nothing needs to be done
 }

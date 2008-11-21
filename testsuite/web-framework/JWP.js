@@ -2,13 +2,15 @@
 
 var JWP_NAME = "JW FLV Media Player 4.2";
 
-addPlayer(JWP_NAME, "startJWPPlayer", "activeJWPTest", "stopJWPPlayer");
+addPlayer(JWP_NAME, "startJWPPlayer", "activeJWPTest", "stopJWPTest", "stopJWPPlayer");
 
 function startJWPPlayer()
 {
-    alert("Note that the "
-	  + JWP_NAME
-	  + " only works properly when accessing captioning files from a web server.");
+    if (document.URL.substring(0, 5) != "http:") {
+	alert("Note that the "
+	      + JWP_NAME
+	      + " only works properly when accessing captioning files from a web server.");
+    }
 }
 
 function activeJWPTest(test_number, filename, autostart, div) 
@@ -34,6 +36,10 @@ function activeJWPTest(test_number, filename, autostart, div)
 
     // append the object
     div.appendChild(embed);
+}
+
+function stopJWPTest(test_number) 
+{
 }
 
 function stopJWPPlayer()

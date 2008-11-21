@@ -71,23 +71,26 @@ function switchCategory(cat)
 // list of players
 var players = new Array();
 // the player in use
-var player = -1;
+var player = 0;
 var autostart = false;
 
 // A constant to make it easier to access the array
 // var NAME = 0; is already defined
-var START_FUNCTION_NAME = 1;
-var ACTIVATE_FUNCTION_NAME = 2;
-var STOP_FUNCTION_NAME = 3;
+var START_PLAYER_FUNCTION_NAME = 1;
+var START_TEST_FUNCTION_NAME   = 2;
+var STOP_TEST_FUNCTION_NAME    = 3;
+var STOP_PLAYER_FUNCTION_NAME  = 4;
 
 function addPlayer(name,
 		   startFunctionName,
-		   activateFunctionName, 
+		   startTestFunctionName, 
+		   stopTestFunctionName, 
 		   stopFunctionName)
 {
     players[players.length] = new Array(name,
 					startFunctionName,
-					activateFunctionName,
+					startTestFunctionName, 
+					stopTestFunctionName, 
 					stopFunctionName);
 }
 
@@ -105,10 +108,16 @@ function switchPlayer(nPlayer) {
     var report_content = document.getElementById("report_content");
     report_content.innerHTML = '';
 
+    if (player > 0) {
+	eval(players[player-1][STOP_PLAYER_FUNCTION_NAME] + "()");
+    }
+
     // switch
     player = nPlayer;
 
-    eval(players[player-1][START_FUNCTION_NAME] + "()");
+    if (player > 0) {
+	eval(players[player-1][START_PLAYER_FUNCTION_NAME] + "()");
+    }
 }
 
 function switchAutostart(nAutostart)
@@ -174,6 +183,8 @@ function activeTest(test_number)
     var descr=document.getElementById("description");
 
     if (test_number > -1 && test_number < tests.length) {
+	stopTest(currentTest);
+
 	title.innerHTML = tests[test_number][NAME];
 	descr.innerHTML = tests[test_number][DESCRIPTION];
 	if (player == 0) {
@@ -182,7 +193,7 @@ function activeTest(test_number)
 	} else {
 	    addResultButtons(test_number);
 	    
-	    eval(players[player-1][ACTIVATE_FUNCTION_NAME] + "("
+	    eval(players[player-1][START_TEST_FUNCTION_NAME] + "("
 		 + test_number + ",\""
 		 + tests[test_number][FILE] + "\","
 		 + autostart
@@ -222,7 +233,7 @@ function stopTest(test_number)
 {
     if (test_number > -1 && test_number < tests.length) {
 	if (player > 0) {
-	    eval(players[player-1][STOP_FUNCTION_NAME] + "("
+	    eval(players[player-1][STOP_TEST_FUNCTION_NAME] + "("
 		 + test_number + ")");
 	    currentTest = -1;
 	}
@@ -371,13 +382,39 @@ function resetAll()
 
 function getFlashPlayerVersion()
 {    
-    if (navigator.plugins && navigator.mimeTypes.length) {
+    if (navigator.plugins && navigator.plugins.length) {
         var plugin = navigator.plugins["Shockwave Flash"];
         if (plugin && plugin.description) {
-            return plugin.description.replace(/([a-zA-Z]|\s)+/, "").replace(/(\s+r|\s+b[0-9]+)/, ".").split(".");
+            return plugin.description;
+	} else {
+	    return "no flash";
         }
+    } else if (navigator.mimeTypes && navigator.mimeTypes.length) {
+	var mime = navigator.mimeTypes['application/x-shockwave-flash'];
+	if (mime && mime.enabledPlugin) {
+	    return mime.enabledPlugin.description;
+	} else {
+	    return "no flash";
+	}
+    } else {
+	try {
+	    var obj = new ActiveXObject('ShockwaveFlash.ShockwaveFlash.7');
+	    return obj.GetVariable('$version');
+	} catch (e) {
+	    try {
+		var obj = new ActiveXObject('ShockwaveFlash.ShockwaveFlash.6');
+		return '6.0.21';
+	    } catch (e) {
+		try {
+		    var obj = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+		    return obj.GetVariable('$version');
+		} catch (e) {
+		    return "no flash";
+		}
+	    }
+	}
     }
-    return [0, 0, 0];
+    return "unknown";
 }
 
 function report()
@@ -427,7 +464,7 @@ function report()
     
     var version = getFlashPlayerVersion();
     p = document.createElement("p");
-    p.innerHTML = "Shockwave Flash: " + version[0] + "." + version[1] + " r" + version[2];
+    p.innerHTML = "Shockwave Flash: " + version;
     report_content.appendChild(p);
     
     p = document.createElement("p");

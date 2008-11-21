@@ -1,4 +1,13 @@
-TEST_SUBDIRS=Content Timing Styling Specification
+TEST_SUBDIRS=\
+Parameters \
+Content \
+Styling \
+Layout \
+Timing \
+Animation \
+Metadata \
+Specification
+
 DATE=$(shell date "+%Y%m%d")
 
 main: filelist archive

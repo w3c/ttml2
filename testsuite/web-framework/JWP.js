@@ -20,7 +20,7 @@ function activeJWPTest(test_number, filename, autostart, div)
     var embed = document.createElement("embed");
     embed.setAttribute("src", "player.swf");
     embed.setAttribute("flashvars", 
-		       "bufferlength=5&file=movie.flv&captions=" 
+		       "bufferlength=5&file=dfxp_movie.flv&captions=" 
 		       + filename
 		       + "&mute=true&plugins=accessibility&autostart="
 		       + autostart);

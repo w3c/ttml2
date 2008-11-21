@@ -17,7 +17,7 @@ function startNCAMPlayer() {
 
 function activeNCAMTest(test_number, filename, autostart, div) {
 
-    var value = "ccPlayer.swf?ccVideoName=movie.flv&ccVideoAutoStart="
+    var value = "ccPlayer.swf?ccVideoName=dfxp_movie.flv&ccVideoAutoStart="
 		   + autostart
 		   + "&ccCaptSourceType=external&ccCaptionSource="
 		   + filename

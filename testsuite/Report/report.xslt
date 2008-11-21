@@ -17,7 +17,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>DFXP test suite coverage</title>
+    <title>DFXP 1.0 test suite coverage</title>
     <link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/base.css" />
     <style type='text/css'>
 caption { font-size: 120%; text-align: left; margin-top: 2em; }
@@ -35,7 +35,7 @@ table { font-size: 90%; margin-top: 2em; }
 	  <xsl:apply-templates select='document(text())' mode='copy'/>
 	</xsl:for-each>
       </xsl:variable>
-      <h1>DFXP test suite coverage</h1>
+      <h1>DFXP 1.0 test suite coverage</h1>
 
 <table id='descriptions'>
 <caption>General description of the tests</caption>

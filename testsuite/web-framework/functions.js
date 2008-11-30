@@ -1,3 +1,14 @@
+if (typeof XMLHttpRequest == "undefined" ) {
+    // Provide the XMLHttpRequest class for IE 5.x-6.x:
+    XMLHttpRequest = function() {
+	try { return new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {}
+	try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") } catch(e) {}
+	try { return new ActiveXObject("Msxml2.XMLHTTP.3.0") } catch(e) {}
+	try { return new ActiveXObject("Msxml2.XMLHTTP") } catch(e) {}
+	throw new Error( "This browser does not support XMLHttpRequest." )
+    };
+}
+
 
 //****************************
 // Handling the lists of tests
@@ -7,17 +18,19 @@
 // list of tests
 var tests = new Array();
 
-// Some constants to make it easier
-var NAME         = 0;
-var FILE         = 1;
-var DESCRIPTION  = 2;
-var CATEGORY     = 3;
-var CATEGORY_NUM = 4;
+function Test(name, filename, description, cat)
+{
+    this.name = name;
+    this.filename = filename;
+    this.description = description;
+    this.category = cat;
+}
+
 
 function addTest(filename, name, description, category)
 {
     var cat = addCategory(category);
-    tests[tests.length] = new Array(name, filename, description, cat);
+    tests[tests.length] = new Test(name, filename, description, cat);
 }
 
 //*********************************
@@ -71,33 +84,17 @@ function switchCategory(cat)
 // list of players
 var players = new Array();
 // the player in use
-var player = 0;
+var player = null;
 var autostart = false;
 
-// A constant to make it easier to access the array
-// var NAME = 0; is already defined
-var START_PLAYER_FUNCTION_NAME = 1;
-var START_TEST_FUNCTION_NAME   = 2;
-var STOP_TEST_FUNCTION_NAME    = 3;
-var STOP_PLAYER_FUNCTION_NAME  = 4;
-
-function addPlayer(name,
-		   startFunctionName,
-		   startTestFunctionName, 
-		   stopTestFunctionName, 
-		   stopFunctionName)
+function addPlayer(player)
 {
-    players[players.length] = new Array(name,
-					startFunctionName,
-					startTestFunctionName, 
-					stopTestFunctionName, 
-					stopFunctionName);
+    players[players.length] = player;
 }
 
 
 // switch from one player to an other
 function switchPlayer(nPlayer) {
-
     // remove the test currently in use
     clearTestArea();
 
@@ -108,15 +105,16 @@ function switchPlayer(nPlayer) {
     var report_content = document.getElementById("report_content");
     report_content.innerHTML = '';
 
-    if (player > 0) {
-	eval(players[player-1][STOP_PLAYER_FUNCTION_NAME] + "()");
+    if (player != null) {
+	player.stopPlayer();
     }
 
     // switch
-    player = nPlayer;
-
-    if (player > 0) {
-	eval(players[player-1][START_PLAYER_FUNCTION_NAME] + "()");
+    if (nPlayer == 0) {
+	player = null;
+    } else {
+	player = players[nPlayer-1];
+	player.startPlayer();
     }
 }
 
@@ -144,35 +142,23 @@ function source_handler() {
     }
 }
 
-if (typeof XMLHttpRequest == "undefined" ) {
-    // Provide the XMLHttpRequest class for IE 5.x-6.x:
-    XMLHttpRequest = function() {
-	try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") } catch(e) {}
-	try { return new ActiveXObject("Msxml2.XMLHTTP.3.0") } catch(e) {}
-	try { return new ActiveXObject("Msxml2.XMLHTTP") } catch(e) {}
-	try { return new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {}
-	throw new Error( "This browser does not support XMLHttpRequest." )
-    };
-}
 
 // Display the source of a test
-function displayTest(test_number) 
+function displayTest(test) 
 {
     var title=document.getElementById("title");
     var div = document.getElementById('testobject');
 
     clearTestArea();
 
-    if (test_number > -1 && test_number < tests.length) {
-	title.innerHTML = tests[test_number][FILE];
-	try {
-	    var xhr = new XMLHttpRequest();
-	    xhr.onreadystatechange = source_handler;
-	    xhr.open("GET", tests[test_number][FILE], true);
-	    xhr.send("");
-	} catch (e) {
-	    div.innerHTML = "<p style='font-weight: bold'>No player selected...</p>";
-	}
+    title.innerHTML = test.filename;
+    try {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = source_handler;
+	xhr.open("GET", test.filename, true);
+	xhr.send("");
+    } catch (e) {
+	div.innerHTML = "<p style='font-weight: bold'>Unable to retrieve the source code?</p>";
     }
 }
 
@@ -185,19 +171,18 @@ function activeTest(test_number)
     if (test_number > -1 && test_number < tests.length) {
 	stopTest(currentTest);
 
-	title.innerHTML = tests[test_number][NAME];
-	descr.innerHTML = tests[test_number][DESCRIPTION];
-	if (player == 0) {
+	title.innerHTML = tests[test_number].name;
+	descr.innerHTML = tests[test_number].description;
+	if (player == null) {
 	    var div = document.getElementById('testobject');
 	    div.innerHTML = '<p><b>Choose a player...</b></p>';	    
 	} else {
 	    addResultButtons(test_number);
 	    
-	    eval(players[player-1][START_TEST_FUNCTION_NAME] + "("
-		 + test_number + ",\""
-		 + tests[test_number][FILE] + "\","
-		 + autostart
-		 + ", document.getElementById('testobject'))");
+	    player.startTest(test_number,
+			     tests[test_number].filename,
+			     autostart,
+			     document.getElementById('testobject'));
 	}
 	currentTest = test_number;
     }
@@ -208,7 +193,7 @@ function nextTestNumber(test_number)
 {
     var i = test_number + 1;
     while (i < results.length) {
-	if (category == 0 || category == tests[i][CATEGORY]) {
+	if (category == 0 || category == tests[i].category) {
 	    return i;
 	}
 	i++;
@@ -232,9 +217,8 @@ function moveToNextTest(test_number)
 function stopTest(test_number)
 {
     if (test_number > -1 && test_number < tests.length) {
-	if (player > 0) {
-	    eval(players[player-1][STOP_TEST_FUNCTION_NAME] + "("
-		 + test_number + ")");
+	if (player != null) {
+	    player.stopTest(test_number);
 	    currentTest = -1;
 	}
     }
@@ -437,8 +421,8 @@ function report()
     var report_content = document.getElementById("report_content");
     report_content.innerHTML = '';
 
-    if (player == 0 || total == 0) {
-	if (player == 0) {
+    if (player == null || total == 0) {
+	if (player == null) {
 	    var p = document.createElement("p");	    
 	    p.innerHTML = "Choose a player.";
 	    report_content.appendChild(p);
@@ -459,7 +443,7 @@ function report()
     report_content.appendChild(p);
 
     p = document.createElement("p");
-    p.innerHTML = "DFXP Player: " + players[player-1][NAME];
+    p.innerHTML = "DFXP Player: " + player.name();
     report_content.appendChild(p);
     
     var version = getFlashPlayerVersion();
@@ -484,7 +468,7 @@ function report()
 		if (s != '') {
 		    s += ', ';
 		}
-		s += tests[pass[i]][NAME];
+		s += tests[pass[i]].name;
 	    }
 	    p.innerHTML = pass.length + " test"
 		+ ((pass.length>1)?"s":"") + " passed: " + s + ".";
@@ -497,7 +481,7 @@ function report()
 		if (s != '') {
 		    s += ', ';
 		}
-		s += tests[fail[i]][NAME];
+		s += tests[fail[i]].name;
 	    }
 	    p.innerHTML = fail.length + " test" 
 		+ ((fail.length>1)?"s ":" ") + " failed:" + s + ".";
@@ -510,7 +494,7 @@ function report()
 		if (s != '') {
 		    s += ', ';
 		}
-		s += tests[cant_tell[i]][NAME];
+		s += tests[cant_tell[i]].name;
 	    }
 	    p.innerHTML = cant_tell.length + " test" 
 		+ ((cant_tell.length>1)?"s ":" ") + " cannot tell:" + s + ".";
@@ -543,13 +527,13 @@ function handleSelection(index)
 // onClick handler to display the tests
 //********************************************
 function onClickHandlerDisplayTest() {
-    displayTest(parseInt(this.getAttribute("test")));
+    displayTest(this.test);
 }
 //********************************************
 // onClick handler to activate the tests
 //********************************************
 function onClickHandlerActiveTest() {
-    activeTest(parseInt(this.getAttribute("test")));
+    activeTest(this.test_number);
 }
 
 //********************************************
@@ -579,11 +563,8 @@ function init() {
     select.appendChild(opt);
     for (i=0; i < players.length; i++) {
 	opt = document.createElement("option");
-	opt.innerHTML = players[i][NAME];
+	opt.innerHTML = players[i].name();
 	select.appendChild(opt);
-    }
-    if (players.length > 0) {
-	player = 0;
     }
 
     // populate the category list
@@ -618,27 +599,27 @@ function init() {
 	var tbody = document.createElement("tbody");
 	table.setAttribute("id", "tcat" + c);
 	for (i=0; i < tests.length; i++) {
-	    if (c == tests[i][CATEGORY]) {
+	    if (c == tests[i].category) {
 		var tr = document.createElement("tr");
 		var th = document.createElement("th");
 		var b = document.createElement("input");
 		b.setAttribute("type", "button");
 		// b.setAttribute("onclick", "activeTest(i)"); doesn't work on IE :-(
 		// so here is a workaround
-		b.setAttribute("test", (i).toString(10));
+		b.test_number = i;
 		b.onclick = onClickHandlerActiveTest;
-		b.setAttribute("value", tests[i][NAME]);
+		b.setAttribute("value", tests[i].name);
 		th.appendChild(b);
 		tr.appendChild(th);
 		td = document.createElement("td"); // for the source
 		if (!isRemote) {
 		    var a = document.createElement("a");
-		    a.setAttribute("href", tests[i][FILE]);
+		    a.setAttribute("href", tests[i].filename);
 		    a.innerHTML = "[source]";
 		    td.appendChild(a);
 		} else {
 		    var span = document.createElement("span");
-		    span.setAttribute("test", (i).toString(10));
+		    span.test = tests[i];
 		    span.onclick = onClickHandlerDisplayTest;
 		    span.innerHTML = "[source]";
 		    td.appendChild(span);		    

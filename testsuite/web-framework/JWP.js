@@ -1,19 +1,22 @@
 // Display a video with the specified DFXP captioning document
 
-var JWP_NAME = "JW FLV Media Player 4.2";
+function JWP() {
+}
 
-addPlayer(JWP_NAME, "startJWPPlayer", "activeJWPTest", "stopJWPTest", "stopJWPPlayer");
+JWP.prototype.name = function() {
+    return "JW FLV Media Player 4.2";
+}
 
-function startJWPPlayer()
+JWP.prototype.startPlayer = function ()
 {
     if (document.URL.substring(0, 5) != "http:") {
 	alert("Note that the "
-	      + JWP_NAME
+	      + this.name()
 	      + " only works properly when accessing captioning files from a web server.");
     }
 }
 
-function activeJWPTest(test_number, filename, autostart, div) 
+JWP.prototype.startTest = function (test_number, filename, autostart, div) 
 {
 
     div.innerHTML = '';
@@ -38,11 +41,13 @@ function activeJWPTest(test_number, filename, autostart, div)
     div.appendChild(embed);
 }
 
-function stopJWPTest(test_number) 
+JWP.prototype.stopTest = function (test_number) 
 {
 }
 
-function stopJWPPlayer()
+JWP.prototype.stopPlayer = function ()
 {
-    // nothing can be done?
+    // nothing can be done
 }
+
+addPlayer(new JWP());

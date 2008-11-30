@@ -1,46 +1,52 @@
-// Display a video with the specified DFXP captioning document
-// 1. Create one function with no parameter to start your player.
-// 2. Create a function to start your player with a test, as follows:
-//    a. the function takes five parameters:
-//       1. integer: The test unique number
-//       2. string: filename of the test
-//       3. boolean: if autostart should be on or off
-//       4. DOM Element: the DOM div element containing your player object
-//    b. the player goes in <div id="testarea">
-// 3. Create a function to stop your player, as follows:
-//    a. the function takes one parameter:
-//       1. integer: The test unique number
-// 4. Create one function with no parameter to stop your player.
-// 5. Invoke addPlayer("name of the player",
-//                     "yourStartPlayerFunctionName",
-//                     "yourStartTestFunctionName", 
-//                     "yourStopTestFunctionName",
-//                     "yourStopPlayerFunctionName") to add your player
+// This is a sample of what needs to be implement for
+// a DFXP presentation processor in order to add it in
+// the test framework
 
-addPlayer("Sample Player 3.0.1", 
-	  "startSamplePlayer", 
-	  "startSampleTest", 
-	  "stopSampleTest", 
-	  "stopSamplePlayer");
+function SamplePlayer() {
+}
 
-function startSamplePlayer() {
+// The name of your player.
+
+SamplePlayer.prototype.name = function () {
+  return "Sample Player";
+}
+
+// Start your player.
+
+SamplePlayer.prototype.startPlayer = function() {
     // nothing needs to be done
     alert("Start the sample player.");
 }
 
-function startSampleTest(test_number, filename, autostart, div) {
+// Run your player with a test
+//  test_number (integer): The test unique number
+//  filename (string): relative URI of the test
+//  autostart (boolean): if the player should start automatically or not
+//  div (DOM Element): the DOM div element containing your player object
+
+SamplePlayer.prototype.startTest = function(test_number, filename, autostart, div) {
 
     alert("Start the sample player with the test " + test_number);
 }
 
-function stopSampleTest(test_number)
+// Stop your player running wit a certain test
+//   test_number (integer): The test unique number
+
+SamplePlayer.prototype.stopTest = function(test_number)
 {
     // nothing needs to be done
     alert("Stop the sample player with the test " + test_number);
 }
 
-function stopSamplePlayer()
+// Stop your player.
+
+SamplePlayer.prototype.stopPlayer = function()
 {
     // nothing needs to be done
     alert("Stop the sample player.");
 }
+
+// Add your player in the list
+
+addPlayer(new SamplePlayer());
+

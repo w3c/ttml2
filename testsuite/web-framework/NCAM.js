@@ -1,14 +1,16 @@
-addPlayer("NCAM Player 3.0.1", 
-	  "startNCAMPlayer", 
-	  "startNCAMTest", 
-	  "stopNCAMTest", 
-	  "stopNCAMPlayer");
 
-function startNCAMPlayer() {
+function NCAM() {
+}
+
+NCAM.prototype.name = function() {
+    return "NCAM Player 3.0.1";
+}
+
+NCAM.prototype.startPlayer = function() {
     // nothing needs to be done
 }
 
-function startNCAMTest(test_number, filename, autostart, div) {
+NCAM.prototype.startTest = function(test_number, filename, autostart, div) {
 
     var value = "ccPlayer.swf?ccVideoName=dfxp_movie.flv&ccVideoAutoStart="
 		   + autostart
@@ -63,12 +65,15 @@ function startNCAMTest(test_number, filename, autostart, div) {
 
 }
 
-function stopNCAMTest(test_number)
+NCAM.prototype.stopTest = function(test_number)
 {
     // nothing needs to be done
 }
 
-function stopNCAMPlayer()
+NCAM.prototype.stopPlayer = function()
 {
     // nothing needs to be done
 }
+
+addPlayer(new NCAM());
+

@@ -178,7 +178,7 @@ function activeTest(test_number)
 	    var div = document.getElementById('testobject');
 	    div.innerHTML = '<p><b>Choose a player...</b></p>';	    
 	} else {
-	    if (displayTest) {
+	    if (displayResult) {
 		addResultButtons(test_number);
 	    }
 	    player.startTest(test_number,
@@ -241,7 +241,7 @@ function clearTestArea()
     title.innerHTML = "";
     var descr = document.getElementById("description");
     descr.innerHTML = "";
-    if (displayTest) {
+    if (displayResult) {
 	var p = document.getElementById("result");
 	p.innerHTML = "";
     }

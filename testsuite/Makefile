@@ -2,13 +2,17 @@ TEST_SUBDIRS=\
 Parameters \
 Content \
 Styling \
-Layout \
-Timing \
-Animation \
-Metadata \
-Specification
+Timing
+
+# Specification
+
+# Layout \
+# Animation \
+# Metadata \
 
 DATE=$(shell date "+%Y%m%d")
+
+TARGET_DIR=$(HOME)/WWW/2008/10/
 
 main: filelist archive
 
@@ -22,13 +26,14 @@ filelist:
 	echo "</files>" >>filelist.xml
 
 archive: filelist
-	rm -f testsuite.zip
-	zip testsuite.zip filelist.xml LICENSE
+	rm -f dfxp-testsuite.zip
+	zip dfxp-testsuite.zip filelist.xml LICENSE
 	for DIR in $(TEST_SUBDIRS) ; do \
           for file in $$DIR/*[0-9][0-9][0-9].xml ; do \
-	    zip testsuite.zip "$$file" ; \
+	    zip dfxp-testsuite.zip "$$file" ; \
 	  done \
 	done
+	mv dfxp-testsuite.zip $(TARGET_DIR)
 
 release: archive
 	cp testsuite.zip testsuite-$(DATE).zip

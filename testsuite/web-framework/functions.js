@@ -99,11 +99,12 @@ function switchPlayer(nPlayer) {
     clearTestArea();
 
     // reset the table of pass/fail
-    resetAll();
-
-    // reset the report
-    var report_content = document.getElementById("report_content");
-    report_content.innerHTML = '';
+    if (displayResult) {
+	resetAll();
+	// reset the report
+	var report_content = document.getElementById("report_content");
+	report_content.innerHTML = '';
+    }
 
     if (player != null) {
 	player.stopPlayer();
@@ -177,8 +178,9 @@ function activeTest(test_number)
 	    var div = document.getElementById('testobject');
 	    div.innerHTML = '<p><b>Choose a player...</b></p>';	    
 	} else {
-	    addResultButtons(test_number);
-	    
+	    if (displayTest) {
+		addResultButtons(test_number);
+	    }
 	    player.startTest(test_number,
 			     tests[test_number].filename,
 			     autostart,
@@ -239,14 +241,18 @@ function clearTestArea()
     title.innerHTML = "";
     var descr = document.getElementById("description");
     descr.innerHTML = "";
-    var p = document.getElementById("result");
-    p.innerHTML = "";
+    if (displayTest) {
+	var p = document.getElementById("result");
+	p.innerHTML = "";
+    }
 
 }
 
 //************************************
 // Handle the fail/pass/unknown status
 //************************************
+
+var displayResult = true;
 
 var results = new Array();
 
@@ -553,7 +559,7 @@ function init() {
 	return;
     }
 
-    initResults();
+    if (displayResult) initResults();
 
     // populate the player list
     var select = document.getElementById("players");
@@ -575,9 +581,11 @@ function init() {
 	opt.innerHTML = categories[i];
 	select.appendChild(opt);
     }
-    opt = document.createElement("option");
-    opt.innerHTML = "See the report";
-    select.appendChild(opt);
+    if (displayResult) {
+	opt = document.createElement("option");
+	opt.innerHTML = "See the report";
+	select.appendChild(opt);
+    }
 
     var tables = document.getElementById("tables");
     var isRemote = false;
@@ -625,9 +633,11 @@ function init() {
 		    td.appendChild(span);		    
 		}
 		tr.appendChild(td);
-		td = document.createElement("td"); // for the result
-		td.setAttribute("id", "r" + i);
-		tr.appendChild(td);
+		if (displayResult) {
+		    td = document.createElement("td"); // for the result
+		    td.setAttribute("id", "r" + i);
+		    tr.appendChild(td);
+		}
 		tbody.appendChild(tr);
 		table.appendChild(tbody);
 	    }

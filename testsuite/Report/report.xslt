@@ -58,7 +58,7 @@
     <xsl:variable name='doc' select='$files[position()=$doc_number]'/>
     <tr>
       <th><a href='{concat("http://dev.w3.org/cvsweb/~checkout~/2008/tt/testsuite/", $doc, "?content-type=application/xml")}'><xsl:value-of select='tt:head/tt:metadata/ttm:title'/></a></th>
-      <td><xsl:value-of select='tt:head/tt:metadata/ttm:descr'/></td>	
+      <td><xsl:value-of select='tt:head/tt:metadata/ttm:desc'/></td>	
     </tr>
   </xsl:for-each>
 </tbody>

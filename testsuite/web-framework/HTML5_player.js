@@ -24,9 +24,6 @@ if (typeof XMLHttpRequest == "undefined" ) {
     };
 }
 
-function HTML5Caption() {
-}
-
 HTML5Caption_toSeconds = function(t) {
     var s = 0.0;
     if(t) {
@@ -36,9 +33,9 @@ HTML5Caption_toSeconds = function(t) {
     }
     return s;
 }
-
+    
 HTML5Caption_strip = function(s) {
-    return s.replace(/^\s+|\s+$/g,"");
+   return s.replace(/^\s+|\s+$/g,"");
 }
 
 HTML5Caption_playSRT = function(video, srt) {    
@@ -102,6 +99,7 @@ var DFXP_TTS = "http://www.w3.org/2006/10/ttaf1#style";
 HTML5Caption_transDFXPAttributes = function(dp, ht) {
     var v;
     v = dp.getAttribute("style");
+
     if (v != null) {
 	// @@TODO v is an IDREFS!
 	var el = dp.ownerDocument.getElementById(v);
@@ -139,10 +137,15 @@ HTML5Caption_transDFXPAttributes = function(dp, ht) {
 	ht.style.setProperty("direction", v, "");
     }
     v = dp.getAttributeNS(DFXP_TTS, "display");
-    if (v != "") {
-	// doesn't work with auto value
-	ht.style.setProperty("display", v, "");
+    if ((v == "") || (v == "auto")) {
+	if (ht.tagName == "SPAN") {
+	    v = "inline";
+	} else {
+	    v = "block";
+	}
     }
+    ht.df_displayValue = v;
+
     v = dp.getAttributeNS(DFXP_TTS, "fontFamily");
     if (v != "") {
 	ht.style.setProperty("font-family", v, "");
@@ -169,21 +172,23 @@ HTML5Caption_transDFXPAttributes = function(dp, ht) {
     }
     v = dp.getAttributeNS(DFXP_TTS, "padding");
     if (v != "") {
-        // I probably need to do more work here...
 	ht.style.setProperty("padding", v, "");
     }
     v = dp.getAttributeNS(DFXP_TTS, "textAlign");
     if (v != "") {
-	if (v != "start" && v != "end") {
-	    ht.style.setProperty("text-align", v, "");
+	// REVISIT to take into account text direction...
+	if (v == "start") {
+	    ht.style.setProperty("text-align", "left", "");
+	} else if (v == "end") {
+	    ht.style.setProperty("text-align", "right", "");
 	} else {
-           // run around like crazy?
-        }
+	    ht.style.setProperty("text-align", v, "");
+	}
     }
     v = dp.getAttributeNS(DFXP_TTS, "textDecoration");
     if (v != "") {
 	if (v == "noUnderline" || v == "noOverline" || v == "noLineThrough") {
-	    // this is not accurate but trying the best here ...
+	    // this is not accurate
 	    v = "none";
 	} else if (v == "lineThrough") {
 	    v = "line-through";
@@ -275,7 +280,7 @@ HTML5Caption_ParentStyle = function(parent, ht) {
 	}
 	HTML5Caption_transDFXPAttributes(parent, ht);
     }
-
+    
 }
 
 HTML5Caption_playDFXP = function(video, dfxp) {    
@@ -299,27 +304,27 @@ HTML5Caption_playDFXP = function(video, dfxp) {
     mainDiv.className = 'dfxp';
     var w = video.getAttribute("width");
     if (w!="") {
-	// the main container gets the side of the video
+	// the main container gets the size of the video
 	mainDiv.style.setProperty("width", w, "");
     }
     var div = document.createElement("div");
-    mainDiv.appendChild(div);
-    var empty = document.createElement("p");
-    empty.style.setProperty("display", "none");
-    var old = empty;
-    div.appendChild(old);
 
     HTML5Caption_ParentStyle(paras.item(0).parentNode, div);
-    video.parentNode.insertBefore(mainDiv, video.nextSibling);
+    div.style.display = div.displayValue;
 
-    // initialize the captions
-    var subtitles = {};
+    // initialize the subtitles
     for (var i = 0; i < paras.length; i++) {
 	var p = paras.item(i);
-	var begin=p.getAttribute("begin");
-	var end=p.getAttribute("end");
-	var dur=p.getAttribute("dur");
+
+	var begin   = p.getAttribute("begin");
+	var end     = p.getAttribute("end");
+	var dur     = p.getAttribute("dur");
 	var element = HTML5Caption_transDFXPElement(p);
+	var sbegin  = -1;
+	var send    = -1;
+
+	// TODO: take into account the timeContainers
+
 	if (div.spaces && div.spaces == true) {
 	    // work around the inheritance ?
 	    // cf tt002.xml
@@ -328,26 +333,32 @@ HTML5Caption_playDFXP = function(video, dfxp) {
 	if (begin != null && end != null) {
 	    sbegin=HTML5Caption_convertDFXPDuration(begin);
 	    send=HTML5Caption_convertDFXPDuration(end);
-	    subtitles[sbegin] = {i:sbegin, o: send, element: element};	
 	} else if (begin != null && dur != null) {
 	    sbegin=HTML5Caption_convertDFXPDuration(begin);
 	    send=sbegin + HTML5Caption_convertDFXPDuration(dur);
-	    subtitles[sbegin] = {i:sbegin, o: send, element: element};	
 	} else if (begin != null) {
 	    sbegin=HTML5Caption_convertDFXPDuration(begin);
 	    var next = paras.item(i+1);
-	    var send = 10000000;
+	    send = 10000000;
 	    if (next != null) {
 		var nbegin=next.getAttribute("begin");
 		if (nbegin!= null) {
 		    send= HTML5Caption_convertDFXPDuration(nbegin);
 		}
 	    }
-	    subtitles[sbegin] = {i:sbegin, o: send, element: element};	
+	}
+	if (sbegin != -1) {
+	    element.df_begin         = sbegin;
+	    element.df_end           = send;	    
+	    element.style.display = "none";
+	    element.df_isInTime      = false;
+	    div.appendChild(element);
 	}
     }
 
-    var currentSubtitle = -1;
+    mainDiv.appendChild(div);
+
+    video.parentNode.insertBefore(mainDiv, video.nextSibling);
 
     var currentTime = video.currentTime;
 
@@ -355,23 +366,26 @@ HTML5Caption_playDFXP = function(video, dfxp) {
 	throw new Error("currentTime is not supported by the Video element");
     } else {
 	setInterval(function() {
-		var currentTime = video.currentTime;
 		if (!video.paused) {
-		    var subtitle = -1;
-		    for (s in subtitles) {
-			if (s > currentTime)
-			    break;
-			subtitle = s;
-		    }
-		    if (subtitle != -1) {
-			if (subtitle != currentSubtitle) {
-			    div.replaceChild(subtitles[subtitle].element, old);
-			    old = subtitles[subtitle].element;
-			    currentSubtitle=subtitle;
-			} else if (subtitles[subtitle].o < currentTime) {
-			    div.replaceChild(empty, old);
-			    old = empty;
-			}
+		    var currentTime = video.currentTime;
+		    var nodes = div.childNodes;
+		    var length = nodes.length;
+		    for (var i = 0; i < length; i++) {
+			node = nodes.item(i);
+			// this might get slow if too many subtitles?
+			if (node.df_isInTime) {
+			    if (node.df_end < currentTime
+				|| node.df_begin > currentTime)  {
+				// remove the element from the display since
+				// it's in a node in the past or future
+				node.style.display = "none";
+				node.df_isInTime = false;
+			    }
+			} else if (node.df_begin < currentTime 
+				   && node.df_end > currentTime) {
+			    node.style.display = node.df_displayValue;
+			    node.df_isInTime = true;
+			}			    
 		    }
 		}
 	    }, 100);
@@ -442,63 +456,4 @@ function init_captions() {
     }
 }
 
-
-// The name of your player.
-
-HTML5Caption.prototype.name = function () {
-  return "HTML5 DFXP Player prototype";
-}
-
-HTML5Caption.prototype.startPlayer = function() {
-    if (-1 == navigator.userAgent.indexOf("Firefox/3.1") &&
-        -1 == navigator.userAgent.indexOf("Shiretoko/3.1")) {
-	alert("This player only works in Firefox 3.1.");
-    }
-}
-
-var HTML5Caption_video = null;
-
-HTML5Caption.prototype.startTest = function(test_number, filename, autostart, div) {
-
-	div.innerHTML = '';
-	// Create the object
-	var obj = document.createElement("video");
-	obj.setAttribute("width", "320px");
-	obj.setAttribute("src", "dfxp_movie.ogv");
-	obj.setAttribute("controls", "true");
-	if (autostart) {
-	    obj.setAttribute("autoplay", "true");
-	}
-	
-	// append the object
-	div.appendChild(obj);
-
-	var xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function () {
-	    if (this.readyState == 4
-		&& this.status == 200) {
-		
-		if (this.responseXML != null) {
-		    HTML5Caption_playDFXP(this.video, this.responseXML);
-		} else {
-		    throw new Error("Can't read DFXP resource");
-		}
-	    }
-	};
-	xhr.video = obj;
-
-	xhr.open("GET", filename, true);
-	xhr.send("");
-}
-
-HTML5Caption.prototype.stopTest = function(test_number)
-{
-}
-
-HTML5Caption.prototype.stopPlayer = function()
-{
-}
-    
-addPlayer(new HTML5Caption());
 

@@ -122,6 +122,7 @@ HTML5Caption_transDFXPAttributes = function(dp, ht) {
 	if (el != null) {
 	    HTML5Caption_transDFXPAttributes(el, ht);	    
 	} else {
+            // the DFXP is invalid. Should fail silently in the future
 	    alert("can't find " + v);
 	}
     }
@@ -168,13 +169,16 @@ HTML5Caption_transDFXPAttributes = function(dp, ht) {
     }
     v = dp.getAttributeNS(DFXP_TTS, "padding");
     if (v != "") {
+        // I probably need to do more work here...
 	ht.style.setProperty("padding", v, "");
     }
     v = dp.getAttributeNS(DFXP_TTS, "textAlign");
     if (v != "") {
 	if (v != "start" && v != "end") {
 	    ht.style.setProperty("text-align", v, "");
-	}
+	} else {
+           // run around like crazy?
+        }
     }
     v = dp.getAttributeNS(DFXP_TTS, "textDecoration");
     if (v != "") {
@@ -277,9 +281,12 @@ HTML5Caption_ParentStyle = function(parent, ht) {
 HTML5Caption_playDFXP = function(video, dfxp) {    
 
     // @@grabing all paragraph elements. ugly but effective so far...
+    // wouldn't work with WGBH files with multiple languages
+    // REVISIT
     var paras = dfxp.getElementsByTagNameNS(DFXP, "p");
 
     if (paras.length == 0) {
+        // fail silently in the future
 	alert("No paragraph in DFXP?!?");
 	return;
     }
@@ -298,6 +305,7 @@ HTML5Caption_playDFXP = function(video, dfxp) {
     var div = document.createElement("div");
     mainDiv.appendChild(div);
     var empty = document.createElement("p");
+    empty.style.setProperty("display", "none");
     var old = empty;
     div.appendChild(old);
 
@@ -329,7 +337,7 @@ HTML5Caption_playDFXP = function(video, dfxp) {
 	    sbegin=HTML5Caption_convertDFXPDuration(begin);
 	    var next = paras.item(i+1);
 	    var send = 10000000;
-	    if (next != 0) {
+	    if (next != null) {
 		var nbegin=next.getAttribute("begin");
 		if (nbegin!= null) {
 		    send= HTML5Caption_convertDFXPDuration(nbegin);

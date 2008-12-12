@@ -14,7 +14,7 @@
     <property name="last-public-draft" value="20070706"/>
 
     <target name="clean">
-        <delete quiet="true" file="tt.html"/>
+        <delete quiet="true" file="ttaf1-dfxp.html"/>
     </target>
 
     <target name="validate-xsl" description="Validates all XML files.">
@@ -30,7 +30,7 @@
     </target>
 
     <target name="validate-tt-specs" description="Validates all Timed Text spec files.">
-        <xmlvalidate lenient="false" warn="yes" file="tt.xml"/>
+        <xmlvalidate lenient="false" warn="yes" file="ttaf1-dfxp.xml"/>
     </target>
 
     <target name="validate" depends="validate-xsl,validate-svg,validate-tt-specs"/>
@@ -60,12 +60,12 @@
     </target>
 
     <target name="html" description="Transforms xml into html.">
-        <echo>Generating tt.html</echo>
+        <echo>Generating ttaf1-dfxp.html</echo>
         <java fork="true" classname="net.sf.saxon.Transform">
             <classpath refid="saxon8.classpath"/>
             <arg value="-o"/>
-            <arg value="${htmlOutputDir}tt.html"/>
-            <arg value="tt.xml"/>
+            <arg value="${htmlOutputDir}ttaf1-dfxp.html"/>
+            <arg value="ttaf1-dfxp.xml"/>
             <arg value="${stylesheet}"/>
             <arg value="showAssertions=true"/>
         </java>    
@@ -83,7 +83,7 @@
             <arg value="both"/>
             <arg value="-words"/>
             <arg value="tt-tr${last-public-draft}.xml"/>
-            <arg value="tt.xml"/>
+            <arg value="ttaf1-dfxp.xml"/>
             <arg value="tt-diff${last-public-draft}.xml"/>
             <classpath path="diffmk.jar:DiffMk.properties"> </classpath>
         </java>
@@ -115,7 +115,7 @@
 
     <target name="changelog" description="Update the CVS change log to be added into the specification">
       <!--        <cvschangelog destfile="changelog.xml"/> -->
-      <get src="http://www.w3.org/2000/06/webdata/xslt?xslfile=http%3A%2F%2Fwww.w3.org%2F2008%2F05%2Fcvswebrss.xsl&amp;xmlfile=http%3A%2F%2Fcgi.w3.org%2Fcgi-bin%2Ftidy%3FdocAddr%3Dhttp%253A%252F%252Fdev.w3.org%252Fcvsweb%252F2008%252Fws%252Ftt%252Ftt.xml%26forceXML%3Don" dest="changelog.xml"/>
+      <get src="http://www.w3.org/2000/06/webdata/xslt?xslfile=http%3A%2F%2Fwww.w3.org%2F2008%2F05%2Fcvswebrss.xsl&amp;xmlfile=http%3A%2F%2Fcgi.w3.org%2Fcgi-bin%2Ftidy%3FdocAddr%3Dhttp%253A%252F%252Fdev.w3.org%252Fcvsweb%252F2008%252Fws%252Ftt%252Fttaf1-dfxp.xml%26forceXML%3Don" dest="changelog.xml"/>
     </target>
 
     <target name="generate" description="Generate the specification without updating changelog and acknowledgments sections"
@@ -126,7 +126,7 @@
     <target name="main" description="Generate the specification for a CVS commit"
 	    depends="changelog,validate-tt-specs,html">
 <!--	    depends="updateAcks,changelog,validate-tt-specs,html"> -->
-      <echo>tt.html is ready for CVS commit</echo>
+      <echo>ttaf1-dfxp.html is ready for CVS commit</echo>
       <echo>Use target "generate" to avoid regenerating changelog.xml and acknowledgments.xml</echo>
     </target>
 

@@ -442,7 +442,8 @@ HTML5Caption.prototype.name = function () {
 }
 
 HTML5Caption.prototype.startPlayer = function() {
-    if (-1 == navigator.userAgent.indexOf("Firefox/3.1")) {
+    if (-1 == navigator.userAgent.indexOf("Firefox/3.1") &&
+        -1 == navigator.userAgent.indexOf("Shiretoko/3.1")) {
 	alert("This player only works in Firefox 3.1.");
     }
 }

@@ -13,7 +13,31 @@
     <property name="diffformat" value="diffspec.xsl"/>
     <property name="last-public-draft" value="20070706"/>
 
-    <target name="clean">
+    <patternset id="escapable">
+      <include name="examples/*.xml"/>
+      <include name="rnc/*.rnc"/>
+      <include name="scm/*.scm"/>
+      <include name="xsd/*.xsd"/>
+      <exclude name="scm/compile.scm"/>
+      <exclude name="scm/load.scm"/>
+    </patternset>
+
+    <patternset id="escaped">
+      <include name="examples/*.esc"/>
+      <include name="rnc/*.esc"/>
+      <include name="scm/*.esc"/>
+      <include name="xsd/*.esc"/>
+    </patternset>
+
+    <target name="clean-escapes" description="Clean escaped entites.">
+      <delete quiet="true">
+	<fileset dir="${basedir}">
+	  <patternset refid="escaped"/>
+	</fileset>
+      </delete>
+    </target>
+
+    <target name="clean" depends="clean-escapes">
         <delete quiet="true" file="ttaf1-dfxp.html"/>
     </target>
 
@@ -29,7 +53,23 @@
         </xmlvalidate>
     </target>
 
-    <target name="validate-tt-specs" description="Validates all Timed Text spec files.">
+    <target name="build-escapes" description="Generate escaped entites.">
+      <apply executable="sed">
+        <arg value="-f"/>
+        <arg value="escape.sed"/>
+	<fileset dir="${basedir}">
+	  <patternset refid="escapable"/>
+	</fileset>
+	<redirector>
+	  <outputmapper>
+    	    <mapper type="glob" from="*" to="*.esc"/>
+	  </outputmapper>
+	</redirector>
+      </apply>
+    </target>
+
+    <target name="validate-tt-specs" description="Validates all Timed Text spec files."
+        depends="build-escapes">
         <xmlvalidate lenient="false" warn="yes" file="ttaf1-dfxp.xml"/>
     </target>
 

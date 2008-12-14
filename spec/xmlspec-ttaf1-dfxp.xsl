@@ -596,20 +596,4 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
   </dt>
   <xsl:apply-templates/>
 </xsl:template>
-
-<!-- author -->
-<xsl:template match="author">
-  <dd xmlns="http://www.w3.org/1999/xhtml">
-    <table style="margin: 0em 0em">
-      <td>
-	<xsl:apply-templates select="name"/>
-	<xsl:apply-templates select="affiliation"/>
-      </td>
-      <td>
-	<xsl:apply-templates select="graphic"/>
-      </td>
-    </table>
-  </dd>
-</xsl:template>
-
 </xsl:stylesheet>

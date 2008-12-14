@@ -574,6 +574,29 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 <xsl:template match="br">
   <br xmlns="http://www.w3.org/1999/xhtml" />
 </xsl:template>
+
+<!-- authlist -->
+<xsl:template match="authlist">
+  <dt xmlns="http://www.w3.org/1999/xhtml">
+    <xsl:choose>
+      <xsl:when test="@role='editor'">
+	<xsl:text>Editor</xsl:text>
+      </xsl:when>
+      <xsl:when test="@role='contributor'">
+	<xsl:text>Contributing Author</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:text>Author</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:if test="count(author) &gt; 1">
+      <xsl:text>s</xsl:text>
+    </xsl:if>
+    <xsl:text>:</xsl:text>
+  </dt>
+  <xsl:apply-templates/>
+</xsl:template>
+
 <!-- author -->
 <xsl:template match="author">
   <dd xmlns="http://www.w3.org/1999/xhtml">

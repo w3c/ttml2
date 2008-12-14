@@ -41,8 +41,8 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .strong { font-weight: bold }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-.diff-add  { color: red; }
-.diff-del  { color: red; text-decoration: line-through; }
+.diff-add  { color: red; background-color: #99FF99; }
+.diff-del  { color: red; text-decoration: line-through; background-color: #99FF99; }
 .diff-chg  { background-color: #99FF99; }
 .diff-off  {}
 </xsl:text>
@@ -96,6 +96,16 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
       <span xmlns="http://www.w3.org/1999/xhtml" class="diff-{$diff}">
 	<xsl:apply-templates/>
       </span>
+    </xsl:when>
+    <xsl:when test="ancestor-or-self::note">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="diff-{$diff}">
+	<div class="note">
+	  <p class="prefix">
+	    <b>Note:</b>
+	  </p>
+	  <xsl:apply-templates/>
+        </div>
+      </div>
     </xsl:when>
     <xsl:otherwise>
       <div xmlns="http://www.w3.org/1999/xhtml" class="diff-{$diff}">

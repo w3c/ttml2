@@ -2,13 +2,13 @@ TEST_SUBDIRS=\
 Parameters \
 Content \
 Styling \
+Metadata \
 Timing
 
 # Specification
 
 # Layout \
 # Animation \
-# Metadata \
 
 DATE=$(shell date "+%Y%m%d")
 

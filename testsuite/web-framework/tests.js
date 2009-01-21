@@ -225,4 +225,4 @@ addTest("../Timing/MediaSeqTiming004.xml","MediaSeqTiming004","Testing dur trunc
 addTest("../Timing/MediaSeqTiming005.xml","MediaSeqTiming005","Testing end truncation on seq","Timing Test");
 addTest("../Timing/MediaSeqTiming006.xml","MediaSeqTiming006","Testing end truncation on seq","Timing Test");
 addTest("../Timing/MediaSeqTiming007.xml","MediaSeqTiming007","Testing more end truncation on seq","Timing Test");
-addTest("../Timing/time001.xml","time001",);
+addTest("../Timing/time001.xml","time001","Timing Test");

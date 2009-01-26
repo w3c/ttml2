@@ -41,6 +41,7 @@ addTest("../Styling/BackgroundColor006.xml","BackgroundColor006","Test tts:backg
 addTest("../Styling/BackgroundColor007.xml","BackgroundColor007","Test tts:backgroundColor using a named color expression on the div element.","Styling Test");
 addTest("../Styling/BackgroundColor008.xml","BackgroundColor008","Test tts:backgroundColor style using a named color expression in style.","Styling Test");
 addTest("../Styling/BackgroundColor009.xml","BackgroundColor009","Test tts:backgroundColor using a named color expression on the body.","Styling Test");
+addTest("../Styling/BackgroundColor010.xml","BackgroundColor010","Test tts:backgroundColor attribute with the inherit value.","Styling Test");
 addTest("../Styling/Color001.xml","Color001","Test tts:color attribute using a named color expression.","Styling Test");
 addTest("../Styling/Color002.xml","Color002","Test tts:color attribute using a hash (#rrggbb) color expression.","Styling Test");
 addTest("../Styling/Color003.xml","Color003","Test tts:color attribute using a hash (#rrggbbaa) color expression with opacity.","Styling Test");
@@ -77,11 +78,17 @@ addTest("../Styling/LineHeight001.xml","LineHeight001","Test tts:lineHeight attr
 addTest("../Styling/LineHeight002.xml","LineHeight002","Test tts:lineHeight attribute using the normal value in a paragraph.","Styling Test");
 addTest("../Styling/LineHeight003.xml","LineHeight003","Test tts:lineHeight attribute using a length value in the style element.","Styling Test");
 addTest("../Styling/LineHeight004.xml","LineHeight004","Test tts:lineHeight attribute using an inherited value.","Styling Test");
+addTest("../Styling/LineHeight006.xml","LineHeight006","Test tts:lineHeight attribute using an em value.","Styling Test");
+addTest("../Styling/LineHeight007.xml","LineHeight007","Test tts:lineHeight attribute using a c value.","Styling Test");
+addTest("../Styling/LineHeight008.xml","LineHeight008","Test tts:textAlign attribute with the inherit value.","Styling Test");
 addTest("../Styling/Padding001.xml","Padding001","Test tts:padding attribute with one value.","Styling Test");
 addTest("../Styling/Padding002.xml","Padding002","Test tts:padding attribute with two values.","Styling Test");
 addTest("../Styling/Padding003.xml","Padding003","Test tts:padding attribute with three values.","Styling Test");
 addTest("../Styling/Padding004.xml","Padding004","Test tts:padding attribute with four values.","Styling Test");
 addTest("../Styling/Padding005.xml","Padding005","Test tts:padding attribute with an inherited value.","Styling Test");
+addTest("../Styling/Padding006.xml","Padding006","Test tts:padding attribute with em values.","Styling Test");
+addTest("../Styling/Padding007.xml","Padding007","Test tts:padding attribute with em values.","Styling Test");
+addTest("../Styling/Padding008.xml","Padding008","Test tts:padding attribute with c values.","Styling Test");
 addTest("../Styling/Style001.xml","Style001","Test style attributes in the style element.","Styling Test");
 addTest("../Styling/Styling001.xml","Styling001","Test two different styles in the style element.","Styling Test");
 addTest("../Styling/TextAlign001.xml","TextAlign001","Test tts:textAlign attribute with the right value in a paragraph.","Styling Test");
@@ -90,6 +97,7 @@ addTest("../Styling/TextAlign003.xml","TextAlign003","Test tts:textAlign attribu
 addTest("../Styling/TextAlign004.xml","TextAlign004","Test tts:textAlign attribute with the center value in a pargraph.","Styling Test");
 addTest("../Styling/TextAlign005.xml","TextAlign005","Test tts:textAlign attribute with the start value in the style element.","Styling Test");
 addTest("../Styling/TextAlign006.xml","TextAlign006","Test tts:textAlign attribute with the end value.","Styling Test");
+addTest("../Styling/TextAlign007.xml","TextAlign007","Test tts:textAlign attribute with the inherit value.","Styling Test");
 addTest("../Styling/TextDecoration001.xml","TextDecoration001","Test tts:textDecoration attribute using the none value.","Styling Test");
 addTest("../Styling/TextDecoration002.xml","TextDecoration002","Test tts:textDecoration attribute using the underline value in a span.","Styling Test");
 addTest("../Styling/TextDecoration003.xml","TextDecoration003","Test tts:textDecoration attribute using the none value in a span.","Styling Test");
@@ -127,6 +135,7 @@ addTest("../Styling/displayAlign001.xml","displayAlign001","Test tts:displayAlig
 addTest("../Styling/displayAlign002.xml","displayAlign002","Test tts:displayAlign attribute with the after value in the style element.","Styling Test");
 addTest("../Styling/displayAlign003.xml","displayAlign003","Test tts:displayAlign attribute with the center value in the style element.","Styling Test");
 addTest("../Styling/displayAlign004.xml","displayAlign004","Test tts:displayAlign attribute with an inherit value.","Styling Test");
+addTest("../Styling/displayAlign005.xml","displayAlign005","Test tts:displayAlign attribute with the inherit value.","Styling Test");
 addTest("../Styling/extent001.xml","extent001","Test tts:extent attribute with the auto value in the style element.","Styling Test");
 addTest("../Styling/extent002.xml","extent002","Test tts:extent attribute with two length values in the style element.","Styling Test");
 addTest("../Styling/extent003.xml","extent003","Test tts:extent attribute with an inherited value.","Styling Test");

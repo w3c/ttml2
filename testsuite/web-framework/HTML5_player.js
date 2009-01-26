@@ -60,6 +60,16 @@ HTML5Caption_toSeconds = function(t) {
     }
     return s;
 }
+
+HTML5Caption_toPixels = function(t) {
+    if (t) {
+	var index = t.indexOf('px');
+	if (index > 0) {
+	    return t.substring(0, index) * 1;
+	}
+    }
+    return 0;
+}
     
 HTML5Caption_strip = function(s) {
    return s.replace(/^\s+|\s+$/g,"");
@@ -120,7 +130,7 @@ HTML5Caption_playSRT = function(video, srt) {
     }
 }
 
-HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement) {
+HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, hasOrigin, top, left) {
     var v;
     
     // that's a little extension of my own to support the style
@@ -130,6 +140,38 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement) {
 	htmlElement.style.cssText = v;
     }
 
+    v = dfxpElement.getAttribute("region");
+    if (v != "" && v != null) {
+	var dfxpElementRef = dfxpElement.ownerDocument.getElementById(v);
+	    
+	if (dfxpElementRef == null) {
+	    // getElementById doesn't work, let's try something else
+	    var regions = dfxpElement.ownerDocument.getElementsByTagNameNS(DFXP_NS, "region");
+
+	    for (var i = 0; i < regions.length; i++) {
+		var r = regions.item(i);
+		var id = r.getAttribute("xml:id");
+		if (id == v) {
+		    dfxpElementRef = r;
+		    break;
+		}
+	    }
+	}
+
+	if (dfxpElementRef != null) {
+	    
+	    HTML5Caption_convertDFXP2HTMLAttributes(dfxpElementRef, htmlElement, hasOrigin, top, left);
+	    
+	    var styles = dfxpElementRef.getElementsByTagNameNS(DFXP_NS, "style");
+	    
+	    for (var i = 0; i < styles.length; i++) {
+		var s = styles.item(i);
+		HTML5Caption_convertDFXP2HTMLAttributes(s, htmlElement, hasOrigin, top, left);
+	    }
+	} else {
+	    if (HTML5Caption_debug) alert("can't find region " + v);
+	}	    
+    }
 
     v = dfxpElement.getAttribute("style");
 
@@ -157,7 +199,7 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement) {
 	    if (HTML5Caption_debug) alert("@@TODO IDREFS");
 	}
 	if (dfxpElementRef != null) {
-	    HTML5Caption_convertDFXP2HTMLAttributes(dfxpElementRef, htmlElement);	    
+	    HTML5Caption_convertDFXP2HTMLAttributes(dfxpElementRef, htmlElement, hasOrigin, top, left);	    
 	} else {
 	    if (HTML5Caption_debug) alert("can't find " + v);
 	}
@@ -175,16 +217,21 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement) {
 	htmlElement.style.setProperty("direction", v, "");
     }
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "display");
-    if ((v == "") || (v == "auto")) {
+    if (v == "none") {
+	htmlElement.style.setProperty("display", "none", "");
+	htmlElement.df_displayValue = "none";
+    } else {
+	var nv;
 	if (htmlElement.localName == "span") {
-	    v = "inline";
+	    nv = "inline";
 	} else {
-	    v = "block";
+	    nv = "block";
+	}
+	if (v != "" || !htmlElement.df_displayValue) {
+	    htmlElement.style.setProperty("display", v, "");
+	    htmlElement.df_displayValue = v;
 	}
     }
-    htmlElement.style.setProperty("display", v, "");
-    htmlElement.df_displayValue = v;
-
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "fontFamily");
     if (v != "") {
 	htmlElement.style.setProperty("font-family", v, "");
@@ -208,6 +255,46 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement) {
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "opacity");
     if (v != "") {
 	htmlElement.style.setProperty("opacity", v, "");
+    }
+    v = dfxpElement.getAttributeNS(DFXP_NS_Style, "overflow");
+    if (v != "") {
+	htmlElement.style.setProperty("overflow", v, "");
+    }
+    v = dfxpElement.getAttributeNS(DFXP_NS_Style, "extent");
+    if (v != "") {
+	if (v != "auto") {
+	    var p = v.split(' ');
+	    if (p.length = 2) {
+		htmlElement.style.setProperty("width", p[0], "");
+		htmlElement.style.setProperty("height", p[1], "");
+		htmlElement.dfxp_width = p[0];
+		htmlElement.dfxp_height = p[1];
+	    }
+	}
+    }
+    v = dfxpElement.getAttributeNS(DFXP_NS_Style, "origin");
+    if (v != "") {
+	if (v != "auto" && v != "inherit") {
+	    var p = v.split(' ');
+	    if (p.length = 2) {
+		var parentNode = htmlElement;
+		var _hasOrigin  = hasOrigin;
+		while (parentNode!= null) {
+		    if (parentNode.hasOrigin) {
+			hasOrigin = true;
+			break;
+		    }
+		    parentNode = parentNode.parentNode;
+		}
+		if (!hasOrigin) {
+		    htmlElement.style.setProperty("position", "absolute", "");
+		    htmlElement.style.setProperty("left", (left + HTML5Caption_toPixels(p[0])) + "px", "");
+		    htmlElement.style.setProperty("top", (top + HTML5Caption_toPixels(p[1])) + "px", "");
+		}
+
+		htmlElement.hasOrigin = true;
+	    }
+	} // else @@ ignore auto or inherit
     }
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "padding");
     if (v != "") {
@@ -255,10 +342,9 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement) {
 	}
 	htmlElement.style.setProperty("white-space", v, "");
     }
-
 }
 
-HTML5Caption_convertDFXP2HTML = function(dfxpNode) {
+HTML5Caption_convertDFXP2HTML = function(dfxpNode, hasOrigin, top, left) {
     var htmlNode = null;
 
     if (dfxpNode.aDur == 0) {
@@ -292,21 +378,15 @@ HTML5Caption_convertDFXP2HTML = function(dfxpNode) {
 		    // eliminates non-active elements
 		    return null;
 		}
-		var region = dfxpNode.getAttribute("region");
-		if (region == "") region = null;
 		if (dfxpNode.localName == "span") {
-		    if (region != null) return null;
 		    htmlNode = document.createElementNS(XHTML_NS, "span");
 		} else if (dfxpNode.localName == "p") {
-		    if (region != null) return null;
 		    htmlNode = document.createElementNS(XHTML_NS, "p");
 		} else if (dfxpNode.localName == "div") {
-		    if (region != null) return null;
 		    htmlNode = document.createElementNS(XHTML_NS, "div");
 		} else if (dfxpNode.localName == "br") {
 		    htmlNode = document.createElementNS(XHTML_NS, "br");
 		} else if (dfxpNode.localName == "body") {
-		    if (region != null) throw new Error("Region on body element is not supported");
 		    htmlNode = document.createElementNS(XHTML_NS, "div");
 		    htmlNode.className = 'dfxp';
 		} else {
@@ -349,7 +429,8 @@ HTML5Caption_convertDFXP2HTML = function(dfxpNode) {
     }
 
     if (dfxpNode.tContainer) {
-	HTML5Caption_convertDFXP2HTMLAttributes(dfxpNode, htmlNode);
+	htmlNode.hasOrigin = false;
+	HTML5Caption_convertDFXP2HTMLAttributes(dfxpNode, htmlNode, hasOrigin, top, left);
 	
 	if (HTML5Caption_debug) {
 	    if (htmlNode.localName == "p" || htmlNode.localName == "div" || htmlNode.localName == "span") {
@@ -358,7 +439,7 @@ HTML5Caption_convertDFXP2HTML = function(dfxpNode) {
 	}
 	var childNodes = dfxpNode.childNodes;
 	for (var i = 0; i < childNodes.length; i++) {
-	    var r = HTML5Caption_convertDFXP2HTML(childNodes.item(i));
+	    var r = HTML5Caption_convertDFXP2HTML(childNodes.item(i), htmlNode.hasOrigin, top, left);
 	    if (r!= null) {
 		htmlNode.appendChild(r);
 	    }
@@ -693,14 +774,21 @@ HTML5Caption_playDFXP = function(video, dfxpDocument) {
     // mainDiv is here to prevent the DFXP style from messing up with
     // with the main container. mainDiv represents the body
     // element of DFXP
-    var mainDiv = HTML5Caption_convertDFXP2HTML(dfxpDocument.bodyElement);
+    var top  = 0;
+    var left = 0;
+    
+    if (video.offsetTop) top = video.offsetTop;
+    if (video.offsetLeft) left = video.offsetLeft;
+    var mainDiv = HTML5Caption_convertDFXP2HTML(dfxpDocument.bodyElement, false, top, left);
 
     if (mainDiv == null) return;
 
     var w = video.getAttribute("width");
     if (w!="") {
 	// the main container gets the size of the video
-	mainDiv.style.setProperty("width", w, "");
+	if (!mainDiv.dfxp_width) {
+	    mainDiv.style.setProperty("width", w, "");
+	}
     }
 
     var subtitles = HTML5Caption_getSubtitleSet(mainDiv);
@@ -708,7 +796,7 @@ HTML5Caption_playDFXP = function(video, dfxpDocument) {
     video.parentNode.insertBefore(mainDiv, video.nextSibling);
 
     if (HTML5Caption_debug) {
-	alert("We have " + subtitles.length + " in the set " + mainDiv.aBegin + "-" + mainDiv.aEnd);
+	alert("set has " + subtitles.length + " subtitles");
 	return;
     }
     var currentTime = video.currentTime;

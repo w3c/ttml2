@@ -42,7 +42,7 @@
 
     <xsl:template match="tt:tt">
       <xsl:text>"</xsl:text>
-      <xsl:value-of select='normalize-space(tt:head/tt:metadata/ttm:descr)'/>
+      <xsl:value-of select='normalize-space(tt:head/tt:metadata/ttm:desc)'/>
       <xsl:text>","</xsl:text>
       <xsl:value-of select='normalize-space(substring-before(tt:head/tt:metadata/ttm:title, "-"))'/>
       <xsl:text>"</xsl:text>

@@ -647,10 +647,11 @@ function init() {
     }
     handleSelection(0);
 
-    // initialize skipOnResult
-    var nSkipOnResult = document.getElementById("skipOnResult").checked;
-    switchSkipOnResult(nSkipOnResult);
-
+    if (displayResult) {
+	// initialize skipOnResult
+	var nSkipOnResult = document.getElementById("skipOnResult").checked;
+	switchSkipOnResult(nSkipOnResult);
+    }
     // initialize autostart
     var nAutostart = document.getElementById("autostart").checked;
     switchAutostart(nAutostart);

@@ -760,6 +760,15 @@ should satisfy the web content accessibility guidelines specified by
 </div2>
 <div2 id="conformance-processor">
 <head>Processor Conformance</head>
+<ednote>
+<name>GA</name>
+<date>2009-01-30</date>
+<edtext>
+The following description of processor conformance needs to be sub-divided into
+transformation and presentation processor specific descriptions, possibly retaining
+common elements in a base processor conformance clause.
+</edtext>
+</ednote>
 <p>A TT AF processor conforms to this specification if the following criteria are
 satisfied:</p>
 <olist>
@@ -906,7 +915,7 @@ of XML Namespaces may be used that is associated with the specified namespace UR
 </note>
 <table id="namespace-vocab-table" role="common">
 <caption>Table 1 &ndash; Namespaces</caption>
-<col width="25%"/>
+<col width="30%"/>
 <tbody>
 <tr>
 <th>Name</th>
@@ -917,6 +926,16 @@ of XML Namespaces may be used that is associated with the specified namespace UR
 <td>TT</td>
 <td><code>tt:</code></td>
 <td><code>http://www.w3.org/2006/10/ttaf1</code></td>
+</tr>
+<tr>
+<td><phrase diff="add">TT Feature Prefix</phrase></td>
+<td><phrase diff="add"><code>ttf:</code></phrase></td>
+<td><phrase diff="add"><code>http://www.w3.org/2006/10/ttaf1/feature</code></phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add">TT Extension Prefix</phrase></td>
+<td><phrase diff="add"><code>ttx:</code></phrase></td>
+<td><phrase diff="add"><code>http://www.w3.org/2006/10/ttaf1/extension</code></phrase></td>
 </tr>
 <tr>
 <td>TT Parameter</td>
@@ -1200,11 +1219,6 @@ catalog is enumerated in
 Core Attributes
 </td>
 <td>
-<!-- FIXME - not yet defined
-<loc href="#content-attribute-requiredExtensions">requiredExtensions</loc>,
-<loc href="#content-attribute-requiredFeatures">requiredFeatures</loc>,
-<loc href="#content-attribute-requiredFonts">requiredFonts</loc>,
--->
 <loc href="#content-attribute-id">xml:id</loc>,
 <loc href="#content-attribute-lang">xml:lang</loc>,
 <loc href="#content-attribute-space">xml:space</loc>
@@ -1298,6 +1312,12 @@ Timing Attributes
 </tr>
 </tbody>
 </table>
+<note role="explanation" diff="add">
+<p>Only those attributes defined as either (1) global, i.e., namespace qualified, or
+(2) shared element-specific, i.e., not namespace qualified but shared across multiple
+element types, are listed in <specref ref="attribute-vocab-table"/> above.
+</p>
+</note>
 <note role="explanation">
 <p>All vocabulary defined by the TT AF consistently makes use of
 the so-called <emph>lowerCamelCase</emph> naming convention. In some cases, this results in the
@@ -1897,6 +1917,17 @@ document instance:</p>
 </ulist>
 <div3 id="document-structure-vocabulary-tt">
 <head>tt</head>
+<ednote>
+<name>GA</name>
+<date>2009-01-19</date>
+<edtext>
+The inclusion of
+<att>requiredFeatures</att> and
+<att>requiredExtensions</att>
+attributes on the <el>tt</el> element type is provisional, and is provided for
+discussion purposes only.
+</edtext>
+</ednote>
 <p>The <el>tt</el> element serves as the root, document element of a document
 instance.</p>
 <p>The <el>tt</el> element accepts as its children zero or one <el>head</el> element followed by
@@ -1908,11 +1939,9 @@ zero or one <el>body</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;tt
-<!-- FIXME - not yet defined
-  <loc href="#content-attribute-requiredExtensions">requiredExtensions</loc> = string
-  <loc href="#content-attribute-requiredFeatures">requiredFeatures</loc> = string
-  <loc href="#content-attribute-requiredFonts">requiredFonts</loc> = string
--->
+  <phrase diff="add">requiredFeatures = string</phrase>
+  <phrase diff="add">requiredExtensions = string</phrase>
+  <phrase diff="add"><loc href="#style-attribute-extent">tts:extent</loc> = string</phrase>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang"><phrase role="reqattr">xml:lang</phrase></loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
@@ -1933,6 +1962,62 @@ these points is referred to subsequently as the <emph>external time interval</em
 <p>A document instance has an implicit duration that is equal to the
 implicit duration of the <el>body</el> element of the document, if present, or zero,
 if not present.</p>
+<p diff="add">If a TT AF document instance makes use of an optional
+language or semantic feature, and if the intended use of the document
+requires recognition and processing of that feature, then the document
+instance must specify the use of that feature using a
+<att>requiredFeatures</att> attribute.  If this attribute is specified
+on the <el>tt</el> element, then it must specify a non-empty, whitespace separated list of
+feature designators as defined by <specref
+ref="feature-designations"/>.</p>
+<p diff="add">If the use of an optional feature is designated by the
+<att>requiredFeatures</att> attribute, then a conforming TT AF
+processor must implement or otherwise support the designated feature
+in order to process the document; otherwise, it must not further
+process the document without the presence of an explicit override from
+an end-user or some implementation specific parameter traceable to an
+end-user or to a user or system configuration setting. If a TT AF
+processor aborts processing of a TT AF document instance due to the
+specification of an unsupported feature by this attribute, then some
+end-user notification should be given unless the end-user or system
+has disabled such a notification, or if the processor does not permit
+or entail the intervention of an end-user.</p>
+<note role="clarification" diff="add">
+<p>The means by which an end-user is notified that the processing of a
+document has aborted due to lack of support of a feature is
+considered to be implementation dependent, and is not further defined
+by this specification.</p></note>
+<p diff="add">If a TT AF document instance makes use of a language or
+semantic extension, and if the intended use of the document requires
+recognition and processing of that extension, then the document
+instance must specify the use of that extension using a
+<att>requiredExtensions</att> attribute.  If this attribute is
+specified on the <el>tt</el> element, then it must specify a non-empty, whitespace separated
+list of extension designators as defined by <specref
+ref="extension-designations"/>.</p>
+<p diff="add">If the use of an extension is designated by the
+<att>requiredExtensions</att> attribute, then a conforming TT AF
+processor must implement or otherwise support the designated extension
+in order to process the document; otherwise, it must not further
+process the document without the presence of an explicit override from
+an end-user or some implementation specific parameter traceable to an
+end-user or to a user or system configuration setting. If a TT AF
+processor aborts processing of a TT AF document instance due to the
+specification of an unsupported extension by this attribute, then some
+end-user notification should be given unless the end-user or system
+has disabled such a notification, or if the processor does not permit
+or entail the intervention of an end-user.</p>
+<note role="clarification" diff="add">
+<p>The means by which an end-user is notified that the processing of a
+document has aborted due to lack of support of an extension is
+considered to be implementation dependent, and is not further defined
+by this specification.</p></note>
+<p diff="add">If the <att>tts:extent</att> attribute is specified on the <el>tt</el>
+element, then it specifies the spatial extent of the root container region in
+which content regions are located and presented. If no <att>tts:extent</att>
+attribute is specified, then the spatial extent of the root container region is
+considered to be determined by the external authoring or presentation
+context.</p>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the document instance.</p>
@@ -2028,29 +2113,34 @@ end point is interpreted as the end point of the external time interval.</p>
 is expected to follow the same timing rules as apply to other SMIL media
 objects.</p>
 </note>
-<p>If relative begin or end times are specified on the <el>body</el> element, then
-these times are resolved by reference to the begin and end time of the external time interval.</p>
+<p>If relative begin or end times are specified on the <el>body</el>
+element, then these times are resolved by reference to the begin and
+end time of the external time interval.</p>
 <p>If the external time interval is shorter than the computed duration of the
 <el>body</el> element, then the active time interval of a document instance is
 truncated to the active end point of the external time interval.</p>
-<p>If no <att>timeContainer</att> attribute is specified, then a <el>body</el> element must be
-interpreted as having <emph>sequential</emph> time containment semantics.</p>
-<p>If the <att>tts:extent</att> attribute is specified on the <el>body</el>
+<p diff="del">If the <att>tts:extent</att> attribute is specified on the <el>body</el>
 element, then it specifies the spatial extent of the root container region in
 which content regions are located and presented. If no <att>tts:extent</att>
 attribute is specified, then the spatial extent of the root container region is
 considered to be determined by the external authoring or presentation
 context.</p>
-<p>An author may associate a set of style properties with a <el>body</el> element by means of either
-the <att>style</att> attribute or inline style attributes or a
-combination thereof.</p>
+<p>An author may associate a set of style properties with a
+<el>body</el> element by means of either the <att>style</att>
+attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
-<p>Style properties that are associated with a <el>body</el> element in a document instance
-are available for style inheritance by descendant content elements such as <el>div</el>, 
-<el>p</el>, and <el>span</el>.</p>
+<p>Style properties that are associated with a <el>body</el> element
+in a document instance are available for style inheritance by
+descendant content elements such as <el>div</el>, <el>p</el>,
+<phrase diff="del">and</phrase>
+<el>span</el>
+<phrase diff="add">and <el>br</el></phrase>.</p>
 </note>
 <p>The declared value of an inline style attribute on a <el>body</el>
 element must not be <code>inherit</code>.</p>
+<p diff="chg">If no <att>timeContainer</att> attribute is specified on a
+<el>body</el> element, then it must be interpreted as having
+<emph>sequential</emph> time containment semantics.</p>
 </div3>
 <div3 id="content-vocabulary-div">
 <head>div</head>
@@ -2117,8 +2207,6 @@ element group apply semantically to the <el>div</el> element.</p>
 </tr>
 </tbody>
 </table>
-<p>If no <att>timeContainer</att> attribute is specified, then a <el>div</el> element must be
-interpreted as having <emph>parallel</emph> time containment semantics.</p>
 <p>An author may associate a set of style properties with a <el>div</el> element by means of either
 the <att>style</att> attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
@@ -2128,8 +2216,12 @@ a <el>div</el> element in a document instance
 are available for style inheritance by descendant content elements such as
 <phrase diff="add"><el>div</el>, </phrase>
 <el>p</el><phrase diff="add">,</phrase>
-and <el>span</el>.</p>
+<phrase diff="del">and</phrase> <el>span</el><phrase diff="add">, and
+<el>br</el></phrase>.</p>
 </note>
+<p diff="chg">If no <att>timeContainer</att> attribute is specified on
+a <el>div</el> element, then it must be interpreted as having
+<emph>parallel</emph> time containment semantics.</p>
 </div3>
 <div3 id="content-vocabulary-p">
 <head>p</head>
@@ -2177,6 +2269,18 @@ element group apply semantically to the <el>p</el> element.</p>
 </tr>
 </tbody>
 </table>
+<p diff="add">An author may associate a set of style properties with a
+<el>p</el> element by means of either the <att>style</att>
+attribute or inline style attributes or a combination thereof.</p>
+<note role="explanation" diff="add">
+<p>Style properties that are associated with a <el>p</el> element
+in a document instance are available for style inheritance by
+descendant content elements such as <el>span</el> and
+<el>br</el>.</p>
+</note>
+<p diff="add">If no <att>timeContainer</att> attribute is specified on
+a <el>p</el> element, then it must be interpreted as having
+<emph>parallel</emph> time containment semantics.</p>
 <p>If a sequence of children of a <el>p</el> element
 consists solely of character information items, then that sequence must
 be considered to be an <emph>anonymous span</emph> for the purpose of
@@ -2236,6 +2340,18 @@ element group apply semantically to the <el>span</el> element.</p>
 </tr>
 </tbody>
 </table>
+<p diff="add">An author may associate a set of style properties with a
+<el>span</el> element by means of either the <att>style</att>
+attribute or inline style attributes or a combination thereof.</p>
+<note role="explanation" diff="add">
+<p>Style properties that are associated with a <el>span</el> element
+in a document instance are available for style inheritance by
+descendant content elements such as <el>span</el> and
+<el>br</el>.</p>
+</note>
+<p diff="add">If no <att>timeContainer</att> attribute is specified on
+a <el>span</el> element, then it must be interpreted as having
+<emph>parallel</emph> time containment semantics.</p>
 </div3>
 <div3 id="content-vocabulary-br">
 <head>br</head>
@@ -2278,35 +2394,10 @@ different effect than a single <el>br</el> element.</p>
 <p>This section defines the following common attributes used with many or all element types
 in the core vocabulary catalog:</p>
 <ulist>
-<!-- FIXME - not yet defined
-<item><p><specref ref="content-attribute-requiredExtensions"/></p></item>
-<item><p><specref ref="content-attribute-requiredFeatures"/></p></item>
-<item><p><specref ref="content-attribute-requiredFonts"/></p></item>
--->
 <item><p><specref ref="content-attribute-id"/></p></item>
 <item><p><specref ref="content-attribute-lang"/></p></item>
 <item><p><specref ref="content-attribute-space"/></p></item>
 </ulist>
-<!-- FIXME - not yet defined
-<div3 id="content-attribute-requiredExtensions">
-<head>requiredExtensions</head>
-<p>The <att>requiredExtensions</att> attribute is used as &tbd;.</p>
-<p>The <att>requiredExtensions</att> attribute may be used with any element in the
-core vocabulary catalog.</p>
-</div3>
-<div3 id="content-attribute-requiredFeatures">
-<head>requiredFeatures</head>
-<p>The <att>requiredFeatures</att> attribute is used as &tbd;.</p>
-<p>The <att>requiredFeatures</att> attribute may be used with any element in the
-core vocabulary catalog.</p>
-</div3>
-<div3 id="content-attribute-requiredFonts">
-<head>requiredFonts</head>
-<p>The <att>requiredFonts</att> attribute is used as &tbd;.</p>
-<p>The <att>requiredFonts</att> attribute may be used with any element in the
-core vocabulary catalog.</p>
-</div3>
--->
 <div3 id="content-attribute-id">
 <head>xml:id</head>
 <p>The <att>xml:id</att> attribute is used as defined by
@@ -2700,11 +2791,10 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<note role="explanation">
-<p>For the purpose of determining applicability of this style property,
+<p diff="chg">For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-</note>
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>The <att>tts:color</att> style is illustrated by the following example.</p>
 <table id="style-attribute-color-example-1" role="example">
 <caption>Example Fragment &ndash; Color</caption>
@@ -2864,6 +2954,7 @@ as a style property only to those element types indicated in the following table
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
+<phrase diff="add"><loc href="#content-vocabulary-region"><el>region</el></loc></phrase>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -3229,7 +3320,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
+<phrase diff="chg"><loc href="#document-structure-vocabulary-tt"><el>tt</el></loc></phrase>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>
 </td>
 </tr>
@@ -3255,7 +3346,7 @@ and <emph>height</emph>, where the first specification is the
 <p>If the value of this attribute is <code>auto</code>, then the initial value
 of the style property must be considered to be the same as the root container extent.
 The root container extent is determined either by a
-<att>tts:extent</att> specified on the <el>body</el> element, if
+<att>tts:extent</att> specified on the <el diff="chg">tt</el> element, if
 present, or by the external authoring context, if not present. In the
 former case, if the width and height is expressed in terms of two
 <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
@@ -3341,15 +3432,14 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<note role="explanation">
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-</note>
 <note role="clarification">
 <p>The initial value, <code>default</code>, is a generic font family name, and is
 further described in <specref ref="style-value-genericFamilyName"/> below.</p>
 </note>
+<p diff="chg">For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>The <att>tts:fontFamily</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontFamily-example-1" role="example">
 <caption>Example Fragment &ndash; Font Family</caption>
@@ -3455,11 +3545,10 @@ one column in width.</p>
 <p>If horizontal and vertical sizes are expressed independently, then the
 metrics of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
-<note role="explanation">
-<p>For the purpose of determining applicability of this style property,
+<p diff="chg">For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-</note>
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>The <att>tts:fontSize</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontSize-example-1" role="example">
 <caption>Example Fragment &ndash; Font Size</caption>
@@ -3550,11 +3639,10 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<note role="explanation">
-<p>For the purpose of determining applicability of this style property,
+<p diff="chg">For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-</note>
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>Use of values <code>oblique</code> and <code>reverseOblique</code>
 denote a shear and reverse shear transformation (at an unspecified
 angle) in the inline progression dimension. A conformant processor may
@@ -3650,11 +3738,10 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<note role="explanation">
-<p>For the purpose of determining applicability of this style property,
+<p diff="chg">For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-</note>
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>If a specified font weight is not available, then a conformant
 processor must interpret the font weight as if the value <code>normal</code> were
 specified for the purpose of presentation processing.</p>
@@ -3742,10 +3829,14 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<p>If the value of this attribute is <code>normal</code>, then the initial value
-of the style property must be considered to be the same as the largest font size
-that applies to any child element.</p>
-<p>If specified as a <loc href="#style-value-length">&lt;length&gt;</loc>, then the length must be non-negative.</p>
+<p>If the value of this attribute is <code>normal</code>, then the
+initial value of the style property must be considered to be the same
+as the largest font size that applies to any <phrase
+diff="del">child</phrase><phrase diff="add">descendant"</phrase>
+element.</p>
+<p>If specified as a <loc
+href="#style-value-length">&lt;length&gt;</loc>, then the length must
+be non-negative.</p>
 <p>The <att>tts:lineHeight</att> style is illustrated by the following example.</p>
 <table id="style-attribute-lineHeight-example-1" role="example">
 <caption>Example Fragment &ndash; Line Height</caption>
@@ -4563,11 +4654,10 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<note role="explanation">
-<p>For the purpose of determining applicability of this style property,
+<p diff="chg">For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-</note>
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>The value of this attribute consists of an optional <loc href="#style-value-color">&lt;color&gt;</loc> term
 followed by one or two <loc href="#style-value-length">&lt;length&gt;</loc> terms.  If a <emph>color</emph> term is
 present, then it denotes the outline color; if no <emph>color</emph> term is
@@ -4742,12 +4832,16 @@ as a style property only to those element types indicated in the following table
 </td>
 </tr>
 <tr>
-<td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td><phrase diff="add"><emph>Inherited:</emph></phrase></td>
+<td><phrase diff="add">yes</phrase></td>
 </tr>
 <tr>
-<td><emph>Percentages:</emph></td>
-<td>N/A</td>
+<td><phrase diff="add"><emph>Percentages:</emph></phrase></td>
+<td><phrase diff="add">N/A</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="del"><emph>Animatable:</emph></phrase></td>
+<td><phrase diff="del">discrete</phrase></td>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
@@ -4865,9 +4959,10 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
+<p diff="chg">For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
+span, where the value of this style property on the anonymous span is considered to be
+<code>inherit</code>.</p>
 <p>The <att>tts:wrapOption</att> style is illustrated by the following example.</p>
 <table id="style-attribute-wrapOption-example-1" role="example">
 <caption>Example Fragment &ndash; Wrap Option</caption>
@@ -5162,6 +5257,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl10"
 <item><p><specref ref="style-value-genericFamilyName"/></p></item>
 <item><p><specref ref="style-value-hexDigit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
+<item><p diff="add"><specref ref="style-value-length"/></p></item>
 <item><p><specref ref="style-value-namedColor"/></p></item>
 <item><p><specref ref="style-value-quotedString"/></p></item>
 <item><p><specref ref="style-value-string"/></p></item>
@@ -5306,42 +5402,6 @@ then it must be expressed as a &lt;quotedString&gt;.</p>
 </tr>
 </tbody>
 </table>
-</div3>
-<div3 id="style-value-genericFamilyName">
-<head>&lt;genericFamilyName&gt;</head>
-<p>A &lt;genericFamilyName&gt; expression specifies a font family using a general
-token that indicates a class of font families.</p>
-<p>The resolution of a generic family name to a concrete font instance is considered to
-be implementation dependent, both in the case of content authoring and content interpretation.</p>
-<table id="genericFamilyName-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;genericFamilyName&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;genericFamilyName&gt;
-  : "default"
-  | "monospace"
-  | "sansSerif"
-  | "serif"
-  | "monospaceSansSerif"
-  | "monospaceSerif"
-  | "proportionalSansSerif"
-  | "proportionalSerif"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The mapping between a generic (font) family name and an actual font is not
-determined by this specification; however, the
-distinction of monospace versus proportional and serif versus sans-serif
-should be maintained if possible when performing presentation.</p>
-<p>If a generic (font) family name of <code>monospace</code> is specified,
-then it may be interpreted as equivalent to either <code>monospaceSansSerif</code>
-or <code>monospaceSerif</code>. The generic family names <code>sansSerif</code>
-and <code>serif</code> are to be interpreted as equivalent to <code>proportionalSansSerif</code>
-and <code>proportionalSerif</code>, respectively.</p>
 </div3>
 <div3 id="style-value-flowFunction">
 <head>&lt;flowFunction&gt;</head>
@@ -5491,6 +5551,42 @@ whether the rate is used with an <code>intra()</code> or
 <code>inter()</code> flow interval function.</p>
 <p>The computed fill and clear interval values are defined by
 <specref ref="dynamicFlowIntervalTimingCalculation"/>.</p>
+</div3>
+<div3 id="style-value-genericFamilyName">
+<head>&lt;genericFamilyName&gt;</head>
+<p>A &lt;genericFamilyName&gt; expression specifies a font family using a general
+token that indicates a class of font families.</p>
+<p>The resolution of a generic family name to a concrete font instance is considered to
+be implementation dependent, both in the case of content authoring and content interpretation.</p>
+<table id="genericFamilyName-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;genericFamilyName&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;genericFamilyName&gt;
+  : "default"
+  | "monospace"
+  | "sansSerif"
+  | "serif"
+  | "monospaceSansSerif"
+  | "monospaceSerif"
+  | "proportionalSansSerif"
+  | "proportionalSerif"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The mapping between a generic (font) family name and an actual font is not
+determined by this specification; however, the
+distinction of monospace versus proportional and serif versus sans-serif
+should be maintained if possible when performing presentation.</p>
+<p>If a generic (font) family name of <code>monospace</code> is specified,
+then it may be interpreted as equivalent to either <code>monospaceSansSerif</code>
+or <code>monospaceSerif</code>. The generic family names <code>sansSerif</code>
+and <code>serif</code> are to be interpreted as equivalent to <code>proportionalSansSerif</code>
+and <code>proportionalSerif</code>, respectively.</p>
 </div3>
 <div3 id="style-value-hexDigit">
 <head>&lt;hexDigit&gt;</head>
@@ -5953,6 +6049,7 @@ element, i.e., does not apply for resolving referential styling.</p>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <phrase diff="add"><loc href="#metadata-attribute-role">ttm:role</loc> = string</phrase>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -6034,6 +6131,17 @@ extent or change a region's background color by means of animation effects. In
 both of these cases, it is necessary to posit an active time interval for a
 region.</p>
 </note>
+<p diff="add">If no <att>timeContainer</att> attribute is specified on
+a <el>region</el> element, then it must be interpreted as having
+<emph>parallel</emph> time containment semantics.</p>
+<p diff="add">If a <loc
+href="#metadata-attribute-role"><att>ttm:role</att></loc> attribute is
+specified on a <el>region</el> element, then it must adhere to the
+value syntax defined by <specref
+ref="metadata-attribute-role-syntax"/>, and where the role identified
+by this attribute expresses the semantic role of the region
+independently from the semantic role of any content targeted to
+(associated with) the region.</p>
 </div3>
 </div2>
 <div2 id="layout-attribute-vocabulary">
@@ -6064,6 +6172,55 @@ presentation in terms of a standard processing model. Any
 implementation is permitted provided that the externally observable
 results are consistent with the results produced by this model.
 </p>
+<div3 id="semantics-default-region" diff="add">
+<head>Default Region</head>
+<p>If a TT AF document instance does not specify a
+<loc href="#layout-vocabulary-region"><el>region</el></loc> element,
+then a <emph>default region</emph> is implied with the following characteristics:</p>
+<ulist>
+<item>
+<p>the identify of the default region is consider to be anonymous;</p>
+</item>
+<item>
+<p>the extent of the default region is the same as the root container
+region;</p>
+</item>
+<item>
+<p>the temporal interval of the default region is the same as temporal
+interval of the document instance;</p>
+</item>
+</ulist>
+<p>Furthermore, if no <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element was
+specified, then the <loc
+href="#layout-attribute-region"><att>region</att></loc> attribute must
+not be specified on any content element in the document
+instance.</p>
+<p>If a default region is implied for a given document instance, then
+the <loc href="#content-vocabulary-body"><el>body</el></loc> element
+is implicitly targeted to (associated with) the default region.</p>
+<p>When implying a default region, the document instance is to be
+treated as if a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element and its
+parent <loc href="#layout-vocabulary-layout"><el>layout</el></loc>
+element were specified in a <loc
+href="#document-structure-vocabulary-head"><el>head</el></loc>
+element, and a matching <loc
+href="#layout-attribute-region"><att>region</att></loc> attribute were
+specified on the <loc
+href="#document-structure-vocabulary-body"><el>body</el></loc> element
+as shown in the following example:</p>
+<eg xml:space="preserve">
+&lt;tt xml:lang="" xmlns="http://www.w3.org/2006/10/ttaf1"&gt;
+  &lt;head&gt;
+    <phrase role="strong">&lt;layout&gt;
+      &lt;region xml:id="anonymous"/&gt;
+    &lt;/layout&gt;</phrase>
+  &lt;/head&gt;
+  &lt;body <phrase role="strong">region="anonymous"</phrase>/&gt;
+&lt;/tt&gt;
+</eg>
+</div3>
 <div3 id="semantics-region-layout-step-1">
 <head>Synchronic Region Construction</head>
 <p>For the purposes of performing presentation processing, the active time
@@ -6092,6 +6249,23 @@ element from the intermediate document, then prune all <att>region</att>,
 <att>begin</att>, <att>end</att>, and <att>dur</att> attributes, which are no
 longer semantically relevant;</p>
 </item>
+</olist>
+<p diff="add">A content element is associated with a region according
+to the following ordered rules, where the first rule satisfied
+is used and remaining rules are skipped:</p>
+<olist>
+<item><p diff="add">if the element specifies a <loc
+href="#layout-attribute-region"><att>region</att></loc> attribute,
+then the element is associated with the region referenced by that
+attribute;</p></item>
+<item><p diff="add">if some ancestor of that element specifies a <loc
+href="#layout-attribute-region"><att>region</att></loc> attribute,
+then the element is associated with the region referenced by the most
+immediate ancestor that specifies this attribute;</p></item>
+<item><p diff="add">if a default region was implied (due to the absence of any
+<loc href="#layout-vocabulary-region"><el>region</el></loc> element),
+then the element is associated with the default region</p></item>
+<item><p diff="add">the element is not associated with any region</p></item>
 </olist>
 <p>The pseudo-code shown in <specref ref="content-hierarchy-region-mapping"/>
 provides one possible algorithm that implements these processing steps.</p>
@@ -6144,10 +6318,24 @@ ref="semantics-region-layout-step-1"/> is mapped to an XSL FO document instance,
 <emph>F</emph>, as follows:</p>
 <olist>
 <item>
-<p>for each significant text node in a content element that is not a child of a
+<p diff="del">for each significant text node in a content element that is not a child of a
 <el>span</el> element, synthesize an anonymous span to enclose the text node,
 substituting the new anonymous span for the original text node child in its
 sibling and parent hierarchy;</p>
+<p diff="add">perform the following ordered sub-steps to create anonymous spans:</p>
+<olist>
+<item><p diff="add">for each significant text node in a content element,
+synthesize an anonymous span to enclose the text node, substituting
+the new anonymous span for the original text node child in its sibling
+and parent hierarchy;</p></item>
+<item><p diff="add">for each contiguous sequence of anonymous spans, replace the
+sequence with a single anonymous span which contains a sequence of
+text nodes representing the individual text node children of the
+original sequence of anonymous spans;</p></item>
+<item><p diff="add">for each span element whose child is a single anonymous span,
+replace the anonymous span with its sequence of child text
+nodes;</p></item>
+</olist>
 </item>
 <item>
 <p>for each element, determine its computed style specification set, if
@@ -6352,10 +6540,9 @@ a &lt;timeExpression&gt; specification as defined by <specref
 ref="timing-value-timeExpression"/>.</p>
 <p>The begin point of a temporal interval is included in the
 interval; i.e., the interval is left-wise closed.</p>
-<note role="derivation">
-<p>The semantics of the <att>begin</att> attribute are based upon that defined
-by <bibref ref="smil21"/>, &sect; <phrase diff="chg">10.4.1</phrase>.</p>
-</note>
+<p diff="chg">The semantics of the <att>begin</att> attribute are those defined
+by <bibref ref="smil21"/>, &sect; <phrase diff="chg">10.4.1</phrase>,
+while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-end">
 <head>end</head>
@@ -6377,10 +6564,9 @@ are limited to frames 300 through 309 only (assuming that 0s corresponds
 with frame 0). The same holds if the active interval is specified
 as [300f,310f).</p>
 </note>
-<note role="derivation">
-<p>The semantics of the <att>end</att> attribute are based upon that defined
-by <bibref ref="smil21"/>, &sect; <phrase diff="chg">10.4.1</phrase>.</p>
-</note>
+<p diff="chg">The semantics of the <att>end</att> attribute are those defined
+by <bibref ref="smil21"/>, &sect; <phrase diff="chg">10.4.1</phrase>,
+while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-dur">
 <head>dur</head>
@@ -6389,10 +6575,9 @@ temporal interval associated with a timed element. If specified,
 the value of a <att>dur</att> attribute must adhere to a
 &lt;timeExpression&gt; specification as defined by <specref
 ref="timing-value-timeExpression"/>.</p>
-<note role="derivation">
-<p>The semantics of the <att>dur</att> attribute are based upon that defined
-by <bibref ref="smil21"/>, &sect; <phrase diff="chg">10.4.1</phrase>.</p>
-</note>
+<p diff="chg">The semantics of the <att>dur</att> attribute are those defined
+by <bibref ref="smil21"/>, &sect; <phrase diff="chg">10.4.1</phrase>,
+while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-timeContainer">
 <head>timeContainer</head>
@@ -6428,9 +6613,9 @@ has time container semantics, then <code>par</code> time container semantics mus
 <item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
 </ulist>
-<note role="derivation"> <p>The semantics of parallel and sequential time
-containment are based upon that defined by <bibref ref="smil21"/>, &sect;
-10.3.2.</p> </note>
+<p diff="chg">The semantics of parallel and sequential time
+containment are those defined by <bibref ref="smil21"/>, &sect; 10.3.2,
+while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 </div2>
 <div2 id="timing-time-value-expressions">
@@ -6535,13 +6720,39 @@ vocabulary defined by this specification, given the following
 constraints:</p>
 <ulist>
 <item>
-<p>The implicit duration of <el>body</el>, <el>div</el>, <el>p</el>,
-and <el>span</el> (whether anonyous or not) is defined as follows: if
-the element's parent time container is a parallel time container, then
+<p>The implicit duration of
+<phrase diff="del">
+<el>body</el>, <el>div</el>, <el>p</el>, and <el>span</el> (whether anonyous or not)
+</phrase>
+<phrase diff="add">
+an anonymous span
+</phrase>
+is defined as follows: if
+the
+<phrase diff="del">
+element's
+</phrase>
+<phrase diff="add">
+anonymous span's
+</phrase>
+parent time container is a parallel time container, then
 the implicit duration is equivalent to the <code>indefinite</code>
-duration value as defined by <bibref ref="smil21"/>; if the element's
+duration value as defined by <bibref ref="smil21"/>; if the
+<phrase diff="del">
+element's
+</phrase>
+<phrase diff="add">
+anonymous span's
+</phrase>
 parent time container is a sequential time container, then the
 implicit duration is equivalent to zero.</p>
+</item>
+<item>
+<p diff="add">The implicit duration of a <el>body</el>, <el>div</el>, <el>p</el>,
+or <el>span</el> element is determined in accordance to (1) whether
+the element is a parallel or sequential time container, and (2) the
+semantics of <bibref ref="smil21"/> as applied to these time
+containers.</p>
 </item>
 <item>
 <p>The implicit duration of the <el>region</el> element is defined to
@@ -7341,6 +7552,14 @@ DFXP document instances:</p>
 normative definitions of document type, element type, or attribute type
 as defined by the body of this specification, then the body of this
 specification takes precedence.</p>
+<ednote>
+<name>GA</name>
+<date>2009-01-30</date>
+<edtext>
+The following schemas need to be updated to reflect changes since the previously
+published candidate recommendation.
+</edtext>
+</ednote>
 <div2 id="dfxp-schema-rnc">
 <head>Relax NG Schema</head>
 <p>This section specifies a Relax NG Compact Syntax (RNC) <bibref ref="rng"/> based schema
@@ -7619,6 +7838,2649 @@ over this specification.</p>
 </def>
 </gitem>
 </glist>
+</div1>
+<div1 id="features" diff="add">
+<head>Features</head>
+<p><emph>This appendix is normative.</emph></p>
+<p>This appendix specifies (1) a set of feature designations, each of which
+labels one or more syntactic and/or semantic features defined by this
+specification, and (2) for each designated feature, whether the feature is mandatory
+or optional for a transformation or presentation processor.</p>
+<div2 id="feature-designations">
+<head>Feature Designations</head>
+<p>A feature designation is expressed as a string that adheres to the following
+form:</p>
+<eg xml:space="preserve">
+feature-designation
+  : feature-namespace designation
+
+feature-namespace
+  : <emph>TT Feature Prefix Namespace</emph>             // <phrase><code>http://www.w3.org/2006/10/ttaf1/feature</code></phrase>
+
+designation
+  : "#" token-char+
+
+token-char
+  : { XML NameChar }                        // XML 1.1 Production [4a]
+</eg>
+<p>All values of <code>feature-designation</code> not defined by this specification are reserved
+for future standardization.</p>
+<p>An example is shown below of using feature designations to indicate the author's intent that a
+receiving processor must be a transformation processor and must support transformation of
+content vocabulary elements.</p>
+<table id="dfxp-example-requiredFeatures" role="example">
+<caption>Example Fragment &ndash; Required Features</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt xml:lang="" xmlns="http://www.w3.org/2006/10/ttaf1"
+    <phrase role="strong">requiredFeatures="http://www.w3.org/2006/10/ttaf1/feature#transformation
+                      http://www.w3.org/2006/10/ttaf1/feature#content"</phrase>&gt;
+  &lt;head/&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;p/&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The following sub-sections define all feature designations (expressed
+without the TT Feature Prefix Namespace).</p>
+<div3 id="feature-animation">
+<head>#animation</head>
+<p>A TT AF transformation processor supports the <code>#animation</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="animation"/>:</p>
+<ulist>
+<item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#animation</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-backgroundColor">
+<head>#backgroundColor</head>
+<p>A TT AF transformation processor supports the
+<code>#backgroundColor</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#backgroundColor</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-backgroundColor-block">
+<head>#backgroundColor-block</head>
+<p>A TT AF transformation processor supports the
+<code>#backgroundColor-block</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute when applied to a content element that would generate a
+block area during presentation processing.</p>
+<p>A TT AF presentation processor supports the
+<code>#backgroundColor-block</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute when applied to a content element that generates a
+block area.</p>
+</div3>
+<div3 id="feature-backgroundColor-inline">
+<head>#backgroundColor-inline</head>
+<p>A TT AF transformation processor supports the
+<code>#backgroundColor-inline</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute when applied to a content element that would generate an
+inline area during presentation processing.</p>
+<p>A TT AF presentation processor supports the
+<code>#backgroundColor-inline</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute when applied to a content element that generates an
+inline area.</p>
+</div3>
+<div3 id="feature-backgroundColor-region">
+<head>#backgroundColor-region</head>
+<p>A TT AF transformation processor supports the
+<code>#backgroundColor-region</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute when applied to a <loc
+href="layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TT AF presentation processor supports the
+<code>#backgroundColor-region</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
+attribute when applied to a <loc
+href="layout-vocabulary-region"><el>region</el></loc> element.</p>
+</div3>
+<div3 id="feature-bidi">
+<head>#bidi</head>
+<p>A TT AF processor supports the <code>#bidi</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc
+href="#feature-direction"><code>#direction</code></loc></p></item>
+<item><p><loc
+href="#feature-unicodeBidi"><code>#unicodeBidi</code></loc></p></item>
+<item><p><loc
+href="#feature-writingMode-horizontal"><code>#writingMode-horizontal</code></loc></p></item>
+</ulist>
+</div3>
+<div3 id="feature-cellResolution">
+<head>#cellResolution</head>
+<p>A TT AF transformation processor supports the
+<code>#cellResolution</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-cellResolution"><att>ttp:cellResolution</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#cellResolution</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-cellResolution"><att>ttp:cellResolution</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-clockMode">
+<head>#clockMode</head>
+<p>A TT AF transformation processor supports the
+<code>#clockMode</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#clockMode</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-color">
+<head>#color</head>
+<p>A TT AF transformation processor supports the
+<code>#color</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-color"><att>tts:color</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#color</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-color"><att>tts:color</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-content">
+<head>#content</head>
+<p>A TT AF transformation processor supports the <code>#content</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="content"/>:</p>
+<ulist>
+<item><p><loc href="#content-vocabulary-body"><el>body</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#content</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-core">
+<head>#core</head>
+<p>A TT AF transformation processor supports the <code>#core</code>
+feature if it recognizes and is capable of transforming the following
+core attributes vocabulary defined by <specref ref="content"/>:</p>
+<ulist>
+<item><p><loc href="#content-attribute-id">@<att>xml:id</att></loc></p></item>
+<item><p><loc href="#content-attribute-id">@<att>xml:lang</att></loc></p></item>
+<item><p><loc href="#content-attribute-id">@<att>xml:space</att></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#core</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-direction">
+<head>#direction</head>
+<p>A TT AF transformation processor supports the
+<code>#direction</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-direction"><att>tts:direction</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#direction</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-direction"><att>tts:direction</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-display">
+<head>#display</head>
+<p>A TT AF transformation processor supports the
+<code>#display</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#display</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-display-block">
+<head>#display-block</head>
+<p>A TT AF transformation processor supports the
+<code>#display-block</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute when applied to a content element that would generate a
+block area during presentation processing.</p>
+<p>A TT AF presentation processor supports the
+<code>#display-block</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute when applied to a content element that generates a
+block area.</p>
+</div3>
+<div3 id="feature-display-inline">
+<head>#display-inline</head>
+<p>A TT AF transformation processor supports the
+<code>#display-inline</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute when applied to a content element that would generate an
+inline area during presentation processing.</p>
+<p>A TT AF presentation processor supports the
+<code>#display-inline</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute when applied to a content element that generates an
+inline area.</p>
+</div3>
+<div3 id="feature-display-region">
+<head>#display-region</head>
+<p>A TT AF transformation processor supports the
+<code>#display-region</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute when applied to a <loc
+href="layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TT AF presentation processor supports the
+<code>#display-region</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-display"><att>tts:display</att></loc>
+attribute when applied to a <loc
+href="layout-vocabulary-region"><el>region</el></loc> element.</p>
+</div3>
+<div3 id="feature-displayAlign">
+<head>#displayAlign</head>
+<p>A TT AF transformation processor supports the
+<code>#displayAlign</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#displayAlign</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow">
+<head>#dynamicFlow</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-barWipe">
+<head>#dynamicFlow-barWipe</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-barWipe</code> feature if it recognizes and
+is capable of transforming the flow transition <code>barWipe</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-barWipe</code> feature if it implements
+presentation semantic support for the flow transition <code>barWipe</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-block">
+<head>#dynamicFlow-block</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-block</code> feature if it recognizes and
+is capable of transforming the flow unit <code>block</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-block</code> feature if it implements
+presentation semantic support for the flow unit <code>block</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-character">
+<head>#dynamicFlow-character</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-character</code> feature if it recognizes and
+is capable of transforming the flow unit <code>character</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-character</code> feature if it implements
+presentation semantic support for the flow unit <code>character</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-fade">
+<head>#dynamicFlow-fade</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-fade</code> feature if it recognizes and
+is capable of transforming the flow style <code>fade</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-fade</code> feature if it implements
+presentation semantic support for the flow style <code>fade</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-glyph">
+<head>#dynamicFlow-glyph</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-glyph</code> feature if it recognizes and
+is capable of transforming the flow unit <code>glyph</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-glyph</code> feature if it implements
+presentation semantic support for the flow unit <code>glyph</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-in">
+<head>#dynamicFlow-in</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-in</code> feature if it recognizes and
+is capable of transforming the flow function <code>in(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-in</code> feature if it implements
+presentation semantic support for the flow function <code>in(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-inline">
+<head>#dynamicFlow-inline</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-inline</code> feature if it recognizes and
+is capable of transforming the flow unit <code>inline</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-inline</code> feature if it implements
+presentation semantic support for the flow unit <code>inline</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-inter">
+<head>#dynamicFlow-inter</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-inter</code> feature if it recognizes and
+is capable of transforming the flow interval function <code>inter(..)</code> as
+defined by <specref ref="style-value-flowIntervalFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-inter</code> feature if it implements
+presentation semantic support for the flow interval function <code>inter(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-intra">
+<head>#dynamicFlow-intra</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-intra</code> feature if it recognizes and
+is capable of transforming the flow interval function <code>intra(..)</code> as
+defined by <specref ref="style-value-flowIntervalFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-intra</code> feature if it implements
+presentation semantic support for the flow interval function <code>intra(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-jump">
+<head>#dynamicFlow-jump</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-jump</code> feature if it recognizes and
+is capable of transforming the flow style <code>jump</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-jump</code> feature if it implements
+presentation semantic support for the flow style <code>jump</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-leftToRight">
+<head>#dynamicFlow-leftToRight</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-leftToRight</code> feature if it recognizes and
+is capable of transforming the flow transition style <code>leftToRight</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-leftToRight</code> feature if it implements
+presentation semantic support for the flow transition style <code>leftToRight</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-line">
+<head>#dynamicFlow-line</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-line</code> feature if it recognizes and
+is capable of transforming the flow unit <code>line</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-line</code> feature if it implements
+presentation semantic support for the flow unit <code>line</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-out">
+<head>#dynamicFlow-out</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-out</code> feature if it recognizes and
+is capable of transforming the flow function <code>out(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-out</code> feature if it implements
+presentation semantic support for the flow function <code>out(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-pixel">
+<head>#dynamicFlow-pixel</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-pixel</code> feature if it recognizes and
+is capable of transforming the flow unit <code>pixel</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-pixel</code> feature if it implements
+presentation semantic support for the flow unit <code>pixel</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-smooth">
+<head>#dynamicFlow-smooth</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-smooth</code> feature if it recognizes and
+is capable of transforming the flow style <code>smooth</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-smooth</code> feature if it implements
+presentation semantic support for the flow style <code>smooth</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-teletext">
+<head>#dynamicFlow-teletext</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-teletext</code> feature if it recognizes and
+is capable of transforming any well-defined value of the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute that is equivalent to
+<attval>in(glyph,jump) out(line,jump)</attval>.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-teletext</code> feature if it implements presentation semantic
+support forany well-defined value of the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute that is equivalent to <attval>in(glyph,jump)
+out(line,jump)</attval>.</p> </div3>
+<div3 id="feature-dynamicFlow-topToBottom">
+<head>#dynamicFlow-topToBottom</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-topToBottom</code> feature if it recognizes and
+is capable of transforming the flow transition style <code>topToBottom</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-topToBottom</code> feature if it implements
+presentation semantic support for the flow transition style <code>topToBottom</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-within">
+<head>#dynamicFlow-within</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-within</code> feature if it recognizes and
+is capable of transforming the flow function <code>within(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-within</code> feature if it implements
+presentation semantic support for the flow function <code>within(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-word">
+<head>#dynamicFlow-word</head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-word</code> feature if it recognizes and
+is capable of transforming the flow unit <code>word</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-word</code> feature if it implements
+presentation semantic support for the flow unit <code>word</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-extent">
+<head>#extent</head>
+<p>A TT AF transformation processor supports the
+<code>#extent</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#extent</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontFamily">
+<head>#fontFamily</head>
+<p>A TT AF transformation processor supports the
+<code>#fontFamily</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontFamily</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontFamily-generic">
+<head>#fontFamily-generic</head>
+<p>A TT AF transformation processor supports the
+<code>#fontFamily-generic</code> feature if it recognizes and is
+capable of transforming <loc
+href="#style-value-genericFamilyName">&lt;genericFamilyName&gt;</loc>
+values when used with the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontFamily-generic</code> feature if it implements presentation semantic
+support for <loc
+href="#style-value-genericFamilyName">&lt;genericFamilyName&gt;</loc>
+values when used with the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontFamily-non-generic">
+<head>#fontFamily-non-generic</head>
+<p>A TT AF transformation processor supports the
+<code>#fontFamily-non-generic</code> feature if it recognizes and is
+capable of transforming <loc
+href="#style-value-familyName">&lt;familyName&gt;</loc>
+values when used with the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontFamily-non-generic</code> feature if it implements presentation semantic
+support for <loc
+href="#style-value-familyName">&lt;familyName&gt;</loc>
+values when used with the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontSize">
+<head>#fontSize</head>
+<p>A TT AF transformation processor supports the
+<code>#fontSize</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontSize</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontSize-anisomorphic">
+<head>#fontSize-anisomorphic</head>
+<p>A TT AF transformation processor supports the
+<code>#fontSize-anisomorphic</code> feature if it recognizes and is
+capable of transforming values of the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute that consist of two <loc
+href="#style-value-length">&lt;length&gt;</loc> specifications.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontSize-anisomorphic</code> feature if it implements presentation semantic
+support for defined values of the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute that consist of two <loc
+href="#style-value-length">&lt;length&gt;</loc> specifications.</p>
+</div3>
+<div3 id="feature-fontSize-isomorphic">
+<head>#fontSize-isomorphic</head>
+<p>A TT AF transformation processor supports the
+<code>#fontSize-isomorphic</code> feature if it recognizes and is
+capable of transforming values of the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute that consist of a single <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontSize-isomorphic</code> feature if it implements presentation semantic
+support for defined values of the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute that consist of a single <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+</div3>
+<div3 id="feature-fontStyle">
+<head>#fontStyle</head>
+<p>A TT AF transformation processor supports the
+<code>#fontStyle</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontStyle</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontStyle-italic">
+<head>#fontStyle-italic</head>
+<p>A TT AF transformation processor supports the
+<code>#fontStyle-italic</code> feature if it recognizes and is
+capable of transforming <code>italic</code> value of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontStyle-italic</code> feature if it implements presentation semantic
+support for the <code>italic</code> of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontWeight">
+<head>#fontWeight</head>
+<p>A TT AF transformation processor supports the
+<code>#fontWeight</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontWeight</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontWeight-bold">
+<head>#fontWeight-bold</head>
+<p>A TT AF transformation processor supports the
+<code>#fontWeight-bold</code> feature if it recognizes and is
+capable of transforming <code>bold</code> value of the <loc
+href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontWeight-bold</code> feature if it implements presentation semantic
+support for the <code>bold</code> of the <loc
+href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-frameRate">
+<head>#frameRate</head>
+<p>A TT AF transformation processor supports the
+<code>#frameRate</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-frameRate"><att>ttp:frameRate</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#frameRate</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-frameRate"><att>ttp:frameRate</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-frameRateMultiplier">
+<head>#frameRateMultiplier</head>
+<p>A TT AF transformation processor supports the
+<code>#frameRateMultiplier</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-frameRateMultiplier"><att>ttp:frameRateMultiplier</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#frameRateMultiplier</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-frameRateMultiplier"><att>ttp:frameRateMultiplier</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-layout">
+<head>#layout</head>
+<p>A TT AF transformation processor supports the <code>#layout</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="layout"/>:</p>
+<ulist>
+<item><p><loc href="#layout-vocabulary-layout"><el>layout</el></loc></p></item>
+<item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
+<item><p><loc href="#layout-attribute-region">@<att>region</att></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#layout</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-length">
+<head>#length</head>
+<p>A TT AF transformation processor supports the <code>#length</code>
+feature if it recognizes and is capable of transforming all defined
+values of the <loc href="#style-value-length">&lt;length&gt;</loc>
+style value expression.</p>
+<p>A TT AF presentation processor supports the <code>#length</code>
+feature if it implements presentation semantic support for all defined values of
+the <loc href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+</div3>
+<div3 id="feature-length-cell">
+<head>#length-cell</head>
+<p>A TT AF transformation processor supports the
+<code>#length-cell</code> feature if it recognizes and is capable of
+transforming scalar values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value expression
+that use <code>c</code> (cell) units.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-cell</code> feature if it implements presentation semantic support
+for scalar values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value expression
+that use <code>c</code> (cell) units.</p>
+</div3>
+<div3 id="feature-length-em">
+<head>#length-em</head>
+<p>A TT AF transformation processor supports the
+<code>#length-em</code> feature if it recognizes and is capable of
+transforming scalar values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value expression
+that use <code>em</code> (EM) units.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-em</code> feature if it implements presentation semantic support
+for scalar values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value expression
+that use <code>em</code> (EM) units.</p>
+</div3>
+<div3 id="feature-length-integer">
+<head>#length-integer</head>
+<p>A TT AF transformation processor supports the
+<code>#length-integer</code> feature if it recognizes and is
+capable of transforming integer values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-integer</code> feature if it implements presentation semantic
+support for integer values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.
+</p>
+</div3>
+<div3 id="feature-length-negative">
+<head>#length-negative</head>
+<p>A TT AF transformation processor supports the
+<code>#length-negative</code> feature if it recognizes and is
+capable of transforming negative values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-negative</code> feature if it implements presentation semantic
+support for negative values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.
+</p>
+</div3>
+<div3 id="feature-length-percentage">
+<head>#length-percentage</head>
+<p>A TT AF transformation processor supports the
+<code>#length-percentage</code> feature if it recognizes and is
+capable of transforming percentage values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-percentage</code> feature if it implements presentation semantic
+support for percentage values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.
+</p>
+</div3>
+<div3 id="feature-length-pixel">
+<head>#length-pixel</head>
+<p>A TT AF transformation processor supports the
+<code>#length-pixel</code> feature if it recognizes and is capable of
+transforming scalar values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value expression
+that use <code>px</code> (pixel) units.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-pixel</code> feature if it implements presentation semantic support
+for scalar values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value expression
+that use <code>px</code> (pixel) units.</p>
+</div3>
+<div3 id="feature-length-positive">
+<head>#length-positive</head>
+<p>A TT AF transformation processor supports the
+<code>#length-positive</code> feature if it recognizes and is
+capable of transforming positive values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-positive</code> feature if it implements presentation semantic
+support for positive values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.
+</p>
+</div3>
+<div3 id="feature-length-real">
+<head>#length-real</head>
+<p>A TT AF transformation processor supports the
+<code>#length-real</code> feature if it recognizes and is
+capable of transforming real values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+<p>A TT AF presentation processor supports the
+<code>#length-real</code> feature if it implements presentation semantic
+support for real values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.
+</p>
+</div3>
+<div3 id="feature-lineHeight">
+<head>#lineHeight</head>
+<p>A TT AF transformation processor supports the
+<code>#lineHeight</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-lineHeight"><att>tts:lineHeight</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#lineHeight</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-lineHeight"><att>tts:lineHeight</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-markerMode">
+<head>#markerMode</head>
+<p>A TT AF transformation processor supports the
+<code>#markerMode</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#markerMode</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-metadata">
+<head>#metadata</head>
+<p>A TT AF transformation processor supports the <code>#metadata</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="metadata"/>:</p>
+<ulist>
+<item><p><loc href="#metadata-vocabulary-metadata"><el>metadata</el></loc></p></item>
+<item><p><loc href="#metadata-vocabulary-title"><el>ttm:title</el></loc></p></item>
+<item><p><loc href="#metadata-vocabulary-title"><el>ttm:desc</el></loc></p></item>
+<item><p><loc href="#metadata-vocabulary-title"><el>ttm:copyright</el></loc></p></item>
+<item><p><loc href="#metadata-vocabulary-title"><el>ttm:agent</el></loc></p></item>
+<item><p><loc href="#metadata-vocabulary-title"><el>ttm:name</el></loc></p></item>
+<item><p><loc href="#metadata-vocabulary-title"><el>ttm:actor</el></loc></p></item>
+<item><p><loc href="#metadata-attribute-agent">@<att>ttm:agent</att></loc></p></item>
+<item><p><loc href="#metadata-attribute-role">@<att>ttm:role</att></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#metadata</code>
+feature if it recognizes and is capable of presenting the information
+expressed by the same vocabulary enumerated above.</p>
+<note role="clarification">
+<p>This specification does not define a standardized form for the
+presentation of metadata information. The presentation or ability to
+present metadata information is considered to be implementation
+dependent.</p>
+</note>
+</div3>
+<div3 id="feature-nested-div">
+<head>#nested-div</head>
+<p>A TT AF transformation processor supports the <code>#nested-div</code>
+feature if it recognizes and is capable of transforming nested
+<loc href="#content-vocabulary-div"><el>div</el></loc> elements.</p>
+<p>A TT AF presentation processor supports the <code>#nested-div</code>
+feature if it implements presentation semantic support for nested
+<loc href="#content-vocabulary-div"><el>div</el></loc> elements.</p>
+</div3>
+<div3 id="feature-nested-span">
+<head>#nested-span</head>
+<p>A TT AF transformation processor supports the <code>#nested-span</code>
+feature if it recognizes and is capable of transforming nested
+<loc href="#content-vocabulary-span"><el>span</el></loc> elements.</p>
+<p>A TT AF presentation processor supports the <code>#nested-span</code>
+feature if it implements presentation semantic support for nested
+<loc href="#content-vocabulary-span"><el>span</el></loc> elements.</p>
+</div3>
+<div3 id="feature-opacity">
+<head>#opacity</head>
+<p>A TT AF transformation processor supports the
+<code>#opacity</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#opacity</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-origin">
+<head>#origin</head>
+<p>A TT AF transformation processor supports the
+<code>#origin</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-origin"><att>tts:origin</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#origin</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-origin"><att>tts:origin</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-overflow">
+<head>#overflow</head>
+<p>A TT AF transformation processor supports the
+<code>#overflow</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-overflow"><att>tts:overflow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#overflow</code> feature if it implements presentation semantic support for
+all defined values of the <loc
+href="#style-attribute-overflow"><att>tts:overflow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-overflow-scroll">
+<head>#overflow-scroll</head>
+<p>A TT AF transformation processor supports the
+<code>#overflow-scroll</code> feature if it recognizes and is capable of
+transforming the <code>scroll</code> value of the <loc
+href="#style-attribute-overflow"><att>tts:overflow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#overflow-scroll</code> feature if it implements presentation semantic support for
+the <code>scroll</code> value of the <loc
+href="#style-attribute-overflow"><att>tts:overflow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-padding">
+<head>#padding</head>
+<p>A TT AF transformation processor supports the
+<code>#padding</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#padding</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-padding-1">
+<head>#padding-1</head>
+<p>A TT AF transformation processor supports the
+<code>#padding-1</code> feature if it recognizes and is capable of
+transforming values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of one <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+<p>A TT AF presentation processor supports the <code>#padding-1</code>
+feature if it implements presentation semantic support for values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of one <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+</div3>
+<div3 id="feature-padding-2">
+<head>#padding-2</head>
+<p>A TT AF transformation processor supports the
+<code>#padding-2</code> feature if it recognizes and is capable of
+transforming values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of two <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+<p>A TT AF presentation processor supports the <code>#padding-2</code>
+feature if it implements presentation semantic support for values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of two <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+</div3>
+<div3 id="feature-padding-3">
+<head>#padding-3</head>
+<p>A TT AF transformation processor supports the
+<code>#padding-3</code> feature if it recognizes and is capable of
+transforming values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of three <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+<p>A TT AF presentation processor supports the <code>#padding-3</code>
+feature if it implements presentation semantic support for values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of three <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+</div3>
+<div3 id="feature-padding-4">
+<head>#padding-4</head>
+<p>A TT AF transformation processor supports the
+<code>#padding-4</code> feature if it recognizes and is capable of
+transforming values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of four <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+<p>A TT AF presentation processor supports the <code>#padding-4</code>
+feature if it implements presentation semantic support for values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
+that consist of four <loc
+href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+</div3>
+<div3 id="feature-pixelAspectRatio">
+<head>#pixelAspectRatio</head>
+<p>A TT AF transformation processor supports the
+<code>#pixelAspectRatio</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-pixelAspectRatio"><att>ttp:pixelAspectRatio</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#pixelAspectRatio</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-pixelAspectRatio"><att>ttp:pixelAspectRatio</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-presentation">
+<head>#presentation</head>
+<p>A TT AF processor supports the
+<code>#presentation</code> feature if it is a compliant TT AF Presentation
+Processor as defined by <specref ref="conformance-processor"/>.</p>
+</div3>
+<div3 id="feature-profile">
+<head>#profile</head>
+<p>A TT AF transformation processor supports the
+<code>#profile</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#profile</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-requiredExtensions">
+<head>#requiredExtensions</head>
+<p>A TT AF processor supports the
+<code>#requiredExtensions</code> feature if it implements semantic support
+for the <loc
+href="#parameter-attribute-requiredExtensions"><att>ttp:requiredExtensions</att></loc>
+attribute on the
+<loc href="#content-vocabulary-tt"><el>tt</el></loc> element.</p>
+</div3>
+<div3 id="feature-requiredFeatures">
+<head>#requiredFeatures</head>
+<p>A TT AF processor supports the
+<code>#requiredFeatures</code> feature if it implements semantic support
+for the <loc
+href="#parameter-attribute-requiredFeatures"><att>ttp:requiredFeatures</att></loc>
+attribute on the
+<loc href="#content-vocabulary-tt"><el>tt</el></loc> element.</p>
+</div3>
+<div3 id="feature-showBackground">
+<head>#showBackground</head>
+<p>A TT AF transformation processor supports the
+<code>#showBackground</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-showBackground"><att>tts:showBackground</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#showBackground</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-showBackground"><att>tts:showBackground</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-smpteMode">
+<head>#smpteMode</head>
+<p>A TT AF transformation processor supports the
+<code>#smpteMode</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-smpteMode"><att>ttp:smpteMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#smpteMode</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-smpteMode"><att>ttp:smpteMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-structure">
+<head>#structure</head>
+<p>A TT AF transformation processor supports the <code>#structure</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="content"/>:</p>
+<ulist>
+<item><p><loc href="#content-vocabulary-tt"><el>tt</el></loc></p></item>
+<item><p><loc href="#styling-vocabulary-head"><el>head</el></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#structure</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-styling">
+<head>#styling</head>
+<p>A TT AF transformation processor supports the <code>#styling</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="styling"/>:</p>
+<ulist>
+<item><p><loc href="#styling-vocabulary-styling"><el>styling</el></loc></p></item>
+<item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
+<item><p><loc href="#style-attribute-style">@<att>style</att></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#styling</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-styling-chained">
+<head>#styling-chained</head>
+<p>A TT AF transformation processor supports the
+<code>#styling-chained</code> feature if it recognizes and is capable
+of transforming chained style association as defined by <specref
+ref="semantics-style-association-chained-referential"/>.</p>
+<p>A TT AF presentation processor supports the
+<code>#styling-chained</code> feature if it implements presentation semantic
+support for chained style association as defined by <specref
+ref="semantics-style-association-chained-referential"/>.</p>
+</div3>
+<div3 id="feature-styling-inheritance-content">
+<head>#styling-inheritance-content</head>
+<p>A TT AF transformation processor supports the
+<code>#styling-inheritance</code> feature if it recognizes and is
+capable of transforming content style inheritance as defined by
+<specref ref="semantics-style-inheritance-content"/>.</p>
+<p>A TT AF presentation processor supports the
+<code>#styling-inheritance-content</code> feature if it implements
+presentation semantic support for content style inheritance as defined by <specref
+ref="semantics-style-inheritance-content"/>.</p>
+</div3>
+<div3 id="feature-styling-inheritance-region">
+<head>#styling-inheritance-region</head>
+<p>A TT AF transformation processor supports the
+<code>#styling-inheritance</code> feature if it recognizes and is
+capable of transforming region style inheritance as defined by
+<specref ref="semantics-style-inheritance-region"/>.</p>
+<p>A TT AF presentation processor supports the
+<code>#styling-inheritance-region</code> feature if it implements
+presentation semantic support for region style inheritance as defined by <specref
+ref="semantics-style-inheritance-region"/>.</p>
+</div3>
+<div3 id="feature-styling-inline">
+<head>#styling-inline</head>
+<p>A TT AF transformation processor supports the
+<code>#styling-inline</code> feature if it recognizes and is capable
+of transforming inline style association as defined by <specref
+ref="semantics-style-association-inline"/>.</p>
+<p>A TT AF presentation processor supports the
+<code>#styling-inline</code> feature if it implements presentation semantic support
+for inline style association as defined by <specref
+ref="semantics-style-association-inline"/>.</p>
+</div3>
+<div3 id="feature-styling-referential">
+<head>#styling-referential</head>
+<p>A TT AF transformation processor supports the
+<code>#styling-referential</code> feature if it recognizes and is capable
+of transforming referential style association as defined by <specref
+ref="semantics-style-association-referential"/>.</p>
+<p>A TT AF presentation processor supports the
+<code>#styling-referential</code> feature if it implements presentation semantic
+support for referential style association as defined by <specref
+ref="semantics-style-association-referential"/>.</p>
+</div3>
+<div3 id="feature-subFrameRate">
+<head>#subFrameRate</head>
+<p>A TT AF transformation processor supports the
+<code>#subFrameRate</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-subFrameRate"><att>ttp:subFrameRate</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#subFrameRate</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-subFrameRate"><att>ttp:subFrameRate</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textAlign">
+<head>#textAlign</head>
+<p>A TT AF transformation processor supports the
+<code>#textAlign</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-textAlign"><att>tts:textAlign</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textAlign</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-textAlign"><att>tts:textAlign</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textAlign-absolute">
+<head>#textAlign-absolute</head>
+<p>A TT AF transformation processor supports the
+<code>#textAlign-absolute</code> feature if it recognizes and is
+capable of transforming the <code>left</code>, <code>center</code>,
+and <code>right</code> values of the <loc
+href="#style-attribute-textAlign"><att>tts:textAlign</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textAlign-absolute</code> feature if it implements presentation semantic
+support for the <code>left</code>, <code>center</code>, and
+<code>right</code> values of the <loc
+href="#style-attribute-textAlign"><att>tts:textAlign</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textAlign-relative">
+<head>#textAlign-relative</head>
+<p>A TT AF transformation processor supports the
+<code>#textAlign-relative</code> feature if it recognizes and is
+capable of transforming the <code>start</code>, <code>center</code>,
+and <code>end</code> values of the <loc
+href="#style-attribute-textAlign"><att>tts:textAlign</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textAlign-relative</code> feature if it implements presentation semantic
+support for the <code>start</code>, <code>center</code>, and
+<code>end</code> values of the <loc
+href="#style-attribute-textAlign"><att>tts:textAlign</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textDecoration">
+<head>#textDecoration</head>
+<p>A TT AF transformation processor supports the
+<code>#textDecoration</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textDecoration</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textDecoration-over">
+<head>#textDecoration-over</head>
+<p>A TT AF transformation processor supports the
+<code>#textDecoration-over</code> feature if it recognizes and is
+capable of transforming the <code>overline</code> and
+<code>noOverline</code> values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textDecoration-over</code> feature if it implements
+presentation semantic support for the <code>overline</code> and
+<code>noOverline</code> values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textDecoration-through">
+<head>#textDecoration-through</head>
+<p>A TT AF transformation processor supports the
+<code>#textDecoration-through</code> feature if it recognizes and is
+capable of transforming the <code>lineThrough</code> and
+<code>noLineThrough</code> values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textDecoration-through</code> feature if it implements
+presentation semantic support for the <code>lineThrough</code> and
+<code>noLineThrough</code> values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textDecoration-under">
+<head>#textDecoration-under</head>
+<p>A TT AF transformation processor supports the
+<code>#textDecoration-under</code> feature if it recognizes and is
+capable of transforming the <code>underline</code> and
+<code>noUnderline</code> values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textDecoration-under</code> feature if it implements
+presentation semantic support for the <code>underline</code> and
+<code>noUnderline</code> values of the <loc
+href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textOutline">
+<head>#textOutline</head>
+<p>A TT AF transformation processor supports the
+<code>#textOutline</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#textOutline</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textOutline-blur">
+<head>#textOutline-blur</head>
+<p>A TT AF transformation processor supports the
+<code>#textOutline-blur</code> feature if it recognizes and is capable of
+transforming values of the <loc
+href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
+attribute that include a blur radius specification.</p>
+<p>A TT AF presentation processor supports the
+<code>#textOutline-blur</code> feature if it implements presentation semantic support
+for values of the <loc
+href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
+attribute that include a blur radius specification.</p>
+</div3>
+<div3 id="feature-tickRate">
+<head>#tickRate</head>
+<p>A TT AF transformation processor supports the
+<code>#tickRate</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-tickRate"><att>ttp:tickRate</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#tickRate</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-tickRate"><att>ttp:tickRate</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-timeBase-clock">
+<head>#timeBase-clock</head>
+<p>A TT AF transformation processor supports the
+<code>#timeBase-clock</code> feature if it recognizes and is capable
+of transforming the <code>clock</code> value of the <loc
+href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
+attribute and if it supports the <loc
+href="#feature-clockMode"><code>#clockMode</code></loc> feature.</p>
+<p>A TT AF presentation processor supports the
+<code>#timeBase-clock</code> feature if it implements presentation
+semantic support for the <code>clock</code> value of the <loc
+href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
+attribute and if it supports the <loc
+href="#feature-clockMode"><code>#clockMode</code></loc> feature.</p>
+</div3>
+<div3 id="feature-timeBase-media">
+<head>#timeBase-media</head>
+<p>A TT AF transformation processor supports the
+<code>#timeBase-media</code> feature if it recognizes and is capable
+of transforming the <code>media</code> value of the <loc
+href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#timeBase-media</code> feature if it implements presentation
+semantic support for the <code>media</code> value of the <loc
+href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-timeBase-smpte">
+<head>#timeBase-smpte</head>
+<p>A TT AF transformation processor supports the
+<code>#timeBase-smpte</code> feature if it recognizes and is capable
+of transforming the <code>smpte</code> value of the <loc
+href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
+attribute and if it supports the <loc
+href="#feature-smpteMode"><code>#smpteMode</code></loc> feature.</p>
+<p>A TT AF presentation processor supports the
+<code>#timeBase-smpte</code> feature if it implements presentation
+semantic support for the <code>smpte</code> value of the <loc
+href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
+attribute and if it supports the <loc
+href="#feature-smpteMode"><code>#smpteMode</code></loc> feature.</p>
+</div3>
+<div3 id="feature-timeContainer">
+<head>#timeContainer</head>
+<p>A TT AF transformation processor supports the
+<code>#timeContainer</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#timing-attribute-timeContainer"><att>timeContainer</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#timeContainer</code> feature if it implements presentation semantic support
+for the <loc
+href="#timing-attribute-timeContainer"><att>timeContainer</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-time-clock">
+<head>#time-clock</head>
+<p>A TT AF transformation processor supports the
+<code>#time-clock</code> feature if it recognizes and is capable of
+transforming all values of the <loc
+href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+satisfy the following subset of time expression syntax:</p>
+<eg xml:space="preserve">
+&lt;timeExpression&gt;
+  : hours ":" minutes ":" seconds ( fraction )?
+</eg>
+<p>A TT AF presentation processor supports the
+<code>#time-clock</code> feature if it implements presentation
+semantic support for the same syntax specified above.</p>
+</div3>
+<div3 id="feature-time-clock-with-frames">
+<head>#time-clock-with-frames</head>
+<p>A TT AF transformation processor supports the
+<code>#time-clock-with-frames</code> feature if it supports the
+<loc href="#feature-frameRate"><code>#frameRate</code></loc>,
+<loc href="#feature-frameRateMultiplier"><code>#frameRateMultiplier</code></loc>, and
+<loc href="#feature-subFrameRate"><code>#subFrameRate</code></loc> features
+and if it recognizes and is capable of
+transforming all values of the <loc
+href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+satisfy the following subset of time expression syntax:</p>
+<eg xml:space="preserve">
+&lt;timeExpression&gt;
+  : hours ":" minutes ":" seconds ( fraction | ":" frames ( "." sub-frames )? )?
+</eg>
+<p>A TT AF presentation processor supports the
+<code>#time-clock-with-frames</code> feature if it implements
+presentation semantic support for the same features and syntax
+specified above.</p>
+</div3>
+<div3 id="feature-time-offset">
+<head>#time-offset</head>
+<p>A TT AF transformation processor supports the
+<code>#time-offset</code> feature if it recognizes and is capable of
+transforming all values of the <loc
+href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+satisfy the following subset of time expression syntax:</p>
+<eg xml:space="preserve">
+&lt;timeExpression&gt;
+  : time-count fraction? ( "h" | "m" | "s" | "ms" )
+</eg>
+<p>A TT AF presentation processor supports the
+<code>#time-offset</code> feature if it implements presentation
+semantic support for the same syntax specified above.</p>
+</div3>
+<div3 id="feature-time-offset-with-frames">
+<head>#time-offset-with-frames</head>
+<p>A TT AF transformation processor supports the
+<code>#time-offset-with-frames</code> feature if it supports the
+<loc href="#feature-frameRate"><code>#frameRate</code></loc>,
+<loc href="#feature-frameRateMultiplier"><code>#frameRateMultiplier</code></loc>, and
+<loc href="#feature-subFrameRate"><code>#subFrameRate</code></loc> features
+and if it recognizes and is capable of
+transforming all values of the <loc
+href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+satisfy the following subset of time expression syntax:</p>
+<eg xml:space="preserve">
+&lt;timeExpression&gt;
+  : time-count fraction? "f"
+</eg>
+<p>A TT AF presentation processor supports the
+<code>#time-offset-with-frames</code> feature if it implements
+presentation semantic support for the same features and syntax
+specified above.</p>
+</div3>
+<div3 id="feature-time-offset-with-ticks">
+<head>#time-offset-with-ticks</head>
+<p>A TT AF transformation processor supports the
+<code>#time-offset-with-ticks</code> feature if it supports the 
+<loc href="#feature-tickRate"><code>#tickRate</code></loc> feature
+and if it recognizes and is capable of
+transforming all values of the <loc
+href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+satisfy the following subset of time expression syntax:</p>
+<eg xml:space="preserve">
+&lt;timeExpression&gt;
+  : time-count fraction? "t"
+</eg>
+<p>A TT AF presentation processor supports the
+<code>#time-offset-with-ticks</code> feature if it implements presentation
+semantic support for the same features and syntax specified above.</p>
+</div3>
+<div3 id="feature-timing">
+<head>#timing</head>
+<p>A TT AF transformation processor supports the <code>#timing</code>
+feature if it recognizes and is capable of transforming the following
+vocabulary defined by <specref ref="timing"/>:</p>
+<ulist>
+<item><p><loc href="#timing-attribute-begin">@<att>begin</att></loc></p></item>
+<item><p><loc href="#timing-attribute-dur">@<att>dur</att></loc></p></item>
+<item><p><loc href="#timing-attribute-end">@<att>end</att></loc></p></item>
+</ulist>
+<p>A TT AF presentation processor supports the <code>#timing</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-transformation">
+<head>#transformation</head>
+<p>A TT AF processor supports the
+<code>#transformation</code> feature if it is a compliant TT AF Transformation
+Processor as defined by <specref ref="conformance-processor"/>.</p>
+</div3>
+<div3 id="feature-unicodeBidi">
+<head>#unicodeBidi</head>
+<p>A TT AF transformation processor supports the
+<code>#unicodeBidi</code> feature if it recognizes and is capable of
+transforming all defined values of the <loc
+href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#unicodeBidi</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-visibility">
+<head>#visibility</head>
+<p>A TT AF transformation processor supports the
+<code>#visibility</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#visibility</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-visibility-block">
+<head>#visibility-block</head>
+<p>A TT AF transformation processor supports the
+<code>#visibility-block</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute when applied to a content element that would generate a
+block area during presentation processing.</p>
+<p>A TT AF presentation processor supports the
+<code>#visibility-block</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute when applied to a content element that generates a
+block area.</p>
+</div3>
+<div3 id="feature-visibility-inline">
+<head>#visibility-inline</head>
+<p>A TT AF transformation processor supports the
+<code>#visibility-inline</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute when applied to a content element that would generate an
+inline area during presentation processing.</p>
+<p>A TT AF presentation processor supports the
+<code>#visibility-inline</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute when applied to a content element that generates an
+inline area.</p>
+</div3>
+<div3 id="feature-visibility-region">
+<head>#visibility-region</head>
+<p>A TT AF transformation processor supports the
+<code>#visibility-region</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute when applied to a <loc
+href="layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TT AF presentation processor supports the
+<code>#visibility-region</code> feature if it implements presentation semantic
+support for all defined values of the <loc
+href="#style-attribute-visibility"><att>tts:visibility</att></loc>
+attribute when applied to a <loc
+href="layout-vocabulary-region"><el>region</el></loc> element.</p>
+</div3>
+<div3 id="feature-wrapOption">
+<head>#wrapOption</head>
+<p>A TT AF transformation processor supports the
+<code>#wrapOption</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-wrapOption"><att>tts:wrapOption</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#wrapOption</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-wrapOption"><att>tts:wrapOption</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-writingMode">
+<head>#writingMode</head>
+<p>A TT AF transformation processor supports the
+<code>#writingMode</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#writingMode</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-writingMode-vertical">
+<head>#writingMode-vertical</head>
+<p>A TT AF transformation processor supports the
+<code>#writingMode-vertical</code> feature if it recognizes and is
+capable of transforming the <code>tbrl</code>, <code>tblr</code>, and
+<code>tb</code> values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#writingMode-vertical</code> feature if it implements presentation semantic
+support for the <code>tbrl</code>, <code>tblr</code>, and
+<code>tb</code> values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-writingMode-horizontal">
+<head>#writingMode-horizontal</head>
+<p>A TT AF transformation processor supports the
+<code>#writingMode-horizontal</code> feature if it recognizes and is
+capable of transforming the <code>lrtb</code>, <code>rltb</code>,
+<code>lr</code> and <code>rl</code> values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#writingMode-horizontal</code> feature if it implements presentation semantic
+support for the <code>lrtb</code>, <code>rltb</code>, <code>lr</code>
+and <code>rl</code> values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-writingMode-horizontal-lr">
+<head>#writingMode-horizontal-lr</head>
+<p>A TT AF transformation processor supports the
+<code>#writingMode-horizontal</code> feature if it recognizes and is
+capable of transforming the <code>lrtb</code> and <code>lr</code>
+values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#writingMode-horizontal-lr</code> feature if it implements presentation semantic
+support for the <code>lrtb</code> and <code>lr</code> values of the
+<loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-writingMode-horizontal-rl">
+<head>#writingMode-horizontal-rl</head>
+<p>A TT AF transformation processor supports the
+<code>#writingMode-horizontal</code> feature if it recognizes and is
+capable of transforming the <code>rltb</code> and <code>rl</code>
+values of the <loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#writingMode-horizontal-rl</code> feature if it implements presentation semantic
+support for the <code>rltb</code> and <code>rl</code> values of the
+<loc
+href="#style-attribute-writingMode"><att>tts:writingMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-zIndex">
+<head>#zIndex</head>
+<p>A TT AF transformation processor supports the
+<code>#zIndex</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-zIndex"><att>tts:zIndex</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#zIndex</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-zIndex"><att>tts:zIndex</att></loc>
+attribute.</p>
+</div3>
+</div2>
+<div2 id="feature-support">
+<head>Feature Support</head>
+<p>The following table, <specref ref="feature-support-table"/>,
+enumerates every defined feature designation (expressed without the TT
+Feature Prefix Namespace), and, for each designated feature, specifies
+whether the feature is mandatory (M) or optional (O) for
+transformation and presentation processors.</p>
+<table id="feature-support-table" role="common">
+<caption>Table E-1 &ndash; Feature Support</caption>
+<col width="60%"/>
+<col width="20%"/>
+<col width="20%"/>
+<tbody>
+<tr>
+<td><phrase role="strong">Feature</phrase></td>
+<td><phrase role="strong">Transformation</phrase></td>
+<td><phrase role="strong">Presentation</phrase></td>
+</tr>
+<tr>
+<td><loc href="#feature-animation"><code>#animation</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-backgroundColor"><code>#backgroundColor</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-backgroundColor-block"><code>#backgroundColor-block</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-backgroundColor-inline"><code>#backgroundColor-inline</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-backgroundColor-region"><code>#backgroundColor-region</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-bidi"><code>#bidi</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-cellResolution"><code>#cellResolution</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-clockMode"><code>#clockMode</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-color"><code>#color</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-content"><code>#content</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-core"><code>#core</code></loc></td>
+<td>M</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-direction"><code>#direction</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-display"><code>#display</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-display-block"><code>#display-block</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-display-inline"><code>#display-inline</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-display-region"><code>#display-region</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-displayAlign"><code>#displayAlign</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow"><code>#dynamicFlow</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-barWipe"><code>#dynamicFlow-barWipe</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-block"><code>#dynamicFlow-block</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-character"><code>#dynamicFlow-character</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-fade"><code>#dynamicFlow-fade</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-glyph"><code>#dynamicFlow-glyph</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-in"><code>#dynamicFlow-in</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-inline"><code>#dynamicFlow-inline</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-inter"><code>#dynamicFlow-inter</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-intra"><code>#dynamicFlow-intra</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-jump"><code>#dynamicFlow-jump</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-leftToRight"><code>#dynamicFlow-leftToRight</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-line"><code>#dynamicFlow-line</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-out"><code>#dynamicFlow-out</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-pixel"><code>#dynamicFlow-pixel</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-smooth"><code>#dynamicFlow-smooth</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-teletext"><code>#dynamicFlow-teletext</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-topToBottom"><code>#dynamicFlow-topToBottom</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-within"><code>#dynamicFlow-within</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-word"><code>#dynamicFlow-word</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent"><code>#extent</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontFamily"><code>#fontFamily</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontFamily-generic"><code>#fontFamily-generic</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontFamily-non-generic"><code>#fontFamily-non-generic</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontSize"><code>#fontSize</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontSize-anisomorphic"><code>#fontSize-anisomorphic</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontStyle"><code>#fontStyle</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontWeight"><code>#fontWeight</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-frameRate"><code>#frameRate</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-frameRateMultiplier"><code>#frameRateMultiplier</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-layout"><code>#layout</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-length"><code>#length</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-cell"><code>#length-cell</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-em"><code>#length-em</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-integer"><code>#length-integer</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-negative"><code>#length-negative</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-percentage"><code>#length-percentage</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-pixel"><code>#length-pixel</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-positive"><code>#length-positive</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-real"><code>#length-real</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-lineHeight"><code>#lineHeight</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-markerMode"><code>#markerMode</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-metadata"><code>#metadata</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-nested-div"><code>#nested-div</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-nested-span"><code>#nested-span</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity"><code>#opacity</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-origin"><code>#origin</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-overflow"><code>#overflow</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-overflow-scroll"><code>#overflow-scroll</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding"><code>#padding</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-1"><code>#padding-1</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-2"><code>#padding-2</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-3"><code>#padding-3</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-4"><code>#padding-4</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-pixelAspectRatio"><code>#pixelAspectRatio</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-presentation"><code>#presentation</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-profile"><code>#profile</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-requiredExtensions"><code>#requiredExtensions</code></loc></td>
+<td>M</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-requiredFeatures"><code>#requiredFeatures</code></loc></td>
+<td>M</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-showBackground"><code>#showBackground</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-smpteMode"><code>#smpteMode</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-structure"><code>#structure</code></loc></td>
+<td>M</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling"><code>#styling</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-chained"><code>#styling-chained</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-inheritance-region"><code>#styling-inheritance-region</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-inline"><code>#styling-inline</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-referential"><code>#styling-referential</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-subFrameRate"><code>#subFrameRate</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textAlign"><code>#textAlign</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-textAlign-relative"><code>#textAlign-relative</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textDecoration"><code>#textDecoration</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textDecoration-over"><code>#textDecoration-over</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textDecoration-through"><code>#textDecoration-through</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textDecoration-under"><code>#textDecoration-under</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textOutline"><code>#textOutline</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textOutline-blur"><code>#textOutline-blur</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-tickRate"><code>#tickRate</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-timeBase-clock"><code>#timeBase-clock</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-timeBase-media"><code>#timeBase-media</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-timeBase-smpte"><code>#timeBase-smpte</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-timeContainer"><code>#timeContainer</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-time-clock"><code>#time-clock</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-time-clock-with-frames"><code>#time-clock-with-frames</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-time-offset"><code>#time-offset</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-time-offset-with-frames"><code>#time-offset-with-frames</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-time-offset-with-ticks"><code>#time-offset-with-ticks</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-timing"><code>#timing</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-transformation"><code>#transformation</code></loc></td>
+<td>M</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-unicodeBidi"><code>#unicodeBidi</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-visibility"><code>#visibility</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-visibility-block"><code>#visibility-block</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-visibility-inline"><code>#visibility-inline</code></loc></td>
+<td>O</td>
+<td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-visibility-region"><code>#visibility-region</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-wrapOption"><code>#wrapOption</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-writingMode"><code>#writingMode</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-writingMode-vertical"><code>#writingMode-vertical</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-writingMode-horizontal"><code>#writingMode-horizontal</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-writingMode-horizontal-lr"><code>#writingMode-horizontal-lr</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-writingMode-horizontal-rl"><code>#writingMode-horizontal-rl</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-zIndex"><code>#zIndex</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>For the sake of convenience, the following table,
+<specref ref="feature-transformation-mandatory-table"/>, enumerates all
+mandatory features for a TT AF Transformation Processor, providing additional
+comments to summarize the context of usage or the nature of the feature.</p>
+<table id="feature-transformation-mandatory-table" role="common">
+<caption>Table E-2 &ndash; Mandatory Features - Transformation</caption>
+<col width="60%"/>
+<col width="40%"/>
+<tbody>
+<tr>
+<td><phrase role="strong">Feature</phrase></td>
+<td><phrase role="strong">Comments</phrase></td>
+</tr>
+<tr>
+<td><loc href="#feature-core"><code>#core</code></loc></td>
+<td>
+<loc href="#content-attribute-id">@<att>xml:id</att></loc>,
+<loc href="#content-attribute-id">@<att>xml:lang</att></loc>,
+<loc href="#content-attribute-id">@<att>xml:space</att></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-structure"><code>#structure</code></loc></td>
+<td>
+<loc href="#content-vocabulary-tt"><el>tt</el></loc>,
+<loc href="#styling-vocabulary-head"><el>head</el></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-requiredExtensions"><code>#requiredExtensions</code></loc></td>
+<td><loc href="#content-vocabulary-tt">@<att>requiredExtensions</att></loc>
+applied to <loc href="content-vocabulary-tt"><el>tt</el></loc></td>
+</tr>
+<tr>
+<td><loc href="#feature-requiredFeatures"><code>#requiredFeatures</code></loc></td>
+<td><loc href="#content-vocabulary-tt">@<att>requiredFeatures</att></loc>
+applied to <loc href="content-vocabulary-tt"><el>tt</el></loc></td>
+</tr>
+<tr>
+<td><loc href="#feature-transformation"><code>#transformation</code></loc></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>For the sake of convenience, the following table,
+<specref ref="feature-presentation-mandatory-table"/>, enumerates all
+mandatory features for a TT AF Presentation Processor, providing additional
+comments to summarize the context of usage or the nature of the feature.</p>
+<table id="feature-presentation-mandatory-table" role="common">
+<caption>Table E-3 &ndash; Mandatory Features - Presentation</caption>
+<col width="60%"/>
+<col width="40%"/>
+<tbody>
+<tr>
+<td><phrase role="strong">Feature</phrase></td>
+<td><phrase role="strong">Comments</phrase></td>
+</tr>
+<tr>
+<td><loc href="#feature-color"><code>#color</code></loc></td>
+<td><loc href="#style-attribute-color">@<att>tts:color</att></loc></td>
+</tr>
+<tr>
+<td><loc href="#feature-content"><code>#content</code></loc></td>
+<td>
+<loc href="#content-vocabulary-body"><el>body</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#content-vocabulary-span"><el>span</el></loc>,
+<loc href="#content-vocabulary-br"><el>br</el></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-core"><code>#core</code></loc></td>
+<td>
+<loc href="#content-attribute-id">@<att>xml:id</att></loc>,
+<loc href="#content-attribute-id">@<att>xml:lang</att></loc>,
+<loc href="#content-attribute-id">@<att>xml:space</att></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-display-block"><code>#display-block</code></loc></td>
+<td><loc href="#style-attribute-display">@<att>tts:display</att></loc>
+applied to
+<loc href="#content-vocabulary-body"><el>body</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-display-inline"><code>#display-inline</code></loc></td>
+<td><loc href="#style-attribute-display">@<att>tts:display</att></loc>
+applied to
+<loc href="#content-vocabulary-span"><el>span</el></loc>,
+<loc href="#content-vocabulary-br"><el>br</el></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent"><code>#extent</code></loc></td>
+<td><loc href="#style-attribute-extent">@<att>tts:extent</att></loc>
+applied to <loc href="content-vocabulary-tt"><el>tt</el></loc></td>
+</tr>
+<tr>
+<td><loc href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></loc></td>
+<td>
+<loc href="#style-attribute-fontSize">@<att>tts:fontSize</att></loc>=
+"<code><loc href="#style-value-length">&lt;length&gt;</loc></code>"
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></loc></td>
+<td>
+<loc href="#style-attribute-fontStyle">@<att>tts:fontStyle</att></loc>=
+"<code>italic</code>"
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></loc></td>
+<td>
+<loc href="#style-attribute-fontWeight">@<att>tts:fontWeight</att></loc>=
+"<code>bold</code>"
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-cell"><code>#length-cell</code></loc></td>
+<td>
+<code><loc href="#style-value-length">&lt;length&gt;</loc></code> :
+<code><loc href="#style-value-integer">&lt;integer&gt;</loc>c</code>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-pixel"><code>#length-pixel</code></loc></td>
+<td>
+<code><loc href="#style-value-length">&lt;length&gt;</loc></code> :
+<code><loc href="#style-value-integer">&lt;integer&gt;</loc>px</code>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-positive"><code>#length-positive</code></loc></td>
+<td>
+<code><loc href="#style-value-length">&lt;length&gt;</loc></code>&ge;0
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-presentation"><code>#presentation</code></loc></td>
+<td></td>
+</tr>
+<tr>
+<td><loc href="#feature-requiredExtensions"><code>#requiredExtensions</code></loc></td>
+<td><loc href="#content-vocabulary-tt">@<att>requiredExtensions</att></loc>
+applied to <loc href="content-vocabulary-tt"><el>tt</el></loc></td>
+</tr>
+<tr>
+<td><loc href="#feature-requiredFeatures"><code>#requiredFeatures</code></loc></td>
+<td><loc href="#content-vocabulary-tt">@<att>requiredFeatures</att></loc>
+applied to <loc href="content-vocabulary-tt"><el>tt</el></loc></td>
+</tr>
+<tr>
+<td><loc href="#feature-structure"><code>#structure</code></loc></td>
+<td>
+<loc href="#content-vocabulary-tt"><el>tt</el></loc>,
+<loc href="#styling-vocabulary-head"><el>head</el></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></loc></td>
+<td></td>
+</tr>
+<tr>
+<td><loc href="#feature-styling-inline"><code>#styling-inline</code></loc></td>
+<td></td>
+</tr>
+<tr>
+<td><loc href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></loc></td>
+<td>
+<loc href="#style-attribute-textAlign">@<att>tts:textAlign</att></loc>=
+"<code>left</code>|<code>center</code>|<code>right</code>"
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-time-offset"><code>#time-offset</code></loc></td>
+<td></td>
+</tr>
+<tr>
+<td><loc href="#feature-timing"><code>#timing</code></loc></td>
+<td>
+<loc href="#timing-attribute-begin">@<att>begin</att></loc>,
+<loc href="#timing-attribute-dur">@<att>dur</att></loc>,
+<loc href="#timing-attribute-end">@<att>end</att></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-visibility-block"><code>#visibility-block</code></loc></td>
+<td><loc href="#style-attribute-visibility">@<att>tts:visibility</att></loc>
+applied to
+<loc href="#content-vocabulary-body"><el>body</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>
+</td>
+</tr>
+<tr>
+<td><loc href="#feature-visibility-inline"><code>#visibility-inline</code></loc></td>
+<td><loc href="#style-attribute-visibility">@<att>tts:visibility</att></loc>
+applied to
+<loc href="#content-vocabulary-span"><el>span</el></loc>,
+<loc href="#content-vocabulary-br"><el>br</el></loc>
+</td>
+</tr>
+</tbody>
+</table>
+</div2>
+</div1>
+<div1 id="extensions" diff="add">
+<head>Extensions</head>
+<p><emph>This appendix is normative.</emph></p>
+<p>This appendix specifies the syntactic form of extension designations, which are
+used to express authorial intent regarding the presence of extension
+mechanisms in a TT AF processor.</p>
+<div2 id="extension-designations">
+<head>Extension Designations</head>
+<p>An extension designation is expressed as a string that adheres to the following
+form:</p>
+<eg xml:space="preserve">
+extension-designation
+  : extension-namespace designation
+
+extension-namespace
+  : <emph>TT Extension Prefix Namespace</emph>           // <phrase><code>http://www.w3.org/2006/10/ttaf1/extension</code></phrase>
+
+designation
+  : "#" designation-token
+
+designation-token
+  : standard-designation-token
+  | extension-designation-token
+
+standard-designation-token
+  : token-char+
+
+extension-designation-token
+  : "x-" token-char+
+
+token-char
+  : { XML NameChar }                        // XML 1.1 Production [4a]
+</eg>
+<p>All values of <code>designation-token</code> that do not start with the prefix
+<code>x-</code> are reserved for future standardization.</p>
+<p>An example is shown below of using feature and extension
+designations to indicate the author's intent that a receiving
+processor must implement both transformation and presentation
+processors and must perform a non-standardized (extension)
+transformation in order to pre-filter by language.</p>
+<table id="dfxp-example-requiredExtensions" role="example">
+<caption>Example Fragment &ndash; Required Extensions</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt xml:lang="" xmlns="http://www.w3.org/2006/10/ttaf1"
+    requiredFeatures="http://www.w3.org/2006/10/ttaf1/feature#transformation
+                      http://www.w3.org/2006/10/ttaf1/feature#presentation"
+    <phrase role="strong">requiredExtensions="http://www.w3.org/2006/10/ttaf1/extension#x-prefilter-by-language"</phrase>&gt;
+  &lt;head/&gt;
+  &lt;body&gt;
+    &lt;div xml:lang="en"/&gt;
+    &lt;div xml:lang="fr"/&gt;
+    &lt;div xml:lang="es"/&gt;
+    &lt;div xml:lang="it"/&gt;
+    &lt;div xml:lang="de"/&gt;
+  &lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div2>
 </div1>
 <div1 id="references">
 <head>References</head>
@@ -8257,7 +11119,7 @@ indicates the extent to which they are satisfied by this specification, where
 a requirement is partially satisfied, and <emph>N</emph> denotes a
 requirement is not satisfied.</p>
 <table id="requirements-table" role="common">
-<caption>Table H-1 &ndash; Requirement Satisfaction</caption>
+<caption>Table J-1 &ndash; Requirement Satisfaction</caption>
 <col width="10%"/>
 <col width="40%"/>
 <col width="10%"/>
@@ -8720,7 +11582,7 @@ corresponding TT AF element; in contrast, the details column includes
 that is not specified for use with the <el>xhtml:div</el> model
 element.</p>
 <table id="element-vocab-derivation-table" role="common">
-<caption>Table I-1 &ndash; Elements</caption>
+<caption>Table K-1 &ndash; Elements</caption>
 <col width="20%"/>
 <col width="17%"/>
 <col width="13%" align="center"/>
@@ -8965,7 +11827,7 @@ type's derivation described in <specref
 ref="element-vocab-derivation-table"/>
 above.</p>
 <table id="attribute-vocab-derivation-table" role="common">
-<caption>Table I-2 &ndash; Attributes</caption>
+<caption>Table K-2 &ndash; Attributes</caption>
 <col width="20%"/>
 <col width="17%"/>
 <col width="13%" align="center"/>
@@ -9373,9 +12235,8 @@ specifying separate horizontal and vertical scaling of glyph's EM
 square.</p>
 </item>
 <item>
-<p>The value <code>scroll</code> is defined in terms of the <loc
-href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-style property.</p>
+<p>The value <code>scroll</code> is defined in terms of the
+<att>tts:dynamicFlow</att> style property.</p>
 </item>
 <item>
 <p>Expressed in terms of writing mode relative padding properties
@@ -9413,7 +12274,7 @@ ref="qaf-sg"/>.</p>
 <div2>
 <head>Requirements</head>
 <table id="qa-framework-requirements-table" role="common">
-<caption>Table J-1 &ndash; QA Framework Requirements Checklist</caption>
+<caption>Table L-1 &ndash; QA Framework Requirements Checklist</caption>
 <col width="76%"/>
 <col width="6%" align="center"/>
 <col width="6%" align="center"/>
@@ -9532,7 +12393,7 @@ clause</xspecref></td>
 <div2>
 <head>Guidelines</head>
 <table id="qa-framework-guidelines-table" role="common">
-<caption>Table J-2 &ndash; QA Framework Guidelines Checklist</caption>
+<caption>Table L-2 &ndash; QA Framework Guidelines Checklist</caption>
 <col width="76%"/>
 <col width="6%" align="center"/>
 <col width="6%" align="center"/>

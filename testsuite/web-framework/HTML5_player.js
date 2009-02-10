@@ -336,11 +336,16 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, has
     if (v != null && v != "") {
 	if (v == "preserve") {
 	    v = "pre";
-	    htmlElement.spaces = true;
 	} else {
 	    v = "normal";
 	}
 	htmlElement.style.setProperty("white-space", v, "");
+    }
+    v = dfxpElement.getAttributeNS(DFXP_NS_Style, "wrapOption");
+    if (v != "") {
+	if (v == "noWrap") {
+	    htmlElement.style.setProperty("white-space", "nowrap", "");
+	}
     }
 }
 
@@ -823,7 +828,7 @@ HTML5Caption_playDFXP = function(video, dfxpDocument) {
 				   && node.aEnd > currentTime) {
 			    node.style.display = node.df_displayValue;
 			    node.df_isInTime = true;
-			}			    
+			}    
 		    }
 		}
 	    }, 100);

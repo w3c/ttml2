@@ -3,7 +3,7 @@
     version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:tt="http://www.w3.org/2006/10/ttaf1"
-    xmlns:tts="http://www.w3.org/2006/10/ttaf1#style" 
+    xmlns:tts="http://www.w3.org/2006/10/ttaf1#styling" 
     xmlns:ttm="http://www.w3.org/2006/10/ttaf1#metadata"
     xmlns:ttp="http://www.w3.org/2006/10/ttaf1#parameter"
     xmlns="http://www.w3.org/1999/xhtml"
@@ -548,6 +548,30 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[t:isLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
+      <th>@tts:fontSize="&lt;% length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.10</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontSize[t:isPercentLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[t:isPercentLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:fontSize="&lt;px length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.10</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontSize[t:isPxLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[t:isPxLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:fontSize="&lt;em length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.10</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontSize[t:isEmLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[t:isEmLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:fontSize="&lt;c length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.10</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontSize[t:isCLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[t:isCLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
       <th>@tts:fontSize="&lt;length&gt; &lt;length&gt;"</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.10</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontSize[t:isDoubleLength(.)]])'/></td>
@@ -638,6 +662,30 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[t:isLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
+      <th>@tts:lineHeight="&lt;% length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight[t:isPercentLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[t:isPercentLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:lineHeight="&lt;px length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight[t:isPxLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[t:isPxLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:lineHeight="&lt;em length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight[t:isEmLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[t:isEmLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:lineHeight="&lt;c length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight[t:isCLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[t:isCLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
       <th>@tts:lineHeight="inherit"</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight="inherit"])'/></td>
@@ -726,6 +774,30 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding[t:isLength(.)]])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[t:isLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:padding="&lt;% length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding[t:isPercentLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[t:isPercentLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:padding="&lt;px length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding[t:isPxLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[t:isPxLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:padding="&lt;em length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding[t:isEmLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[t:isEmLength(.)])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:padding="&lt;c length&gt;"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding[t:isCLength(.)]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[t:isCLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:padding="&lt;length&gt; &lt;length&gt;"</th>
@@ -1190,16 +1262,16 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@timeContainer)'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:timeContainer="par"</th>
+      <th>@timeContainer="par"</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>10.2.4</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:timeContainer="par"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:timeContainer[.="par"])'/></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@timeContainer="par"])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@timeContainer[.="par"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:timeContainer="seq"</th>
+      <th>@timeContainer="seq"</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>10.2.4</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:timeContainer="seq"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:timeContainer[.="seq"])'/></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@timeContainer="seq"])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@timeContainer[.="seq"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>tt:set</th>
@@ -1372,6 +1444,26 @@
       <xsl:param name='s' as="xs:string"/>
 
       <xsl:value-of select='matches($s, "^(\+|-)?\d+(\.\d+)?(px|em|c|%)$")'/>
+    </xsl:function>
+    <xsl:function name="t:isPxLength" as="xs:boolean">
+      <xsl:param name='s' as="xs:string"/>
+
+      <xsl:value-of select='matches($s, "^(\+|-)?\d+(\.\d+)?px$")'/>
+    </xsl:function>
+    <xsl:function name="t:isPercentLength" as="xs:boolean">
+      <xsl:param name='s' as="xs:string"/>
+
+      <xsl:value-of select='matches($s, "^(\+|-)?\d+(\.\d+)?%$")'/>
+    </xsl:function>
+    <xsl:function name="t:isEmLength" as="xs:boolean">
+      <xsl:param name='s' as="xs:string"/>
+
+      <xsl:value-of select='matches($s, "^(\+|-)?\d+(\.\d+)?em$")'/>
+    </xsl:function>
+    <xsl:function name="t:isCLength" as="xs:boolean">
+      <xsl:param name='s' as="xs:string"/>
+
+      <xsl:value-of select='matches($s, "^(\+|-)?\d+(\.\d+)?c$")'/>
     </xsl:function>
     <xsl:function name="t:isDoubleLength" as="xs:boolean">
       <xsl:param name='s' as="xs:string"/>

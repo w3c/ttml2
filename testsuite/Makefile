@@ -3,12 +3,12 @@ Parameters \
 Content \
 Styling \
 Metadata \
-Timing
+Timing \
+Animation
 
 # Specification
 
 # Layout \
-# Animation \
 
 DATE=$(shell date "+%Y%m%d")
 

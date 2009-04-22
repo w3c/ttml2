@@ -784,9 +784,13 @@ HTML5Caption_playDFXP = function(video, dfxpDocument) {
     
     if (video.offsetTop) top = video.offsetTop;
     if (video.offsetLeft) left = video.offsetLeft;
+
     var mainDiv = HTML5Caption_convertDFXP2HTML(dfxpDocument.bodyElement, false, top, left);
 
     if (mainDiv == null) return;
+
+    HTML5Caption_convertDFXP2HTMLAttributes(dfxpDocument.documentElement, mainDiv, false, 0, 0);
+    
 
     var w = video.getAttribute("width");
     if (w!="") {

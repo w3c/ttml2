@@ -161,6 +161,9 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, has
 
 	if (dfxpElementRef != null) {
 	    
+	    // The overflow default value for region is hidden
+	    htmlElement.style.setProperty("overflow", "hidden", "");
+
 	    HTML5Caption_convertDFXP2HTMLAttributes(dfxpElementRef, htmlElement, hasOrigin, top, left);
 	    
 	    var styles = dfxpElementRef.getElementsByTagNameNS(DFXP_NS, "style");
@@ -288,7 +291,7 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, has
 		    parentNode = parentNode.parentNode;
 		}
 		if (!hasOrigin) {
-		    htmlElement.style.setProperty("position", "fixed", "");
+		    htmlElement.style.setProperty("position", "absolute", "");
 		    htmlElement.style.setProperty("left", (left + HTML5Caption_toPixels(p[0])) + "px", "");
 		    htmlElement.style.setProperty("top", (top + HTML5Caption_toPixels(p[1])) + "px", "");
 		}

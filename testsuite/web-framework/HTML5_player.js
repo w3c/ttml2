@@ -77,6 +77,12 @@ HTML5Caption_strip = function(s) {
 
 HTML5Caption_playSRT = function(video, srt) {    
 
+    var currentTime = video.currentTime;
+
+    if (typeof currentTime == "undefined") {
+	throw new Error("currentTime is not supported by the Video element");
+    }
+	
     srt = srt.replace('\r\n|\r|\n', '\n');
 	
     var subtitles = {};
@@ -105,29 +111,24 @@ HTML5Caption_playSRT = function(video, srt) {
     div.className = 'srt';
     video.parentNode.insertBefore(div, video.nextSibling);
 
-    var currentTime = video.currentTime;
-
-    if (typeof currentTime == "undefined") {
-	throw new Error("currentTime is not supported by the Video element");
-    } else {
-	var ival = setInterval(function() {
-		var currentTime = video.currentTime;
-		var subtitle = -1;
-		for (s in subtitles) {
-		    if (s > currentTime)
-			break;
-		    subtitle = s;
-		}
-		if (subtitle != -1) {
-		    if (subtitle != currentSubtitle) {
-			div.innerHTML = subtitles[subtitle].t;
-			currentSubtitle=subtitle;
-		    } else if (subtitles[subtitle].o < currentTime) {
-			div.innerHTML = '';
-		    }
-		}
-	    }, 100);
-    }
+    video.addEventListener("timeupdate",
+			   function() {
+			       var currentTime = video.currentTime;
+			       var subtitle = -1;
+			       for (s in subtitles) {
+				   if (s > currentTime)
+				       break;
+				   subtitle = s;
+			       }
+			       if (subtitle != -1) {
+				   if (subtitle != currentSubtitle) {
+				       div.innerHTML = subtitles[subtitle].t;
+				       currentSubtitle=subtitle;
+				   } else if (subtitles[subtitle].o < currentTime) {
+				       div.innerHTML = '';
+				   }
+			       }
+			   }, false);
 }
 
 HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, hasOrigin, top, left) {
@@ -770,6 +771,12 @@ HTML5Caption_getSubtitleSet = function(htmlElement) {
 
 HTML5Caption_playDFXP = function(video, dfxpDocument) {    
 
+    var currentTime = video.currentTime;
+
+    if (typeof currentTime == "undefined") {       
+	throw new Error("currentTime is not supported by the Video element");
+    }
+
     dfxpDocument.bodyElement = dfxpDocument.getElementsByTagNameNS(DFXP_NS, "body").item(0);
 
     // the following function call will decorate the dfxp tree with active durations
@@ -782,6 +789,9 @@ HTML5Caption_playDFXP = function(video, dfxpDocument) {
     var top  = 0;
     var left = 0;
     
+    // ISSUE: if the video is moved on the screen after this, regions
+    // won't appear at the right place...
+    // possible work around: initialize the captions just before playing...
     if (video.offsetTop) top = video.offsetTop;
     if (video.offsetLeft) left = video.offsetLeft;
 
@@ -808,37 +818,43 @@ HTML5Caption_playDFXP = function(video, dfxpDocument) {
 	alert("set has " + subtitles.length + " subtitles");
 	return;
     }
-    var currentTime = video.currentTime;
 
-    if (typeof currentTime == "undefined") {
-	throw new Error("currentTime is not supported by the Video element");
-    } else {
-	var length = subtitles.length;
-	setInterval(function() {
-		if (!video.paused) {
-		    currentTime = video.currentTime;
-		    for (var i = 0; i < length; i++) {
-			node = subtitles[i];
-			// this might get slow if too many subtitles?
-			if (node.df_isInTime) {
-			    if (node.aEnd < currentTime
-				|| node.aBegin > currentTime)  {
-				// remove the element from the display since
-				// it's in a node in the past or future
-				node.style.display = "none";
-				node.df_isInTime = false;
-			    }
-			} else if (node.aBegin < currentTime 
-				   && node.aEnd > currentTime) {
-			    node.style.display = node.df_displayValue;
-			    node.df_isInTime = true;
-			}    
-		    }
-		}
-	    }, 100);
-    }
+    var length = subtitles.length;
+    video.addEventListener("timeupdate",
+			   function() {
+			       currentTime = video.currentTime;
+			       for (var i = 0; i < length; i++) {
+				   node = subtitles[i];
+				   // this might get slow if too many subtitles?
+				   if (node.df_isInTime) {
+				       if (node.aEnd < currentTime
+					   || node.aBegin > currentTime)  {
+					   // remove the element from the display since
+					   // it's in a node in the past or future
+					   node.style.display = "none";
+					   node.df_isInTime = false;
+				       }
+				   } else if (node.aBegin < currentTime 
+					      && node.aEnd > currentTime) {
+				       if (video.paused) return;
+				       node.style.display = node.df_displayValue;
+				       node.df_isInTime = true;
+				   }    
+			       }
+			   }, false);
+
+    // clear the captions when it ended
+    video.addEventListener("ended",
+			   function() {
+			       for (var i = 0; i < length; i++) {
+				   node = subtitles[i];
+				   if (node.df_isInTime) {
+				       node.style.display = "none";
+				       node.df_isInTime = true;
+				   }    
+			       }
+                           }, false);
 }
-
 
 HTML5Caption_playVideo = function(video, caption) {
     var xhr = new XMLHttpRequest();

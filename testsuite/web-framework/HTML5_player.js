@@ -254,6 +254,10 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, has
     }
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "lineHeight");
     if (v != "") {
+	if (v == "normal") {
+	    // normal line-height is exactly 100%, unlike in CSS or XSL
+	    v = "100%";
+	}
 	htmlElement.style.setProperty("line-height", v, "");
     }
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "opacity");

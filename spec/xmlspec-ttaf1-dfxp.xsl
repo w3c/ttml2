@@ -41,11 +41,15 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .strong { font-weight: bold }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
+</xsl:text>
+<xsl:if test="$show.diff.markup != '0'">
+<xsl:text>
 .diff-add  { color: red; background-color: #99FF99; }
 .diff-del  { color: red; text-decoration: line-through; background-color: #99FF99; }
 .diff-chg  { background-color: #99FF99; }
-.diff-off  {}
+q.diff-off  {}
 </xsl:text>
+</xsl:if>
 </xsl:param>
 <xsl:output method="xml" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" indent="no"/>
 
@@ -483,63 +487,139 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
     <xsl:apply-templates/>
   </div>
 </xsl:template>
+<!-- status w/diff -->
+<xsl:template match="status[@diff]" priority="1">
+  <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
+  <xsl:if test='$show.diff.markup != 0 or $diffval != "del"'>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test='$show.diff.markup != 0'>
+	<xsl:attribute name='class'>
+	  <xsl:text>diff-</xsl:text>
+	  <xsl:value-of select='$diffval'/>
+	</xsl:attribute>
+      </xsl:if>
+      <h2>
+	<xsl:call-template name="anchor">
+	  <xsl:with-param name="conditional" select="0"/>
+	  <xsl:with-param name="default.id" select="'status'"/>
+	</xsl:call-template>
+	<xsl:text>Status of this Document</xsl:text>
+      </h2>
+      <xsl:if test="/spec/@role='editors-copy'">
+	<p><strong>This document is an editor's copy that has no official standing.</strong></p>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:if>
+</xsl:template>
+<!-- note w/diff -->
+<xsl:template match="note[@diff]" priority="1">
+  <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
+  <xsl:if test='$show.diff.markup != 0 or $diffval != "del"'>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test='$show.diff.markup != 0'>
+	<xsl:attribute name='class'>
+	  <xsl:text>diff-</xsl:text>
+	  <xsl:value-of select='$diffval'/>
+	</xsl:attribute>
+      </xsl:if>
+      <div class="note">
+	<p class="prefix">
+	  <b>Note:</b>
+	</p>
+	<xsl:apply-templates/>
+      </div>
+    </div>
+  </xsl:if>
+</xsl:template>
 <!-- ulist w/diff -->
 <xsl:template match="ulist[@diff]" priority="1">
   <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
-  <ul xmlns="http://www.w3.org/1999/xhtml" class="diff-{$diffval}">
-    <xsl:apply-templates/>
-  </ul>
+  <xsl:if test='$show.diff.markup != 0 or $diffval != "del"'>
+    <ul xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test='$show.diff.markup != 0'>
+	<xsl:attribute name='class'>
+	  <xsl:text>diff-</xsl:text>
+	  <xsl:value-of select='$diffval'/>
+	</xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </ul>
+  </xsl:if>
 </xsl:template>
 <!-- p w/diff -->
 <xsl:template match="p[@diff]" priority="1">
   <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
-  <p xmlns="http://www.w3.org/1999/xhtml" class="diff-{$diffval}">
-    <xsl:if test="@id">
-      <xsl:attribute name="id">
-	<xsl:value-of select="@id"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="@role">
-      <xsl:attribute name="class">
-	<xsl:value-of select="@role"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:apply-templates/>
-  </p>
+  <xsl:if test='$show.diff.markup != 0 or $diffval != "del"'>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test='$show.diff.markup != 0'>
+	<xsl:attribute name='class'>
+	  <xsl:text>diff-</xsl:text>
+	  <xsl:value-of select='$diffval'/>
+	</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="@id">
+	<xsl:attribute name="id">
+	  <xsl:value-of select="@id"/>
+	</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="@role">
+	<xsl:attribute name="class">
+	  <xsl:value-of select="@role"/>
+	</xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </p>
+  </xsl:if>
 </xsl:template>
 <!-- bibl w/diff -->
 <xsl:template match="bibl[@diff]" priority="1">
   <xsl:variable name="diffval" select="ancestor-or-self::*/@diff"/>
-  <dt xmlns="http://www.w3.org/1999/xhtml" class="label diff-{$diffval}">
-    <xsl:if test="@id">
-      <a name="{@id}" id="{@id}"/>
-    </xsl:if>
-    <xsl:choose>
-      <xsl:when test="@key">
-	<xsl:value-of select="@key"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="@id"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </dt>
-  <dd xmlns="http://www.w3.org/1999/xhtml" class="diff-{$diffval}">
-    <xsl:choose>
-      <xsl:when test="@href">
-	<a href="{@href}">
+  <xsl:if test='$show.diff.markup != 0 or $diffval != "del"'>
+    <dt xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name='class'>
+	<xsl:text>label</xsl:text>
+	<xsl:if test='$show.diff.markup != 0'>
+	  <xsl:text>diff-</xsl:text>
+	  <xsl:value-of select='$diffval'/>
+	</xsl:if>
+      </xsl:attribute>
+      <xsl:if test="@id">
+	<a name="{@id}" id="{@id}"/>
+      </xsl:if>
+      <xsl:choose>
+	<xsl:when test="@key">
+	  <xsl:value-of select="@key"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="@id"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </dt>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test='$show.diff.markup != 0'>
+	<xsl:attribute name='class'>
+	  <xsl:text>diff-</xsl:text>
+	  <xsl:value-of select='$diffval'/>
+	</xsl:attribute>
+      </xsl:if>
+      <xsl:choose>
+	<xsl:when test="@href">
+	  <a href="{@href}">
+	    <xsl:apply-templates/>
+	  </a>
+	</xsl:when>
+	<xsl:otherwise>
 	  <xsl:apply-templates/>
-	</a>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:apply-templates/>
-      </xsl:otherwise>
-    </xsl:choose>
-    <xsl:if test="@href">
-      <xsl:text>  (See </xsl:text>
-      <xsl:value-of select="@href"/>
-      <xsl:text>.)</xsl:text>
-    </xsl:if>
-  </dd>
+	</xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="@href">
+	<xsl:text>  (See </xsl:text>
+	<xsl:value-of select="@href"/>
+	<xsl:text>.)</xsl:text>
+      </xsl:if>
+    </dd>
+  </xsl:if>
 </xsl:template>
 <!-- table -->
 <xsl:template match="table">
@@ -553,7 +633,7 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 	  </xsl:attribute>
 	</xsl:when>
 	<xsl:otherwise>
-          <xsl:copy-of select="."/>
+	  <xsl:copy-of select="."/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>

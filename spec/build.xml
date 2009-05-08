@@ -12,6 +12,11 @@
 	<property name="generateBPlist" value="generateBPlist.xsl"/>
     <property name="diffformat" value="diffspec.xsl"/>
     <property name="last-public-draft" value="20070706"/>
+    
+    <property name="jing.jar" value="${basedir}/jing/jing.jar"/>
+    <property name="rnc.dir" value="${basedir}/rnc"/>
+    <property name="rnc.schema" value="${rnc.dir}/ttaf1-dfxp.rnc"/>
+    <property name="profiles.dir" value="${basedir}/profiles"/>
 
     <patternset id="escapable">
       <include name="examples/*.xml"/>
@@ -38,6 +43,32 @@
     <target name="clean" depends="clean-escapes">
         <delete quiet="true" file="ttaf1-dfxp.html"/>
     </target>
+
+    <target name="validate-schema-rnc" description="Validates DFXP's RNC Schema.">
+        <java fork="true" jar="${jing.jar}" dir="${rnc.dir}">
+            <arg value="-c"/>
+            <arg value="ttaf1-dfxp.rnc"/>
+        </java>
+    </target>
+
+    <target name="validate-profile-presentation" description="Validates presentation profile.">
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${profiles.dir}/dfxp-presentation.xml"/>
+        </java>
+    </target>
+
+    <target name="validate-profile-transformation" description="Validates transformation profile.">
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${profiles.dir}/dfxp-presentation.xml"/>
+        </java>
+    </target>
+
+    <target name="validate-profiles"
+	    depends="validate-profile-presentation,validate-profile-transformation"/>
 
     <target name="validate-xsl" description="Validates all XML files.">
         <xmlvalidate lenient="true">
@@ -71,7 +102,7 @@
         <xmlvalidate lenient="false" warn="yes" file="ttaf1-dfxp.xml"/>
     </target>
 
-    <target name="validate" depends="validate-xsl,validate-svg,validate-tt-specs"/>
+    <target name="validate" depends="validate-xsl,validate-svg,validate-tt-specs,validate-schema-rnc,validate-profiles"/>
 
     <target name="updateAcks"
         description="Update acknowledgements. Before running this, 

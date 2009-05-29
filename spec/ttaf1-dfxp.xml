@@ -71,6 +71,7 @@
 <!ENTITY xsd-dfxp-xml-attrs-module SYSTEM "./xsd/xml.xsd.esc">
 <!ENTITY profile-dfxp-presentation SYSTEM "./profiles/dfxp-presentation.xml.esc">
 <!ENTITY profile-dfxp-transformation SYSTEM "./profiles/dfxp-transformation.xml.esc">
+<!ENTITY profile-dfxp-full SYSTEM "./profiles/dfxp-full.xml.esc">
 ]>
 <?xml-stylesheet type='text/xsl' href='xmlspec-ttaf1-dfxp.xsl'?>
 <spec w3c-doctype="&doctype;" role="&document.role;">
@@ -95,7 +96,7 @@
 <authlist id="editors" role="editor">
 <author>
 <name>Glenn Adams</name>
-<affiliation>Extensible Formatting Systems, Inc. (XFSI)</affiliation>
+<affiliation><phrase diff="chg">Samsung Electronics Co., Ltd.</phrase></affiliation>
 </author>
 </authlist>
 <authlist id="contributors" role="contributor">
@@ -875,7 +876,7 @@ by <specref ref="profile-dfxp-transformation"/>.</p>
 <specref ref="conformance-generic-processor"/>.</p>
 </item>
 <item>
-<p>The processor implements support for the region and line layout
+<p diff="del">The processor implements support for the region and line layout
 semantics defined by <specref ref="semantics-region-layout"/> and
 <specref ref="semantics-line-layout"/>, respectively. In addition, the
 processor should satisfy the user agent accessibility guidelines specified by
@@ -1029,9 +1030,9 @@ of XML Namespaces may be used that is associated with the specified namespace UR
 <td><code>http://www.w3.org/2006/10/ttaf1#parameter</code></td>
 </tr>
 <tr>
-<td>TT Parameter Extension</td>
-<td><code>ttpx:</code></td>
-<td><code>http://www.w3.org/2006/10/ttaf1#parameter-extension</code></td>
+<td><phrase diff="del">TT Parameter Extension</phrase></td>
+<td><phrase diff="del"><code>ttpx:</code></phrase></td>
+<td><phrase diff="del"><code>http://www.w3.org/2006/10/ttaf1#parameter-extension</code></phrase></td>
 </tr>
 <tr>
 <td>TT Style</td>
@@ -1039,9 +1040,9 @@ of XML Namespaces may be used that is associated with the specified namespace UR
 <td><code>http://www.w3.org/2006/10/ttaf1#styling</code></td>
 </tr>
 <tr>
-<td>TT Style Extension</td>
-<td><code>ttsx:</code></td>
-<td><code>http://www.w3.org/2006/10/ttaf1#styling-extension</code></td>
+<td><phrase diff="del">TT Style Extension</phrase></td>
+<td><phrase diff="del"><code>ttsx:</code></phrase></td>
+<td><phrase diff="del"><code>http://www.w3.org/2006/10/ttaf1#styling-extension</code></phrase></td>
 </tr>
 <tr>
 <td>TT Metadata</td>
@@ -1049,9 +1050,9 @@ of XML Namespaces may be used that is associated with the specified namespace UR
 <td><code>http://www.w3.org/2006/10/ttaf1#metadata</code></td>
 </tr>
 <tr>
-<td>TT Metadata Extension</td>
-<td><code>ttmx:</code></td>
-<td><code>http://www.w3.org/2006/10/ttaf1#metadata-extension</code></td>
+<td><phrase diff="del">TT Metadata Extension</phrase></td>
+<td><phrase diff="del"><code>ttmx:</code></phrase></td>
+<td><phrase diff="del"><code>http://www.w3.org/2006/10/ttaf1#metadata-extension</code></phrase></td>
 </tr>
 <tr>
 <td>TT Profile</td>
@@ -1081,6 +1082,10 @@ namespace URI is for purposes other than defining XML vocabulary,
 e.g., for designating profiles, features, extensions and for
 dereferencing standard profile definitions.</p>
 </note>
+<p diff="add">All TT AF Namespaces are <loc
+href="http://www.w3.org/2001/tag/doc/namespaceState#namespacedef"><emph>mutable</emph></loc>
+<bibref ref="nsstate"/>; all undefined names in these namespaces are reserved for future
+standardization by the W3C.</p>
 </div2>
 <div2 id="vocabulary-profiles">
 <head>Profiles</head>
@@ -1110,6 +1115,10 @@ and where each of these profiles is formally elaborated in
 <td>DFXP Presentation</td>
 <td><code>http://www.w3.org/2006/10/ttaf1/profile/dfxp-presentation</code></td>
 </tr>
+<tr>
+<td><phrase diff="add">DFXP Full</phrase></td>
+<td><phrase diff="add"><code>http://www.w3.org/2006/10/ttaf1/profile/dfxp-full</code></phrase></td>
+</tr>
 </tbody>
 </table>
 <p/>
@@ -1118,22 +1127,40 @@ and where each of these profiles is formally elaborated in
 &sect;3.2.17. If the profile designator is expressed as a relative URI,
 then it must be absolutized by using the TT Profile Namespace value as
 the base URI.</p>
-<p>A profile designator is not restricted to the set of designators enumerated
-in <specref ref="profile-vocab-table"/>, but may be any URI that
-feasibly dereferences a TT AF Profile Definition Document.</p>
 <note role="example">
-<p>For example, if a profile designator were expressed as
+<p>For example, if a profile designator is expressed as
 <code>dfxp-presentation</code>, then the absolutized profile designator
 would be
 <code>http://www.w3.org/2006/10/ttaf1/profile/dfxp-presentation</code>.</p>
 </note>
-<p>The profile of a document instance is specified
-either (1) by specifying a
-<att>ttp:profile</att> attribute on the root <el>tt</el> element, as defined by
-<specref ref="parameter-attribute-profile"/>, or
-(2) by including a <el>ttp:profile</el> element in the <el>head</el>
-element, in accordance with <specref
+<p>A profile designator is not restricted to the set of designators enumerated
+in <specref ref="profile-vocab-table"/>, but may be any URI that
+feasibly dereferences a TT AF Profile Definition Document.</p>
+<p>The profile of a document instance is specified either (1) by
+specifying a <att>ttp:profile</att> attribute on the root <el>tt</el>
+element, as defined by <specref ref="parameter-attribute-profile"/>,
+or (2) by including <phrase diff="chg">one or more</phrase>
+<el>ttp:profile</el> element<phrase diff="add">s</phrase> in the
+<el>head</el> element, in accordance with <specref
 ref="parameter-vocabulary-profile"/>.</p>
+<p diff="add">If a <el>ttp:profile</el> element appears as a
+descendant of the <el>tt</el> element, then the <loc
+href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
+attribute should not be specified on the <el>tt</el> element. If both
+a <el>ttp:profile</el> element and a <att>ttp:profile</att>
+attribute are present (in a given document instance), then the
+<att>ttp:profile</att> attribute must be ignored for the purpose of
+determining the declared profile requirements.</p>
+<p diff="add">If more than one <el>ttp:profile</el> element appears in
+a TT AF document instance, then all specified profiles apply
+simultaneously.  In such a case, if some feature or some extension is
+specified by one profile to be used (mandatory and enabled) and by
+another profile to be required (mandatory) or optional (voluntary),
+then that feature or extension must be considered to be used
+(mandatory and enabled); if some feature or some extension is
+specified by one profile to be merely required (mandatory) and by
+another profile to be optional (voluntary), then that feature or
+extension must be considered to be required (mandatory).</p>
 <p>If neither
 <loc href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
 attribute nor
@@ -1170,24 +1197,31 @@ and additive.</p>
 <p>If a TT AF document instance makes use of a feature defined by
 <specref ref="feature-designations"/> and if the intended use of the
 document requires the recognition and processing of that feature, then
-the document must include a <emph>required feature</emph>
-specification in one of its declared profiles.  If a TT AF
-document instance makes use of an extension designatable by
-<specref ref="extension-designations"/> and if the intended use of the
-document requires the recognition and processing of that extension,
-then the document must include a <emph>required extension</emph>
-specification in one of its declared profiles.</p>
+the document must include a <emph>required feature</emph><phrase diff="add"> or
+a <emph>used feature</emph></phrase>
+specification in one of its declared<phrase diff="add"> or
+referenced</phrase> profiles.  If a TT AF document instance makes use
+of an extension designatable by <specref
+ref="extension-designations"/> and if the intended use of the document
+requires the recognition and processing of that extension, then the
+document must include a <emph>required extension</emph><phrase diff="add"> or
+a <emph>used extension</emph></phrase> specification
+in one of its declared<phrase diff="add"> or referenced</phrase>
+profiles.</p>
 <note role="elaboration">
-<p>A required feature specification is expressed directly (or
-indirectly by referring to a profile) by means of a <loc
+<p>A required<phrase diff="add"> or used</phrase> feature
+specification is expressed directly (or indirectly by referring to a
+profile) by means of a <loc
 href="#parameter-vocabulary-feature"><el>ttp:feature</el></loc>
 element where the value of its <att>value</att> attribute is
-<code>required</code>.  A required extension specification is
-expressed directly (or indirectly by referring to a profile) by means
-of a <loc
+<code>required</code><phrase diff="add"> or <code>use</code>,
+respectively</phrase>.  A required<phrase diff="add"> or used</phrase>
+extension specification is expressed directly (or indirectly by
+referring to a profile) by means of a <loc
 href="#parameter-vocabulary-extension"><el>ttp:extension</el></loc>
 element where the value of its <att>value</att> attribute is
-<code>required</code>.</p>
+<code>required</code><phrase diff="add"> or <code>use</code>,
+respectively</phrase>.</p>
 </note>
 <p>An example of an author defined
 subtractive, derived profile of the DFXP Presentation
@@ -1202,7 +1236,7 @@ below in <specref ref="dfxp-example-sub-profile"/>.</p>
 &lt;tt xml:lang="" xmlns="http://www.w3.org/2006/10/ttaf1"&gt;
  &lt;head&gt;
    &lt;profile use="dfxp-presentation" xmlns="http://www.w3.org/2006/10/ttaf1#parameter"&gt;
-     &lt;features&gt;
+     &lt;features <phrase diff="add">xml:base="http://www.w3.org/2006/10/ttaf1/feature"</phrase>&gt;
        &lt;feature value="optional"&gt;#fontStyle-italic&lt;/feature&gt;
      &lt;/features&gt;
    &lt;/profile&gt;
@@ -1529,11 +1563,11 @@ that used a different naming convention.</p>
 <head>Extension Catalog</head>
 <p>The extension vocabulary catalog is intended for use by future
 profiles of the TT AF.</p>
-<p>In this version of this specification, no
+<p diff="del">In this version of this specification, no
 standardized extension vocabulary is defined. The following namespaces are
 specifically reserved by <specref ref="namespace-vocab-table"/>
 for extension vocabulary:</p>
-<ulist>
+<ulist diff="del">
 <item>
 <p>TT Metadata Extension</p>
 </item>
@@ -1583,13 +1617,15 @@ required (mandatory) and optional (voluntary) features and extensions that must 
 may be supported by a TT AF content processor in order to process a
 TT AF document that makes use (or may make use) of such features and extensions.</p>
 <note role="clarification">
-<p>The difference between is <emph>feature</emph> and an
+<p>The difference between a <emph>feature</emph> and an
 <emph>extension</emph> is where it is defined an how it is labeled:
 if defined in this specification (or a future revision thereof) and
 labeled with a feature designation in <specref ref="features"/>, then
 it is considered to be a feature; if defined in another specification
 and labeled there with an extension designation, then it is considered
-to be an extension.</p>
+to be an extension. In general, features are expected to be defined by
+the W3C standards process, while extensions are expected to be defined by
+third parties.</p>
 </note>
 <p>This specification defines two distinct uses of the <el>ttp:profile</el> element:</p>
 <ulist>
@@ -1604,14 +1640,14 @@ instance;</p>
 </ulist>
 <p>When a <el>tt:profile</el> element appears within a TT AF document
 instance, its purpose is to express authorial intentions about which
-featueres and extensions must or may be supported by a recipient
+features and extensions must or may be supported by a recipient
 content processor. In addition, the element indirectly expresses
 information about the set of features or extensions that are (or may
 expected to be) used by the document instance.</p>
 <p>When a <el>tt:profile</el> element is used by a TT AF
 Profile Definition document instance, it serves to publish a machine
 readable specification of a specific TT AF content profile, of which
-this specification defines two such Profile Definition Documents in
+this specification defines four such Profile Definition Documents in
 <specref ref="profiles"/>.</p>
 <p>The <el>ttp:profile</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
@@ -1626,7 +1662,7 @@ zero or more <el>ttp:extensions</el> elements.</p>
 &lt;ttp:profile
   use = string
   <loc href="#content-attribute-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#parameter-vocabulary-features">ttp:features</loc>*, <loc href="#parameter-vocabulary-extensions">ttp:extensions</loc>*
 &lt;/ttp:profile&gt;
 </eg>
@@ -1685,13 +1721,12 @@ reference a non-standard TT AF Profile Definition Document, then some
 end-user notification should be given unless the end-user or system
 has disabled such a notification, or if the processor does not permit
 or entail the intervention of an end-user.</p>
-<p>If more than one <el>ttp:profile</el> element appears in a TT AF
+<p diff="del">If more than one <el>ttp:profile</el> element appears in a TT AF
 document instance, then all specified profiles apply simultaneously.
 In such a case, if some feature or some extension is specified by one profile
 to be required (mandatory) and by another profile to be optional
 (voluntary), then that feature or extension must be considered to be
 required (mandatory).</p>
-
 <p>The <el>ttp:profile</el> element is illustrated by the following example.</p>
 <table id="parameter-vocabulary-profile-example-1" role="example">
 <caption>Example Fragment &ndash; ttp:profile</caption>
@@ -1700,7 +1735,7 @@ required (mandatory).</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="dfxp-presentation"&gt;
-  &lt;ttp:features&gt;
+  &lt;ttp:features <phrase diff="add">xml:base="http://www.w3.org/2006/10/ttaf1/feature"</phrase>&gt;
     &lt;ttp:feature&gt;#rollUp&lt;/ttp:feature&gt;
   &lt;/ttp:features&gt;
 &lt;/ttp:profile&gt;
@@ -1715,7 +1750,6 @@ baseline profile. This baseline profile is then supersetted (thus
 creating an additive derived profile) by requiring support for
 <code>#rollUp</code> feature.</p>
 </note>
-
 </div3>
 <div3 id="parameter-vocabulary-features">
 <head>ttp:features</head>
@@ -1731,9 +1765,9 @@ zero or more <el>ttp:feature</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:features
-  base = string : <emph>TT Feature Namespace</emph>
+  <phrase diff="add">xml:</phrase>base = string : <emph>TT Feature Namespace</emph>
   <loc href="#content-attribute-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#parameter-vocabulary-feature">ttp:feature</loc>*
 &lt;/ttp:features&gt;
 </eg>
@@ -1741,15 +1775,18 @@ zero or more <el>ttp:feature</el> elements.</p>
 </tr>
 </tbody>
 </table>
-<p>If specified, the <att>base</att> attribute must adhere to the
+<p>If specified, the <att><phrase diff="add">xml:</phrase>base</att>
+attribute must <phrase diff="add">(1) </phrase>adhere to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17, and, furthermore, must express a feature namespace as
-defined by <specref ref="feature-designations"/>. If not specified,
-the <att>base</att> attribute's default value applies, which is
-the TT Feature Namespace.</p>
-<p>The <att>base</att> attribute is used to permit the abbreviation
-of feature designation URIs expressed by child <el>ttp:feature</el>
-elements.</p>
+&sect;3.2.17, <phrase diff="add">(2) express an absolute URI that
+adheres to <bibref ref="xmlbase"/></phrase> and, <phrase
+diff="chg">(3) </phrase> express a feature namespace as defined by
+<specref ref="feature-designations"/>. If not specified, the
+<att><phrase diff="add">xml:</phrase>base</att> attribute's default
+value applies, which is the TT Feature Namespace.</p>
+<p>The <att><phrase diff="add">xml:</phrase>base</att> attribute is
+used to permit the abbreviation of feature designation URIs expressed
+by child <el>ttp:feature</el> elements.</p>
 </div3>
 <div3 id="parameter-vocabulary-feature">
 <head>ttp:feature</head>
@@ -1766,9 +1803,9 @@ sequence of character information items that adheres to the
 <td>
 <eg xml:space="preserve">
 &lt;ttp:feature
-  value = (required|optional) : required
+  value = (<phrase diff="chg">optional|required|use</phrase>) : required
   <loc href="#content-attribute-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttp:feature&gt;
 </eg>
@@ -1777,21 +1814,29 @@ sequence of character information items that adheres to the
 </tbody>
 </table>
 <p>If the URI expressed by the content of the <el>ttp:feature</el>
-element is a relative URI, then, when combined with the value of the
-<att>base</att> attribute of the nearest ancestor
-<el>ttp:features</el> element, it must express an absolute URI.  In
-either case (original absolute URI or resulting absolutized URI), the
-URI expressed by the <el>ttp:feature</el> element must further adhere
-to the syntax of a feature designation as defined by <specref
-ref="feature-designations"/>.</p>
+element is a relative URI, then, when combined with the <phrase
+diff="chg">feature namespace value expressed by</phrase> the
+<att><phrase diff="add">xml:</phrase>base</att> attribute of the
+nearest ancestor <el>ttp:features</el> element, it must express an
+absolute URI.  In either case (original absolute URI or resulting
+absolutized URI), the URI expressed by the <el>ttp:feature</el>
+element must further adhere to the syntax of a feature designation as
+defined by <specref ref="feature-designations"/>.</p> <p diff="add">If
+the URI expressed by the content of the <el>ttp:feature</el> element
+is a relative URI, then an <att>xml:base</att> attribute should be
+specified on the nearest ancestor <el>ttp:features</el> element.</p>
 <p>The <att>value</att> attribute specifies whether a conforming TT AF
 processor must or may implement the designated feature in order to
 process the document. If the value of the <att>value</att> attribute
-is <code>required</code>, then the processor must implement or
-otherwise support the feature in order to process the document;
-however, if the value is <code>optional</code>, then the processor
-need not implement or otherwise support the feature in order to
-process the document.</p>
+is <phrase diff="chg"> <code>optional</code>, then the processor need
+not implement or otherwise support the feature in order to process the
+document; if the value is <code>required</code>, then the processor
+must implement or otherwise support the feature in order to process
+the document;</phrase><phrase diff="add"> if the value is
+<code>use</code>, then the processor must both (1) implement or
+otherwise support the feature and (2) enable (activate) use of the
+feature</phrase>.</p>
+
 <note role="clarification">
 <p>The default value of the <att>value</att> attribute is
 <code>required</code>, as indicated in the above element information
@@ -1800,7 +1845,8 @@ specified on a <el>ttp:feature</el> element, it is equivalent to
 specifying that support for the feature is required.</p>
 </note>
 <p>If the value of the <att>value</att> attribute is
-<code>required</code>, and if the TT AF processor implementation does
+<code>required</code><phrase diff="add"> or <code>use</code></phrase>,
+and if the TT AF processor implementation does
 not support the feature, then it must not further process the document
 without the presence of an explicit override from an end-user or some
 implementation specific parameter traceable to an end-user or to a
@@ -1830,7 +1876,7 @@ valid.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/2006/10/ttaf1/profile/dfxp-presentation"&gt;
-  &lt;ttp:features&gt;
+  &lt;ttp:features <phrase diff="add">xml:base="http://www.w3.org/2006/10/ttaf1/feature"</phrase>&gt;
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#textDecoration-under&lt;/ttp:feature&gt;</phrase>
     <phrase role="strong">&lt;ttp:feature value="optional"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</phrase>
   &lt;/ttp:features&gt;
@@ -1871,9 +1917,9 @@ zero or more <el>ttp:extension</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:extensions
-  base = string : <emph>TT Extension Namespace</emph>
+  <phrase diff="add">xml:</phrase>base = string : <emph>TT Extension Namespace</emph>
   <loc href="#content-attribute-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#parameter-vocabulary-extension">ttp:extension</loc>*
 &lt;/ttp:extensions&gt;
 </eg>
@@ -1881,15 +1927,18 @@ zero or more <el>ttp:extension</el> elements.</p>
 </tr>
 </tbody>
 </table>
-<p>If specified, the <att>base</att> attribute must adhere to the
+<p>If specified, the <att><phrase diff="add">xml:</phrase>base</att>
+attribute must <phrase diff="add">(1) </phrase>adhere to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17, and, furthermore, must express an extension namespace as
-defined by <specref ref="extension-designations"/>. If not specified,
-the <att>base</att> attribute's default value applies, which is
-the TT Extension Namespace.</p>
-<p>The <att>base</att> attribute is used to permit the abbreviation
-of extension designation URIs expressed by child <el>ttp:extension</el>
-elements.</p>
+&sect;3.2.17, <phrase diff="add">(2) express an absolute URI that
+adheres to <bibref ref="xmlbase"/></phrase> and, <phrase
+diff="chg">(3) </phrase> express an extension namespace as defined by
+<specref ref="extension-designations"/>. If not specified, the
+<att><phrase diff="add">xml:</phrase>base</att> attribute's default
+value applies, which is the TT Extension Namespace.</p>
+<p>The <att><phrase diff="add">xml:</phrase>base</att> attribute is
+used to permit the abbreviation of feature designation URIs expressed
+by child <el>ttp:extension</el> elements.</p>
 </div3>
 <div3 id="parameter-vocabulary-extension">
 <head>ttp:extension</head>
@@ -1906,9 +1955,9 @@ sequence of character information items that adheres to the
 <td>
 <eg xml:space="preserve">
 &lt;ttp:extension
-  value = (required|optional) : required
+  value = (<phrase diff="chg">optional|required|use</phrase>) : required
   <loc href="#content-attribute-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttp:extension&gt;
 </eg>
@@ -1917,21 +1966,29 @@ sequence of character information items that adheres to the
 </tbody>
 </table>
 <p>If the URI expressed by the content of the <el>ttp:extension</el>
-element is a relative URI, then, when combined with the value of the
-<att>base</att> attribute of the nearest ancestor
-<el>ttp:extensions</el> element, it must express an absolute URI.  In
-either case (original absolute URI or resulting absolutized URI), the
-URI expressed by the <el>ttp:extension</el> element must further adhere
-to the syntax of an extension designation as defined by <specref
-ref="extension-designations"/>.</p>
+element is a relative URI, then, when combined with the <phrase
+diff="chg">extension namespace value expressed by</phrase> the
+<att><phrase diff="add">xml:</phrase>base</att> attribute of the
+nearest ancestor <el>ttp:extensions</el> element, it must express an
+absolute URI.  In either case (original absolute URI or resulting
+absolutized URI), the URI expressed by the <el>ttp:extension</el>
+element must further adhere to the syntax of an extension designation
+as defined by <specref ref="extension-designations"/>.</p>
+<p diff="add">If the URI expressed by the content of the
+<el>ttp:feature</el> element is a relative URI, then an
+<att>xml:base</att> attribute should be specified on the nearest
+ancestor <el>ttp:extensions</el> element.</p>
 <p>The <att>value</att> attribute specifies whether a conforming TT AF
 processor must or may implement the designated extension in order to
 process the document. If the value of the <att>value</att> attribute
-is <code>required</code>, then the processor must implement or
-otherwise support the extension in order to process the document;
-however, if the value is <code>optional</code>, then the processor
-need not implement or otherwise support the extension in order to
-process the document.</p>
+is <phrase diff="chg"> <code>optional</code>, then the processor need
+not implement or otherwise support the extension in order to process the
+document; if the value is <code>required</code>, then the processor
+must implement or otherwise support the extension in order to process
+the document;</phrase><phrase diff="add"> if the value is
+<code>use</code>, then the processor must both (1) implement or
+otherwise support the extension and (2) enable (activate) use of the
+extension</phrase>.</p>
 <note role="clarification">
 <p>The default value of the <att>value</att> attribute is
 <code>required</code>, as indicated in the above element information
@@ -1940,16 +1997,17 @@ specified on a <el>ttp:extension</el> element, it is equivalent to
 specifying that support for the extension is required.</p>
 </note>
 <p>If the value of the <att>value</att> attribute is
-<code>required</code>, and if the TT AF processor implementation does
-not support the extension, then it must not further process the document
-without the presence of an explicit override from an end-user or some
+<code>required</code><phrase diff="add"> or <code>use</code></phrase>,
+and if the TT AF processor implementation does not support the
+extension, then it must not further process the document without the
+presence of an explicit override from an end-user or some
 implementation specific parameter traceable to an end-user or to a
 user or system configuration setting.  If a TT AF processor aborts
 processing of a TT AF document instance due to the specification of a
-required, but unsupported extension by this element, then some end-user
-notification should be given unless the end-user or system has
-disabled such a notification, or if the processor does not permit or
-entail the intervention of an end-user.</p>
+required, but unsupported extension by this element, then some
+end-user notification should be given unless the end-user or system
+has disabled such a notification, or if the processor does not permit
+or entail the intervention of an end-user.</p>
 <p>If the value of the <att>value</att> attribute is
 <code>optional</code>, and if the TT AF processor implementation does
 not support the extension, then it may further process the document even
@@ -1970,11 +2028,11 @@ valid.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/2006/10/ttaf1/profile/dfxp-transformation"&gt;
-  &lt;ttp:extensions&gt;
+<phrase diff="del">  &lt;ttp:extensions&gt;
     <phrase role="strong">&lt;ttp:extension value="required"&gt;#x-prefilter-by-language&lt;/ttp:extension&gt;</phrase>
-  &lt;/ttp:extensions&gt;
-  &lt;ttp:extensions base="http://foo.bar.example.org/ttaf1/extension"&gt;
-    <phrase role="strong">&lt;ttp:extension value="required"&gt;#private-extension-1&lt;/ttp:extension&gt;</phrase>
+  &lt;/ttp:extensions&gt;</phrase>
+  &lt;ttp:extensions <phrase diff="add">xml:</phrase>base="http://foo.bar.example.org/ttaf1/extension"&gt;
+    <phrase role="strong">&lt;ttp:extension value="<phrase diff="chg">use</phrase>"&gt;#<phrase diff="chg">prefilter-by-language</phrase>&lt;/ttp:extension&gt;</phrase>
   &lt;/ttp:extensions&gt;
 &lt;/ttp:profile&gt;
 </eg>
@@ -1985,22 +2043,23 @@ valid.</p>
 <note role="explanation">
 <p>In the above example, the DFXP transformation profile is used as
 the baseline profile. This baseline profile is then supersetted by
-specifying that support is required for two extensions, where the
+specifying that support<phrase diff="add"> and use</phrase> is required for<phrase diff="del"> two extensions, where the
 first extension is a experimental extension
 <code>#x-prefilter-by-language</code> defined (hypothetically) by the
-W3C in the TT Extension Namespace, and where the second extension is a
-private extension defined in a third party namespace. The
+W3C in the TT Extension Namespace, and where the second extension is</phrase>
+a private extension defined in a third party namespace.<phrase diff="del">The
 <att>base</att> attribute is elided from the first specified
 <el>ttp:extensions</el> element since it makes use of the TT Extension
 Namespace. Note that the explicit specification of
 <code>required</code> on the <att>value</att> attributes on the two
 <el>ttp:extension</el> elements is not necessary, since it is the
-default value of this attribute.</p>
+default value of this attribute.</phrase></p>
 <p>The effect of this example is to express authorial intentions that
 a recipient processor must support the DFXP transformation profile and
-must also support two additional extensions, one (hypothetically)
-defined by the W3C (in another specification or in a future version of
-this specification) and the other defined by a third party.</p>
+must also support<phrase diff="add"> and use</phrase> <phrase diff="del"> two additional extensions, one
+(hypothetically) defined by the W3C (in another specification or in a
+future version of this specification) and the other</phrase><phrase
+diff="add">an extension </phrase>defined by a third party.</p>
 </note>
 </div3>
 </div2>
@@ -2309,7 +2368,7 @@ profile designator in accordance with
 <p>A <att>ttp:profile</att>
 attribute is considered to be significant only when specified on the
 <el>tt</el> element.</p>
-<p>If a <el>ttp:profile</el> element appears as a
+<p diff="del">If a <el>ttp:profile</el> element appears as a
 descendant of the <el>tt</el> element, then the <loc
 href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
 attribute should not be specified on the <el>tt</el> element. If both
@@ -2580,8 +2639,8 @@ zero or one <el>body</el> element.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang"><phrase role="reqattr">xml:lang</phrase></loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
-  {<emph>any attribute in TT Parameter namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Parameter namespace</emph>}
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#document-structure-vocabulary-head">head</loc>?, <loc href="#document-structure-vocabulary-body">body</loc>?
 &lt;/tt&gt;
 </eg>
@@ -2641,7 +2700,8 @@ are referenced by content elements.</p>
 &lt;head
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
-  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)&gt;
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <phrase diff="add">{<emph>any attribute not in default or any TT namespace</emph>}</phrase>&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Parameters.class</loc>*, <loc href="#styling-vocabulary-styling">styling</loc>?, <loc href="#layout-vocabulary-layout">layout</loc>?
 &lt;/head&gt;
 </eg>
@@ -2684,11 +2744,11 @@ element group apply semantically to the <el>body</el> element.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Metadata namespace ...</emph>}
-  {<emph>any attribute in TT Metadata Extension namespace ...</emph>}
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Metadata namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Metadata Extension namespace</emph>}</phrase>
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Animation.class</loc>*, <loc href="#content-vocabulary-div">div</loc>*
 &lt;/body&gt;
 </eg>
@@ -2774,11 +2834,11 @@ element group apply semantically to the <el>div</el> element.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Metadata namespace ...</emph>}
-  {<emph>any attribute in TT Metadata Extension namespace ...</emph>}
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Metadata namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Metadata Extension namespace</emph>}</phrase>
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-table">Metadata.class</loc>*, <loc
   href="#element-vocab-group-table">Animation.class</loc>*, <loc
@@ -2838,11 +2898,11 @@ element group apply semantically to the <el>p</el> element.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Metadata namespace ...</emph>}
-  {<emph>any attribute in TT Metadata Extension namespace ...</emph>}
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Metadata namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Metadata Extension namespace</emph>}</phrase>
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-table">Metadata.class</loc>*, <loc
   href="#element-vocab-group-table">Animation.class</loc>*, <loc
@@ -2906,11 +2966,11 @@ element group apply semantically to the <el>span</el> element.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Metadata namespace ...</emph>}
-  {<emph>any attribute in TT Metadata Extension namespace ...</emph>}
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Metadata namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Metadata Extension namespace</emph>}</phrase>
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-table">Metadata.class</loc>*, <loc
   href="#element-vocab-group-table">Animation.class</loc>*, <loc
@@ -2948,11 +3008,11 @@ a <el>span</el> element, then it must be interpreted as having
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Metadata namespace ...</emph>}
-  {<emph>any attribute in TT Metadata Extension namespace ...</emph>}
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Metadata namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Metadata Extension namespace</emph>}</phrase>
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Animation.class</loc>*
 &lt;/br&gt;
 </eg>
@@ -3102,7 +3162,7 @@ zero or more <el>style</el> elements.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#styling-vocabulary-style">style</loc>*
 &lt;/styling&gt;
 </eg>
@@ -3132,9 +3192,9 @@ specified style set in accordance with
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*
 &lt;/style&gt;
 </eg>
@@ -3797,17 +3857,26 @@ as a style property only to those element types indicated in the following table
 dynamic flow semantics apply.</p>
 <p>If the value of this attribute is <code>rollUp</code>, then
 this value is interpreted as a shorthand value equivalent to
-<code>out(line,smooth) inter(0.433s)</code>.</p>
+<code>out(line,smooth) <phrase diff="chg">clear</phrase>(0.433s)</code>.</p>
+<note role="explanation" diff="add">
+<p>The choice of a definite duration of 0.433 seconds for the clear
+interval for roll up dynamic flow timing is based upon recommendations
+specified in <bibref ref="ccreq"/>, p. 792.
+</p>
+</note>
 <p>If the value of this attribute contains a single <loc
 href="#style-value-flowFunction">&lt;flowFunction&gt;</loc>, then that
 flow function applies equally to <emph>fill into</emph> and <emph>clear
 from</emph> dynamic flow operations.</p>
-<p>If either <code>intra()</code> or <code>inter()</code> <loc
+<p>If either <code><phrase diff="chg">fill</phrase>()</code> or
+<code><phrase diff="chg">clear</phrase>()</code> <loc
 href="#style-value-flowIntervalFunction">&lt;flowIntervalFunction&gt;</loc>
 is not specified, then the <code>auto</code> value for the missing
 <loc
 href="#style-value-flowIntervalFunction">&lt;flowIntervalFunction&gt;</loc>
-applies.</p>
+applies.  <phrase diff="add">Multiple instances of the same <loc
+href="#style-value-flowIntervalFunction">&lt;flowIntervalFunction&gt;</loc>
+must not appear in the value of this attribute.</phrase></p>
 <p>The normative processing model for dynamic flow behavior is
 specified in <specref ref="dynamicFlowModel"/>.</p>
 <p>If a specified value of this attribute is not supported,
@@ -3829,7 +3898,7 @@ href="images/dynamicFlow_RU_animated.svg">SVG Animation</loc>.</p>
   &lt;style tts:fontFamily="proportionalSansSerif"/&gt;
   &lt;style tts:fontSize="18px"/&gt;
   &lt;style <phrase role="strong">tts:overflow="dynamic"</phrase>/&gt;
-  &lt;style <phrase role="strong">tts:dynamicFlow="in(word,jump) out(line,smooth) inter(3s)"</phrase>/&gt;
+  &lt;style <phrase role="strong">tts:dynamicFlow="in(word,jump) out(line,smooth) <phrase diff="chg">clear</phrase>(3s)"</phrase>/&gt;
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
@@ -4747,7 +4816,8 @@ not be clipped outside of the affected region, and region composition and layout
 must be performed as if the region's width and height were
 unconstrained,
 but with
-a well-defined origin.  If the value is <code>hidden</code>, then content should
+a well-defined origin.  If the value is <code>hidden</code><phrase diff="add"> or
+<code>dynamic</code></phrase>, then content should
 be clipped outside of the affected region.</p>
 <note role="explanation">
 <p>Unless a manual line break element <el>br</el> is used by the content author,
@@ -6081,9 +6151,9 @@ flowArguments
 
 flowUnit
   : "glyph"
-  | "inline"
+  <phrase diff="del">| "inline"</phrase>
   | "line"
-  | "block"
+  <phrase diff="del">| "block"</phrase>
   | "character"
   | "word"
   | extensionToken
@@ -6104,9 +6174,9 @@ extensionToken
 into its region and flowing it out of its region. These two phases of dynamic flow are specified using the
 <code>in()</code> and <code>out()</code> flow functions respectively.</p>
 <p>Dynamic flow occurs on the basis of specific visual or semantic
-content units. In the case of <code>glyph</code>,
-<code>inline</code>, <code>line</code>, and <code>block</code>, the
-unit of dynamic flow is based upon a visually rendered construct
+content units. In the case of
+<phrase diff="chg"><code>glyph</code> and <code>line</code></phrase>,
+the unit of dynamic flow is based upon a visually rendered construct
 (<code>glyph</code>) or upon an area of the area
 tree produced by formatting the affected content. In the case of
 <code>character</code> and <code>word</code>, the unit of dynamic flow
@@ -6152,8 +6222,8 @@ duration that affects dynamic flow timing behavior.</p>
 <td>
 <eg xml:space="preserve">
 &lt;flowIntervalFunction&gt;
-  : "intra(" flowIntervalArguments ")"
-  | "inter(" flowIntervalArguments ")"
+  : "<phrase diff="chg">fill</phrase>(" flowIntervalArguments ")"
+  | "<phrase diff="chg">clear</phrase>(" flowIntervalArguments ")"
 
 flowIntervalArguments
   : "auto"
@@ -6167,13 +6237,13 @@ flowIntervalRate
 </tr>
 </tbody>
 </table>
-<p>The <code>intra()</code> flow interval function is used to
+<p>The <code><phrase diff="chg">fill</phrase>()</code> flow interval function is used to
 determine the <emph>computed fill interval</emph> state parameter for performing
 dynamic flow processing, which expresses the
 duration of time between fill
 timer events, as specified by <specref ref="flowTimerFill"/>, which
 in turn, limits the dynamic flowed content fill rate.</p>
-<p>The <code>inter()</code> flow interval function is used to
+<p>The <code><phrase diff="chg">clear</phrase>()</code> flow interval function is used to
 determine the <emph>computed clear interval</emph> state parameter for performing
 dynamic flow processing, which expresses the
 duration of time between clear
@@ -6186,8 +6256,8 @@ If a flow interval rate is
 specified as an argument to a flow interval function, then it is
 considered to represent a <emph>definite rate</emph> in units per
 second, where the applicable unit is determined in the context of
-whether the rate is used with an <code>intra()</code> or
-<code>inter()</code> flow interval function.</p>
+whether the rate is used with an <code><phrase diff="chg">fill</phrase>()</code> or
+<code><phrase diff="chg">clear</phrase>()</code> flow interval function.</p>
 <p>The computed fill and clear interval values are defined by
 <specref ref="dynamicFlowIntervalTimingCalculation"/>.</p>
 </div3>
@@ -6418,8 +6488,6 @@ is a quotation delimiter character.</p>
 2.2.</p>
 </div3>
 </div2>
-
-<!-- START NEW -->
 <div2 id="semantics-style-resolution">
 <head>Style Resolution</head>
 <p>This section defines the semantics of style resolution in terms of
@@ -6457,7 +6525,7 @@ layout element.</p>
 <div4 id="semantics-style-association-inline">
 <head>Inline Styling</head>
 <p>Style properties may be expressed in an inline manner by direct specification of an
-attribute from the TT Style Namespace or TT Style Extension Namespace
+attribute from the TT Style Namespace<phrase diff="del"> or TT Style Extension Namespace</phrase>
 on the affected element. When expressed in this manner, the association of style information
 is referred to as <emph>inline styling</emph>.</p>
 <p>Style properties associated by inline styling are afforded a higher priority than all other
@@ -7036,8 +7104,6 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 </div4>
 </div3>
 </div2>
-<!-- END NEW -->
-
 </div1>
 <div1 id="layout">
 <head>Layout</head>
@@ -7082,7 +7148,7 @@ zero or more <el>region</el> elements.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#layout-vocabulary-region">region</loc>*
 &lt;/layout&gt;
 </eg>
@@ -7131,9 +7197,9 @@ element, i.e., does not apply for resolving referential styling.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Style namespace ...</emph>}
-  {<emph>any attribute in TT Style Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute in TT Style namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Style Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Animation.class</loc>*, <loc href="#styling-vocabulary-style">style</loc>*
 &lt;/region&gt;
 </eg>
@@ -7592,6 +7658,14 @@ are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
 <p>The semantics of line layout, including line breaking, defined by 
 <bibref ref="xsl11"/> apply to the performance of the composition and layout of
 lines for presentation processing of a document instance on a visual medium.</p>
+<p diff="add">If a profile that applies to a document instance
+requires use of the <loc
+href="#feature-lineBreak-uax14">#lineBreak-uax14</loc> feature
+(i.e., the value attribute for the feature is specified as <code>use</code>), then
+the recommendations defined by <loc
+href="http://www.unicode.org/unicode/reports/tr14/#Algorithm">Line
+Breaking Algorithm</loc> <bibref ref="uax14"/> apply when performing
+line layout on the content of the document instance.</p>
 </div2>
 </div1>
 <div1 id="timing">
@@ -7893,8 +7967,8 @@ elements in the <code>Metadata.class</code> element group.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>a single attribute in TT Style or TT Style Extension namespace</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>a single attribute in TT Style<phrase diff="del"> or TT Style Extension</phrase> namespace</emph>}
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*
 &lt;/set&gt;
 </eg>
@@ -8034,10 +8108,10 @@ are referred to in this document as <emph>metadata items</emph>.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute in TT Metadata namespace ...</emph>}
-  {<emph>any attribute in TT Metadata Extension namespace ...</emph>}
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
-  <emph>Content:</emph> {<emph>any element not in TT namespace</emph>}*
+  {<emph>any attribute in TT Metadata namespace</emph>}
+  <phrase diff="del">{<emph>any attribute in TT Metadata Extension namespace</emph>}</phrase>
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <phrase diff="chg">({<emph>any element in TT Metadata namespace</emph>}|{<emph>any element not in any TT namespace</emph>})*</phrase>
 &lt;/metadata&gt;
 </eg>
 </td>
@@ -8046,10 +8120,12 @@ are referred to in this document as <emph>metadata items</emph>.</p>
 </table>
 <note role="explanation">
 <p>The meaning of a specific metadata item must be evaluated in the
-context of where it appears. The core vocabulary catalog permits an arbitrary number of
-<el>metadata</el> element children of any non-empty element type except
-for the <el>body</el> element. See specific element vocabulary
-definitions for any constraints that apply to such usage.</p>
+context of where it appears. The core vocabulary catalog permits an
+arbitrary number of <el>metadata</el> element children of any <phrase
+diff="chg">content</phrase> element type except for the <phrase
+diff="chg"><el>tt</el></phrase> element. See specific element
+vocabulary definitions for any constraints that apply to such
+usage.</p>
 </note>
 <p>The use of document metadata is illustrated by the following example.</p>
 <table id="metadata-vocabulary-metadata-example-1" role="example">
@@ -8135,7 +8211,7 @@ a specific element instance.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:title&gt;
 </eg>
@@ -8164,7 +8240,7 @@ a specific element instance.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:desc&gt;
 </eg>
@@ -8195,7 +8271,7 @@ child of the <el>head</el> element.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:copyright&gt;
 </eg>
@@ -8226,7 +8302,7 @@ agent, whether it be the name of a person, character, group, or organization.</p
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#metadata-vocabulary-name">ttm:name</loc>*, <loc href="#metadata-vocabulary-actor">ttm:actor</loc>?
 &lt;/ttm:agent&gt;
 </eg>
@@ -8321,7 +8397,7 @@ group, or organization.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:name&gt;
 </eg>
@@ -8358,7 +8434,7 @@ agent with another agent that portrays the character.</p>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace ...</emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> EMPTY
 &lt;/ttm:actor&gt;
 </eg>
@@ -8557,14 +8633,19 @@ the <emph>clear style</emph> parameter;</p>
 of the <code>out()</code> flow function;</p></item>
 <item><p><emph>clear style</emph>, as specified by the <code>flowStyle</code> argument
 of the <code>out()</code> flow function;</p></item>
-<item><p><emph>fill interval</emph>, as specified by the <code>intra()</code>
+<item><p><emph>fill interval</emph>, as specified by the <code><phrase diff="chg">fill</phrase>()</code>
 flow interval function;</p></item>
-<item><p><emph>clear interval</emph>, as specified by the <code>inter()</code>
+<item><p><emph>clear interval</emph>, as specified by the <code><phrase diff="chg">clear</phrase>()</code>
 flow interval function;</p></item>
-<item><p><emph>computed fill interval, as determined by the flow
-interval timing calculation below;</emph></p></item>
-<item><p><emph>computed clear interval, as determined by the flow
-interval timing calculation below;</emph></p></item>
+<item><p><emph>computed fill interval</emph>, as determined by the flow
+interval timing calculation below;</p></item>
+<item><p><emph>computed clear interval</emph>, as determined by the flow
+interval timing calculation below;</p></item>
+<item><p diff="add"><emph>last fill time</emph>, the time at which the last fill operation
+occurred;</p></item>
+<item><p diff="add"><emph>last clear time</emph>, the time at which the last clear operation
+occurred;</p></item>
+<item><p diff="add"><emph>dynamic flow lock</emph>, a synchronization primitive;</p></item>
 </olist>
 </item>
 </olist>
@@ -8579,7 +8660,7 @@ time. If the <att>tts:dynamicFlow</att> property is animated,
 then these nominally static parameters remain static between
 animation intervals.</p>
 </div2>
-<div2 id="dynamicFlowEvents">
+<div2 id="dynamicFlowBuffer">
 <head>Flow Buffer</head>
 <p>Each region which is assigned a <att>tts:overflow</att> property
 with the value <code>dynamic</code> is associated with a <emph>flow
@@ -8630,8 +8711,9 @@ and subsequent content presently visible in the region;</p></item>
 </item>
 <item><p>If any one of the conditions 2a, 2b, and 2c applies, then do not
 change the flow buffer.</p></item>
-<item><p>If condition 2d applies, then instantaneously replace
-the affected
+<item><p>If condition 2d applies, then<phrase diff="del">
+instantaneously</phrase> replace
+<phrase diff="add">at time <code>T<sub>k+1</sub></code> </phrase>the affected
 content of the flow buffer with the new content (in part or in whole) that corresponds with
 time <code>T<sub>k+1</sub></code> such that the
 logical content position
@@ -8659,8 +8741,9 @@ ref="dynamicFlowIntervalTimingCalculation"/>, then reset both fill and
 clear timers to their inactive state.</p></item>
 <item><p>If using automatic flow interval timing, then re-perform the process
 described in <specref ref="dynamicFlowIntervalTimingCalculation"/>.</p></item>
-<item><p>If the fill timer is not active, then restart the
-timer.</p></item>
+<item><p>If the fill timer is not active, then <phrase
+diff="chg">reset the fill timer to the current value of the computed
+fill interval</phrase>.</p></item>
 </olist>
 </item>
 </olist>
@@ -8668,9 +8751,15 @@ timer.</p></item>
 buffer at time <code>T<sub>k</sub></code> is considered to be
 significantly different from the content of the same flow buffer at
 time <code>T<sub>k+1</sub></code> if the set of glyph areas that would
-be produced by formatting the content at time
+be produced by
+<phrase diff="del">formatting the content</phrase><phrase
+diff="add">performing synchronic flow processing on the intermediate
+synchronic document</phrase> at time
 <code>T<sub>k</sub></code> differs from the set of glyph areas that
-would be produced by formatting the content at time
+would be produced by
+<phrase diff="del">formatting the content</phrase><phrase
+diff="add">performing synchronic flow processing on the intermediate
+synchronic document</phrase> at time
 <code>T<sub>k+1</sub></code> in any of the following ways:</p>
 <ulist>
 <item><p>the number of glyph areas are different;</p></item>
@@ -8745,7 +8834,12 @@ content of the flow buffer, or the presentation
 region.</p>
 <div3 id="flowIntervalFillTiming">
 <head>Computed Fill Timing Interval</head>
-<p>The computed fill timing interval is determined as follows:</p>
+<p>The computed fill timing interval<phrase
+diff="add"> from time <code>T<sub>k</sub></code> up to but not
+including <code>T<sub>k+1</sub></code></phrase> is determined as
+follows<phrase diff="add">, where the meaning of
+<code>T<sub>k</sub></code> and <code>T<sub>k+1</sub></code> is as
+described above</phrase>:</p>
 <olist>
 <item><p>If the value of the <emph>fill interval</emph> parameter is a
 definite duration, then use this duration as the computed fill
@@ -8757,31 +8851,41 @@ of the specified rate (in fill units per second);</p></item>
 <item><p>otherwise, if the value of the <emph>fill interval</emph> is
 <code>auto</code>, then the computed fill interval is equal to the
 difference between the time coordinate associated with the most
-temporally prior beginning point of an active duration of some
-content unit present in the flow buffer and the most temporally
-subsequent ending point of an active duration of some content unit
-present in the flow buffer divided by the number of fill units
-currently available in the flow buffer.</p></item>
+temporally prior beginning point of an active duration of some content
+unit present in the flow buffer<phrase diff="add"> at time
+<code>T<sub>k</sub></code></phrase> and the most temporally subsequent
+ending point of an active duration of some content unit present in the
+flow buffer<phrase diff="add"> at time
+<code>T<sub>k</sub></code></phrase> divided by the number of fill
+units currently available in the flow buffer<phrase diff="add"> at
+time <code>T<sub>k</sub></code></phrase>.</p></item>
 </olist>
 </div3>
 <div3 id="flowIntervalClearTiming">
 <head>Computed Clear Timing Interval</head>
-<p>The computed clear timing interval is determined as follows:</p>
+<p>The computed clear timing interval<phrase diff="add"> from time
+<code>T<sub>k</sub></code> up to but not including
+<code>T<sub>k+1</sub></code></phrase> is determined as follows<phrase
+diff="add">, where the meaning of <code>T<sub>k</sub></code> and
+<code>T<sub>k+1</sub></code> is as described above</phrase>:</p>
 <olist>
 <item><p>If the value of the <emph>clear interval</emph> parameter is a
 definite duration, then use this duration as the computed clear
 interval;</p></item>
-<item><p>otherwise, if the value of the <emph>clear interval</emph> parameter is a
-definite rate, then the computed clear interval is equal to the
-specified rate (in clear units per second);</p></item>
+<item><p>otherwise, if the value of the <emph>clear interval</emph>
+parameter is a definite rate, then the computed clear interval is
+equal to the specified rate (in clear units per second);</p></item>
 <item><p>otherwise, if the value of the <emph>clear interval</emph> is
 <code>auto</code>, then the computed clear interval is equal to the
 difference between the time coordinate associated with the most
-temporally prior beginning point of an active duration of some
-content unit present in the presentation region and the most temporally
-subsequent ending point of an active duration of some content unit
-present in the presentation region divided by the number of clear units
-currently available in the presentation region.</p></item>
+temporally prior beginning point of an active duration of some content
+unit present in the presentation region<phrase diff="add"> at time
+<code>T<sub>k</sub></code></phrase> and the most temporally subsequent
+ending point of an active duration of some content unit present in the
+presentation region<phrase diff="add"> at time
+<code>T<sub>k</sub></code></phrase> divided by the number of clear
+units currently available in the presentation region<phrase
+diff="add"> at time <code>T<sub>k</sub></code></phrase>.</p></item>
 </olist>
 </div3>
 </div2>
@@ -8802,11 +8906,12 @@ this formatted content.</p>
 <p>Flow operations apply simultaneously to logical content
 and to its corresponding formatted content. In the context of the
 presentation region, fill, reflow, and clear operations operate on
-formatted content units (glyph, inline, line, and block areas);
+formatted content units
+(<phrase diff="chg">glyph and line areas</phrase>);
 however, in the context of the flow buffer, fill, reflow, and clear
-operations operate on logical content units (character information items and
-element information items &ndash;
-<code>fo:inline</code> and <code>fo:block</code>).
+operations operate on logical content units
+(character information items<phrase diff="del"> and element information
+items &ndash; <code>fo:inline</code> and <code>fo:block</code></phrase>).
 Because logical content units and formatted content units are
 deterministically related to one another, an operation upon logical
 units can always be described in terms of operations on formatted
@@ -8821,15 +8926,21 @@ information item may correspond to multiple glyph areas; likewise, a
 single glyph area may correspond to multiple character information
 items.</p>
 </note>
+<p diff="add">For the purpose of performing line breaking in the
+context of dynamic flow processing, fill, reflow, and clear flow unit
+boundaries must be interpreted as potential legal line break opportunity
+regardless of other constraints.</p>
 <p>When effecting the result of a flow operation on a
 presentation region, the direction of (apparent)
 translation of formatted content is determined by the nature of the
 affected formatted content element.  If the affected formatted content
-unit is a glyph or inline area, then it is translated in the inline
+unit is a glyph<phrase diff="del"> or inline</phrase> area,
+then it is translated in the inline
 progression direction that applies to the nearest immediate ancestor
 inline or block area, and it is translated in a direction towards the
 start edge of this ancestor area.  If the affected formatted content
-unit is a line or block area, then it is translated in the block
+unit is a line<phrase diff="del"> or block area</phrase>,
+then it is translated in the block
 progression direction that applies to the nearest immediate ancestor
 block, and it is translated in a direction towards the before edge of
 this ancestor area.</p>
@@ -8837,30 +8948,32 @@ this ancestor area.</p>
 operation, then the direction of (apparent) translation of pixels that
 belong to the affected formatted content follows the direction of
 translation of the formatted content units as determined above.</p>
-<div3 id="flowOperationFill"> <head>Fill Operation</head>
+<div3 id="flowOperationFill">
+<head>Fill Operation</head>
 <p>A <emph>fill operation</emph> causes the following ordered steps
 to be performed:</p>
 <olist>
-<item><p>remove sufficient
-logical content
-from the beginning of the
-<emph>flow buffer</emph> to constitute
-(or compose) a
-<emph>fill
-unit</emph>;</p>
-</item>
-<item><p>format the content removed from the
-<emph>flow buffer</emph> in the previous step in order to
-create a sequence of glyph areas or a sequence of (full or
-partial measure) line areas each containing a sequence of glyph
-areas;</p></item>
+<item><p diff="add">reset the <emph>last fill time</emph> to the
+current value of the flow timers timeline;</p></item>
+<item><p>remove sufficient logical content from the beginning of the
+<emph>flow buffer</emph> to constitute (or compose) a <emph>fill
+unit</emph>;</p> </item>
+<item><p>format the content removed from the <emph>flow buffer</emph>
+in the previous step in order to create a sequence of glyph areas or a
+sequence of <phrase diff="del">(full or partial measure) </phrase>line
+areas each containing a sequence of glyph areas;</p></item>
 <item><p>append the sequence of areas produced in the previous step to
 the sequence of areas currently associated with the presentation
 region, where new glyph areas are appended to the current line area
-and new line areas are appended to the sequence of line areas;</p></item>
+and new line areas are appended to the sequence of line
+areas;</p></item>
 <item><p>cause the newly appended areas to be made visible according
-to the <emph>fill style</emph>
-state parameter in force.</p></item>
+to the <emph>fill style</emph> state parameter in force<phrase
+diff="chg">;</phrase></p></item>
+<item><p diff="add">if the clear timer is not active, then reset the
+clear timer to the current value of the <emph>computed clear interval</emph>;</p></item>
+<item><p diff="add">reset the fill timer to the
+current value of the <emph>computed fill interval</emph>.</p></item>
 </olist>
 <note role="elaboration">
 <p>In certain cases, it may be necessary to retain logical content
@@ -8879,26 +8992,26 @@ such a holding buffer) until all generated glyphs are consumed.</p>
 to be performed:</p>
 <olist>
 <item>
-<p>translate glyph areas, inline
-areas, (full or partial
-measure) line areas , or block areas that
-correspond with a <emph>reflow unit</emph> of formatted content that
-follows (in inline or block progression dimension order) the space
-cleared by the immediately preceding <emph>clear operation</emph> to a
-new position such that the glyph area that corresponds to the most
-logically prior content is aligned with the before and start edges of
-the presentation region, and where the translation adheres to the
-<emph>reflow style</emph> state parameter in force.</p>
+<p>translate <phrase diff="chg">glyph areas or
+line areas</phrase> that correspond with a <emph>reflow
+unit</emph> of formatted content that follows (in inline or block
+progression dimension order) the space cleared by the immediately
+preceding <emph>clear operation</emph> to a new position such that the
+glyph area that corresponds to the most logically prior content is
+aligned with the before and start edges of the presentation region,
+and where the translation adheres to the <emph>reflow style</emph>
+state parameter in force.</p>
 </item>
 </olist>
 <note role="elaboration">
 <p>If a reflow unit is based on logical content units, then "reflow
 unit of formatted content" refers to the logical content that
-generates the block, line, inline and glyph areas of formatted
-content that are being translated within the presentation region. In
-contrast, if a reflow unit is based on formatted content units, then
-"reflow unit of formatted content" refers directly to the generated
-block, line, inline and glyph areas of formatted content.</p>
+generates the <phrase diff="chg">glyph and line areas</phrase> of
+formatted content that are being translated within the presentation
+region. In contrast, if a reflow unit is based on formatted content
+units, then "reflow unit of formatted content" refers directly to the
+generated <phrase diff="chg">glyph and line areas</phrase> of
+formatted content.</p>
 </note>
 </div3>
 <div3 id="flowOperationClear">
@@ -8906,24 +9019,56 @@ block, line, inline and glyph areas of formatted content.</p>
 <p>A <emph>clear operation</emph> causes the following ordered steps
 to be performed:</p>
 <olist>
+<item><p diff="add">reset the <emph>last clear time</emph> to the
+current value of the flow timers timeline;</p></item>
 <item>
-<p>remove glyph areas, inline
-areas, (full or partial
-measure) line areas, or block areas  that
-correspond with a <emph>clear unit</emph> of formatted content from
-the starting edge or the before edge of the presentation region in
-inline or block progression direction, respectively, applying the
-<emph>clear style</emph> state parameter in force.</p>
+<p>remove <phrase diff="chg">glyph areas or
+line areas</phrase> that correspond with a <emph>clear unit</emph> of
+formatted content from the starting edge or the before edge of the
+presentation region in inline or block progression direction,
+respectively, applying the <emph>clear style</emph> state parameter in
+force.</p>
 </item>
 </olist>
 <note role="elaboration">
 <p>If a clear unit is based on logical content units, then "clear unit
 of formatted content" refers to the logical content that generates the
-block, line, inline and glyph areas of formatted content that are
-being cleared from the presentation region. In contrast, if a clear
-unit is based on formatted content units, then "clear unit of
-formatted content" refers directly to the generated block, line,
-inline and glyph areas of formatted content.</p>
+<phrase diff="chg">glyph and line areas</phrase> of formatted content
+that are being cleared from the presentation region. In contrast, if a
+clear unit is based on formatted content units, then "clear unit of
+formatted content" refers directly to the generated <phrase
+diff="chg">glyph and line areas</phrase> of formatted content.</p>
+</note>
+</div3>
+<div3 id="flowOperationCombined" diff="add">
+<head>Combined Flow Operation</head>
+<p>A combined flow operation causes the following ordered steps to be performed:</p>
+<olist>
+<item><p>if the presentation region contains sufficient formatted
+content to compose a <emph>clear unit</emph>, then perform the
+processing described in <specref ref="flowOperationClear"/>;</p></item>
+<item><p>if (1) the space created by the above clear operation is
+sufficient to accept a <emph>reflow unit</emph> and (2) the presentation
+region contains sufficient formatted content to compose a <emph>reflow
+unit</emph>, then perform the processing described in <specref
+ref="flowOperationReflow"/>;</p></item>
+<item><p>if (1) the difference between the current value of the flow
+timers timeline and the <emph>last fill time</emph> is greater than or
+equal to the current value of the computed fill interval, (2) the
+presentation region contains sufficient space to accept a <emph>fill
+unit</emph>, and (3) the flow buffer contains sufficient content to
+compose a <emph>fill unit</emph>, then perform the processing
+described in <specref ref="flowOperationFill"/>;</p></item>
+</olist>
+<p>If more than one of the clear, reflow or fill operations would be
+performed by the above steps, then the visual rendering of these operations
+should be performed in such a manner as to reduce or eliminate delays
+between the completion of one operation and the start of the next operation.</p>
+<note role="example">
+<p>For example, if the applicable clear, reflow, and fill styles are
+indicated as <code>smooth</code> flow style, then it should appear
+that the clear, reflow, and fill units are simultaneously translated
+in a continuous, smooth translation.</p>
 </note>
 </div3>
 </div2>
@@ -8942,63 +9087,75 @@ below reflects the intent that clear and reflow
 operations or clear, reflow, and flow operations are performed
 simultaneously if the (logically, but not necesesarily temporally)
 prior operation would create sufficient space in the presentation
-region to accept the subsequent unit of formatted content.</p> </note>
-<div3 id="flowTimerFill">
+region to accept the subsequent unit of formatted content.</p></note>
+<p diff="add">When resetting a flow timer, the <emph>dynamic flow
+lock</emph> must first be acquired prior to changing the flow timer's
+value, and must be released immediately after making the change.</p>
+<div3 id="flowTimerFill" diff="chg">
 <head>Fill Timer</head>
 <p>The fill timer is used to pace the addition of formatted content to the
 presentation region undergoing dynamic flow processing.</p>
 <p>Each time the fill timer expires, the following ordered steps are
 performed:</p>
 <olist>
-<item><p>
-If the <emph>fill buffer</emph> is non-empty and contains sufficient
-content to compose a <emph>fill unit</emph> and if
-sufficient space is present in the presentation region to accept a
-unit of formatted content that corresponds to a <emph>fill unit</emph>, then
-perform the processing described in <specref
-ref="flowOperationFill"/>, where, if the fill timer was expired or
-simulated as a result of performing a prior reflow operation, this operation commences at the same
-time as the reflow operation;</p></item>
-<item><p>If the <emph>fill buffer</emph> is non-empty, then
-reset the fill timer to the current value of the computed fill
-interval;</p></item>
-<item><p>
-If the <emph>presentation region</emph> is non-empty and if the clear
-timer is not active, then
-reset the clear timer to the current value of the computed clear
-interval.</p></item>
+<item><p>acquire <emph>dynamic flow lock</emph>;</p></item>
+<item><p>if the difference between the current value of the flow
+timers timeline and the <emph>last fill time</emph> is greater than or
+equal to the current value of the computed fill interval, then perform
+the following ordered sub-steps:</p>
+<olist>
+<item><p>if (1) the presentation region is non-full and
+contains sufficient space to accept a <emph>fill unit</emph> and (2)
+the flow buffer contains sufficient content to compose a <emph>fill
+unit</emph>, then perform the processing described in <specref
+ref="flowOperationFill"/>;</p></item>
+<item><p>if the presentation region is non-empty, then
+perform the following ordered sub-steps:</p>
+<olist>
+<item><p>if the clear timer is not active, then reset the clear timer
+to the current value of the computed clear interval;</p></item>
+<item><p>if the fill timer is not active and the flow
+buffer is empty, then reset the fill timer to the current value of the
+computed fill interval.</p></item>
+</olist>
+</item>
+</olist>
+</item>
+<item><p>otherwise (the difference between the current value of the flow
+timers timeline and the <emph>last fill time</emph> is less than
+the current value of the computed fill interval), reset the fill timer
+to the difference between the current value of the computed fill interval
+and the current value of the flow timers timeline;</p></item>
+<item><p>release <emph>dynamic flow lock</emph>.</p></item>
 </olist>
 </div3>
-<div3 id="flowTimerClear">
+<div3 id="flowTimerClear" diff="chg">
 <head>Clear Timer</head>
 <p>The clear timer is used to pace the removal of formatted content from the
 presentation region undergoing dynamic flow processing.</p>
+<p>Each time the clear timer expires, the following ordered steps are
+performed:</p>
 <olist>
-<item><p>
-If the <emph>presentation region</emph> is non-empty and contains sufficient
-formatted content to compose a <emph>clear unit</emph>, then
-perform the processing described in <specref
-ref="flowOperationClear"/>;</p>
+<item><p>acquire <emph>dynamic flow lock</emph>;</p></item>
+<item><p>if the difference between the current value of the flow
+timers timeline and the <emph>last fill time</emph> is greater than or
+equal to the current value of the computed fill interval, then perform
+the following ordered sub-steps:</p>
+<olist>
+<item><p>if the <emph>presentation region</emph> is non-empty and
+contains sufficient formatted content to compose a <emph>clear
+unit</emph> and either (1) the <emph>presentation region</emph> is so
+full as to prevent it from accepting another <emph>fill unit</emph>
+or (2) the flow buffer is empty, then perform the processing described
+in <specref ref="flowOperationCombined"/>;</p></item>
+</olist>
 </item>
-<item><p>If the space created by performing the clear operation
-indicated by the above step would be sufficient to accept a unit of
-formatted content that corresponds to a <emph>reflow unit</emph> and
-if sufficient formatted content remains after this point in the
-presentation region, then perform the processing described in <specref
-ref="flowOperationReflow"/>, where this operation commences at the
-same time as the clear operation;</p></item>
-<item><p>If a reflow operation would be performed as indicated by the above
-step and if the space created by performing this reflow operation
-would be sufficient to accept a unit of formatted content that
-corresponds to a <emph>fill unit</emph> and if the fill buffer is
-non-empty, then, if active, cause the fill timer to immediately expire
-or, if not active, simulate fill timer expiration, such that the
-expiration permits a fill operation to commence simultaneously with
-the reflow operation;</p></item>
-<item><p> If the previous step did not cause the fill timer to expire
-and if the <emph>presentation region</emph> is non-empty, then reset
-the clear timer to the current value of the computed clear
-interval.</p></item>
+<item><p>otherwise (the difference between the current value of the flow
+timers timeline and the <emph>last clear time</emph> is less than
+the current value of the computed clear interval), reset the clear timer
+to the difference between the current value of the computed clear interval
+and the current value of the flow timers timeline;</p></item>
+<item><p>release <emph>dynamic flow lock</emph>.</p></item>
 </olist>
 </div3>
 </div2>
@@ -9605,7 +9762,7 @@ for all defined values of the <loc
 href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
 attribute.</p>
 </div3>
-<div3 id="feature-dynamicFlow-block">
+<div3 id="feature-dynamicFlow-block" diff="del">
 <head>#dynamicFlow-block</head>
 <p>A TT AF transformation processor supports the
 <code>#dynamicFlow-block</code> feature if it recognizes and
@@ -9631,6 +9788,36 @@ attribute.</p>
 <p>A TT AF presentation processor supports the
 <code>#dynamicFlow-character</code> feature if it implements
 presentation semantic support for the flow unit <code>character</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-clear">
+<head>#dynamicFlow-<phrase diff="chg">clear</phrase></head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-<phrase diff="chg">clear</phrase></code> feature if it recognizes and
+is capable of transforming the flow interval function <code><phrase diff="chg">clear</phrase>(..)</code> as
+defined by <specref ref="style-value-flowIntervalFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-<phrase diff="chg">clear</phrase></code> feature if it implements
+presentation semantic support for the flow interval function <code><phrase diff="chg">clear</phrase>(..)</code> as
+defined by <specref ref="style-value-flowFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dynamicFlow-fill">
+<head>#dynamicFlow-<phrase diff="chg">fill</phrase></head>
+<p>A TT AF transformation processor supports the
+<code>#dynamicFlow-<phrase diff="chg">fill</phrase></code> feature if it recognizes and
+is capable of transforming the flow interval function <code><phrase diff="chg">fill</phrase>(..)</code> as
+defined by <specref ref="style-value-flowIntervalFunction"/> when used with the
+<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dynamicFlow-<phrase diff="chg">fill</phrase></code> feature if it implements
+presentation semantic support for the flow interval function <code><phrase diff="chg">fill</phrase>(..)</code> as
 defined by <specref ref="style-value-flowFunction"/> when used with the
 <loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
 attribute.</p>
@@ -9665,7 +9852,7 @@ defined by <specref ref="style-value-flowFunction"/> when used with the
 <loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
 attribute.</p>
 </div3>
-<div3 id="feature-dynamicFlow-inline">
+<div3 id="feature-dynamicFlow-inline" diff="del">
 <head>#dynamicFlow-inline</head>
 <p>A TT AF transformation processor supports the
 <code>#dynamicFlow-inline</code> feature if it recognizes and
@@ -9676,36 +9863,6 @@ attribute.</p>
 <p>A TT AF presentation processor supports the
 <code>#dynamicFlow-inline</code> feature if it implements
 presentation semantic support for the flow unit <code>inline</code> as
-defined by <specref ref="style-value-flowFunction"/> when used with the
-<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-attribute.</p>
-</div3>
-<div3 id="feature-dynamicFlow-inter">
-<head>#dynamicFlow-inter</head>
-<p>A TT AF transformation processor supports the
-<code>#dynamicFlow-inter</code> feature if it recognizes and
-is capable of transforming the flow interval function <code>inter(..)</code> as
-defined by <specref ref="style-value-flowIntervalFunction"/> when used with the
-<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-attribute.</p>
-<p>A TT AF presentation processor supports the
-<code>#dynamicFlow-inter</code> feature if it implements
-presentation semantic support for the flow interval function <code>inter(..)</code> as
-defined by <specref ref="style-value-flowFunction"/> when used with the
-<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-attribute.</p>
-</div3>
-<div3 id="feature-dynamicFlow-intra">
-<head>#dynamicFlow-intra</head>
-<p>A TT AF transformation processor supports the
-<code>#dynamicFlow-intra</code> feature if it recognizes and
-is capable of transforming the flow interval function <code>intra(..)</code> as
-defined by <specref ref="style-value-flowIntervalFunction"/> when used with the
-<loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-attribute.</p>
-<p>A TT AF presentation processor supports the
-<code>#dynamicFlow-intra</code> feature if it implements
-presentation semantic support for the flow interval function <code>intra(..)</code> as
 defined by <specref ref="style-value-flowFunction"/> when used with the
 <loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
 attribute.</p>
@@ -10135,6 +10292,16 @@ href="#style-value-length">&lt;length&gt;</loc> style value
 expression.
 </p>
 </div3>
+<div3 id="feature-lineBreak-uax14" diff="add">
+<head>#lineBreak-uax14</head>
+<p>A TT AF transformation processor supports the
+<code>#lineBreak-uax14</code> feature if it recognizes and is capable of
+transforming requirements expressed by <bibref ref="uax14"/> into its
+target document space.</p>
+<p>A TT AF presentation processor supports the
+<code>#lineBreak-uax14</code> feature if it implements presentation semantic support
+for <bibref ref="uax14"/> as applies to line breaking.</p>
+</div3>
 <div3 id="feature-lineHeight">
 <head>#lineHeight</head>
 <p>A TT AF transformation processor supports the
@@ -10342,9 +10509,26 @@ attribute.</p>
 </div3>
 <div3 id="feature-presentation">
 <head>#presentation</head>
-<p>A TT AF processor supports the
-<code>#presentation</code> feature if it is a compliant TT AF Presentation
-Processor as defined by <specref ref="conformance-processor"/>.</p>
+<p diff="chg">A TT AF processor supports the
+<code>#presentation</code> feature if it
+(1) satisfies the generic processor criteria defined by 
+<specref ref="conformance-generic-processor"/>,
+(2) implements support for the region and line layout
+semantics defined by <specref ref="semantics-region-layout"/> and
+<specref ref="semantics-line-layout"/>, respectively, and
+(3) implements presentation semantics for the following features:</p>
+<ulist diff="add">
+<item><p><loc href="#content"><code>#content</code></loc></p></item>
+<item><p><loc href="#core"><code>#core</code></loc></p></item>
+<item><p><loc href="#profile"><code>#profile</code></loc></p></item>
+<item><p><loc href="#structure"><code>#structure</code></loc></p></item>
+<item><p><loc href="#time-offset"><code>#time-offset</code></loc></p></item>
+<item><p><loc href="#timing"><code>#timing</code></loc></p></item>
+</ulist>
+<p diff="add">
+In addition, a TT AF processor that supports the
+<code>#presentation</code> feature should satisfy the user agent
+accessibility guidelines specified by <bibref ref="uaag"/>.</p>
 </div3>
 <div3 id="feature-profile">
 <head>#profile</head>
@@ -10815,9 +10999,19 @@ same vocabulary enumerated above.</p>
 </div3>
 <div3 id="feature-transformation">
 <head>#transformation</head>
-<p>A TT AF processor supports the
-<code>#transformation</code> feature if it is a compliant TT AF Transformation
-Processor as defined by <specref ref="conformance-processor"/>.</p>
+<p diff="chg">A TT AF processor supports the
+<code>#transformation</code> feature if it
+(1) satisfies the generic processor criteria defined by 
+<specref ref="conformance-generic-processor"/>,
+(2) implements transformation semantics for the following features:</p>
+<ulist diff="add">
+<item><p><loc href="#content"><code>#content</code></loc></p></item>
+<item><p><loc href="#core"><code>#core</code></loc></p></item>
+<item><p><loc href="#profile"><code>#profile</code></loc></p></item>
+<item><p><loc href="#structure"><code>#structure</code></loc></p></item>
+<item><p><loc href="#time-offset"><code>#time-offset</code></loc></p></item>
+<item><p><loc href="#timing"><code>#timing</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-unicodeBidi">
 <head>#unicodeBidi</head>
@@ -11051,11 +11245,11 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-color"><code>#color</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-content"><code>#content</code></loc></td>
-<td>O</td>
+<td><phrase diff="chg">M</phrase></td>
 <td>M</td>
 </tr>
 <tr>
@@ -11076,12 +11270,12 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-display-block"><code>#display-block</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-display-inline"><code>#display-inline</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-display-region"><code>#display-region</code></loc></td>
@@ -11099,12 +11293,22 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-dynamicFlow-block"><code>#dynamicFlow-block</code></loc></td>
+<td><phrase diff="del"><loc href="#feature-dynamicFlow-block"><code>#dynamicFlow-block</code></loc></phrase></td>
+<td><phrase diff="del">O</phrase></td>
+<td><phrase diff="del">O</phrase></td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-character"><code>#dynamicFlow-character</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-dynamicFlow-character"><code>#dynamicFlow-character</code></loc></td>
+<td><loc href="#feature-dynamicFlow-clear"><code>#dynamicFlow-<phrase diff="chg">clear</phrase></code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-dynamicFlow-fill"><code>#dynamicFlow-<phrase diff="chg">fill</phrase></code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -11119,19 +11323,9 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-dynamicFlow-inline"><code>#dynamicFlow-inline</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-dynamicFlow-inter"><code>#dynamicFlow-inter</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-dynamicFlow-intra"><code>#dynamicFlow-intra</code></loc></td>
-<td>O</td>
-<td>O</td>
+<td><phrase diff="del"><loc href="#feature-dynamicFlow-inline"><code>#dynamicFlow-inline</code></loc></phrase></td>
+<td><phrase diff="del">O</phrase></td>
+<td><phrase diff="del">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-dynamicFlow-jump"><code>#dynamicFlow-jump</code></loc></td>
@@ -11171,7 +11365,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-extent"><code>#extent</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-fontFamily"><code>#fontFamily</code></loc></td>
@@ -11196,12 +11390,12 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-fontSize-anisomorphic"><code>#fontSize-anisomorphic</code></loc></td>
 <td>O</td>
-<td>O</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-fontStyle"><code>#fontStyle</code></loc></td>
@@ -11211,7 +11405,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-fontWeight"><code>#fontWeight</code></loc></td>
@@ -11221,7 +11415,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-frameRate"><code>#frameRate</code></loc></td>
@@ -11246,7 +11440,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-length-cell"><code>#length-cell</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-length-em"><code>#length-em</code></loc></td>
@@ -11256,7 +11450,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-length-integer"><code>#length-integer</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-length-negative"><code>#length-negative</code></loc></td>
@@ -11271,17 +11465,22 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-length-pixel"><code>#length-pixel</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-length-positive"><code>#length-positive</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-length-real"><code>#length-real</code></loc></td>
 <td>O</td>
 <td>O</td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-lineBreak-uax14"><code>#lineBreak-uax14</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-lineHeight"><code>#lineHeight</code></loc></td>
@@ -11401,7 +11600,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-styling-inheritance-region"><code>#styling-inheritance-region</code></loc></td>
@@ -11411,7 +11610,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-styling-inline"><code>#styling-inline</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-styling-nested"><code>#styling-nested</code></loc></td>
@@ -11436,7 +11635,7 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td><phrase diff="chg">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-textAlign-relative"><code>#textAlign-relative</code></loc></td>
@@ -11510,7 +11709,7 @@ transformation and presentation processors.</p>
 </tr>
 <tr>
 <td><loc href="#feature-time-offset"><code>#time-offset</code></loc></td>
-<td>O</td>
+<td><phrase diff="chg">M</phrase></td>
 <td>M</td>
 </tr>
 <tr>
@@ -11525,7 +11724,7 @@ transformation and presentation processors.</p>
 </tr>
 <tr>
 <td><loc href="#feature-timing"><code>#timing</code></loc></td>
-<td>O</td>
+<td><phrase diff="chg">M</phrase></td>
 <td>M</td>
 </tr>
 <tr>
@@ -11546,12 +11745,12 @@ transformation and presentation processors.</p>
 <tr>
 <td><loc href="#feature-visibility-block"><code>#visibility-block</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-visibility-inline"><code>#visibility-inline</code></loc></td>
 <td>O</td>
-<td>M</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-visibility-region"><code>#visibility-region</code></loc></td>
@@ -11613,6 +11812,16 @@ DFXP Transformation Profile is specified in
 <td><phrase role="strong">Comments</phrase></td>
 </tr>
 <tr>
+<td><phrase diff="add"><loc href="#feature-content"><code>#content</code></loc></phrase></td>
+<td><phrase diff="add">
+<loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#content-vocabulary-span"><el>span</el></loc>,
+<loc href="#content-vocabulary-br"><el>br</el></loc></phrase>
+</td>
+</tr>
+<tr>
 <td><loc href="#feature-core"><code>#core</code></loc></td>
 <td>
 <loc href="#content-attribute-id">@<att>xml:id</att></loc>,
@@ -11629,6 +11838,19 @@ DFXP Transformation Profile is specified in
 <td>
 <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
 <loc href="#document-structure-vocabulary-head"><el>head</el></loc>
+</td>
+</tr>
+
+<tr>
+<td><phrase diff="add"><loc href="#feature-time-offset"><code>#time-offset</code></loc></phrase></td>
+<td></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-timing"><code>#timing</code></loc></phrase></td>
+<td><phrase diff="add">
+<loc href="#timing-attribute-begin">@<att>begin</att></loc>,
+<loc href="#timing-attribute-dur">@<att>dur</att></loc>,
+<loc href="#timing-attribute-end">@<att>end</att></loc></phrase>
 </td>
 </tr>
 <tr>
@@ -11655,8 +11877,8 @@ DFXP Presentation Profile is specified in
 <td><phrase role="strong">Comments</phrase></td>
 </tr>
 <tr>
-<td><loc href="#feature-color"><code>#color</code></loc></td>
-<td><loc href="#style-attribute-color">@<att>tts:color</att></loc></td>
+<td><phrase diff="del"><loc href="#feature-color"><code>#color</code></loc></phrase></td>
+<td><phrase diff="del"><loc href="#style-attribute-color">@<att>tts:color</att></loc></phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-content"><code>#content</code></loc></td>
@@ -11677,66 +11899,66 @@ DFXP Presentation Profile is specified in
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-display-block"><code>#display-block</code></loc></td>
-<td><loc href="#style-attribute-display">@<att>tts:display</att></loc>
+<td><phrase diff="del"><loc href="#feature-display-block"><code>#display-block</code></loc></phrase></td>
+<td><phrase diff="del"><loc href="#style-attribute-display">@<att>tts:display</att></loc>
 applied to
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>
+<loc href="#content-vocabulary-p"><el>p</el></loc></phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-display-inline"><code>#display-inline</code></loc></td>
-<td><loc href="#style-attribute-display">@<att>tts:display</att></loc>
+<td><phrase diff="del"><loc href="#feature-display-inline"><code>#display-inline</code></loc></phrase></td>
+<td><phrase diff="del"><loc href="#style-attribute-display">@<att>tts:display</att></loc>
 applied to
 <loc href="#content-vocabulary-span"><el>span</el></loc>,
-<loc href="#content-vocabulary-br"><el>br</el></loc>
+<loc href="#content-vocabulary-br"><el>br</el></loc></phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-extent"><code>#extent</code></loc></td>
-<td><loc href="#style-attribute-extent">@<att>tts:extent</att></loc>
-applied to <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc></td>
+<td><phrase diff="del"><loc href="#feature-extent"><code>#extent</code></loc></phrase></td>
+<td><phrase diff="del"><loc href="#style-attribute-extent">@<att>tts:extent</att></loc>
+applied to <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc></phrase></td>
 </tr>
 <tr>
-<td><loc href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></loc></td>
-<td>
+<td><phrase diff="del"><loc href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></loc></phrase></td>
+<td><phrase diff="del">
 <loc href="#style-attribute-fontSize">@<att>tts:fontSize</att></loc>=
-"<code><loc href="#style-value-length">&lt;length&gt;</loc></code>"
+"<code><loc href="#style-value-length">&lt;length&gt;</loc></code>"</phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></loc></td>
-<td>
+<td><phrase diff="del"><loc href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></loc></phrase></td>
+<td><phrase diff="del">
 <loc href="#style-attribute-fontStyle">@<att>tts:fontStyle</att></loc>=
-"<code>italic</code>"
+"<code>italic</code>"</phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></loc></td>
-<td>
+<td><phrase diff="del"><loc href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></loc></phrase></td>
+<td><phrase diff="del">
 <loc href="#style-attribute-fontWeight">@<att>tts:fontWeight</att></loc>=
-"<code>bold</code>"
+"<code>bold</code>"</phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-length-cell"><code>#length-cell</code></loc></td>
-<td>
+<td><phrase diff="del"><loc href="#feature-length-cell"><code>#length-cell</code></loc></phrase></td>
+<td><phrase diff="del">
 <code><loc href="#style-value-length">&lt;length&gt;</loc></code> :
-<code><loc href="#style-value-integer">&lt;integer&gt;</loc>c</code>
+<code><loc href="#style-value-integer">&lt;integer&gt;</loc>c</code></phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-length-pixel"><code>#length-pixel</code></loc></td>
-<td>
+<td><phrase diff="del"><loc href="#feature-length-pixel"><code>#length-pixel</code></loc></phrase></td>
+<td><phrase diff="del">
 <code><loc href="#style-value-length">&lt;length&gt;</loc></code> :
-<code><loc href="#style-value-integer">&lt;integer&gt;</loc>px</code>
+<code><loc href="#style-value-integer">&lt;integer&gt;</loc>px</code></phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-length-positive"><code>#length-positive</code></loc></td>
-<td>
-<code><loc href="#style-value-length">&lt;length&gt;</loc></code>&ge;0
+<td><phrase diff="del"><loc href="#feature-length-positive"><code>#length-positive</code></loc></phrase></td>
+<td><phrase diff="del">
+<code><loc href="#style-value-length">&lt;length&gt;</loc></code>&ge;0</phrase>
 </td>
 </tr>
 <tr>
@@ -11755,18 +11977,18 @@ applied to <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc></td>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></loc></td>
+<td><phrase diff="del"><loc href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></loc></phrase></td>
 <td></td>
 </tr>
 <tr>
-<td><loc href="#feature-styling-inline"><code>#styling-inline</code></loc></td>
+<td><phrase diff="del"><loc href="#feature-styling-inline"><code>#styling-inline</code></loc></phrase></td>
 <td></td>
 </tr>
 <tr>
-<td><loc href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></loc></td>
-<td>
+<td><phrase diff="del"><loc href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></loc></phrase></td>
+<td><phrase diff="del">
 <loc href="#style-attribute-textAlign">@<att>tts:textAlign</att></loc>=
-"<code>left</code>|<code>center</code>|<code>right</code>"
+"<code>left</code>|<code>center</code>|<code>right</code>"</phrase>
 </td>
 </tr>
 <tr>
@@ -11782,20 +12004,20 @@ applied to <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc></td>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-visibility-block"><code>#visibility-block</code></loc></td>
-<td><loc href="#style-attribute-visibility">@<att>tts:visibility</att></loc>
+<td><phrase diff="del"><loc href="#feature-visibility-block"><code>#visibility-block</code></loc></phrase></td>
+<td><phrase diff="del"><loc href="#style-attribute-visibility">@<att>tts:visibility</att></loc>
 applied to
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>
+<loc href="#content-vocabulary-p"><el>p</el></loc></phrase>
 </td>
 </tr>
 <tr>
-<td><loc href="#feature-visibility-inline"><code>#visibility-inline</code></loc></td>
-<td><loc href="#style-attribute-visibility">@<att>tts:visibility</att></loc>
+<td><phrase diff="del"><loc href="#feature-visibility-inline"><code>#visibility-inline</code></loc></phrase></td>
+<td><phrase diff="del"><loc href="#style-attribute-visibility">@<att>tts:visibility</att></loc>
 applied to
 <loc href="#content-vocabulary-span"><el>span</el></loc>,
-<loc href="#content-vocabulary-br"><el>br</el></loc>
+<loc href="#content-vocabulary-br"><el>br</el></loc></phrase>
 </td>
 </tr>
 </tbody>
@@ -11843,19 +12065,30 @@ identifier.</p>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies the following standard TT AF profiles:</p>
 <ulist>
-<item><p><specref ref="profile-dfxp-presentation"/></p></item>
 <item><p><specref ref="profile-dfxp-transformation"/></p></item>
+<item><p><specref ref="profile-dfxp-presentation"/></p></item>
+<item><p diff="add"><specref ref="profile-dfxp-full"/></p></item>
 </ulist>
 <p>Each TT AF profile is defined in terms of a TT AF Profile Definition Document,
 which is expressed as an XML document wherein the root element adheres to
 <specref ref="parameter-vocabulary-profile"/>.</p>
-<div2 id="profile-dfxp-presentation">
-<head>DFXP Presentation Profile</head>
-<eg xml:space="preserve">&profile-dfxp-presentation;</eg>
-</div2>
 <div2 id="profile-dfxp-transformation">
 <head>DFXP Transformation Profile</head>
-<eg xml:space="preserve">&profile-dfxp-transformation;</eg>
+<p diff="add">The DFXP Transformation Profile is intended to be used to
+express minimum compliance for transformation processing.</p>
+<eg xml:space="preserve"><phrase diff="chg">&profile-dfxp-transformation;</phrase></eg>
+</div2>
+<div2 id="profile-dfxp-presentation">
+<head>DFXP Presentation Profile</head>
+<p diff="add">The DFXP Presentation Profile is intended to be used to
+express minimum compliance for presentation processing.</p>
+<eg xml:space="preserve"><phrase diff="chg">&profile-dfxp-presentation;</phrase></eg>
+</div2>
+<div2 id="profile-dfxp-full" diff="add">
+<head>DFXP Full Profile</head>
+<p diff="add">The DFXP Full Profile is intended to be used to
+express maximum compliance for both transformation and presentation processing.</p>
+<eg xml:space="preserve">&profile-dfxp-full;</eg>
 </div2>
 </div1>
 <div1 id="references">
@@ -11918,6 +12151,12 @@ href="http://www.itu.int/rec/">Standard-Frequency and Time-Signal
 Emissions</titleref>, International
 Telecommunciations Union, Radio Sector (ITU-R).
 </bibl>
+<bibl id="uax14" key="UAX14">Asmus Freytag, <titleref
+href="http://www.unicode.org/reports/tr14/tr14-17.html">Line Breaking
+Properties</titleref>, Unicode Consortium, 29 August 2005. (See
+<xspecref
+href="http://www.unicode.org/reports/tr14/tr14-17.html">http://www.unicode.org/reports/tr14/tr14-17.html</xspecref>.)
+</bibl>
 <bibl id="wcag" key="WCAG">Wendy Chisholm, Gregg Vanderheiden, and Ian Jacobs, Eds.,
 <titleref href="http://www.w3.org/TR/1999/WAI-WEBCONTENT-19990505/">Web
 Content Accessibility Guidelines 1.0</titleref>, W3C Recommendation, 05
@@ -11929,19 +12168,24 @@ May 1999. (See
 1.0 (Fifth Edition)</titleref>, W3C Recommendation, 26 November 2008. (See
 <xspecref href="http://www.w3.org/TR/2008/REC-xml-20081126/">http://www.w3.org/TR/2008/REC-xml-20081126/</xspecref>.)
 </bibl>
+<bibl id="xmlbase" key="XML Base" diff="add">Jonathan Marsh and Richard Tobin, Eds.,
+<titleref href="http://www.w3.org/TR/2009/REC-xmlbase-20090128/">XML Base (Second Edition)</titleref>,
+W3C Recommendation, 28 January 2009. (See
+<xspecref href="http://www.w3.org/TR/2009/REC-xmlbase-20090128/">http://www.w3.org/TR/2009/REC-xmlbase-20090128/</xspecref>.)
+</bibl>
 <bibl id="xmlid" key="XML ID">Jonathan Marsh, Daniel Veillard, Norman Walsh, Eds.,
 <titleref href="http://www.w3.org/TR/2005/REC-xml-id-20050909/">xml:id Version 1.0</titleref>,
 W3C Recommendation, 09 September 2005. (See
 <xspecref href="http://www.w3.org/TR/2005/REC-xml-id-20050909/">http://www.w3.org/TR/2005/REC-xml-id-20050909/</xspecref>.)
 </bibl>
 <bibl id="xml-media" key="XML Media">Makato Murata, Simon St. Laurent,
-Kan Khon, <titleref
+Kan Khon<phrase diff="add">, Eds.</phrase>, <titleref
 href="http://www.rfc-editor.org/rfc/rfc3023.txt">XML Media Types</titleref>,
 RFC 3023, January 2001, IETF.(See
 <xspecref
 href="http://www.rfc-editor.org/rfc/rfc3023.txt">http://www.rfc-editor.org/rfc/rfc3023.txt</xspecref>.)
 </bibl>
-<bibl id="infoset" key="XML InfoSet">John Cowan and Richard Tobin,
+<bibl id="infoset" key="XML InfoSet">John Cowan and Richard Tobin<phrase diff="add">, Eds.</phrase>,
 <titleref href="http://www.w3.org/TR/2004/REC-xml-infoset-20040204/">XML Information Set (Second Edition)</titleref>,
 W3C Recommendation, 04 February 2004. (See
 <xspecref href="http://www.w3.org/TR/2004/REC-xml-infoset-20040204/">http://www.w3.org/TR/2004/REC-xml-infoset-20040204/</xspecref>.)
@@ -11979,6 +12223,13 @@ W3C Recommendation, 05 December 2006. (See
 <inform-div1 id="other-references">
 <head>Other References</head>
 <blist>
+<bibl id="ccreq" key="CC-DECODER-REQ" diff="add">Norman Walsh, Ed.,
+<titleref
+href="http://edocket.access.gpo.gov/cfr_2005/octqtr/47cfr15.119.htm">Closed Caption Decoder
+Requirements for Analog Television</titleref>,
+United States Code of Federal Regulations, Title 47, Volume 1, Part 15, &sect; 15.119. (See
+<xspecref href="http://edocket.access.gpo.gov/cfr_2005/octqtr/47cfr15.119.htm">http://edocket.access.gpo.gov/cfr_2005/octqtr/47cfr15.119.htm</xspecref>.)
+</bibl>
 <bibl id="cea608c" key="CEA-608-C">
 EIA/CEA-608-C,
 <titleref href="http://members.ce.org/standards/StandardDetails.aspx?Id=1506">Line 21 Data
@@ -12001,6 +12252,12 @@ href="http://www.iso.org/">Information technology &ndash; Multimedia content des
 interface &ndash; Part 5: Multimedia description schemes</titleref>,
 International Organization for Standardization (ISO).
 </bibl>
+<bibl id="nsstate" key="NSState" diff="add">Norman Walsh, Ed.,
+<titleref
+href="http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09.html">The Disposition
+of Names in an XML Namespace</titleref>, TAG Finding, 9 January 2006. (See
+<xspecref href="http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09.html">http://www.w3.org/tag/doc/namespaceState-2006-01-09</xspecref>.)
+</bibl>
 <bibl id="qaf-sg" key="QAF SG">Karl Dubost, et al.,
 <titleref
 href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
@@ -12008,7 +12265,7 @@ Framework: Specifications Guidelines</titleref>, W3C Recommendation, 17
 August 2005. (See
 <xspecref href="http://www.w3.org/TR/qaframe-spec/">http://www.w3.org/TR/qaframe-spec/</xspecref>.)
 </bibl>
-<bibl id="scheme" key="SCHEME">Guy Steele and Gerald Sussman,
+<bibl id="scheme" key="SCHEME" diff="del">Guy Steele and Gerald Sussman,
 <titleref
 href="http://swiss.csail.mit.edu/projects/scheme/">Scheme Programming
 Environment</titleref>,
@@ -12028,7 +12285,7 @@ Vector Graphics (SVG) 1.1 Specification</titleref>, W3C Recommendation, 14
 January 2003. (See
 <xspecref href="http://www.w3.org/TR/2003/REC-SVG11-20030114/">http://www.w3.org/TR/2003/REC-SVG11-20030114/</xspecref>.)
 </bibl>
-<bibl id="ttaf1-req" key="TTAF1-REQ">Glenn Adams, Editor,
+<bibl id="ttaf1-req" key="TTAF1-REQ">Glenn Adams, Ed.,
 <titleref href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">Timed Text (TT) Authoring Format 1.0 Use
 Cases and Requirements</titleref>,
 W3C Working Group Note, 27 April 2006. (See
@@ -13652,92 +13909,6 @@ capabilities model.</p>
 <inform-div1 id="change-history">
 <head>Change History</head>
 
-<div2 id="change-history-cr1-to-wd1">
-<head>Changes since Candidate Recommendation</head>
-
-<eg xml:space="preserve">
-<![CDATA[
-[GA-A-035-20090504] 3.2         subdivide into transformation and presentation conformance
-[GA-A-036-20090504] C           update schemas
-[GA-I-009-20090504] 11,12       add examples to metadata and animation element vocabulary
-[GA-I-056-20090504] 8.2.20      fix indentation of tts:textDecoration example
-[GA-I-060-20090504] 5.2,6.1     enhance profile specification mechanism
-[GA-I-068-20090504] 9.3.3       ensure last block of body's block is filled out to region
-[GA-I-069-20090504] 8.2.8       mandate explicit lengths for tts:extent on tt:tt element
-[GA-I-070-20090504] 8.2.16      clarify "region's width and height were infinite"
-[GA-I-075-20090504] 5.2         clarify use of optional feature/extension
-[GA-I-080-20090504] I           remove sample code appendix
-[GA-I-085-20090504] 6.2.4       ttp:frameRateMultiplier - missing default for denominator
-[GA-I-086-20090504] 8.3.6,B     tts:dynamicFlow - remove fade, within()
-[GA-I-087-20090504] 5.1         change TT style namespace value to #styling instead of #style
-[GA-I-088-20090504] *           remove editorial notes
-[GA-I-089-20090504] 12.2.2      ttm:role - allow multiple tokens
-[GA-I-090-20090504] 8.2.14      improve opacity semantics
-[GA-I-091-20090504] 8.2.*       implement style defaults
-----------------------------
-[GA-A-034-20090427] 8.2.7       add "rollUp" shorthand value to tts:dynamicFlow
-[GA-I-054-20090427] 8.{2,4}     remove explicit inheritance
-[GA-I-055-20090427] 8.2.{20,21} make textDecoration and textOutline inheritable
-[GA-I-059-20090427] 8.2.*       make all style properties animatable
-[GA-I-061-20090427] B.3.{1,2}   correct flow interval computation with definite rate
-[GA-I-062-20090427] B.2         clarify meaning of "difference" in contents of flow buffer
-[GA-I-063-20090427] B.2         clarify meaning of "logical content position"
-[GA-I-064-20090427] B.5         clarify timeline used for dynamic flow
-[GA-I-065-20090427] 8.2.7, B    account for side effects of animation
-[GA-I-066-20090427] B.2         clarify assumptions regarding flow buffer state persistence
-[GA-I-067-20090427] B.2         clarify handling of temporal style changes w.r.t. flow buffer
-[GA-I-073-20090427] 1.2         remove superfluous text
-[GA-I-076-20090427] 8.2.13      fix typo
-[GA-I-077-20090427] 8.2.*       add missing prose regarding anonymous spans
-[GA-I-078-20090427] 8.3.14      remove spurious reference to whitespace S syntactic element
-[GA-I-079-20090427] G           update XSL reference to XSL 1.1
-[GA-I-081-20090427] 8.3.6, B    remove 'pixel' flow unit and flow transitions
-[GA-I-082-20090427] 8.2.{13,16} change 'scroll' value to 'dynamic' for tts:overflow
-[GA-I-083-20090427] B.4         clarify flow operations prose logical vs formatted units
-[GA-I-084-20090427] 8.3.6       specify semantics if smooth or fade flow style not supported
-----------------------------
-[GA-A-033-20090415] *           unify and better formalize style resolution process
-[GA-I-008-20090415] 12.2.2      add "description" value to ttm:role enumeration
-[GA-I-015-20090415] *           change XML and XML Namespace references
-[GA-I-032-20090415] 8.4.3       style chaining an left preference
-[GA-I-033-20090415] 8.3.{5,14}  allow unquoted font family name that contains whitespace
-[GA-I-035-20090415] 8.3.1       opacity float value
-[GA-I-040-20090415] *           unify and better formalize style resolution process
-[GA-I-041-20090415] 7.1.3       change body to parallel time containment as default
-[GA-I-043-20090415] 9.3.2       correct content hierarchy region mapping example code
-----------------------------
-[GA-A-026-20090130] *           define default region
-[GA-A-028-20090130] *           move tts:extent from body to tt element
-[GA-A-029-20090130] *           fix inconsistency regarding time containment semantics
-[GA-A-030-20090130] 10.2        clarify semantics for dur and end
-[GA-A-032-20090130] 9.1.2       add ttm:role to region element
-[GA-I-012-20090130] *           define default region
-[GA-I-028-20090130] 8.2.13      elaborate prose to accommodate nested spans
-[GA-I-034-20090130] 9.3         elaborate processing of anonymous spans
-[GA-I-036-20090130] 8.2         inheritance by anonymous spans
-[GA-I-042-20090130] 9.3         processing in absence of region attribute
-[GA-I-048-20090130] *           specify requiredExtensions and requiredFeatures
-[GA-I-050-20090130] *           improve consistency of style association prose on content elts
-[GA-I-051-20090130] 8.2.5       allow tts:display to apply to region element
-[GA-I-052-20090130] 8.3         fix order and missing entry in list of style value expressions
-----------------------------
-[GA-A-024-20081214] 7.1.4       correct prose to accommodate nested divs
-[GA-A-024-20081214] 7.1.6       correct prose to accommodate nested spans
-[GA-A-027-20081214] 9.3.2 (7)   map anonymous spans to fo:inline only when parent is p or span
-[GA-I-016-20081214] 10.2.*      fix incorrect reference to smil2 section (should be 10.4.1)
-[GA-I-017-20081214] 8.3.4       correct definition of <duration> syntax to <digit>+
-[GA-I-027-20081214] 8.2.20      correct names of textDecoration values (lineThrough)
-[GA-I-037-20081214] 9.3.2 (7)   map anonymous spans to fo:inline only when parent is p or span
-[GA-I-044-20081214] B.4         change typo "withing" to "within"
-[GA-I-045-20081214] 8.2.24      remove extra '"' at end of last line of wrap option example
-[GA-I-046-20081214] 8.2.23      missing inheritance and percentage constraints
-----------------------------
-
-]]>
-</eg>
-
-</div2>
-
 <div2 id="change-history-lc1-to-lc2">
 <head>Changes from First to Second Last Call Working Draft</head>
 <eg xml:space="preserve">
@@ -13940,8 +14111,8 @@ schemas for DFXP:
 </eg>
 </div2>
 
-<div2 id="change-history-lc2-to-cr">
-<head>Changes from Second Last Call Working Draft to Candidate
+<div2 id="change-history-lc2-to-cr1">
+<head>Changes from Second Last Call Working Draft to First Candidate
 Recommendation</head>
 <eg xml:space="preserve">
 <phrase role="strong">Technical Changes</phrase>
@@ -14044,10 +14215,11 @@ schemas, or conformance criteria for DFXP:
 </eg>
 </div2>
 
+<div2 id="change-history-cr1-to-lc3">
+<head>Changes from First Candidate Recommendation to Third Last Call
+Working Draft</head>
+
 <!-- FIXME - not yet included
-<div2 id="change-history-cr-to-pr">
-<head>Changes from Candidate Recommendation to Proposed Recommendation</head>
-<eg xml:space="preserve">
 <phrase role="strong">Technical Changes</phrase>
 
 The following changes result in a technical change of the conformance
@@ -14075,16 +14247,110 @@ property:
 
 * Add 'rollUp' value to tts:dynamicFlow attribute.
 
-
 <phrase role="strong">Editorial Changes</phrase>
 
 The following changes are editorial in nature or entail semantic
 clarifications that do not affect the abstract document type, defined
 schemas, or conformance criteria for DFXP:
-</eg>
-</div2>
 -->
 
+<eg xml:space="preserve">
+<![CDATA[
+[GA-A-024-20081214] 7.1.{4,6}   correct prose to accommodate nested divs and spans
+[GA-A-026-20090130] *           define default region
+[GA-A-027-20081214] 9.3.2 (7)   map anonymous spans to fo:inline only when parent is p or span
+[GA-A-028-20090130] *           move tts:extent from body to tt element
+[GA-A-029-20090130] *           fix inconsistency regarding time containment semantics
+[GA-A-030-20090130] 10.2        clarify semantics for dur and end
+[GA-A-032-20090130] 9.1.2       add ttm:role to region element
+[GA-A-033-20090415] *           unify and better formalize style resolution process
+[GA-A-034-20090427] 8.2.7       add "rollUp" shorthand value to tts:dynamicFlow
+[GA-A-035-20090504] 3.2         subdivide into transformation and presentation conformance
+[GA-A-036-20090504] C           update schemas
+[GA-I-008-20090415] 12.2.2      add "description" value to ttm:role enumeration
+[GA-I-009-20090504] 11,12       add examples to metadata and animation element vocabulary
+[GA-I-012-20090130] *           define default region
+[GA-I-015-20090415] *           change XML and XML Namespace references
+[GA-I-016-20081214] 10.2.*      fix incorrect reference to smil2 section (should be 10.4.1)
+[GA-I-017-20081214] 8.3.4       correct definition of <duration> syntax to <digit>+
+[GA-I-027-20081214] 8.2.20      correct names of textDecoration values (lineThrough)
+[GA-I-028-20090130] 8.2.13      elaborate prose to accommodate nested spans
+[GA-I-032-20090415] 8.4.3       style chaining an left preference
+[GA-I-033-20090415] 8.3.{5,14}  allow unquoted font family name that contains whitespace
+[GA-I-034-20090130] 9.3         elaborate processing of anonymous spans
+[GA-I-035-20090415] 8.3.1       opacity float value
+[GA-I-036-20090130] 8.2         inheritance by anonymous spans
+[GA-I-037-20081214] 9.3.2 (7)   map anonymous spans to fo:inline only when parent is p or span
+[GA-I-040-20090415] *           unify and better formalize style resolution process
+[GA-I-041-20090415] 7.1.3       change body to parallel time containment as default
+[GA-I-042-20090130] 9.3         processing in absence of region attribute
+[GA-I-043-20090415] 9.3.2       correct content hierarchy region mapping example code
+[GA-I-044-20081214] B.4         change typo "withing" to "within"
+[GA-I-045-20081214] 8.2.24      remove extra '"' at end of last line of wrap option example
+[GA-I-046-20081214] 8.2.23      missing inheritance and percentage constraints
+[GA-I-048-20090130] *           specify requiredExtensions and requiredFeatures
+[GA-I-050-20090130] *           improve consistency of style association prose on content elts
+[GA-I-051-20090130] 8.2.5       allow tts:display to apply to region element
+[GA-I-052-20090130] 8.3         fix order and missing entry in list of style value expressions
+[GA-I-054-20090427] 8.{2,4}     remove explicit inheritance
+[GA-I-055-20090427] 8.2.{20,21} make textDecoration and textOutline inheritable
+[GA-I-056-20090504] 8.2.20      fix indentation of tts:textDecoration example
+[GA-I-059-20090427] 8.2.*       make all style properties animatable
+[GA-I-060-20090504] 5.2,6.1     enhance profile specification mechanism
+[GA-I-061-20090427] B.3.{1,2}   correct flow interval computation with definite rate
+[GA-I-062-20090427] B.2         clarify meaning of "difference" in contents of flow buffer
+[GA-I-063-20090427] B.2         clarify meaning of "logical content position"
+[GA-I-064-20090427] B.5         clarify timeline used for dynamic flow
+[GA-I-065-20090427] 8.2.7,B     account for side effects of animation
+[GA-I-066-20090427] B.2         clarify assumptions regarding flow buffer state persistence
+[GA-I-067-20090427] B.2         clarify handling of temporal style changes w.r.t. flow buffer
+[GA-I-068-20090504] 9.3.3       ensure last block of body's block is filled out to region
+[GA-I-069-20090504] 8.2.8       mandate explicit lengths for tts:extent on tt:tt element
+[GA-I-070-20090504] 8.2.16      clarify "region's width and height were infinite"
+[GA-I-073-20090427] 1.2         remove superfluous text
+[GA-I-075-20090504] 5.2         clarify use of optional feature/extension
+[GA-I-076-20090427] 8.2.13      fix typo
+[GA-I-077-20090427] 8.2.*       add missing prose regarding anonymous spans
+[GA-I-078-20090427] 8.3.14      remove spurious reference to whitespace S syntactic element
+[GA-I-079-20090427] G           update XSL reference to XSL 1.1
+[GA-I-080-20090504] I           remove sample code appendix
+[GA-I-081-20090427] 8.3.6,B     remove 'pixel' flow unit and flow transitions
+[GA-I-082-20090427] 8.2.{13,16} change 'scroll' value to 'dynamic' for tts:overflow
+[GA-I-083-20090427] B.4         clarify flow operations prose logical vs formatted units
+[GA-I-084-20090427] 8.3.6       specify semantics if smooth or fade flow style not supported
+[GA-I-085-20090504] 6.2.4       ttp:frameRateMultiplier - missing default for denominator
+[GA-I-086-20090504] 8.3.6,B     tts:dynamicFlow - remove fade, within()
+[GA-I-087-20090504] 5.1         change TT style namespace value to #styling instead of #style
+[GA-I-088-20090504] *           remove editorial notes
+[GA-I-089-20090504] 12.2.2      ttm:role - allow multiple tokens
+[GA-I-090-20090504] 8.2.14      improve opacity semantics
+[GA-I-091-20090504] 8.2.*       implement style defaults
+[GA-I-092-20090529] 6.1.{2,4}   change base to xml:base
+[GA-I-093-20090529] 6.1.{2,4}   change base to xml:base
+[GA-I-094-20090529] 5.1,I       specify that TT namespaces are mutable
+[GA-I-096-20090529] G.3         create DFXP "Full" profile, requiring all features
+[GA-I-097-20090529] 12.1.1      fix metadata content model
+[GA-I-098-20090529] B           eliminate or clarify clear timing
+[GA-I-099-20090529] B           clarify semantics of blocked fill operation
+[GA-I-100-20090529] 8.3.6,B     remove block and inline fill units
+[GA-I-101-20090529] 8.2.7,I     add note justifying rollUp interval
+[GA-I-102-20090529] 8.[23].7,B  change names of intra() and inter() flow interval functions
+[GA-I-103-20090529] 8.2.7       proscribe multiple instances of same flow function
+[GA-I-104-20090529] B.{2,3}     clarify flow buffer language
+[GA-I-105-20090529] 8.2.16,B.4  clarify interaction between dynamic flow and wrap property
+[GA-I-106-20090529] 9.4,E       clarify line breaking, add line breaking feature designator
+[GA-I-108-20090529] G.1         remove redundant transformation requirement in transform profile
+[GA-I-110-20090529] 7.1.2       explicitly allow foreign attributes on head element
+[GA-I-111-20090529] 12.1.1      fix note regarding context of usage of metadata items
+[GA-I-112-20090529] 5.3.2       remove style, metadata, and parameter extension namespaces
+[GA-I-113-20090529] 3,E         remove circularity in definition of processor conformance
+[GA-I-114-20090529] E.2,G.2     reduce presentation profile requirements
+[GA-I-115-20090529] E.2,G.1     expand transformation profile requirements
+[GA-I-116-20090529] 5.2,6.{1,2} aggregate certain ttp:profile related text into one place
+[GA-I-117-20090529] 5.2,6.1     add 'use' value to ttp:{feature,extension} value attribute
+]]>
+</eg>
+</div2>
 </inform-div1>
 </back>
 </spec>

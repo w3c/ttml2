@@ -1136,13 +1136,14 @@ would be
 <p>A profile designator is not restricted to the set of designators enumerated
 in <specref ref="profile-vocab-table"/>, but may be any URI that
 feasibly dereferences a TT AF Profile Definition Document.</p>
-<p>The profile of a document instance is specified either (1) by
-specifying a <att>ttp:profile</att> attribute on the root <el>tt</el>
-element, as defined by <specref ref="parameter-attribute-profile"/>,
-or (2) by including <phrase diff="chg">one or more</phrase>
-<el>ttp:profile</el> element<phrase diff="add">s</phrase> in the
-<el>head</el> element, in accordance with <specref
-ref="parameter-vocabulary-profile"/>.</p>
+<p>The profile of <phrase diff="add">TT AF that must be supported by a
+TT AF content processor in order to process</phrase> a document
+instance is specified either (1) by specifying a
+<att>ttp:profile</att> attribute on the root <el>tt</el> element, as
+defined by <specref ref="parameter-attribute-profile"/>, or (2) by
+including <phrase diff="chg">one or more</phrase> <el>ttp:profile</el>
+element<phrase diff="add">s</phrase> in the <el>head</el> element, in
+accordance with <specref ref="parameter-vocabulary-profile"/>.</p>
 <p diff="add">If a <el>ttp:profile</el> element appears as a
 descendant of the <el>tt</el> element, then the <loc
 href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
@@ -1224,11 +1225,11 @@ element where the value of its <att>value</att> attribute is
 respectively</phrase>.</p>
 </note>
 <p>An example of an author defined
-subtractive, derived profile of the DFXP Presentation
+<phrase diff="chg">additive</phrase>, derived profile of the DFXP Presentation
 profile is shown
 below in <specref ref="dfxp-example-sub-profile"/>.</p>
 <table id="dfxp-example-sub-profile" role="example">
-<caption>Example Fragment &ndash; DFXP Subtractive Profile</caption>
+<caption>Example Fragment &ndash; DFXP <phrase diff="chg">Additive</phrase> Profile</caption>
 <tbody>
 <tr>
 <td>
@@ -1237,7 +1238,7 @@ below in <specref ref="dfxp-example-sub-profile"/>.</p>
  &lt;head&gt;
    &lt;profile use="dfxp-presentation" xmlns="http://www.w3.org/2006/10/ttaf1#parameter"&gt;
      &lt;features <phrase diff="add">xml:base="http://www.w3.org/2006/10/ttaf1/feature"</phrase>&gt;
-       &lt;feature value="optional"&gt;#fontStyle-italic&lt;/feature&gt;
+       &lt;feature value="<phrase diff="chg">required</phrase>"&gt;#fontStyle-italic&lt;/feature&gt;
      &lt;/features&gt;
    &lt;/profile&gt;
  &lt;/head&gt;
@@ -1249,8 +1250,9 @@ below in <specref ref="dfxp-example-sub-profile"/>.</p>
 </table>
 <note role="explanation">
 <p>In the above example, the baseline profile is declared to be
-the DFXP Presentation profile, which is then subtractively modified by making the
-<code>#fontStyle-italic</code> feature optional (rather than required as it is defined
+the DFXP Presentation profile, which is then <phrase diff="chg">additively</phrase> modified by making the
+<code>#fontStyle-italic</code> feature <phrase diff="chg">required</phrase> (rather than
+<phrase diff="chg">optional</phrase> as it is defined
 in <specref ref="profile-dfxp-presentation"/>). Note also the resetting of the
 default XMLNS binding on the <el>profile</el> element to the TT Parameter Namespace.</p>
 </note>
@@ -1264,7 +1266,7 @@ defined in the following major catalogs (divisions of vocabulary):</p>
 <item><p><specref ref="extension-vocabulary-overview"/></p></item>
 </ulist>
 <p>The core catalog defines the baseline, core vocabulary of the TT
-AF, and, in particular, the vocabulary of DFXP. The extensions catalog
+AF, and, in particular, the vocabulary of DFXP. The extension catalog
 serves as a placeholder for extensions to the core vocabulary defined
 by DFXP.</p>
 <div3 id="core-vocabulary-overview">
@@ -1562,7 +1564,8 @@ that used a different naming convention.</p>
 <div3 id="extension-vocabulary-overview">
 <head>Extension Catalog</head>
 <p>The extension vocabulary catalog is intended for use by future
-profiles of the TT AF.</p>
+profiles of the TT AF<phrase diff="add">, and is not further defined
+by this version of this specification</phrase>.</p>
 <p diff="del">In this version of this specification, no
 standardized extension vocabulary is defined. The following namespaces are
 specifically reserved by <specref ref="namespace-vocab-table"/>
@@ -1613,9 +1616,11 @@ or a content processor:</p>
 <div3 id="parameter-vocabulary-profile">
 <head>ttp:profile</head>
 <p>The <el>ttp:profile</el> element is used to specify a collection of
-required (mandatory) and optional (voluntary) features and extensions that must or
-may be supported by a TT AF content processor in order to process a
-TT AF document that makes use (or may make use) of such features and extensions.</p>
+<phrase diff="chg">used (mandatory and enabled), required (mandatory),
+and optional (voluntary)</phrase> features and extensions that must or
+may be supported by a TT AF content processor in order to process a TT
+AF document that makes use (or may make use) of such features and
+extensions.</p>
 <note role="clarification">
 <p>The difference between a <emph>feature</emph> and an
 <emph>extension</emph> is where it is defined an how it is labeled:
@@ -1877,8 +1882,8 @@ valid.</p>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/2006/10/ttaf1/profile/dfxp-presentation"&gt;
   &lt;ttp:features <phrase diff="add">xml:base="http://www.w3.org/2006/10/ttaf1/feature"</phrase>&gt;
+    <phrase role="strong">&lt;ttp:feature value="<phrase diff="add">required</phrase>"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</phrase>
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#textDecoration-under&lt;/ttp:feature&gt;</phrase>
-    <phrase role="strong">&lt;ttp:feature value="optional"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</phrase>
   &lt;/ttp:features&gt;
 &lt;/ttp:profile&gt;
 </eg>
@@ -1887,20 +1892,20 @@ valid.</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the DFXP
-presentation profile is used as the baseline profile. This baseline profile
-is then modified by two <el>ttp:feature</el> elements, the first to superset the
-baseline profile (since <code>#textDecoration-under</code> is not required
-by the DFXP presentation profile), and the second to subset the
-baseline profile (since <code>#fontStyle-italic</code> is nominally
-required by the DFXP presentation profile). Note that the explicit
-specification of <code>required</code> on the <att>value</att>
-attribute on the first of the two <el>ttp:feature</el> elements is not
-necessary, since it is the default value of this attribute.</p>
+<p>In the above example, the DFXP presentation profile is used as the
+baseline profile. This baseline profile is then modified by two
+<el>ttp:feature</el> <phrase diff="chg">elements in order</phrase> to
+superset the baseline profile <phrase diff="chg">(since neither
+<code>#fontStyle-italic</code> nor <code>#textDecoration-under</code>
+are required by the DFXP presentation profile)</phrase>.  Note that
+the explicit specification of <code>required</code> on the
+<att>value</att> attribute on <phrase diff="chg">these two</phrase>
+<el>ttp:feature</el> elements is not <phrase diff="add">strictly
+</phrase>necessary, since it is the default value of this
+attribute.</p>
 <p>The effect of this example is to express authorial intentions that
-text underlining must be supported, but that the italic font style need
-not be supported (even though nominally required by the referenced baseline
-profile).</p>
+<phrase diff="chg">italic font style and text underlining must be
+supported</phrase>.</p>
 </note>
 </div3>
 <div3 id="parameter-vocabulary-extensions">
@@ -2043,23 +2048,26 @@ valid.</p>
 <note role="explanation">
 <p>In the above example, the DFXP transformation profile is used as
 the baseline profile. This baseline profile is then supersetted by
-specifying that support<phrase diff="add"> and use</phrase> is required for<phrase diff="del"> two extensions, where the
-first extension is a experimental extension
+specifying that support<phrase diff="add"> and use</phrase> is
+required for<phrase diff="del"> two extensions, where the first
+extension is a experimental extension
 <code>#x-prefilter-by-language</code> defined (hypothetically) by the
-W3C in the TT Extension Namespace, and where the second extension is</phrase>
-a private extension defined in a third party namespace.<phrase diff="del">The
-<att>base</att> attribute is elided from the first specified
-<el>ttp:extensions</el> element since it makes use of the TT Extension
-Namespace. Note that the explicit specification of
-<code>required</code> on the <att>value</att> attributes on the two
-<el>ttp:extension</el> elements is not necessary, since it is the
-default value of this attribute.</phrase></p>
+W3C in the TT Extension Namespace, and where the second extension
+is</phrase> a private extension defined in a third party
+namespace.<phrase diff="del">The <att>base</att> attribute is elided
+from the first specified <el>ttp:extensions</el> element since it
+makes use of the TT Extension Namespace. Note that the explicit
+specification of <code>required</code> on the <att>value</att>
+attributes on the two <el>ttp:extension</el> elements is not
+necessary, since it is the default value of this
+attribute.</phrase></p>
 <p>The effect of this example is to express authorial intentions that
 a recipient processor must support the DFXP transformation profile and
-must also support<phrase diff="add"> and use</phrase> <phrase diff="del"> two additional extensions, one
-(hypothetically) defined by the W3C (in another specification or in a
-future version of this specification) and the other</phrase><phrase
-diff="add">an extension </phrase>defined by a third party.</p>
+must also support<phrase diff="add"> and use</phrase> <phrase
+diff="del"> two additional extensions, one (hypothetically) defined by
+the W3C (in another specification or in a future version of this
+specification) and the other</phrase><phrase diff="add">an extension
+</phrase>defined by a third party.</p>
 </note>
 </div3>
 </div2>
@@ -3898,7 +3906,7 @@ href="images/dynamicFlow_RU_animated.svg">SVG Animation</loc>.</p>
   &lt;style tts:fontFamily="proportionalSansSerif"/&gt;
   &lt;style tts:fontSize="18px"/&gt;
   &lt;style <phrase role="strong">tts:overflow="dynamic"</phrase>/&gt;
-  &lt;style <phrase role="strong">tts:dynamicFlow="in(word,jump) out(line,smooth) <phrase diff="chg">clear</phrase>(3s)"</phrase>/&gt;
+  &lt;style <phrase role="strong">tts:dynamicFlow="in(word,jump) <phrase diff="add">fill(1.0s) </phrase>out(line,smooth) <phrase diff="chg">clear</phrase>(0.3s)"</phrase>/&gt;
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
@@ -7291,7 +7299,8 @@ results are consistent with the results produced by this model.
 then a <emph>default region</emph> is implied with the following characteristics:</p>
 <ulist>
 <item>
-<p>the identify of the default region is consider to be anonymous;</p>
+<p>the <phrase diff="chg">identity</phrase> of the default region is consider<phrase
+diff="add">ed</phrase> to be anonymous;</p>
 </item>
 <item>
 <p>the extent of the default region is the same as the root container
@@ -7393,10 +7402,15 @@ attribute;</p></item>
 href="#layout-attribute-region"><att>region</att></loc> attribute,
 then the element is associated with the region referenced by the most
 immediate ancestor that specifies this attribute;</p></item>
+<item><p diff="add"> if the element contains a descendant element that
+specifies a <loc
+href="#layout-attribute-region"><att>region</att></loc> attribute,
+then the element is associated with the region referenced by that
+attribute;</p></item>
 <item><p>if a default region was implied (due to the absence of any
 <loc href="#layout-vocabulary-region"><el>region</el></loc> element),
-then the element is associated with the default region</p></item>
-<item><p>the element is not associated with any region</p></item>
+then the element is associated with the default region<phrase diff="add">;</phrase></p></item>
+<item><p>the element is not associated with any region<phrase diff="add">.</phrase></p></item>
 </olist>
 <p>The pseudo-code shown in <specref ref="content-hierarchy-region-mapping"/>
 provides one possible algorithm that implements these processing steps.</p>
@@ -14218,138 +14232,92 @@ schemas, or conformance criteria for DFXP:
 <div2 id="change-history-cr1-to-lc3">
 <head>Changes from First Candidate Recommendation to Third Last Call
 Working Draft</head>
-
-<!-- FIXME - not yet included
-<phrase role="strong">Technical Changes</phrase>
+<eg xml:space="preserve">
+<phrase diff="chg"><phrase role="strong">Technical Changes</phrase>
 
 The following changes result in a technical change of the conformance
 criteria, the normative abstract document type that is defined
 for use with DFXP, or the defined value space of an attribute or
 property:
 
-* SCHEMA TECHNICAL CHANGES *
-
 * Change TT Style Namespace to use #styling instead of #style as
-  fragment identifier. 
-* Add ttp:{profile,features,feature,extensions,extension> elements.
-* Add tts:extent to tt element.
-* Add Parameters.class group to head content model.
-* Add attributes from metadata extension namespace to body, div, p,
-  span, br, metadata.
-* Add attributes from style extension namespace to body, div, p, span,
-  br, region.
-* Remove 'inherit' value from all tts:* style attributes.
-* Change 'scroll' value to 'dynamic' on tts:overflow attribute.
-* Add 'description' value to ttm:role attribute.
-* Change data type of ttm:role attribute to NMTOKENS.
-
-* NON-SCHEMA TECHNICAL CHANGES *
-
-* Add 'rollUp' value to tts:dynamicFlow attribute.
+  fragment identifier [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/87">I-087</loc>]. 
+* Add ttp:{profile,features,feature,extensions,extension} element types
+  [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/60">I-060</loc>].
+* Add Parameters.class group, containing ttp:profile element, to content
+  model of head element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/60">I-060</loc>].
+* Define three normative profiles: dfxp-{transformation,presentation,full},
+  with dfxp-transformation being the default in absence of declaration
+  [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/60">I-060</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/96">I-096</loc>].
+* Subdivide processor conformance into transformation and presentation
+  processors, mandating support for the respective profile [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/35">A-035</loc>].
+* Add optional tts:extent attribute to tt element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/28">A-028</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/69">I-069</loc>].
+* Change default time containment of body element to 'par' [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/41">I-041</loc>].
+* Remove 'inherit' value from all tts:* style attributes [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/54">I-054</loc>].
+* Allow unquoted font family names to contain whitespace in
+  &lt;familyName&gt; style value expression used with tts:fontFamily
+  attribute [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/33">I-033</loc>].
+* Change 'scroll' value to 'dynamic' on tts:overflow attribute [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/82">I-082</loc>].
+* Add 'rollUp' value to tts:dynamicFlow attribute [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/34">A-034</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/101">I-101</loc>].
+* Remove (1) 'within' flow function, (2) 'block', 'inline', and 'pixel'
+  flow units, (3) 'fade' flow style, and (4) flow transition and flow
+  transition styles from &lt;flowFunction&gt; style value expression
+  [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/81">I-081</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/86">I-086</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/100">I-100</loc>].
+* Rename intra(..) and inter(..) to fill(..) and clear(..), respectively,
+  in &lt;flowIntervalFunction&gt; style value expression [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/102">I-102</loc>].
+* Allow tts:display style property to apply to region element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/51">I-051</loc>].
+* Allow ttm:role attribute on region element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/32">A-032</loc>].
+* Improve content model of metadata element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/97">I-097</loc>].
+* Change data type of ttm:role attribute to NMTOKENS [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/89">I-089</loc>].
+* Add 'description' value to ttm:role attribute [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/8">I-008</loc>].
 
 <phrase role="strong">Editorial Changes</phrase>
 
 The following changes are editorial in nature or entail semantic
 clarifications that do not affect the abstract document type, defined
 schemas, or conformance criteria for DFXP:
--->
 
-<eg xml:space="preserve">
-<![CDATA[
-[GA-A-024-20081214] 7.1.{4,6}   correct prose to accommodate nested divs and spans
-[GA-A-026-20090130] *           define default region
-[GA-A-027-20081214] 9.3.2 (7)   map anonymous spans to fo:inline only when parent is p or span
-[GA-A-028-20090130] *           move tts:extent from body to tt element
-[GA-A-029-20090130] *           fix inconsistency regarding time containment semantics
-[GA-A-030-20090130] 10.2        clarify semantics for dur and end
-[GA-A-032-20090130] 9.1.2       add ttm:role to region element
-[GA-A-033-20090415] *           unify and better formalize style resolution process
-[GA-A-034-20090427] 8.2.7       add "rollUp" shorthand value to tts:dynamicFlow
-[GA-A-035-20090504] 3.2         subdivide into transformation and presentation conformance
-[GA-A-036-20090504] C           update schemas
-[GA-I-008-20090415] 12.2.2      add "description" value to ttm:role enumeration
-[GA-I-009-20090504] 11,12       add examples to metadata and animation element vocabulary
-[GA-I-012-20090130] *           define default region
-[GA-I-015-20090415] *           change XML and XML Namespace references
-[GA-I-016-20081214] 10.2.*      fix incorrect reference to smil2 section (should be 10.4.1)
-[GA-I-017-20081214] 8.3.4       correct definition of <duration> syntax to <digit>+
-[GA-I-027-20081214] 8.2.20      correct names of textDecoration values (lineThrough)
-[GA-I-028-20090130] 8.2.13      elaborate prose to accommodate nested spans
-[GA-I-032-20090415] 8.4.3       style chaining an left preference
-[GA-I-033-20090415] 8.3.{5,14}  allow unquoted font family name that contains whitespace
-[GA-I-034-20090130] 9.3         elaborate processing of anonymous spans
-[GA-I-035-20090415] 8.3.1       opacity float value
-[GA-I-036-20090130] 8.2         inheritance by anonymous spans
-[GA-I-037-20081214] 9.3.2 (7)   map anonymous spans to fo:inline only when parent is p or span
-[GA-I-040-20090415] *           unify and better formalize style resolution process
-[GA-I-041-20090415] 7.1.3       change body to parallel time containment as default
-[GA-I-042-20090130] 9.3         processing in absence of region attribute
-[GA-I-043-20090415] 9.3.2       correct content hierarchy region mapping example code
-[GA-I-044-20081214] B.4         change typo "withing" to "within"
-[GA-I-045-20081214] 8.2.24      remove extra '"' at end of last line of wrap option example
-[GA-I-046-20081214] 8.2.23      missing inheritance and percentage constraints
-[GA-I-048-20090130] *           specify requiredExtensions and requiredFeatures
-[GA-I-050-20090130] *           improve consistency of style association prose on content elts
-[GA-I-051-20090130] 8.2.5       allow tts:display to apply to region element
-[GA-I-052-20090130] 8.3         fix order and missing entry in list of style value expressions
-[GA-I-054-20090427] 8.{2,4}     remove explicit inheritance
-[GA-I-055-20090427] 8.2.{20,21} make textDecoration and textOutline inheritable
-[GA-I-056-20090504] 8.2.20      fix indentation of tts:textDecoration example
-[GA-I-059-20090427] 8.2.*       make all style properties animatable
-[GA-I-060-20090504] 5.2,6.1     enhance profile specification mechanism
-[GA-I-061-20090427] B.3.{1,2}   correct flow interval computation with definite rate
-[GA-I-062-20090427] B.2         clarify meaning of "difference" in contents of flow buffer
-[GA-I-063-20090427] B.2         clarify meaning of "logical content position"
-[GA-I-064-20090427] B.5         clarify timeline used for dynamic flow
-[GA-I-065-20090427] 8.2.7,B     account for side effects of animation
-[GA-I-066-20090427] B.2         clarify assumptions regarding flow buffer state persistence
-[GA-I-067-20090427] B.2         clarify handling of temporal style changes w.r.t. flow buffer
-[GA-I-068-20090504] 9.3.3       ensure last block of body's block is filled out to region
-[GA-I-069-20090504] 8.2.8       mandate explicit lengths for tts:extent on tt:tt element
-[GA-I-070-20090504] 8.2.16      clarify "region's width and height were infinite"
-[GA-I-073-20090427] 1.2         remove superfluous text
-[GA-I-075-20090504] 5.2         clarify use of optional feature/extension
-[GA-I-076-20090427] 8.2.13      fix typo
-[GA-I-077-20090427] 8.2.*       add missing prose regarding anonymous spans
-[GA-I-078-20090427] 8.3.14      remove spurious reference to whitespace S syntactic element
-[GA-I-079-20090427] G           update XSL reference to XSL 1.1
-[GA-I-080-20090504] I           remove sample code appendix
-[GA-I-081-20090427] 8.3.6,B     remove 'pixel' flow unit and flow transitions
-[GA-I-082-20090427] 8.2.{13,16} change 'scroll' value to 'dynamic' for tts:overflow
-[GA-I-083-20090427] B.4         clarify flow operations prose logical vs formatted units
-[GA-I-084-20090427] 8.3.6       specify semantics if smooth or fade flow style not supported
-[GA-I-085-20090504] 6.2.4       ttp:frameRateMultiplier - missing default for denominator
-[GA-I-086-20090504] 8.3.6,B     tts:dynamicFlow - remove fade, within()
-[GA-I-087-20090504] 5.1         change TT style namespace value to #styling instead of #style
-[GA-I-088-20090504] *           remove editorial notes
-[GA-I-089-20090504] 12.2.2      ttm:role - allow multiple tokens
-[GA-I-090-20090504] 8.2.14      improve opacity semantics
-[GA-I-091-20090504] 8.2.*       implement style defaults
-[GA-I-092-20090529] 6.1.{2,4}   change base to xml:base
-[GA-I-093-20090529] 6.1.{2,4}   change base to xml:base
-[GA-I-094-20090529] 5.1,I       specify that TT namespaces are mutable
-[GA-I-096-20090529] G.3         create DFXP "Full" profile, requiring all features
-[GA-I-097-20090529] 12.1.1      fix metadata content model
-[GA-I-098-20090529] B           eliminate or clarify clear timing
-[GA-I-099-20090529] B           clarify semantics of blocked fill operation
-[GA-I-100-20090529] 8.3.6,B     remove block and inline fill units
-[GA-I-101-20090529] 8.2.7,I     add note justifying rollUp interval
-[GA-I-102-20090529] 8.[23].7,B  change names of intra() and inter() flow interval functions
-[GA-I-103-20090529] 8.2.7       proscribe multiple instances of same flow function
-[GA-I-104-20090529] B.{2,3}     clarify flow buffer language
-[GA-I-105-20090529] 8.2.16,B.4  clarify interaction between dynamic flow and wrap property
-[GA-I-106-20090529] 9.4,E       clarify line breaking, add line breaking feature designator
-[GA-I-108-20090529] G.1         remove redundant transformation requirement in transform profile
-[GA-I-110-20090529] 7.1.2       explicitly allow foreign attributes on head element
-[GA-I-111-20090529] 12.1.1      fix note regarding context of usage of metadata items
-[GA-I-112-20090529] 5.3.2       remove style, metadata, and parameter extension namespaces
-[GA-I-113-20090529] 3,E         remove circularity in definition of processor conformance
-[GA-I-114-20090529] E.2,G.2     reduce presentation profile requirements
-[GA-I-115-20090529] E.2,G.1     expand transformation profile requirements
-[GA-I-116-20090529] 5.2,6.{1,2} aggregate certain ttp:profile related text into one place
-[GA-I-117-20090529] 5.2,6.1     add 'use' value to ttp:{feature,extension} value attribute
-]]>
-</eg>
+* Clarify prose with respect to support for nested div and span [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/24">A-024</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/28">I-028</loc>].
+* Define default region in absence of explicit region [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/26">A-026</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/12">I-012</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/42">I-042</loc>].
+* Map anonymous spans to fo:inline only when parent is p or span [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/27">A-027</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/37">I-037</loc>].
+* Fix inconsistencies regarding time containment semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/29">A-029</loc>].
+* Clarify semantics of dur and end attributes [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/30">A-030</loc>].
+* Unify specification of behavior of style resolution processing [<loc href="http://www.w3.org/AudioVideo/TT/tracker/actions/33">A-033</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/32">I-032</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/40">I-040</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/50">I-050</loc>].
+* Add examples of metadata and animation vocabulary [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/9">I-009</loc>].
+* Revert XML and XML Namespace references to their 1.0 versions [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/15">I-015</loc>].
+* Fix incorrect reference to SMIL2 sections [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/16">I-016</loc>].
+* Fix syntactic definition of &lt;duration&gt; style value expression [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/17">I-017</loc>].
+* Correct name of tts:textDecoration value 'lineThrough' [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/27">I-027</loc>].
+* Clarify prose describing &lt;opacity&gt; style value expression [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/35">I-035</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/90">I-090</loc>].
+* Clarify processing and inheritance of anonymous spans [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/34">I-034</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/36">I-036</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/77">I-077</loc>].
+* Fix example code for content hierarchy region mapping [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/43">I-043</loc>].
+* Fix various typos and formatting issues [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/44">I-044</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/45">I-045</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/56">I-056</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/73">I-073</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/76">I-076</loc>].
+* Add missing inheritance and percentage constraints [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/46">I-046</loc>].
+* Fix ordering and missing entry in list of style value expressions [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/52">I-052</loc>].
+* Designate tts:textDecoration and tts:textOutline as inheritable [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/55">I-055</loc>].
+* Make all style properties animatable [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/59">I-059</loc>].
+* Correct flow interval computation with definite rate [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/61">I-061</loc>].
+* Clarify dynamic flow buffer semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/62">I-062</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/63">I-063</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/66">I-066</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/67">I-067</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/104">I-104</loc>].
+* Clarify dynamic flow timing semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/64">I-064</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/104">I-104</loc>].
+* Clarify affect of animation of styles and dynamic flow [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/65">I-065</loc>].
+* Clarify semantics of space filling of region [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/68">I-068</loc>].
+* Clarify extent of region with respect to tts:overflow semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/70">I-070</loc>].
+* Update XSL reference to 1.1 version [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/79">I-079</loc>].
+* Remove appendix containing sample code [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/80">I-080</loc>].
+* Clarify dynamic flow operation semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/83">I-083</loc>, <loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/99">I-099</loc>].
+* Clarify default flow style semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/84">I-084</loc>].
+* Clarify default denominator on ttp:frameRateMultiplier [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/85">I-085</loc>].
+* Add missing style default semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/91">I-091</loc>].
+* Clarify mutability of TT AF namespaces [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/94">I-094</loc>].
+* Clarify constraints on syntax of flow functions [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/103">I-103</loc>].
+* Clarify interaction between dynamic flow and wrap option processing [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/105">I-105</loc>].
+* Clarify line breaking semantics [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/106">I-106</loc>].
+* Enlarge syntactic treatment of foreign attributes on head element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/110">I-110</loc>].
+* Fix note regarding context of usage of metadata items [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/111">I-111</loc>].
+* Remove style and metadata extension namespaces [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/112">I-112</loc>].
+* Clarify region association algorithm [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/118">I-118</loc>].
+
+</phrase></eg>
 </div2>
 </inform-div1>
 </back>

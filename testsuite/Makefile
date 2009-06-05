@@ -25,6 +25,15 @@ filelist:
 	done
 	echo "</files>" >>filelist.xml
 
+validate:
+	rm -f validate-report.txt
+	for DIR in $(TEST_SUBDIRS) ; do \
+          for file in $$DIR/*[0-9][0-9][0-9].xml ; do \
+	    echo Checking $$file ... ; \
+	    java -jar ../spec/jing/jing.jar -c ../spec/rnc/ttaf1-dfxp.rnc $$file >>validate-report.txt ; \
+	  done \
+	done
+
 archive: filelist
 	rm -f dfxp-testsuite.zip
 	zip dfxp-testsuite.zip filelist.xml LICENSE

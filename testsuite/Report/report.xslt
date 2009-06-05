@@ -716,10 +716,10 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:overflow[.="hidden"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:overflow="scroll"</th>
+      <th>@tts:overflow="dynamic"</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.16</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:overflow="scroll"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:overflow[.="scroll"])'/></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:overflow="dynamic"])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:overflow[.="dynamic"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:padding</th>

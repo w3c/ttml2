@@ -78,6 +78,36 @@
 </thead>
 <tbody>
    <tr>
+      <th>ttp:profile</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.1.1</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//ttp:profile])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//ttp:profile)'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>ttp:features</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.1.2</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//ttp:features])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//ttp:features)'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>ttp:feature</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.1.3</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//ttp:feature])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//ttp:feature)'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>ttp:extensions</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.1.4</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//ttp:extensions])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//ttp:extensions)'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>ttp:extension</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.1.5</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//ttp:extension])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//ttp:extension)'/></xsl:call-template></td>
+   </tr>
+   <tr>
       <th>@ttp:cellResolution</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.2.1</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@ttp:cellResolution[matches(., "^\d+ \d+$")]])'/></td>
@@ -342,12 +372,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:backgroundColor[t:isNamedColor(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:backgroundColor="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.2</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:backgroundColor="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:backgroundColor[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:color</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.3</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:color])'/></td>
@@ -384,12 +408,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:color[t:isNamedColor(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:color="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.3</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:color="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:color[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:direction</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.4</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:direction])'/></td>
@@ -408,12 +426,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:direction[.="rtl"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:direction="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.4</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:direction="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:direction[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:display</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.5</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:display])'/></td>
@@ -430,12 +442,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.5</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:display="none"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:display[.="none"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:display="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.5</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:display="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:display[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:displayAlign</th>
@@ -462,12 +468,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:displayAlign[.="after"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:displayAlign="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.6</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:displayAlign="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:displayAlign[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:dynamicFlow</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.7</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:dynamicFlow])'/></td>
@@ -478,6 +478,12 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.7</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:dynamicFlow="none"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:dynamicFlow[.="none"])'/></xsl:call-template></td>
+   </tr>
+   <tr>
+      <th>@tts:dynamicFlow="rollUp"</th>
+      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.7</xsl:with-param></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:dynamicFlow="rollUp"])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:dynamicFlow[.="rollUp"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:dynamicFlow="&lt;flowFunction&gt;"</th>
@@ -508,12 +514,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.8</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:extent[t:isDoubleLength(.)]])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:extent[t:isDoubleLength(.)])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:extent="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.8</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:extent="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:extent[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:fontFamily</th>
@@ -578,12 +578,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[t:isDoubleLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:fontSize="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.10</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontSize="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontSize[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:fontStyle</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.11</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontStyle])'/></td>
@@ -614,12 +608,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontStyle[.="reverseOblique"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:fontStyle="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.11</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontStyle="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontStyle[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:fontWeight</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.12</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontWeight])'/></td>
@@ -636,12 +624,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.12</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontWeight="bold"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontWeight[.="bold"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:fontWeight="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.12</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:fontWeight="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:fontWeight[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:lineHeight</th>
@@ -686,12 +668,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[t:isCLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:lineHeight="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:opacity</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.14</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:opacity])'/></td>
@@ -702,12 +678,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.14</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:opacity[t:isFloat(.)]])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:opacity[t:isFloat(.)])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:opacity="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.14</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:opacity="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:opacity[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:origin</th>
@@ -726,12 +696,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.15</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:origin[t:isDoubleLength(.)]])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:origin[t:isDoubleLength(.)])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:origin="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.15</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:origin="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:origin[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:overflow</th>
@@ -756,12 +720,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.16</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:overflow="scroll"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:overflow[.="scroll"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:overflow="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.16</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:overflow="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:overflow[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:padding</th>
@@ -818,12 +776,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[t:isQuadrupleLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:padding="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:showBackground</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.18</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:showBackground])'/></td>
@@ -840,12 +792,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.18</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:showBackground="whenActive"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:showBackground[.="whenActive"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:showBackground="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.18</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:showBackground="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:showBackground[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:textAlign</th>
@@ -882,12 +828,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.19</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:textAlign="end"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textAlign[.="end"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:textAlign="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.19</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:textAlign="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textAlign[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:textDecoration</th>
@@ -950,12 +890,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textDecoration[matches(., "(underline|lineThrough|overline) (underline|lineThrough|overline) (underline|lineThrough|overline)")])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:textDecoration="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.20</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:textDecoration="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textDecoration[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:textOutline</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.21</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:textOutline])'/></td>
@@ -992,12 +926,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textOutline[t:isColorDoubleLength(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:textOutline="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.21</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:textOutline="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textOutline[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:unicodeBidi</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.22</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:unicodeBidi])'/></td>
@@ -1022,12 +950,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:unicodeBidi[.="bidiOverride"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:unicodeBidi="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.22</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:unicodeBidi="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:unicodeBidi[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:visibility</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.23</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:visibility])'/></td>
@@ -1046,12 +968,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:visibility[.="hidden"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:visibility="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.23</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:visibility="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:visibility[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:wrapOption</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.24</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:wrapOption])'/></td>
@@ -1068,12 +984,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.24</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:wrapOption="noWrap"])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:wrapOption[.="noWrap"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:wrapOption="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.24</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:wrapOption="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:wrapOption[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:writingMode</th>
@@ -1124,12 +1034,6 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:writingMode[.="tb"])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:writingMode="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.25</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:writingMode="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:writingMode[.="inherit"])'/></xsl:call-template></td>
-   </tr>
-   <tr>
       <th>@tts:zIndex</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.26</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:zIndex])'/></td>
@@ -1146,12 +1050,6 @@
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.26</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:zIndex[matches(., "^(\+|-)?\d+$")]])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:zIndex[matches(., "^(\+|-)?\d+$")])'/></xsl:call-template></td>
-   </tr>
-   <tr>
-      <th>@tts:zIndex="inherit"</th>
-      <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.26</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@tts:zIndex="inherit"])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:zIndex[.="inherit"])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>tt:layout</th>

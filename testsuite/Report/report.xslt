@@ -1327,14 +1327,14 @@
     <xsl:function name="t:isFlowFunction" as="xs:boolean">
       <xsl:param name='s' as="xs:string"/>
 
-      <xsl:value-of select='matches($s, "^(in|within|out)\((pixel|glyph|inline|line|block|character|word)(,(jump|smooth|fade)(,barWipe(,(leftToRight|topToBottom))?)?)?\)$")'/> 
+      <xsl:value-of select='matches($s, "^((in|out)\((glyph|line|character|word)(,(jump|smooth))?\))+$")'/> 
 
     </xsl:function>
 
     <xsl:function name="t:isDynamicFlow" as="xs:boolean">
       <xsl:param name='s' as="xs:string"/>
 
-      <xsl:value-of select='matches($s, "^((in|within|out)\((pixel|glyph|inline|line|block|character|word)(,(jump|smooth|fade)(,barWipe(,(leftToRight|topToBottom))?)?)?\))+( (intra|inter)\((auto|\d(\.\d)?(s|ms|f|t)?)\))+$")'/> 
+      <xsl:value-of select='matches($s, "^((in|out)\((glyph|line|character|word)(,(jump|smooth))?\))+((fill|clear)\((auto|\d(\.\d)?(s|ms|f|t)?)\))+$")'/> 
 
     </xsl:function>
 

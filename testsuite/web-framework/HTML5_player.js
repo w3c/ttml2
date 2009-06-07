@@ -266,7 +266,11 @@ HTML5Caption_convertDFXP2HTMLAttributes = function(dfxpElement, htmlElement, has
     }
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "overflow");
     if (v != "") {
-	htmlElement.style.setProperty("overflow", v, "");
+	if (v == "dynamic") {	    
+	    htmlElement.style.setProperty("overflow", "scroll", "");
+	} else {
+	    htmlElement.style.setProperty("overflow", v, "");
+	}
     }
     v = dfxpElement.getAttributeNS(DFXP_NS_Style, "extent");
     if (v != "") {

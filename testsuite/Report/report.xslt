@@ -339,7 +339,7 @@
       <th>@tts:backgroundColor</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.2</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:backgroundColor])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:backgroundColor)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:backgroundColor|$tests//tt:body/@tts:backgroundColor|$tests//tt:div/@tts:backgroundColor|$tests//tt:p/@tts:backgroundColor|$tests//tt:region/@tts:backgroundColor|$tests//tt:span/@tts:backgroundColor)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:backgroundColor="&lt;hash (rgb) color&gt;"</th>
@@ -375,7 +375,7 @@
       <th>@tts:color</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.3</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:color])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:color)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:color|$tests//tt:span/@tts:color)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:color="&lt;hash (rgb) color&gt;"</th>
@@ -411,7 +411,7 @@
       <th>@tts:direction</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.4</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:direction])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:direction)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:direction|$tests//tt:p/@tts:direction|$tests//tt:span/@tts:direction)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:direction="ltr"</th>
@@ -447,7 +447,7 @@
       <th>@tts:displayAlign</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.6</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:displayAlign])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:displayAlign)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:displayAlign|$tests//tt:region/@tts:displayAlign)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:displayAlign="before"</th>
@@ -471,7 +471,7 @@
       <th>@tts:dynamicFlow</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.7</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:dynamicFlow])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:dynamicFlow)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:dynamicFlow|$tests//tt:region/@tts:dynamicFlow)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:dynamicFlow="none"</th>
@@ -501,7 +501,7 @@
       <th>@tts:extent</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.8</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:extent])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:extent)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:tt/@tts:extent|$tests//tt:region/@tts:extent)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:extent="auto"</th>
@@ -629,7 +629,7 @@
       <th>@tts:lineHeight</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.13</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:lineHeight])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:lineHeight)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:lineHeight|$tests//tt:p/@tts:lineHeight)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:lineHeight="normal"</th>
@@ -671,7 +671,7 @@
       <th>@tts:opacity</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.14</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:opacity])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:opacity)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:opacity|$tests//tt:region/@tts:opacity)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:opacity="&lt;alpha&gt;"</th>
@@ -683,7 +683,7 @@
       <th>@tts:origin</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.15</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:origin])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:origin)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:origin|$tests//tt:region/@tts:origin)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:origin="auto"</th>
@@ -701,7 +701,7 @@
       <th>@tts:overflow</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.16</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:overflow])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:overflow)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:overflow|$tests//tt:region/@tts:overflow)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:overflow="visible"</th>
@@ -725,7 +725,7 @@
       <th>@tts:padding</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.17</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:padding])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:padding)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:padding|$tests//tt:region/@tts:padding)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:padding="&lt;length&gt;"</th>
@@ -779,7 +779,7 @@
       <th>@tts:showBackground</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.18</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:showBackground])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:showBackground)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:showBackground|$tests//tt:region/@tts:showBackground)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:showBackground="always"</th>
@@ -797,7 +797,7 @@
       <th>@tts:textAlign</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.19</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:textAlign])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:textAlign)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:textAlign|$tests//tt:p/@tts:textAlign)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:textAlign="left"</th>
@@ -989,7 +989,7 @@
       <th>@tts:writingMode</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.25</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:writingMode])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:writingMode)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:writingMode|$tests//tt:region/@tts:writingMode)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:writingMode="lrtb"</th>
@@ -1037,7 +1037,7 @@
       <th>@tts:zIndex</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.26</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:zIndex])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:zIndex)'/></xsl:call-template></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//tt:style/@tts:zIndex|$tests//tt:region/@tts:zIndex)'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@tts:zIndex="auto"</th>

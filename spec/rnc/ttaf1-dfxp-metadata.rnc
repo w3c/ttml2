@@ -4,6 +4,7 @@
 
 # namespace prefix bindings
 namespace tt = "http://www.w3.org/2006/10/ttaf1"
+namespace ttm = "http://www.w3.org/2006/10/ttaf1#metadata"
 namespace local = ""
 
 # meta - generic metadata
@@ -17,8 +18,8 @@ TTAF.metadata.attlist &=
   TTAF.Core.attrib.class
 
 TTAF.External.class =
-  element * - tt:* {
-    ( attribute * - ( xml:* | local:* ) { text }
+  element * - ( tt:* | ttm:* ) {
+    ( attribute * - ( xml:id ) { text }
       | text
       | TTAF.External.class
     )*
@@ -26,16 +27,13 @@ TTAF.External.class =
 
 TTAF.metadata.content.extra = empty
 TTAF.metadata.content =
-  (TTAF.External.class |
+  (TTAF.MetadataItems.class |
+   TTAF.External.class |
    TTAF.metadata.content.extra)*
 
-TTAF.MetadataNoAgent.class |=
+TTAF.Metadata.class |=
   TTAF.MetadataItems.class |
   TTAF.metadata
-
-TTAF.Metadata.class |=
-  TTAF.MetadataNoAgent.class |
-  TTAF.meta.agent
 
 # .......................................................................
 # .......................................................................

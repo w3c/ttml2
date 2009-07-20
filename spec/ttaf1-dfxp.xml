@@ -622,7 +622,7 @@ future revision of this specification).</p>
 <label>Processor Profile</label>
 <def>
 <p>A collection of features and extensions that must or may be implemented (supported) by
-by a content processor.</p>
+<phrase diff="del">by </phrase>a content processor.</p>
 </def>
 </gitem>
 <gitem>
@@ -742,7 +742,7 @@ and <code>+</code>. Each element name therein is a hyperlink to its
 own illustration.</p>
 <p>All content of this specification that is not explicitly marked as
 non-normative is considered to be normative. If a section or appendix
-header contains the the expression "Non-Normative", then the entirety
+header contains the <phrase diff="del">the </phrase>expression "Non-Normative", then the entirety
 of the section or appendix is considered non-normative.</p>
 <p>All paragraphs marked as a <phrase role="strong">Note</phrase> are considered non-normative.</p>
 <p>Example code fragments are depicted with a light blue-green
@@ -975,8 +975,23 @@ ref="document-structure-vocabulary-tt"/>.</p>
 <p>The schemas included in this specification do not validate all syntactic constraints
 defined by this specification. In particular, performing validation with one of the above
 referenced schemas may result in a <emph>false positive</emph> indication of validity.
-However, their use will not produce a <emph>false negative</emph> indication of validity
-when used with a compliant validating processor.</p>
+However,
+<phrase diff="add">with one exception, </phrase>their
+use will not produce a <emph>false negative</emph> indication of validity
+when used with a compliant validating
+processor.</p>
+<p diff="add">In exception to the above statement about false negatives,
+if the Relax NG schema included in this specification is used to validate a
+TT AF Document containing elements in a foreign namespace and the <att>xml:id</att>
+attribute is used with any of those (foreign) elements,
+then an error will be reported even though such usage is permitted by this
+specification. In this case, the false negative arises due
+to a specific limitation in expressing wildcard patterns involving <code>xsd:ID</code>
+typed attributes in Relax NG schemas.
+Note that this specification defines the formal validity of a TT AF Document to be
+based on an abstract document instance from which all foreign namespace elements and
+attributes have been removed. Therefore, the exceptional reporting of this false
+negative does not impact the formal assessment of TT AF Document validity.</p>
 </note>
 </div2>
 </div1>
@@ -1034,17 +1049,17 @@ of XML Namespaces may be used that is associated with the specified namespace UR
 <tr>
 <td>TT Profile</td>
 <td><emph>none</emph></td>
-<td><code>http://www.w3.org/2006/10/ttaf1/profile</code></td>
+<td><code>http://www.w3.org/2006/10/ttaf1/profile<phrase diff="add">/</phrase></code></td>
 </tr>
 <tr>
 <td>TT Feature</td>
 <td><emph>none</emph></td>
-<td><code>http://www.w3.org/2006/10/ttaf1/feature</code></td>
+<td><code>http://www.w3.org/2006/10/ttaf1/feature<phrase diff="add">/</phrase></code></td>
 </tr>
 <tr>
 <td>TT Extension</td>
 <td><emph>none</emph></td>
-<td><code>http://www.w3.org/2006/10/ttaf1/extension</code></td>
+<td><code>http://www.w3.org/2006/10/ttaf1/extension<phrase diff="add">/</phrase></code></td>
 </tr>
 </tbody>
 </table>
@@ -1214,7 +1229,7 @@ below in <specref ref="dfxp-example-sub-profile"/>.</p>
 &lt;tt xml:lang="" xmlns="http://www.w3.org/2006/10/ttaf1"&gt;
  &lt;head&gt;
    &lt;profile use="dfxp-presentation" xmlns="http://www.w3.org/2006/10/ttaf1#parameter"&gt;
-     &lt;features xml:base="http://www.w3.org/2006/10/ttaf1/feature"&gt;
+     &lt;features xml:base="http://www.w3.org/2006/10/ttaf1/feature<phrase diff="add">/</phrase>"&gt;
        &lt;feature value="required"&gt;#fontStyle-italic&lt;/feature&gt;
      &lt;/features&gt;
    &lt;/profile&gt;
@@ -1461,12 +1476,12 @@ Parameter Attributes
 <td>
 <loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc>,
 <loc href="#parameter-attribute-clockMode">ttp:clockMode</loc>,
+<loc href="#parameter-attribute-dropMode">ttp:<phrase diff="chg">dropMode</phrase></loc>,
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-profile">ttp:profile</loc>,
-<loc href="#parameter-attribute-smpteMode">ttp:smpteMode</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
 <loc href="#parameter-attribute-timeBase">ttp:timeBase</loc>
@@ -1585,7 +1600,7 @@ AF document that makes use (or may make use) of such features and
 extensions.</p>
 <note role="clarification">
 <p>The difference between a <emph>feature</emph> and an
-<emph>extension</emph> is where it is defined an how it is labeled:
+<emph>extension</emph> is where it is defined an<phrase diff="add">d</phrase> how it is labeled:
 if defined in this specification (or a future revision thereof) and
 labeled with a feature designation in <specref ref="features"/>, then
 it is considered to be a feature; if defined in another specification
@@ -1696,7 +1711,7 @@ or entail the intervention of an end-user.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="dfxp-presentation"&gt;
-  &lt;ttp:features xml:base="http://www.w3.org/2006/10/ttaf1/feature"&gt;
+  &lt;ttp:features xml:base="http://www.w3.org/2006/10/ttaf1/feature<phrase diff="add">/</phrase>"&gt;
     &lt;ttp:feature&gt;#rollUp&lt;/ttp:feature&gt;
   &lt;/ttp:features&gt;
 &lt;/ttp:profile&gt;
@@ -1837,7 +1852,7 @@ valid.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/2006/10/ttaf1/profile/dfxp-presentation"&gt;
-  &lt;ttp:features xml:base="http://www.w3.org/2006/10/ttaf1/feature"&gt;
+  &lt;ttp:features xml:base="http://www.w3.org/2006/10/ttaf1/feature<phrase diff="add">/</phrase>"&gt;
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</phrase>
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#textDecoration-under&lt;/ttp:feature&gt;</phrase>
   &lt;/ttp:features&gt;
@@ -1989,7 +2004,7 @@ valid.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/2006/10/ttaf1/profile/dfxp-transformation"&gt;
-  &lt;ttp:extensions xml:base="http://foo.bar.example.org/ttaf1/extension"&gt;
+  &lt;ttp:extensions xml:base="http://foo.bar.example.org/ttaf1/extension<phrase diff="add">/</phrase>"&gt;
     <phrase role="strong">&lt;ttp:extension value="use"&gt;#prefilter-by-language&lt;/ttp:extension&gt;</phrase>
   &lt;/ttp:extensions&gt;
 &lt;/ttp:profile&gt;
@@ -2015,12 +2030,12 @@ must also support and use an extension defined by a third party.</p>
 <ulist>
 <item><p><specref ref="parameter-attribute-cellResolution"/></p></item>
 <item><p><specref ref="parameter-attribute-clockMode"/></p></item>
+<item><p><specref ref="parameter-attribute-dropMode"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-profile"/></p></item>
-<item><p><specref ref="parameter-attribute-smpteMode"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
 <item><p><specref ref="parameter-attribute-timeBase"/></p></item>
@@ -2121,215 +2136,21 @@ to be <code>utc</code>.</p>
 <p>A <att>ttp:clockMode</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
-<div3 id="parameter-attribute-frameRate">
-<head>ttp:frameRate</head>
-<p>The <att>ttp:frameRate</att> attribute is used to specify the frame rate of a related
-media object or the intrinsic frame rate of a document instance in case it is intended
-to function as an independent media object.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-frameRate-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:frameRate</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:frameRate
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+                                // <emph>value</emph> > 0
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The frame rate that applies to a document instance is used to
-interpret time expressions that are expressed in <emph>frames</emph>
-as defined by <specref ref="timing-value-timeExpression"/>.</p>
-<p>A frame is interpreted as a division of a second of media
-time, such that if the frame rate is specified as <emph>F</emph>, then
-a second of media time is divided into <emph>F</emph> intervals of
-equal duration, where each interval is labeled as frame <emph>f</emph>,
-with <emph>f</emph> &isin; [0&hellip;<emph>F&minus;1</emph>].</p>
-<p>If not specified, the frame rate must be considered to be equal to some
-application defined frame rate, or if no application defined frame rate applies,
-then thirty (30) frames per second. If specified, then the frame rate must
-be greater than zero (0).</p>
-<p>A <att>ttp:frameRate</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-</div3>
-<div3 id="parameter-attribute-frameRateMultiplier">
-<head>ttp:frameRateMultiplier</head>
-<p>The <att>ttp:frameRateMultiplier</att> attribute is used to
-specify a multiplier to be applied to the frame rate specified by a
-<att>ttp:frameRate</att> attribute in order to compute the effective
-frame rate.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-frameRateMultiplier-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:frameRateMultiplier</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:frameRateMultiplier
-  : numerator ( ":" denominator )?          // <emph>denominator</emph> != 0
-
-numerator | denominator
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>A frame rate multiplier is used when the desired frame rate cannot
-be expressed as an integral number of frames per second.</p>
-<p>If not specified, the frame rate multiplier must be considered to
-be equal to one (1:1). If a denominator is specified, then it must not be zero (0).
- If no denominator is specified, then a denominator of one (1)
-applies.</p>
-<p>A <att>ttp:frameRateMultiplier</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="example">
-<p>The frame rate multiplier used for synchronizing with NTSC <bibref
-ref="smpte170m"/>
-formatted video objects at 30 frames per second is nominally
-1000:1001. The nominal frame rate of NTSC video is defined as the chrominance
-sub-carrier frequency of 3,579,545.45&hellip;Hz (= 5.0MHz &mult; 63/88) times the ratio 2/455 divided by
-the number of horizontal lines per frame of 525, which yields a frame
-rate of 29.970029970029&hellip; (= 30 &mult; 1000/1001) frames per
-second. Other frame rate multipliers apply to different regions of
-usage and video format standards.</p>
-</note>
-<note role="example">
-<p>Except in the case of PAL/M, the frame rate multiplier used for synchronizing with PAL
-formatted video objects at 25 frames per second is nominally 1:1.</p>
-</note>
-</div3>
-<div3 id="parameter-attribute-markerMode">
-<head>ttp:markerMode</head>
-<p>The <att>ttp:markerMode</att> attribute is used to specify
-constraints on the interpretation and use of time expressions
-that correspond with <bibref ref="smpte12m"/> time coordinates when operating
-with time base of <code>smpte</code> as defined by
-<specref ref="parameter-attribute-timeBase"/>.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-markerMode-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:markerMode</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:markerMode
-  : "continuous"
-  | "discontinuous"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If the time base, defined by <specref
-ref="parameter-attribute-timeBase"/>, is designated as
-<code>smpte</code>, then this parameter applies as follows: if the
-parameter's value is <code>continuous</code>, then <bibref ref="smpte12m"/> time coordinates
-may be assumed to be linear and either monotonically increasing or
-decreasing; however, if <code>discontinuous</code>, then any assumption
-must not be made regarding linearity or monotonicity of time coordinates.</p>
-<p>If not specified, the value of this parameter must be considered
-to be <code>continuous</code>.</p>
-<p>A <att>ttp:markerMode</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<p>If a value of <code>discontinuous</code> applies, then time
-expressions must not be converted to either media time or real time
-coordinates, arithmetical operators (addition, multiplication) are not
-defined on time expressions, and, consequently, any expression of a
-duration must be ignored.</p>
-<note role="explanation">
-<p>When operating with <code>smpte</code> time base and
-<code>discontinuous</code> marker mode, there is no effective time coordinate
-space; rather, all time expressions are interpreted as labeled
-synchronization events (markers), where some external synchronization
-context emits these events, which, when they correspond with time
-expressions that denote the same label, cause a temporal interval to
-begin or end accordingly.</p>
-<p>An additional side-effect of operating in <code>discontinuous</code>
-mode is that time expressions of children have no necessary
-relationship with time expressions of their temporal container; that
-is, temporal containers and children of these containers are
-temporally activated and inactivated independently based on the
-occurrence of a labeled synchronization (marker) event.</p>
-</note>
-<note role="explanation">
-<p>The notion of marker discontinuity as captured by this parameter
-is logically independent from the method used to count frames as
-expressed by the <att>ttp:smpteMode</att> parameter. In particular,
-even if the <att>ttp:smpteMode</att> parameter is specified as
-<code>dropNTSC</code> or <code>dropPAL</code>, the marker mode may be
-specified as <code>continuous</code>, even in the presence of frame count
-discontinuities induced by the frame counting method, unless there
-were some other non-linearity or discontinuity in marker labeling, for
-example, two consecutive frames labeled as <code>10:00:00:00</code>
-and <code>10:00:01:00</code>.
-</p>
-</note>
-</div3>
-<div3 id="parameter-attribute-pixelAspectRatio">
-<head>ttp:pixelAspectRatio</head>
-<p>The <att>ttp:pixelAspectRatio</att> attribute may be used by a content author
-to express the aspect ratio of non-square pixels in the production of content that
-makes use of pixel coordinates.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-pixelAspectRatio-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:pixelAspectRatio</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:pixelAspectRatio
-  : width ":" height                        // <emph>width</emph> != 0; <emph>height</emph> != 0
-
-width | height
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If not specified, then square pixels (i.e., aspect ratio 1:1) must be assumed to apply.
-If specified, then width or height must not be zero.</p>
-<p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>This parameter may be used by a content transcoder or translator in
-order to convert pixel measurements between different pixel aspect
-ratios while still maintaining authorial layout intentions.</p>
-</note>
-</div3>
-<div3 id="parameter-attribute-profile">
-<head>ttp:profile</head>
-<p>The <att>ttp:profile</att> attribute may be used by a content author
-to express the profile of the Timed Text Authoring Format (TT AF) used
-in a document instance.</p>
-<p>If specified, the value of this attribute must adhere to the
-<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17, and, further, must specify a
-profile designator in accordance with
-<specref ref="vocabulary-profiles"/>.</p>
-<p>A <att>ttp:profile</att>
-attribute is considered to be significant only when specified on the
-<el>tt</el> element.</p>
-</div3>
-<div3 id="parameter-attribute-smpteMode">
-<head>ttp:smpteMode</head>
-<p>The <att>ttp:smpteMode</att> attribute is used to specify
+<div3 id="parameter-attribute-dropMode">
+<head>ttp:<phrase diff="chg">dropMode</phrase></head>
+<p>The <att>ttp:<phrase diff="chg">dropMode</phrase></att> attribute is used to specify
 constraints on the interpretation and use of frame counts
 that correspond with <bibref ref="smpte12m"/> time coordinates when operating
 with time base of <code>smpte</code> as defined by
 <specref ref="parameter-attribute-timeBase"/>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-smpteMode-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:smpteMode</caption>
+<table id="parameter-attribute-dropMode-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:<phrase diff="chg">dropMode</phrase></caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-ttp:smpteMode
+ttp:<phrase diff="chg">dropMode</phrase>
   : "dropNTSC"
   | "dropPAL"
   | "nonDrop"
@@ -2393,8 +2214,200 @@ code, which uses PAL modulation with the NTSC frame rate of ~29.97
 frames/second. The M/PAL system is used primarily in Brazil.</p>
 </note>
 <p>If not specified, then <code>nonDrop</code> must be assumed to apply.</p>
-<p>A <att>ttp:smpteMode</att> attribute is considered to be significant only
+<p>A <att>ttp:<phrase diff="chg">dropMode</phrase></att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-frameRate">
+<head>ttp:frameRate</head>
+<p>The <att>ttp:frameRate</att> attribute is used to specify the frame rate of a related
+media object or the intrinsic frame rate of a document instance in case it is intended
+to function as an independent media object.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-frameRate-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:frameRate</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:frameRate
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+                                // <emph>value</emph> > 0
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The frame rate that applies to a document instance is used to
+interpret time expressions that are expressed in <emph>frames</emph>
+as defined by <specref ref="timing-value-timeExpression"/>.</p>
+<p>A frame is interpreted as a division of a second of media
+time, such that if the frame rate is specified as <emph>F</emph>, then
+a second of media time is divided into <emph>F</emph> intervals of
+equal duration, where each interval is labeled as frame <emph>f</emph>,
+with <emph>f</emph> &isin; [0&hellip;<emph>F&minus;1</emph>].</p>
+<p>If not specified, the frame rate must be considered to be equal to some
+application defined frame rate, or if no application defined frame rate applies,
+then thirty (30) frames per second. If specified, then the frame rate must
+be greater than zero (0).</p>
+<p>A <att>ttp:frameRate</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-frameRateMultiplier">
+<head>ttp:frameRateMultiplier</head>
+<p>The <att>ttp:frameRateMultiplier</att> attribute is used to
+specify a multiplier to be applied to the frame rate specified by a
+<att>ttp:frameRate</att> attribute in order to compute the effective
+frame rate.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-frameRateMultiplier-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:frameRateMultiplier</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:frameRateMultiplier
+  : <phrase diff="chg">numerator denominator</phrase>                   // <phrase diff="add"><emph>numerator</emph> != 0; </phrase><emph>denominator</emph> != 0
+
+numerator | denominator
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A frame rate multiplier is used when the desired frame rate cannot
+be expressed as an integral number of frames per second.</p>
+<p>If not specified, the frame rate multiplier must be considered to be equal to one (1:1).
+<phrase diff="chg">Both numerator and denominator must be non-zero.</phrase></p>
+<p>A <att>ttp:frameRateMultiplier</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+<note role="example">
+<p>The frame rate multiplier used for synchronizing with NTSC <bibref
+ref="smpte170m"/>
+formatted video objects at 30 frames per second is nominally
+1000:1001. The nominal frame rate of NTSC video is defined as the chrominance
+sub-carrier frequency of 3,579,545.45&hellip;Hz (= 5.0MHz &mult; 63/88) times the ratio 2/455 divided by
+the number of horizontal lines per frame of 525, which yields a frame
+rate of 29.970029970029&hellip; (= 30 &mult; 1000/1001) frames per
+second. Other frame rate multipliers apply to different regions of
+usage and video format standards.</p>
+</note>
+<note role="example">
+<p>Except in the case of PAL/M, the frame rate multiplier used for synchronizing with PAL
+formatted video objects at 25 frames per second is nominally 1:1.</p>
+</note>
+</div3>
+<div3 id="parameter-attribute-markerMode">
+<head>ttp:markerMode</head>
+<p>The <att>ttp:markerMode</att> attribute is used to specify
+constraints on the interpretation and use of time expressions
+that correspond with <bibref ref="smpte12m"/> time coordinates when operating
+with time base of <code>smpte</code> as defined by
+<specref ref="parameter-attribute-timeBase"/>.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-markerMode-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:markerMode</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:markerMode
+  : "continuous"
+  | "discontinuous"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If the time base, defined by <specref
+ref="parameter-attribute-timeBase"/>, is designated as
+<code>smpte</code>, then this parameter applies as follows: if the
+parameter's value is <code>continuous</code>, then <bibref ref="smpte12m"/> time coordinates
+may be assumed to be linear and either monotonically increasing or
+decreasing; however, if <code>discontinuous</code>, then any assumption
+must not be made regarding linearity or monotonicity of time coordinates.</p>
+<p>If not specified, the value of this parameter must be considered
+to be <code>continuous</code>.</p>
+<p>A <att>ttp:markerMode</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+<p>If a value of <code>discontinuous</code> applies, then time
+expressions must not be converted to either media time or real time
+coordinates, arithmetical operators (addition, multiplication) are not
+defined on time expressions, and, consequently, any expression of a
+duration must be <phrase diff="chg">considered to be invalid</phrase>.</p>
+<note role="explanation">
+<p>When operating with <code>smpte</code> time base and
+<code>discontinuous</code> marker mode, there is no effective time coordinate
+space; rather, all time expressions are interpreted as labeled
+synchronization events (markers), where some external synchronization
+context emits these events, which, when they correspond with time
+expressions that denote the same label, cause a temporal interval to
+begin or end accordingly.</p>
+<p>An additional side-effect of operating in <code>discontinuous</code>
+mode is that time expressions of children have no necessary
+relationship with time expressions of their temporal container; that
+is, temporal containers and children of these containers are
+temporally activated and inactivated independently based on the
+occurrence of a labeled synchronization (marker) event.</p>
+</note>
+<note role="explanation">
+<p>The notion of marker discontinuity as captured by this parameter
+is logically independent from the method used to count frames as
+expressed by the <att>ttp:<phrase diff="chg">dropMode</phrase></att> parameter. In particular,
+even if the <att>ttp:<phrase diff="chg">dropMode</phrase></att> parameter is specified as
+<code>dropNTSC</code> or <code>dropPAL</code>, the marker mode may be
+specified as <code>continuous</code>, even in the presence of frame count
+discontinuities induced by the frame counting method, unless there
+were some other non-linearity or discontinuity in marker labeling, for
+example, two consecutive frames labeled as <code>10:00:00:00</code>
+and <code>10:00:01:00</code>.
+</p>
+</note>
+</div3>
+<div3 id="parameter-attribute-pixelAspectRatio">
+<head>ttp:pixelAspectRatio</head>
+<p>The <att>ttp:pixelAspectRatio</att> attribute may be used by a content author
+to express the aspect ratio of non-square pixels in the production of content that
+makes use of pixel coordinates.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-pixelAspectRatio-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:pixelAspectRatio</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:pixelAspectRatio
+  : <phrase diff="chg">width height</phrase>                            // <emph>width</emph> != 0; <emph>height</emph> != 0
+
+width | height
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If not specified, then square pixels (i.e., aspect ratio 1:1) must be assumed to apply.
+If specified, <phrase diff="chg">then both width and height must be non-zero</phrase>.</p>
+<p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+<note role="explanation">
+<p>This parameter may be used by a content transcoder or translator in
+order to convert pixel measurements between different pixel aspect
+ratios while still maintaining authorial layout intentions.</p>
+</note>
+</div3>
+<div3 id="parameter-attribute-profile">
+<head>ttp:profile</head>
+<p>The <att>ttp:profile</att> attribute may be used by a content author
+to express the profile of the Timed Text Authoring Format (TT AF) used
+in a document instance.</p>
+<p>If specified, the value of this attribute must adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17, and, further, must specify a
+profile designator in accordance with
+<specref ref="vocabulary-profiles"/>.</p>
+<p>A <att>ttp:profile</att>
+attribute is considered to be significant only when specified on the
+<el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-subFrameRate">
 <head>ttp:subFrameRate</head>
@@ -2515,9 +2528,9 @@ media time base is outside the scope of this specification.</p>
 then a time expression denotes a <bibref ref="smpte12m"/> time
 coordinate with which the content of a document instance is to
 be synchronized.  In this case, the value of the <att>ttp:markerMode</att> 
-and <att>ttp:smpteMode</att> parameters apply, as defined by <specref
+and <att>ttp:<phrase diff="chg">dropMode</phrase></att> parameters apply, as defined by <specref
 ref="parameter-attribute-markerMode"/> and <specref
-ref="parameter-attribute-smpteMode"/>, respectively.</p>
+ref="parameter-attribute-dropMode"/>, respectively.</p>
 <p>If the time base is designated as <code>clock</code>, then the time
 expression denotes a coordinate in some real-world time line as
 established by some real-time clock, such as the local wall-clock time
@@ -2600,7 +2613,8 @@ specifies the spatial extent of the root container region in
 which content regions are located and presented. If no <att>tts:extent</att>
 attribute is specified, then the spatial extent of the root container region is
 considered to be determined by the external authoring or presentation
-context.</p>
+context.<phrase diff="add"> The root container origin is determined by the external
+authoring context.</phrase></p>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the document instance.</p>
@@ -3191,8 +3205,8 @@ properties.</p>
 <p>A style property may be expressed as a specified attribute on any content
 element type independently of whether the property applies to that
 element type. This capability permits the expression of an inheritable
-style property on ancestor elements to which the property property
-does not apply.</p>
+style property on ancestor elements to which the property
+<phrase diff="del">property </phrase>does not apply.</p>
 </note>
 <div3 id="style-attribute-style">
 <head>style</head>
@@ -3654,7 +3668,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td><phrase diff="chg">no</phrase></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -3794,7 +3808,10 @@ specified in <bibref ref="ccreq"/>, p. 792.
 <p>If the value of this attribute contains a single <loc
 href="#style-value-flowFunction">&lt;flowFunction&gt;</loc>, then that
 flow function applies equally to <emph>fill into</emph> and <emph>clear
-from</emph> dynamic flow operations.</p>
+from</emph> dynamic flow operations.<phrase diff="add"> Multiple
+instances of the same <loc
+href="#style-value-flowFunction">&lt;flowFunction&gt;</loc>
+must not appear in the value of this attribute.</phrase></p>
 <p>If either <code>fill()</code> or
 <code>clear()</code> <loc
 href="#style-value-flowIntervalFunction">&lt;flowIntervalFunction&gt;</loc>
@@ -4152,6 +4169,10 @@ span.</p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>1c</code> were specified.</p>
+<note role="elaboration" diff="add">
+<p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
+the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.</p>
+</note>
 <p>The <att>tts:fontSize</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontSize-example-1" role="example">
 <caption>Example Fragment &ndash; Font Size</caption>
@@ -4493,8 +4514,8 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <div3 id="style-attribute-opacity">
 <head>tts:opacity</head>
 <p>The <att>tts:opacity</att> attribute is used to specify a style property that
-defines the opacity (or transparency) of marks associated with a
-region.</p>
+defines the opacity (or <phrase diff="add">conversely, the </phrase>transparency)
+of marks associated with a region.</p>
 <p>When presented onto a visual medium, the opacity of the region is applied uniformly and on a linear scale
 to all marks produced by content targeted to the
 region.</p>
@@ -4653,8 +4674,9 @@ as a style property only to those element types indicated in the following table
 then they must be interpreted as <emph>x</emph> and <emph>y</emph> coordinates, where the first specification
 is the <emph>x</emph> coordinate, and the second specification is the <emph>y</emph> coordinate.</p>
 <p>If the value of this attribute is <code>auto</code>, then the initial value
-of the style property must be considered to be the same as the root container origin.
-The root container origin is determined by the external authoring context.</p>
+of the style property must be considered to be the same as the root container
+origin.<phrase diff="del"> The root container origin is determined by the external
+authoring context.</phrase></p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>auto</code> were specified.</p>
@@ -6150,13 +6172,19 @@ duration that affects dynamic flow timing behavior.</p>
   : "fill(" flowIntervalArguments ")"
   | "clear(" flowIntervalArguments ")"
 
-flowIntervalArguments
+flowIntervalArguments<phrase diff="add">
+  : flowInterval [ "," flowStyleDuration ]
+
+flowInterval</phrase>
   : "auto"
   | <loc href="#style-value-duration">&lt;duration&gt;</loc>
   | flowIntervalRate
 
 flowIntervalRate
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+ ( "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+ )?
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+ ( "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+ )?<phrase diff="add">
+
+flowStyleDuration
+  : <loc href="#style-value-duration">&lt;duration&gt;</loc></phrase>
 </eg>
 </td>
 </tr>
@@ -6175,16 +6203,32 @@ duration of time between clear
 timer events, as specified by <specref ref="flowTimerClear"/>, which in turn,
 limits the dynamic flowed content retention period.</p>
 <p>If a <loc href="#style-value-duration">&lt;duration&gt;</loc> is
-specified as an argument to a flow interval function, then it is
+specified as
+<phrase diff="chg">the flow interval argument to</phrase>
+a flow interval function, then it is
 considered to represent a <emph>definite duration</emph>.
 If a flow interval rate is
-specified as an argument to a flow interval function, then it is
+specified<phrase diff="del"> as an argument to a flow interval
+function</phrase>, then it is
 considered to represent a <emph>definite rate</emph> in units per
 second, where the applicable unit is determined in the context of
 whether the rate is used with an <code>fill()</code> or
 <code>clear()</code> flow interval function.</p>
+<p diff="add">If a <loc href="#style-value-duration">&lt;duration&gt;</loc> is
+specified as the flow style duration argument to a flow interval function,
+then it is considered to represent the <emph>definite duration</emph>
+during which time the applicable flow style is to be applied in those cases
+where the applicable flow style has intrinsic duration semantics. If no
+flow style duration argument is specified and the applicable flow style
+has intrinsic duration semantics, then the duration must be considered to
+be equal to zero.</p>
+<note role="example" diff="add"><p>In the current version of this
+specification, only the <code>smooth</code> flow style has intrinsic
+duration semantcs.</p></note>
+<note role="elaboration" diff="chg">
 <p>The computed fill and clear interval values are defined by
 <specref ref="dynamicFlowIntervalTimingCalculation"/>.</p>
+</note>
 </div3>
 <div3 id="style-value-genericFamilyName">
 <head>&lt;genericFamilyName&gt;</head>
@@ -6319,7 +6363,7 @@ measure or as two length measures of equal length, the unit of measure <code>em<
 identical to that defined by <bibref ref="xsl11"/>, &sect; 5.9.13;
 however, when specified relative to a font whose size is expressed as
 two length measures of non-equal lengths, then one <code>em</code> is
-equal to the inline progression dimension of the anisomorphically
+equal to the inline progression dimension of the <phrase diff="chg">anamorphically</phrase>
 scaled font when used to specify lengths in the inline progression
 direction and equal to the block progression dimension of the scaled
 font when used to specify lengths in the block progression direction.</p>
@@ -7153,7 +7197,7 @@ styles may be effected.</p>
 <p>For example, an author may wish a region that is otherwise empty, but
 may have a visible background color to be presented starting at some time and
 continuing over the region's duration.  The simple duration of the region serves
-additionaly to scope the presentation effects of content that is targeted to the
+additional<phrase diff="add">l</phrase>y to scope the presentation effects of content that is targeted to the
 region. An author may also wish to move a region within the root container
 extent or change a region's background color by means of animation effects. In
 both of these cases, it is necessary to posit an active time interval for a
@@ -7664,9 +7708,25 @@ temporal interval associated with a timed element. If specified,
 the value of a <att>dur</att> attribute must adhere to a
 &lt;timeExpression&gt; specification as defined by <specref
 ref="timing-value-timeExpression"/>.</p>
+<note role="clarification" diff="add">
+<p>When the <code>clock-time</code> form of a &lt;timeExpression&gt; specification
+is used with a <att>dur</att> attribute, it is intended to be interpreted as
+a difference between two implied clock time expressions.</p>
+</note>
+<p diff="chg">When a TT AF document instance specifies the use of the
+<code>smpte</code> time base and <code>discontinuous</code> marker
+mode, the <att>dur</att> attribute must not be specified on any
+element.</p>
 <p>The semantics of the <att>dur</att> attribute are those defined
 by <bibref ref="smil21"/>, &sect; 10.4.1,
 while taking into account any overriding semantics defined by this specification.</p>
+<note role="elaboration" diff="add">
+<p>In the context of the subset of <bibref ref="smil21"/> semantics supported by
+this specification, the active duration of an element that specifies both
+<att>end</att> and <att>dur</att> attributes is equal to the lesser of the value of
+the <att>dur</att> attribute and the difference between the value of the
+<att>end</att> attribute and the element's begin time.</p>
+</note>
 </div3>
 <div3 id="timing-attribute-timeContainer">
 <head>timeContainer</head>
@@ -7791,14 +7851,15 @@ applies only to leap seconds.</p>
 <emph>clock-time</emph> and a <emph>frames</emph> term is specified,
 then the value of this term must be constrained to the interval
 [0&hellip;<emph>F-1</emph>], where <emph>F</emph> is the frame rate
-determined by the the <att>ttp:frameRate</att> parameter as defined
+determined by the <phrase diff="del">the </phrase><att>ttp:frameRate</att> parameter as defined
 by <specref ref="parameter-attribute-frameRate"/>.</p>
 <p>If a &lt;timeExpression&gt; is expressed in terms of a
-<emph>clock-time</emph> and a <emph>sub-frames</emph> term is specified,
-then the value of this term must be constrained to the interval
-[0&hellip;<emph>S-1</emph>], where <emph>S</emph> is the sub-frame rate
-determined by the the <att>ttp:subFrameRate</att> parameter as defined
-by <specref ref="parameter-attribute-subFrameRate"/>.</p>
+<emph>clock-time</emph> and a <emph>sub-frames</emph> term is
+specified, then the value of this term must be constrained to the
+interval [0&hellip;<emph>S-1</emph>], where <emph>S</emph> is the
+sub-frame rate determined by the <phrase diff="del">the
+</phrase><att>ttp:subFrameRate</att> parameter as defined by <specref
+ref="parameter-attribute-subFrameRate"/>.</p>
 </div3>
 </div2>
 <div2 id="timing-time-intervals">
@@ -8097,9 +8158,10 @@ usage.</p>
 </tbody>
 </table>
 <p/>
+
 <p>The use of metadata attribute items is illustrated by the following example.</p>
 <table id="metadata-vocabulary-metadata-example-3" role="example">
-<caption>Example Fragment &ndash; Metadata Attribute Items</caption>
+<caption>Example Fragment &ndash; <phrase diff="add">Foreign </phrase>Metadata Attribute Items</caption>
 <tbody>
 <tr>
 <td>
@@ -8122,6 +8184,33 @@ attribute may also be expressed directly on the <el>div</el> element;
 however, in this case the author wishes to segregate certain metadata
 attributes by expressing them indirectly on <el>metadata</el>
 elements.</p>
+</note>
+<p/>
+<p diff="add">The use of foreign element metadata is illustrated by the following example.</p>
+<table id="metadata-vocabulary-metadata-example-4" role="example">
+<caption><phrase diff="add">Example Fragment &ndash; Foreign Element Metadata</phrase></caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+<phrase diff="add">...
+&lt;metadata
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;dc:title&gt;Foreign Element Metadata Example&lt;/dc:title&gt;
+  &lt;dc:description&gt;Express metadata using elements in foreign namespace.&lt;/dc:description&gt;
+  &lt;dc:format xsi:type="dcterms:IMT"&gt;application/ttaf+xml&lt;/dc:format&gt;
+&lt;/metadata&gt;
+...</phrase>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="explanation" diff="add">
+<p>In the above example, a number of elements defined by the Dublin
+Core metadata vocabulary are used to express document level metadata.</p>
 </note>
 <p/>
 </div3>
@@ -8150,7 +8239,7 @@ a specific element instance.</p>
 <note role="elaboration">
 <p>No specific use of the <el>ttm:title</el> element is defined by this specification.</p>
 </note>
-<p>Examples of the <att>ttm:name</att> element are shown above in
+<p>Examples of the <att>ttm:<phrase diff="chg">title</phrase></att> element are shown above in
 <specref ref="metadata-vocabulary-metadata-example-1"/> and
 <specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
 </div3>
@@ -9023,7 +9112,7 @@ performed:</p>
 <olist>
 <item><p>acquire <emph>dynamic flow lock</emph>;</p></item>
 <item><p>if the difference between the current value of the flow
-timers timeline and the <emph>last fill time</emph> is greater than or
+timers<phrase diff="add">'</phrase> timeline and the <emph>last fill time</emph> is greater than or
 equal to the current value of the computed fill interval, then perform
 the following ordered sub-steps:</p>
 <olist>
@@ -9045,10 +9134,10 @@ computed fill interval.</p></item>
 </olist>
 </item>
 <item><p>otherwise (the difference between the current value of the flow
-timers timeline and the <emph>last fill time</emph> is less than
+timers<phrase diff="add">'</phrase> timeline and the <emph>last fill time</emph> is less than
 the current value of the computed fill interval), reset the fill timer
 to the difference between the current value of the computed fill interval
-and the current value of the flow timers timeline;</p></item>
+and the current value of the flow timers<phrase diff="add">'</phrase> timeline;</p></item>
 <item><p>release <emph>dynamic flow lock</emph>.</p></item>
 </olist>
 </div3>
@@ -9061,8 +9150,8 @@ performed:</p>
 <olist>
 <item><p>acquire <emph>dynamic flow lock</emph>;</p></item>
 <item><p>if the difference between the current value of the flow
-timers timeline and the <emph>last fill time</emph> is greater than or
-equal to the current value of the computed fill interval, then perform
+timers<phrase diff="add">'</phrase> timeline and the <emph>last <phrase diff="chg">clear</phrase> time</emph> is greater than or
+equal to the current value of the computed <phrase diff="chg">clear</phrase> interval, then perform
 the following ordered sub-steps:</p>
 <olist>
 <item><p>if the <emph>presentation region</emph> is non-empty and
@@ -9074,10 +9163,10 @@ in <specref ref="flowOperationCombined"/>;</p></item>
 </olist>
 </item>
 <item><p>otherwise (the difference between the current value of the flow
-timers timeline and the <emph>last clear time</emph> is less than
+timers<phrase diff="add">'</phrase> timeline and the <emph>last clear time</emph> is less than
 the current value of the computed clear interval), reset the clear timer
 to the difference between the current value of the computed clear interval
-and the current value of the flow timers timeline;</p></item>
+and the current value of the flow timers<phrase diff="add">'</phrase> timeline;</p></item>
 <item><p>release <emph>dynamic flow lock</emph>.</p></item>
 </olist>
 </div3>
@@ -9407,7 +9496,7 @@ feature-designation
   : feature-namespace designation
 
 feature-namespace
-  : <emph>TT Feature Namespace</emph>                    // http://www.w3.org/2006/10/ttaf1/feature
+  : <emph>TT Feature Namespace</emph>                    // http://www.w3.org/2006/10/ttaf1/feature<phrase diff="add">/</phrase>
 
 designation
   : "#" token-char+
@@ -9670,6 +9759,19 @@ attribute.</p>
 <code>#displayAlign</code> feature if it implements presentation semantic support
 for all defined values of the <loc
 href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dropMode">
+<head>#<phrase diff="chg">dropMode</phrase></head>
+<p>A TT AF transformation processor supports the
+<code>#<phrase diff="chg">dropMode</phrase></code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-dropMode"><att>ttp:<phrase diff="chg">dropMode</phrase></att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#<phrase diff="chg">dropMode</phrase></code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-dropMode"><att>ttp:<phrase diff="chg">dropMode</phrase></att></loc>
 attribute.</p>
 </div3>
 <div3 id="feature-dynamicFlow">
@@ -9935,16 +10037,16 @@ for the <loc
 href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
 attribute.</p>
 </div3>
-<div3 id="feature-fontSize-anisomorphic">
-<head>#fontSize-anisomorphic</head>
+<div3 id="feature-fontSize-anamorphic">
+<head>#fontSize-<phrase diff="chg">anamorphic</phrase></head>
 <p>A TT AF transformation processor supports the
-<code>#fontSize-anisomorphic</code> feature if it recognizes and is
+<code>#fontSize-<phrase diff="chg">anamorphic</phrase></code> feature if it recognizes and is
 capable of transforming values of the <loc
 href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
 attribute that consist of two <loc
 href="#style-value-length">&lt;length&gt;</loc> specifications.</p>
 <p>A TT AF presentation processor supports the
-<code>#fontSize-anisomorphic</code> feature if it implements presentation semantic
+<code>#fontSize-<phrase diff="chg">anamorphic</phrase></code> feature if it implements presentation semantic
 support for defined values of the <loc
 href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
 attribute that consist of two <loc
@@ -10474,19 +10576,6 @@ for all defined values of the <loc
 href="#style-attribute-showBackground"><att>tts:showBackground</att></loc>
 attribute.</p>
 </div3>
-<div3 id="feature-smpteMode">
-<head>#smpteMode</head>
-<p>A TT AF transformation processor supports the
-<code>#smpteMode</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#parameter-attribute-smpteMode"><att>ttp:smpteMode</att></loc>
-attribute.</p>
-<p>A TT AF presentation processor supports the
-<code>#smpteMode</code> feature if it implements presentation semantic support
-for the <loc
-href="#parameter-attribute-smpteMode"><att>ttp:smpteMode</att></loc>
-attribute.</p>
-</div3>
 <div3 id="feature-structure">
 <head>#structure</head>
 <p>A TT AF transformation processor supports the <code>#structure</code>
@@ -10768,13 +10857,13 @@ attribute.</p>
 of transforming the <code>smpte</code> value of the <loc
 href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
 attribute and if it supports the <loc
-href="#feature-smpteMode"><code>#smpteMode</code></loc> feature.</p>
+href="#feature-dropMode"><code>#<phrase diff="chg">dropMode</phrase></code></loc> feature.</p>
 <p>A TT AF presentation processor supports the
 <code>#timeBase-smpte</code> feature if it implements presentation
 semantic support for the <code>smpte</code> value of the <loc
 href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc>
 attribute and if it supports the <loc
-href="#feature-smpteMode"><code>#smpteMode</code></loc> feature.</p>
+href="#feature-dropMode"><code>#<phrase diff="chg">dropMode</phrase></code></loc> feature.</p>
 </div3>
 <div3 id="feature-timeContainer">
 <head>#timeContainer</head>
@@ -11181,6 +11270,11 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
+<td><loc href="#feature-dropMode"><code>#<phrase diff="chg">dropMode</phrase></code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-dynamicFlow"><code>#dynamicFlow</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -11271,7 +11365,7 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-fontSize-anisomorphic"><code>#fontSize-anisomorphic</code></loc></td>
+<td><loc href="#feature-fontSize-anamorphic"><code>#fontSize-<phrase diff="chg">anamorphic</phrase></code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -11457,11 +11551,6 @@ transformation and presentation processors.</p>
 </tr>
 <tr>
 <td><loc href="#feature-showBackground"><code>#showBackground</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-smpteMode"><code>#smpteMode</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -11823,7 +11912,7 @@ extension-designation
   : extension-namespace designation
 
 extension-namespace
-  : <emph>TT Extension Namespace</emph>                  // http://www.w3.org/2006/10/ttaf1/extension
+  : <emph>TT Extension Namespace</emph>                  // http://www.w3.org/2006/10/ttaf1/extension<phrase diff="add">/</phrase>
   | <emph>Other Extension Namespace</emph>               // expressed as an absolute URI
 
 designation
@@ -12960,7 +13049,7 @@ above.</p>
 <td></td>
 </tr>
 <tr>
-<td><loc href="#parameter-attribute-smpteMode"><code>ttp:smpteMode</code></loc></td>
+<td><loc href="#parameter-attribute-dropMode"><code>ttp:<phrase diff="chg">dropMode</phrase></code></loc></td>
 <td><emph>none</emph></td>
 <td></td>
 <td>expresses frame counting (drop) modes</td>
@@ -13224,10 +13313,10 @@ count with subframe count.
 Interpretation of time expression is further constrained by
 parameters expressed by
 <att>ttp:clockMode</att>,
+<att>ttp:<phrase diff="chg">dropMode</phrase></att>,
 <att>ttp:frameRate</att>,
 <att>ttp:frameRateMultiplier</att>,
 <att>ttp:markerMode</att>,
-<att>ttp:smpteMode</att>,
 <att>ttp:subFrameRate</att>,
 <att>ttp:tickRate</att>, and
 <att>ttp:timeBase</att> attributes.</p>
@@ -14077,6 +14166,54 @@ schemas, or conformance criteria for DFXP:
 * Fix note regarding context of usage of metadata items [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/111">I-111</loc>].
 * Remove style and metadata extension namespaces [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/112">I-112</loc>].
 * Clarify region association algorithm [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/118">I-118</loc>].
+
+</eg>
+</div2>
+<div2 id="change-history-lc3-to-cr2" diff="add">
+<head>Changes from Third Last Call Working Draft to Second Candidate Recommendation</head>
+<eg xml:space="preserve">
+<phrase role="strong">Technical Changes</phrase>
+
+The following changes result in a technical change of the conformance
+criteria, the normative abstract document type that is defined
+for use with DFXP, or the defined value space of an attribute or
+property:
+
+* Change value syntax of ttp:frameRateMultiplier and ttp:pixelAspectRatio
+  to use whitespace separator rather than COLON ':' separator [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/122">I-122</loc>].
+* Add flow style duration argument to flow interval function [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/126">I-126</loc>].
+* Add path separator '/' to end of TT Profile, Feature, and Extension
+  Namespace strings, which are used as base URIs [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/131">I-131</loc>].
+* Prohibit use of 'dur' attribute when operating in discontinuous marker
+  mode [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/141">I-141</loc>].
+* Change name of ttp:smpteMode attribute to ttp:dropMode [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/142">I-142</loc>].
+
+<phrase role="strong">Editorial Changes</phrase>
+
+The following changes are editorial in nature or entail semantic
+clarifications that do not affect the abstract document type, defined
+schemas, or conformance criteria for DFXP:
+
+* Change #style to #styling suffix of TT Styling Namespace in RNC
+  schema [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/119">I-119</loc>].
+* Remove use of TT extension namespaces in RNC schema [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/119">I-119</loc>].
+* Add missing direction and unicodeBidi style attributes to
+  TTAF.Styling.attrib in RNC schema [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/120">I-120</loc>].
+* Enhance foreign element pattern for metadata content model in RNC
+  schema [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/121">I-121</loc>].
+* Clarify that numerator of ttp:frameRateMultiplier must be non-zero [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/123">I-123</loc>].
+* Remove erroneous specification of inheritance on tts:displayAlign [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/125">I-125</loc>].
+* Fix typos in descriptive prose of flow timers [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/128">I-128</loc>].
+* Fix miscellaneous typos [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/132">I-132</loc>].
+* Clarify use of 'transparency' [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/133">I-133</loc>].
+* Reorder descriptive prose on root container origin [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/134">I-134</loc>].
+* Clarify meaning of presence of both 'dur' and 'end' attributes
+  on an element [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/135">I-135</loc>].
+* Add note on first usage of 'c' (cell) length unit [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/136">I-136</loc>].
+* Add example of foreign metadata element usage [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/137">I-137</loc>].
+* Clarify meaning of 'dur' attribute with clock-time expression [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/140">I-140</loc>].
+* Add note on exception to false negatives when using RNC schema [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/145">I-145</loc>].
+* Add proscription against multiple instances of same flow function [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/146">I-146</loc>].
 
 </eg>
 </div2>

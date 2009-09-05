@@ -2553,6 +2553,10 @@ based on the passage of real time.</p>
 given document instance, the interpretation of time expressions
 is uniform throughout the document instance.</p>
 </note>
+<p diff="add">When operating with the <code>clock</code> time base,
+the expression <emph>media time</emph> as used in this specification is
+to be interpreted as the real-time clock selected by
+<specref ref="parameter-attribute-clockMode"/>.</p>
 </div3>
 </div2>
 </div1>
@@ -3842,7 +3846,7 @@ href="images/dynamicFlow_RU_animated.svg">SVG Animation</loc>.</p>
   &lt;style tts:fontFamily="proportionalSansSerif"/&gt;
   &lt;style tts:fontSize="18px"/&gt;
   &lt;style <phrase role="strong">tts:overflow="dynamic"</phrase>/&gt;
-  &lt;style <phrase role="strong">tts:dynamicFlow="in(word,jump) fill(1.0s) out(line,smooth) clear(0.3s)"</phrase>/&gt;
+  &lt;style <phrase role="strong">tts:dynamicFlow="in(word,jump) fill(1.0s) out(line,smooth) clear(<phrase diff="add">break,</phrase>0.3s)"</phrase>/&gt;
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
@@ -6154,7 +6158,8 @@ region. If the flow style is <code>smooth</code>, then the flow unit
 is smoothly transitioned by means of pixel based exposure, movement,
 or hiding, respectively.</p>
 <p>If a presentation processor that supports dynamic flow
-does not the <code>smooth</code> flow style, then this flow style must
+does not <phrase diff="add">support </phrase>the <code>smooth</code>
+flow style, then this flow style must
 be interpreted as if the <code>jump</code> flow style were
 specified.</p>
 </div3>
@@ -6176,7 +6181,8 @@ flowIntervalArguments<phrase diff="add">
   : flowInterval [ "," flowStyleDuration ]
 
 flowInterval</phrase>
-  : "auto"
+  : "auto"<phrase diff="add">
+  | "break"</phrase>
   | <loc href="#style-value-duration">&lt;duration&gt;</loc>
   | flowIntervalRate
 
@@ -6202,6 +6208,16 @@ dynamic flow processing, which expresses the
 duration of time between clear
 timer events, as specified by <specref ref="flowTimerClear"/>, which in turn,
 limits the dynamic flowed content retention period.</p>
+<p diff="add">If the value <code>auto</code> is specified as
+the flow interval argument to a flow interval function, then an
+implied flow interval is computed dynamically.</p>
+<p diff="add">If the value <code>break</code> is specified as
+the flow interval argument to a flow interval function, then
+the flow interval is variable, and depends upon the time at
+which a content unit is appended to the flow buffer or whose
+corresponding flow area is appended to the flow region, where
+the content unit is logically preceded by or followed by a manual
+line break element.</p>
 <p>If a <loc href="#style-value-duration">&lt;duration&gt;</loc> is
 specified as
 <phrase diff="chg">the flow interval argument to</phrase>
@@ -6214,6 +6230,11 @@ considered to represent a <emph>definite rate</emph> in units per
 second, where the applicable unit is determined in the context of
 whether the rate is used with an <code>fill()</code> or
 <code>clear()</code> flow interval function.</p>
+<note role="elaboration" diff="chg">
+<p>See <specref ref="dynamicFlowIntervalTimingCalculation"/> for further
+information on how the computed fill and clear interval values are
+determined from &lt;flowIntervalFunction&gt; expressions.</p>
+</note>
 <p diff="add">If a <loc href="#style-value-duration">&lt;duration&gt;</loc> is
 specified as the flow style duration argument to a flow interval function,
 then it is considered to represent the <emph>definite duration</emph>
@@ -6225,10 +6246,6 @@ be equal to zero.</p>
 <note role="example" diff="add"><p>In the current version of this
 specification, only the <code>smooth</code> flow style has intrinsic
 duration semantcs.</p></note>
-<note role="elaboration" diff="chg">
-<p>The computed fill and clear interval values are defined by
-<specref ref="dynamicFlowIntervalTimingCalculation"/>.</p>
-</note>
 </div3>
 <div3 id="style-value-genericFamilyName">
 <head>&lt;genericFamilyName&gt;</head>
@@ -7903,8 +7920,10 @@ duration value as defined by <bibref ref="smil21"/>.</p>
 <item>
 <p>If the governing time mode is <code>media</code> or
 <code>smpte</code> with mode <code>continuous</code>, then time
-expressions must be interpreted as equivalent to offset clock values
-related to the associated media time line.</p>
+expressions must be interpreted as
+<phrase diff="chg">equivalent to offset based timing
+in <bibref ref="smil21"/>, namely, as offsets from an implicit
+syncbase</phrase>.</p>
 </item>
 <item>
 <p>If the governing time mode is <code>smpte</code> with mode
@@ -8681,8 +8700,8 @@ animation intervals.</p>
 <head>Flow Buffer</head>
 <p>Each region which is assigned a <att>tts:overflow</att> property
 with the value <code>dynamic</code> is associated with a <emph>flow
-buffer</emph>, whose implementation is not defined by this
-specification.</p>
+buffer</emph>, <phrase diff="chg">the implementation of which</phrase>
+is not defined by this specification.</p>
 <p>The content of a flow buffer is defined to be equivalent (in form) to the
 content of an <el>fo:block-container</el> element produced by
 <specref ref="semantics-region-layout-step-2"/>, and represents
@@ -8723,7 +8742,7 @@ visible in the region;</p></item>
 <item><p>difference present, but not limited to before, between, or after
 the logical content positions
 that correspond with the most logically prior
-and subsequent content presently visible in the region;</p></item>
+and subsequent content presently visible in the region.</p></item>
 </olist>
 </item>
 <item><p>If any one of the conditions 2a, 2b, and 2c applies, then do not
@@ -8757,9 +8776,17 @@ ref="dynamicFlowIntervalTimingCalculation"/>, then reset both fill and
 clear timers to their inactive state.</p></item>
 <item><p>If using automatic flow interval timing, then re-perform the process
 described in <specref ref="dynamicFlowIntervalTimingCalculation"/>.</p></item>
-<item><p>If the fill timer is not active, then
-reset the fill timer to the current value of the computed
-fill interval.</p></item>
+<item><p>If the fill timer is not active<phrase diff="add"> and
+if the current value of the 
+numeric value</phrase>, then
+reset the fill timer to the current value of the <emph>computed
+fill interval</emph>;</p></item>
+<item><p diff="add">If the fill timer is not active, if the
+current value of the <emph>computed fill interval</emph> is the
+token value <code>break</code>, and if the flow buffer contains
+a retained line break, then simulate the effects of fill timer
+expiration by performing the processing described in
+<specref ref="flowTimerFill"/>.</p></item>
 </olist>
 </item>
 </olist>
@@ -8862,7 +8889,8 @@ interval;</p></item>
 definite rate, then the computed fill interval is equal to the
 inverse
 of the specified rate (in fill units per second);</p></item>
-<item><p>otherwise, if the value of the <emph>fill interval</emph> is
+<item><p>otherwise, if the value of the <emph>fill interval</emph>
+<phrase diff="add">parameter </phrase>is
 <code>auto</code>, then the computed fill interval is equal to the
 difference between the time coordinate associated with the most
 temporally prior beginning point of an active duration of some content
@@ -8872,7 +8900,11 @@ ending point of an active duration of some content unit present in the
 flow buffer at time
 <code>T<sub>k</sub></code> divided by the number of fill
 units currently available in the flow buffer at
-time <code>T<sub>k</sub></code>.</p></item>
+time <code>T<sub>k</sub></code>;</p></item>
+<item><p diff="add">otherwise, if the value of the
+<emph>fill interval</emph> parameter is <code>break</code>, then the
+computed fill interval is the special token value <code>break</code>.</p>
+</item>
 </olist>
 </div3>
 <div3 id="flowIntervalClearTiming">
@@ -8889,7 +8921,8 @@ interval;</p></item>
 <item><p>otherwise, if the value of the <emph>clear interval</emph>
 parameter is a definite rate, then the computed clear interval is
 equal to the specified rate (in clear units per second);</p></item>
-<item><p>otherwise, if the value of the <emph>clear interval</emph> is
+<item><p>otherwise, if the value of the <emph>clear interval</emph>
+<phrase diff="add">parameter </phrase>is
 <code>auto</code>, then the computed clear interval is equal to the
 difference between the time coordinate associated with the most
 temporally prior beginning point of an active duration of some content
@@ -8899,7 +8932,11 @@ ending point of an active duration of some content unit present in the
 presentation region at time
 <code>T<sub>k</sub></code> divided by the number of clear
 units currently available in the presentation region
-at time <code>T<sub>k</sub></code>.</p></item>
+at time <code>T<sub>k</sub></code>;</p></item>
+<item><p diff="add">otherwise, if the value of the
+<emph>clear interval</emph> parameter is <code>break</code>, then the
+computed clear interval is the special token value <code>break</code>.</p>
+</item>
 </olist>
 </div3>
 </div2>
@@ -8982,9 +9019,13 @@ and new line areas are appended to the sequence of line
 areas;</p></item>
 <item><p>cause the newly appended areas to be made visible according
 to the <emph>fill style</emph> state parameter in force;</p></item>
-<item><p>if the clear timer is not active, then reset the
+<item><p>if the clear timer is not active<phrase diff="add"> and
+the current value of the <emph>computed clear interval</emph> is a
+numeric value</phrase>, then reset the
 clear timer to the current value of the <emph>computed clear interval</emph>;</p></item>
-<item><p>reset the fill timer to the
+<item><p><phrase diff="add">if the current value of the <emph>computed
+fill interval</emph> is a numeric value, then </phrase>reset the
+fill timer to the
 current value of the <emph>computed fill interval</emph>.</p></item>
 </olist>
 <note role="elaboration">
@@ -9106,12 +9147,31 @@ value, and must be released immediately after making the change.</p>
 <div3 id="flowTimerFill">
 <head>Fill Timer</head>
 <p>The fill timer is used to pace the addition of formatted content to the
-presentation region undergoing dynamic flow processing.</p>
+presentation region undergoing dynamic flow processing
+<phrase diff="add">when the current value of the <emph>computed fill
+interval</emph> is a numeric value; however, if it is not a numeric value,
+then the fill timer remains inactive</phrase>.</p>
+<note role="elaboration" diff="add">
+<p>Although the fill timer is inactive when the value of the
+<emph>computed fill interval</emph> is non-numeric, the effects of
+fill timer expiration may nevertheless be simulated by certain
+conditions described elsewhere.</p>
+</note>
 <p>Each time the fill timer expires, the following ordered steps are
 performed:</p>
 <olist>
 <item><p>acquire <emph>dynamic flow lock</emph>;</p></item>
-<item><p>if the difference between the current value of the flow
+<item><p diff="add">if the current value of the <emph>computed clear
+interval</emph> is the token value <code>break</code> and the most
+temporally prior unfilled content in the flow buffer, i.e., the next
+available content available for a fill operation at the beginning of
+the flow buffer, is or starts with a retained
+line break, then perform steps (1) and (2) of the processing described in
+<specref ref="flowOperationCombined"/>, i.e., perform the
+clear and reflow steps of the combined flow operation;</p></item>
+<item><p>if
+<phrase diff="add">(1) the current value of the computed fill interval is
+non-numeric or (2) </phrase>the difference between the current value of the flow
 timers<phrase diff="add">'</phrase> timeline and the <emph>last fill time</emph> is greater than or
 equal to the current value of the computed fill interval, then perform
 the following ordered sub-steps:</p>
@@ -9126,14 +9186,19 @@ perform the following ordered sub-steps:</p>
 <olist>
 <item><p>if the clear timer is not active, then reset the clear timer
 to the current value of the computed clear interval;</p></item>
-<item><p>if the fill timer is not active and the flow
-buffer is empty, then reset the fill timer to the current value of the
+<item><p>if the fill timer is not
+active<phrase diff="chg">, </phrase>the flow
+buffer is empty<phrase diff="add">, and the current value of
+the computed fill interval is a numeric value</phrase>,
+then reset the fill timer to the current value of the
 computed fill interval.</p></item>
 </olist>
 </item>
 </olist>
 </item>
-<item><p>otherwise (the difference between the current value of the flow
+<item><p>otherwise (<phrase diff="add">the current value of
+the computed fill interval is numeric and </phrase>the
+difference between the current value of the flow
 timers<phrase diff="add">'</phrase> timeline and the <emph>last fill time</emph> is less than
 the current value of the computed fill interval), reset the fill timer
 to the difference between the current value of the computed fill interval
@@ -9144,15 +9209,26 @@ and the current value of the flow timers<phrase diff="add">'</phrase> timeline;<
 <div3 id="flowTimerClear">
 <head>Clear Timer</head>
 <p>The clear timer is used to pace the removal of formatted content from the
-presentation region undergoing dynamic flow processing.</p>
+presentation region undergoing dynamic flow processing
+<phrase diff="add">when the current value of the <emph>computed clear
+interval</emph> is a numeric value; however, if it is not a numeric value,
+then the clear timer remains inactive</phrase>.</p>
+<note role="elaboration" diff="add">
+<p>Although the clear timer is inactive when the value of the
+<emph>computed clear interval</emph> is non-numeric, the effects of
+clear timer expiration may nevertheless be simulated by certain
+conditions described elsewhere.</p>
+</note>
 <p>Each time the clear timer expires, the following ordered steps are
 performed:</p>
 <olist>
 <item><p>acquire <emph>dynamic flow lock</emph>;</p></item>
-<item><p>if the difference between the current value of the flow
-timers<phrase diff="add">'</phrase> timeline and the <emph>last <phrase diff="chg">clear</phrase> time</emph> is greater than or
-equal to the current value of the computed <phrase diff="chg">clear</phrase> interval, then perform
-the following ordered sub-steps:</p>
+<item><p><phrase diff="add">(1) the current value of the computed fill interval
+is non-numeric or (2) </phrase>if the difference between the current value of
+the flow timers<phrase diff="add">'</phrase> timeline and the
+<emph>last <phrase diff="chg">clear</phrase> time</emph> is greater than or
+equal to the current value of the computed <phrase diff="chg">clear</phrase>
+interval, then perform the following ordered sub-steps:</p>
 <olist>
 <item><p>if the <emph>presentation region</emph> is non-empty and
 contains sufficient formatted content to compose a <emph>clear
@@ -9162,7 +9238,9 @@ or (2) the flow buffer is empty, then perform the processing described
 in <specref ref="flowOperationCombined"/>;</p></item>
 </olist>
 </item>
-<item><p>otherwise (the difference between the current value of the flow
+<item><p>otherwise (<phrase diff="add">the current value of the
+computed clear interval is numeric and </phrase>the
+difference between the current value of the flow
 timers<phrase diff="add">'</phrase> timeline and the <emph>last clear time</emph> is less than
 the current value of the computed clear interval), reset the clear timer
 to the difference between the current value of the computed clear interval
@@ -9657,6 +9735,45 @@ for the <loc
 href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-clockMode-gps" diff="add">
+<head>#clockMode-gps</head>
+<p>A TT AF transformation processor supports the
+<code>#clockMode-gps</code> feature if it recognizes and is capable of
+transforming the <code>gps</code> value of the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#clockMode-gps</code> feature if it implements presentation semantic support
+for the <code>gps</code> value of the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-clockMode-local" diff="add">
+<head>#clockMode-local</head>
+<p>A TT AF transformation processor supports the
+<code>#clockMode-local</code> feature if it recognizes and is capable of
+transforming the <code>local</code> value of the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#clockMode-local</code> feature if it implements presentation semantic support
+for the <code>local</code> value of the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-clockMode-utc" diff="add">
+<head>#clockMode-utc</head>
+<p>A TT AF transformation processor supports the
+<code>#clockMode-utc</code> feature if it recognizes and is capable of
+transforming the <code>utc</code> value of the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#clockMode-utc</code> feature if it implements presentation semantic support
+for the <code>utc</code> value of the <loc
+href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc>
+attribute.</p>
+</div3>
 <div3 id="feature-color">
 <head>#color</head>
 <p>A TT AF transformation processor supports the
@@ -9800,6 +9917,45 @@ for the <loc
 href="#parameter-attribute-dropMode"><att>ttp:<phrase diff="chg">dropMode</phrase></att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-dropMode-dropNTSC" diff="add">
+<head>#dropMode-dropNTSC</head>
+<p>A TT AF transformation processor supports the
+<code>#dropMode-dropNTSC</code> feature if it recognizes and is capable of
+transforming the <code>dropNTSC</code> value of the <loc
+href="#parameter-attribute-dropMode"><att>ttp:dropMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dropMode-dropNTSC</code> feature if it implements presentation semantic support
+for the <code>dropNTSC</code> value of the <loc
+href="#parameter-attribute-dropMode"><att>ttp:dropMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dropMode-dropPAL" diff="add">
+<head>#dropMode-dropPAL</head>
+<p>A TT AF transformation processor supports the
+<code>#dropMode-dropPAL</code> feature if it recognizes and is capable of
+transforming the <code>dropPAL</code> value of the <loc
+href="#parameter-attribute-dropMode"><att>ttp:dropMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dropMode-dropPAL</code> feature if it implements presentation semantic support
+for the <code>dropPAL</code> value of the <loc
+href="#parameter-attribute-dropMode"><att>ttp:dropMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-dropMode-nonDrop" diff="add">
+<head>#dropMode-nonDrop</head>
+<p>A TT AF transformation processor supports the
+<code>#dropMode-nonDrop</code> feature if it recognizes and is capable of
+transforming the <code>nonDrop</code> value of the <loc
+href="#parameter-attribute-dropMode"><att>ttp:dropMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#dropMode-nonDrop</code> feature if it implements presentation semantic support
+for the <code>nonDrop</code> value of the <loc
+href="#parameter-attribute-dropMode"><att>ttp:dropMode</att></loc>
+attribute.</p>
+</div3>
 <div3 id="feature-dynamicFlow">
 <head>#dynamicFlow</head>
 <p>A TT AF transformation processor supports the
@@ -9907,16 +10063,22 @@ attribute.</p>
 <head>#dynamicFlow-line</head>
 <p>A TT AF transformation processor supports the
 <code>#dynamicFlow-line</code> feature if it recognizes and
-is capable of transforming the flow unit <code>line</code> as
+is capable of transforming <phrase diff="add">(1) </phrase>the flow unit
+<code>line</code> as
 defined by <specref ref="style-value-flowFunction"/> when used with the
 <loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-attribute.</p>
+attribute<phrase diff="add"> and (2) the flow interval argument
+<code>break</code> as defined by
+<specref ref="style-value-flowIntervalFunction"/></phrase>.</p>
 <p>A TT AF presentation processor supports the
 <code>#dynamicFlow-line</code> feature if it implements
-presentation semantic support for the flow unit <code>line</code> as
+presentation semantic support for <phrase diff="add">(1) </phrase>the
+flow unit <code>line</code> as
 defined by <specref ref="style-value-flowFunction"/> when used with the
 <loc href="#style-attribute-dynamicFlow"><att>tts:dynamicFlow</att></loc>
-attribute.</p>
+attribute<phrase diff="add"> and (2) the flow interval argument
+<code>break</code> as defined by
+<specref ref="style-value-flowIntervalFunction"/></phrase>.</p>
 </div3>
 <div3 id="feature-dynamicFlow-out">
 <head>#dynamicFlow-out</head>
@@ -10002,6 +10164,36 @@ attribute.</p>
 the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute.</p>
+</div3>
+<div3 id="feature-extent-region" diff="add">
+<head>#extent-region</head>
+<p>A TT AF transformation processor supports the
+<code>#extent-region</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TT AF presentation processor supports the
+<code>#extent-region</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+</div3>
+<div3 id="feature-extent-root" diff="add">
+<head>#extent-root</head>
+<p>A TT AF transformation processor supports the
+<code>#extent-root</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to the <loc
+href="#document-structure-vocabulary-root"><el>tt</el></loc> element.</p>
+<p>A TT AF presentation processor supports the
+<code>#extent-root</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a <loc
+href="#document-structure-vocabulary-root"><el>tt</el></loc> element.</p>
 </div3>
 <div3 id="feature-fontFamily">
 <head>#fontFamily</head>
@@ -10116,6 +10308,32 @@ attribute.</p>
 <p>A TT AF presentation processor supports the
 <code>#fontStyle-italic</code> feature if it implements presentation semantic
 support for the <code>italic</code> of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontStyle-oblique" diff="add">
+<head>#fontStyle-oblique</head>
+<p>A TT AF transformation processor supports the
+<code>#fontStyle-oblique</code> feature if it recognizes and is
+capable of transforming the <code>oblique</code> value of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontStyle-oblique</code> feature if it implements presentation semantic
+support for the <code>oblique</code> of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-fontStyle-reverseOblique" diff="add">
+<head>#fontStyle-reverseOblique</head>
+<p>A TT AF transformation processor supports the
+<code>#fontStyle-reverseOblique</code> feature if it recognizes and is
+capable of transforming the <code>reverseOblique</code> value of the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#fontStyle-reverseOblique</code> feature if it implements presentation semantic
+support for the <code>reverseOblique</code> of the <loc
 href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
 attribute.</p>
 </div3>
@@ -10349,6 +10567,32 @@ for the <loc
 href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-markerMode-continuous" diff="add">
+<head>#markerMode-continuous</head>
+<p>A TT AF transformation processor supports the
+<code>#markerMode-continuous</code> feature if it recognizes and is capable of
+transforming the <code>continuous</code> value of the <loc
+href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#markerMode-continuous</code> feature if it implements presentation semantic support
+for the <code>continuous</code> value of the <loc
+href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-markerMode-discontinuous" diff="add">
+<head>#markerMode-discontinuous</head>
+<p>A TT AF transformation processor supports the
+<code>#markerMode-discontinuous</code> feature if it recognizes and is capable of
+transforming the <code>discontinuous</code> value of the <loc
+href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#markerMode-discontinuous</code> feature if it implements presentation semantic support
+for the <code>discontinuous</code> value of the <loc
+href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc>
+attribute.</p>
+</div3>
 <div3 id="feature-metadata">
 <head>#metadata</head>
 <p>A TT AF transformation processor supports the <code>#metadata</code>
@@ -10443,6 +10687,19 @@ attribute.</p>
 <p>A TT AF presentation processor supports the
 <code>#overflow-dynamic</code> feature if it implements presentation semantic support for
 the <code>dynamic</code> value of the <loc
+href="#style-attribute-overflow"><att>tts:overflow</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-overflow-visible" diff="add">
+<head>#overflow-visible</head>
+<p>A TT AF transformation processor supports the
+<code>#overflow-visible</code> feature if it recognizes and is capable of
+transforming the <code>visible</code> value of the <loc
+href="#style-attribute-overflow"><att>tts:overflow</att></loc>
+attribute.</p>
+<p>A TT AF presentation processor supports the
+<code>#overflow-visible</code> feature if it implements presentation semantic support for
+the <code>visible</code> value of the <loc
 href="#style-attribute-overflow"><att>tts:overflow</att></loc>
 attribute.</p>
 </div3>
@@ -10822,18 +11079,31 @@ for the <loc
 href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
 attribute.</p>
 </div3>
-<div3 id="feature-textOutline-blur">
-<head>#textOutline-blur</head>
+<div3 id="feature-textOutline-blurred" diff="chg">
+<head>#textOutline-blurred</head>
 <p>A TT AF transformation processor supports the
-<code>#textOutline-blur</code> feature if it recognizes and is capable of
+<code>#textOutline-blurred</code> feature if it recognizes and is capable of
 transforming values of the <loc
 href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
-attribute that include a blur radius specification.</p>
+attribute that includes a blur radius specification.</p>
 <p>A TT AF presentation processor supports the
-<code>#textOutline-blur</code> feature if it implements presentation semantic support
+<code>#textOutline-blurred</code> feature if it implements presentation semantic support
 for values of the <loc
 href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
-attribute that include a blur radius specification.</p>
+attribute that includes a blur radius specification.</p>
+</div3>
+<div3 id="feature-textOutline-unblurred" diff="add">
+<head>#textOutline-unblurred</head>
+<p>A TT AF transformation processor supports the
+<code>#textOutline-unblurred</code> feature if it recognizes and is capable of
+transforming values of the <loc
+href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
+attribute that does not include a blur radius specification.</p>
+<p>A TT AF presentation processor supports the
+<code>#textOutline-unblurred</code> feature if it implements presentation semantic support
+for values of the <loc
+href="#style-attribute-textOutline"><att>tts:textOutline</att></loc>
+attribute that does not include a blur radius specification.</p>
 </div3>
 <div3 id="feature-tickRate">
 <head>#tickRate</head>
@@ -11251,6 +11521,21 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
+<td><phrase diff="add"><loc href="#feature-clockMode-gps"><code>#clockMode-gps</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-clockMode-local"><code>#clockMode-local</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-clockMode-utc"><code>#clockMode-utc</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
 <td><loc href="#feature-color"><code>#color</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -11299,6 +11584,21 @@ transformation and presentation processors.</p>
 <td><loc href="#feature-dropMode"><code>#<phrase diff="chg">dropMode</phrase></code></loc></td>
 <td>O</td>
 <td>O</td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-dropMode-dropNTSC"><code>#dropMode-dropNTSC</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-dropMode-dropPAL"><code>#dropMode-dropPAL</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-dropMode-nonDrop"><code>#dropMode-nonDrop</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-dynamicFlow"><code>#dynamicFlow</code></loc></td>
@@ -11371,6 +11671,16 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
+<td><phrase diff="add"><loc href="#feature-extent-region"><code>#extent-region</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-extent-root"><code>#extent-root</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
 <td><loc href="#feature-fontFamily"><code>#fontFamily</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -11409,6 +11719,16 @@ transformation and presentation processors.</p>
 <td><loc href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></loc></td>
 <td>O</td>
 <td>O</td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-fontStyle-oblique"><code>#fontStyle-oblique</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-fontStyle-reverseOblique"><code>#fontStyle-reverseOblique</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-fontWeight"><code>#fontWeight</code></loc></td>
@@ -11496,6 +11816,16 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
+<td><phrase diff="add"><loc href="#feature-markerMode-continuous"><code>#markerMode-continuous</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-markerMode-discontinuous"><code>#markerMode-discontinuous</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
+</tr>
+<tr>
 <td><loc href="#feature-metadata"><code>#metadata</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -11529,6 +11859,11 @@ transformation and presentation processors.</p>
 <td><loc href="#feature-overflow-dynamic"><code>#overflow-dynamic</code></loc></td>
 <td>O</td>
 <td>O</td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-overflow-visible"><code>#overflow-visible</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-padding"><code>#padding</code></loc></td>
@@ -11666,9 +12001,14 @@ transformation and presentation processors.</p>
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-textOutline-blur"><code>#textOutline-blur</code></loc></td>
+<td><phrase diff="chg"><loc href="#feature-textOutline-blurred"><code>#textOutline-blurred</code></loc></phrase></td>
 <td>O</td>
 <td>O</td>
+</tr>
+<tr>
+<td><phrase diff="add"><loc href="#feature-textOutline-unblurred"><code>#textOutline-unblurred</code></loc></phrase></td>
+<td><phrase diff="add">O</phrase></td>
+<td><phrase diff="add">O</phrase></td>
 </tr>
 <tr>
 <td><loc href="#feature-tickRate"><code>#tickRate</code></loc></td>
@@ -11971,19 +12311,19 @@ identifier.</p>
 <p>Each TT AF profile is defined in terms of a TT AF Profile Definition Document,
 which is expressed as an XML document wherein the root element adheres to
 <specref ref="parameter-vocabulary-profile"/>.</p>
-<div2 id="profile-dfxp-transformation">
+<div2 id="profile-dfxp-transformation" diff="chg">
 <head>DFXP Transformation Profile</head>
 <p>The DFXP Transformation Profile is intended to be used to
 express minimum compliance for transformation processing.</p>
 <eg xml:space="preserve">&profile-dfxp-transformation;</eg>
 </div2>
-<div2 id="profile-dfxp-presentation">
+<div2 id="profile-dfxp-presentation" diff="chg">
 <head>DFXP Presentation Profile</head>
 <p>The DFXP Presentation Profile is intended to be used to
 express minimum compliance for presentation processing.</p>
 <eg xml:space="preserve">&profile-dfxp-presentation;</eg>
 </div2>
-<div2 id="profile-dfxp-full">
+<div2 id="profile-dfxp-full" diff="chg">
 <head>DFXP Full Profile</head>
 <p>The DFXP Full Profile is intended to be used to
 express maximum compliance for both transformation and presentation processing.</p>
@@ -14208,6 +14548,8 @@ property:
 * Change value syntax of ttp:frameRateMultiplier and ttp:pixelAspectRatio
   to use whitespace separator rather than COLON ':' separator [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/122">I-122</loc>].
 * Add flow style duration argument to flow interval function [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/126">I-126</loc>].
+* Add 'break' value as flow interval argument in flow interval function [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/127">I-127</loc>].
+* Add missing feature designators [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/130">I-130</loc>].
 * Add path separator '/' to end of TT Profile, Feature, and Extension
   Namespace strings, which are used as base URIs [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/131">I-131</loc>].
 * Prohibit use of 'dur' attribute when operating in discontinuous marker
@@ -14230,6 +14572,8 @@ schemas, or conformance criteria for DFXP:
 * Clarify that numerator of ttp:frameRateMultiplier must be non-zero [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/123">I-123</loc>].
 * Remove erroneous specification of inheritance on tts:displayAlign [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/125">I-125</loc>].
 * Fix typos in descriptive prose of flow timers [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/128">I-128</loc>].
+* Update tts:dynamicFlow attribute example to use 'break' clear interval  [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/129">I-129</loc>].
+* Rename #fontSize-anisomorphic and #textOutline-blur feature designators [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/130">I-130</loc>].
 * Fix miscellaneous typos [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/132">I-132</loc>].
 * Clarify use of 'transparency' [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/133">I-133</loc>].
 * Reorder descriptive prose on root container origin [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/134">I-134</loc>].
@@ -14240,6 +14584,9 @@ schemas, or conformance criteria for DFXP:
 * Clarify meaning of 'dur' attribute with clock-time expression [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/140">I-140</loc>].
 * Add note on exception to false negatives when using RNC schema [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/145">I-145</loc>].
 * Add proscription against multiple instances of same flow function [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/146">I-146</loc>].
+* Clarify the meaning of <emph>media time</emph> when using clock timebase [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/147">I-147</loc>].
+* Clarify the meaning of <emph>offset based timing</emph> when using media or
+  continuous smpte timebase [<loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/148">I-148</loc>].
 
 </eg>
 </div2>

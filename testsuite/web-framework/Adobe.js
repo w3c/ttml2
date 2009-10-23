@@ -3,7 +3,7 @@ function Adobe() {
 }
 
 Adobe.prototype.name = function() {
-    return "Adobe Flash cc version ?";
+    return "Adobe Flash DFXP prototype";
 }
 
 Adobe.prototype.startPlayer = function() {
@@ -11,19 +11,18 @@ Adobe.prototype.startPlayer = function() {
 }
 
 Adobe.prototype.startTest = function(test_number, filename, autostart, div) {
-
-    var value = "flv=dfxp_movie.flv&cc=" + filename;
+    var value = "flv=dfxp_movie.flv&cc=" + filename + "&autoplay=" + autostart;
     if (-1 != navigator.userAgent.indexOf("MSIE")) {
 	// once again, a workaround for IE :-/
 	div.innerHTML =
-	    '<OBJECT width="400" height="300" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
-	    + 'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"'
+	    '<OBJECT width="335" height="282" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
+	    + 'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0"'
 	    + ' type="application/x-shockwave-flash" align="middle">'
 	    + '<PARAM name="movie" class="object" value="adobeflashcc.swf"/>'
 	    + '<PARAM name="bgcolor" value="#000000"/><PARAM name="allowScriptAccess" value="always"/>'
 	    + '<PARAM name="quality" value="high"/><PARAM name="allowFullScreen" value="false"/>'
 	    + '<PARAM name="flashvars" value="' + value + '"/>'
-	    + '<EMBED width="400" height="300" src="adobeflashcc.swf"'
+	    + '<EMBED width="335" height="282" src="adobeflashcc.swf"'
 	    + ' bgcolor="#000000" quality="high" allowFullScreen="false"'
 	    + ' flashvars="' + value + '"'
 	    + ' pluginspage="http://www.macromedia.com/go/getflashplayer"'
@@ -33,9 +32,9 @@ Adobe.prototype.startTest = function(test_number, filename, autostart, div) {
 	// Create the object
 	var obj = document.createElement("object");
 	obj.setAttribute("classid", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
-	obj.setAttribute("codebase", "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0");
-	obj.setAttribute("width", "400");
-	obj.setAttribute("height", "300");
+	obj.setAttribute("codebase", "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0");
+	obj.setAttribute("width", "335");
+	obj.setAttribute("height", "282");
 	obj.setAttribute("align", "middle");
 	obj.setAttribute("type", "application/x-shockwave-flash");
 	var p = document.createElement("param");
@@ -61,8 +60,8 @@ Adobe.prototype.startTest = function(test_number, filename, autostart, div) {
 	var embed = document.createElement("embed");
 	embed.setAttribute("src", "adobeflashcc.swf");
 	embed.setAttribute("bgcolor", "#000000");
-	embed.setAttribute("width", "400");
-	embed.setAttribute("height", "300");
+	embed.setAttribute("width", "335");
+	embed.setAttribute("height", "282");
 	embed.setAttribute("allowScriptAccess", "always");
 	embed.setAttribute("type", "application/x-shockwave-flash");
 	embed.setAttribute("flashvars", value);

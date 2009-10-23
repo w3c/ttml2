@@ -25,13 +25,23 @@ filelist:
 	done
 	echo "</files>" >>filelist.xml
 
-validate:
-	rm -f validate-report.txt
-	for DIR in $(TEST_SUBDIRS) ; do \
+validate-rnc:
+	@rm -f validate-report-rnc.txt
+	@echo "Validating with RNC Schema"
+	@for DIR in $(TEST_SUBDIRS) ; do \
 	  echo Checking $$DIR ... ; \
-	  java -jar ../spec/jing/jing.jar -c ../spec/rnc/ttaf1-dfxp.rnc $$DIR/*[0-9][0-9][0-9].xml >>validate-report.txt ; \
-	  java -jar ../spec/jing/jing.jar ../spec/xsd/ttaf1-dfxp.xsd $$DIR/*[0-9][0-9][0-9].xml >>validate-report.txt ; \
+	  java -jar ../spec/jing/jing.jar -c ../spec/rnc/ttaf1-dfxp.rnc $$DIR/*[0-9][0-9][0-9].xml >>validate-report-rnc.txt ; \
 	done
+
+validate-xsd:
+	@rm -f validate-report-xsd.txt
+	@echo "Validating with XSD Schema"
+	@for DIR in $(TEST_SUBDIRS) ; do \
+	  echo Checking $$DIR ... ; \
+	  java -jar ../spec/jing/jing.jar ../spec/xsd/ttaf1-dfxp.xsd $$DIR/*[0-9][0-9][0-9].xml >>validate-report-xsd.txt ; \
+	done
+
+validate: validate-rnc validate-xsd
 
 archive: filelist
 	rm -f dfxp-testsuite.zip

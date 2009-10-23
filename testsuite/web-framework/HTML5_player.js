@@ -24,8 +24,8 @@ if (typeof XMLHttpRequest == "undefined" ) {
     };
 }
 
-var DFXP_NS = "http://www.w3.org/2006/10/ttaf1";
 var XHTML_NS = "http://www.w3.org/1999/xhtml";
+var DFXP_NS = "http://www.w3.org/2006/10/ttaf1";
 var DFXP_NS_Parameter = "http://www.w3.org/2006/10/ttaf1#parameter";
 var DFXP_NS_Style = "http://www.w3.org/2006/10/ttaf1#styling";
 var DFXP_NS_Style_Extensions = "http://www.w3.org/2006/10/ttaf1#style-extension";
@@ -519,7 +519,8 @@ HTML5Caption_computeRelativeTimeIntervals = function(dfxpNode) {
     }
 
     // for each node, we're going to compute the time container and
-    // its corresponding relative time interval.
+    // its corresponding relative time interval (relative to its parent
+    // or its previous sibling)
     //
     // we'll decorate the tree with the results:
     //   dfxpNode.tContainer
@@ -587,7 +588,7 @@ HTML5Caption_computeRelativeTimeIntervals = function(dfxpNode) {
 
     // set the relative time interval. 
     // for a par, its' relative to its parent.
-    // for a seq, it's relative to its previous sibling or the its
+    // for a seq, it's relative to its previous sibling or the
     // parent if no previous sibling.
     dfxpNode.rBegin = begin;  // 0 or higher
     dfxpNode.rEnd   = end;    // TIME_INDEFINITE or >= begin

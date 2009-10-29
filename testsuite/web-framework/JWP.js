@@ -4,7 +4,7 @@ function JWP() {
 }
 
 JWP.prototype.name = function() {
-    return "JW FLV Media Player 4.2";
+    return "JW FLV Media Player 4.6";
 }
 
 JWP.prototype.startPlayer = function ()
@@ -25,9 +25,9 @@ JWP.prototype.startTest = function (test_number, filename, autostart, div)
     var embed = document.createElement("embed");
     embed.setAttribute("src", "player.swf");
     embed.setAttribute("flashvars", 
-		       "bufferlength=5&file=dfxp_movie.flv&captions=" 
+		       "bufferlength=5&file=dfxp_movie.flv&plugins=captions-1&captions.file=" 
 		       + filename
-		       + "&mute=true&plugins=accessibility&autostart="
+		       + "&autostart="
 		       + autostart);
     embed.setAttribute("seamlesstabbing", "true");
     embed.setAttribute("bgcolor", "white");

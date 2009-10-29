@@ -8,12 +8,12 @@
 (declare (usual-integrations))
 
 (define *dfxp-preferred-reverse-bindings*
-  '(("http://www.w3.org/2006/10/ttaf1" . "")
-    ("http://www.w3.org/2006/10/ttaf1#parameter" . "ttp")
-    ("http://www.w3.org/2006/10/ttaf1#style" . "tts")
-    ("http://www.w3.org/2006/10/ttaf1#style-extension" . "ttsx")
-    ("http://www.w3.org/2006/10/ttaf1#metadata" . "ttm")
-    ("http://www.w3.org/2006/10/ttaf1#metadata-extension" . "ttmx")))
+  '(("http://www.w3.org/ns/ttml" . "")
+    ("http://www.w3.org/ns/ttml#parameter" . "ttp")
+    ("http://www.w3.org/ns/ttml#style" . "tts")
+    ("http://www.w3.org/ns/ttml#style-extension" . "ttsx")
+    ("http://www.w3.org/ns/ttml#metadata" . "ttm")
+    ("http://www.w3.org/ns/ttml#metadata-extension" . "ttmx")))
 
 (define *dfxp-namespaces-table*
   (let ((t (make-string-hash-table)))
@@ -24,8 +24,8 @@
     t))
 
 (define *dfxp-empty-element-types*
-  '(("br" . "http://www.w3.org/2006/10/ttaf1")
-    ("metadata" . "http://www.w3.org/2006/10/ttaf1")))
+  '(("br" . "http://www.w3.org/ns/ttml")
+    ("metadata" . "http://www.w3.org/ns/ttml")))
 
 (define (in-per-element-namespace? attr)
   (let* ((name (rxi-attribute/name attr))

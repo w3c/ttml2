@@ -389,13 +389,15 @@ HTML5Caption_convertDFXP2HTML = function(dfxpNode, hasOrigin, top, left) {
 	    || dfxpNode.namespaceURI == DFXP_NS_Metadata) {
 	    // ignore metadata stuff
 	    return null;
-	} else {		
-	    if (dfxpNode.namespaceURI == DFXP_NS) {
-		if (dfxpNode.aDur <= 0) {
+	} else if (dfxpNode.namespaceURI == DFXP_NS) {
+
+		if (dfxpNode.localName == "head") {
+		    // nothing for the moment
+		    return null;
+		} else if (dfxpNode.aDur <= 0) {
 		    // eliminates non-active elements
 		    return null;
-		}
-		if (dfxpNode.localName == "span") {
+		} else if (dfxpNode.localName == "span") {
 		    htmlNode = document.createElementNS(XHTML_NS, "span");
 		} else if (dfxpNode.localName == "p") {
 		    htmlNode = document.createElementNS(XHTML_NS, "p");
@@ -411,14 +413,13 @@ HTML5Caption_convertDFXP2HTML = function(dfxpNode, hasOrigin, top, left) {
 		    return null;
 		}
 		
-	    } else {
-		// there is something here, but it's not dfxp, let's copy it as-is if XHTML
-		if (dfxpNode.namespaceURI == XHTML_NS) {
-		    try {
-			htmlNode = document.importNode(dfxpNode, true);
-		    } catch (e) {
-			return null;
-		    }
+	} else {
+	    // there is something here, but it's not dfxp, let's copy it as-is if XHTML
+	    if (dfxpNode.namespaceURI == XHTML_NS) {
+		try {
+		    htmlNode = document.importNode(dfxpNode, true);
+		} catch (e) {
+		    return null;
 		}
 	    }
 	}

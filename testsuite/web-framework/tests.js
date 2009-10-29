@@ -125,6 +125,8 @@ addTest("../Styling/TextDecoration008.xml","TextDecoration008","Test tts:textDec
 addTest("../Styling/TextDecoration009.xml","TextDecoration009","Test tts:textDecoration attribute with the noLineThrough value.","Styling Test");
 addTest("../Styling/TextDecoration010.xml","TextDecoration010","Test tts:textDecoration attribute with the overline value.","Styling Test");
 addTest("../Styling/TextDecoration011.xml","TextDecoration011","Test tts:textDecoration attribute with the noOverline value.","Styling Test");
+addTest("../Styling/TextDecoration012.xml","TextDecoration012","Test tts:textDecoration attribute with underline and line through.","Styling Test");
+addTest("../Styling/TextDecoration013.xml","TextDecoration013","Test tts:textDecoration attribute with underline, overline and line through.","Styling Test");
 addTest("../Styling/TextOutline001.xml","TextOutline001","Test tts:textOutline attribute using the none value.","Styling Test");
 addTest("../Styling/TextOutline002.xml","TextOutline002","Test tts:textOutline attribute using a value for outline thickness.","Styling Test");
 addTest("../Styling/TextOutline003.xml","TextOutline003","Test tts:textOutline attribute using values for outline thickness and blur radius.","Styling Test");

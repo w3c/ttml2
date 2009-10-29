@@ -492,7 +492,7 @@
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:dynamicFlow[t:isFlowFunction(.)])'/></xsl:call-template></td>
    </tr>
    <tr>
-      <th>@tts:dynamicFlow="&lt;flowFunction&gt;+ &lt;flowInternalFunction&gt;+"</th>
+      <th>@tts:dynamicFlow="(&lt;flowFunction&gt; &lt;flowInternalFunction&gt;+)+"</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>8.2.7</xsl:with-param></xsl:call-template></td>
       <td><xsl:value-of select='count($tests/tt:tt[.//@tts:dynamicFlow[t:isDynamicFlow(.)]])'/></td>
       <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@tts:dynamicFlow[t:isDynamicFlow(.)])'/></xsl:call-template></td>
@@ -1334,7 +1334,7 @@
     <xsl:function name="t:isDynamicFlow" as="xs:boolean">
       <xsl:param name='s' as="xs:string"/>
 
-      <xsl:value-of select='matches($s, "^((in|out)\((glyph|line|character|word)(,(jump|smooth))?\))+((fill|clear)\((auto|\d(\.\d)?(s|ms|f|t)?)\))+$")'/> 
+      <xsl:value-of select='matches($s, "^((in|out)\((glyph|line|character|word)(,(jump|smooth))?\)((fill|clear)\((auto|break|\d(\.\d)?(s|ms|f|t)?)(,\d(\.\d)?(s|ms|f|t))?\))+)+$")'/> 
 
     </xsl:function>
 

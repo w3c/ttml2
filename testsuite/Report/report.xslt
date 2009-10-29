@@ -2,10 +2,10 @@
 <xsl:stylesheet
     version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:tt="http://www.w3.org/2006/10/ttaf1"
-    xmlns:tts="http://www.w3.org/2006/10/ttaf1#styling" 
-    xmlns:ttm="http://www.w3.org/2006/10/ttaf1#metadata"
-    xmlns:ttp="http://www.w3.org/2006/10/ttaf1#parameter"
+    xmlns:tt="http://www.w3.org/ns/ttml"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling" 
+    xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
+    xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:t="http://www.w3.org/1999/xhtml"
@@ -176,8 +176,8 @@
    <tr>
       <th>@ttp:profile</th>
       <td><xsl:call-template name='toc'><xsl:with-param name='section'>6.2.7</xsl:with-param></xsl:call-template></td>
-      <td><xsl:value-of select='count($tests/tt:tt[.//@ttp:profile[starts-with(., "http://www.w3.org/2006/10/ttaf1#profile-dfxp")]])'/></td>
-      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@ttp:profile[starts-with(., "http://www.w3.org/2006/10/ttaf1#profile-dfxp")])'/></xsl:call-template></td>
+      <td><xsl:value-of select='count($tests/tt:tt[.//@ttp:profile[starts-with(., "http://www.w3.org/ns/ttml#profile-dfxp")]])'/></td>
+      <td><xsl:call-template name='display'><xsl:with-param name='n' select='count($tests//@ttp:profile[starts-with(., "http://www.w3.org/ns/ttml#profile-dfxp")])'/></xsl:call-template></td>
    </tr>
    <tr>
       <th>@ttp:smpteMode</th>

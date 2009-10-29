@@ -25,12 +25,12 @@ if (typeof XMLHttpRequest == "undefined" ) {
 }
 
 var XHTML_NS = "http://www.w3.org/1999/xhtml";
-var DFXP_NS = "http://www.w3.org/2006/10/ttaf1";
-var DFXP_NS_Parameter = "http://www.w3.org/2006/10/ttaf1#parameter";
-var DFXP_NS_Style = "http://www.w3.org/2006/10/ttaf1#styling";
-var DFXP_NS_Style_Extensions = "http://www.w3.org/2006/10/ttaf1#style-extension";
-var DFXP_NS_Metadata = "http://www.w3.org/2006/10/ttaf1#metadata";
-var DFXP_NS_Metadata_Extensions = "http://www.w3.org/2006/10/ttaf1#metadata-extension";
+var DFXP_NS = "http://www.w3.org/ns/ttml";
+var DFXP_NS_Parameter = "http://www.w3.org/ns/ttml#parameter";
+var DFXP_NS_Style = "http://www.w3.org/ns/ttml#styling";
+var DFXP_NS_Style_Extensions = "http://www.w3.org/ns/ttml#style-extension";
+var DFXP_NS_Metadata = "http://www.w3.org/ns/ttml#metadata";
+var DFXP_NS_Metadata_Extensions = "http://www.w3.org/ns/ttml#metadata-extension";
 
 var DFXP_TIME_CONTAINER_PAR = 1;
 var DFXP_TIME_CONTAINER_SEQ = 2;

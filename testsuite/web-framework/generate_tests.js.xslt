@@ -2,10 +2,8 @@
 <xsl:stylesheet
     version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:tt="http://www.w3.org/2006/10/ttaf1"
-    xmlns:tts="http://www.w3.org/2006/10/ttaf1#style" 
-    xmlns:ttm="http://www.w3.org/2006/10/ttaf1#metadata"
-    xmlns:ttp="http://www.w3.org/2006/10/ttaf1#parameter"
+    xmlns:tt="http://www.w3.org/ns/ttml"
+    xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
     xmlns="http://www.w3.org/1999/xhtml"
     xml:lang="en">
 

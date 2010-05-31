@@ -417,11 +417,11 @@ G <a href="#references">References</a><br/>
 H <a href="#other-references">Other References</a> (Non-Normative)<br/>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br/>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br/>
-    J.1 <a href="#d3e17024">Element Derivation</a><br/>
-    J.2 <a href="#d3e17503">Attribute Derivation</a><br/>
+    J.1 <a href="#d3e17015">Element Derivation</a><br/>
+    J.2 <a href="#d3e17494">Attribute Derivation</a><br/>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br/>
-    K.1 <a href="#d3e18391">Requirements</a><br/>
-    K.2 <a href="#d3e18555">Guidelines</a><br/>
+    K.1 <a href="#d3e18382">Requirements</a><br/>
+    K.2 <a href="#d3e18546">Guidelines</a><br/>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br/>
 M <a href="#acknowledgments">Acknowledgments</a> (Non-Normative)<br/>
 N <a href="#change-history">Change History</a> (Non-Normative)<br/>
@@ -432,6 +432,7 @@ Recommendation</a><br/>
 Working Draft</a><br/>
     N.4 <a href="#change-history-lc3-to-cr2">Changes from Third Last Call Working Draft to Second Candidate Recommendation</a><br/>
     N.5 <a href="#change-history-cr2-to-cr3">Changes from Second Candidate Recommendation to Third Candidate Recommendation</a><br/>
+    N.6 <a href="#change-history-cr3-to-cr4">Changes from Third Candidate Recommendation to Fourth Candidate Recommendation</a><br/>
 </p></div><hr/><div class="body"><div class="div1">
 <h2><a name="intro" id="intro"/>1 Introduction</h2><p><em>Unless specified otherwise, this section and its sub-sections are non-normative.</em></p><p>The Timed Text Markup Language (TTML) 1.0
 provides a standardized representation of a particular subset of
@@ -929,7 +930,7 @@ in <a href="#profile-dfxp-presentation"><b>F.2 DFXP Presentation Profile</b></a>
 default XMLNS binding on the <code>profile</code> element to the TT Parameter Namespace.</p></div></div><div class="div2">
 <h3><a name="vocabulary-overview" id="vocabulary-overview"/>5.3 Catalog</h3><p>The vocabulary of the Timed Text Markup Language (TTML) is
 defined in the following major catalogs (divisions of vocabulary):</p><ul><li><p><a href="#core-vocabulary-overview"><b>5.3.1 Core Catalog</b></a></p></li><li><p><a href="#extension-vocabulary-overview"><b>5.3.2 Extension Catalog</b></a></p></li></ul><p>The core catalog defines the baseline, core vocabulary of TTML,
-and, in particular, the vocabulary of DFXP. The extension catalog
+and, in particular, the vocabulary of DFXP Content. The extension catalog
 serves as a placeholder for extensions to the core vocabulary defined
 by TTML.</p><div class="div3">
 <h4><a name="core-vocabulary-overview" id="core-vocabulary-overview"/>5.3.1 Core Catalog</h4><p>The core vocabulary catalog is intended to satisfy the needs of
@@ -5009,9 +5010,6 @@ TTAF.DropMode.datatype =
   "dropPAL" |
   "nonDrop"
 
-TTAF.DynamicFlow.datatype =
-  string
-
 TTAF.ExtensionDesignator.datatype =
   TTAF.URI.datatype
 
@@ -5104,8 +5102,7 @@ TTAF.Origin.datatype =
 
 TTAF.Overflow.datatype =
   "visible" |
-  "hidden" |
-  "dynamic"
+  "hidden" 
 
 TTAF.Padding.datatype =
   string
@@ -5198,6 +5195,7 @@ TTAF.ZIndex.datatype =
 # .......................................................................
 # .......................................................................
 # .......................................................................
+
 </pre></div></div><div class="div4">
 <h5><a name="rnc-dfxp-document-module" id="rnc-dfxp-document-module"/>B.1.2.6 Document Module</h5><div class="exampleInner"><pre># .......................................................................
 # TT-AF 1.0 DFXP Document Module ........................................
@@ -5646,8 +5644,6 @@ TTAF.display.attrib
   = attribute tts:display { TTAF.Display.datatype }?
 TTAF.displayAlign.attrib
   = attribute tts:displayAlign { TTAF.DisplayAlign.datatype }?
-TTAF.dynamicFlow.attrib
-  = attribute tts:dynamicFlow { TTAF.DynamicFlow.datatype }?
 TTAF.extent.attrib
   = attribute tts:extent { TTAF.Extent.datatype }?
 TTAF.fontFamily.attrib
@@ -5700,7 +5696,6 @@ TTAF.Styling.attrib.class &amp;=
   TTAF.direction.attrib,
   TTAF.display.attrib,
   TTAF.displayAlign.attrib,
-  TTAF.dynamicFlow.attrib,
   TTAF.extent.attrib,
   TTAF.fontFamily.attrib,
   TTAF.fontSize.attrib,
@@ -5777,8 +5772,7 @@ TTAF.styling.style.attlist =
 
 TTAF.styling.style.content.extra = empty
 TTAF.styling.style.content =
-  (TTAF.Metadata.class*,
-   (TTAF.styling.style.content.extra)*)
+  (TTAF.styling.style.content.extra)*
 
 # style definitions class
 TTAF.styling.defs.extra = empty
@@ -5788,8 +5782,7 @@ TTAF.styling.defs.class =
 
 # .......................................................................
 # .......................................................................
-# .......................................................................
-</pre></div></div><div class="div4">
+# .......................................................................</pre></div></div><div class="div4">
 <h5><a name="rnc-dfxp-timing-attribs-module" id="rnc-dfxp-timing-attribs-module"/>B.1.2.17 Timing Attributes Module</h5><div class="exampleInner"><pre># .......................................................................
 # TT-AF 1.0 DFXP Timing Attributes Module ...............................
 # .......................................................................
@@ -6014,9 +6007,10 @@ Archive</a>.</p><div class="div3">
   &lt;/xs:attributeGroup&gt;
 &lt;/xs:schema&gt;
 </pre></div></div><div class="div4">
-<h5><a name="xsd-dfxp-datatypes-module" id="xsd-dfxp-datatypes-module"/>B.2.2.4 Data Types Module</h5><div class="exampleInner"><pre>&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml#datatype"
-	xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:ttd="http://www.w3.org/ns/ttml#datatype"&gt;
+<h5><a name="xsd-dfxp-datatypes-module" id="xsd-dfxp-datatypes-module"/>B.2.2.4 Data Types Module</h5><div class="exampleInner"><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml#datatype"
+        xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:ttd="http://www.w3.org/ns/ttml#datatype"&gt;
   &lt;xs:simpleType name="alpha"&gt;
     &lt;xs:restriction base="xs:float"&gt;
       &lt;xs:minInclusive value="0"/&gt;
@@ -6067,9 +6061,6 @@ Archive</a>.</p><div class="div3">
       &lt;xs:enumeration value="dropPAL"/&gt;
       &lt;xs:enumeration value="nonDrop"/&gt;
     &lt;/xs:restriction&gt;
-  &lt;/xs:simpleType&gt;
-  &lt;xs:simpleType name="dynamicFlow"&gt;
-    &lt;xs:restriction base="xs:string"/&gt;
   &lt;/xs:simpleType&gt;
   &lt;xs:simpleType name="extensionDesignator"&gt;
     &lt;xs:restriction base="xs:anyURI"/&gt;
@@ -6201,7 +6192,6 @@ Archive</a>.</p><div class="div3">
     &lt;xs:restriction base="xs:token"&gt;
       &lt;xs:enumeration value="visible"/&gt;
       &lt;xs:enumeration value="hidden"/&gt;
-      &lt;xs:enumeration value="dynamic"/&gt;
     &lt;/xs:restriction&gt;
   &lt;/xs:simpleType&gt;
   &lt;xs:simpleType name="padding"&gt;
@@ -6327,6 +6317,8 @@ Archive</a>.</p><div class="div3">
     &lt;xs:restriction base="xs:string"/&gt;
   &lt;/xs:simpleType&gt;
 &lt;/xs:schema&gt;
+
+
 </pre></div></div><div class="div4">
 <h5><a name="xsd-dfxp-document-module" id="xsd-dfxp-document-module"/>B.2.2.5 Document Module</h5><div class="exampleInner"><pre>&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml" xml:lang="en"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -6659,7 +6651,8 @@ Archive</a>.</p><div class="div3">
   &lt;/xs:attributeGroup&gt;
 &lt;/xs:schema&gt;
 </pre></div></div><div class="div4">
-<h5><a name="xsd-dfxp-styling-attribs-module" id="xsd-dfxp-styling-attribs-module"/>B.2.2.14 Styling Attributes Module</h5><div class="exampleInner"><pre>&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml#styling" xml:lang="en"
+<h5><a name="xsd-dfxp-styling-attribs-module" id="xsd-dfxp-styling-attribs-module"/>B.2.2.14 Styling Attributes Module</h5><div class="exampleInner"><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml#styling" xml:lang="en"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:ttd="http://www.w3.org/ns/ttml#datatype"
   xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
@@ -6670,7 +6663,6 @@ Archive</a>.</p><div class="div3">
   &lt;xs:attribute name="direction" type="ttd:direction"/&gt;
   &lt;xs:attribute name="display" type="ttd:display"/&gt;
   &lt;xs:attribute name="displayAlign" type="ttd:displayAlign"/&gt;
-  &lt;xs:attribute name="dynamicFlow" type="ttd:dynamicFlow"/&gt;
   &lt;xs:attribute name="extent" type="ttd:extent"/&gt;
   &lt;xs:attribute name="fontFamily" type="ttd:fontFamily"/&gt;
   &lt;xs:attribute name="fontSize" type="ttd:fontSize"/&gt;
@@ -6696,7 +6688,6 @@ Archive</a>.</p><div class="div3">
     &lt;xs:attribute ref="tts:direction"/&gt;
     &lt;xs:attribute ref="tts:display"/&gt;
     &lt;xs:attribute ref="tts:displayAlign"/&gt;
-    &lt;xs:attribute ref="tts:dynamicFlow"/&gt;
     &lt;xs:attribute ref="tts:extent"/&gt;
     &lt;xs:attribute ref="tts:fontFamily"/&gt;
     &lt;xs:attribute ref="tts:fontSize"/&gt;
@@ -6718,6 +6709,7 @@ Archive</a>.</p><div class="div3">
     &lt;xs:attribute ref="tts:zIndex"/&gt;
   &lt;/xs:attributeGroup&gt;
 &lt;/xs:schema&gt;
+
 </pre></div></div><div class="div4">
 <h5><a name="xsd-dfxp-styling-module" id="xsd-dfxp-styling-module"/>B.2.2.15 Styling Module</h5><div class="exampleInner"><pre>&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml" xml:lang="en"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -6750,14 +6742,13 @@ Archive</a>.</p><div class="div3">
     &lt;xs:attributeGroup ref="tt:styling.attlist"/&gt;
   &lt;/xs:complexType&gt;
   &lt;xs:complexType name="style.eltype"&gt;
-    &lt;xs:sequence&gt;
-      &lt;xs:group ref="tt:Metadata.class" minOccurs="0" maxOccurs="unbounded"/&gt;
-    &lt;/xs:sequence&gt;
     &lt;xs:attributeGroup ref="tt:style.attlist"/&gt;
   &lt;/xs:complexType&gt;
   &lt;xs:element name="styling" type="tt:styling.eltype"/&gt;
   &lt;xs:element name="style" type="tt:style.eltype"/&gt;
 &lt;/xs:schema&gt;
+
+
 </pre></div></div><div class="div4">
 <h5><a name="xsd-dfxp-timing-attribs-module" id="xsd-dfxp-timing-attribs-module"/>B.2.2.16 Timing Attributes Module</h5><div class="exampleInner"><pre>&lt;xs:schema targetNamespace="http://www.w3.org/ns/ttml" xml:lang="en"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -7713,7 +7704,7 @@ attribute.</p></div></div><div class="div2">
 enumerates every defined feature designation (expressed without the TT
 Feature Namespace), and, for each designated feature, specifies
 whether the feature is mandatory (M) or optional (O) for
-transformation and presentation processors.</p><table summary="HTML Table" id="feature-support-table" class="common"><caption>Table E-1 – Feature Support</caption><col width="60%" span="1"/><col width="20%" span="1"/><col width="20%" span="1"/><tbody><tr><td><span class="strong">Feature</span></td><td><span class="strong">Transformation</span></td><td><span class="strong">Presentation</span></td></tr><tr><td><a href="#feature-animation"><code>#animation</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor"><code>#backgroundColor</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor-block"><code>#backgroundColor-block</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor-inline"><code>#backgroundColor-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor-region"><code>#backgroundColor-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-bidi"><code>#bidi</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-cellResolution"><code>#cellResolution</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode"><code>#clockMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode-gps"><code>#clockMode-gps</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode-local"><code>#clockMode-local</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode-utc"><code>#clockMode-utc</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-color"><code>#color</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-content"><code>#content</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-core"><code>#core</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-direction"><code>#direction</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display"><code>#display</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display-block"><code>#display-block</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display-inline"><code>#display-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display-region"><code>#display-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-displayAlign"><code>#displayAlign</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode"><code>#dropMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode-dropNTSC"><code>#dropMode-dropNTSC</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode-dropPAL"><code>#dropMode-dropPAL</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode-nonDrop"><code>#dropMode-nonDrop</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-extent"><code>#extent</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-extent-region"><code>#extent-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-extent-root"><code>#extent-root</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontFamily"><code>#fontFamily</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontFamily-generic"><code>#fontFamily-generic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontFamily-non-generic"><code>#fontFamily-non-generic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontSize"><code>#fontSize</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontSize-anamorphic"><code>#fontSize-anamorphic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle"><code>#fontStyle</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle-oblique"><code>#fontStyle-oblique</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle-reverseOblique"><code>#fontStyle-reverseOblique</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontWeight"><code>#fontWeight</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-frameRate"><code>#frameRate</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-frameRateMultiplier"><code>#frameRateMultiplier</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-layout"><code>#layout</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length"><code>#length</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-cell"><code>#length-cell</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-em"><code>#length-em</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-integer"><code>#length-integer</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-negative"><code>#length-negative</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-percentage"><code>#length-percentage</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-pixel"><code>#length-pixel</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-positive"><code>#length-positive</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-real"><code>#length-real</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-lineBreak-uax14"><code>#lineBreak-uax14</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-lineHeight"><code>#lineHeight</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-markerMode"><code>#markerMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-markerMode-continuous"><code>#markerMode-continuous</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-markerMode-discontinuous"><code>#markerMode-discontinuous</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-metadata"><code>#metadata</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-nested-div"><code>#nested-div</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-nested-span"><code>#nested-span</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-opacity"><code>#opacity</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-origin"><code>#origin</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-overflow"><code>#overflow</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-overflow-visible"><code>#overflow-visible</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding"><code>#padding</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-1"><code>#padding-1</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-2"><code>#padding-2</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-3"><code>#padding-3</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-4"><code>#padding-4</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-pixelAspectRatio"><code>#pixelAspectRatio</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-presentation"><code>#presentation</code></a></td><td>O</td><td>M</td></tr><tr><td><a href="#feature-profile"><code>#profile</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-rollUp"><code>#rollUp</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-showBackground"><code>#showBackground</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-structure"><code>#structure</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-styling"><code>#styling</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-chained"><code>#styling-chained</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-inheritance-region"><code>#styling-inheritance-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-inline"><code>#styling-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-nested"><code>#styling-nested</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-referential"><code>#styling-referential</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-subFrameRate"><code>#subFrameRate</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textAlign"><code>#textAlign</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textAlign-relative"><code>#textAlign-relative</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration"><code>#textDecoration</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration-over"><code>#textDecoration-over</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration-through"><code>#textDecoration-through</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration-under"><code>#textDecoration-under</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textOutline"><code>#textOutline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textOutline-blurred"><code>#textOutline-blurred</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textOutline-unblurred"><code>#textOutline-unblurred</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-tickRate"><code>#tickRate</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeBase-clock"><code>#timeBase-clock</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeBase-media"><code>#timeBase-media</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeBase-smpte"><code>#timeBase-smpte</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeContainer"><code>#timeContainer</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-clock"><code>#time-clock</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-clock-with-frames"><code>#time-clock-with-frames</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-offset"><code>#time-offset</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-time-offset-with-frames"><code>#time-offset-with-frames</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-offset-with-ticks"><code>#time-offset-with-ticks</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timing"><code>#timing</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-transformation"><code>#transformation</code></a></td><td>M</td><td>O</td></tr><tr><td><a href="#feature-unicodeBidi"><code>#unicodeBidi</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility"><code>#visibility</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility-block"><code>#visibility-block</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility-inline"><code>#visibility-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility-region"><code>#visibility-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-wrapOption"><code>#wrapOption</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode"><code>#writingMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-vertical"><code>#writingMode-vertical</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-horizontal"><code>#writingMode-horizontal</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-horizontal-lr"><code>#writingMode-horizontal-lr</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-horizontal-rl"><code>#writingMode-horizontal-rl</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-zIndex"><code>#zIndex</code></a></td><td>O</td><td>O</td></tr></tbody></table><p>For the sake of convenience, the following table,
+transformation and presentation processors.</p><table summary="HTML Table" id="feature-support-table" class="common"><caption>Table E-1 – Feature Support</caption><col width="60%" span="1"/><col width="20%" span="1"/><col width="20%" span="1"/><tbody><tr><td><span class="strong">Feature</span></td><td><span class="strong">Transformation</span></td><td><span class="strong">Presentation</span></td></tr><tr><td><a href="#feature-animation"><code>#animation</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor"><code>#backgroundColor</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor-block"><code>#backgroundColor-block</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor-inline"><code>#backgroundColor-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-backgroundColor-region"><code>#backgroundColor-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-bidi"><code>#bidi</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-cellResolution"><code>#cellResolution</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode"><code>#clockMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode-gps"><code>#clockMode-gps</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode-local"><code>#clockMode-local</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-clockMode-utc"><code>#clockMode-utc</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-color"><code>#color</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-content"><code>#content</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-core"><code>#core</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-direction"><code>#direction</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display"><code>#display</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display-block"><code>#display-block</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display-inline"><code>#display-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-display-region"><code>#display-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-displayAlign"><code>#displayAlign</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode"><code>#dropMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode-dropNTSC"><code>#dropMode-dropNTSC</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode-dropPAL"><code>#dropMode-dropPAL</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-dropMode-nonDrop"><code>#dropMode-nonDrop</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-extent"><code>#extent</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-extent-region"><code>#extent-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-extent-root"><code>#extent-root</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontFamily"><code>#fontFamily</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontFamily-generic"><code>#fontFamily-generic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontFamily-non-generic"><code>#fontFamily-non-generic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontSize"><code>#fontSize</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontSize-anamorphic"><code>#fontSize-anamorphic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontSize-isomorphic"><code>#fontSize-isomorphic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle"><code>#fontStyle</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle-italic"><code>#fontStyle-italic</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle-oblique"><code>#fontStyle-oblique</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontStyle-reverseOblique"><code>#fontStyle-reverseOblique</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontWeight"><code>#fontWeight</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-frameRate"><code>#frameRate</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-frameRateMultiplier"><code>#frameRateMultiplier</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-layout"><code>#layout</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length"><code>#length</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-cell"><code>#length-cell</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-em"><code>#length-em</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-integer"><code>#length-integer</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-negative"><code>#length-negative</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-percentage"><code>#length-percentage</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-pixel"><code>#length-pixel</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-positive"><code>#length-positive</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-length-real"><code>#length-real</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-lineBreak-uax14"><code>#lineBreak-uax14</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-lineHeight"><code>#lineHeight</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-markerMode"><code>#markerMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-markerMode-continuous"><code>#markerMode-continuous</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-markerMode-discontinuous"><code>#markerMode-discontinuous</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-metadata"><code>#metadata</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-nested-div"><code>#nested-div</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-nested-span"><code>#nested-span</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-opacity"><code>#opacity</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-origin"><code>#origin</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-overflow"><code>#overflow</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-overflow-visible"><code>#overflow-visible</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding"><code>#padding</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-1"><code>#padding-1</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-2"><code>#padding-2</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-3"><code>#padding-3</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-padding-4"><code>#padding-4</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-pixelAspectRatio"><code>#pixelAspectRatio</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-presentation"><code>#presentation</code></a></td><td>O</td><td>M</td></tr><tr><td><a href="#feature-profile"><code>#profile</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-showBackground"><code>#showBackground</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-structure"><code>#structure</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-styling"><code>#styling</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-chained"><code>#styling-chained</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-inheritance-content"><code>#styling-inheritance-content</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-inheritance-region"><code>#styling-inheritance-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-inline"><code>#styling-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-nested"><code>#styling-nested</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-styling-referential"><code>#styling-referential</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-subFrameRate"><code>#subFrameRate</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textAlign"><code>#textAlign</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textAlign-absolute"><code>#textAlign-absolute</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textAlign-relative"><code>#textAlign-relative</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration"><code>#textDecoration</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration-over"><code>#textDecoration-over</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration-through"><code>#textDecoration-through</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textDecoration-under"><code>#textDecoration-under</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textOutline"><code>#textOutline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textOutline-blurred"><code>#textOutline-blurred</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-textOutline-unblurred"><code>#textOutline-unblurred</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-tickRate"><code>#tickRate</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeBase-clock"><code>#timeBase-clock</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeBase-media"><code>#timeBase-media</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeBase-smpte"><code>#timeBase-smpte</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timeContainer"><code>#timeContainer</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-clock"><code>#time-clock</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-clock-with-frames"><code>#time-clock-with-frames</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-offset"><code>#time-offset</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-time-offset-with-frames"><code>#time-offset-with-frames</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-time-offset-with-ticks"><code>#time-offset-with-ticks</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-timing"><code>#timing</code></a></td><td>M</td><td>M</td></tr><tr><td><a href="#feature-transformation"><code>#transformation</code></a></td><td>M</td><td>O</td></tr><tr><td><a href="#feature-unicodeBidi"><code>#unicodeBidi</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility"><code>#visibility</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility-block"><code>#visibility-block</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility-inline"><code>#visibility-inline</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-visibility-region"><code>#visibility-region</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-wrapOption"><code>#wrapOption</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode"><code>#writingMode</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-vertical"><code>#writingMode-vertical</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-horizontal"><code>#writingMode-horizontal</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-horizontal-lr"><code>#writingMode-horizontal-lr</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-writingMode-horizontal-rl"><code>#writingMode-horizontal-rl</code></a></td><td>O</td><td>O</td></tr><tr><td><a href="#feature-zIndex"><code>#zIndex</code></a></td><td>O</td><td>O</td></tr></tbody></table><p>For the sake of convenience, the following table,
 <a href="#feature-transformation-mandatory-table"><b>Table E-2 – Mandatory Features - Transformation</b></a>, enumerates all
 mandatory features for a TTML Transformation Processor, providing additional
 comments to summarize the context of usage or the nature of the feature.
@@ -7795,433 +7786,394 @@ which is expressed as an XML document wherein the root element adheres to
 express minimum compliance for transformation processing.</p><div class="exampleInner"><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!-- this file defines the "dfxp-transformation" profile of ttaf1 --&gt;
 &lt;profile xmlns="http://www.w3.org/ns/ttml#parameter"&gt;
-&lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
-&lt;!-- required (mandatory) feature support --&gt;
-&lt;feature value="required"&gt;#content&lt;/feature&gt;
-&lt;feature value="required"&gt;#core&lt;/feature&gt;
-&lt;feature value="required"&gt;#profile&lt;/feature&gt;
-&lt;feature value="required"&gt;#structure&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-offset&lt;/feature&gt;
-&lt;feature value="required"&gt;#timing&lt;/feature&gt;
-&lt;feature value="required"&gt;#transformation&lt;/feature&gt;
-&lt;!-- optional (voluntary) feature support --&gt;
-&lt;feature value="optional"&gt;#animation&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor-block&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor&lt;/feature&gt;
-&lt;feature value="optional"&gt;#bidi&lt;/feature&gt;
-&lt;feature value="optional"&gt;#cellResolution&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode-gps&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode-local&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode-utc&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#color&lt;/feature&gt;
-&lt;feature value="optional"&gt;#direction&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display-block&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display&lt;/feature&gt;
-&lt;feature value="optional"&gt;#displayAlign&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode-dropNTSC&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode-dropPAL&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode-nonDrop&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-character&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-clear&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-fill&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-glyph&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-in&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-jump&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-line&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-out&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-rollUp&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-smooth&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-teletext&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-word&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow&lt;/feature&gt;
-&lt;feature value="optional"&gt;#extent-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#extent-root&lt;/feature&gt;
-&lt;feature value="optional"&gt;#extent&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontFamily-generic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontFamily-non-generic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontFamily&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontSize-anamorphic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontSize-isomorphic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontSize&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle-italic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle-oblique&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle-reverseOblique&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontWeight-bold&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontWeight&lt;/feature&gt;
-&lt;feature value="optional"&gt;#frameRate&lt;/feature&gt;
-&lt;feature value="optional"&gt;#frameRateMultiplier&lt;/feature&gt;
-&lt;feature value="optional"&gt;#layout&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-cell&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-em&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-negative&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-percentage&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-pixel&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-positive&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-real&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length&lt;/feature&gt;
-&lt;feature value="optional"&gt;#lineBreak-uax14&lt;/feature&gt;
-&lt;feature value="optional"&gt;#lineHeight&lt;/feature&gt;
-&lt;feature value="optional"&gt;#markerMode-continuous&lt;/feature&gt;
-&lt;feature value="optional"&gt;#markerMode-discontinuous&lt;/feature&gt;
-&lt;feature value="optional"&gt;#markerMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#metadata-foreign&lt;/feature&gt;
-&lt;feature value="optional"&gt;#metadata&lt;/feature&gt;
-&lt;feature value="optional"&gt;#nested-div&lt;/feature&gt;
-&lt;feature value="optional"&gt;#nested-span&lt;/feature&gt;
-&lt;feature value="optional"&gt;#opacity&lt;/feature&gt;
-&lt;feature value="optional"&gt;#origin&lt;/feature&gt;
-&lt;feature value="optional"&gt;#overflow-scroll&lt;/feature&gt;
-&lt;feature value="optional"&gt;#overflow-visible&lt;/feature&gt;
-&lt;feature value="optional"&gt;#overflow&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-1&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-2&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-3&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-4&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding&lt;/feature&gt;
-&lt;feature value="optional"&gt;#pixelAspectRatio&lt;/feature&gt;
-&lt;feature value="optional"&gt;#presentation&lt;/feature&gt;
-&lt;feature value="optional"&gt;#rollUp&lt;/feature&gt;
-&lt;feature value="optional"&gt;#showBackground&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-chained&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-inheritance-content&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-inheritance-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-nested&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-referential&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling&lt;/feature&gt;
-&lt;feature value="optional"&gt;#subFrameRate&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textAlign-absolute&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textAlign-relative&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textAlign&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration-over&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration-through&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration-under&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textOutline-blurred&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textOutline-unblurred&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textOutline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#tickRate&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-clock-with-frames&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-clock&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-offset-with-frames&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-offset-with-ticks&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeBase-clock&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeBase-media&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeBase-smpte&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeContainer&lt;/feature&gt;
-&lt;feature value="optional"&gt;#unicodeBidi&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility-block&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility&lt;/feature&gt;
-&lt;feature value="optional"&gt;#wrapOption&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-horizontal-lr&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-horizontal-rl&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-horizontal&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-vertical&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#zIndex&lt;/feature&gt;
-&lt;/features&gt;
-&lt;extensions xml:base="http://www.w3.org/ns/ttml/extension/"&gt;
-&lt;!-- required (mandatory) extension support --&gt;
-&lt;!-- optional (voluntary) extension support --&gt;
-&lt;/extensions&gt;
+  &lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
+    &lt;!-- required (mandatory) feature support --&gt;
+    &lt;feature value="required"&gt;#content&lt;/feature&gt;
+    &lt;feature value="required"&gt;#core&lt;/feature&gt;
+    &lt;feature value="required"&gt;#profile&lt;/feature&gt;
+    &lt;feature value="required"&gt;#structure&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-offset&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timing&lt;/feature&gt;
+    &lt;feature value="required"&gt;#transformation&lt;/feature&gt;
+    &lt;!-- optional (voluntary) feature support --&gt;
+    &lt;feature value="optional"&gt;#animation&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor-block&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#bidi&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#cellResolution&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode-gps&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode-local&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode-utc&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#color&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#direction&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display-block&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#displayAlign&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode-dropNTSC&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode-dropPAL&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode-nonDrop&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#extent-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#extent-root&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#extent&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontFamily-generic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontFamily-non-generic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontFamily&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontSize-anamorphic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontSize-isomorphic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontSize&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle-italic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle-oblique&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle-reverseOblique&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontWeight-bold&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontWeight&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#frameRate&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#frameRateMultiplier&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#layout&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-cell&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-em&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-negative&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-percentage&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-pixel&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-positive&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-real&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#lineBreak-uax14&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#lineHeight&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#markerMode-continuous&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#markerMode-discontinuous&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#markerMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#metadata-foreign&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#metadata&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#nested-div&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#nested-span&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#opacity&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#origin&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#overflow-scroll&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#overflow-visible&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#overflow&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-1&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-2&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-3&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-4&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#pixelAspectRatio&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#presentation&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#showBackground&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-chained&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-inheritance-content&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-inheritance-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-nested&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-referential&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#subFrameRate&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textAlign-absolute&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textAlign-relative&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textAlign&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration-over&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration-through&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration-under&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textOutline-blurred&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textOutline-unblurred&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textOutline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#tickRate&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-clock-with-frames&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-clock&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-offset-with-frames&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-offset-with-ticks&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeBase-clock&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeBase-media&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeBase-smpte&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeContainer&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#unicodeBidi&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility-block&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#wrapOption&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-horizontal-lr&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-horizontal-rl&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-horizontal&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-vertical&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#zIndex&lt;/feature&gt;
+  &lt;/features&gt;
+  &lt;extensions xml:base="http://www.w3.org/ns/ttml/extension/"&gt;
+    &lt;!-- required (mandatory) extension support --&gt;
+    &lt;!-- optional (voluntary) extension support --&gt;
+  &lt;/extensions&gt;
 &lt;/profile&gt;
+
 </pre></div></div><div class="div2">
 <h3><a name="profile-dfxp-presentation" id="profile-dfxp-presentation"/>F.2 DFXP Presentation Profile</h3><p>The DFXP Presentation Profile is intended to be used to
 express minimum compliance for presentation processing.</p><div class="exampleInner"><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!-- this file defines the "dfxp-presentation" profile of ttaf1-dfxp --&gt;
 &lt;profile xmlns="http://www.w3.org/ns/ttml#parameter"&gt;
-&lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
-&lt;!-- required (mandatory) feature support --&gt;
-&lt;feature value="required"&gt;#content&lt;/feature&gt;
-&lt;feature value="required"&gt;#core&lt;/feature&gt;
-&lt;feature value="required"&gt;#presentation&lt;/feature&gt;
-&lt;feature value="required"&gt;#profile&lt;/feature&gt;
-&lt;feature value="required"&gt;#structure&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-offset&lt;/feature&gt;
-&lt;feature value="required"&gt;#timing&lt;/feature&gt;
-&lt;!-- optional (voluntary) feature support --&gt;
-&lt;feature value="optional"&gt;#animation&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor-block&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#backgroundColor&lt;/feature&gt;
-&lt;feature value="optional"&gt;#bidi&lt;/feature&gt;
-&lt;feature value="optional"&gt;#cellResolution&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode-gps&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode-local&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode-utc&lt;/feature&gt;
-&lt;feature value="optional"&gt;#clockMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#color&lt;/feature&gt;
-&lt;feature value="optional"&gt;#direction&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display-block&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#display&lt;/feature&gt;
-&lt;feature value="optional"&gt;#displayAlign&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode-dropNTSC&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode-dropPAL&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode-nonDrop&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dropMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-character&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-clear&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-fill&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-glyph&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-in&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-jump&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-line&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-out&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-rollUp&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-smooth&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-teletext&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow-word&lt;/feature&gt;
-&lt;feature value="optional"&gt;#dynamicFlow&lt;/feature&gt;
-&lt;feature value="optional"&gt;#extent-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#extent-root&lt;/feature&gt;
-&lt;feature value="optional"&gt;#extent&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontFamily-generic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontFamily-non-generic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontFamily&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontSize-anamorphic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontSize-isomorphic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontSize&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle-italic&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle-oblique&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle-reverseOblique&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontStyle&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontWeight-bold&lt;/feature&gt;
-&lt;feature value="optional"&gt;#fontWeight&lt;/feature&gt;
-&lt;feature value="optional"&gt;#frameRate&lt;/feature&gt;
-&lt;feature value="optional"&gt;#frameRateMultiplier&lt;/feature&gt;
-&lt;feature value="optional"&gt;#layout&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-cell&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-em&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-negative&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-percentage&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-pixel&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-positive&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length-real&lt;/feature&gt;
-&lt;feature value="optional"&gt;#length&lt;/feature&gt;
-&lt;feature value="optional"&gt;#lineBreak-uax14&lt;/feature&gt;
-&lt;feature value="optional"&gt;#lineHeight&lt;/feature&gt;
-&lt;feature value="optional"&gt;#markerMode-continuous&lt;/feature&gt;
-&lt;feature value="optional"&gt;#markerMode-discontinuous&lt;/feature&gt;
-&lt;feature value="optional"&gt;#markerMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#metadata-foreign&lt;/feature&gt;
-&lt;feature value="optional"&gt;#metadata&lt;/feature&gt;
-&lt;feature value="optional"&gt;#nested-div&lt;/feature&gt;
-&lt;feature value="optional"&gt;#nested-span&lt;/feature&gt;
-&lt;feature value="optional"&gt;#opacity&lt;/feature&gt;
-&lt;feature value="optional"&gt;#origin&lt;/feature&gt;
-&lt;feature value="optional"&gt;#overflow-scroll&lt;/feature&gt;
-&lt;feature value="optional"&gt;#overflow-visible&lt;/feature&gt;
-&lt;feature value="optional"&gt;#overflow&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-1&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-2&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-3&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding-4&lt;/feature&gt;
-&lt;feature value="optional"&gt;#padding&lt;/feature&gt;
-&lt;feature value="optional"&gt;#pixelAspectRatio&lt;/feature&gt;
-&lt;feature value="optional"&gt;#rollUp&lt;/feature&gt;
-&lt;feature value="optional"&gt;#showBackground&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-chained&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-inheritance-content&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-inheritance-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-nested&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling-referential&lt;/feature&gt;
-&lt;feature value="optional"&gt;#styling&lt;/feature&gt;
-&lt;feature value="optional"&gt;#subFrameRate&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textAlign-absolute&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textAlign-relative&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textAlign&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration-over&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration-through&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration-under&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textDecoration&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textOutline-blurred&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textOutline-unblurred&lt;/feature&gt;
-&lt;feature value="optional"&gt;#textOutline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#tickRate&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-clock-with-frames&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-clock&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-offset-with-frames&lt;/feature&gt;
-&lt;feature value="optional"&gt;#time-offset-with-ticks&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeBase-clock&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeBase-media&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeBase-smpte&lt;/feature&gt;
-&lt;feature value="optional"&gt;#timeContainer&lt;/feature&gt;
-&lt;feature value="optional"&gt;#transformation&lt;/feature&gt;
-&lt;feature value="optional"&gt;#unicodeBidi&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility-block&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility-inline&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility-region&lt;/feature&gt;
-&lt;feature value="optional"&gt;#visibility&lt;/feature&gt;
-&lt;feature value="optional"&gt;#wrapOption&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-horizontal-lr&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-horizontal-rl&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-horizontal&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode-vertical&lt;/feature&gt;
-&lt;feature value="optional"&gt;#writingMode&lt;/feature&gt;
-&lt;feature value="optional"&gt;#zIndex&lt;/feature&gt;
-&lt;/features&gt;
-&lt;extensions xml:base="http://www.w3.org/ns/ttml/extension/"&gt;
-&lt;!-- required (mandatory) extension support --&gt;
-&lt;!-- optional (voluntary) extension support --&gt;
-&lt;/extensions&gt;
+  &lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
+    &lt;!-- required (mandatory) feature support --&gt;
+    &lt;feature value="required"&gt;#content&lt;/feature&gt;
+    &lt;feature value="required"&gt;#core&lt;/feature&gt;
+    &lt;feature value="required"&gt;#presentation&lt;/feature&gt;
+    &lt;feature value="required"&gt;#profile&lt;/feature&gt;
+    &lt;feature value="required"&gt;#structure&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-offset&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timing&lt;/feature&gt;
+    &lt;!-- optional (voluntary) feature support --&gt;
+    &lt;feature value="optional"&gt;#animation&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor-block&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#backgroundColor&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#bidi&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#cellResolution&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode-gps&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode-local&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode-utc&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#clockMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#color&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#direction&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display-block&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#display&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#displayAlign&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode-dropNTSC&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode-dropPAL&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode-nonDrop&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#dropMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#extent-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#extent-root&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#extent&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontFamily-generic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontFamily-non-generic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontFamily&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontSize-anamorphic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontSize-isomorphic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontSize&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle-italic&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle-oblique&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle-reverseOblique&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontStyle&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontWeight-bold&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#fontWeight&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#frameRate&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#frameRateMultiplier&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#layout&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-cell&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-em&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-negative&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-percentage&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-pixel&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-positive&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length-real&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#length&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#lineBreak-uax14&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#lineHeight&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#markerMode-continuous&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#markerMode-discontinuous&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#markerMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#metadata-foreign&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#metadata&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#nested-div&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#nested-span&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#opacity&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#origin&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#overflow-scroll&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#overflow-visible&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#overflow&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-1&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-2&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-3&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding-4&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#padding&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#pixelAspectRatio&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#showBackground&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-chained&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-inheritance-content&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-inheritance-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-nested&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling-referential&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#styling&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#subFrameRate&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textAlign-absolute&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textAlign-relative&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textAlign&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration-over&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration-through&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration-under&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textDecoration&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textOutline-blurred&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textOutline-unblurred&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#textOutline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#tickRate&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-clock-with-frames&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-clock&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-offset-with-frames&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#time-offset-with-ticks&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeBase-clock&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeBase-media&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeBase-smpte&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#timeContainer&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#transformation&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#unicodeBidi&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility-block&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility-inline&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility-region&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#visibility&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#wrapOption&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-horizontal-lr&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-horizontal-rl&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-horizontal&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode-vertical&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#writingMode&lt;/feature&gt;
+    &lt;feature value="optional"&gt;#zIndex&lt;/feature&gt;
+  &lt;/features&gt;
+  &lt;extensions xml:base="http://www.w3.org/ns/ttml/extension/"&gt;
+    &lt;!-- required (mandatory) extension support --&gt;
+    &lt;!-- optional (voluntary) extension support --&gt;
+  &lt;/extensions&gt;
 &lt;/profile&gt;
+
 </pre></div></div><div class="div2">
 <h3><a name="profile-dfxp-full" id="profile-dfxp-full"/>F.3 DFXP Full Profile</h3><p>The DFXP Full Profile is intended to be used to
 express maximum compliance for both transformation and presentation processing.</p><div class="exampleInner"><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!-- this file defines the "dfxp-full" profile of ttaf1-dfxp --&gt;
 &lt;profile xmlns="http://www.w3.org/ns/ttml#parameter"&gt;
-&lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
-&lt;!-- required (mandatory) feature support --&gt;
-&lt;feature value="required"&gt;#animation&lt;/feature&gt;
-&lt;feature value="required"&gt;#backgroundColor-block&lt;/feature&gt;
-&lt;feature value="required"&gt;#backgroundColor-inline&lt;/feature&gt;
-&lt;feature value="required"&gt;#backgroundColor-region&lt;/feature&gt;
-&lt;feature value="required"&gt;#backgroundColor&lt;/feature&gt;
-&lt;feature value="required"&gt;#bidi&lt;/feature&gt;
-&lt;feature value="required"&gt;#cellResolution&lt;/feature&gt;
-&lt;feature value="required"&gt;#clockMode-gps&lt;/feature&gt;
-&lt;feature value="required"&gt;#clockMode-local&lt;/feature&gt;
-&lt;feature value="required"&gt;#clockMode-utc&lt;/feature&gt;
-&lt;feature value="required"&gt;#clockMode&lt;/feature&gt;
-&lt;feature value="required"&gt;#color&lt;/feature&gt;
-&lt;feature value="required"&gt;#content&lt;/feature&gt;
-&lt;feature value="required"&gt;#core&lt;/feature&gt;
-&lt;feature value="required"&gt;#direction&lt;/feature&gt;
-&lt;feature value="required"&gt;#display-block&lt;/feature&gt;
-&lt;feature value="required"&gt;#display-inline&lt;/feature&gt;
-&lt;feature value="required"&gt;#display-region&lt;/feature&gt;
-&lt;feature value="required"&gt;#display&lt;/feature&gt;
-&lt;feature value="required"&gt;#displayAlign&lt;/feature&gt;
-&lt;feature value="required"&gt;#dropMode-dropNTSC&lt;/feature&gt;
-&lt;feature value="required"&gt;#dropMode-dropPAL&lt;/feature&gt;
-&lt;feature value="required"&gt;#dropMode-nonDrop&lt;/feature&gt;
-&lt;feature value="required"&gt;#dropMode&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-character&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-clear&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-fill&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-glyph&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-in&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-jump&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-line&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-out&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-rollUp&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-smooth&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-teletext&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow-word&lt;/feature&gt;
-&lt;feature value="required"&gt;#dynamicFlow&lt;/feature&gt;
-&lt;feature value="required"&gt;#extent-region&lt;/feature&gt;
-&lt;feature value="required"&gt;#extent-root&lt;/feature&gt;
-&lt;feature value="required"&gt;#extent&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontFamily-generic&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontFamily-non-generic&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontFamily&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontSize-anamorphic&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontSize-isomorphic&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontSize&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontStyle-italic&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontStyle-oblique&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontStyle-reverseOblique&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontStyle&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontWeight-bold&lt;/feature&gt;
-&lt;feature value="required"&gt;#fontWeight&lt;/feature&gt;
-&lt;feature value="required"&gt;#frameRate&lt;/feature&gt;
-&lt;feature value="required"&gt;#frameRateMultiplier&lt;/feature&gt;
-&lt;feature value="required"&gt;#layout&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-cell&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-em&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-negative&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-percentage&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-pixel&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-positive&lt;/feature&gt;
-&lt;feature value="required"&gt;#length-real&lt;/feature&gt;
-&lt;feature value="required"&gt;#length&lt;/feature&gt;
-&lt;feature value="required"&gt;#lineBreak-uax14&lt;/feature&gt;
-&lt;feature value="required"&gt;#lineHeight&lt;/feature&gt;
-&lt;feature value="required"&gt;#markerMode-continuous&lt;/feature&gt;
-&lt;feature value="required"&gt;#markerMode-discontinuous&lt;/feature&gt;
-&lt;feature value="required"&gt;#markerMode&lt;/feature&gt;
-&lt;feature value="required"&gt;#metadata-foreign&lt;/feature&gt;
-&lt;feature value="required"&gt;#metadata&lt;/feature&gt;
-&lt;feature value="required"&gt;#nested-div&lt;/feature&gt;
-&lt;feature value="required"&gt;#nested-span&lt;/feature&gt;
-&lt;feature value="required"&gt;#opacity&lt;/feature&gt;
-&lt;feature value="required"&gt;#origin&lt;/feature&gt;
-&lt;feature value="required"&gt;#overflow-scroll&lt;/feature&gt;
-&lt;feature value="required"&gt;#overflow-visible&lt;/feature&gt;
-&lt;feature value="required"&gt;#overflow&lt;/feature&gt;
-&lt;feature value="required"&gt;#padding-1&lt;/feature&gt;
-&lt;feature value="required"&gt;#padding-2&lt;/feature&gt;
-&lt;feature value="required"&gt;#padding-3&lt;/feature&gt;
-&lt;feature value="required"&gt;#padding-4&lt;/feature&gt;
-&lt;feature value="required"&gt;#padding&lt;/feature&gt;
-&lt;feature value="required"&gt;#pixelAspectRatio&lt;/feature&gt;
-&lt;feature value="required"&gt;#presentation&lt;/feature&gt;
-&lt;feature value="required"&gt;#profile&lt;/feature&gt;
-&lt;feature value="required"&gt;#rollUp&lt;/feature&gt;
-&lt;feature value="required"&gt;#showBackground&lt;/feature&gt;
-&lt;feature value="required"&gt;#structure&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling-chained&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling-inheritance-content&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling-inheritance-region&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling-inline&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling-nested&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling-referential&lt;/feature&gt;
-&lt;feature value="required"&gt;#styling&lt;/feature&gt;
-&lt;feature value="required"&gt;#subFrameRate&lt;/feature&gt;
-&lt;feature value="required"&gt;#textAlign-absolute&lt;/feature&gt;
-&lt;feature value="required"&gt;#textAlign-relative&lt;/feature&gt;
-&lt;feature value="required"&gt;#textAlign&lt;/feature&gt;
-&lt;feature value="required"&gt;#textDecoration-over&lt;/feature&gt;
-&lt;feature value="required"&gt;#textDecoration-through&lt;/feature&gt;
-&lt;feature value="required"&gt;#textDecoration-under&lt;/feature&gt;
-&lt;feature value="required"&gt;#textDecoration&lt;/feature&gt;
-&lt;feature value="required"&gt;#textOutline-blurred&lt;/feature&gt;
-&lt;feature value="required"&gt;#textOutline-unblurred&lt;/feature&gt;
-&lt;feature value="required"&gt;#textOutline&lt;/feature&gt;
-&lt;feature value="required"&gt;#tickRate&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-clock-with-frames&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-clock&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-offset-with-frames&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-offset-with-ticks&lt;/feature&gt;
-&lt;feature value="required"&gt;#time-offset&lt;/feature&gt;
-&lt;feature value="required"&gt;#timeBase-clock&lt;/feature&gt;
-&lt;feature value="required"&gt;#timeBase-media&lt;/feature&gt;
-&lt;feature value="required"&gt;#timeBase-smpte&lt;/feature&gt;
-&lt;feature value="required"&gt;#timeContainer&lt;/feature&gt;
-&lt;feature value="required"&gt;#timing&lt;/feature&gt;
-&lt;feature value="required"&gt;#transformation&lt;/feature&gt;
-&lt;feature value="required"&gt;#unicodeBidi&lt;/feature&gt;
-&lt;feature value="required"&gt;#visibility-block&lt;/feature&gt;
-&lt;feature value="required"&gt;#visibility-inline&lt;/feature&gt;
-&lt;feature value="required"&gt;#visibility-region&lt;/feature&gt;
-&lt;feature value="required"&gt;#visibility&lt;/feature&gt;
-&lt;feature value="required"&gt;#wrapOption&lt;/feature&gt;
-&lt;feature value="required"&gt;#writingMode-horizontal-lr&lt;/feature&gt;
-&lt;feature value="required"&gt;#writingMode-horizontal-rl&lt;/feature&gt;
-&lt;feature value="required"&gt;#writingMode-horizontal&lt;/feature&gt;
-&lt;feature value="required"&gt;#writingMode-vertical&lt;/feature&gt;
-&lt;feature value="required"&gt;#writingMode&lt;/feature&gt;
-&lt;feature value="required"&gt;#zIndex&lt;/feature&gt;
-&lt;!-- optional (voluntary) feature support --&gt;
-&lt;/features&gt;
-&lt;extensions xml:base="http://www.w3.org/ns/ttml/extension/"&gt;
-&lt;!-- required (mandatory) extension support --&gt;
-&lt;!-- optional (voluntary) extension support --&gt;
-&lt;/extensions&gt;
+  &lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
+    &lt;!-- required (mandatory) feature support --&gt;
+    &lt;feature value="required"&gt;#animation&lt;/feature&gt;
+    &lt;feature value="required"&gt;#backgroundColor-block&lt;/feature&gt;
+    &lt;feature value="required"&gt;#backgroundColor-inline&lt;/feature&gt;
+    &lt;feature value="required"&gt;#backgroundColor-region&lt;/feature&gt;
+    &lt;feature value="required"&gt;#backgroundColor&lt;/feature&gt;
+    &lt;feature value="required"&gt;#bidi&lt;/feature&gt;
+    &lt;feature value="required"&gt;#cellResolution&lt;/feature&gt;
+    &lt;feature value="required"&gt;#clockMode-gps&lt;/feature&gt;
+    &lt;feature value="required"&gt;#clockMode-local&lt;/feature&gt;
+    &lt;feature value="required"&gt;#clockMode-utc&lt;/feature&gt;
+    &lt;feature value="required"&gt;#clockMode&lt;/feature&gt;
+    &lt;feature value="required"&gt;#color&lt;/feature&gt;
+    &lt;feature value="required"&gt;#content&lt;/feature&gt;
+    &lt;feature value="required"&gt;#core&lt;/feature&gt;
+    &lt;feature value="required"&gt;#direction&lt;/feature&gt;
+    &lt;feature value="required"&gt;#display-block&lt;/feature&gt;
+    &lt;feature value="required"&gt;#display-inline&lt;/feature&gt;
+    &lt;feature value="required"&gt;#display-region&lt;/feature&gt;
+    &lt;feature value="required"&gt;#display&lt;/feature&gt;
+    &lt;feature value="required"&gt;#displayAlign&lt;/feature&gt;
+    &lt;feature value="required"&gt;#dropMode-dropNTSC&lt;/feature&gt;
+    &lt;feature value="required"&gt;#dropMode-dropPAL&lt;/feature&gt;
+    &lt;feature value="required"&gt;#dropMode-nonDrop&lt;/feature&gt;
+    &lt;feature value="required"&gt;#dropMode&lt;/feature&gt;
+    &lt;feature value="required"&gt;#extent-region&lt;/feature&gt;
+    &lt;feature value="required"&gt;#extent-root&lt;/feature&gt;
+    &lt;feature value="required"&gt;#extent&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontFamily-generic&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontFamily-non-generic&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontFamily&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontSize-anamorphic&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontSize-isomorphic&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontSize&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontStyle-italic&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontStyle-oblique&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontStyle-reverseOblique&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontStyle&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontWeight-bold&lt;/feature&gt;
+    &lt;feature value="required"&gt;#fontWeight&lt;/feature&gt;
+    &lt;feature value="required"&gt;#frameRate&lt;/feature&gt;
+    &lt;feature value="required"&gt;#frameRateMultiplier&lt;/feature&gt;
+    &lt;feature value="required"&gt;#layout&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-cell&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-em&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-negative&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-percentage&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-pixel&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-positive&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length-real&lt;/feature&gt;
+    &lt;feature value="required"&gt;#length&lt;/feature&gt;
+    &lt;feature value="required"&gt;#lineBreak-uax14&lt;/feature&gt;
+    &lt;feature value="required"&gt;#lineHeight&lt;/feature&gt;
+    &lt;feature value="required"&gt;#markerMode-continuous&lt;/feature&gt;
+    &lt;feature value="required"&gt;#markerMode-discontinuous&lt;/feature&gt;
+    &lt;feature value="required"&gt;#markerMode&lt;/feature&gt;
+    &lt;feature value="required"&gt;#metadata-foreign&lt;/feature&gt;
+    &lt;feature value="required"&gt;#metadata&lt;/feature&gt;
+    &lt;feature value="required"&gt;#nested-div&lt;/feature&gt;
+    &lt;feature value="required"&gt;#nested-span&lt;/feature&gt;
+    &lt;feature value="required"&gt;#opacity&lt;/feature&gt;
+    &lt;feature value="required"&gt;#origin&lt;/feature&gt;
+    &lt;feature value="required"&gt;#overflow-scroll&lt;/feature&gt;
+    &lt;feature value="required"&gt;#overflow-visible&lt;/feature&gt;
+    &lt;feature value="required"&gt;#overflow&lt;/feature&gt;
+    &lt;feature value="required"&gt;#padding-1&lt;/feature&gt;
+    &lt;feature value="required"&gt;#padding-2&lt;/feature&gt;
+    &lt;feature value="required"&gt;#padding-3&lt;/feature&gt;
+    &lt;feature value="required"&gt;#padding-4&lt;/feature&gt;
+    &lt;feature value="required"&gt;#padding&lt;/feature&gt;
+    &lt;feature value="required"&gt;#pixelAspectRatio&lt;/feature&gt;
+    &lt;feature value="required"&gt;#presentation&lt;/feature&gt;
+    &lt;feature value="required"&gt;#profile&lt;/feature&gt;
+    &lt;feature value="required"&gt;#showBackground&lt;/feature&gt;
+    &lt;feature value="required"&gt;#structure&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling-chained&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling-inheritance-content&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling-inheritance-region&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling-inline&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling-nested&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling-referential&lt;/feature&gt;
+    &lt;feature value="required"&gt;#styling&lt;/feature&gt;
+    &lt;feature value="required"&gt;#subFrameRate&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textAlign-absolute&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textAlign-relative&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textAlign&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textDecoration-over&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textDecoration-through&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textDecoration-under&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textDecoration&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textOutline-blurred&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textOutline-unblurred&lt;/feature&gt;
+    &lt;feature value="required"&gt;#textOutline&lt;/feature&gt;
+    &lt;feature value="required"&gt;#tickRate&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-clock-with-frames&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-clock&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-offset-with-frames&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-offset-with-ticks&lt;/feature&gt;
+    &lt;feature value="required"&gt;#time-offset&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timeBase-clock&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timeBase-media&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timeBase-smpte&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timeContainer&lt;/feature&gt;
+    &lt;feature value="required"&gt;#timing&lt;/feature&gt;
+    &lt;feature value="required"&gt;#transformation&lt;/feature&gt;
+    &lt;feature value="required"&gt;#unicodeBidi&lt;/feature&gt;
+    &lt;feature value="required"&gt;#visibility-block&lt;/feature&gt;
+    &lt;feature value="required"&gt;#visibility-inline&lt;/feature&gt;
+    &lt;feature value="required"&gt;#visibility-region&lt;/feature&gt;
+    &lt;feature value="required"&gt;#visibility&lt;/feature&gt;
+    &lt;feature value="required"&gt;#wrapOption&lt;/feature&gt;
+    &lt;feature value="required"&gt;#writingMode-horizontal-lr&lt;/feature&gt;
+    &lt;feature value="required"&gt;#writingMode-horizontal-rl&lt;/feature&gt;
+    &lt;feature value="required"&gt;#writingMode-horizontal&lt;/feature&gt;
+    &lt;feature value="required"&gt;#writingMode-vertical&lt;/feature&gt;
+    &lt;feature value="required"&gt;#writingMode&lt;/feature&gt;
+    &lt;feature value="required"&gt;#zIndex&lt;/feature&gt;
+    &lt;!-- optional (voluntary) feature support --&gt;
+  &lt;/features&gt;
+  &lt;extensions xml:base="http://www.w3.org/ns/ttml/extension/"&gt;
+    &lt;!-- required (mandatory) extension support --&gt;
+    &lt;!-- optional (voluntary) extension support --&gt;
+  &lt;/extensions&gt;
 &lt;/profile&gt;
+
 </pre></div></div></div><div class="div1">
 <h2><a name="references" id="references"/>G References</h2><p><em>This appendix is normative.</em></p><dl><dt class="label"><a name="css2" id="css2"/>CSS2</dt><dd>Bert Bos et al.,
 <a href="http://www.w3.org/TR/1998/REC-CSS2-19980512/"><cite>Cascading
@@ -8379,7 +8331,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a name="derivation" id="derivation"/>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a name="d3e17024" id="d3e17024"/>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
+<h3><a name="d3e17015" id="d3e17015"/>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8434,7 +8386,7 @@ elements.</p></li><li><p>Derived from the use of <code>@requiredExtensions</code
 and <code>@requiredFeatures</code> on the <code>svg:svg</code> element,
 but extended to support distinct specification of optionality.</p></li><li><p>Derived from the use of <code>@baseProfile</code>
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e17503" id="d3e17503"/>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
+<h3><a name="d3e17494" id="d3e17494"/>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8506,9 +8458,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a name="qa" id="qa"/>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a> <a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a name="d3e18391" id="d3e18391"/>K.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a name="d3e18382" id="d3e18382"/>K.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td/><td/><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td/><td/><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e18555" id="d3e18555"/>K.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a name="d3e18546" id="d3e18546"/>K.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 <a href="#doctypes">TTML Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">
@@ -9004,4 +8956,27 @@ schemas, or conformance criteria for TTML:
 * Update namespace URIs to use ns/ttml instead of 2006/10.
 * Changed the title of the document
 * Identified tts:dynamicFlow at risk
+</pre></div></div><div class="div2">
+<h3><a name="change-history-cr3-to-cr4" id="change-history-cr3-to-cr4"/>N.6 Changes from Third Candidate Recommendation to Fourth Candidate Recommendation</h3><div class="exampleInner"><pre>
+<span class="strong">Technical Changes</span>
+The following changes result in a technical change of the conformance
+criteria, the normative abstract document type that is defined
+for use with TTML, or the defined value space of an attribute or
+property:
+
+* Removed at risk features tts:dynamicFlow property, overflow: dynamic value, flowFunction and flowInternalFunction definitions 
+* Removed Appendix on Dynamic Flow Processing Model 
+* Removed profile features: #rollUp, #dynamicFlow, #dynamicFlow-*, #overflow-dynamic, #rollup
+* Removed requirements R307, R501 
+* Changed content model of &lt;style&gt; element to EMPTY
+
+<span class="strong">Editorial Changes</span>
+The following changes are editorial in nature or entail semantic
+clarifications that do not affect the abstract document type, defined
+schemas, or conformance criteria for TTML:
+
+* replaced names TT AF and DFXP to TTML.
+* Changed wording on XSL model to clarify it as an exemplar and not a requirement
+* Removed informative notes on style attributes.
+
 </pre></div></div></div></div></body></html>

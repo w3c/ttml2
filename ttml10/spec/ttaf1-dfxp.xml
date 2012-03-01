@@ -96,7 +96,7 @@
 <authlist id="editors" role="editor">
 <author>
 <name>Glenn Adams</name>
-<affiliation>Samsung Electronics Co., Ltd.</affiliation>
+<affiliation>Cox Communications, Inc.</affiliation>
 </author>
 </authlist>
 <authlist id="contributors" role="contributor">
@@ -4055,7 +4055,7 @@ with cell based metrics in order to denote fonts that are two rows in height and
 one column in width.</p>
 </note>
 <p>If horizontal and vertical sizes are expressed independently, then the
-metrics of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
+units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
@@ -7178,14 +7178,17 @@ document instances,
 <p>Subsequent to performing a temporal (synchronic) slice and subsequent
 remapping of regionally selected content hierarchy, the resulting intermediate
 synchronic document is subjected to a flow transformation step that produces 
-a rooted flow object tree
-<!-- changed for future CSS compatibility 
-represented as 
--->
-equivalent to
+a rooted flow object tree represented as 
 an XSL FO document instance as defined by <bibref ref="xsl11"/>,
 and semantically extended by TTML specific style properties that have no XSL
 FO counterpart.</p>
+<note>
+<p>In this section, the use of XSL FO is intended to be conceptual only, employed
+solely for the purpose of defining the normative presentation semantics of
+TTML. An actual implementation of this algorithm is not required to create or process
+XSL FO representations. In particular, it is possible to implement these semantics
+using alternative presentation models, such as Cascading Style Sheets (CSS).</p>
+</note>
 <p>Each intermediate synchronic  document produced by <specref
 ref="semantics-region-layout-step-1"/> is mapped 
 <!-- changed for future CSS compatibility 
@@ -7214,7 +7217,7 @@ nodes;</p></item>
 ref="semantics-style-resolution-process-overall"/>;</p>
 </item>
 <item>
-<p>map the <el>tt</el> element to be equivalent to an <el>fo:root</el> element, populated
+<p>map the <el>tt</el> element to an <el>fo:root</el> element, populated
 initially with an <el>fo:layout-master-set</el> element that contains a valid
 <el>fo:simple-page-master</el> that, in turn, contains an
 <el>fo:region-body</el> child, where the root container extent expressed on the
@@ -7223,12 +7226,12 @@ initially with an <el>fo:layout-master-set</el> element that contains a valid
 element;</p>
 </item>
 <item>
-<p>map the <el>layout</el> element to be equivalent to an <el>fo:page-sequence</el> element and a
+<p>map the <el>layout</el> element to an <el>fo:page-sequence</el> element and a
 child <el>fo:flow</el> element that reference the page master and page region
 defined by the simple page master produced above;</p>
 </item>
 <item>
-<p>map each non-empty <el>region</el> element to be equivalent to an <el>fo:block-container</el>
+<p>map each non-empty <el>region</el> element to an <el>fo:block-container</el>
 element with an <att>absolute-position</att> attribute with value
 <code>absolute</code>, and where the region's position and extent are mapped to equivalent
 <att>top</att>, <att>left</att>, <att>width</att>, and <att>height</att>
@@ -7237,14 +7240,14 @@ attributes;</p>
 <item>
 <p>for each <el>body</el>, <el>div</el>, and <el>p</el> element that is not
 associated with a <att>tts:display</att> style property with the value
-<code>none</code>, map the element to the equivalent of a distinct <el>fo:block</el> element,
+<code>none</code>, map the element to a distinct <el>fo:block</el> element,
 populating the style properties of <el>fo:block</el> by using the computed
 style set associated with each original TTML content element;</p>
 </item>
 <item>
-<p>for the resulting <el>fo:block</el> formatting object equivalent
+<p>for the resulting <el>fo:block</el> formatting object
 produced in the previous step that corresponds to the <el>body</el>
-element, map to be equivalent to appending to the end of its children an empty
+element, synthesize and append to the end of its children an empty
   <el>fo:block</el> with the following attributes:
 <att>space-after.optimum</att>, <att>space-after.maximum</att>, and
 <att>space-after.conditionality</att>, where the value of the former
@@ -7259,7 +7262,7 @@ associated with a <att>tts:display</att> style property with the value
 <code>none</code> and for each anonymous
 span that is a child of a <el>p</el> or <el>span</el> element,
 map the element or
-sequence of character items to be equivalent to a distinct <el>fo:inline</el> element,
+sequence of character items to a distinct <el>fo:inline</el> element,
 populating the style properties of <el>fo:inline</el> by using the computed
 style set associated with each original TTML content element
 or anonymous span;</p>
@@ -7267,8 +7270,8 @@ or anonymous span;</p>
 <item>
 <p>for each <el>br</el> element that is not
 associated with a <att>tts:display</att> style property with the value
-<code>none</code>, map the element to be equivalent
-to a distinct <el>fo:character</el> element having the following
+<code>none</code>, map the element to
+a distinct <el>fo:character</el> element having the following
 properties:</p>
 <ulist>
 <item>

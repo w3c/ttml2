@@ -1,0 +1,70 @@
+1. flowed content buffer
+
+a vector of elements E as follows:
+
+* if (dtf/character? E) then
+	E is a styled content character
+
+* if (dtf/line-break? E) then
+	E is an explicit line break
+
+* if (dtf/space? E) then
+	E is a reference to a dtf/space structure
+
+2. flowed presentation region (area)
+
+a vector of elements E as follows:
+
+* if (dtf/glyph? E) then
+	E denotes a glyph area
+
+* if (dtf/marker? E) then
+	E denotes the a marker
+
+3. dtf/marker
+
+a dtf/marker is either a dtf/content-marker or a dtf/area-marker
+
+a dtf/content-marker is an enumeration as follows:
+
+{
+  CHARACTER,
+  WORD
+}
+
+within the context of a flowed presentation region, a (dtf/content-marker 'CHARACTER) is not expressed, but is implied at
+the boundary of each character code
+
+a dtf/area-marker is an enumeration as follows:
+
+{
+  GLYPH,
+  INLINE,
+  LINE,
+  BLOCK
+}
+
+within the context of a flowed presentation region, a (dtf/area-marker 'GLYPH) is not expressed, but is implied at
+the boundary of each glyph code
+
+4. dtf/character
+
+The following slots are defined:
+
+* ch, where (wide-character? ch) => #t
+
+5. dtf/glyph
+
+The following slots are defined:
+
+* font index
+* glyph index
+* background color
+* foreground color
+* decorations
+* x position (relative to some reference point, e.g., containing region's origin, containing block's origin,
+  containing line's baseline origin, containing inline's baseline origin, prior glyph's origin, prior glyphs's
+  origin plus escapement)
+* y position (relative to some reference point, as with x position)
+* x escapement
+* y escapement

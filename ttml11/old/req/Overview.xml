@@ -1,0 +1,1766 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE spec SYSTEM "xmlspec-tt-f.dtd" [
+<!ENTITY draft.month.name "April">
+<!ENTITY draft.month "04">
+<!ENTITY draft.day "27">
+<!ENTITY draft.year "2006">
+<!ENTITY versionOfTT "1.0">
+<!ENTITY doc.designation.nodate "ttaf1-req">
+<!ENTITY doc.status "Working Group Note">
+<!ENTITY doc.status.abbr "WD">
+<!ENTITY doc.base.uri.root "/TR">
+<!ENTITY doc.base.uri.noyear "http://www.w3.org&doc.base.uri.root;/">
+<!ENTITY doc.base.uri "&doc.base.uri.noyear;&draft.year;/">
+<!ENTITY doc.audience "internal review and discussion">
+<!ENTITY doc.distribution "may be distributed freely, as long as
+all text and legal notices remain intact">
+<!ENTITY iso6.doc.date "&draft.year;&draft.month;&draft.day;">
+<!ENTITY doc.designation.nostatus "&doc.designation.nodate;-&iso6.doc.date;">
+<!ENTITY doc.designation.full "&doc.status.abbr;-&doc.designation.nostatus;">
+<!ENTITY doc.designation "&doc.designation.full;">
+<!ENTITY tbd "<phrase role='tbd'>To Be Defined</phrase>">
+<!ENTITY aring "&#x00e5;">
+<!ENTITY ccedil "&#x00e7;">
+<!ENTITY nbsp "&#x00a0;">
+<!ENTITY ndash "&#x2013;">
+<!ENTITY hArr "&#x21d4;">
+<!ENTITY trade "&#x2122;">
+<!ENTITY uuml "&#x00fc;">
+]>
+<?xml-stylesheet type="text/xsl" href="ttaf1-req.xsl"?>
+<spec w3c-doctype="wg-note">
+<header>
+<title>Timed Text (TT) Authoring Format &versionOfTT; Use Cases and Requirements</title>
+<w3c-designation>&doc.designation;</w3c-designation>
+<w3c-doctype>W3C &doc.status;</w3c-doctype>
+<pubdate>
+<day>&draft.day;</day>
+<month>&draft.month.name;</month>
+<year>&draft.year;</year>
+</pubdate>
+<publoc>
+<loc href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</loc>
+</publoc>
+<latestloc>
+<loc href="&doc.base.uri.noyear;&doc.designation.nodate;/">&doc.base.uri.noyear;&doc.designation.nodate;/</loc>
+</latestloc>
+<prevlocs>
+<loc href="http://www.w3.org/TR/2003/WD-ttaf1-req-20030515/">http://www.w3.org/TR/2003/WD-ttaf1-req-20030515/</loc>
+</prevlocs>
+<authlist>
+<author>
+<name>Glenn Adams</name>
+<affiliation>Extensible Formatting Systems, Inc.</affiliation>
+<email href="mailto:glenn@xfsi.com">glenn@xfsi.com</email>
+</author>
+</authlist>
+<abstract id="abstract">
+<p>This document specifies usage scenarios and requirements for a timed text authoring
+format. A timed text authoring format is a content type that represents timed text
+media for the purpose of interchange among authoring systems.
+Timed text is textual information that is intrinsically or extrinsically
+associated with timing information.</p>
+</abstract>
+<status id="status">
+<p><emph>This section describes the status of this document at the
+time of its publication. Other documents may supersede this document.
+A list of current W3C publications and the latest revision of this
+technical report can be found in the <loc
+href="http://www.w3.org/TR/">W3C technical reports index</loc> at
+http://www.w3.org/TR/.</emph></p>
+<p>This Working Group Note is the third publication of 
+the Timed Text (TT)
+Authoring Format &versionOfTT; Use Cases and
+Requirements, and represents an editorial revision from the previous
+version in order to transition from Working Draft to Working Group
+Note.
+This document has been produced by the <loc
+href="http://www.w3.org/AudioVideo/TT/">Timed Text Working
+Group</loc> as part of the W3C <loc
+href="http://www.w3.org/AudioVideo/Activity">Synchronized Multimedia
+Activity</loc>.
+The authors of this document are the TT Working Group members, who
+consider this document to be stable, and do not expect further
+revision.
+</p>
+<p>Comments on this document should be sent to the email list <loc
+href="mailto:public-tt@w3.org">public-tt@w3.org</loc>, which is the
+public mailing list of Timed Text Working Group (<loc
+href="http://lists.w3.org/Archives/Public/public-tt/">list
+archives</loc>).
+To subscribe, send an email to <loc
+href="mailto:public-tt-request@w3.org">public-tt-request@w3.org</loc>
+with the word <code>subscribe</code> in the subject line.</p>
+<p>Publication as a Working Group Note does not imply endorsement
+by the W3C Membership. This is a draft document and may be updated,
+replaced or obsoleted by other documents at any time. It is
+inappropriate to cite this document as other than work in
+progress.</p>
+<p>As of this publication, the Working Group does not expect this
+document to become a W3C Recommendation, and therefore it has no
+associated
+<loc href="http://www.w3.org/Consortium/Patent-Policy-20040205/">W3C
+Patent Policy</loc> licensing obligations. If this
+expectation changes, the Working Group will have an opportunity to
+fulfill the associated patent policy requirements with respect to a future draft.</p>
+</status>
+<langusage><language id="en">English</language></langusage>
+<revisiondesc><p>$Id$</p></revisiondesc>
+</header>
+<body>
+<div1 id="intro">
+<head>Introduction</head>
+<p>This document specifies usage scenarios and requirements for a timed text authoring
+format. A timed text authoring format is a content type that represents timed text
+media for the purpose of interchange among authoring systems.
+Timed text is textual information that is intrinsically or extrinsically
+associated with timing information.</p>
+<note role="explanation">
+<p>This document incorporates requirements regarding stylistic
+and timing functionality that range from simple to relatively complex. It is expected
+that the use of this functionality will be partitioned into one or more profiles
+represented by document types of increasing complexity. It is not expected that every
+authoring system or ultimate consumer of timed text content will support all of this
+functionality.</p>
+</note>
+<div2 id="motivation">
+<head>Motivation</head>
+<p>A principal motivation for the development of a common authoring format for
+timed text is the lack of a standard content format that supports the representation
+and interchange of textual information which is synchronized with other media
+elements or which serves as a synchronization master itself.</p>
+<p>Popular proprietary multimedia systems and their corresponding player
+components have defined distinct timed text formats for each proprietary use. As
+a consequence there is no common authoring format that serves as a
+portable interchange format between such systems. A goal of the present work is
+to define such a portable interchange format to ease the burden of authoring tool
+developers and users as well as enhance portability of timed text content.</p>
+<p>A side effect of the development and deployment of a common timed text authoring
+format is that it simplifies the creation and distribution of synchronized text
+for use with a multitude of devices, such as multimedia players, caption, subtitle,
+and teletext encoders and decoders, character generators, LED displays, and other
+text display devices.</p>
+</div2>
+<div2 id="model">
+<head>System Model</head>
+<p>The uses cases and requirements specified in this document are based upon a system
+model, depicted in <specref ref="model-graphic"/>, wherein the timed text authoring format
+serves as a bidirectional interchange format among a heterogeneous collection of
+authoring systems, and as a unidirectional interchange format to a
+heterogeneous collection of distribution formats after undergoing transcoding
+to the target distribution formats as required.</p>
+<table id="model-graphic" role="graphic">
+<caption>Figure 1 &ndash; System Model</caption>
+<tbody>
+<tr>
+<td><graphic id="graphic-model" source="./images/model.png" alt="System Model"/></td>
+</tr>
+</tbody>
+</table>
+<note role="explanation">
+<p>In the figure depicted above, the acronym <emph>DFXP</emph> refers
+to a profile of the timed text authoring format known as the Distribution
+Format Exchange Profile, which is intended primarily to satisfy
+interchange among existing legacy formats, and which may also be
+distributed directly.</p>
+</note>
+<note role="explanation">
+<p>This system model does not preclude the timed text authoring format from
+being used as a distribution format in its own right.</p>
+</note>
+</div2>
+</div1>
+<div1 id="definitions">
+<head>Definitions</head>
+<div2 id="acronyms">
+<head>Acronyms</head>
+<glist role="acronyms">
+<gitem>
+<label>TT</label>
+<def>
+<p>Timed Text</p>
+</def>
+</gitem>
+<gitem>
+<label>TT AS</label>
+<def>
+<p>Timed Text Authoring System</p>
+</def>
+</gitem>
+<gitem>
+<label>TT AF</label>
+<def>
+<p>Timed Text Authoring Format</p>
+</def>
+</gitem>
+<gitem>
+<label>TT WG</label>
+<def>
+<p>Timed Text Working Group</p>
+</def>
+</gitem>
+</glist>
+</div2>
+<div2 id="terms">
+<head>Terminology</head>
+<glist>
+<gitem>
+<label>Timed Text</label>
+<def>
+<p>Textual information that is intrinsically or extrinsically
+associated with timing information.</p>
+</def>
+</gitem>
+<gitem>
+<label>Timed Text Authoring Format</label>
+<def>
+<p>A content type that represents timed text media for the purpose
+of interchange among authoring systems.</p>
+</def>
+</gitem>
+<gitem>
+<label>Timed Text Authoring System</label>
+<def>
+<p>A content authoring system capable of
+importing and exporting timed text authoring format content.</p>
+</def>
+</gitem>
+</glist>
+</div2>
+<div2 id="notations">
+<head>Notations</head>
+<p>The following notations are employed in this document:</p>
+<ulist>
+<item>
+<p><phrase role="strong">SXXX</phrase> &ndash; use case scenario <emph>XXX</emph></p>
+</item>
+<item>
+<p><phrase role="strong">RXXX</phrase> &ndash; requirement <emph>XXX</emph></p>
+</item>
+<item>
+<p><phrase role="strong">RX9X</phrase> &ndash; solution space requirement <emph>X9X</emph></p>
+</item>
+<item>
+<p><phrase role="strong">NXXX</phrase> &ndash; non-requirement <emph>XXX</emph></p>
+</item>
+</ulist>
+</div2>
+</div1>
+<div1 id="scenarios">
+<head>Use Case Scenarios</head>
+<uselist id="S0XX">
+<useitem id="S000" type="simple">
+<head>Captioning Audio</head>
+<use>
+<p>A caption service provider needs a common content authoring format by means of which
+a textual expression of audio information may be associated with such audio
+information in a time synchronized manner.</p>
+<note role="explanation">
+<p>In the context of captioning an aggregate audio/video service, both audio and
+caption information are typically synchronized to the video track as the
+timebase master.</p>
+</note>
+</use>
+</useitem>
+<useitem id="S001" type="simple">
+<head>Subtitling Audio</head>
+<use>
+<p>A subtitle service provider needs a common content authoring format by means of which
+a textual expression of the original or a translation of the original natural language
+(speech) audio information may be associated with such audio information in a time
+synchronized manner.</p>
+<note role="explanation">
+<p>In the context of subtitling an aggregate audio/video service, both audio and
+subtitle information are typically synchronized to the video track as the
+timebase master.</p>
+</note>
+<note role="explanation">
+<p>The distinction between <emph>captioning</emph> and <emph>subtitling</emph> is best
+expressed as follows: captioning is expressly intended to serve the needs of deaf and
+hard of hearing users, and typically contains transcriptions of speech and non-speech audio information;
+in contrast, subtitling is generally intended to serve the needs of hearing users who
+don't have access to an audio track (e.g., in muting situations) or don't understand
+the natural language of the speech contained in the audio track. Subtitling is often
+viewed as a paraphrase or a translation of speech information, as opposed to a transcription of
+all audio information.</p>
+<p>In the absence of captioning information, subtitling information may also be
+used by deaf and hard of hearing
+users, provided that it is available in the original natural language.</p>
+</note>
+<note role="explanation">
+<p>Some user communities use the term <emph>subtitling</emph> to encompass both captioning
+and subtitling uses as distinguished in the previous note.</p>
+</note>
+</use>
+</useitem>
+<useitem id="S002" type="simple">
+<head>Description</head>
+<use>
+<p>A description service provider needs a common content authoring format in which
+a textual description of video information or a textual expression of an
+audio description of video information may be associated with such video
+information in a time synchronized manner.</p>
+<note role="explanation">
+<p>When a description is rendered by an audio track, such a description is commonly
+referred to as an <emph>Audio Description</emph>.</p>
+</note>
+<note role="explanation">
+<p>In the use of aural forms of visual description, it may be the case that
+the duration of an aural form of a description exceeds the duration
+of the visual information being described. In a presentation device, this
+necessitates manual or automatic pausing of the video track in order to
+fully render the aural form of description. It is likely that similar
+modes of presentation will be required for timed text representations of
+video descriptions.</p>
+</note>
+<note role="explanation">
+<p>This use case scenario is not intended to serve as a general form of <emph>metadata</emph>
+description of related video or audio content.</p>
+</note>
+</use>
+</useitem>
+<useitem id="S003" type="simple">
+<head>Generic Timed Text</head>
+<use>
+<p>A generic timed text service provider needs a common content authoring format in which
+textual information can be presented in a time synchronized manner.</p>
+<note role="explanation">
+<p>In the context of using a generic timed text service, timed text information
+serves as the timebase master, with which other possible timed media may
+be associated.</p>
+</note>
+<note role="explanation">
+<p>Examples of the use of generic timed text
+include (but are not limited to):
+marquee signs, timed text oriented presentations, scrolling text presentation, etc.</p>
+</note>
+</use>
+</useitem>
+</uselist>
+</div1>
+<div1 id="requirements">
+<head>Requirements</head>
+<div2 id="general">
+<head>General</head>
+<!-- general requirements list -->
+<rlist id="R1xx">
+<ritem id="R100" type="dreq">
+<head>Specification Format</head>
+<req>
+<p>The TT AF specification(s) shall be authored using XML and XSL Stylesheets
+based on <bibref ref="xmlspec"/> and shall adhere to best current practices in the
+W3C for specification style and quality assurance.</p>
+</req>
+</ritem>
+<ritem id="R101" type="dreq">
+<head>Specification Modularity</head>
+<req>
+<p>The TT AF specification(s) shall be defined in a modular manner that logically separates
+significant areas of functionality to as great extent as is practical.</p>
+</req>
+</ritem>
+<ritem id="R102" type="dreq">
+<head>Specification Organization</head>
+<req>
+<p>The TT AF specification(s) shall be organized in such a manner as to
+separate the following aspects:</p>
+<ulist>
+<item>
+<p>TT Framework</p>
+</item>
+<item>
+<p>TT Core Vocabulary</p>
+</item>
+<item>
+<p>TT Core Document Types</p>
+</item>
+<item>
+<p>TT Extension Vocabulary(ies)</p>
+</item>
+<item>
+<p>TT Extension Document Type(s)</p>
+</item>
+</ulist>
+<p/>
+</req>
+</ritem>
+<ritem id="R103" type="dreq">
+<head>Core and Periphery</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that core functionality
+is logically separated from peripheral functionality.</p>
+</req>
+</ritem>
+<ritem id="R104" type="dreq">
+<head>Evolution of Core</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that core functionality
+can evolve over time, e.g., by the specification of multiple levels (or versions)
+of core functionality.</p>
+</req>
+</ritem>
+<ritem id="R105" type="dreq">
+<head>Ownership of Core</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that core
+functionality be specified soley by the TT WG or, in the event that the
+TT WG is terminated, its successors within the W3C.</p>
+<note role="assumption">
+<p>It is assumed that one or more appropriate namespace mechanisms will be
+used to segregate core functionality defined or adopted in the TT AF from
+peripheral functionality defined or adopted by clients of the TT AF.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R106" type="dreq">
+<head>Surjection of Core</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that for every
+item in the TT AF core vocabulary, there shall be at least one TT AF core document
+type that makes use of that item, i.e., there exists a surjection from the
+set of TT AF core document types to the set of TT AF vocabulary items referenced
+by those document types.</p>
+<note role="explanation">
+<p>The TT AF specification(s) may define standardized peripheral vocabulary that
+is not referenced by any TT AF core document type.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R107" type="dreq">
+<head>Evolution of Periphery</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that peripheral functionality
+can evolve over time, e.g., by the future specification of one or more
+peripheral functionality modules.</p>
+</req>
+</ritem>
+<ritem id="R108" type="dreq">
+<head>Ownership of Periphery</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that peripheral functionality
+need not be specified by the TT WG or the W3C, but may be specified by other
+W3C WGs as well as non-W3C clients of the TT AF.</p>
+</req>
+</ritem>
+<ritem id="R109" type="freq">
+<head>Transformability</head>
+<req>
+<p>The TT AF shall be capable of being transformed, without undue complexity, into
+one or more legacy timed text content formats, e.g., <bibref ref="threegpp"/>,
+<bibref ref="qtext"/>, <bibref ref="realtext"/>, <bibref ref="sami"/>, etc.</p>
+<note role="explanation">
+<p>The above list of potential target timed text content formats is strictly
+informative, and is not intended to be exhuastive.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R110" type="freq">
+<head>Streamable Tranformation</head>
+<req>
+<p>The TT AF shall be capable of being transformed into an idealized streamable
+representation format.</p>
+<note role="non-requirement">
+<p>It is not required that an idealized streamable representation format be
+defined by the TT AF specification(s); however, the definition of such a format
+may be the subject of future activities by the TT WG.</p>
+</note>
+<note role="information">
+<p>It is intended that existing closed captioning and subtitle streaming
+formats used by analog and digital television services as well as timed text
+used in the context of streaming audio and motion video formats be potentially
+targeted by one or more transformations of the TT AF. These formats include
+<bibref ref="eia608b"/>, <bibref ref="eia708b"/>, <bibref ref="en300706"/>,
+<bibref ref="en300743"/>, etc.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R111" type="freq">
+<head>Accessibility &ndash; Content</head>
+<req>
+<p>The TT AF shall include the following accessibility related features:</p>
+<ulist>
+<item><p>Support for a mechanism to explicitly associate
+<emph>Equivalent Alternatives</emph> to the textual information in
+the TT presentation in accordance with <bibref ref="xmlaccess"/>
+Guideline 1.</p></item>
+<item><p>Support for <emph>Content Rendering Adaption</emph> in 
+accordance with <bibref ref="smilaccess"/>, Section 5. See also
+<specref ref="R207"/>.</p></item>
+<item><p>Use of a default text vocabulary that satisfies guideline 2
+of <bibref ref="xmlaccess"/> regarding structural and semantical
+stringency.</p></item>
+<item><p> Ability to extend or replace the default text vocabulary
+with other XML dialects to represent the textual information of the
+TT presentation. See also <specref ref="R205"/>.</p></item>
+<item><p>Support for explicit definition of a <emph>Navigational
+Structure</emph> associated with the TT presentation in accordance
+with <bibref ref="smilaccess"/>, Section 4.3.</p></item>
+</ulist>
+<p/>
+</req>
+</ritem>
+<ritem id="R112" type="freq">
+<head>Accessibility &ndash; Authoring System</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner as to require
+a TT AS to adhere to all applicable aspects of <bibref ref="atag10"/>.</p>
+</req>
+</ritem>
+<!-- end of general requirements -->
+</rlist>
+</div2>
+<div2 id="content">
+<head>Content</head>
+<!-- content requirements list -->
+<rlist id="R2xx">
+<ritem id="R200" type="freq">
+<head>Authorability</head>
+<req>
+<p>The TT AF shall be capable of being created and modified using a plain text
+editor, e.g., emacs, vi, etc.</p>
+</req>
+</ritem>
+<ritem id="R201" type="freq">
+<head>Multiple Natural Languages</head>
+<req>
+<p>The TT AF shall be capable of representing content of different natural languages,
+where the content of distinct languages may be segregated into separate document instances
+or may be integrated into a single document instance.</p>
+</req>
+</ritem>
+<ritem id="R202" type="freq">
+<head>Natural Language Coverage</head>
+<req>
+<p>The TT AF shall be capable of representing content of at least those specific
+natural languages that may be represented with <bibref ref="unicode32"/>.
+</p>
+</req>
+</ritem>
+<ritem id="R203" type="freq">
+<head>Natural Language Association Granularity</head>
+<req>
+<p>The TT AF shall be capable of associating natural language binding information
+with plain text information at the granularity of a single coded character.</p>
+</req>
+</ritem>
+<ritem id="R204" type="freq">
+<head>Minimum Character Representability</head>
+<req>
+<p>The TT AF shall be capable of representing every coded character available in
+<bibref ref="unicode32"/> by using only those characters in <bibref ref="ascii"/>.
+</p>
+<note role="use">
+<p>This requirement facilitates the entry and editing of characters
+in a TT AF document instance that would otherwise not be permitted due to lack of
+an appropriate character input method or lack of support for a
+non-ASCII character encoding system.</p>
+<p>It is assumed that every TT AS will provide a means to enter and edit
+TT AF document instances represented in the ASCII character set.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R205" type="freq">
+<head>Intrinsic and Extrinsic Text Content</head>
+<req>
+<p>The TT AF shall be capable of expressing text content intrinsically within a TT AF
+document instance, extrinsically by referencing from a TT AF document instance to text
+content in one or more external resources, or in any combination of these two modes.
+</p>
+</req>
+</ritem>
+<ritem id="R206" type="freq">
+<head>Markup Association</head>
+<req>
+<p>The TT AF shall be capable of associating structural markup with intrinsic and
+extrinsic text content, where such markup may denote either or both semantic (functional)
+and presentational (formal) properties of the content.
+</p>
+<note>
+<p>In this context, <emph>presentational</emph> properties designate both stylistic
+and timing related presentation information.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R207" type="freq">
+<head>Conditional Content</head>
+<req>
+<p>The TT AF shall be capable of expressing conditional content, where each alternative
+content choice is governed by one or more test expressions such that exactly one or zero
+content choice is selected when evaluating each choice in a predefined order.</p>
+</req>
+</ritem>
+<ritem id="R208" type="freq">
+<head>Flowed Text</head>
+<req>
+<p>The TT AF shall be capable of expressing authorial intention to flow (layout) text
+content in an idealized, but unspecified user agent.
+</p>
+<note role="explanation">
+<p>In this context, the concept of <emph>flow</emph> refers to an implied process by
+means of which textual information expressed in the character domain is mapped
+to a positioned glyph codomain.</p>
+</note>
+<note role="non-requirement">
+<p>It is not required that an idealized user agent or behavior of such a user agent be
+defined by the TT AF specification(s); however, the definition of such a user agent or
+user agent behavior may be the subject of future activities by the TT WG.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R209" type="freq">
+<head>Logical Flowed Text Vocabulary</head>
+<req>
+<p>The TT AF shall be capable of expressing the following vocabulary as pertains to
+logical flowed text content:
+</p>
+<ulist>
+<item>
+<p>body</p>
+</item>
+<item>
+<p>division</p>
+</item>
+<item>
+<p>paragraph</p>
+</item>
+<item>
+<p>phrase</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>A generic <emph>role</emph> attribute is expected to be provided for use with these
+items in order to express distinct stylistic and semantic roles, e.g., a <emph>paragraph</emph>
+role may be associated with a <emph>division</emph> item to indicate that the logical division
+expressed corresponds to a stylistic and semantic paragraph.</p>
+</note>
+<note role="example">
+<p>One possible mapping for this vocabulary is to <el>xhtml:body</el>,
+<el>xhtml:div</el>, <el>xhtml:p</el>, and <el>xhtml:span</el>, respectively,
+as defined by <bibref ref="xhtml1"/>.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R210" type="freq">
+<head>Presentational Flowed Text Vocabulary</head>
+<req>
+<p>The TT AF shall be capable of expressing the following vocabulary as pertains to
+presentational flowed text content:
+</p>
+<ulist>
+<item>
+<p>block</p>
+</item>
+<item>
+<p>block container</p>
+</item>
+<item>
+<p>character</p>
+</item>
+<item>
+<p>flow</p>
+</item>
+<item>
+<p>forced line break</p>
+</item>
+<item>
+<p>inline</p>
+</item>
+<item>
+<p>inline container</p>
+</item>
+<item>
+<p>region</p>
+</item>
+<item>
+<p>viewport</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>The items enumerated above are drawn in part from similarly named items
+defined by <bibref ref="xsl"/>, Section 6, <emph>Formatting Objects</emph>.</p>
+</note>
+<note role="explanation">
+<p>The <emph>forced line break</emph> item may be expressed in terms
+of the <emph>character</emph> item, where the specified character has line separator or line
+break semantics.</p>
+<p>The use of this item in combination with a <emph>wrap option</emph>
+style parameter with the value <code>nowrap</code> permits an intermediate mode
+of text representation with formatting semantics that fall between flowed text
+and non-flowed text.</p>
+</note>
+<note role="explanation">
+<p>The <emph>viewport</emph> and <emph>region</emph> items are intended to be
+analogous to the <bibref ref="xsl"/> vocabulary <code>fo:simple-page-master</code>
+and <code>fo:region-*</code>, respectively.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R211" type="freq">
+<head>Flowed Text Vocabulary Relationship</head>
+<req>
+<p>The TT AF shall be defined in such a manner that a default relationship
+between logical and presentational flowed text vocabulary may be assumed as follows:</p>
+<ulist>
+<item>
+<p>body &hArr; flow</p>
+</item>
+<item>
+<p>division (display: block) &hArr; block container</p>
+</item>
+<item>
+<p>paragraph &hArr; block</p>
+</item>
+<item>
+<p>division (display: inline) &hArr; inline container</p>
+</item>
+<item>
+<p>phrase &hArr; inline</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>Parsed character data (<code>#PCDATA</code>) that appears in
+logical flowed text content should be assumed to map by default to
+parsed character data or <emph>character</emph> in presentational flowed
+text content.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R212" type="freq">
+<head>Flowed Text Vocabulary Separation</head>
+<req>
+<p>The TT AF shall be defined in such a manner that use of logical flowed text
+vocabulary is separated from use of presentational flowed text vocabulary.</p>
+<note role="explanation">
+<p>It is not required that the TT AF specification(s) define a document type
+that supports the simultaneous use of both logical and presentational flowed text
+vocabulary.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R213" type="freq">
+<head>Non-Flowed Text</head>
+<req>
+<p>The TT AF shall be capable of expressing authorial intention to render non-flowed text
+content in an idealized, but unspecified user agent.
+</p>
+<note role="explanation">
+<p>In this context, the concept of <emph>non-flowed text</emph> refers to textual
+information that is explicitly associated with positioned glyph information at authoring
+time; i.e., all bidirectional processing and character to glyph substitution processing
+and glyph position assignment has already occurred.</p>
+</note>
+<note role="non-requirement">
+<p>It is not required that an idealized user agent or behavior of such a user agent be
+defined by the TT AF specification(s); however, the definition of such a user agent or
+user agent behavior may be the subject of future activities by the TT WG.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R214" type="freq">
+<head>Non-Flowed Text Vocabulary</head>
+<req>
+<p>The TT AF shall be capable of expressing the following vocabulary as pertains to
+non-flowed text content:</p>
+<ulist>
+<item>
+<p>area</p>
+</item>
+<item>
+<p>glyph</p>
+</item>
+<item>
+<p>glyph sequence</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>The glyph and glyph sequence vocabulary items are intended to make direct reference to
+specific glyphs in specific fonts, having already been transformed from the character
+domain to the glyph domain. References to glyphs would typically take the form of a glyph
+identifier or a glyph code. For further information on character to the
+glyph mapping process, see <bibref ref="charmod"/>, Section 3.1.3,
+<emph>Units of Visual Rendering</emph>.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R215" type="freq">
+<head>Hybrid Flowed and Non-Flowed Text</head>
+<req>
+<p>The TT AF shall be capable of expressing authorial intention to create a hybrid of
+flowed and non-flowed text content; however, such an expression may require that these
+two types of content be segregated at a specific level of granularity.</p>
+</req>
+</ritem>
+<ritem id="R216" type="freq">
+<head>Hyperlinking</head>
+<req>
+<p>The TT AF shall be capable of expressing simple hyperlinks, where the ending
+(destination) resource is either the starting (source) resource or an external resource.
+</p>
+</req>
+</ritem>
+<ritem id="R217" type="freq">
+<head>Embedded Graphics</head>
+<req>
+<p>The TT AF shall be capable of expressing block and inline,
+embedded graphics of both bitmap and vector or outline formats.
+</p>
+<p>If block or inline graphics are used for the purpose of expressing pre-rasterized
+text in a bitmap format, then the original text that produced such a pre-rasterized form shall
+also be required to be present in TT AF content.</p>
+</req>
+</ritem>
+<ritem id="R218" type="freq">
+<head>Non-Embedded Graphics</head>
+<req>
+<p>The TT AF shall be capable of expressing block and inline,
+non-embedded graphics of both bitmap and vector or outline formats, where a graphic is
+represented by an external resource.
+</p>
+<p>If block or inline graphics are used for the purpose of expressing pre-rasterized
+text in a bitmap format, then the original text that produced such a pre-rasterized form shall
+also be required to be present in TT AF content.</p>
+</req>
+</ritem>
+<ritem id="R219" type="freq">
+<head>Embedded Fonts</head>
+<req>
+<p>The TT AF shall be capable of expressing embedded fonts of both bitmap and
+outline formats.
+</p>
+</req>
+</ritem>
+<ritem id="R220" type="freq">
+<head>Non-Embedded Fonts</head>
+<req>
+<p>The TT AF shall be capable of expressing non-embedded fonts of both bitmap and
+outline formats, where a font is represented by an external resource.
+</p>
+</req>
+</ritem>
+<ritem id="R221" type="freq">
+<head>Descriptive Vocabulary</head>
+<req>
+<p>The TT AF shall be capable of associating text content
+with descriptive information from an appropriate domain of discourse.</p>
+<p/>
+<note role="explanation">
+<p>See <bibref ref="tei"/>, Chapter 10, <emph>Base Tag Set for Drama</emph>,
+and Chapter 11, <emph>Transcription of Speech</emph>, for examples of descriptive
+vocabulary pertaining to drama and the transcription of speech, respectively.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R222" type="freq">
+<head>Embedded Audio</head>
+<req>
+<p>The TT AF shall be capable of expressing embedded audio that is intended to be played or
+rendered in sequence or in parallel with associated text content.</p>
+<note role="explanation">
+<p>The use of embedded audio is intended to support aural cues that may accompany text.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R223" type="freq">
+<head>Non-Embedded Audio</head>
+<req>
+<p>The TT AF shall be capable of expressing non-embedded audio that is intended to be played or
+rendered in sequence or in parallel with associated text content, where the audio
+content is represented by an external resource.</p>
+<note role="explanation">
+<p>The use of non-embedded audio is intended to support aural cues that may accompany text.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R290" type="sreq">
+<head>Markup Format</head>
+<req>
+<p>The TT AF shall support the use of both <bibref ref="xml10"/> and
+<bibref ref="xml11"/> as serialized forms of a TT AF XML information set.</p>
+<note role="explanation">
+<p>See <bibref ref="infoset"/> for further information on an <emph>XML
+information set</emph>.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R291" type="sreq">
+<head>Markup Format and Unicode Interaction</head>
+<req>
+<p>The TT AF shall require or recommend adherence to the practices
+recommended by <bibref ref="uxml"/>.</p>
+</req>
+</ritem>
+<ritem id="R292" type="sreq">
+<head>Extrinsic Resource References</head>
+<req>
+<p>The TT AF shall support the use of <bibref ref="xlink"/> for the purpose of
+referencing external resources.</p>
+</req>
+</ritem>
+<ritem id="R293" type="dreq">
+<head>Schema Validity Specification</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner that the normative validity of
+markup content be specified in terms of either or both
+<bibref ref="rng"/> and <bibref ref="xsd-1"/> in combination with <bibref ref="xsd-2"/>.</p>
+</req>
+</ritem>
+<!-- end of content requirements -->
+</rlist>
+</div2>
+<div2 id="styling">
+<head>Styling</head>
+<!-- styling requirements list -->
+<rlist id="R3xx">
+<ritem id="R300" type="freq">
+<head>Inline Styling</head>
+<req>
+<p>The TT AF shall be capable of inline styling, where inline
+styling means the inclusion of stylistic presentation information in a TT AF
+document instance.</p>
+</req>
+</ritem>
+<ritem id="R301" type="freq">
+<head>Inline Styling Form</head>
+<req>
+<p>The TT AF shall be capable of specifying inline styling by means of (1) distinct
+attributes, (2) a generic attribute, e.g., <code>style</code>, and (3) one or more
+inline stylesheets.</p>
+</req>
+</ritem>
+<ritem id="R302" type="freq">
+<head>Out-of-Line Styling</head>
+<req>
+<p>The TT AF shall be capable of out-of-line styling, where out-of-line styling
+means the association of stylistic presentation information with TT AF content
+via some mechanism external to a TT AF document instance.</p>
+</req>
+</ritem>
+<ritem id="R303" type="freq">
+<head>Out-Of-Line Styling Form</head>
+<req>
+<p>The TT AF shall be capable of specifying out-of-line styling by means of one or
+more external stylesheets.</p>
+</req>
+</ritem>
+<ritem id="R304" type="freq">
+<head>Styling Prioritization</head>
+<req>
+<p>The TT AF shall be capable of associating priorities with stylistic presentation
+information in order to permit the resolution of multiple style specifications that
+apply to the same content.</p>
+</req>
+</ritem>
+<ritem id="R305" type="freq">
+<head>Style Parameters &ndash; Aural</head>
+<req>
+<p>The TT AF shall be capable of associating the following aural style
+parameters with timed text content:</p>
+<ulist>
+<item>
+<p>azimuth</p>
+</item>
+<item>
+<p>cue before, during, after</p>
+</item>
+<item>
+<p>elevation</p>
+</item>
+<item>
+<p>pause before, after</p>
+</item>
+<item>
+<p>pitch</p>
+</item>
+<item>
+<p>pitch range</p>
+</item>
+<item>
+<p>richness</p>
+</item>
+<item>
+<p>speaking mode</p>
+</item>
+<item>
+<p>speech rate</p>
+</item>
+<item>
+<p>stress</p>
+</item>
+<item>
+<p>voice family</p>
+</item>
+<item>
+<p>volume</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>For further information on these style parameters, see <bibref ref="xsl"/>,
+Section 7.6, <emph>Common Aural Properties</emph> and <bibref ref="css2"/>.</p>
+</note>
+<note role="explanation">
+<p>For further information on the <emph>speaking mode</emph> aural style parameter,
+see discussion of <code>speak</code>, <code>speak-numeral</code>, and
+<code>speak-punctuation</code> properties described in
+<bibref ref="xsl"/>, Section 7.6.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R306" type="freq">
+<head>Style Parameters &ndash; Visual</head>
+<req>
+<p>The TT AF shall be capable of associating the following visual style
+parameters with timed text content:</p>
+<ulist>
+<item>
+<p>absolute position</p>
+</item>
+<item>
+<p>background color</p>
+</item>
+<item>
+<p>baseline alignment point</p>
+</item>
+<item>
+<p>baseline alignment</p>
+</item>
+<item>
+<p>baseline dominance</p>
+</item>
+<item>
+<p>baseline shift</p>
+</item>
+<item>
+<p>bidirectional treatment</p>
+</item>
+<item>
+<p>block progression dimension</p>
+</item>
+<item>
+<p>block scroll amount</p>
+</item>
+<item>
+<p>border before, after, start, end</p>
+</item>
+<item>
+<p>break before, after</p>
+</item>
+<item>
+<p>clear</p>
+</item>
+<item>
+<p>color</p>
+</item>
+<item>
+<p>color profile name</p>
+</item>
+<item>
+<p>display none, block, inline</p>
+</item>
+<item>
+<p>display alignment</p>
+</item>
+<item>
+<p>float</p>
+</item>
+<item>
+<p>font family</p>
+</item>
+<item>
+<p>font size</p>
+</item>
+<item>
+<p>font style</p>
+</item>
+<item>
+<p>font weight</p>
+</item>
+<item>
+<p>height</p>
+</item>
+<item>
+<p>indent start, end</p>
+</item>
+<item>
+<p>inline progression dimension</p>
+</item>
+<item>
+<p>inline scroll amount</p>
+</item>
+<item>
+<p>intrusion-displace</p>
+</item>
+<item>
+<p>line feed treatment</p>
+</item>
+<item>
+<p>line height</p>
+</item>
+<item>
+<p>line stacking strategy</p>
+</item>
+<item>
+<p>line wrapping option</p>
+</item>
+<item>
+<p>opacity</p>
+</item>
+<item>
+<p>origin (top, left)</p>
+</item>
+<item>
+<p>overflow</p>
+</item>
+<item>
+<p>padding before, after, start, end</p>
+</item>
+<item>
+<p>reference orientation</p>
+</item>
+<item>
+<p>relative position</p>
+</item>
+<item>
+<p>space before, after, start, end</p>
+</item>
+<item>
+<p>text alignment</p>
+</item>
+<item>
+<p>text altitude (ascent)</p>
+</item>
+<item>
+<p>text decoration</p>
+</item>
+<item>
+<p>text depth (descent)</p>
+</item>
+<item>
+<p>text indent (first line)</p>
+</item>
+<item>
+<p>text shadow</p>
+</item>
+<item>
+<p>visibility</p>
+</item>
+<item>
+<p>white space collapse</p>
+</item>
+<item>
+<p>white space treatment</p>
+</item>
+<item>
+<p>width</p>
+</item>
+<item>
+<p>writing mode</p>
+</item>
+<item>
+<p>z-index</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>For further information on these style parameters, see <bibref ref="xsl"/>,
+Section 7, <emph>Formatting Properties</emph> and <bibref ref="css2"/>.</p>
+</note>
+<note role="explanation">
+<p>The style parameters <emph>break before</emph> and <emph>break after</emph> are
+intended to model the like named style properties defined by <bibref ref="xsl"/>,
+Section 7.19, <emph>Keeps and Breaks Properties</emph>, except that the possible values of these
+parameters are expected to be restricted to <code>auto</code>, <code>line</code>, and <code>inherit</code>.
+The new value <code>line</code> is intended to denote a line area context in order to express
+that a line break should precede or follow the element associated with this parameter.</p>
+<p>Unlike XSL, these parameters apply only to inline vocabulary, and not block vocabulary.</p>
+</note>
+<note role="explanation">
+<p>A <emph>style parameter</emph> is intended to convey the notion of any type
+of style specification or declaration whether it is expressed as an attribute or a property.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R307" type="freq">
+<head>Style Parameters &ndash; Visual &ndash; Temporal Fill Mode</head>
+<req>
+<p>The TT AF may be capable of associating the following visual style
+parameters that pertain to temporal filling (flowing) of timed text content:</p>
+<ulist>
+<item>
+<p>temporal fill mode</p>
+</item>
+<item>
+<p>temporal fill direction</p>
+</item>
+<item>
+<p>temporal block clear mode</p>
+</item>
+<item>
+<p>temporal fill interval</p>
+</item>
+<item>
+<p>temporal inter-fill interval</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>These parameters are intended to permit the expression of authorial intent with respect
+to the temporal filling (stacking) of glyph areas within a line area and line areas within a block area.</p>
+<p>The <emph>temporal fill mode</emph> parameter permits specifying the granularity of temporal
+filling, e.g., line, word, character. The <emph>temporal fill direction</emph> parameter permits specifying
+the direction of fill (stacking) independently from the writing mode. The <emph>temporal block clear
+mode</emph> parameter permits specifying whether the containing block is cleared or is automatically
+scrolled, and by what extent, when the block is filled. The <emph>temporal fill interval</emph>
+parameter permits specifying the interval that a filled area should remain static before processing the next fill.
+The <emph>temporal inter-fill interval</emph> parameter permits specifying the interval
+between the end of a prior fill interval and the start of a subsequent fill interval.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R390" type="sreq">
+<head>Style Parameter Symmetry</head>
+<req>
+<p>The TT AF shall be defined in such a manner that if a stylistic presentation
+parameter may be specified as a style property, then that parameter shall also be
+specifiable as a style attribute, and vice-versa.</p>
+<note role="explanation">
+<p>In this context, a style <emph>attribute</emph> refers to an attribute expressed
+in a markup language (e.g., an XML attribute), while a style <emph>property</emph>
+refers to a property expressed in a style language (e.g., a CSS property).</p>
+</note>
+</req>
+</ritem>
+<ritem id="R391" type="dreq">
+<head>Style Parameter Definitions</head>
+<req>
+<p>The TT AF shall be defined in such a manner that if there is a conflict
+when adopting the name or value semantics of a style parameter specification,
+then the following order shall hold for resolving such a conflict:</p>
+<olist>
+<item>
+<p>XSL FO</p>
+</item>
+<item>
+<p>SVG</p>
+</item>
+<item>
+<p>SMIL</p>
+</item>
+<item>
+<p>CSS Level 2</p>
+</item>
+<item>
+<p>CSS Level 3</p>
+</item>
+</olist>
+<p/>
+</req>
+</ritem>
+<ritem id="R392" type="dreq">
+<head>Style Element Type Shorthand Equivalence</head>
+<req>
+<p>The TT AF shall be defined in such a manner that to the extent that
+stylistic oriented markup element types are defined or adopted, then such element
+types shall be defined as shorthand equivalents of non-stylistic oriented
+element types in combination with specific style parameters.</p>
+</req>
+</ritem>
+<!-- end of styling requirements -->
+</rlist>
+</div2>
+<div2 id="timing">
+<head>Timing</head>
+<!-- timing requirements list -->
+<rlist id="R4xx">
+<ritem id="R401" type="freq">
+<head>Inline Timing</head>
+<req>
+<p>The TT AF shall be capable of inline timing, where inline
+timing means the inclusion of temporal presentation markup in a TT AF
+document instance.</p>
+</req>
+</ritem>
+<ritem id="R402" type="freq">
+<head>Out-of-Line Timing</head>
+<req>
+<p>The TT AF shall be capable of out-of-line timing, where out-of-line timing
+means the association of temporal presentation information with TT AF content
+via some mechanism external to a TT AF document instance.</p>
+</req>
+</ritem>
+<ritem id="R403" type="freq">
+<head>Synchronization Parameters</head>
+<req>
+<p>The TT AF shall be capable of expressing the following
+synchronization parameters in terms of any legal combination that
+expresses a possibly repeated or restarted,
+single, simple interval:</p>
+<ulist>
+<item><p>begin</p></item>
+<item><p>dur</p></item>
+<item><p>end</p></item>
+<item><p>endsync</p></item>
+<item><p>fill</p></item>
+<item><p>fillDefault</p></item>
+<item><p>repeatCount</p></item>
+<item><p>repeatDur</p></item>
+<item><p>restart</p></item>
+<item><p>restartDefault</p></item>
+</ulist>
+<note role="explanation">
+<p>For further information on these synchronization parameters, see <bibref ref="smil20"/>,
+Section 10, <emph>The SMIL 2.0 Timing and Synchronization Module</emph>.</p>
+</note>
+<note role="non-requirement">
+<p>It is not required that the TT AF support the specification of multiple
+simple intervals, i.e., multiple start, duration, or begin values.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R404" type="freq">
+<head>Synchronization Parameter Value Space Semantics</head>
+<req>
+<p>The TT AF shall be capable of expressing the following synchronization parameter
+value space semantics:</p>
+<ulist>
+<item>
+<p><emph>Offset Values</emph> &nbsp;&ndash; a clock offset from an implied or
+explicit synchronization timebase;</p>
+</item>
+<item>
+<p><emph>Event Values</emph> &nbsp;&ndash; a clock offset from a named event associated
+with an implied or explicit element node, including, at a minimum, named events
+that indicate the beginning or end of a timed element's active interval;</p>
+</item>
+<item>
+<p><emph>Access Key Values</emph> &nbsp;&ndash; a clock offset from a specific key press
+event;</p>
+</item>
+<item>
+<p><emph>Media Marker Values</emph> &nbsp;&ndash; a clock offset from a media marker,
+including, at a minimum, a media marker that denotes a SMPTE time code;</p>
+</item>
+<item>
+<p><emph>Wallclock Values</emph> &nbsp;&ndash; a clock offset from an absolute
+wallclock time in an implied or explicit time zone.</p>
+</item>
+</ulist>
+<note role="non-requirement">
+<p>It is not required that the TT AF support the specification of negative
+offset values.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R405" type="freq">
+<head>Time Containment Semantics</head>
+<req>
+<p>The TT AF shall be capable of expressing sequential, parallel, and
+exclusive time containment semantics of consituent timed text content.</p>
+<note role="explanation">
+<p>For further information on these time containment semantics, see <bibref ref="smil20"/>,
+Section 10, <emph>The SMIL 2.0 Timing and Syncrhonization Module</emph>.</p>
+</note>
+</req>
+</ritem>
+<!-- end of timing requirements -->
+</rlist>
+</div2>
+<div2 id="animation">
+<head>Animation</head>
+<rlist id="R5XX">
+<ritem id="R500" type="freq">
+<head>Animation Modes</head>
+<req>
+<p>The TT AF shall be capable of expressing animation according to the following modes:</p>
+<ulist>
+<item>
+<p>continuous &ndash; linear</p>
+</item>
+<item>
+<p>continuous &ndash; non-linear</p>
+</item>
+<item>
+<p>discrete</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>By <emph>animation</emph> is meant the ability to alter some parameter or value over
+time.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R501" type="freq">
+<head>Scroll Animation</head>
+<req>
+<p>The TT AF shall be capable of expressing animated scrolling of content, both
+in block and inline progression directions, with independent expression of
+scroll in, scroll out, and scroll repetition.</p>
+</req>
+</ritem>
+<ritem id="R502" type="freq">
+<head>Highlight Animation</head>
+<req>
+<p>The TT AF shall be capable of expressing animated highlighting of content, with
+granularity at the level of individual characters or glyphs.</p>
+</req>
+</ritem>
+<ritem id="R503" type="freq">
+<head>Fade Transition Animation</head>
+<req>
+<p>The TT AF shall be capable of expressing animated fade transitions of content, with
+granularity at the level of individual regions or areas.</p>
+<note role="explanation">
+<p>See <specref ref="R210"/> and <specref ref="R214"/> for information on <emph>region</emph>
+and <emph>area</emph> vocabulary items, respectively.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R504" type="freq">
+<head>Animated Style Parameters &ndash; Aural</head>
+<req>
+<p>The TT AF shall be capable of animating the following aural style parameters:</p>
+<ulist>
+<item>
+<p>azimuth</p>
+</item>
+<item>
+<p>elevation</p>
+</item>
+<item>
+<p>speaking mode</p>
+</item>
+<item>
+<p>speech rate</p>
+</item>
+<item>
+<p>volume</p>
+</item>
+</ulist>
+<p/>
+</req>
+</ritem>
+<ritem id="R505" type="freq">
+<head>Animated Style Parameters &ndash; Visual</head>
+<req>
+<p>The TT AF shall be capable of animating the following visual style parameters:</p>
+<ulist>
+<item>
+<p>background color</p>
+</item>
+<item>
+<p>block scroll amount</p>
+</item>
+<item>
+<p>border color</p>
+</item>
+<item>
+<p>color</p>
+</item>
+<item>
+<p>display</p>
+</item>
+<item>
+<p>inline scroll amount</p>
+</item>
+<item>
+<p>opacity</p>
+</item>
+<item>
+<p>origin</p>
+</item>
+<item>
+<p>visibility</p>
+</item>
+</ulist>
+<note role="explanation">
+<p>It is possible to express fade-in and fade-out transitions by means of
+animating the <emph>opacity</emph> style parameter.</p>
+</note>
+<note role="explanation">
+<p>Animation of the <emph>display</emph> style parameter may cause reflow (reformatting)
+of content in a user agent at each animation step.</p>
+</note>
+</req>
+</ritem>
+<ritem id="N506" type="nreq">
+<head>Animated Content</head>
+<req>
+<p>The TT AF is not required to support the animation of content.</p>
+<note role="explanation">
+<p>By <emph>animation of content</emph> is meant the dynamic addition or changing
+of element content by means of animation functionality, e.g., replacing the text
+content of an element.</p>
+</note>
+</req>
+</ritem>
+</rlist>
+</div2>
+<div2 id="metadata">
+<head>Metadata</head>
+<rlist id="R6XX">
+<ritem id="R600" type="freq">
+<head>Metadata Item Association</head>
+<req>
+<p>The TT AF shall be capable of associating arbitrary metadata, expressed as
+<emph>metadata items</emph>, with (1) a TT AF document instance and (2) any
+element contained within a TT AF document instance.</p>
+<note role="non-requirement">
+<p>It is not required that metadata be able to be associated with an element's
+attributes or with any other child of an element other than a child that is
+characterized as an element itself.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R601" type="freq">
+<head>Metadata Item Constituents</head>
+<req>
+<p>The TT AF shall be capable of expressing the following constituents of individual
+metadata items:</p>
+<ulist>
+<item>
+<p>name</p>
+</item>
+<item>
+<p>value type</p>
+</item>
+<item>
+<p>value</p>
+</item>
+</ulist>
+<p/>
+</req>
+</ritem>
+<ritem id="R602" type="freq">
+<head>Metadata Item Value Representation</head>
+<req>
+<p>The TT AF shall give preference to the representation of metadata item values
+as element content as opposed to attribute content.</p>
+<note role="explanation">
+<p>By <emph>element content</emph> is meant those children of
+an element information item that are characterized as elements or as character data.
+By <emph>attribute content</emph> is meant the normalized values of the
+attributes of an element information item.</p>
+</note>
+</req>
+</ritem>
+<ritem id="R603" type="freq">
+<head>Metadata Item Extensibility</head>
+<req>
+<p>The TT AF shall be capable of expressing metadata items whose names, value
+types, and semantics are defined externally to the TT AF specification(s).</p>
+</req>
+</ritem>
+<ritem id="R604" type="freq">
+<head>Metadata Item Validation</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner as to permit
+and potentially require the ability to validate metadata.</p>
+</req>
+</ritem>
+<ritem id="R690" type="sreq">
+<head>Dublin Core Preference</head>
+<req>
+<p>The TT AF specification(s) shall be defined in such a manner as to give
+preference to those metadata items defined by <bibref ref="dcmes"/> in
+case that a conflict exists with another candidate metadata representation.</p>
+</req>
+</ritem>
+</rlist>
+</div2>
+</div1>
+</body>
+<back>
+<div1 id="references">
+<head>References</head>
+<blist>
+<bibl id="ascii" key="ASCII (ANSI X3.4)">
+American National Standards Institute.
+<titleref>ANSI X3.4: Coded character set &ndash; 7-bit American national code for
+information interchange</titleref>. New York, 1986.
+</bibl>
+<bibl id="atag10" key="ATAG 1.0">Jutta Treviranus, Charles McCathieNevile, Ian Jacobs, Jan Richards, Eds.,
+<titleref href="http://www.w3.org/TR/ATAG10/">Authoring Tool Accessibility Guidelines 1.0</titleref>, W3C Recommendation, 3 February 2000. (See
+<xspecref href="http://www.w3.org/TR/ATAG10/">http://www.w3.org/TR/ATAG10/</xspecref>.)
+</bibl>
+<bibl id="dcmes" key="DCMES 1.1">Dublin Core Metadata Initiative,
+<titleref href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1: Reference Description</titleref>. (See
+<xspecref href="http://dublincore.org/documents/dces/">http://dublincore.org/documents/dces/</xspecref>.)
+</bibl>
+<bibl id="rng" key="RELAX NG">James Clark and Makato Murata, Eds.,
+<titleref href="http://www.relaxng.org/spec-20011203.html">RELAX NG Specification</titleref>, OASIS Committee Specification, 3 December 2001. (See
+<xspecref href="http://www.relaxng.org/spec-20011203.html">http://www.relaxng.org/spec-20011203.html</xspecref>.)
+</bibl>
+<bibl id="unicode32" key="Unicode 3.2">The Unicode Consortium,
+<titleref>The Unicode Standard, Version 3.2.0</titleref> is defined by <titleref>The Unicode Standard, Version 3.0</titleref>
+(Reading, MA, Addison-Wesley, 2000. ISBN 0-201-61633-5), as amended by the <titleref>Unicode Standard Annex #27: Unicode 3.1</titleref>
+(see <loc href="http://www.unicode.org/reports/tr27/">http://www.unicode.org/reports/tr27</loc>)
+and by the <titleref>Unicode Standard Annex #28: Unicode 3.2</titleref>
+(see <loc href="http://www.unicode.org/reports/tr28/">http://www.unicode.org/reports/tr28</loc>).
+</bibl>
+<bibl id="uxml" key="Unicode in XML">Martin J. D&uuml;rst and
+Asums Freytag,
+<titleref href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</titleref>,
+W3C Note. (See
+<xspecref href="http://www.w3.org/TR/unicode-xml/">http://www.w3.org/TR/unicode-xml/</xspecref>.)
+</bibl>
+<bibl id="smilaccess" key="WAI SMIL AG">Marja-Riitta Koivunen,
+<titleref href="http://www.w3.org/TR/SMIL-access/">Accessibility Features of SMIL</titleref>, W3C Note, 21 September 1999. (See
+<xspecref href="http://www.w3.org/TR/SMIL-access/">http://www.w3.org/TR/SMIL-access/</xspecref>.)
+</bibl>
+<bibl id="xmlaccess" key="WAI XML AG">Daniel Dardailler, Sean B. Palmer, Charles McCathieNevile, Eds.,
+<titleref href="http://www.w3.org/TR/xag.html">XML Accessibility Guidelines</titleref>, W3C Working Draft, 3 October 2002. (See
+<xspecref href="http://www.w3.org/TR/xag.html">http://www.w3.org/TR/xag.html</xspecref>.)
+</bibl>
+<bibl id="xlink" key="XLink">Steve DeRose, Eve Maler, David Orchard, Eds.,
+<titleref href="http://www.w3.org/TR/xlink/">XML Linking Language (XLink) Version 1.0</titleref>,
+W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/xlink/">http://www.w3.org/TR/xlink/</xspecref>.)
+</bibl>
+<bibl id="xml10" key="XML 1.0">Tim Bray, Jean Paoli, C. M.
+Sperberg-McQueen, Eve Maler, Eds.,
+<titleref href="http://www.w3.org/TR/REC-xml">Extensible Markup Language (XML)
+1.0 (Second Edition)</titleref>, W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</xspecref>.)
+</bibl>
+<bibl id="xml11" key="XML 1.1">John Cowan,
+<titleref href="http://www.w3.org/TR/2002/CR-xml11-20021015/">Extensible Markup Language (XML)
+1.1</titleref>, W3C Candidate Recommendation, 15 October 2002. (See
+<xspecref href="http://www.w3.org/TR/2002/CR-xml11-20021015/">http://www.w3.org/TR/2002/CR-xml11-20021015/</xspecref>.)
+</bibl>
+<bibl id="infoset" key="XML InfoSet">John Cowan and Richard Tobin,
+<titleref href="http://www.w3.org/TR/xml-infoset/">XML Information Set</titleref>,
+W3C Recommendation, 24 Oct 2001. (See
+<xspecref href="http://www.w3.org/TR/xml-infoset/">http://www.w3.org/TR/xml-infoset/</xspecref>.)
+</bibl>
+<bibl id="xsd-1" key="XML Schema Part 1">Henry S. Thompson, David Beech,
+Murray Maloney, Noah Mendelsohn, Eds.,
+<titleref href="http://www.w3.org/TR/xmlschema-1/">XML Schema Part 1: Structures</titleref>,
+W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/xmlschema-1/">http://www.w3.org/TR/xmlschema-1/</xspecref>.)
+</bibl>
+<bibl id="xsd-2" key="XML Schema Part 2">Paul Biron and Ashok Malhotra,
+<titleref href="http://www.w3.org/TR/xmlschema-2/">XML Schema Part 2: Datatypes</titleref>,
+W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/xmlschema-2/">http://www.w3.org/TR/xmlschema-2/</xspecref>.)
+</bibl>
+<bibl id="xmlspec" key="XML Spec">Norman Walsh,
+<titleref href="http://www.w3.org/2002/xmlspec/">The XML Spec Schema and Stylesheets</titleref>,
+W3C. (See <loc href="http://www.w3.org/2002/xmlspec/">http://www.w3.org/2002/xmlspec/</loc>).
+</bibl>
+</blist>
+</div1>
+<inform-div1 id="other-references">
+<head>Other References</head>
+<blist>
+<bibl id="threegpp" key="3GPP">3rd Generation Partnership Project,
+<titleref href="http://www.3gpp.org/ftp/Specs/html-info/26234.htm">Technical Specification
+Group Services and System Aspects; Transparent End-To-End Packet-Switched Streaming Service (PSS);
+Protocols and Codecs</titleref>, 3GPP Organizational Partners. (See
+<xspecref href="http://www.3gpp.org/ftp/Specs/html-info/26234.htm">http://www.3gpp.org/ftp/Specs/html-info/26234.htm</xspecref>.)
+</bibl>
+<bibl id="charmod" key="CharMod">Martin J. D&uuml;rst et al., Eds.,
+<titleref href="http://www.w3.org/TR/charmod/">Character Model for the World Wide Web 1.0: Fundamentals</titleref>,
+W3C Recommendation, 15 February 2005. (See
+<xspecref href="http://www.w3.org/TR/charmod/">http://www.w3.org/TR/charmod/</xspecref>.)
+</bibl>
+<bibl id="css2" key="CSS Level 2">Bert Bos, H&aring;kon Wium Lie, Chris Lilley,
+Ian Jacobs, Eds.,
+<titleref href="http://www.w3.org/TR/REC-CSS2/">Cascading Style Sheets, Level 2</titleref>,
+W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/REC-CSS2/">http://www.w3.org/TR/REC-CSS2/</xspecref>.)
+</bibl>
+<bibl id="dcmi-terms" key="DCMI Terms">Dublin Core Metadata Initiative,
+<titleref href="http://dublincore.org/documents/2003/03/04/dcmi-terms/">DCMI Metadata Terms</titleref>. (See
+<xspecref href="http://dublincore.org/documents/2003/03/04/dcmi-terms/">http://dublincore.org/documents/2003/03/04/dcmi-terms/</xspecref>.)
+</bibl>
+<bibl id="eia608b" key="EIA-608B">Electronics Industry Alliance (EIA),
+<titleref href="http://www.ce.org/standards/standard_details.asp?id=270">Line 21 Data Services</titleref>. (See 
+<xspecref href="http://www.ce.org/standards/standard_details.asp?id=270">http://www.ce.org/standards/standard_details.asp?id=270</xspecref>.)
+</bibl>
+<bibl id="eia708b" key="EIA-708B">Electronics Industry Alliance (EIA),
+<titleref href="http://www.ce.org/standards/standard_details.asp?id=249">Digital Television (DTV) Closed Captioning</titleref>. (See 
+<xspecref href="http://www.ce.org/standards/standard_details.asp?id=249">http://www.ce.org/standards/standard_details.asp?id=249</xspecref>.)
+</bibl>
+<bibl id="en300706" key="EN 300 706">European Telecommunications Standards Institute,
+<titleref href="http://webapp.etsi.org/action%5COP/OP20030411/en_300706v010201o.pdf">Enhanced
+Teletext Specification</titleref>. (See
+<xspecref href="http://webapp.etsi.org/action%5COP/OP20030411/en_300706v010201o.pdf">http://webapp.etsi.org/action%5COP/OP20030411/en_300706v010201o.pdf</xspecref>.)
+</bibl>
+<bibl id="en300743" key="EN 300 743">European Telecommunications Standards Institute,
+<titleref href="http://webapp.etsi.org/action%5COP/OP20021004/en_300743v010201o.pdf">Digital Video
+Broadcasting (DVB); Subtitling Systems</titleref>. (See
+<xspecref href="http://webapp.etsi.org/action%5COP/OP20021004/en_300743v010201o.pdf">http://webapp.etsi.org/action%5COP/OP20021004/en_300743v010201o.pdf</xspecref>.)
+</bibl>
+<bibl id="qtext" key="QText">Apple Computers, Inc.,
+<titleref href="http://www.apple.com/quicktime/tools_tips/tutorials/texttracks.html">QuickTime Text</titleref>.
+(See <loc href="http://www.apple.com/quicktime/tools_tips/tutorials/texttracks.html">http://www.apple.com/quicktime/tools_tips/tutorials/texttracks.html</loc>).
+</bibl>
+<bibl id="realtext" key="RealText">RealNetworks, Inc.,
+<titleref href="http://www.realnetworks.com/resources/howto/realtext/index.html">RealText Markup</titleref>.
+(See <loc href="http://www.realnetworks.com/resources/howto/realtext/index.html">http://www.realnetworks.com/resources/howto/realtext/index.html</loc>).
+</bibl>
+<bibl id="sami" key="SAMI">Microsoft Corporation,
+<titleref href="http://www.msdn.microsoft.com/library/default.asp?url=/library/en-us/dnacc/html/atg_samiarticle.asp">SAMI &ndash;
+Synchronized Accessible Media Interchange for Windows Media Player</titleref>. (See
+<xspecref href="http://www.msdn.microsoft.com/library/default.asp?url=/library/en-us/dnacc/html/atg_samiarticle.asp">http://www.msdn.microsoft.com/library/default.asp?url=/library/en-us/dnacc/html/atg_samiarticle.asp</xspecref>.)
+</bibl>
+<bibl id="smil20" key="SMIL 2.0">Jeff Ayars, Dick Bulterman, et al., Eds.,
+<titleref href="http://www.w3.org/TR/smil20/">Synchronized Multimedia Integration Language (SMIL 2.0)</titleref>,
+W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/smil20/">http://www.w3.org/TR/smil20/</xspecref>.)
+</bibl>
+<bibl id="tei" key="TEI">C. M. Sperberg-McQueen and Lou Burnard, Eds.,
+<titleref href="http://www.tei-c.org/Guidelines2/index.html">TEI P4: Guidelines for Electronic Text Encoding and Interchange</titleref>,
+Text Encoding Initiative Consortium, Oxford, 2002.
+(See <xspecref href="http://www.tei-c.org/Guidelines2/index.html">http://www.tei-c.org/Guidelines2/index.html</xspecref>.)
+</bibl>
+<bibl id="xhtml1" key="XHTML 1.0">Steven Pemberton, et al., Eds.,
+<titleref href="http://www.w3.org/TR/xhtml1/">XHTML&trade; 1.0 Extensible Hypertext
+Markup Language (Second Edition)</titleref>, W3C Recommendation.
+(See <xspecref href="http://www.w3.org/TR/xhtml1/">http://www.w3.org/TR/xhtml1/</xspecref>.)
+</bibl>
+<bibl id="xsl" key="XSL 1.0">Sharon Adler, Anders Berglund, et al., Eds.,
+<titleref href="http://www.w3.org/TR/xsl/">Extensible Stylesheet Language, Version 1.0</titleref>,
+W3C Recommendation. (See
+<xspecref href="http://www.w3.org/TR/xsl/">http://www.w3.org/TR/xsl/</xspecref>.)
+</bibl>
+</blist>
+</inform-div1>
+<inform-div1 id="acknowledgements">
+<head>Acknowledgments</head>
+<p>The editor acknowledges the members of the Timed Text Working
+Group, the members of other W3C Working Groups, and industry experts
+in other forums who have contributed directly or indirectly to the
+process or content of creating this document.</p>
+<p>The current and former members of the Timed Text Working Group are:
+Glenn Adams, Extensible Formatting Systems, Inc. (chair);
+Kees Blom, CWI;
+Brad Botkin, WGBH;
+Dick Bulterman, CWI;
+Michael Dolan, Invited Expert;
+Gerry Fields, WGBH;
+Geoff Freed, WGBH;
+Markus Gylling, DAISY Consortium;
+Markku Hakkinen, Japanese Society for Rehabilitation of Persons with Disabilities;
+Sean Hayes, Microsoft;
+Erik Hodge, RealNetworks;
+Masahiko Kaneko, Microsoft;
+George Kerscher, DAISY Consortium;
+David Kirby, BBC;
+Thierry Michel, W3C (team contact);
+Patrick Schmitz, Invited Expert;
+and, Dave Singer, Apple Computer.
+</p>
+<p>The Timed Text Working Group has benefited in its work from the
+participation and contributions of a number of people not currently
+members of the Working Group, including in particular those named
+below. Affiliations given are those current at the time of their work
+with the WG.</p>
+<p>
+John Birch, Screen Subtitling Systems;
+Bert Bos, W3C (chair, CSS WG);
+Martin D&uuml;rst, W3C (leader, I18N Activity);
+Al Gilman (chair, WAI Protocol and Formats WG);
+Philipp Hoschka, W3C (leader, Interaction Domain);
+Chris Lilley, W3C (chair, SVG WG).
+</p>
+</inform-div1>
+</back>
+</spec>

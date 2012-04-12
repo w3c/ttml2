@@ -1,0 +1,50 @@
+# .......................................................................
+# TT-AF 1.0 DFXP Styling Module .........................................
+# .......................................................................
+
+# style reference attribute; must reference /tt/head/styling/style
+TTAF.style.attrib
+  = attribute style { xsd:IDREFS }?
+
+# styling - generic styling container
+TTAF.styling =
+  element styling {
+    TTAF.styling.attlist,
+    TTAF.styling.content
+  }
+
+TTAF.styling.attlist &=
+  TTAF.Core.attrib.class
+
+TTAF.styling.content.extra = empty
+TTAF.styling.content =
+  (TTAF.Metadata.class*,
+   TTAF.styling.defs.class*,
+   TTAF.styling.content.extra*)
+
+# style - style declaration
+TTAF.styling.style =
+  element style {
+    TTAF.styling.style.attlist,
+    TTAF.styling.style.content
+  }
+
+TTAF.styling.style.attlist =
+  TTAF.Core.attrib.class,
+  TTAF.style.attrib,
+  (TTAF.Styling.attrib.class |
+   TTAF.Styling.ForeignExtension.attrib+ )
+
+TTAF.styling.style.content.extra = empty
+TTAF.styling.style.content =
+  (TTAF.styling.style.content.extra)*
+
+# style definitions class
+TTAF.styling.defs.extra = empty
+TTAF.styling.defs.class = 
+  TTAF.styling.style
+  | TTAF.styling.defs.extra
+
+# .......................................................................
+# .......................................................................
+# .......................................................................

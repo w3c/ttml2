@@ -2334,8 +2334,30 @@ must not be made regarding linearity or monotonicity of time coordinates.</p>
 to be <code>continuous</code>.</p>
 <p>A <att>ttp:markerMode</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
+<p>If a value of <code>continuous</code> applies, then time
+expressions may be converted to real time
+coordinates by taking into account the computed frame rate
+and drop mode as expressed by the <att>ttp:dropMode</att> parameter.</p>
+<note role="explanation">
+<p>When operating with <code>smpte</code> time base and
+<code>continuous</code> marker mode, there is an implied time coordinate
+space, defined by the monotonically increasing (or decreasing) 
+<bibref ref="smpte12m"/> time coordinates, while taking into account
+the computed frame rate and drop mode. All time expressions are interpreted
+as labeled synchronization events (markers), where some external
+synchronization context emits these events with implied constraints
+regarding time coordinate monoticity and resynchronization in
+the presence of dropped frames.</p>
+<p>Use of <code>continuous</code> marker mode with the <code>smpte</code>
+time base is different from using the <code>media</code> time base
+because (1) the semantics of the <att>ttp:dropMode</att> parameter
+apply to the former, but not the latter, and (2) <bibref ref="smpte12m"/>
+time coordinates may be applied monotonically to media which has been
+subjected to dilation in time, constriction in time, or reversal in
+time.</p>
+</note>
 <p>If a value of <code>discontinuous</code> applies, then time
-expressions must not be converted to either media time or real time
+expressions must not be converted to real time
 coordinates, arithmetical operators (addition, multiplication) are not
 defined on time expressions, and, consequently, any expression of a
 duration must be considered to be invalid.</p>
@@ -2536,6 +2558,13 @@ be synchronized.  In this case, the value of the <att>ttp:markerMode</att>
 and <att>ttp:dropMode</att> parameters apply, as defined by <specref
 ref="parameter-attribute-markerMode"/> and <specref
 ref="parameter-attribute-dropMode"/>, respectively.</p>
+<note role="explanation">
+<p>When the time base is designated as <code>smpte</code>,
+every time expression denotes a media marker value akin to that
+defined by <bibref ref="smil21"/>, &sect; 10.4.1, except instead
+of using an opaque marker name, a structured <bibref ref="smpte12m"/>
+time coordinate serves as the marker name.</p>
+</note>
 <p>If the time base is designated as <code>clock</code>, then the time
 expression denotes a coordinate in some real-world time line as
 established by some real-time clock, such as the local wall-clock time

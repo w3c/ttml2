@@ -509,13 +509,13 @@ and may specify inline overrides to styling.</p>
 <p>Timed Text</p>
 </def>
 </gitem>
-  <gitem>
-    <label>TTML</label>
-    <def>
-      <p>Timed Text Markup Language</p>
-    </def>
-  </gitem>
-  <gitem>
+<gitem>
+<label>TTML</label>
+<def>
+<p>Timed Text Markup Language</p>
+</def>
+</gitem>
+<gitem>
 <label>TT AS</label>
 <def>
 <p>Timed Text Authoring System</p>
@@ -591,8 +591,17 @@ performing presentation processing.</p>
 <label>Document Interchange Context</label>
 <def>
 <p>The implied context or environment external to a <emph>Content Processor</emph> in
-which document interchange occurs, and in which out-of-band protocols or procedures
+which document interchange occurs, and in which out-of-band protocols or specifications
 may define certain behavioral defaults, such as an implied <emph>Content Profile</emph>.</p>
+</def>
+</gitem>
+<gitem>
+<label>Document Processing Context</label>
+<def>
+<p>The implied context or environment internal to a <emph>Content Processor</emph> in
+which document processing occurs, and in which out-of-band protocols or specifications
+may define certain behavioral defaults, such as the establishment or creation of a
+<emph>Synthetic Syncbase</emph>.</p>
 </def>
 </gitem>
 <gitem>
@@ -663,10 +672,43 @@ constraints specify by <specref ref="reduced-infoset"/>.</p>
 </def>
 </gitem>
 <gitem>
+<label>Related Media Object</label>
+<def>
+<p>A (possibly null) media object associated with or otherwise related
+to a TTML document instance. For example, an aggregate audio/video media
+object for which a TTML document instance provides caption or subtitle
+information, and with which that TTML document instance is associated.</p>
+</def>
+</gitem>
+<gitem>
 <label>Root Container Region</label>
 <def>
 <p>A logical region that establishes a coordinate system into which
 content regions are placed and optionally clipped.</p>
+</def>
+</gitem>
+<gitem>
+<label>SMPTE Time Code</label>
+<def>
+<p>A time code whose format and semantics is established by <bibref ref="smpte12m"/>
+which may be embedded into or otherwise associated with media content, such
+as a broadcast audio/video stream.</p>
+</def>
+</gitem>
+<gitem>
+<label>Synthetic Document Syncbase</label>
+<def>
+<p>A document level syncbase synthesized or otherwise established by
+the <emph>Document Processing Context</emph> in accordance with the
+<emph>Related Media Object</emph> or other processing criteria.</p>
+</def>
+</gitem>
+<gitem>
+<label>Synthetic SMPTE Document Syncbase</label>
+<def>
+<p>A <emph>Synthetic Document Syncbase</emph> constructed from <emph>SMPTE Time
+Code</emph> values embedded in or associated with the <emph>Related Media Object</emph> or
+otherwise determined by the <emph>Document Processing Context</emph>.</p>
 </def>
 </gitem>
 <gitem>
@@ -2340,21 +2382,33 @@ may be assumed to be linear and either monotonically increasing or
 decreasing; however, if <code>discontinuous</code>, then any assumption
 must not be made regarding linearity or monotonicity of time coordinates.</p>
 <p>If not specified, the value of this parameter must be considered
-to be <code>continuous</code>.</p>
+to be <code>discontinuous</code>.</p>
+<note role="historical">
+<p>The default value for this parameter was originally specified
+(in <xspecref href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">TTML 1.0 First Edition</xspecref>)
+as <code>continuous</code>; however, further evaluation of the state of the industry indicates this
+choice was incorrect, and that the most common default is <code>discontinuous</code>.</p>
+</note>
 <p>A <att>ttp:markerMode</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <p>If a value of <code>continuous</code> applies, then time
 expressions may be converted to real time
 coordinates by taking into account the computed frame rate
-and drop mode as expressed by the <att>ttp:dropMode</att> parameter.</p>
+and drop mode as expressed by the <att>ttp:dropMode</att> parameter.
+In this case, the <emph>Content Processor</emph> must create and maintain a
+<emph>Synthetic SMPTE Document Syncbase</emph> within which these time
+expressions are interpreted as further described in
+<specref ref="timing-time-intervals"/>.</p>
 <note role="explanation">
 <p>When operating with <code>smpte</code> time base and
 <code>continuous</code> marker mode, there is an implied time coordinate
-space, defined by the monotonically increasing (or decreasing) 
+space, the <emph>Synthetic SMPTE Document Syncbase</emph>,
+defined by the monotonically increasing (or decreasing) 
 <bibref ref="smpte12m"/> time coordinates, while taking into account
 the computed frame rate and drop mode. All time expressions are interpreted
-as labeled synchronization events (markers), where some external
-synchronization context emits these events with implied constraints
+in relationship to this time coordinate space based upon
+<emph>SMPTE Time Code</emph> synchronization events (markers),
+where the <emph>Document Processing Context</emph>  emits these events with implied constraints
 regarding time coordinate monoticity and resynchronization in
 the presence of dropped frames.</p>
 <p>Use of <code>continuous</code> marker mode with the <code>smpte</code>
@@ -2374,8 +2428,8 @@ duration must be considered to be invalid.</p>
 <p>When operating with <code>smpte</code> time base and
 <code>discontinuous</code> marker mode, there is no effective time coordinate
 space; rather, all time expressions are interpreted as labeled
-synchronization events (markers), where some external synchronization
-context emits these events, which, when they correspond with time
+synchronization events (markers), where the <emph>Document Processing Context</emph>
+emits these events, which, when they correspond with time
 expressions that denote the same label, cause a temporal interval to
 begin or end accordingly.</p>
 <p>An additional side-effect of operating in <code>discontinuous</code>
@@ -7714,23 +7768,12 @@ vocabulary defined by this specification, given the following
 constraints:</p>
 <ulist>
 <item>
-<p>The implicit duration of
-
-an anonymous span
-
-is defined as follows: if
-the
-
-anonymous span's
-
-parent time container is a parallel time container, then
+<p>The implicit duration of an anonymous span is defined as follows: if
+the anonymous span's parent time container is a parallel time container, then
 the implicit duration is equivalent to the <code>indefinite</code>
-duration value as defined by <bibref ref="smil21"/>; if the
-
-anonymous span's
-
-parent time container is a sequential time container, then the
-implicit duration is equivalent to zero.</p>
+duration value as defined by <bibref ref="smil21"/>; if the anonymous span's
+parent time container is a sequential time container, then the implicit duration
+is equivalent to zero.</p>
 </item>
 <item>
 <p>The implicit duration of a <el>body</el>, <el>div</el>, <el>p</el>,
@@ -7745,24 +7788,51 @@ be equivalent to the <code>indefinite</code>
 duration value as defined by <bibref ref="smil21"/>.</p>
 </item>
 <item>
-<p>If the governing time mode is <code>media</code> or
-<code>smpte</code> with mode <code>continuous</code>, then time
-expressions must be interpreted as
-equivalent to offset based timing
+<p>If the governing time base is <code>media</code>, then time
+expressions must be interpreted as equivalent to offset based timing
 in <bibref ref="smil21"/>, namely, as offsets from an implicit
 syncbase.</p>
 </item>
 <item>
-<p>If the governing time mode is <code>smpte</code> with mode
-<code>discontinuous</code>, then time expressions must be interpreted
-as equivalent to marker values produced by an external marker event
-source, in which case all time expressions are equivalent to event
-based timing in <bibref ref="smil21"/>.</p>
+<p>If the governing time base is <code>smpte</code> with <code>continuous</code> marker mode,
+then time expressions must be interpreted as follows:</p>
+<ulist>
+<item>
+<p>If the time expression is an <code>offset-time</code> expression, then it must be
+interpreted as equivalent to offset based timing in <bibref ref="smil21"/>, where the
+offset is in relationship to the applicable implicit syncbase.</p>
 </item>
 <item>
-<p>If the governing time mode is <code>clock</code>, then time
-expressions must be interpreted as equivalent to wallclock time
-expressions in <bibref ref="smil21"/>, where the applicable wallclock
+<p>If the time expression is a <code>clock-time</code> expression, then it must be
+interpreted as equivalent to offset based timing in <bibref ref="smil21"/>, where the
+offset is in relationship to the <emph>Synthetic SMPTE Document Syncbase</emph>. For example,
+if the begin time of this synthetic syncbase is associated with the
+time code <code>10:00:00:00.0</code>, then the appearance of time expression <code>11:00:00:00.0</code>
+is interpreted as equivalent to expressing an <code>offset-time</code> expression
+of <code>1h</code> where the applicable implicit syncbase is the <emph>Synthetic SMPTE Document Syncbase</emph>.</p>
+</item>
+</ulist>
+</item>
+<item>
+<p>If the governing time base is <code>smpte</code> with <code>discontinuous</code> marker mode,
+then time expressions must be interpreted as follows:</p>
+<ulist>
+<item>
+<p>If the time expression is an <code>offset-time</code> expression, then it must be
+interpreted as an error.</p>
+</item>
+<item>
+<p>If the time expression is a <code>clock-time</code> expression, then it must be
+interpreted as equivalent to marker values produced by an external marker event
+source, in which case the time expression is equivalent to event
+based timing in <bibref ref="smil21"/>.</p>
+</item>
+</ulist>
+</item>
+<item>
+<p>If the governing time base is <code>clock</code>, then time
+expressions must be interpreted as equivalent to wall-clock time
+expressions in <bibref ref="smil21"/>, where the applicable wall-clock
 used is determined by the clock mode parameter.</p>
 </item>
 </ulist>
@@ -11777,7 +11847,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td>
 <td>R404</td>
 <td>Synchronization Parameter Value Spaces</td>
 <td>P</td>
-<td>Supports offset values, media marker values (SMPTE 12M), wallclock values</td>
+<td>Supports offset values, media marker values (SMPTE 12M), wall-clock values</td>
 </tr>
 <tr>
 <td>R405</td>
@@ -12529,7 +12599,7 @@ following in accordance to whether the parameter expressed by the
 or <code>clock</code>, respectively:
 (1) an offset from an implicit syncbase that is linked to a media time
 line, (2) an event time
-that represents the occurrence of an implicit media marker, or (3) a wallclock
+that represents the occurrence of an implicit media marker, or (3) a wall-clock
 time.</p>
 </item>
 <item>

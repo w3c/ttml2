@@ -1214,9 +1214,17 @@ attribute nor
 <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc>
 element is present in a TTML document instance, and if the Document
 Interchange Context does not make an implicit or explicit
-reference to a pre-defined Content Profile, and does not specify a Profile Definition
+reference to a pre-defined Content Profile or does not specify a Profile Definition
 Document or another equivalent set of feature designations,
 then the DFXP Transformation profile applies.</p>
+<note role="elaboration">
+<p>It is not a requirement on a conformant document instance that a <emph>Content Profile</emph> be internally
+defined by use of a <el>ttp:profile</el> element or internally referenced by a
+<att>ttp:profile</att> attribute. More specifically, it is permitted that the <emph>Document
+Interchange Context</emph> determines the applicable <emph>Content Profile</emph> through private
+agreement, out-of-band protocol, or common use (between sender and receiver) of a profile defined
+by an external specification.</p>
+</note>
 <note role="elaboration">
 <p>It is intended that the <att>ttp:profile</att> attribute be used when
 the author wishes to reference one of the standard, predefined profiles of
@@ -1861,10 +1869,11 @@ process the document. If the value of the <att>value</att> attribute
 is <code>optional</code>, then the processor need
 not implement or otherwise support the feature in order to process the
 document; if the value is <code>required</code>, then the processor
-must implement or otherwise support the feature in order to process
+must implement or otherwise support the feature, irrespective of
+whether the feature is enabled or disabled, in order to process
 the document; if the value is
 <code>use</code>, then the processor must both (1) implement or
-otherwise support the feature and (2) enable (activate) use of the
+otherwise support the feature and (2) have enabled (activated) use of the
 feature.</p>
 
 <note role="clarification">
@@ -1898,6 +1907,14 @@ presence or reference to an optional feature by a document must not be
 considered to be a violation of document validity or a barrier to
 further processing if the syntactic expression is well-formed and
 valid.</p>
+<p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
+a <el>ttp:feature</el> element in a given profile, then it must be interpreted as if the feature were specified
+with the <att>value</att> attribute equal to <code>optional</code>.</p>
+<note role="elaboration">
+<p>In particular, if some feature is not present in a profile definition, then
+it is not to be interpreted as meaning the use of that feature (in a document instance)
+is disallowed or otherwise prohibited.</p>
+</note>
 <p>The <el>ttp:feature</el> element is illustrated by the following example.</p>
 <table id="parameter-vocabulary-feature-example-1" role="example">
 <caption>Example Fragment &ndash; ttp:feature</caption>

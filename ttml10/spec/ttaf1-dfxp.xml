@@ -7365,14 +7365,33 @@ style set associated with each original TTML content element;</p>
 <item>
 <p>for the resulting <el>fo:block</el> formatting object
 produced in the previous step that corresponds to the <el>body</el>
-element, synthesize and append to the end of its children an empty
-  <el>fo:block</el> with the following attributes:
+element, perform the following ordered sub-steps:</p>
+<olist>
+<item>
+<p>if the <att>display-align</att> style property of this <el>fo:block</el>
+has the value <code>center</code> or <code>after</code>,
+then synthesize and insert as the first child of this <el>fo:block</el>
+an empty <el>fo:block</el> with the following attributes:
 <att>space-after.optimum</att>, <att>space-after.maximum</att>, and
 <att>space-after.conditionality</att>, where the value of the former
 two attributes is the height or width of the containing
 <el>fo:block-container</el> element, whichever of these is designated
 as the block progression dimension, and where the value of the last is
 <code>retain</code>;</p>
+</item>
+<item>
+<p>if the <att>display-align</att> style property of this <el>fo:block</el>
+has the value <code>center</code> or <code>before</code>,
+then synthesize and insert as the last child of this <el>fo:block</el>
+an empty <el>fo:block</el> with the following attributes:
+<att>space-after.optimum</att>, <att>space-after.maximum</att>, and
+<att>space-after.conditionality</att>, where the value of the former
+two attributes is the height or width of the containing
+<el>fo:block-container</el> element, whichever of these is designated
+as the block progression dimension, and where the value of the last is
+<code>retain</code>;</p>
+</item>
+</olist>
 </item>
 <item>
 <p>for each <el>span</el> element that is not
@@ -7436,9 +7455,9 @@ is not necessarily sufficient to satisfy the presentation
 semantics defined by this specification.</p>
 </note>
 --> 
-  <p>For each resulting document instance F, if processing requires presentation on a 
-  visual medium, then apply formatting and rendering semantics consistent with that 
-  prescribed by <bibref ref="xsl11"/>.</p>
+<p>For each resulting document instance F, if processing requires presentation on a 
+visual medium, then apply formatting and rendering semantics consistent with that 
+prescribed by <bibref ref="xsl11"/>.</p>
 <note role="elaboration">
 <p>In an XSL FO area tree produced by formatting <emph>F</emph> using 
 an <bibref ref="xsl11"/> formatting processor, 
@@ -7449,14 +7468,23 @@ element, would correspond to the <emph>root container region</emph> defined
 above in <specref ref="definitions"/>.</p>
 </note>
 <note>
-<p>
-  Due to the possible presence of TTML style properties or style property values
-  in a given TTML document instance for which there is no <bibref ref="xsl11"/> counterpart,
-  Implementors should recognize that it is the layout model of <bibref ref="xsl11"/> that is being referenced
-  by this specification, not the requirement to use a compliant <bibref ref="xsl11"/> formatting processor,
-  since such would not necessarily be sufficient to satisfy the full presentation semantics
-  defined by this specification, and would contain a large number of features not needed to
-  implement the presentation semantics of TTML.</p>
+<p>Due to the possible presence of TTML style properties or style property values
+in a given TTML document instance for which there is no <bibref ref="xsl11"/> counterpart,
+Implementors should recognize that it is the layout model of <bibref ref="xsl11"/> that is being referenced
+by this specification, not the requirement to use a compliant <bibref ref="xsl11"/> formatting processor,
+since such would not necessarily be sufficient to satisfy the full presentation semantics
+defined by this specification, and would contain a large number of features not needed to
+implement the presentation semantics of TTML.</p>
+</note>
+<note role="explanation">
+<p>The purpose of inserting additional, collapsible space in the block progression
+dimension of the <el>fo:block</el> that corresponds with the <el>body</el> element
+is to ensure that the before and after edges of this <el>fo:block</el> are coincident
+with the before and after edges of the <el>fo:block-container</el> that corresponds
+to the containing <el>region</el>, while simultaneously taking into account the needs
+to satisfy alignment in the block progression dimension. For example, this assures that
+the background color associated with the <el>body</el> element, if not <code>transparent</code>,
+ will fill the containing region wholly.</p>
 </note>
 </div3>
 <div3 id="semantics-region-layout-example">

@@ -284,7 +284,7 @@ function constraint(doc, content) {
 function atrisk(doc,content) {
     var atRiskConstraint = constraints;
     var prefix = atRiskConstraint < 9 ? "R000" : "R00";
-    return "<div class='issue'>Constraint " + prefix + atRiskConstraint + " is at risk.<\/div>"
+    return "<div class='issue'>Constraint " + prefix + atRiskConstraint + " is at risk." + (!!content ? " " : "") + content + "<\/div>"
 }
 var examples = 0;
 function example(doc, content) {
@@ -1218,9 +1218,13 @@ div (root)</td>
 <h4>Constraints</h4>
 <p>Processors MUST support the capability to present documents where the following constraints apply:</p>
 <p data-transform='constraint'>Character edge attributes MUST be expressed using textOutline-unblurred based on the settings identified in CEA-708-D, Section 8.5.8.</p>
-<p data-transform='constraint'>A text outline MUST be expressed using textOutline-unblurred of up to 10%.</p>
+<p data-transform='constraint'>A text outline MUST be expressed using textOutline-unblurred of up to 10% thickness.</p>
 <p data-transform='constraint'>The user MUST be able to specify character edge and type attributes using tts:textOutline attribute.</p>
 <p data-transform='constraint'>The user MUST be able to specify the rendering of character edge types of: none, raised, depressed, uniform or drop shadowed edges.</p>
+<p data-transform='atrisk'>Except for <code>none</code>, [[!TTML10]] provides no explicit, named edge style, such as raised, depressed, drop, etc. Some of
+these, such as <code>depressed</code> (inset) and <code>uniform</code> may be achieved with the current definition of <code>tts:textOutline</code>, however, the
+<code>raised</code> and <code>drop</code> edge style may require the use of multiple outlines (shadows), which are not presently supported. One way
+to address this may be to add an appendix that recommends how to map these CEA-708 edge types to specific <code>tts:textOutline</code> usage patterns.</p>
 <p></p>
 </section>
 </section>

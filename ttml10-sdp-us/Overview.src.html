@@ -92,7 +92,7 @@ var constraints = 0;
 function constraint(doc, content) {
     // perform transformations to make it render and prettier
     var prefix = constraints < 9 ? "R000" : "R00";
-    return '<div class=numbered title=' + prefix + (++constraints) + '>' + content + '</div>';
+    return '<div class=\'numbered constraint\' title=' + prefix + (++constraints) + '>' + content + '</div>';
 }
 function atrisk(doc,content) {
     var atRiskConstraint = constraints;
@@ -254,6 +254,10 @@ div.numbered
 {
     padding: 0 12px 0 8px;
 }
+div.constraint
+{
+    margin-bottom: 1em;
+}
 span.numbered
 {
     font-weight: bold;
@@ -414,10 +418,10 @@ Claims of presentation processor conformance MUST implement the required feature
 <section class='Structural_Constraints'>
 <h3>Structural Constraints</h3>
 <p>Presentation processors MUST support the capability to present documents where the following constraints apply:</p>
-<div data-transform='constraint'>A document MUST contain both a head and body element</div>
+<div data-transform='constraint'>A document MUST contain both a head and body element.</div>
 <div data-transform='constraint'>A document MUST contain both a styling and a layout element.</div>
 <div data-transform='constraint'>A document MUST NOT use a div element inside a div element.</div>
-<div data-transform='constraint'>A document MUST contain only a single level of span element within a p element</div>
+<div data-transform='constraint'>A document MUST contain only a single level of span element within a p element.</div>
 <div data-transform='example'>Single level of spans.</div>
 <pre class="example" style="font-family: Segoe UI; font-size: 13pt; color: black; background: white;">
 <span style="color: blue;">&lt;</span><span style="color: #a31515;">span</span><span style="color: blue;"> </span><span style="color: red;">style</span><span style="color: blue;">=</span>"<span style="color: blue;">s1</span>"<span style="color: blue;">&gt;</span>A<span style="color: blue;">&lt;/</span><span style="color: #a31515;">span</span><span style="color: blue;">&gt;</span>
@@ -482,7 +486,7 @@ Claims of presentation processor conformance MUST implement the required feature
 <section class='Core_Constraints'>
 <h4>Constraints</h4>
 <p>Presentation processors MUST support the capability to present documents where the following constraints apply:</p>
-<div data-transform='constraint'>A document MUST contain only the following elements:</div>
+<div data-transform='constraint'>A document MUST NOT contain an element that is not one of the following:</div>
 <ul>
 <li><code>tt</code></li>
 <li><code>head</code></li>
@@ -556,7 +560,7 @@ or a <code>tt</code> prefix needs to be added to each usage in this document.</d
 </section>
 <section class='Core_Constraints'>
 <h4>Constraints</h4>
-<div data-transform='constraint'>Presentation processors MUST support the capability to present documents referencing this profile using the following URI: <dfn>http://www.w3.org/TR/profile/simple-delivery</dfn></div>
+<div data-transform='constraint'>Presentation processors MUST support the capability to present documents referencing this profile using the following URI: <dfn>http://www.w3.org/TR/profile/simple-delivery</dfn>.</div>
 <div class='note'><p>See also <a href="#conformance">Conformance</a>. [[!TTML10]] allows zero or more profiles (ttp:profile in the head element) to be specified and used simultaneously. A presentation processor may reject documents it does not understand.</p></div>
 <div class='note'><p>When the <code>use</code> attribute is used on the <code>ttp:profile</code> element could indicate the geographical region for which the profile is used. For example, specific styling capabilities could be used in a particular geographical region. See also <a href="#other_constraints">Other Constraints</a>.</p></div>
 </section>
@@ -622,8 +626,8 @@ region element</td>
 <div data-transform='constraint'>The backgroundColor MUST be expressed in #rrggbbaa format exclusively using the <dfn>&lt;hexdigit&gt;</dfn> style value expression.</div>
 <div data-transform='constraint'>The backgroundColor MUST support the colors outlined in <a href="#color-values">Color Values</a>.</div>
 <div class='note'><p>These colors are identical to those identified in the CEA708-D, Section 8.8 [RBG resolution of 4 bits for each primary (03)].</p></div>
-<div data-transform='constraint'>The alpha component of backgroundColor MUST support the opacity values outlined in <a href="#color-values">Color Values</a> .</div>
-<div data-transform='constraint'>The alpha component of backgroundColor for a region MUST be 00.</div>
+<div data-transform='constraint'>The alpha component of backgroundColor MUST support the opacity values outlined in <a href="#color-values">Color Values</a>.</div>
+<div data-transform='constraint'>The alpha component of backgroundColor for a region MUST be zero (0).</div>
 <div data-transform='constraint'>The presentation processor MUST allow the user to specify a backgroundColor for p and span elements based on a minimum of an 8-color palette of white, black, red, green, blue, yellow, magenta, and cyan (See Minimum Color List in <a href="#color-values">Color Values</a> ).</div>
 <div data-transform='constraint'>The presentation processor MUST allow the user to specify a backgroundColor for p and span elements to allow for semi-transparent and transparent opacities.</div>
 </section>
@@ -656,7 +660,7 @@ region element</td>
 <div data-transform='constraint'>The color MUST be expressed in #rrggbbaa format exclusively using the <dfn>&lt;hexdigit&gt;</dfn> style value expression.</div>
 <div data-transform='constraint'>The color MUST support the colors outlined in <a href="#color-values">Color Values</a>.</div>
 <div class='note'><p>These colors are identical to those identified in the CEA708-D, Section 8.8 [RBG resolution of 4 bits for each primary (03)].</p></div>
-<div data-transform='constraint'>The alpha component of color MUST support the opacity values outlined in <a href="#color-values">Color Values</a> .</div>
+<div data-transform='constraint'>The alpha component of color MUST support the opacity values outlined in <a href="#color-values">Color Values</a>.</div>
 <div data-transform='constraint'>The presentation processor MUST allow the user to specify a color for p and span elements based on a minimum of an 8-color palette of white, black, red, green, blue, yellow, magenta, and cyan (See Minimum Color List in <a href="#color-values">Color Values</a> ).</div>
 <div data-transform='constraint'>The presentation processor MUST allow the user to specify a color for p and span elements to allow for semi-transparent and transparent opacities.</div>
 </section>
@@ -858,7 +862,7 @@ so that a line fills up incrementally, and then as new lines are added the upper
 <li>smallCaps</li>
 </ul>
 <div class='note'><p>Values of tts:fontFamily that do not not correspond to generic font family names in [[!TTML10]], such as <code>casual</code>, <code>cursive</code> and <code>smallCaps</code>, may be used. These are to be interpreted as local font names, which, if not available, the <code>default</code> font family is to be used.</p></div>
-<div data-transform='constraint'>A presentation processor MUST map the generic font names to fonts as follows</div>
+<div data-transform='constraint'>A presentation processor MUST map the generic font names to fonts as follows:</div>
 <table>
 <tr>
 <th>Style Value</th>
@@ -938,8 +942,8 @@ div (root)</td>
 <section class='Core_Constraints'>
 <h4>Constraints</h4>
 <p>Presentation processors MUST support the capability to present documents where the following constraints apply:</p>
-<div data-transform='constraint'>document MUST only specify tts:fontSize(s) using a value of 50%, 75%, 100%, 150% or 200%.</div>
-<div class='note'><p>Use of a fontSize of less than 75% (i.e. 50%) could result in unreadable content for a user.</p></div>
+<div data-transform='constraint'>A document MUST NOT specify <code>tts:fontSize</code> using a value that is not one of 50%, 75%, 100%, 150% or 200%.</div>
+<div class='note'><p>Use of a fontSize of less than 75% (i.e. 50%) may result in unreadable content for a user.</p></div>
 <div class='note'><p>Specifying a fontSize is used for a document could allow the user to select a preferred fontSize.</p></div>
 <div class='note'><p>If a specific fontSize is not supported, then, follow the semantics for a presentation processor defined in [[!TTML10]], Section 8.2.9.</p></div>
 <div class='note'><p>Constraining the root container extent to the active video area means that the default
@@ -1452,7 +1456,7 @@ as such, a document SHOULD NOT use a duration on an element type other than p or
 <div data-transform='constraint'>The set element MUST only animate the region or span element.</div>
 <div data-transform='constraint'>The use of set elements applied to a region element MUST only animate the tts:display, tts:origin or tts:extent attribute.</div>
 <div data-transform='constraint'>The use of set elements applied to a span element MUST only animate the tts:color attribute.</div>
-<div data-transform='constraint'>No more than 6 set elements MUST be used within a given element</div>
+<div data-transform='constraint'>No more than 6 set elements MUST be used within a given element.</div>
 <div class='note'><p>Animation is constrained to the scenarios where the region needs to be moved &#8211; i.e. when the &#8220;snap&#8221; display effect is required.</p></div>
 <div class='note'><p>Animation is constrained to the scenarios to change the foreground color of content when flashing text is required.</p></div>
 </section>
@@ -2644,7 +2648,7 @@ as such, a document SHOULD NOT use a duration on an element type other than p or
 <td class="style2" style="width:49px"></td>
 </tr>
 </table>
-<div data-transform='constraint'>Presentation processors MAY support the extended G2 characters sets that map onto Unicode code points (See table).</div>
+<div data-transform='constraint'>Presentation processors MAY support the extended G2 characters sets that map onto Unicode code points (see table).</div>
 Presentation processors may also provide Glyph coverage for additional Unicode code points
 <section class='color_values'>
 <h2>Color values</h2>

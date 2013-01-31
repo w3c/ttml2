@@ -1117,6 +1117,8 @@
             </a>
             <xsl:text>, </xsl:text>
             <a href="http://www.keio.ac.jp/">Keio</a>
+            <xsl:text>, </xsl:text>
+	    <a href="http://ev.buaa.edu.cn/">Beihang</a>
             <xsl:text>), All Rights Reserved. W3C </xsl:text>
             <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>

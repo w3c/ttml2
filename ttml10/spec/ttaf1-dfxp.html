@@ -70,9 +70,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .diff-del  { color: red; text-decoration: line-through; background-color: #99FF99; }
 .diff-chg  { background-color: #99FF99; }
 q.diff-off  {}
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date: 2013/02/06 19:03:00 $<div id="revisions"/><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date$<div id="revisions"/><div class="head">
 <h1><a name="title" id="title"/>Timed Text Markup Language (TTML) 1.0 (Second Edition)</h1>
-<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date: 2013/02/06 19:03:00 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date$ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttaf1-dfxp.html">ttaf1-dfxp.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -213,6 +213,8 @@ for example, providing a standard content format to reference from a <code>&lt;t
         9.3.1 <a href="#semantics-default-region">Default Region</a><br/>
         9.3.2 <a href="#semantics-region-layout-step-1">Intermediate Synchronic Document Construction</a><br/>
         9.3.3 <a href="#semantics-region-layout-step-2">Synchronic Flow Processing</a><br/>
+            9.3.3.1 <a href="#semantics-region-layout-step-2-xslfo">XSL-FO Mapping</a><br/>
+            9.3.3.2 <a href="#semantics-region-layout-step-2-html">HTML Mapping</a><br/>
         9.3.4 <a href="#semantics-region-layout-example">Elaborated Example (Informative)</a><br/>
     9.4 <a href="#semantics-line-layout">Line Layout</a><br/>
 10 <a href="#timing">Timing</a><br/>
@@ -417,11 +419,11 @@ H <a href="#references">References</a><br/>
 I <a href="#other-references">Other References</a> (Non-Normative)<br/>
 J <a href="#requirements">Requirements</a> (Non-Normative)<br/>
 K <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br/>
-    K.1 <a href="#d3e17471">Element Derivation</a><br/>
-    K.2 <a href="#d3e17950">Attribute Derivation</a><br/>
+    K.1 <a href="#d3e17700">Element Derivation</a><br/>
+    K.2 <a href="#d3e18179">Attribute Derivation</a><br/>
 L <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br/>
-    L.1 <a href="#d3e18819">Requirements</a><br/>
-    L.2 <a href="#d3e18983">Guidelines</a><br/>
+    L.1 <a href="#d3e19048">Requirements</a><br/>
+    L.2 <a href="#d3e19212">Guidelines</a><br/>
 M <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br/>
 N <a href="#common-styling">Common Caption Style Examples</a> (Non-Normative)<br/>
     N.1 <a href="#pop-on-example">Pop-On Caption Example</a><br/>
@@ -1775,7 +1777,11 @@ which content regions are located and presented. If no <code>tts:extent</code>
 attribute is specified, then the spatial extent of the root container region is
 considered to be determined by the external authoring or presentation
 context. The root container origin is determined by the external
-authoring context.</p><p>An <code>xml:lang</code> attribute must be specified on the <code>tt</code> element.
+authoring (or presentation) context.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>If an author desires to signal the (storage or image) aspect ratio of the root container
+region without specifying its resolution, then this may be accomplished by using metadata specified
+in an external namespace, such as <code>m708:aspectRatio</code> as defined in <a href="#smpte2052">[SMPTE 2052-11]</a>, §5.4.4.
+This would permit, for example, the interchange of information that reflects the
+the semantics of <a href="#cea708d">[CEA-708-D]</a> , §4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p></div><p>An <code>xml:lang</code> attribute must be specified on the <code>tt</code> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the document instance.</p><p>If no <code>xml:space</code> attribute is specified upon the <code>tt</code> element, then it must
 be considered as if the attribute had been specified with a value of <code>default</code>.</p></div><div class="div3">
@@ -3934,16 +3940,18 @@ by <a href="#cea608c">[CEA-608-C]</a>, § C.3.</p></div></div><div class="div3">
 <h4><a name="semantics-region-layout-step-2" id="semantics-region-layout-step-2"/>9.3.3 Synchronic Flow Processing</h4><p>Subsequent to performing a temporal (synchronic) slice and subsequent
 remapping of regionally selected content hierarchy, the resulting intermediate
 synchronic document is subjected to a flow transformation step that produces 
-a rooted flow object tree represented as 
-an XSL FO document instance as defined by <a href="#xsl11">[XSL 1.1]</a>,
+a rooted flow object tree represented in one of two forms:</p><ul><li><p>an XSL FO document instance as defined by <a href="#xsl11">[XSL 1.1]</a>,
 and semantically extended by TTML specific style properties that have no XSL
-FO counterpart.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this section, the use of XSL FO is intended to be conceptual only, employed
+FO counterpart.</p></li><li><p>a CSS styled HTML document instance or HTML fragment as defined by <a href="#html5">[HTML5]</a>
+and <a href="#css2">[CSS2]</a>,
+and semantically extended by TTML specific style properties that have no CSS
+counterpart.</p></li></ul><div class="note"><p class="prefix"><b>Note:</b></p><p>In this section, uses of XSL FO and CSS styled HTML are intended to be conceptual only, employed
 solely for the purpose of defining the normative presentation semantics of
 TTML. An actual implementation of this algorithm is not required to create or process
-XSL FO representations. In particular, it is possible to implement these semantics
-using alternative presentation models, such as Cascading Style Sheets (CSS).</p></div><p>Each intermediate synchronic  document produced by <a href="#semantics-region-layout-step-1"><b>9.3.2 Intermediate Synchronic Document Construction</b></a> is mapped 
-
-to a styled document <em>F</em> consistent with an XSL FO document instance, as follows</p><ol class="enumar"><li><p>perform the following ordered sub-steps to create anonymous spans:</p><ol class="enumla"><li><p>for each significant text node in a content element,
+either representation. In particular, it is possible to implement these semantics
+using alternative presentation models, where two such alternatives are elaborated here.</p></div><div class="div4">
+<h5><a name="semantics-region-layout-step-2-xslfo" id="semantics-region-layout-step-2-xslfo"/>9.3.3.1 XSL-FO Mapping</h5><p>Each intermediate synchronic document produced by <a href="#semantics-region-layout-step-1"><b>9.3.2 Intermediate Synchronic Document Construction</b></a> is mapped 
+to an XSL FO document instance, <em>F</em>, as follows:</p><ol class="enumar"><li><p>perform the following ordered sub-steps to create anonymous spans:</p><ol class="enumla"><li><p>for each significant text node in a content element,
 synthesize an anonymous span to enclose the text node, substituting
 the new anonymous span for the original text node child in its sibling
 and parent hierarchy;</p></li><li><p>for each contiguous sequence of anonymous spans, replace the
@@ -4026,7 +4034,56 @@ with the before and after edges of the <code>fo:block-container</code> that corr
 to the containing <code>region</code>, while simultaneously taking into account the needs
 to satisfy alignment in the block progression dimension. For example, this assures that
 the background color associated with the <code>body</code> element, if not <code>transparent</code>,
- will fill the containing region wholly.</p></div></div><div class="div3">
+ will fill the containing region wholly.</p></div></div><div class="div4">
+<h5><a name="semantics-region-layout-step-2-html" id="semantics-region-layout-step-2-html"/>9.3.3.2 HTML Mapping</h5><div class="issue"><p class="prefix"><a name="one" id="one"/><b>Issue (one):</b></p><p>Need to specify table mapping TTML properties to CSS properties.</p><p class="prefix"><b>Resolution:</b></p><p>None recorded.</p></div><div class="issue"><p class="prefix"><a name="two" id="two"/><b>Issue (two):</b></p><p>Need to make use of CSS3 Alignment Module's align-content property to map
+TTML's display-align property.</p><p class="prefix"><b>Resolution:</b></p><p>None recorded.</p></div><p>Each intermediate synchronic document produced by <a href="#semantics-region-layout-step-1"><b>9.3.2 Intermediate Synchronic Document Construction</b></a> is mapped 
+to either an HTML document instance or an HTML fragment, <em>F</em>, as follows:</p><ol class="enumar"><li><p>perform the following ordered sub-steps to create anonymous spans:</p><ol class="enumla"><li><p>for each significant text node in a content element,
+synthesize an anonymous span to enclose the text node, substituting
+the new anonymous span for the original text node child in its sibling
+and parent hierarchy;</p></li><li><p>for each contiguous sequence of anonymous spans, replace the
+sequence with a single anonymous span which contains a sequence of
+text nodes representing the individual text node children of the
+original sequence of anonymous spans;</p></li><li><p>for each span element whose child is a single anonymous span,
+replace the anonymous span with its sequence of child text
+nodes;</p></li></ol></li><li><p>resolve styles according to <a href="#semantics-style-resolution-process-overall"><b>8.4.4.4 Style Resolution Process</b></a>;</p></li><li><p>if the target, <em>F</em> is an HTML document instance, then
+map the <code>tt</code> element to an HTML <code>html</code> element; otherwise,
+map the <code>tt</code> element to an HTML <code>div</code> element;</p></li><li><p>map each non-empty <code>region</code> element to an HTTML <code>div</code>
+element with an associated <code>position</code> property with value
+<code>absolute</code>, and where the region's position and extent are mapped to equivalent
+<code>top</code>, <code>left</code>, <code>width</code>, and <code>height</code>
+properties;</p></li><li><p>for each <code>body</code> and <code>div</code> element that is not
+associated with a <code>tts:display</code> style property with the value
+<code>none</code>, map the element to a distinct HTML <code>div</code> element,
+populating the style properties of this <code>div</code> by using the computed
+style set associated with each original TTML content element;</p></li><li><p>for each <code>p</code> element that is not
+associated with a <code>tts:display</code> style property with the value
+<code>none</code>, map the element to a distinct HTML <code>p</code> element,
+populating the style properties of <code>p</code> by using the computed
+style set associated with each original TTML content element;</p></li><li><p>for each <code>span</code> element that is not
+associated with a <code>tts:display</code> style property with the value
+<code>none</code> and for each anonymous
+span that is a child of a <code>p</code> or <code>span</code> element,
+map the element or sequence of character items to a distinct HTML <code>p</code> element,
+populating the style properties of this <code>p</code> element by using the computed
+style set associated with each original TTML content element
+or anonymous span;</p></li><li><p>for each <code>br</code> element that is not
+associated with a <code>tts:display</code> style property with the value
+<code>none</code>, map the element to
+a distinct HTML <code>br</code> element;</p></li><li><p>for each TTML style property attribute in some computed
+style set that
+has no counterpart in <a href="#css2">[CSS2]</a>, map that attribute directly through
+to the relevant formatting object produced by the input TTML content element to
+which the style property applies;</p></li><li><p>optionally, synthesize a unique <code>id</code> attribute on each resulting
+HTML element that relates that element to the input element that
+resulted in that HTML element;</p></li></ol><p>For each resulting document instance F, if processing requires presentation on a 
+visual medium, then apply formatting and rendering semantics consistent with that 
+prescribed by <a href="#html5">[HTML5]</a> and <a href="#css2">[CSS2]</a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Due to the possible presence of TTML style properties or style property values
+in a given TTML document instance for which there is no <a href="#css2">[CSS2]</a> counterpart,
+Implementors should recognize that it is the layout model of <a href="#css2">[CSS2]</a> that is being referenced
+by this specification, not the requirement to use a compliant <a href="#css2">[CSS2]</a> formatting processor,
+since such would not necessarily be sufficient to satisfy the full presentation semantics
+defined by this specification, and would contain a large number of features not needed to
+implement the presentation semantics of TTML.</p></div></div></div><div class="div3">
 <h4><a name="semantics-region-layout-example" id="semantics-region-layout-example"/>9.3.4 Elaborated Example (Informative)</h4><p>An example of the processing steps described above is elaborated below, starting with <a href="#region-mapping-example-1-s"><b>Example – Sample Source Document</b></a>.</p><table summary="HTML Table" id="region-mapping-example-1-s" class="example"><caption>Example – Sample Source Document</caption><tbody><tr><td>
 <div class="exampleInner"><pre>&lt;tt tts:extent="640px 480px" xml:lang="en"
   xmlns="http://www.w3.org/ns/ttml"
@@ -8272,6 +8329,11 @@ May 1998. (See
 Positioning System</cite></a>, US Naval Observatory.
 (See
 <a href="http://tycho.usno.navy.mil/gpsinfo.html">http://tycho.usno.navy.mil/gpsinfo.html</a>.)
+</dd><dt class="label"><a name="html5" id="html5"/>HTML5</dt><dd>Robin Berjon et al.,
+<a href="http://www.w3.org/html/wg/drafts/html/CR/"><cite>HTML5 A vocabulary
+and associated APIs for HTML and XHTML</cite></a>, W3C Candidate Recommendation, 17
+December 2012. (See
+<a href="http://www.w3.org/TR/2012/CR-html5-20121217//">http://www.w3.org/TR/2012/CR-html5-20121217//</a>.)
 </dd><dt class="label"><a name="mime-media" id="mime-media"/>MIME</dt><dd>Ned Freed and Nathaniel Borenstein,  
 <a href="http://www.rfc-editor.org/rfc/rfc2046.txt"><cite>Multipurpose Internet
 Mail Extensions (MIME) Part Two: Media Types</cite></a>,
@@ -8367,6 +8429,10 @@ EIA/CEA-608-C,
 <a href="http://www.ce.org/"><cite>Line 21 Data
 Services</cite></a>, EIA/CEA Standard,
 Consumer Electronics Association (CEA).
+</dd><dt class="label"><a name="cea708d" id="cea708d"/>CEA-708-D</dt><dd>
+CEA-708-D,
+<a href="http://www.ce.org/"><cite>Digital Television (DTV) Closed Captioning</cite></a>, CEA Standard,
+Consumer Electronics Association (CEA).
 </dd><dt class="label"><a name="css3-color" id="css3-color"/>CSS3 Color</dt><dd>Tantek Çelik and Chris Lilley,
 <a href="http://www.w3.org/TR/2003/CR-css3-color-20030514/"><cite>CSS3 Color
 Module</cite></a>, W3C Candidate Recommendation, 14 May 2003. (See
@@ -8391,6 +8457,9 @@ August 2005. (See
 </dd><dt class="label"><a name="smpte170m" id="smpte170m"/>SMPTE 170M</dt><dd>ANSI/SMPTE 170M, 
 <a href="http://www.smpte.org/"><cite>Television – Composite Analog Video
 Signal – NTSC for Studio Applications</cite></a>, SMPTE Standard.
+</dd><dt class="label"><a name="smpte2052" id="smpte2052"/>SMPTE 2052-11</dt><dd>SMPTE 2052-11,
+<a href="http://www.smpte.org/"><cite>Conversion from CEA-708 Caption Data to SMPTE-TT</cite></a>,
+SMPTE Recommended Practice.
 </dd><dt class="label"><a name="svg11" id="svg11"/>SVG 1.1</dt><dd>Jon Ferraiolo, Jun Fujisawa, Dean Jackson, Eds.,
 <a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/"><cite>Scalable
 Vector Graphics (SVG) 1.1 Specification</cite></a>, W3C Recommendation, 14
@@ -8421,7 +8490,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a name="derivation" id="derivation"/>K Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a name="d3e17471" id="d3e17471"/>K.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
+<h3><a name="d3e17700" id="d3e17700"/>K.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8476,7 +8545,7 @@ elements.</p></li><li><p>Derived from the use of <code>@requiredExtensions</code
 and <code>@requiredFeatures</code> on the <code>svg:svg</code> element,
 but extended to support distinct specification of optionality.</p></li><li><p>Derived from the use of <code>@baseProfile</code>
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e17950" id="d3e17950"/>K.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
+<h3><a name="d3e18179" id="d3e18179"/>K.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8548,9 +8617,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a name="qa" id="qa"/>L QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a> <a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a name="d3e18819" id="d3e18819"/>L.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a name="d3e19048" id="d3e19048"/>L.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td/><td/><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td/><td/><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e18983" id="d3e18983"/>L.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a name="d3e19212" id="d3e19212"/>L.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>K Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 <a href="#doctypes">TTML Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

@@ -2746,7 +2746,14 @@ which content regions are located and presented. If no <att>tts:extent</att>
 attribute is specified, then the spatial extent of the root container region is
 considered to be determined by the external authoring or presentation
 context. The root container origin is determined by the external
-authoring context.</p>
+authoring (or presentation) context.</p>
+<note>
+<p>If an author desires to signal the (storage or image) aspect ratio of the root container
+region without specifying its resolution, then this may be accomplished by using metadata specified
+in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bibref ref="smpte2052"/>, &sect;5.4.4.
+This would permit, for example, the interchange of information that reflects the
+the semantics of <bibref ref="cea708d"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
+</note>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the document instance.</p>
@@ -7318,23 +7325,28 @@ by <bibref ref="cea608c"/>, &sect; C.3.</p>
 <p>Subsequent to performing a temporal (synchronic) slice and subsequent
 remapping of regionally selected content hierarchy, the resulting intermediate
 synchronic document is subjected to a flow transformation step that produces 
-a rooted flow object tree represented as 
-an XSL FO document instance as defined by <bibref ref="xsl11"/>,
+a rooted flow object tree represented in one of two forms:</p>
+<ulist>
+<item><p>an XSL FO document instance as defined by <bibref ref="xsl11"/>,
 and semantically extended by TTML specific style properties that have no XSL
-FO counterpart.</p>
+FO counterpart.</p></item>
+<item><p>a CSS styled HTML document instance or HTML fragment as defined by <bibref ref="html5"/>
+and <bibref ref="css2"/>,
+and semantically extended by TTML specific style properties that have no CSS
+counterpart.</p></item>
+</ulist>
 <note>
-<p>In this section, the use of XSL FO is intended to be conceptual only, employed
+<p>In this section, uses of XSL FO and CSS styled HTML are intended to be conceptual only, employed
 solely for the purpose of defining the normative presentation semantics of
 TTML. An actual implementation of this algorithm is not required to create or process
-XSL FO representations. In particular, it is possible to implement these semantics
-using alternative presentation models, such as Cascading Style Sheets (CSS).</p>
+either representation. In particular, it is possible to implement these semantics
+using alternative presentation models, where two such alternatives are elaborated here.</p>
 </note>
-<p>Each intermediate synchronic  document produced by <specref
+<div4 id="semantics-region-layout-step-2-xslfo">
+<head>XSL-FO Mapping</head>
+<p>Each intermediate synchronic document produced by <specref
 ref="semantics-region-layout-step-1"/> is mapped 
-<!-- changed for future CSS compatibility 
 to an XSL FO document instance, <emph>F</emph>, as follows:</p>
--->
-to a styled document <emph>F</emph> consistent with an XSL FO document instance, as follows</p>
 <olist>
 <item>
 <p>perform the following ordered sub-steps to create anonymous spans:</p>
@@ -7508,6 +7520,108 @@ to satisfy alignment in the block progression dimension. For example, this assur
 the background color associated with the <el>body</el> element, if not <code>transparent</code>,
  will fill the containing region wholly.</p>
 </note>
+</div4>
+<div4 id="semantics-region-layout-step-2-html">
+<head>HTML Mapping</head>
+<issue id="one">
+<p>Need to specify table mapping TTML properties to CSS properties.</p>
+</issue>
+<issue id="two">
+<p>Need to make use of CSS3 Alignment Module's align-content property to map
+TTML's display-align property.</p>
+</issue>
+<p>Each intermediate synchronic document produced by <specref
+ref="semantics-region-layout-step-1"/> is mapped 
+to either an HTML document instance or an HTML fragment, <emph>F</emph>, as follows:</p>
+<olist>
+<item>
+<p>perform the following ordered sub-steps to create anonymous spans:</p>
+<olist>
+<item><p>for each significant text node in a content element,
+synthesize an anonymous span to enclose the text node, substituting
+the new anonymous span for the original text node child in its sibling
+and parent hierarchy;</p></item>
+<item><p>for each contiguous sequence of anonymous spans, replace the
+sequence with a single anonymous span which contains a sequence of
+text nodes representing the individual text node children of the
+original sequence of anonymous spans;</p></item>
+<item><p>for each span element whose child is a single anonymous span,
+replace the anonymous span with its sequence of child text
+nodes;</p></item>
+</olist>
+</item>
+<item>
+<p>resolve styles according to <specref
+ref="semantics-style-resolution-process-overall"/>;</p>
+</item>
+<item>
+<p>if the target, <emph>F</emph> is an HTML document instance, then
+map the <el>tt</el> element to an HTML <el>html</el> element; otherwise,
+map the <el>tt</el> element to an HTML <el>div</el> element;</p>
+</item>
+<item>
+<p>map each non-empty <el>region</el> element to an HTTML <el>div</el>
+element with an associated <att>position</att> property with value
+<code>absolute</code>, and where the region's position and extent are mapped to equivalent
+<att>top</att>, <att>left</att>, <att>width</att>, and <att>height</att>
+properties;</p>
+</item>
+<item>
+<p>for each <el>body</el> and <el>div</el> element that is not
+associated with a <att>tts:display</att> style property with the value
+<code>none</code>, map the element to a distinct HTML <el>div</el> element,
+populating the style properties of this <el>div</el> by using the computed
+style set associated with each original TTML content element;</p>
+</item>
+<item>
+<p>for each <el>p</el> element that is not
+associated with a <att>tts:display</att> style property with the value
+<code>none</code>, map the element to a distinct HTML <el>p</el> element,
+populating the style properties of <el>p</el> by using the computed
+style set associated with each original TTML content element;</p>
+</item>
+<item>
+<p>for each <el>span</el> element that is not
+associated with a <att>tts:display</att> style property with the value
+<code>none</code> and for each anonymous
+span that is a child of a <el>p</el> or <el>span</el> element,
+map the element or sequence of character items to a distinct HTML <el>p</el> element,
+populating the style properties of this <el>p</el> element by using the computed
+style set associated with each original TTML content element
+or anonymous span;</p>
+</item>
+<item>
+<p>for each <el>br</el> element that is not
+associated with a <att>tts:display</att> style property with the value
+<code>none</code>, map the element to
+a distinct HTML <el>br</el> element;</p>
+</item>
+<item>
+<p>for each TTML style property attribute in some computed
+style set that
+has no counterpart in <bibref ref="css2"/>, map that attribute directly through
+to the relevant formatting object produced by the input TTML content element to
+which the style property applies;</p>
+</item>
+<item>
+<p>optionally, synthesize a unique <att>id</att> attribute on each resulting
+HTML element that relates that element to the input element that
+resulted in that HTML element;</p>
+</item>
+</olist>
+<p>For each resulting document instance F, if processing requires presentation on a 
+visual medium, then apply formatting and rendering semantics consistent with that 
+prescribed by <bibref ref="html5"/> and <bibref ref="css2"/>.</p>
+<note>
+<p>Due to the possible presence of TTML style properties or style property values
+in a given TTML document instance for which there is no <bibref ref="css2"/> counterpart,
+Implementors should recognize that it is the layout model of <bibref ref="css2"/> that is being referenced
+by this specification, not the requirement to use a compliant <bibref ref="css2"/> formatting processor,
+since such would not necessarily be sufficient to satisfy the full presentation semantics
+defined by this specification, and would contain a large number of features not needed to
+implement the presentation semantics of TTML.</p>
+</note>
+</div4>
 </div3>
 <div3 id="semantics-region-layout-example">
 <head>Elaborated Example (Informative)</head>
@@ -11397,6 +11511,12 @@ Positioning System</titleref>, US Naval Observatory.
 (See
 <xspecref href="http://tycho.usno.navy.mil/gpsinfo.html">http://tycho.usno.navy.mil/gpsinfo.html</xspecref>.)
 </bibl>
+<bibl id="html5" key="HTML5">Robin Berjon et al.,
+<titleref href="http://www.w3.org/html/wg/drafts/html/CR/">HTML5 A vocabulary
+and associated APIs for HTML and XHTML</titleref>, W3C Candidate Recommendation, 17
+December 2012. (See
+<xspecref href="http://www.w3.org/TR/2012/CR-html5-20121217//">http://www.w3.org/TR/2012/CR-html5-20121217//</xspecref>.)
+</bibl>
 <bibl id="mime-media" key="MIME">Ned Freed and Nathaniel Borenstein,  
 <titleref
 href="http://www.rfc-editor.org/rfc/rfc2046.txt">Multipurpose Internet
@@ -11528,6 +11648,11 @@ EIA/CEA-608-C,
 Services</titleref>, EIA/CEA Standard,
 Consumer Electronics Association (CEA).
 </bibl>
+<bibl id="cea708d" key="CEA-708-D">
+CEA-708-D,
+<titleref href="http://www.ce.org/">Digital Television (DTV) Closed Captioning</titleref>, CEA Standard,
+Consumer Electronics Association (CEA).
+</bibl>
 <bibl id="css3-color" key="CSS3 Color">Tantek &Ccedil;elik and Chris Lilley,
 <titleref href="http://www.w3.org/TR/2003/CR-css3-color-20030514/">CSS3 Color
 Module</titleref>, W3C Candidate Recommendation, 14 May 2003. (See
@@ -11561,6 +11686,11 @@ August 2005. (See
 <titleref
 href="http://www.smpte.org/">Television &ndash; Composite Analog Video
 Signal &ndash; NTSC for Studio Applications</titleref>, SMPTE Standard.
+</bibl>
+<bibl id="smpte2052" key="SMPTE 2052-11">SMPTE 2052-11,
+<titleref
+href="http://www.smpte.org/">Conversion from CEA-708 Caption Data to SMPTE-TT</titleref>,
+SMPTE Recommended Practice.
 </bibl>
 <bibl id="svg11" key="SVG 1.1">Jon Ferraiolo, Jun Fujisawa, Dean Jackson, Eds.,
 <titleref

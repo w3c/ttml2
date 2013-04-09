@@ -110,6 +110,10 @@
         <xmlvalidate lenient="false" warn="yes" file="ttaf1-dfxp.xml"/>
     </target>
 
+    <target name="validate-tt-specs-dont-build-escapes" description="Validates all Timed Text spec files.">
+        <xmlvalidate lenient="false" warn="yes" file="ttaf1-dfxp.xml"/>
+    </target>
+
     <target name="validate" depends="validate-xsl,validate-svg,validate-tt-specs,validate-schema-rnc,validate-profiles"/>
 
     <target name="updateAcks"
@@ -200,6 +204,11 @@
       <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
     </target>
     
+    <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
+	    depends="validate-tt-specs-dont-build-escapes,html">
+      <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
+    </target>
+
     <target name="main" description="Generate the specification for a CVS commit"
 	    depends="changelog,validate-tt-specs,html">
 <!--	    depends="updateAcks,changelog,validate-tt-specs,html"> -->

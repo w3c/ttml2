@@ -27,8 +27,12 @@
 <!ENTITY minus "&#x2212;">
 <!ENTITY le "&#x2264;">
 <!ENTITY ge "&#x2265;">
-<!ENTITY plusmn "&#x00B1;">
+<!ENTITY plusmn "&#x00b1;">
 <!ENTITY thinsp "&#x2009;">
+<!ENTITY infin "&#x221e;">
+<!ENTITY real "&#x211c;">
+<!ENTITY prop "&#x221d;">
+<!ENTITY not "&#x00ac;">
 <!ENTITY dfxp-ex1 SYSTEM "./examples/ex1.xml.esc">
 <!ENTITY dfxp-ex1-x-0 SYSTEM "./examples/ex1-x-0.xml.esc">
 <!ENTITY dfxp-ex1-p-0 SYSTEM "./examples/ex1-p-0.xml.esc">
@@ -685,7 +689,15 @@ information, and with which that TTML document instance is associated.</p>
 <label>Root Container Region</label>
 <def>
 <p>A logical region that establishes a coordinate system into which
-content regions are placed and optionally clipped.</p>
+TTML document instance content regions are placed and optionally clipped.</p>
+</def>
+</gitem>
+<gitem>
+<label>Root Temporal Extent</label>
+<def>
+<p>
+The temporal extent (interval) defined by the temporal beginning and ending of a TTML document instance in relationship with some external application or presentation context.
+</p>
 </def>
 </gitem>
 <gitem>
@@ -2731,14 +2743,8 @@ zero or one <el>body</el> element.</p>
 </tr>
 </tbody>
 </table>
-<p>The temporal beginning and ending of a document instance represented by a
-<el>tt</el> element is defined in relationship with some external
-application or presentation context. The temporal interval defined by
-these points is referred to subsequently as the <emph>external time interval</emph>.
-</p>
-<p>A document instance has an implicit duration that is equal to the
-implicit duration of the <el>body</el> element of the document, if present, or zero,
-if not present.</p>
+<p>The <emph>Root Temporal Extent</emph>, i.e., the time interval over which a document instance is active, has an implicit duration that is equal to the
+implicit duration of the <el>body</el> element of the document, if present, or zero, if not present.</p>
 <p>If the <att>tts:extent</att> attribute is specified on the <el>tt</el>
 element, then it must adhere to <specref ref="style-attribute-extent"/>, in which case it
 specifies the spatial extent of the root container region in
@@ -2802,7 +2808,7 @@ are referenced by content elements.</p>
 </table>
 <p>To the extent that time semantics apply to the content of the
 <el>head</el> element, the implied time interval of this element is
-defined to be coterminous with the external time interval.</p>
+defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
 </div3>
 <div3 id="document-structure-vocabulary-body">
 <head>body</head>
@@ -2847,20 +2853,20 @@ element group apply semantically to the <el>body</el> element.</p>
 </table>
 <p>An author may specify a temporal interval for a <el>body</el> element using
 the <att>begin</att>, <att>dur</att>, and <att>end</att> attributes. If the begin point
-of this interval remains unspecified, then the begin point is interpreted as the begin
-point of the external time interval. Similarly, if the end point of this interval remains unspecified, then the
-end point is interpreted as the end point of the external time interval.</p>
+of this interval remains unspecified, then the begin point is interpreted as the beginning
+point of the <emph>Root Temporal Extent</emph>. Similarly, if the end point of this interval remains unspecified, then the
+end point is interpreted as the ending point of the <emph>Root Temporal Extent</emph>.</p>
 <note role="explanation">
 <p>A TTML document instance referenced from a SMIL presentation
 is expected to follow the same timing rules as apply to other SMIL media
 objects.</p>
 </note>
 <p>If relative begin or end times are specified on the <el>body</el>
-element, then these times are resolved by reference to the begin and
-end time of the external time interval.</p>
-<p>If the external time interval is shorter than the computed duration of the
-<el>body</el> element, then the active time interval of a document instance is
-truncated to the active end point of the external time interval.</p>
+element, then these times are resolved by reference to the beginning and
+ending time of the <emph>Root Temporal Extent</emph>.</p>
+<p>If the <emph>Root Temporal Extent</emph> is shorter than the computed duration of the
+<el>body</el> element, then the active time interval of a <el>body</el> element is
+truncated to the active end point of the <emph>Root Temporal Extent</emph>.</p>
 <p>An author may associate a set of style properties with a
 <el>body</el> element by means of either the <att>style</att>
 attribute or inline style attributes or a combination thereof.</p>
@@ -3280,7 +3286,7 @@ zero or more <el>style</el> elements.</p>
 </table>
 <p>To the extent that time semantics apply to the content of the
 <el>styling</el> element, the implied time interval of this element is
-defined to be coterminous with the external time interval.</p>
+defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
 </div3>
 <div3 id="styling-vocabulary-style">
 <head>style</head>
@@ -7020,7 +7026,7 @@ zero or more <el>region</el> elements.</p>
 </table>
 <p>To the extent that time semantics apply to the content of the
 <el>layout</el> element, the implied time interval of this element is
-defined to be coterminous with the external time interval.</p>
+defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
 </div3>
 <div3 id="layout-vocabulary-region">
 <head>region</head>
@@ -7762,7 +7768,9 @@ while taking into account any overriding semantics defined by this specification
 <head>&lt;timeExpression&gt;</head>
 <p>A &lt;timeExpression&gt; is used to specify a coordinate along
 some time base, where the applicable time base is determined by the
-<att>ttp:timeBase</att> parameter.</p>
+<att>ttp:timeBase</att> parameter, and where the semantics defined
+by <specref ref="time-expression-semantics"/> apply.</p>
+
 <note role="example">
 <p>See <specref ref="parameter-attribute-timeBase"/>, <specref
 ref="parameter-attribute-frameRate"/>, <specref
@@ -7837,13 +7845,17 @@ applies only to leap seconds.</p>
 then the value of this term must be constrained to the interval
 [0&hellip;<emph>F-1</emph>], where <emph>F</emph> is the frame rate
 determined by the <att>ttp:frameRate</att> parameter as defined
-by <specref ref="parameter-attribute-frameRate"/>.</p>
+by <specref ref="parameter-attribute-frameRate"/>.
+It is considered an error if a <emph>frames</emph> term or
+<code>f</code> (frames) metric is specified when the <code>clock</code> time base applies.</p>
 <p>If a &lt;timeExpression&gt; is expressed in terms of a
 <emph>clock-time</emph> and a <emph>sub-frames</emph> term is
 specified, then the value of this term must be constrained to the
 interval [0&hellip;<emph>S-1</emph>], where <emph>S</emph> is the
 sub-frame rate determined by the <att>ttp:subFrameRate</att> parameter as defined by <specref
-ref="parameter-attribute-subFrameRate"/>.</p>
+ref="parameter-attribute-subFrameRate"/>.
+It is considered an error if a <emph>sub-frames</emph> term is specified
+when the <code>clock</code> time base applies.</p>
 </div3>
 </div2>
 <div2 id="timing-time-intervals">
@@ -7875,10 +7887,22 @@ be equivalent to the <code>indefinite</code>
 duration value as defined by <bibref ref="smil21"/>.</p>
 </item>
 <item>
+<p>If the governing time base is <code>clock</code>, then time
+expressions are considered to be equivalent to wall-clock
+based timing in <bibref ref="smil21"/>, where the specific semantics of
+<specref ref="time-expression-semantics-clock"/> apply.</p>
+</item>
+<item>
+<p>If the governing time base is <code>smpte</code>, then time
+expressions are considered to be equivalent to either offset
+based timing or event based timing in <bibref ref="smil21"/>, where the specific semantics of
+<specref ref="time-expression-semantics-smpte"/> apply.</p>
+</item>
+<item>
 <p>If the governing time base is <code>media</code>, then time
-expressions must be interpreted as equivalent to offset based timing
-in <bibref ref="smil21"/>, namely, as offsets from an implicit
-syncbase.</p>
+expressions are considered to be equivalent to offset based timing
+in <bibref ref="smil21"/>, where the specific semantics of
+<specref ref="time-expression-semantics-media"/> apply.</p>
 </item>
 <item>
 <p>If the governing time base is <code>smpte</code> with <code>continuous</code> marker mode,
@@ -7915,12 +7939,6 @@ source, in which case the time expression is equivalent to event
 based timing in <bibref ref="smil21"/>.</p>
 </item>
 </ulist>
-</item>
-<item>
-<p>If the governing time base is <code>clock</code>, then time
-expressions must be interpreted as equivalent to wall-clock time
-expressions in <bibref ref="smil21"/>, where the applicable wall-clock
-used is determined by the clock mode parameter.</p>
 </item>
 </ulist>
 </div2>
@@ -11383,6 +11401,281 @@ express maximum compliance for both transformation and presentation processing.<
 <p>In the absence of other requirements, a TTML document should be concretely encoded as a
 well-formed XML 1.0 <bibref ref="xml10"/> document using the UTF-8 character encoding.</p>
 </div1>
+
+<div1 id="time-expression-semantics">
+<head>Time Expression Semantics</head>
+<p><emph>This appendix is normative.</emph></p>
+
+<div2 id="time-expression-semantics-clock">
+<head>Clock Time Base</head>
+<p>When operating with the <code>clock</code> time base, the following semantics apply for interpreting time expressions,
+as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
+
+<p>The clock time base <phrase role="strong"><code>C</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
+expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase>
+as follows:</p>
+
+<table id="clock-time-and-real-time" role="semantics">
+<caption>TTML Semantics &ndash; Clock Time and Real Time Relationship</caption>
+<tbody>
+<tr>
+<td>
+<slist>
+<sitem/>
+<sitem>
+<code role="formulae">R = C + epochOffset + discontinuityOffset</code>
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+where <code>C &isin; &real;</code>, <code>0 &le; C &lt; &infin;</code>, <code>C</code> in seconds since the most immediately prior midnight of the reference clock base;
+</sitem>
+<sitem/>
+<sitem>
+<code>epochOffset &isin; &real;</code>, <code>0 &le; epochOffset &lt; &infin;</code>, <code>epochOffset</code> in seconds, with 0 being the beginning
+of epoch <code>E</code>, and where the value of <code>epochOffset</code> is determined from the computed value of the <code>ttp:clockMode</code> parameter
+as follows:
+</sitem>
+<sitem/>
+<sitem>
+(1) if <code>local</code>, then the difference between the local real time at the most immediately prior local midnight and the local real time
+at the beginning of epoch <code>E</code>, expressed in seconds;
+</sitem>
+<sitem/>
+<sitem>
+(2) if <code>gps</code>, then the difference between the GPS time at the most immediately prior GPS midnight
+and the GPS time at the beginning of epoch <code>E</code>, expressed in seconds;
+</sitem>
+<sitem/>
+<sitem>
+(3) if <code>utc</code>, then the difference between the UTC time at the most immediately prior UTC midnight
+and the UTC time at the beginning of epoch <code>E</code>, expressed in seconds;
+</sitem>
+<sitem/>
+<sitem>
+<code>discontinuityOffset &isin; &real;</code>, <code>&minus;&infin; &lt; discontinuityOffset &lt; &infin;</code>, <code>discontinuityOffset</code> in seconds,
+and where the value of <code>discontinuityOffset</code> is equal to the sum of leap seconds (and fractions thereof) that have been added (or subtracted) since the
+most immediately prior midnight in the reference clock base;
+</sitem>
+<sitem/>
+<sitem>
+and <code>epochOffset</code> and <code>discontinuityOffset</code> are determined once and only once prior to the beginning of the <emph>Root Temporal Extent</emph> such that
+during the period between value determination and the beginning of the <emph>Root Temporal Extent</emph> there occurs no local midnight or reference clock base discontinuity.
+</sitem>
+<sitem/>
+</slist>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Time value expressions, as denoted by a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, are related to
+clock time <phrase role="strong"><code>C</code></phrase> as follows:</p>
+
+<table id="time-expressions-and-clock-time" role="semantics">
+<caption>TTML Semantics &ndash; Time Expressions and Clock Time Relationship</caption>
+<tbody>
+<tr>
+<td>
+<slist>
+<sitem>
+If a time expression uses the <emph>clock-time</emph> form or an <emph>offset-time</emph> form that doesn't use the ticks (<code>t</code>) metric, then:
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+<code role="formulae">
+C = 3600 * hours + 60 * minutes + seconds
+</code>
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+where
+<code>hours</code>,
+<code>minutes</code>,
+<code>seconds</code> components are extracted from time expression if present, or zero if not present.
+</sitem>
+<sitem/>
+<sitem>
+Otherwise, if a time expression uses an <emph>offset-time</emph> form that uses the ticks (<code>t</code>) metric, then:
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+<code role="formulae">
+C = ticks / tickRate
+</code>
+</sitem>
+<sitem/>
+<sitem/>
+</slist>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="clarification">
+<p>The <emph>frames</emph> and <emph>sub-frames</emph> terms and the frames (<code>f</code>) metric of time expressions do not apply when using
+the <code>clock</code> time base.</p>
+</note>
+<p>The clock time base <phrase role="strong"><code>C</code></phrase> is independent of media time <phrase role="strong"><code>M</code></phrase>:</p>
+<table id="clock-time-and-media-time" role="semantics">
+<caption>TTML Semantics &ndash; Clock Time and Media Time Relationship</caption>
+<tbody>
+<tr>
+<td>
+<slist>
+<sitem/>
+<sitem>
+<code role="formulae">M &not;&prop; C</code>
+</sitem>
+<sitem/>
+<sitem/>
+</slist>
+</td>
+</tr>
+</tbody>
+</table>
+
+<note role="elaboration">
+<p>That is to say, timing is disconnected from (not necessarily proportional to) media time when
+the <code>clock</code> time base is used. For example, if the media play rate is zero (0), media playback is suspended; however, timing coordinates
+will continue to advance according to the natural progression of clock time in direct proportion to the reference clock base. Furthermore, if the media play rate changes
+during playback, presentation timing is not affected.
+</p>
+</note>
+
+</div2>
+
+<div2 id="time-expression-semantics-media">
+<head>Media Time Base</head>
+<p>When operating with the <code>media</code> time base, the following semantics apply for interpreting time expressions,
+as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
+
+<p>The media time base <phrase role="strong"><code>M</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
+expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase> as follows:</p>
+
+<table id="media-time-and-real-time" role="semantics">
+<caption>TTML Semantics &ndash; Media Time and Real Time Relationship</caption>
+<tbody>
+<tr>
+<td>
+<slist>
+<sitem/>
+<sitem>
+<code role="formulae">R = playRate * M + epochOffset</code>
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M</code> in seconds, with 0 corresponding to the beginning of the <emph>Root Temporal Extent</emph>;
+</sitem>
+<sitem/>
+<sitem>
+<code>playRate &isin; &real;</code>, <code>&minus;&infin; &lt; playRate &lt; &infin;</code>, <code>playRate</code> is unit-less, and where the value of
+<code>playRate</code> is determined by the document processing context;
+</sitem>
+<sitem/>
+<sitem>
+and <code>epochOffset &isin; &real;</code>, <code>0 &le; epochOffset &lt; &infin;</code>, <code>epochOffset</code> in seconds, with 0 corresponding to the beginning of
+an epoch <code>E</code>, and where the value of <code>epochOffset</code> is the difference between the local real time at the beginning of the
+<emph>Root Temporal Extent</emph> and the local real time at the the beginning of epoch <code>E</code>, expressed in seconds.
+</sitem>
+</slist>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Time value expressions, as denoted by a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, are related to
+media time <phrase role="strong"><code>M</code></phrase> in accordance to the
+<code>ttp:frameRate</code>, <code>ttp:subFrameRate</code>, and <code>ttp:frameRateMultipler</code> parameters as follows:</p>
+
+<table id="time-expressions-and-media-time" role="semantics">
+<caption>TTML Semantics &ndash; Time Expressions and Media Time Relationship</caption>
+<tbody>
+<tr>
+<td>
+<slist>
+<sitem>
+If a time expression uses a <emph>clock-time</emph> form or an <emph>offset-time</emph> form that doesn't use the ticks (<code>t</code>) metric, then:
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+<code role="formulae">
+M = containerBegin + 3600 * hours + 60 * minutes + seconds + ((frames + (subFrames / subFrameRate)) / effectiveFrameRate)
+</code>
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+where <code>containerBegin</code> is the media time that corresponds to the beginning of the nearest ancestor time container or
+zero (0) if this time container is the <emph>Root Temporal Extent</emph>;
+</sitem>
+<sitem/>
+<sitem>
+the <code>hours</code>, <code>minutes</code>, <code>seconds</code>, <code>frames</code>, <code>subFrames</code> components
+are extracted from time expression if present, or zero if not present;
+</sitem>
+<sitem/>
+<sitem>
+<code>subFrameRate</code> is the computed value of the <att>ttp:subFrameRate</att> parameter;
+</sitem>
+<sitem/>
+<sitem>
+and <code>effectiveFrameRate</code> (in frames per second) is <code>frameRate * frameRateMultipler</code> where
+<code>frameRate</code> is the computed value of the <att>ttp:frameRate</att> parameter and
+<code>frameRateMultipler</code> is the computed value of the <att>ttp:frameRateMultiplier</att> parameter.
+</sitem>
+<sitem/>
+<sitem>
+Otherwise, if a time expression uses an <emph>offset-time</emph> form that uses the ticks (<code>t</code>) metric, then:
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+<code role="formulae">
+M = containerBegin + ticks / tickRate
+</code>
+</sitem>
+<sitem/>
+<sitem/>
+<sitem>
+where <code>containerBegin</code> is as described above;
+</sitem>
+<sitem/>
+<sitem>
+the <code>ticks</code> component is extracted from time expression;
+</sitem>
+<sitem/>
+<sitem>
+and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> parameter;
+</sitem>
+<sitem/>
+</slist>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>If the computed <code>frameRateMultipler</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
+</note>
+<note role="clarification">
+<p>The above formalisms assumes that the <emph>Root Temporal Extent</emph> corresponds with the beginning of a related media object. If
+this assumption doesn't hold, then an additional offset that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
+</note>
+</div2>
+
+<div2 id="time-expression-semantics-smpte">
+<head>SMPTE Time Base</head>
+<p>When operating with the <code>smpte</code> time base, the following semantics apply for interpreting time expressions,
+as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
+</div2>
+
+</div1>
+
 <div1 id="references">
 <head>References</head>
 <p><emph>This appendix is normative.</emph></p>

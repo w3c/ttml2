@@ -26,10 +26,26 @@ table.syntax caption { font-weight: bold; text-align: left; padding-bottom: 0.5e
 table.syntax th { border: 0px solid black; text-align: left }
 table.syntax td { border: 0px solid black }
 table.syntax div { background-color: #ffffc8 }
+table.semantics { border: 0px solid black; width: 85%; border-collapse: collapse }
+table.semantics caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
+table.semantics th { border: 0px solid black; text-align: left }
+table.semantics td {
+  border-left: 0px solid black;
+  border-right: 0px solid black;
+  border-top: 4px double #d3d3d3;
+  border-bottom: 4px double #d3d3d3;
+  background-color: #ccffcc
+}
+table.semantics code.formulae {
+  padding: 1em;
+  border: 1px dashed #005a9c;
+  line-height: 1.1em;
+  background-color: #fdfdfd;
+}
 table.example { border: 0px solid black; width: 85%; border-collapse: collapse }
 table.example caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
 table.example th { border: 0px solid black; text-align: left }
-table.example td { border: 0px solid black }
+table.example td { border: 0px solid black;  }
 table.example div { background-color: #c8ffff }
 table.example-images { text-align: center; border: 0px solid black; width: 85%; border-collapse: collapse }
 table.example-images caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }

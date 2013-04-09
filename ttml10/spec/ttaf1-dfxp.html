@@ -50,10 +50,26 @@ table.syntax caption { font-weight: bold; text-align: left; padding-bottom: 0.5e
 table.syntax th { border: 0px solid black; text-align: left }
 table.syntax td { border: 0px solid black }
 table.syntax div { background-color: #ffffc8 }
+table.semantics { border: 0px solid black; width: 85%; border-collapse: collapse }
+table.semantics caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
+table.semantics th { border: 0px solid black; text-align: left }
+table.semantics td {
+  border-left: 0px solid black;
+  border-right: 0px solid black;
+  border-top: 4px double #d3d3d3;
+  border-bottom: 4px double #d3d3d3;
+  background-color: #ccffcc
+}
+table.semantics code.formulae {
+  padding: 1em;
+  border: 1px dashed #005a9c;
+  line-height: 1.1em;
+  background-color: #fdfdfd;
+}
 table.example { border: 0px solid black; width: 85%; border-collapse: collapse }
 table.example caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
 table.example th { border: 0px solid black; text-align: left }
-table.example td { border: 0px solid black }
+table.example td { border: 0px solid black;  }
 table.example div { background-color: #c8ffff }
 table.example-images { text-align: center; border: 0px solid black; width: 85%; border-collapse: collapse }
 table.example-images caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
@@ -70,9 +86,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .diff-del  { color: red; text-decoration: line-through; background-color: #99FF99; }
 .diff-chg  { background-color: #99FF99; }
 q.diff-off  {}
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date: 2013/04/04 09:27:10 $<div id="revisions"/><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date$<div id="revisions"/><div class="head">
 <h1><a name="title" id="title"/>Timed Text Markup Language (TTML) 1.0 (Second Edition)</h1>
-<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date: 2013/04/04 09:27:10 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date$ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttaf1-dfxp.html">ttaf1-dfxp.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -413,33 +429,37 @@ F <a href="#profiles">Profiles</a><br/>
     F.2 <a href="#profile-dfxp-presentation">DFXP Presentation Profile</a><br/>
     F.3 <a href="#profile-dfxp-full">DFXP Full Profile</a><br/>
 G <a href="#concrete-encoding">Concrete Encoding</a><br/>
-H <a href="#references">References</a><br/>
-I <a href="#other-references">Other References</a> (Non-Normative)<br/>
-J <a href="#requirements">Requirements</a> (Non-Normative)<br/>
-K <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br/>
-    K.1 <a href="#d3e17499">Element Derivation</a><br/>
-    K.2 <a href="#d3e17978">Attribute Derivation</a><br/>
-L <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br/>
-    L.1 <a href="#d3e18847">Requirements</a><br/>
-    L.2 <a href="#d3e19011">Guidelines</a><br/>
-M <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br/>
-N <a href="#common-styling">Common Caption Style Examples</a> (Non-Normative)<br/>
-    N.1 <a href="#pop-on-example">Pop-On Caption Example</a><br/>
-    N.2 <a href="#roll-up-example">Roll-Up Caption Example</a><br/>
-    N.3 <a href="#paint-on-example">Paint-On Caption Example</a><br/>
-O <a href="#acknowledgments">Acknowledgments</a> (Non-Normative)<br/>
+H <a href="#time-expression-semantics">Time Expression Semantics</a><br/>
+    H.1 <a href="#time-expression-semantics-clock">Clock Time Base</a><br/>
+    H.2 <a href="#time-expression-semantics-media">Media Time Base</a><br/>
+    H.3 <a href="#time-expression-semantics-smpte">SMPTE Time Base</a><br/>
+I <a href="#references">References</a><br/>
+J <a href="#other-references">Other References</a> (Non-Normative)<br/>
+K <a href="#requirements">Requirements</a> (Non-Normative)<br/>
+L <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br/>
+    L.1 <a href="#d3e18086">Element Derivation</a><br/>
+    L.2 <a href="#d3e18565">Attribute Derivation</a><br/>
+M <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br/>
+    M.1 <a href="#d3e19433">Requirements</a><br/>
+    M.2 <a href="#d3e19597">Guidelines</a><br/>
+N <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br/>
+O <a href="#common-styling">Common Caption Style Examples</a> (Non-Normative)<br/>
+    O.1 <a href="#pop-on-example">Pop-On Caption Example</a><br/>
+    O.2 <a href="#roll-up-example">Roll-Up Caption Example</a><br/>
+    O.3 <a href="#paint-on-example">Paint-On Caption Example</a><br/>
+P <a href="#acknowledgments">Acknowledgments</a> (Non-Normative)<br/>
 </p></div><hr/><div class="body"><div class="div1">
 <h2><a name="intro" id="intro"/>1 Introduction</h2><p><em>Unless specified otherwise, this section and its sub-sections are non-normative.</em></p><p>The Timed Text Markup Language (TTML) 1.0
 provides a standardized representation of a particular subset of
 textual information with which stylistic, layout, and timing semantics are associated by
 an author or an authoring system for the purpose of interchange and potential presentation.</p><p>TTML is expressly designed to meet only a limited set of requirements
-established by <a href="#ttaf1-req">[TTAF1-REQ]</a>, and summarized in <a href="#requirements"><b>J Requirements</b></a>. In particular, only those requirements which service the
+established by <a href="#ttaf1-req">[TTAF1-REQ]</a>, and summarized in <a href="#requirements"><b>K Requirements</b></a>. In particular, only those requirements which service the
 need of performing interchange with existing, legacy distribution systems are
 satisfied.</p><p>In addition to being used for interchange among legacy distribution content
 formats, TTML content may be used directly as a distribution format, providing, for
 example, a standard content format to reference from a <code>&lt;text&gt;</code> or 
 <code>&lt;textstream&gt;</code> media object element in a <a href="#smil21">[SMIL 2.1]</a> document. Certain properties of TTML support
-streamability of content, as described in <a href="#streaming"><b>M Streaming TTML Content</b></a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>While TTML was not expressly designed for direct (embedded) integration into a
+streamability of content, as described in <a href="#streaming"><b>N Streaming TTML Content</b></a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>While TTML was not expressly designed for direct (embedded) integration into a
 SMIL document instance, such integration is not precluded.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>In some contexts of use, it may be appropriate to employ
 animated content to depict sign language representations of the same content
 as expressed by a Timed Text document instance. This use case is not
@@ -644,7 +664,9 @@ constraints specify by <a href="#reduced-infoset"><b>A Reduced XML Infoset</b></
 to a TTML document instance. For example, an aggregate audio/video media
 object for which a TTML document instance provides caption or subtitle
 information, and with which that TTML document instance is associated.</p></dd><dt class="label">Root Container Region</dt><dd><p>A logical region that establishes a coordinate system into which
-content regions are placed and optionally clipped.</p></dd><dt class="label">SMPTE Time Code</dt><dd><p>A time code whose format and semantics is established by <a href="#smpte12m">[SMPTE 12M]</a>
+TTML document instance content regions are placed and optionally clipped.</p></dd><dt class="label">Root Temporal Extent</dt><dd><p>
+The temporal extent (interval) defined by the temporal beginning and ending of a TTML document instance in relationship with some external application or presentation context.
+</p></dd><dt class="label">SMPTE Time Code</dt><dd><p>A time code whose format and semantics is established by <a href="#smpte12m">[SMPTE 12M]</a>
 which may be embedded into or otherwise associated with media content, such
 as a broadcast audio/video stream.</p></dd><dt class="label">Synthetic Document Syncbase</dt><dd><p>A document level syncbase synthesized or otherwise established by
 the <em>Document Processing Context</em> in accordance with the
@@ -1762,13 +1784,8 @@ zero or one <code>body</code> element.</p><table summary="HTML Table" id="elt-sy
   <em>Content:</em> <a href="#document-structure-vocabulary-head">head</a>?, <a href="#document-structure-vocabulary-body">body</a>?
 &lt;/tt&gt;
 </pre></div>
-</td></tr></tbody></table><p>The temporal beginning and ending of a document instance represented by a
-<code>tt</code> element is defined in relationship with some external
-application or presentation context. The temporal interval defined by
-these points is referred to subsequently as the <em>external time interval</em>.
-</p><p>A document instance has an implicit duration that is equal to the
-implicit duration of the <code>body</code> element of the document, if present, or zero,
-if not present.</p><p>If the <code>tts:extent</code> attribute is specified on the <code>tt</code>
+</td></tr></tbody></table><p>The <em>Root Temporal Extent</em>, i.e., the time interval over which a document instance is active, has an implicit duration that is equal to the
+implicit duration of the <code>body</code> element of the document, if present, or zero, if not present.</p><p>If the <code>tts:extent</code> attribute is specified on the <code>tt</code>
 element, then it must adhere to <a href="#style-attribute-extent"><b>8.2.7 tts:extent</b></a>, in which case it
 specifies the spatial extent of the root container region in
 which content regions are located and presented. If no <code>tts:extent</code>
@@ -1809,7 +1826,7 @@ are referenced by content elements.</p><table summary="HTML Table" id="elt-synta
 </pre></div>
 </td></tr></tbody></table><p>To the extent that time semantics apply to the content of the
 <code>head</code> element, the implied time interval of this element is
-defined to be coterminous with the external time interval.</p></div><div class="div3">
+defined to be coterminous with the <em>Root Temporal Extent</em>.</p></div><div class="div3">
 <h4><a name="document-structure-vocabulary-body" id="document-structure-vocabulary-body"/>7.1.3 body</h4><p>The <code>body</code> element functions as a logical container and a temporal
 structuring element for a sequence of textual content units represented as
 logical divisions.</p><p>The <code>body</code> element accepts as its children zero or more
@@ -1839,15 +1856,15 @@ element group apply semantically to the <code>body</code> element.</p><table sum
 </pre></div>
 </td></tr></tbody></table><p>An author may specify a temporal interval for a <code>body</code> element using
 the <code>begin</code>, <code>dur</code>, and <code>end</code> attributes. If the begin point
-of this interval remains unspecified, then the begin point is interpreted as the begin
-point of the external time interval. Similarly, if the end point of this interval remains unspecified, then the
-end point is interpreted as the end point of the external time interval.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A TTML document instance referenced from a SMIL presentation
+of this interval remains unspecified, then the begin point is interpreted as the beginning
+point of the <em>Root Temporal Extent</em>. Similarly, if the end point of this interval remains unspecified, then the
+end point is interpreted as the ending point of the <em>Root Temporal Extent</em>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A TTML document instance referenced from a SMIL presentation
 is expected to follow the same timing rules as apply to other SMIL media
 objects.</p></div><p>If relative begin or end times are specified on the <code>body</code>
-element, then these times are resolved by reference to the begin and
-end time of the external time interval.</p><p>If the external time interval is shorter than the computed duration of the
-<code>body</code> element, then the active time interval of a document instance is
-truncated to the active end point of the external time interval.</p><p>An author may associate a set of style properties with a
+element, then these times are resolved by reference to the beginning and
+ending time of the <em>Root Temporal Extent</em>.</p><p>If the <em>Root Temporal Extent</em> is shorter than the computed duration of the
+<code>body</code> element, then the active time interval of a <code>body</code> element is
+truncated to the active end point of the <em>Root Temporal Extent</em>.</p><p>An author may associate a set of style properties with a
 <code>body</code> element by means of either the <code>style</code>
 attribute or inline style attributes or a combination thereof.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Style properties that are associated with a <code>body</code> element
 in a document instance are available for style inheritance by
@@ -2075,7 +2092,7 @@ zero or more <code>style</code> elements.</p><table summary="HTML Table" id="elt
 </pre></div>
 </td></tr></tbody></table><p>To the extent that time semantics apply to the content of the
 <code>styling</code> element, the implied time interval of this element is
-defined to be coterminous with the external time interval.</p></div><div class="div3">
+defined to be coterminous with the <em>Root Temporal Extent</em>.</p></div><div class="div3">
 <h4><a name="styling-vocabulary-style" id="styling-vocabulary-style"/>8.1.2 style</h4><p>The <code>style</code> element is used to define
 a set of style specifications expressed as a
 specified style set in accordance with
@@ -3766,7 +3783,7 @@ zero or more <code>region</code> elements.</p><table summary="HTML Table" id="el
 </pre></div>
 </td></tr></tbody></table><p>To the extent that time semantics apply to the content of the
 <code>layout</code> element, the implied time interval of this element is
-defined to be coterminous with the external time interval.</p></div><div class="div3">
+defined to be coterminous with the <em>Root Temporal Extent</em>.</p></div><div class="div3">
 <h4><a name="layout-vocabulary-region" id="layout-vocabulary-region"/>9.1.2 region</h4><p>The <code>region</code> element is used to define a space or area into which content is
 to be flowed for the purpose of presentation.</p><p>In addition, and in accordance with
 <a href="#semantics-style-inheritance-region"><b>8.4.2.2 Region Style Inheritance</b></a>, 
@@ -4359,7 +4376,8 @@ while taking into account any overriding semantics defined by this specification
 <h3><a name="timing-time-value-expressions" id="timing-time-value-expressions"/>10.3 Time Value Expressions</h3><p>Timing attribute values include the use of the following expressions:</p><ul><li><p><a href="#timing-value-timeExpression"><b>10.3.1 &lt;timeExpression&gt;</b></a></p></li></ul><div class="div3">
 <h4><a name="timing-value-timeExpression" id="timing-value-timeExpression"/>10.3.1 &lt;timeExpression&gt;</h4><p>A &lt;timeExpression&gt; is used to specify a coordinate along
 some time base, where the applicable time base is determined by the
-<code>ttp:timeBase</code> parameter.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See <a href="#parameter-attribute-timeBase"><b>6.2.11 ttp:timeBase</b></a>, <a href="#parameter-attribute-frameRate"><b>6.2.4 ttp:frameRate</b></a>, <a href="#parameter-attribute-subFrameRate"><b>6.2.9 ttp:subFrameRate</b></a>, and <a href="#parameter-attribute-tickRate"><b>6.2.10 ttp:tickRate</b></a> for further information on
+<code>ttp:timeBase</code> parameter, and where the semantics defined
+by <a href="#time-expression-semantics"><b>H Time Expression Semantics</b></a> apply.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See <a href="#parameter-attribute-timeBase"><b>6.2.11 ttp:timeBase</b></a>, <a href="#parameter-attribute-frameRate"><b>6.2.4 ttp:frameRate</b></a>, <a href="#parameter-attribute-subFrameRate"><b>6.2.9 ttp:subFrameRate</b></a>, and <a href="#parameter-attribute-tickRate"><b>6.2.10 ttp:tickRate</b></a> for further information on
 explicit specification of time base, frame rate, sub-frame rate, and
 tick rate.</p></div><table summary="HTML Table" id="timeExpression-syntax" class="syntax"><caption>Syntax Representation – &lt;timeExpression&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -4410,11 +4428,15 @@ applies only to leap seconds.</p><p>If a &lt;timeExpression&gt; is expressed in 
 then the value of this term must be constrained to the interval
 [0…<em>F-1</em>], where <em>F</em> is the frame rate
 determined by the <code>ttp:frameRate</code> parameter as defined
-by <a href="#parameter-attribute-frameRate"><b>6.2.4 ttp:frameRate</b></a>.</p><p>If a &lt;timeExpression&gt; is expressed in terms of a
+by <a href="#parameter-attribute-frameRate"><b>6.2.4 ttp:frameRate</b></a>.
+It is considered an error if a <em>frames</em> term or
+<code>f</code> (frames) metric is specified when the <code>clock</code> time base applies.</p><p>If a &lt;timeExpression&gt; is expressed in terms of a
 <em>clock-time</em> and a <em>sub-frames</em> term is
 specified, then the value of this term must be constrained to the
 interval [0…<em>S-1</em>], where <em>S</em> is the
-sub-frame rate determined by the <code>ttp:subFrameRate</code> parameter as defined by <a href="#parameter-attribute-subFrameRate"><b>6.2.9 ttp:subFrameRate</b></a>.</p></div></div><div class="div2">
+sub-frame rate determined by the <code>ttp:subFrameRate</code> parameter as defined by <a href="#parameter-attribute-subFrameRate"><b>6.2.9 ttp:subFrameRate</b></a>.
+It is considered an error if a <em>sub-frames</em> term is specified
+when the <code>clock</code> time base applies.</p></div></div><div class="div2">
 <h3><a name="timing-time-intervals" id="timing-time-intervals"/>10.4 Time Intervals</h3><p>The semantics of time containment, durations, and intervals defined by
 <a href="#smil21">[SMIL 2.1]</a> apply to the interpretation of like-named timed elements and timing
 vocabulary defined by this specification, given the following
@@ -4430,10 +4452,16 @@ the element is a parallel or sequential time container, (2) the default
 and (3) the semantics of <a href="#smil21">[SMIL 2.1]</a> as applied to these time
 containers.</p></li><li><p>The implicit duration of the <code>region</code> element is defined to
 be equivalent to the <code>indefinite</code>
-duration value as defined by <a href="#smil21">[SMIL 2.1]</a>.</p></li><li><p>If the governing time base is <code>media</code>, then time
-expressions must be interpreted as equivalent to offset based timing
-in <a href="#smil21">[SMIL 2.1]</a>, namely, as offsets from an implicit
-syncbase.</p></li><li><p>If the governing time base is <code>smpte</code> with <code>continuous</code> marker mode,
+duration value as defined by <a href="#smil21">[SMIL 2.1]</a>.</p></li><li><p>If the governing time base is <code>clock</code>, then time
+expressions are considered to be equivalent to wall-clock
+based timing in <a href="#smil21">[SMIL 2.1]</a>, where the specific semantics of
+<a href="#time-expression-semantics-clock"><b>H.1 Clock Time Base</b></a> apply.</p></li><li><p>If the governing time base is <code>smpte</code>, then time
+expressions are considered to be equivalent to either offset
+based timing or event based timing in <a href="#smil21">[SMIL 2.1]</a>, where the specific semantics of
+<a href="#time-expression-semantics-smpte"><b>H.3 SMPTE Time Base</b></a> apply.</p></li><li><p>If the governing time base is <code>media</code>, then time
+expressions are considered to be equivalent to offset based timing
+in <a href="#smil21">[SMIL 2.1]</a>, where the specific semantics of
+<a href="#time-expression-semantics-media"><b>H.2 Media Time Base</b></a> apply.</p></li><li><p>If the governing time base is <code>smpte</code> with <code>continuous</code> marker mode,
 then time expressions must be interpreted as follows:</p><ul><li><p>If the time expression is an <code>offset-time</code> expression, then it must be
 interpreted as equivalent to offset based timing in <a href="#smil21">[SMIL 2.1]</a>, where the
 offset is in relationship to the applicable implicit syncbase.</p></li><li><p>If the time expression is a <code>clock-time</code> expression, then it must be
@@ -4447,10 +4475,7 @@ then time expressions must be interpreted as follows:</p><ul><li><p>If the time 
 interpreted as an error.</p></li><li><p>If the time expression is a <code>clock-time</code> expression, then it must be
 interpreted as equivalent to marker values produced by an external marker event
 source, in which case the time expression is equivalent to event
-based timing in <a href="#smil21">[SMIL 2.1]</a>.</p></li></ul></li><li><p>If the governing time base is <code>clock</code>, then time
-expressions must be interpreted as equivalent to wall-clock time
-expressions in <a href="#smil21">[SMIL 2.1]</a>, where the applicable wall-clock
-used is determined by the clock mode parameter.</p></li></ul></div></div><div class="div1">
+based timing in <a href="#smil21">[SMIL 2.1]</a>.</p></li></ul></li></ul></div></div><div class="div1">
 <h2><a name="animation" id="animation"/>11 Animation</h2><p>This section specifies the <em>animation</em> matter of the
 core vocabulary catalog, where
 animation is to be understood as a separable layer of information that combines
@@ -8264,7 +8289,120 @@ express maximum compliance for both transformation and presentation processing.<
 </pre></div></div></div><div class="div1">
 <h2><a name="concrete-encoding" id="concrete-encoding"/>G Concrete Encoding</h2><p><em>This appendix is normative.</em></p><p>In the absence of other requirements, a TTML document should be concretely encoded as a
 well-formed XML 1.0 <a href="#xml10">[XML 1.0]</a> document using the UTF-8 character encoding.</p></div><div class="div1">
-<h2><a name="references" id="references"/>H References</h2><p><em>This appendix is normative.</em></p><dl><dt class="label"><a name="css2" id="css2"/>CSS2</dt><dd>Bert Bos et al.,
+<h2><a name="time-expression-semantics" id="time-expression-semantics"/>H Time Expression Semantics</h2><p><em>This appendix is normative.</em></p><div class="div2">
+<h3><a name="time-expression-semantics-clock" id="time-expression-semantics-clock"/>H.1 Clock Time Base</h3><p>When operating with the <code>clock</code> time base, the following semantics apply for interpreting time expressions,
+as defined by <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>, and their relationship to media time and local real time.</p><p>The clock time base <span class="strong"><code>C</code></span> is related to local real time <span class="strong"><code>R</code></span>
+expressed in an arbitrary (implementation defined) epoch <span class="strong"><code>E</code></span>
+as follows:</p><table summary="HTML Table" id="clock-time-and-real-time" class="semantics"><caption>TTML Semantics – Clock Time and Real Time Relationship</caption><tbody><tr><td>
+<blockquote><p><br/>
+<code class="formulae">R = C + epochOffset + discontinuityOffset</code>
+<br/><br/><br/>
+where <code>C ∈ ℜ</code>, <code>0 ≤ C &lt; ∞</code>, <code>C</code> in seconds since the most immediately prior midnight of the reference clock base;
+<br/><br/>
+<code>epochOffset ∈ ℜ</code>, <code>0 ≤ epochOffset &lt; ∞</code>, <code>epochOffset</code> in seconds, with 0 being the beginning
+of epoch <code>E</code>, and where the value of <code>epochOffset</code> is determined from the computed value of the <code>ttp:clockMode</code> parameter
+as follows:
+<br/><br/>
+(1) if <code>local</code>, then the difference between the local real time at the most immediately prior local midnight and the local real time
+at the beginning of epoch <code>E</code>, expressed in seconds;
+<br/><br/>
+(2) if <code>gps</code>, then the difference between the GPS time at the most immediately prior GPS midnight
+and the GPS time at the beginning of epoch <code>E</code>, expressed in seconds;
+<br/><br/>
+(3) if <code>utc</code>, then the difference between the UTC time at the most immediately prior UTC midnight
+and the UTC time at the beginning of epoch <code>E</code>, expressed in seconds;
+<br/><br/>
+<code>discontinuityOffset ∈ ℜ</code>, <code>−∞ &lt; discontinuityOffset &lt; ∞</code>, <code>discontinuityOffset</code> in seconds,
+and where the value of <code>discontinuityOffset</code> is equal to the sum of leap seconds (and fractions thereof) that have been added (or subtracted) since the
+most immediately prior midnight in the reference clock base;
+<br/><br/>
+and <code>epochOffset</code> and <code>discontinuityOffset</code> are determined once and only once prior to the beginning of the <em>Root Temporal Extent</em> such that
+during the period between value determination and the beginning of the <em>Root Temporal Extent</em> there occurs no local midnight or reference clock base discontinuity.
+<br/></p></blockquote>
+</td></tr></tbody></table><p>Time value expressions, as denoted by a <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>, are related to
+clock time <span class="strong"><code>C</code></span> as follows:</p><table summary="HTML Table" id="time-expressions-and-clock-time" class="semantics"><caption>TTML Semantics – Time Expressions and Clock Time Relationship</caption><tbody><tr><td>
+<blockquote><p>
+If a time expression uses the <em>clock-time</em> form or an <em>offset-time</em> form that doesn't use the ticks (<code>t</code>) metric, then:
+<br/><br/><br/>
+<code class="formulae">
+C = 3600 * hours + 60 * minutes + seconds
+</code>
+<br/><br/><br/>
+where
+<code>hours</code>,
+<code>minutes</code>,
+<code>seconds</code> components are extracted from time expression if present, or zero if not present.
+<br/><br/>
+Otherwise, if a time expression uses an <em>offset-time</em> form that uses the ticks (<code>t</code>) metric, then:
+<br/><br/><br/>
+<code class="formulae">
+C = ticks / tickRate
+</code>
+<br/><br/></p></blockquote>
+</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The <em>frames</em> and <em>sub-frames</em> terms and the frames (<code>f</code>) metric of time expressions do not apply when using
+the <code>clock</code> time base.</p></div><p>The clock time base <span class="strong"><code>C</code></span> is independent of media time <span class="strong"><code>M</code></span>:</p><table summary="HTML Table" id="clock-time-and-media-time" class="semantics"><caption>TTML Semantics – Clock Time and Media Time Relationship</caption><tbody><tr><td>
+<blockquote><p><br/>
+<code class="formulae">M ¬∝ C</code>
+<br/><br/></p></blockquote>
+</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>That is to say, timing is disconnected from (not necessarily proportional to) media time when
+the <code>clock</code> time base is used. For example, if the media play rate is zero (0), media playback is suspended; however, timing coordinates
+will continue to advance according to the natural progression of clock time in direct proportion to the reference clock base. Furthermore, if the media play rate changes
+during playback, presentation timing is not affected.
+</p></div></div><div class="div2">
+<h3><a name="time-expression-semantics-media" id="time-expression-semantics-media"/>H.2 Media Time Base</h3><p>When operating with the <code>media</code> time base, the following semantics apply for interpreting time expressions,
+as defined by <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>, and their relationship to media time and local real time.</p><p>The media time base <span class="strong"><code>M</code></span> is related to local real time <span class="strong"><code>R</code></span>
+expressed in an arbitrary (implementation defined) epoch <span class="strong"><code>E</code></span> as follows:</p><table summary="HTML Table" id="media-time-and-real-time" class="semantics"><caption>TTML Semantics – Media Time and Real Time Relationship</caption><tbody><tr><td>
+<blockquote><p><br/>
+<code class="formulae">R = playRate * M + epochOffset</code>
+<br/><br/><br/>
+where <code>M ∈ ℜ</code>, <code>0 ≤ M &lt; ∞</code>, <code>M</code> in seconds, with 0 corresponding to the beginning of the <em>Root Temporal Extent</em>;
+<br/><br/>
+<code>playRate ∈ ℜ</code>, <code>−∞ &lt; playRate &lt; ∞</code>, <code>playRate</code> is unit-less, and where the value of
+<code>playRate</code> is determined by the document processing context;
+<br/><br/>
+and <code>epochOffset ∈ ℜ</code>, <code>0 ≤ epochOffset &lt; ∞</code>, <code>epochOffset</code> in seconds, with 0 corresponding to the beginning of
+an epoch <code>E</code>, and where the value of <code>epochOffset</code> is the difference between the local real time at the beginning of the
+<em>Root Temporal Extent</em> and the local real time at the the beginning of epoch <code>E</code>, expressed in seconds.
+</p></blockquote>
+</td></tr></tbody></table><p>Time value expressions, as denoted by a <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>, are related to
+media time <span class="strong"><code>M</code></span> in accordance to the
+<code>ttp:frameRate</code>, <code>ttp:subFrameRate</code>, and <code>ttp:frameRateMultipler</code> parameters as follows:</p><table summary="HTML Table" id="time-expressions-and-media-time" class="semantics"><caption>TTML Semantics – Time Expressions and Media Time Relationship</caption><tbody><tr><td>
+<blockquote><p>
+If a time expression uses a <em>clock-time</em> form or an <em>offset-time</em> form that doesn't use the ticks (<code>t</code>) metric, then:
+<br/><br/><br/>
+<code class="formulae">
+M = containerBegin + 3600 * hours + 60 * minutes + seconds + ((frames + (subFrames / subFrameRate)) / effectiveFrameRate)
+</code>
+<br/><br/><br/>
+where <code>containerBegin</code> is the media time that corresponds to the beginning of the nearest ancestor time container or
+zero (0) if this time container is the <em>Root Temporal Extent</em>;
+<br/><br/>
+the <code>hours</code>, <code>minutes</code>, <code>seconds</code>, <code>frames</code>, <code>subFrames</code> components
+are extracted from time expression if present, or zero if not present;
+<br/><br/>
+<code>subFrameRate</code> is the computed value of the <code>ttp:subFrameRate</code> parameter;
+<br/><br/>
+and <code>effectiveFrameRate</code> (in frames per second) is <code>frameRate * frameRateMultipler</code> where
+<code>frameRate</code> is the computed value of the <code>ttp:frameRate</code> parameter and
+<code>frameRateMultipler</code> is the computed value of the <code>ttp:frameRateMultiplier</code> parameter.
+<br/><br/>
+Otherwise, if a time expression uses an <em>offset-time</em> form that uses the ticks (<code>t</code>) metric, then:
+<br/><br/><br/>
+<code class="formulae">
+M = containerBegin + ticks / tickRate
+</code>
+<br/><br/><br/>
+where <code>containerBegin</code> is as described above;
+<br/><br/>
+the <code>ticks</code> component is extracted from time expression;
+<br/><br/>
+and <code>tickRate</code> is the computed value of the <code>ttp:tickRate</code> parameter;
+<br/></p></blockquote>
+</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>If the computed <code>frameRateMultipler</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>The above formalisms assumes that the <em>Root Temporal Extent</em> corresponds with the beginning of a related media object. If
+this assumption doesn't hold, then an additional offset that accounts for the difference may be introduced when computing media time <code>M</code>.</p></div></div><div class="div2">
+<h3><a name="time-expression-semantics-smpte" id="time-expression-semantics-smpte"/>H.3 SMPTE Time Base</h3><p>When operating with the <code>smpte</code> time base, the following semantics apply for interpreting time expressions,
+as defined by <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>, and their relationship to media time and local real time.</p></div></div><div class="div1">
+<h2><a name="references" id="references"/>I References</h2><p><em>This appendix is normative.</em></p><dl><dt class="label"><a name="css2" id="css2"/>CSS2</dt><dd>Bert Bos et al.,
 <a href="http://www.w3.org/TR/1998/REC-CSS2-19980512/"><cite>Cascading
 Style Sheets, Level 2</cite></a>, W3C Recommendation, 12
 May 1998. (See
@@ -8365,7 +8503,7 @@ W3C Recommendation, 28 October 2004. (See
 W3C Recommendation, 05 December 2006. (See
 <a href="http://www.w3.org/TR/2006/REC-xsl11-20061205/">http://www.w3.org/TR/2006/REC-xsl11-20061205/</a>.)
 </dd></dl></div><div class="div1">
-<h2><a name="other-references" id="other-references"/>I Other References (Non-Normative)</h2><dl><dt class="label"><a name="ccreq" id="ccreq"/>CC-DECODER-REQ</dt><dd><a href="http://www.gpo.gov/fdsys/pkg/CFR-2005-title47-vol1/xml/CFR-2005-title47-vol1-sec15-119.xml"><cite>Closed Caption Decoder
+<h2><a name="other-references" id="other-references"/>J Other References (Non-Normative)</h2><dl><dt class="label"><a name="ccreq" id="ccreq"/>CC-DECODER-REQ</dt><dd><a href="http://www.gpo.gov/fdsys/pkg/CFR-2005-title47-vol1/xml/CFR-2005-title47-vol1-sec15-119.xml"><cite>Closed Caption Decoder
 Requirements for Analog Television</cite></a>,
 United States Code of Federal Regulations, Title 47, Volume 1, Part 15, § 15.119. (See
 <a href="http://www.gpo.gov/fdsys/pkg/CFR-2005-title47-vol1/xml/CFR-2005-title47-vol1-sec15-119.xml">http://www.gpo.gov/fdsys/pkg/CFR-2005-title47-vol1/xml/CFR-2005-title47-vol1-sec15-119.xml</a>.)
@@ -8422,7 +8560,7 @@ W3C Recommendation, 01
 August 2002. (See
 <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/">http://www.w3.org/TR/2002/REC-xhtml1-20020801/</a>.)
 </dd></dl></div><div class="div1">
-<h2><a name="requirements" id="requirements"/>J Requirements (Non-Normative)</h2><p>The Distribution Format Exchange Profile (DFXP) of the Timed Text Authoring
+<h2><a name="requirements" id="requirements"/>K Requirements (Non-Normative)</h2><p>The Distribution Format Exchange Profile (DFXP) of the Timed Text Authoring
 Format (TTML) satisfies a subset of the requirements established by
 <a href="#ttaf1-req">[TTAF1-REQ]</a>. The following table enumerates these requirements and
 indicates the extent to which they are satisfied by this specification, where
@@ -8432,10 +8570,10 @@ requirement is not satisfied.</p><table summary="HTML Table" id="requirements-ta
 font family, font size, font style, font weight, height, line height, origin,
 opacity, overflow, padding (before, after, start, end), text alignment,
 text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr><td>R390</td><td>Style Parameter Symmetry</td><td>S</td><td/></tr><tr><td>R391</td><td>Style Parameter Definitions</td><td>S</td><td/></tr><tr><td>R392</td><td>Style Parameter Shorthands</td><td>S</td><td/></tr><tr><td>R401</td><td>Inline Timing</td><td>S</td><td/></tr><tr><td>R402</td><td>Out-of-Line Timing</td><td>N</td><td/></tr><tr><td>R403</td><td>Synchronization Parameters</td><td>P</td><td>Supports begin, end, dur</td></tr><tr><td>R404</td><td>Synchronization Parameter Value Spaces</td><td>P</td><td>Supports offset values, media marker values (SMPTE 12M), wall-clock values</td></tr><tr><td>R405</td><td>Time Containment Semantics</td><td>P</td><td>Supports sequential, parallel</td></tr><tr><td>R500</td><td>Animation Modes</td><td>P</td><td>Supports discrete</td></tr><tr><td>R502</td><td>Highlight Animation</td><td>S</td><td><code>&lt;set tts:backgroundColor="..."/&gt;</code></td></tr><tr><td>R503</td><td>Fade Transition Animation</td><td>S</td><td><code>&lt;set tts:opacity="..."/&gt;</code></td></tr><tr><td>R504</td><td>Animated Style Parameters – Aural</td><td>N</td><td/></tr><tr><td>R505</td><td>Animated Style Parameters – Visual</td><td>P</td><td>Supports animating background color, color, display, opacity, origin, visibility</td></tr><tr><td>N506</td><td>Animated Content</td><td>S</td><td/></tr><tr><td>R600</td><td>Metadata Item Association</td><td>S</td><td>See <code>metadata</code>, <code>Metadata.class</code></td></tr><tr><td>R601</td><td>Metadata Item Constituents</td><td>P</td><td>Supports name, value</td></tr><tr><td>R602</td><td>Metadata Item Value Representation</td><td>P</td><td>See <code>metadata</code></td></tr><tr><td>R603</td><td>Metadata Item Extensibility</td><td>S</td><td>See <code>metadata</code></td></tr><tr><td>R604</td><td>Metadata Item Validation</td><td>S</td><td>See <code>metadata</code></td></tr><tr><td>R690</td><td>Dublin Core Preference</td><td>N</td><td>Uses <code>ttm:copyright</code>, <code>ttm:desc</code>, <code>ttm:title</code></td></tr></tbody></table></div><div class="div1">
-<h2><a name="derivation" id="derivation"/>K Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
+<h2><a name="derivation" id="derivation"/>L Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a name="d3e17499" id="d3e17499"/>K.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
+<h3><a name="d3e18086" id="d3e18086"/>L.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8490,7 +8628,7 @@ elements.</p></li><li><p>Derived from the use of <code>@requiredExtensions</code
 and <code>@requiredFeatures</code> on the <code>svg:svg</code> element,
 but extended to support distinct specification of optionality.</p></li><li><p>Derived from the use of <code>@baseProfile</code>
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e17978" id="d3e17978"/>K.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
+<h3><a name="d3e18565" id="d3e18565"/>L.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8559,16 +8697,16 @@ contours and inside of inner closed contours.</p></li><li><p>On root element, de
 <code>default</code>, which is defined in terms of whitespace
 normalization. Semantics of preservation and default normalization are
 defined in terms of presentation semantics by <a href="#content-attribute-space"><b>7.2.3 xml:space</b></a>.</p></li><li><p>Defined to be inheritable.</p></li></ol></div></div></div><div class="div1">
-<h2><a name="qa" id="qa"/>L QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
+<h2><a name="qa" id="qa"/>M QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a> <a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a name="d3e18847" id="d3e18847"/>L.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a name="d3e19433" id="d3e19433"/>M.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td/><td/><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td/><td/><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e19011" id="d3e19011"/>L.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
-specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>K Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
+<h3><a name="d3e19597" id="d3e19597"/>M.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>L Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 <a href="#doctypes">TTML Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">
-<h2><a name="streaming" id="streaming"/>M Streaming TTML Content (Non-Normative)</h2><p>TTML Content is designed to support streamability by implementing the
+<h2><a name="streaming" id="streaming"/>N Streaming TTML Content (Non-Normative)</h2><p>TTML Content is designed to support streamability by implementing the
 following properties:</p><ul><li><p>can be progressively encoded (i.e., does not require computing
 subsequent data prior to sending current data);</p></li><li><p>can be progressively decoded (i.e., does not require forward
 references, but uses only reverse references when necessary);</p></li><li><p>does not require dereferencing (and subsequent loading) of any
@@ -8591,12 +8729,12 @@ information set in order to interpret subsequent content
 fragments.</p><p>An example of such a fragmentation of a TTML document instance is
 shown in <a href="#fragment-streaming-graphic"><b>Figure 3 – Fragment Streaming</b></a>.</p><table summary="HTML Table" id="fragment-streaming-graphic" class="example-images"><caption>Figure 3 – Fragment Streaming</caption><tbody><tr><td><img src="images/streaming.png" alt="Fragment Streaming"/></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification does not define a transport buffer model or a decoder
 capabilities model.</p></div></div><div class="div1">
-<h2><a name="common-styling" id="common-styling"/>N Common Caption Style Examples (Non-Normative)</h2><p>This section provides examples of the following common caption styles using TTML content
+<h2><a name="common-styling" id="common-styling"/>O Common Caption Style Examples (Non-Normative)</h2><p>This section provides examples of the following common caption styles using TTML content
 to obtain the desired behavior:</p><ul><li><p>Pop-On Captions</p></li><li><p>Roll-Up Captions</p></li><li><p>Paint-On Captions</p></li></ul><div class="div2">
-<h3><a name="pop-on-example" id="pop-on-example"/>N.1 Pop-On Caption Example</h3><p><span class="tbd">To Be Defined</span></p></div><div class="div2">
-<h3><a name="roll-up-example" id="roll-up-example"/>N.2 Roll-Up Caption Example</h3><p><span class="tbd">To Be Defined</span></p></div><div class="div2">
-<h3><a name="paint-on-example" id="paint-on-example"/>N.3 Paint-On Caption Example</h3><p><span class="tbd">To Be Defined</span></p></div></div><div class="div1">
-<h2><a name="acknowledgments" id="acknowledgments"/>O Acknowledgments (Non-Normative)</h2><p>The editor acknowledges the members of the Timed Text Working
+<h3><a name="pop-on-example" id="pop-on-example"/>O.1 Pop-On Caption Example</h3><p><span class="tbd">To Be Defined</span></p></div><div class="div2">
+<h3><a name="roll-up-example" id="roll-up-example"/>O.2 Roll-Up Caption Example</h3><p><span class="tbd">To Be Defined</span></p></div><div class="div2">
+<h3><a name="paint-on-example" id="paint-on-example"/>O.3 Paint-On Caption Example</h3><p><span class="tbd">To Be Defined</span></p></div></div><div class="div1">
+<h2><a name="acknowledgments" id="acknowledgments"/>P Acknowledgments (Non-Normative)</h2><p>The editor acknowledges the members of the Timed Text Working
 Group, the members of other W3C Working Groups, and industry experts
 in other forums who have contributed directly or indirectly to the
 process or content of creating this document.</p><p>The current and former members of the Timed Text Working Group are:

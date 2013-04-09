@@ -457,7 +457,14 @@
   <!-- code: generic computer code -->
   <!-- output as HTML <code> for monospaced formatting -->
   <xsl:template match="code">
-    <code xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></code>
+    <code xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test="@role">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@role"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </code>
   </xsl:template>
 
   <!-- col: see table -->

@@ -1364,6 +1364,11 @@
   <!-- note: a note about the spec -->
   <xsl:template match="note">
     <div xmlns="http://www.w3.org/1999/xhtml" class="note">
+      <xsl:if test="@id">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
       <p class="prefix">
         <b>Note:</b>
       </p>

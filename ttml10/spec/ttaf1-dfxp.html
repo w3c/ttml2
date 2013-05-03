@@ -86,9 +86,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .diff-del  { color: red; text-decoration: line-through; background-color: #99FF99; }
 .diff-chg  { background-color: #99FF99; }
 q.diff-off  {}
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date$<div id="revisions"/><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date: 2013/05/03 05:31:57 $<div id="revisions"/><div class="head">
 <h1><a name="title" id="title"/>Timed Text Markup Language (TTML) 1.0 (Second Edition)</h1>
-<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date$ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date: 2013/05/03 05:31:57 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttaf1-dfxp.html">ttaf1-dfxp.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -6671,9 +6671,9 @@ media time base <span class="strong"><code>M</code></span> is related to the loc
 as described in <a href="#time-expression-semantics-media"><b>N.2 Media Time Base</b></a> above.</p></div></div><div class="div1">
 <h2><a name="common-styling" id="common-styling"/>O Common Caption Style Examples (Non-Normative)</h2><p>This section provides examples of the following common caption styles using TTML content
 to obtain the desired behavior:</p><ul><li><p>Pop-On Captions</p></li><li><p>Roll-Up Captions</p></li><li><p>Paint-On Captions</p></li></ul><div class="div2">
-<h3><a name="pop-on-example" id="pop-on-example"/>O.1 Pop-On Caption Example</h3><p>An example of paint-on captions. In this example, two regions are targeted with the same content, where in the first region,
-content is timed using the default parallel time containment rules, and in the second, content is timed using explicit sequential
-time containment rules. Each paragraph is non-overlapping in time and appears in the same single row of the respective region.</p><table summary="HTML Table" id="pop-on-example-1-s" class="example"><caption>Example – Pop-On Captions</caption><tbody><tr><td>
+<h3><a name="pop-on-example" id="pop-on-example"/>O.1 Pop-On Caption Example</h3><p>An example of paint-on captions. In this example, two regions are targeted with alternating, paint-on content, where content is timed
+using explicit sequential time containment rules. Each paragraph is non-overlapping in time and appears in the same single row
+of its targeted region.</p><table summary="HTML Table" id="pop-on-example-1-s" class="example"><caption>Example – Pop-On Captions</caption><tbody><tr><td>
 <div class="exampleInner"><pre>&lt;tt ttp:cellResolution="60 20" xml:lang="en" xmlns="http://www.w3.org/ns/ttml"
   xmlns:tts="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
   &lt;head&gt;
@@ -6683,21 +6683,12 @@ time containment rules. Each paragraph is non-overlapping in time and appears in
     &lt;/layout&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;!-- using default 'par' time containment --&gt;
-    &lt;div region="r1"&gt;
-      &lt;p begin="0s" end="4s"&gt;Lorem ipsum dolor sit&lt;/p
-      &lt;p begin="4s" end="8s"&gt;Amet consectetur adipiscing elit&lt;/p&gt;
-      &lt;p begin="8s" end="14s"&gt;Sed do eiusmod tempor incididunt labore&lt;/p&gt;
-      &lt;p begin="14s" end="18s"&gt;et dolore magna aliqua&lt;/p&gt;
-      &lt;p begin="18s" end="25s"&gt;Ut enim ad minim veniam quis, nostrud&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;!-- using explicit 'seq' time containment --&gt;
-    &lt;div region="r2" timeContainer="seq"&gt;
-      &lt;p dur="4s"&gt;Lorem ipsum dolor sit&lt;/p
-      &lt;p dur="4s"&gt;Amet consectetur adipiscing elit&lt;/p&gt;
-      &lt;p dur="6s"&gt;Sed do eiusmod tempor incididunt labore&lt;/p&gt;
-      &lt;p dur="4s"&gt;et dolore magna aliqua&lt;/p&gt;
-      &lt;p dur="7s"&gt;Ut enim ad minim veniam quis, nostrud&lt;/p&gt;
+    &lt;div timeContainer="seq"&gt;
+      &lt;p region="r1" dur="4s"&gt;Lorem ipsum dolor sit&lt;/p
+      &lt;p region="r2" dur="4s"&gt;Amet consectetur adipiscing elit&lt;/p&gt;
+      &lt;p region="r1" dur="6s"&gt;Sed do eiusmod tempor incididunt labore&lt;/p&gt;
+      &lt;p region="r2" dur="4s"&gt;et dolore magna aliqua&lt;/p&gt;
+      &lt;p region="r1" dur="7s"&gt;Ut enim ad minim veniam quis, nostrud&lt;/p&gt;
     &lt;/div&gt;
   &lt;/body&gt;
 &lt;/tt&gt;
@@ -6727,7 +6718,7 @@ old paragraph (line) out and a new paragraph (line) in, will be either smooth or
 </pre></div>
 </td></tr></tbody></table></div><div class="div2">
 <h3><a name="paint-on-example" id="paint-on-example"/>O.3 Paint-On Caption Example</h3><p>An example of paint-on captions. Paint-on effects are achieved by using timed <code>span</code> elements in order to expose (paint) inline text units, e.g., words,
-over some time interval. Here, five parapraphs have their individual words sequentially timed in order to paint one new word every second. The end of the active duration of
+over some time interval. Here, five paragraphs have their individual words sequentially timed in order to paint one new word every second. The end of the active duration of
 each inline element coincides with the end of the <code>div</code> element's parallel time container, so that once a word is painted, it remains in the region (on its rendered line) until the <code>div</code> element's active time interval lapses.</p><table summary="HTML Table" id="paint-on-example-1-s" class="example"><caption>Example – Paint-On Captions</caption><tbody><tr><td>
 <div class="exampleInner"><pre>&lt;tt ttp:cellResolution="60 20" xml:lang="en" xmlns="http://www.w3.org/ns/ttml"
   xmlns:tts="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;

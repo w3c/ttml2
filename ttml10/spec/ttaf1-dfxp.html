@@ -86,9 +86,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .diff-del  { color: red; text-decoration: line-through; background-color: #99FF99; }
 .diff-chg  { background-color: #99FF99; }
 q.diff-off  {}
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date: 2013/05/03 05:31:57 $<div id="revisions"/><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"/></head><body>Last Modified: $Date: 2013/05/07 23:50:55 $<div id="revisions"/><div class="head">
 <h1><a name="title" id="title"/>Timed Text Markup Language (TTML) 1.0 (Second Edition)</h1>
-<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date: 2013/05/03 05:31:57 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a name="w3c-doctype" id="w3c-doctype"/>Editors' copy $Date: 2013/05/07 23:50:55 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttaf1-dfxp.html">ttaf1-dfxp.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml10/spec/ttaf1-dfxp.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -394,11 +394,11 @@ G <a href="#references">References</a><br/>
 H <a href="#other-references">Other References</a> (Non-Normative)<br/>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br/>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br/>
-    J.1 <a href="#d3e17370">Element Derivation</a><br/>
-    J.2 <a href="#d3e17849">Attribute Derivation</a><br/>
+    J.1 <a href="#d3e17555">Element Derivation</a><br/>
+    J.2 <a href="#d3e18034">Attribute Derivation</a><br/>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br/>
-    K.1 <a href="#d3e18717">Requirements</a><br/>
-    K.2 <a href="#d3e18881">Guidelines</a><br/>
+    K.1 <a href="#d3e18902">Requirements</a><br/>
+    K.2 <a href="#d3e19066">Guidelines</a><br/>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br/>
 M <a href="#concrete-encoding">Concrete Encoding</a> (Non-Normative)<br/>
 N <a href="#time-expression-semantics">Time Expression Semantics</a> (Non-Normative)<br/>
@@ -1428,7 +1428,7 @@ assumed that the presentation of text or the alignment of individual
 glyph areas is
 coordinated with this grid. Such alignment is possible, but
 requires the use of a monospaced font and a font size whose EM square exactly
-matches the cell size.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Except when indicated otherwise, when a <a href="#style-value-length">&lt;length&gt;</a> expressed in
+matches the cell size.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Except where indicated otherwise, when a <a href="#style-value-length">&lt;length&gt;</a> expressed in
 cells expresses a dimension parallel to the inline or block progression dimension,
 the cell's dimension in the inline or block progression dimension applies, respectively.
 For example, if padding (on all four edges) is specified as 0.1c, the cell resolution
@@ -1581,7 +1581,7 @@ must not be made regarding linearity or monotonicity of time coordinates.</p><p>
 to be <code>discontinuous</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value for this parameter was originally specified
 (in <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">TTML 1.0 First Edition</a>)
 as <code>continuous</code>; however, further evaluation of the state of the industry indicates this
-choice was incorrect, and that the most common default is <code>discontinuous</code>.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Due to lack of industry consensus on the utility and interpretation of 
+choice was incorrect, and that the most common default is <code>discontinuous</code>.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Due to lack of industry consensus on the utility and interpretation of the
 <code>continuous</code> marker mode, authors are advised to avoid its use. Furthermore, the
 <code>ttp:markerMode</code> is being considered for deprecation in the next revision of this
 specification.</p></div><p>A <code>ttp:markerMode</code> attribute is considered to be significant only
@@ -1770,8 +1770,7 @@ specifies the spatial extent of the root container region in
 which content regions are located and presented. If no <code>tts:extent</code>
 attribute is specified, then the spatial extent of the root container region is
 considered to be determined by the external authoring or presentation
-context. The root container origin is determined by the external
-authoring (or presentation) context.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>If an author desires to signal the (storage or image) aspect ratio of the root container
+context. The root container origin is determined by the <em>Document Processing Context</em>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>If an author desires to signal the (storage or image) aspect ratio of the root container
 region without specifying its resolution, then this may be accomplished by using metadata specified
 in an external namespace, such as <code>m708:aspectRatio</code> as defined in <a href="#smpte2052">[SMPTE 2052-11]</a>, §5.4.4.
 This would permit, for example, the interchange of information that reflects the
@@ -1943,7 +1942,7 @@ a <code>p</code> element, then it must be interpreted as having
 consists solely of character information items, then that sequence must
 be considered to be an <em>anonymous span</em> for the purpose of
 applying style properties that apply to <code>span</code> elements.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The presentation semantics of TTML effectively
-imply that a <code>p</code> element constitutes a line break. In particular,
+implies that a <code>p</code> element constitutes a line break. In particular,
 it is associated with a block-stacking constraint both before the first
 generated line area and after the last generated line area. See
 <a href="#semantics-region-layout-step-2"><b>9.3.3 Synchronic Flow Processing</b></a> for further details.</p></div></div><div class="div3">
@@ -5175,21 +5174,37 @@ values of the <a href="#style-value-length">&lt;length&gt;</a>
 style value expression.</p><p>A TTML presentation processor supports the <code>#length</code>
 feature if it implements presentation semantic support for all defined values of
 the <a href="#style-value-length">&lt;length&gt;</a> style value
-expression.</p></div><div class="div3">
+expression.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length</code> is intended to imply support for the following features:
+<code>#length-integer</code>,
+<code>#length-real</code>,
+<code>#length-positive</code>,
+<code>#length-negative</code>,
+<code>#length-cell</code>,
+<code>#length-em</code>,
+<code>#length-percentage</code>, and
+<code>#length-pixel</code>.</p></div></div><div class="div3">
 <h4><a name="feature-length-cell" id="feature-length-cell"/>D.1.43 #length-cell</h4><p>A TTML transformation processor supports the
 <code>#length-cell</code> feature if it recognizes and is capable of
 transforming scalar values of the <a href="#style-value-length">&lt;length&gt;</a> style value expression
 that use <code>c</code> (cell) units.</p><p>A TTML presentation processor supports the
 <code>#length-cell</code> feature if it implements presentation semantic support
 for scalar values of the <a href="#style-value-length">&lt;length&gt;</a> style value expression
-that use <code>c</code> (cell) units.</p></div><div class="div3">
+that use <code>c</code> (cell) units.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-cell</code> does not, by itself, imply support for
+<code>#length-integer</code>,
+<code>#length-real</code>,
+<code>#length-positive</code>, or
+<code>#length-negative</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-length-em" id="feature-length-em"/>D.1.44 #length-em</h4><p>A TTML transformation processor supports the
 <code>#length-em</code> feature if it recognizes and is capable of
 transforming scalar values of the <a href="#style-value-length">&lt;length&gt;</a> style value expression
 that use <code>em</code> (EM) units.</p><p>A TTML presentation processor supports the
 <code>#length-em</code> feature if it implements presentation semantic support
 for scalar values of the <a href="#style-value-length">&lt;length&gt;</a> style value expression
-that use <code>em</code> (EM) units.</p></div><div class="div3">
+that use <code>em</code> (EM) units.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-em</code> does not, by itself, imply support for
+<code>#length-integer</code>,
+<code>#length-real</code>,
+<code>#length-positive</code>, or
+<code>#length-negative</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-length-integer" id="feature-length-integer"/>D.1.45 #length-integer</h4><p>A TTML transformation processor supports the
 <code>#length-integer</code> feature if it recognizes and is
 capable of transforming integer values of the <a href="#style-value-length">&lt;length&gt;</a> style value
@@ -5197,7 +5212,9 @@ expression.</p><p>A TTML presentation processor supports the
 <code>#length-integer</code> feature if it implements presentation semantic
 support for integer values of the <a href="#style-value-length">&lt;length&gt;</a> style value
 expression.
-</p></div><div class="div3">
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-positive</code> does not, by itself, imply support for
+<code>#length-negative</code> or
+<code>#length-positive</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-length-negative" id="feature-length-negative"/>D.1.46 #length-negative</h4><p>A TTML transformation processor supports the
 <code>#length-negative</code> feature if it recognizes and is
 capable of transforming negative values of the <a href="#style-value-length">&lt;length&gt;</a> style value
@@ -5205,7 +5222,9 @@ expression.</p><p>A TTML presentation processor supports the
 <code>#length-negative</code> feature if it implements presentation semantic
 support for negative values of the <a href="#style-value-length">&lt;length&gt;</a> style value
 expression.
-</p></div><div class="div3">
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-positive</code> does not, by itself, imply support for
+<code>#length-integer</code> or
+<code>#length-real</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-length-percentage" id="feature-length-percentage"/>D.1.47 #length-percentage</h4><p>A TTML transformation processor supports the
 <code>#length-percentage</code> feature if it recognizes and is
 capable of transforming percentage values of the <a href="#style-value-length">&lt;length&gt;</a> style value
@@ -5213,14 +5232,22 @@ expression.</p><p>A TTML presentation processor supports the
 <code>#length-percentage</code> feature if it implements presentation semantic
 support for percentage values of the <a href="#style-value-length">&lt;length&gt;</a> style value
 expression.
-</p></div><div class="div3">
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-percentage</code> does not, by itself, imply support for
+<code>#length-integer</code>,
+<code>#length-real</code>,
+<code>#length-positive</code>, or
+<code>#length-negative</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-length-pixel" id="feature-length-pixel"/>D.1.48 #length-pixel</h4><p>A TTML transformation processor supports the
 <code>#length-pixel</code> feature if it recognizes and is capable of
 transforming scalar values of the <a href="#style-value-length">&lt;length&gt;</a> style value expression
 that use <code>px</code> (pixel) units.</p><p>A TTML presentation processor supports the
 <code>#length-pixel</code> feature if it implements presentation semantic support
 for scalar values of the <a href="#style-value-length">&lt;length&gt;</a> style value expression
-that use <code>px</code> (pixel) units.</p></div><div class="div3">
+that use <code>px</code> (pixel) units.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-pixel</code> does not, by itself, imply support for
+<code>#length-integer</code>,
+<code>#length-real</code>,
+<code>#length-positive</code>, or
+<code>#length-negative</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-length-positive" id="feature-length-positive"/>D.1.49 #length-positive</h4><p>A TTML transformation processor supports the
 <code>#length-positive</code> feature if it recognizes and is
 capable of transforming positive values of the <a href="#style-value-length">&lt;length&gt;</a> style value
@@ -5228,7 +5255,14 @@ expression.</p><p>A TTML presentation processor supports the
 <code>#length-positive</code> feature if it implements presentation semantic
 support for positive values of the <a href="#style-value-length">&lt;length&gt;</a> style value
 expression.
-</p></div><div class="div3">
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-positive</code> is intended to imply support for zero valued
+<a href="#style-value-length">&lt;length&gt;</a> style value
+expressions.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-positive</code> does not, by itself, imply support for
+<code>#length-integer</code> or
+<code>#length-real</code> features; however, as a concession to existing practice,
+a profile that requires support for <code>#length-positive</code> but does not require
+support for <code>#length-integer</code> or <code>#length-real</code> is recommended
+to be considered as additionally requiring support for <code>#length-real</code>.</p></div></div><div class="div3">
 <h4><a name="feature-length-real" id="feature-length-real"/>D.1.50 #length-real</h4><p>A TTML transformation processor supports the
 <code>#length-real</code> feature if it recognizes and is
 capable of transforming real values of the <a href="#style-value-length">&lt;length&gt;</a> style value
@@ -5236,7 +5270,11 @@ expression.</p><p>A TTML presentation processor supports the
 <code>#length-real</code> feature if it implements presentation semantic
 support for real values of the <a href="#style-value-length">&lt;length&gt;</a> style value
 expression.
-</p></div><div class="div3">
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-real</code> is intended to imply support for
+integer valued <a href="#style-value-length">&lt;length&gt;</a> style value
+expressions as well as real valued expressions.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Support for <code>#length-real</code> does not, by itself, imply support for
+<code>#length-negative</code> or
+<code>#length-positive</code> features.</p></div></div><div class="div3">
 <h4><a name="feature-lineBreak-uax14" id="feature-lineBreak-uax14"/>D.1.51 #lineBreak-uax14</h4><p>A TTML transformation processor supports the
 <code>#lineBreak-uax14</code> feature if it recognizes and is capable of
 transforming requirements expressed by <a href="#uax14">[UAX14]</a> into its
@@ -6349,7 +6387,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a name="derivation" id="derivation"/>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a name="d3e17370" id="d3e17370"/>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
+<h3><a name="d3e17555" id="d3e17555"/>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table K-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -6404,7 +6442,7 @@ elements.</p></li><li><p>Derived from the use of <code>@requiredExtensions</code
 and <code>@requiredFeatures</code> on the <code>svg:svg</code> element,
 but extended to support distinct specification of optionality.</p></li><li><p>Derived from the use of <code>@baseProfile</code>
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e17849" id="d3e17849"/>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
+<h3><a name="d3e18034" id="d3e18034"/>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table K-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -6476,9 +6514,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a name="qa" id="qa"/>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a> <a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a name="d3e18717" id="d3e18717"/>K.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a name="d3e18902" id="d3e18902"/>K.1 Requirements</h3><table summary="HTML Table" id="qa-framework-requirements-table" class="common"><caption>Table L-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td/><td/><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td/><td/><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a name="d3e18881" id="d3e18881"/>K.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a name="d3e19066" id="d3e19066"/>K.2 Guidelines</h3><table summary="HTML Table" id="qa-framework-guidelines-table" class="common"><caption>Table L-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><col width="6%" align="center" span="1"/><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td/><td>NO</td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td/><td/><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td/><td/><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td/><td>NO</td><td/><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td/><td/><td/></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td/><td/><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td/><td/><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td/><td/><td/></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 <a href="#doctypes">TTML Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

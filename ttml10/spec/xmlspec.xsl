@@ -1117,6 +1117,8 @@
             </a>
             <xsl:text>, </xsl:text>
             <a href="http://www.keio.ac.jp/">Keio</a>
+            <xsl:text>, </xsl:text>
+            <a href="http://ev.buaa.edu.cn/">Beihang</a>
             <xsl:text>), All Rights Reserved. W3C </xsl:text>
             <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>
@@ -2681,11 +2683,11 @@ div.exampleHeader { font-weight: bold;
       <xsl:attribute name="href">
         <xsl:text>http://www.w3.org/StyleSheets/TR/</xsl:text>
         <xsl:choose>
-          <xsl:when test="/spec/@role='editors-copy'">base</xsl:when>
+          <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
           <xsl:otherwise>
             <xsl:choose>
 	      <!-- Editor's review drafts are a special case. -->
-              <xsl:when test="/spec/@w3c-doctype='review'          or contains(/spec/header/w3c-doctype, 'Editor')">base</xsl:when>
+              <xsl:when test="/spec/@w3c-doctype='review'          or contains(/spec/header/w3c-doctype, 'Editor')">W3C-ED</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='wd'">W3C-WD</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='rec'">W3C-REC</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='pr'">W3C-PR</xsl:when>

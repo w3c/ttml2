@@ -6,7 +6,7 @@
 <!-- ====================================================================== -->
 <!-- xmlspec.xsl: An HTML XSL[1] Stylesheet for XML Spec V2.1[2] markup
 
-     Version: $Id$
+     Version: $Id: xmlspec.xsl,v 1.1 2011/09/07 14:47:12 mdw Exp $
 
      URI:     http://dev.w3.org/cvsweb/spec-prod/html/xmlspec.xsl
 
@@ -17,7 +17,7 @@
               Henry S. Thompson (ht@cogsci.ed.ac.uk)
 
      Date:    Created 07 September 1999
-              Last updated $Date$ by $Author$
+              Last updated $Date: 2011/09/07 14:47:12 $ by $Author: mdw $
 
      Copyright (C) 2000, 2001, 2002 Sun Microsystems, Inc. All Rights Reserved.
      This document is governed by the W3C Software License[3] as
@@ -457,14 +457,7 @@
   <!-- code: generic computer code -->
   <!-- output as HTML <code> for monospaced formatting -->
   <xsl:template match="code">
-    <code xmlns="http://www.w3.org/1999/xhtml">
-      <xsl:if test="@role">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@role"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </code>
+    <code xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></code>
   </xsl:template>
 
   <!-- col: see table -->
@@ -1124,8 +1117,6 @@
             </a>
             <xsl:text>, </xsl:text>
             <a href="http://www.keio.ac.jp/">Keio</a>
-            <xsl:text>, </xsl:text>
-	    <a href="http://ev.buaa.edu.cn/">Beihang</a>
             <xsl:text>), All Rights Reserved. W3C </xsl:text>
             <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>
@@ -1364,11 +1355,6 @@
   <!-- note: a note about the spec -->
   <xsl:template match="note">
     <div xmlns="http://www.w3.org/1999/xhtml" class="note">
-      <xsl:if test="@id">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
       <p class="prefix">
         <b>Note:</b>
       </p>
@@ -2012,7 +1998,9 @@
             <!-- nop -->
           </xsl:when>
           <xsl:otherwise>
-            <xsl:copy-of select="."/>
+            <xsl:copy>
+              <xsl:apply-templates/>
+            </xsl:copy>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
@@ -2695,11 +2683,11 @@ div.exampleHeader { font-weight: bold;
       <xsl:attribute name="href">
         <xsl:text>http://www.w3.org/StyleSheets/TR/</xsl:text>
         <xsl:choose>
-          <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
+          <xsl:when test="/spec/@role='editors-copy'">base</xsl:when>
           <xsl:otherwise>
             <xsl:choose>
 	      <!-- Editor's review drafts are a special case. -->
-              <xsl:when test="/spec/@w3c-doctype='review'          or contains(/spec/header/w3c-doctype, 'Editor')">W3C-ED</xsl:when>
+              <xsl:when test="/spec/@w3c-doctype='review'          or contains(/spec/header/w3c-doctype, 'Editor')">base</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='wd'">W3C-WD</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='rec'">W3C-REC</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='pr'">W3C-PR</xsl:when>

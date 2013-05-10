@@ -61,7 +61,7 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .optattr { font-style: italic }
 </xsl:text>
 </xsl:param>
-<xsl:output method="html" encoding="utf-8" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" indent="no"/>
+<xsl:output method="html" encoding="utf-8" indent="no"/>
 
 <!-- spec: the specification itself -->
 <xsl:template match="spec">
@@ -86,7 +86,7 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 	  <xsl:value-of select="$additional.title"/>
 	</xsl:if>
 	<xsl:if test="/spec/@role='editors-copy'">
-	  <xsl:text> -- (Editors' copy)</xsl:text>
+	  <xsl:text> -- (Editor's copy)</xsl:text>
 	</xsl:if>
       </title>
       <xsl:call-template name="css"/>

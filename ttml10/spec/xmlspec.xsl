@@ -1988,7 +1988,7 @@
         <xsl:text>Status of this Document</xsl:text>
       </h2>
       <xsl:if test="/spec/@role='editors-copy'">
-        <p><strong>This document is an editors' copy that has
+        <p><strong>This document is an editor's copy that has
         no official standing.</strong></p>
       </xsl:if>
       <xsl:apply-templates/>

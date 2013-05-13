@@ -33,14 +33,14 @@
 <!ENTITY real "&#x211c;">
 <!ENTITY prop "&#x221d;">
 <!ENTITY not "&#x00ac;">
-<!ENTITY dfxp-ex1 SYSTEM "./examples/ex1.xml.esc">
-<!ENTITY dfxp-ex1-x-0 SYSTEM "./examples/ex1-x-0.xml.esc">
-<!ENTITY dfxp-ex1-p-0 SYSTEM "./examples/ex1-p-0.xml.esc">
-<!ENTITY dfxp-ex1-x-1 SYSTEM "./examples/ex1-x-1.xml.esc">
-<!ENTITY dfxp-ex1-x-2 SYSTEM "./examples/ex1-x-2.xml.esc">
-<!ENTITY dfxp-ex2-pop-on SYSTEM "./examples/ex2-pop-on.xml.esc">
-<!ENTITY dfxp-ex2-roll-up SYSTEM "./examples/ex2-roll-up.xml.esc">
-<!ENTITY dfxp-ex2-paint-on SYSTEM "./examples/ex2-paint-on.xml.esc">
+<!ENTITY ttml-ex1 SYSTEM "./examples/ex1.xml.esc">
+<!ENTITY ttml-ex1-x-0 SYSTEM "./examples/ex1-x-0.xml.esc">
+<!ENTITY ttml-ex1-p-0 SYSTEM "./examples/ex1-p-0.xml.esc">
+<!ENTITY ttml-ex1-x-1 SYSTEM "./examples/ex1-x-1.xml.esc">
+<!ENTITY ttml-ex1-x-2 SYSTEM "./examples/ex1-x-2.xml.esc">
+<!ENTITY ttml-ex2-pop-on SYSTEM "./examples/ex2-pop-on.xml.esc">
+<!ENTITY ttml-ex2-roll-up SYSTEM "./examples/ex2-roll-up.xml.esc">
+<!ENTITY ttml-ex2-paint-on SYSTEM "./examples/ex2-paint-on.xml.esc">
 <!ENTITY profile-dfxp-presentation SYSTEM "./profiles/dfxp-presentation.xml.esc">
 <!ENTITY profile-dfxp-transformation SYSTEM "./profiles/dfxp-transformation.xml.esc">
 <!ENTITY profile-dfxp-full SYSTEM "./profiles/dfxp-full.xml.esc">
@@ -115,10 +115,10 @@ for the purpose of transcoding or exchanging timed text information
 among legacy distribution content formats presently in use for
 subtitling and captioning functions.</p>
 <p>In addition to being used for interchange among legacy distribution content
-formats, TTML content may be used directly as a distribution format,
+formats, TTML Content may be used directly as a distribution format,
 for example, providing a standard content format to reference from a <el>&lt;track&gt;</el>
 element in an HTML5 document, or a <el>&lt;text&gt;</el> or 
-<el>&lt;textstream&gt;</el> media object element in a <bibref
+<el>&lt;textstream&gt;</el> media element in a <bibref
 ref="smil21"/> document.</p>
 </abstract>
 &status;
@@ -132,40 +132,47 @@ ref="smil21"/> document.</p>
 <p>The Timed Text Markup Language (TTML) 1.0
 provides a standardized representation of a particular subset of
 textual information with which stylistic, layout, and timing semantics are associated by
-an author or an authoring system for the purpose of interchange and potential presentation.</p>
+an author or an authoring system for the purpose of interchange and processing.</p>
 <p>TTML is expressly designed to meet only a limited set of requirements
 established by <bibref ref="ttaf1-req"/>, and summarized in <specref
 ref="requirements"/>. In particular, only those requirements which service the
 need of performing interchange with existing, legacy distribution systems are
 satisfied.</p>
 <p>In addition to being used for interchange among legacy distribution content
-formats, TTML content may be used directly as a distribution format, providing, for
+formats, TTML Content may be used directly as a distribution format (as implied by
+the acronym DFXP), providing, for
 example, a standard content format to reference from a <el>&lt;track&gt;</el>
 element in an HTML5 document, or a <el>&lt;text&gt;</el> or 
 <el>&lt;textstream&gt;</el> media element in a <bibref
 ref="smil21"/> document. Certain properties of TTML support
 streamability of content, as described in <specref ref="streaming"/>.</p>
 <note>
-<p>While TTML was not expressly designed for direct (embedded) integration into a
-SMIL document instance, such integration is not precluded.</p>
+<p>While TTML was not expressly designed for direct (embedded) integration into an
+HTML or a SMIL document instance, such integration is not precluded.</p>
 </note>
 <note>
 <p>In some contexts of use, it may be appropriate to employ
 animated content to depict sign language representations of the same content
-as expressed by a Timed Text document instance. This use case is not
+as expressed by a Timed Text <emph>Document Instance</emph>. This use case is not
 explicitly addressed by TTML mechanisms, but may be addressed by some
 external multimedia integration technology, such as SMIL.</p>
+</note>
+<note role="historical">
+<p>In previous drafts of this specification, TTML was referred to as DFXP (Distribution
+Format Exchange Profile). This latter term is retained for historical reasons in
+certain contexts, such as profile names and designators, and the short name
+<code>ttaf1-dfxp</code> used in URLs to refer to this specification.</p>
 </note>
 <div2 id="model">
 <head>System Model</head>
 <p>Use of TTML is intended to function in a wider context of Timed Text
-Authoring and Distribution mechanisms that are based upon a system
-model, depicted in <specref ref="model-graphic"/>, wherein the Timed Text Markup Language
+Authoring and Distribution mechanisms that are based upon the system
+model depicted in <specref ref="model-graphic"/>, wherein the Timed Text Markup Language
 serves as a bidirectional interchange format among a heterogeneous collection of
 authoring systems, and as a unidirectional interchange format to a
 heterogeneous collection of distribution formats after undergoing transcoding
 or compilation to the target distribution formats as required, and where one
-particular distribution format is TTML.</p>
+particular distribution format is TTML (labeled as "DFXP" in the figure).</p>
 <table id="model-graphic" role="example-images">
 <caption>Figure 1 &ndash; System Model</caption>
 <tbody>
@@ -177,11 +184,11 @@ particular distribution format is TTML.</p>
 </div2>
 <div2 id="example">
 <head>Document Example</head>
-<p>A TTML document instance consists of a <el>tt</el> document element that contains
+<p>A TTML <emph>Document Instance</emph> consists of a <el>tt</el> document element that contains
 a header and a body, where the header specifies document level metadata, styling
 definitions and layout definitions, and the body specifies text content intermixed
-with references to style and layout information and inline timing information.</p>
-<table id="dfxp-example-document-structure" role="example">
+with references to style and layout information and inline styling and timing information.</p>
+<table id="ttml-example-document-structure" role="example">
 <caption>Example Fragment &ndash; TTML Document Structure</caption>
 <tbody>
 <tr>
@@ -202,7 +209,7 @@ with references to style and layout information and inline timing information.</
 <p>Document level metadata may specify a document title, description,
 and copyright information. In addition, arbitrary metadata drawn from
 other namespaces may be specified.</p>
-<table id="dfxp-example-metadata" role="example">
+<table id="ttml-example-metadata" role="example">
 <caption>Example Fragment &ndash; TTML Metadata</caption>
 <tbody>
 <tr>
@@ -218,10 +225,11 @@ other namespaces may be specified.</p>
 </tbody>
 </table>
 <p>Styling information may be specified in the form of style specification
-definitions that are referenced by layout and content information.</p>
-<p>In <specref ref="dfxp-example-styling"/>, four style sets of specifications
+definitions that are referenced by layout and content information,
+specified inline with content information, or both.</p>
+<p>In <specref ref="ttml-example-styling"/>, four style sets of specifications
 are defined, with one set serving as a collection of default styles.</p>
-<table id="dfxp-example-styling" role="example">
+<table id="ttml-example-styling" role="example">
 <caption>Example Fragment &ndash; TTML Styling</caption>
 <tbody>
 <tr>
@@ -251,12 +259,13 @@ are defined, with one set serving as a collection of default styles.</p>
 is intended to be presented. A region definition may reference one or
 more sets of style specifications in order to permit content flowed in the
 region to inherit from these styles.
-In <specref ref="dfxp-example-layout"/>, the region definition makes
-reference to style specification <code>s1</code> which allows all content
-flowed into the region to inherit from the region's styles (in the case
+In <specref ref="ttml-example-layout"/>, the region definition makes
+reference to style specification <code>s1</code> augmented by specific inline
+styles which, together, allow content flowed into the region to inherit
+from the region's styles (in the case
 that a style is not already explicitly specified on content or inherited
 via the content hierarchy.)</p>
-<table id="dfxp-example-layout" role="example">
+<table id="ttml-example-layout" role="example">
 <caption>Example Fragment &ndash; TTML Layout</caption>
 <tbody>
 <tr>
@@ -276,17 +285,17 @@ via the content hierarchy.)</p>
 </tr>
 </tbody>
 </table>
-<p>The content of a TTML document instance is expressed in its
+<p>The content of a <emph>Document Instance</emph> is expressed in its
 body, which is organized in terms of block and inline text elements.
 The hierarchical organization of content elements serves a primary role in
 determining both spatial and temporal relationships. For example, in
-<specref ref="dfxp-example-body"/>, each paragraph (<el>p</el> element)
+<specref ref="ttml-example-body"/>, each paragraph (<el>p</el> element)
 is flowed into its target region in the specified lexical order; furthermore,
 the active time interval of each paragraph is timed in accordance to its
 parent or sibling according to the applicable time containment semantics &mdash;
-in this case, the division parent is interpreted as a parallel time
+in this case, the division parent is interpreted (by default) as a parallel time
 container.</p>
-<table id="dfxp-example-body" role="example">
+<table id="ttml-example-body" role="example">
 <caption>Example Fragment &ndash; TTML Body</caption>
 <tbody>
 <tr>
@@ -339,14 +348,14 @@ container.</p>
 </tr>
 </tbody>
 </table>
-<p>The first subtitle <specref ref="dfxp-example-subtitle-1"/> is
+<p>The first subtitle <specref ref="ttml-example-subtitle-1"/> is
 presented during the time interval 0.76 to 3.45 seconds.
 This
 subtitle inherits its font family, font size,
 foreground color, and text alignment from the region into which it is
 presented. Since no region is explicitly specified on the paragraph,
 the nearest ancestor that specifies a region determines the
-region. Note also that content is presented
+targeted region. Note also that content is presented
 at the bottom (after edge) of the containing region due to the <code>tts:displayAlign="after"</code>
 being specified on the region definition.</p>
 <note role="explanation">
@@ -364,7 +373,7 @@ interval from <emph>X</emph> to <emph>Y</emph>, not including
 <emph>X</emph> or <emph>Y</emph>.
 </p>
 </note>
-<table id="dfxp-example-subtitle-1" role="example-images">
+<table id="ttml-example-subtitle-1" role="example-images">
 <caption>Subtitle 1 &ndash; Time Interval [0.76, 3.45)</caption>
 <tbody>
 <tr>
@@ -373,10 +382,10 @@ interval from <emph>X</emph> to <emph>Y</emph>, not including
 </tbody>
 </table>
 <p>The second subtitle continues with the default style, except that it contains
-two lines of text with an intervening author-specified line break. Note the effects of
+two lines of text with an intervening author-specified line break. Note the affect of
 the use of <code>tts:textAlign="center"</code> to specify the paragraph's alignment
 in the inline progression direction.</p>
-<table id="dfxp-example-subtitle-2" role="example-images">
+<table id="ttml-example-subtitle-2" role="example-images">
 <caption>Subtitle 2 &ndash; Time Interval [5.0, 10.0)</caption>
 <tbody>
 <tr>
@@ -386,7 +395,7 @@ in the inline progression direction.</p>
 </table>
 <p>The third subtitle continues, using a variant style which overrides the default style's
 foreground color with a different color.</p>
-<table id="dfxp-example-subtitle-3" role="example-images">
+<table id="ttml-example-subtitle-3" role="example-images">
 <caption>Subtitle 3 &ndash; Time Interval [10.0, 16.0)</caption>
 <tbody>
 <tr>
@@ -395,7 +404,7 @@ foreground color with a different color.</p>
 </tbody>
 </table>
 <p>The fourth subtitle reverts to the default style.</p>
-<table id="dfxp-example-subtitle-4" role="example-images">
+<table id="ttml-example-subtitle-4" role="example-images">
 <caption>Subtitle 4 &ndash; Time Interval [17.2, 23.0)</caption>
 <tbody>
 <tr>
@@ -405,7 +414,7 @@ foreground color with a different color.</p>
 </table>
 <p>The fifth subtitle continues, again using a variant style which
 overrides the default style's foreground color with a different color.</p>
-<table id="dfxp-example-subtitle-5" role="example-images">
+<table id="ttml-example-subtitle-5" role="example-images">
 <caption>Subtitle 5 &ndash; Time Interval [23.0, 27.0)</caption>
 <tbody>
 <tr>
@@ -414,10 +423,10 @@ overrides the default style's foreground color with a different color.</p>
 </tbody>
 </table>
 <p>During the next active time interval, two distinct subtitles are simultaneously active, with
-the paragraph expressing each subtitle using a different style that overrides color and paragraph
+the paragraphs expressing each subtitle using different styles that override color and paragraph
 text alignment of the default style. Note that the flow order is determined by the lexical
 order of elements as they appear in the content hierarchy.</p>
-<table id="dfxp-example-subtitle-6" role="example-images">
+<table id="ttml-example-subtitle-6" role="example-images">
 <caption>Subtitles 6a and 6b &ndash; Time Interval [28.0, 34.6)</caption>
 <tbody>
 <tr>
@@ -426,9 +435,9 @@ order of elements as they appear in the content hierarchy.</p>
 </tbody>
 </table>
 <p>The next subtitle is specified in a similar manner using
-a style override to give a paragraph right (end) justified in the
+a style override to give the paragraph right (end) justification in the
 inline progression direction.</p>
-<table id="dfxp-example-subtitle-7" role="example-images">
+<table id="ttml-example-subtitle-7" role="example-images">
 <caption>Subtitle 7 &ndash; Time Interval [34.6, 45.0)</caption>
 <tbody>
 <tr>
@@ -439,7 +448,7 @@ inline progression direction.</p>
 <p>The eighth subtitle uses the same style override as the previous
 subtitle in order to maintain the right (end) justification of the
 paragraph.</p>
-<table id="dfxp-example-subtitle-8" role="example-images">
+<table id="ttml-example-subtitle-8" role="example-images">
 <caption>Subtitle 8 &ndash; Time Interval [47.3, 49.0)</caption>
 <tbody>
 <tr>
@@ -452,7 +461,7 @@ subtitles are again simultaneously active, but with a different
 style applied to the second paragraph to override the default color.
 Note that the flow order is determined by the lexical order of
 elements as they appear in the content hierarchy.</p>
-<table id="dfxp-example-subtitle-9" role="example-images">
+<table id="ttml-example-subtitle-9" role="example-images">
 <caption>Subtitles 9a and 9b &ndash; Time Interval [53.5, 58.7)</caption>
 <tbody>
 <tr>
@@ -462,7 +471,7 @@ elements as they appear in the content hierarchy.</p>
 </table>
 <p>The examples shown above demonstrate the primary types of information that may
 be authored using TTML: metadata, styling, layout, timing, and content. In typical cases,
-styling and layout information are separately specified in a document instance. Content information
+styling and layout information are separately specified in a <emph>Document Instance</emph>. Content information
 is expressed in a hierarchical fashion that embodies the organization of both spatial (flow) and
 timing information. Content makes direct or indirect references to styling and layout information
 and may specify inline overrides to styling.</p>
@@ -525,7 +534,7 @@ and may specify inline overrides to styling.</p>
 <label>Abstract Document Type</label>
 <def>
 <p>A set of constraints that defines a class of <emph>XML Information
-Set</emph>s <bibref ref="infoset"/>.</p>
+Sets</emph> <bibref ref="infoset"/>.</p>
 </def>
 </gitem>
 <gitem>
@@ -564,6 +573,15 @@ performing presentation processing.</p>
 </def>
 </gitem>
 <gitem>
+<label>Document Instance</label>
+<def>
+<p>A concrete realization of a Timed Text Markup Language document, where the concrete form
+is specific to the context of reference. For example, a sequence of bytes that represents an
+XML serialization of a Timed Text document, an internal, parsed representation of such a
+Timed Text document, etc.</p>
+</def>
+</gitem>
+<gitem>
 <label>Document Interchange Context</label>
 <def>
 <p>The implied context or environment external to a <emph>Content Processor</emph> in
@@ -577,7 +595,7 @@ may define certain behavioral defaults, such as an implied <emph>Content Profile
 <p>The implied context or environment internal to a <emph>Content Processor</emph> in
 which document processing occurs, and in which out-of-band protocols or specifications
 may define certain behavioral defaults, such as the establishment or creation of a
-<emph>Synthetic Syncbase</emph>.</p>
+<emph>Synthetic Document Syncbase</emph>.</p>
 </def>
 </gitem>
 <gitem>
@@ -651,7 +669,7 @@ is composed and rendered during presentation processing.</p>
 <gitem>
 <label>Reduced XML Infoset</label>
 <def>
-<p>An XML Information Set <bibref ref="infoset"/> that satisfieds the
+<p>An XML Information Set <bibref ref="infoset"/> that satisfies the
 constraints specify by <specref ref="reduced-infoset"/>.</p>
 </def>
 </gitem>
@@ -659,30 +677,30 @@ constraints specify by <specref ref="reduced-infoset"/>.</p>
 <label>Related Media Object</label>
 <def>
 <p>A (possibly null) media object associated with or otherwise related
-to a TTML document instance. For example, an aggregate audio/video media
-object for which a TTML document instance provides caption or subtitle
-information, and with which that TTML document instance is associated.</p>
+to a <emph>Document Instance</emph>. For example, an aggregate audio/video media
+object for which a <emph>Document Instance</emph> provides caption or subtitle
+information, and with which that <emph>Document Instance</emph> is associated.</p>
 </def>
 </gitem>
 <gitem>
 <label>Root Container Region</label>
 <def>
 <p>A logical region that establishes a coordinate system into which
-TTML document instance content regions are placed and optionally clipped.</p>
+<emph>Document Instance</emph> content regions are placed and optionally clipped.</p>
 </def>
 </gitem>
 <gitem>
 <label>Root Temporal Extent</label>
 <def>
 <p>
-The temporal extent (interval) defined by the temporal beginning and ending of a TTML document instance in relationship with some external application or presentation context.
+The temporal extent (interval) defined by the temporal beginning and ending of a <emph>Document Instance</emph> in relationship with some external application or presentation context.
 </p>
 </def>
 </gitem>
 <gitem>
 <label>SMPTE Time Code</label>
 <def>
-<p>A time code whose format and semantics is established by <bibref ref="smpte12m"/>
+<p>A time code whose format and semantics are established by <bibref ref="smpte12m"/>,
 which may be embedded into or otherwise associated with media content, such
 as a broadcast audio/video stream.</p>
 </def>
@@ -690,7 +708,8 @@ as a broadcast audio/video stream.</p>
 <gitem>
 <label>Synthetic Document Syncbase</label>
 <def>
-<p>A document level syncbase synthesized or otherwise established by
+<p>A document level <xspecref href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/smil-timing.html#Timing-Syncbases">syncbase</xspecref>
+<bibref ref="smil21"/>, &sect; 10.7.1, synthesized or otherwise established by
 the <emph>Document Processing Context</emph> in accordance with the
 <emph>Related Media Object</emph> or other processing criteria.</p>
 </def>
@@ -736,6 +755,13 @@ specification does not otherwise define a target profile or format for transform
 no further transformation semantics are defined by this specification.</p>
 </def>
 </gitem>
+<gitem>
+<label>Valid Abstract Document Instance</label>
+<def>
+<p>An <emph>Abstract Document Instance</emph> which has been assessed for validity
+and found to be valid as defined by <specref ref="doctypes"/>.</p>
+</def>
+</gitem>
 </glist>
 </div2>
 <div2 id="conventions">
@@ -766,8 +792,22 @@ to behave as described; otherwise, they are in error. </p>
 </def>
 </gitem>
 </glist>
+
+<p>If normative specification language takes an imperative form,
+then it is to be treated as if the term <phrase role="strong">must</phrase>
+applies. Furthermore, if normative language takes a declarative form,
+and this language is governed by <phrase role="strong">must</phrase>,
+then it is also to be treated as if the term <phrase role="strong">must</phrase>
+applies.</p>
+<note role="example">
+<p>For example, the phrases "treat X as an error" and "consider X
+as an error" are to be read as mandatory requirements in the context of use. Similarly, if the specification
+prose is "X must apply", "X applies", or "X is mandatory", and "X" is further defined as "X is Y and Z",
+then, by transitive closure, this last declarative phrase is to be read as "Y is mandatory" and
+"Z is mandatory" in the context of use.</p>
+</note>
 <p>All normative syntactic definitions of XML representations and
-other related terms are depicted with a light orange background color
+other related terms are depicted with a light yellow-orange background color
 and labeled as "XML Representation" or "Syntax Representation", such
 as in the following:</p>
 <table id="elt-syntax-example" role="syntax">
@@ -831,16 +871,15 @@ the following:</p>
 <div1 id="conformance">
 <head>Conformance</head>
 <p>This section specifies the general conformance requirements for
-TTML content and processors.</p>
+TTML Content and processors.</p>
 <div2 id="conformance-content">
 <head>Content Conformance</head>
-<p>A TTML document instance conforms to this specification if the following criteria are
+<p>A TTML <emph>Document Instance</emph> conforms to this specification if the following criteria are
 satisfied:</p>
 <olist>
 <item>
-<p>When transporting a document instance in a context in which a
-Media Type <bibref ref="media-types"/> identifies the content type of the interchanged document
-instance, then the specified media type is
+<p>When transporting a <emph>Document Instance</emph> in a <emph>Document Interchange Context</emph> in which a
+Media Type <bibref ref="media-types"/> identifies the content type of the interchanged <emph>Document Instance</emph>, then the specified media type is
 <code>application/ttml+xml</code> in conformance with <bibref
 ref="rfc3023"/> &sect; 7, with which an optional
 <code>profile</code> parameter may appear, the value of which
@@ -850,23 +889,22 @@ defined by
 <specref ref="vocabulary-profiles"/>.</p>
 </item>
 <item>
-<p>The document instance is or can be represented as a Reduced XML
+<p>The <emph>Document Instance</emph> is or can be represented as a Reduced XML
 Infoset as defined by <specref ref="reduced-infoset"/>.</p>
 </item>
 <item>
 <p>The Reduced XML
-Infoset that corresponds to the document instance is or can
-be associated with one of the TTML Abstract
-Document Types defined by
+Infoset that corresponds to the <emph>Document Instance</emph> is or can
+be associated with one of the <emph>Abstract Document Types</emph> defined by
 <specref ref="doctypes"/>.</p>
 </item>
 <item>
-<p>The Reduced XML Infoset that corresponds to the document instance is a
-Valid Abstract Document Instance of the associated
-Abstract Document Type.</p>
+<p>The <emph>Reduced XML Infoset</emph> that corresponds to the <emph>Document Instance</emph> is a
+<emph>Valid Abstract Document Instance</emph> of the associated
+<emph>Abstract Document Type</emph>.</p>
 </item>
 <item>
-<p>The Reduced XML Infoset satisfies all additional mandatory syntactic and
+<p>The <emph>Reduced XML Infoset</emph> satisfies all additional mandatory syntactic and
 semantic constraints defined by this specification. In addition, this Infoset
 should satisfy the web content accessibility guidelines specified by
 <bibref ref="wcag"/>.</p>
@@ -877,31 +915,30 @@ should satisfy the web content accessibility guidelines specified by
 <head>Processor Conformance</head>
 <div3 id="conformance-generic-processor">
 <head>Generic Processor Conformance</head>
-<p>A TTML processor conforms to this specification if the following
+<p>A TTML <emph>Content Processor</emph> conforms to this specification if the following
 generic processor criteria are
 satisfied:</p>
 <olist>
 <item>
 <p>The processor provides at least one mechanism for notionally
 instantiating a Reduced XML
-Infoset representation of a conformant TTML document
-instance.</p>
+Infoset representation of a conformant <emph>Document Instance</emph>.</p>
 </item>
 <item>
-<p>If a process does or can perform validation of a candidate TTML
-document instance, then it provides at least one mechanism to
+<p>If a process does or can perform validation of a candidate 
+<emph>Document Instance</emph>, then it provides at least one mechanism to
 implicitly or explicitly associate the
-Reduced XML Infoset representation
-of a conformant TTML document instance with one of the
-TTML Abstract Document Types defined by
+<emph>Reduced XML Infoset</emph> representation
+of a conformant <emph>Document Instance</emph> with one of the
+<emph>Abstract Document Types</emph> defined by
 <specref ref="doctypes"/>.</p>
 </item>
 <item>
 <p>The processor does not <emph>a priori</emph> reject or abort the
-processing of a conformant TTML document instance
+processing of a conformant <emph>Document Instance</emph>
 unless the processor does not support some required
-(mandatory) feature specified or implied by a TTML content profile
-declared to apply to the document instance.</p>
+(mandatory) feature specified or implied by a TTML Content profile
+declared to apply to the <emph>Document Instance</emph>.</p>
 </item>
 <item>
 <p>The processor supports all mandatory processing semantics defined by this specification.</p>
@@ -927,7 +964,7 @@ optional semantics include support for all features marked as optional in <specr
 </div3>
 <div3 id="conformance-transformation-processor">
 <head>Transformation Processor Conformance</head>
-<p>A TTML processor is a conformant TTML transformation processor if
+<p>A TTML <emph>Content Processor</emph> is a conformant TTML <emph>Transformation Processor</emph> if
 the following criteria are satisfied:</p>
 <olist>
 <item>
@@ -942,6 +979,8 @@ by <specref ref="profile-dfxp-transformation"/>.</p>
 </div3>
 <div3 id="conformance-presentation-processor">
 <head>Presentation Processor Conformance</head>
+<p>A TTML <emph>Content Processor</emph> is a conformant TTML <emph>Presentation Processor</emph> if
+the following criteria are satisfied:</p>
 <olist>
 <item>
 <p>The processor satisfies all requirements specified by
@@ -956,17 +995,17 @@ by <specref ref="profile-dfxp-presentation"/>.</p>
 </div2>
 <div2 id="claims">
 <head>Claims</head>
-<p>Any claim of compliance with respect to TTML content or processor
-conformance must make
+<p>Any claim of compliance with respect to the conformance of a TTML <emph>Document Instance</emph> or
+<emph>Content Processor</emph> must make
 reference to an implementation compliance statement (ICS).</p>
 <p>An implementation compliance statement must identify all mandatory
 and optional features of this specification that are satisfied by the
-content or processor implementation. In particular, the statement must
+document instance or the content processor implementation. In particular, the statement must
 identify the utilized or supported TTML vocabulary profile(s) as
 defined by <specref ref="vocabulary-profiles"/>, and, if a subset or
 superset profile is used or supported, then what features are excluded
 or included in the subset or superset profile.</p>
-<p>A TTML document instance for which a compliance claim is made
+<p>A <emph>Document Instance</emph> for which a compliance claim is made
 must specify
 either (1)
 a <att>ttp:profile</att> attribute on its root
@@ -981,30 +1020,30 @@ a <el>ttp:profile</el> element as a child of the
 </div1>
 <div1 id="doctypes">
 <head>Document Types</head>
-<p>This section defines the following TTML Abstract Document Types:</p>
+<p>This section defines the following TTML <emph>Abstract Document Types</emph>:</p>
 <ulist>
-<item><p><specref ref="dfxp-content-doctype"/></p></item>
+<item><p><specref ref="ttml-content-doctype"/></p></item>
 </ulist>
-<p>Each abstract document type consists of the following constraints:</p>
+<p>Each <emph>Abstract Document Type</emph> consists of the following constraints:</p>
 <ulist>
 <item><p>a non-empty collection of element types, where each element type consists of a name,
 a (possibly empty) collection of attributes, and a content specification</p></item>
 <item><p>a non-empty collection of element types that may appear as the document element</p></item>
 </ulist>
-<p>An Abstract Document Instance may be assessed in terms of validity,
-and is considered to be a Valid Abstract Document Instance if it
+<p>An <emph>Abstract Document Instance</emph> may be assessed in terms of validity,
+and is considered to be a <emph>Valid Abstract Document Instance</emph> if it
 satisfies the following condition: if after</p>
 <olist>
 <item>
 <p>pruning all element information
 items whose names are not members of the collection of element types defined
-by the associated abstract document type, then</p>
+by the associated <emph>Abstract Document Type</emph>, then</p>
 </item>
 <item>
 <p>pruning character
 information item children from any remaining element in case that all
 character children of the element denote XML whitespace characters and the element's type
-is defined as empty in the associated Abstract Document Type, and then</p>
+is defined as empty in the associated <emph>Abstract Document Type</emph>, and then</p>
 </item>
 <item>
 <p>pruning all attribute
@@ -1014,62 +1053,60 @@ ref="namespace-vocab-table"/>,</p>
 </item>
 </olist>
 <p>then the document element is one of the document
-element types permitted by the associated abstract document type,
+element types permitted by the associated <emph>Abstract Document Type</emph>,
 the descendants of the document
 element satisfy their respective element type's content
 specifications, all required attributes are present, and the declared
 value of each attribute satisfies the type declared by the
-associated abstract document type.</p>
+associated <emph>Abstract Document Type</emph>.</p>
 <note>
 <p>While a conformant processor may not <emph>a priori</emph> reject a
-conformant document instance that adheres to a
-supported content profile, a given document instance may be
+conformant <emph>Document Instance</emph> that adheres to a
+supported content profile, a given <emph>Document Instance</emph> may be
 constrained by the author or authoring tool to satisfy a more
 restrictive definition of validity.</p>
 </note>
-<div2 id="dfxp-content-doctype">
-<head>DFXP Content</head>
-<p>DFXP Content is an abstract document type of a profile of the Timed Text Markup Language intended
+<div2 id="ttml-content-doctype">
+<head>TTML Content</head>
+<p>TTML Content is an <emph>Abstract Document Type</emph> of a profile of the Timed Text Markup Language intended
 to be used for interchange among distribution systems. This document type
 is defined in terms of the
 element and attribute vocabulary
 specified in <specref ref="vocabulary"/>.</p>
-<p>This specification defines two types of schemas that may be used to validate a subset of
-conformant DFXP Content document instances:</p>
+<p>This specification references two types of schemas that may be used to validate a superset/subset
+of conformant TTML Content <emph>Document Instances</emph>:</p>
 <ulist>
-<item><p><specref ref="dfxp-schema-rnc"/></p></item>
-<item><p><specref ref="dfxp-schema-xsd"/></p></item>
+<item><p><specref ref="ttml-schema-rnc"/></p></item>
+<item><p><specref ref="ttml-schema-xsd"/></p></item>
 </ulist>
-<p>The (root) document element of a DFXP Content document instance must be a
+<p>The (root) document element of a TTML Content <emph>Document Instance</emph> must be a
 <el>tt</el> element, as defined by <specref
 ref="document-structure-vocabulary-tt"/>.</p>
 <note role="clarification">
-<p>The schemas included in this specification do not validate all syntactic constraints
-defined by this specification. In particular, performing validation with one of the above
+<p>The schemas referenced by this specification do not validate all syntactic constraints
+defined by this specification, and, as such, represent a superset of conformant
+TTML Content. In particular, performing validation with one of the above
 referenced schemas may result in a <emph>false positive</emph> indication of validity.
-However, with one exception, their
-use will not produce a <emph>false negative</emph> indication of validity
-when used with a compliant validating
-processor.</p>
-<p>In exception to the above statement about false negatives,
-if the Relax NG schema included in this specification is used to validate a
-TTML Document containing elements in a foreign namespace and the <att>xml:id</att>
-attribute is used with any of those (foreign) elements,
-then an error will be reported even though such usage is permitted by this
-specification. In this case, the false negative arises due
-to a specific limitation in expressing wildcard patterns involving <code>xsd:ID</code>
-typed attributes in Relax NG schemas.
-Note that this specification defines the formal validity of a TTML Document to be
-based on an abstract document instance from which all foreign namespace elements and
-attributes have been removed. Therefore, the exceptional reporting of this false
-negative does not impact the formal assessment of TTML Document validity.</p>
+For example, both the RNC and XSD schemas specify
+that a <att>tts:fontFamily</att> attribute must
+satisfy the <code>xs:string</code> XSD data type; however, this data type is a superset
+of the values permitted to be used with the <att>tts:fontFamily</att> attribute.</p>
+<p>In addition, the RNC schema may produce a <emph>false negative</emph>
+indication of validity when using the <att>xml:id</att> attribute with an element in
+a foreign namespace, thus representing a subset of conformant TTML Content. This is
+due to a specific limitation in expressing wildcard patterns involving <code>xsd:ID</code>
+typed attributes in Relax NG schemas. Note that this specification defines the
+formal validity of a <emph>Document Instance</emph> to be based on an <emph>Abstract Document Instance</emph> from
+which all foreign namespace elements and attributes have been removed. Therefore, the
+exceptional reporting of this false negative does not impact the formal assessment
+of <emph>Document Instance</emph> validity.</p>
 </note>
 </div2>
 </div1>
 <div1 id="vocabulary">
 <head>Vocabulary</head>
 <p>This section defines the
-namespaces, profiles, and vocabulary (as an element an attribute
+namespaces, profiles, and vocabulary (as an element and attribute
 catalog) of the Timed Text Markup Language (TTML) as follows:</p>
 <ulist>
 <item><p><specref ref="vocabulary-namespaces"/></p></item>
@@ -1079,14 +1116,14 @@ catalog) of the Timed Text Markup Language (TTML) as follows:</p>
 <div2 id="vocabulary-namespaces">
 <head>Namespaces</head>
 <p>The Timed Text Markup Language (TTML) employs a number of
-namespaces for elements and certain
+XML Namespaces <bibref ref="xmlns10"/> for elements and certain
 global attributes. The following table specifies this set of namespaces
 and indicates the default prefix used within this specification and the
 normative URI that denotes each namespace.</p>
 <note role="explanation">
-<p>In a specific document instance, it is not required that the default
+<p>In a specific <emph>Document Instance</emph>, it is not required that the default
 prefixes shown below are used. Any prefix or namespace binding that satisfies the constraints
-of XML Namespaces may be used that is associated with the specified namespace URI.</p>
+of XML Namespaces <bibref ref="xmlns10"/>  may be used that is associated with the specified namespace URI.</p>
 </note>
 <table id="namespace-vocab-table" role="common">
 <caption>Table 1 &ndash; Namespaces</caption>
@@ -1201,10 +1238,9 @@ would be
 </note>
 <p>A profile designator is not restricted to the set of designators enumerated
 in <specref ref="profile-vocab-table"/>, but may be any URI that
-feasibly dereferences a TTML Profile Definition Document.</p>
+feasibly dereferences a TTML <emph>Profile Definition Document</emph>.</p>
 <p>The profile of TTML that must be supported by a
-TTML content processor in order to process a document
-instance is specified either (1) by specifying a
+TTML <emph>Content Processor</emph> in order to process a <emph>Document Instance</emph> is determined either (1) by specifying a
 <att>ttp:profile</att> attribute on the root <el>tt</el> element, as
 defined by <specref ref="parameter-attribute-profile"/>, or (2) by
 including one or more <el>ttp:profile</el>
@@ -1215,11 +1251,11 @@ descendant of the <el>tt</el> element, then the <loc
 href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
 attribute should not be specified on the <el>tt</el> element. If both
 a <el>ttp:profile</el> element and a <att>ttp:profile</att>
-attribute are present (in a given document instance), then the
+attribute are present (in a given <emph>Document Instance</emph>), then the
 <att>ttp:profile</att> attribute must be ignored for the purpose of
 determining the declared profile requirements.</p>
 <p>If more than one <el>ttp:profile</el> element appears in
-a TTML document instance, then all specified profiles apply
+a <emph>Document Instance</emph>, then all specified profiles apply
 simultaneously.  In such a case, if some feature or some extension is
 specified by one profile to be used (mandatory and enabled) and by
 another profile to be required (mandatory) or optional (voluntary),
@@ -1232,13 +1268,13 @@ extension must be considered to be required (mandatory).</p>
 <loc href="#parameter-attribute-profile"><att>ttp:profile</att></loc>
 attribute nor
 <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc>
-element is present in a TTML document instance, and if the Document
-Interchange Context does not make an implicit or explicit
-reference to a pre-defined Content Profile or does not specify a Profile Definition
-Document or another equivalent set of feature designations,
+element is present in a <emph>Document Instance</emph>, and if the <emph>Document
+Interchange Context</emph> does not make an implicit or explicit
+reference to a pre-defined Content Profile or does not specify a <emph>Profile Definition
+Document</emph> or another equivalent set of feature designations,
 then the DFXP Transformation profile applies.</p>
 <note role="elaboration">
-<p>It is not a requirement on a conformant document instance that a <emph>Content Profile</emph> be internally
+<p>It is not a requirement on a conformant <emph>Document Instance</emph> that a <emph>Content Profile</emph> be internally
 defined by use of a <el>ttp:profile</el> element or internally referenced by a
 <att>ttp:profile</att> attribute. More specifically, it is permitted that the <emph>Document
 Interchange Context</emph> determines the applicable <emph>Content Profile</emph> through private
@@ -1248,15 +1284,15 @@ by an external specification.</p>
 <note role="elaboration">
 <p>It is intended that the <att>ttp:profile</att> attribute be used when
 the author wishes to reference one of the standard, predefined profiles of
-TTML content, and does not wish to modify (by supersetting or subsetting)
+TTML Content, and does not wish to modify (by supersetting or subsetting)
 that profile. This attribute may also be used by an author to indicate the use
 of a non-standard profile, in which case the specified profile designator expresses
-a URI that denotes an externally defined TTML Profile Definition Document.
-However, it is not required that a conformant TTML content processor be able
+a URI that denotes an externally defined <emph>Profile Definition Document</emph>.
+However, it is not required that a conformant TTML Content processor be able
 to dereference such an externally specified profile definition.</p>
 <p>In contrast, it is intended that the <el>ttp:profile</el> element be
 used when the author wishes to make use of a modified predefined profile or
-wishes to include in the document instance a non-standard profile definition
+wishes to include in the <emph>Document Instance</emph> a non-standard profile definition
 not based upon one of the predefined profiles.</p>
 <p>A predefined profile is supersetted by specifying some feature or extension to
 be required (mandatory) that was either not specified in the underlying, baseline
@@ -1270,13 +1306,13 @@ is referred to as an <emph>additive</emph> profile.
 It is also possible to define a derived profile that is simultaneously subtractive
 and additive.</p>
 </note>
-<p>If a TTML document instance makes use of a feature defined by
+<p>If a <emph>Document Instance</emph> makes use of a feature defined by
 <specref ref="feature-designations"/> and if the intended use of the
 document requires the recognition and processing of that feature, then
 the document must include a <emph>required feature</emph> or
 a <emph>used feature</emph>
 specification in one of its declared or
-referenced profiles.  If a TTML document instance makes use
+referenced profiles.  If a <emph>Document Instance</emph> makes use
 of an extension designatable by <specref
 ref="extension-designations"/> and if the intended use of the document
 requires the recognition and processing of that extension, then the
@@ -1302,8 +1338,8 @@ respectively.</p>
 <p>An example of an author defined
 additive, derived profile of the DFXP Presentation
 profile is shown
-below in <specref ref="dfxp-example-sub-profile"/>.</p>
-<table id="dfxp-example-sub-profile" role="example">
+below in <specref ref="ttml-example-sub-profile"/>.</p>
+<table id="ttml-example-sub-profile" role="example">
 <caption>Example Fragment &ndash; DFXP Additive Profile</caption>
 <tbody>
 <tr>
@@ -1341,7 +1377,7 @@ defined in the following major catalogs (divisions of vocabulary):</p>
 <item><p><specref ref="extension-vocabulary-overview"/></p></item>
 </ulist>
 <p>The core catalog defines the baseline, core vocabulary of TTML,
-and, in particular, the vocabulary of DFXP Content. The extension catalog
+and, in particular, the vocabulary of TTML Content. The extension catalog
 serves as a placeholder for extensions to the core vocabulary defined
 by TTML.</p>
 <div3 id="core-vocabulary-overview">
@@ -1359,8 +1395,7 @@ in the following sections:</p>
 <item><p><specref ref="animation"/></p></item>
 <item><p><specref ref="metadata"/></p></item>
 </ulist>
-<p>The core element vocabulary specified for use with a TTML document
-instance is enumerated in
+<p>The core element vocabulary specified for use with a <emph>Document Instance</emph> is enumerated in
 <specref ref="element-vocab-table"/>.</p>
 <table id="element-vocab-table" role="common">
 <caption>Table 3 &ndash; Element Vocabulary</caption>
@@ -1643,11 +1678,11 @@ that used a different naming convention.</p>
 <p>The extension vocabulary catalog is intended for use by future
 profiles of TTML, and is not further defined
 by this version of this specification.</p>
-<p>In addition to standardized extension vocabulary, a conforming TTML
-document instance may contain arbitrary namespace qualified
+<p>In addition to standardized extension vocabulary, a conforming 
+<emph>Document Instance</emph> may contain arbitrary namespace qualified
 elements that reside in any namespace other than those namespaces
-defined for use with this specification. Furthermore, a conforming TTML
-document instance may contain arbitrary namespace qualified
+defined for use with this specification. Furthermore, a conforming 
+<emph>Document Instance</emph> may contain arbitrary namespace qualified
 attributes on TTML defined vocabulary where such attributes reside in
 any namespace other than those defined for use with this
 specification.</p>
@@ -1661,13 +1696,13 @@ core vocabulary catalog, where
 parameters are to be understood as information that is either (1)
 essential or (2) of significant importance for the purpose of
 interpreting the semantics of other types of information expressed by
-core vocabulary items or for establishing a processing context by means
-of which TTML content can be related to an external environment.</p>
+core vocabulary items or for establishing a <emph>Document Processing Context</emph> by means
+of which TTML Content can be related to an external environment.</p>
 <div2 id="parameter-element-vocabulary">
 <head>Parameter Element Vocabulary</head>
 <p>The following elements, all defined in the TT Parameter
-Namespace, specify parametric information that applies to a document
-or a content processor:</p>
+Namespace, specify parametric information that applies to a <emph>Document Instance</emph>
+or <emph>Content Processor</emph>:</p>
 <ulist>
 <item><p><specref ref="parameter-vocabulary-profile"/></p></item>
 <item><p><specref ref="parameter-vocabulary-features"/></p></item>
@@ -1680,8 +1715,8 @@ or a content processor:</p>
 <p>The <el>ttp:profile</el> element is used to specify a collection of
 used (mandatory and enabled), required (mandatory),
 and optional (voluntary) features and extensions that must or
-may be supported by a TTML content processor in order to process a TTML
-document that makes use (or may make use) of such features and
+may be supported by a <emph>Content Processor</emph> in order to process a
+<emph>Document Instance</emph> that makes (or may make) use of such features and
 extensions.</p>
 <note role="clarification">
 <p>The difference between a <emph>feature</emph> and an
@@ -1697,24 +1732,23 @@ third parties.</p>
 <p>This specification defines two distinct uses of the <el>ttp:profile</el> element:</p>
 <ulist>
 <item>
-<p>as a child of the <el>head</el> element within a TTML document
-instance;</p>
+<p>as a child of the <el>head</el> element within a TTML <emph>Document Instance</emph>;</p>
 </item>
 <item>
-<p>as the root element of a TTML Profile Definition document
+<p>as the root element of a TTML <emph>Profile Definition Document</emph>
 instance;</p>
 </item>
 </ulist>
-<p>When a <el>tt:profile</el> element appears within a TTML document
-instance, its purpose is to express authorial intentions about which
+<p>When a <el>tt:profile</el> element appears within a TTML <emph>Document Instance</emph>,
+its purpose is to express authorial intentions about which
 features and extensions must or may be supported by a recipient
 content processor. In addition, the element indirectly expresses
 information about the set of features or extensions that are (or may
-expected to be) used by the document instance.</p>
-<p>When a <el>tt:profile</el> element is used by a TTML
-Profile Definition document instance, it serves to publish a machine
-readable specification of a specific TTML content profile, of which
-this specification defines three such Profile Definition Documents in
+expected to be) used by the <emph>Document Instance</emph>.</p>
+<p>When a <el>tt:profile</el> element is used by a TTML <emph>Profile Definition Document</emph> instance,
+it serves to publish a machine
+readable specification of a specific TTML Content profile, of which
+this specification defines three such <emph>Profile Definition Documents</emph> in
 <specref ref="profiles"/>.</p>
 <p>The <el>ttp:profile</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
@@ -1742,9 +1776,9 @@ zero or more <el>ttp:extensions</el> elements.</p>
 &sect;3.2.17, and, furthermore, must denote a profile designator in
 accordance with <specref ref="vocabulary-profiles"/>. In this case,
 the profile designator must refer to (1) a standard, predefined
-TTML Profile Definition Document as defined by <specref ref="profiles"/>,
-or (2) a dereferenceable resource representing a valid TTML Profile Definition
-document instance. In either case, the referenced profile serves as the
+<emph>Profile Definition Document</emph> as defined by <specref ref="profiles"/>,
+or (2) a feasibly dereferenceable resource representing a valid <emph>Profile Definition
+Document</emph> instance. In either case, the referenced profile serves as the
 baseline profile of the specifying <el>ttp:profile</el> element.</p>
 <p>If the <att>use</att> attribute is not specified, then the baseline
 profile of the <el>ttp:profile</el> element must be considered to be
@@ -1773,18 +1807,18 @@ if it does not yet exist in the profile;</p>
 </item>
 </olist>
 <p>A conformant TTML processor is not required to be able to
-dereference a TTML Profile Definition Document that is not one of the
-standard, predefined profiles defined by <specref ref="profiles"/>.  A
-conformant TTML processor may make use of a built-in, static
+dereference a <emph>Profile Definition Document</emph> that is not one of the
+standard, predefined profiles defined by <specref ref="profiles"/>.  Furthermore,
+a conformant TTML processor may make use of a built-in, static
 form of each standard, predefined profile so as not to require
 dereferencing a network resource.</p>
-<p>If a TTML processor is unable to dereference a non-standard TTML
-Profile Definition Document, then it must not further process the
+<p>If a TTML processor is unable to dereference a non-standard
+<emph>Profile Definition Document</emph>, then it must not further process the
 document without the presence of an explicit override from an end-user
 or some implementation specific parameter traceable to an end-user or
 to a user or system configuration setting. If a TTML processor aborts
-processing of a TTML document instance due to the inability to
-reference a non-standard TTML Profile Definition Document, then some
+processing of a <emph>Document Instance</emph> due to the inability to
+reference a non-standard <emph>Profile Definition Document</emph>, then some
 end-user notification should be given unless the end-user or system
 has disabled such a notification, or if the processor does not permit
 or entail the intervention of an end-user.</p>
@@ -1907,13 +1941,15 @@ specified on a <el>ttp:feature</el> element, it is equivalent to
 specifying that support for the feature is required.</p>
 </note>
 <p>If the value of the <att>value</att> attribute is
-<code>required</code> or <code>use</code>,
-and if the TTML processor implementation does
-not support the feature, then it must not further process the document
+<code>required</code> or <code>use</code>
+and the TTML processor implementation does
+not support the feature, or if the <att>value</att> attribute is
+<code>use</code> and the TTML processor implementation supports but has disabled
+that feature, then it must not further process the document
 without the presence of an explicit override from an end-user or some
 implementation specific parameter traceable to an end-user or to a
 user or system configuration setting.  If a TTML processor aborts
-processing of a TTML document instance due to the specification of a
+processing of a <emph>Document Instance</emph> due to the specification of a
 required, but unsupported feature by this element, then some end-user
 notification should be given unless the end-user or system has
 disabled such a notification, or if the processor does not permit or
@@ -1935,7 +1971,7 @@ a <el>ttp:feature</el> element in a given profile, then it must be interpreted a
 with the <att>value</att> attribute equal to <code>optional</code>.</p>
 <note role="elaboration">
 <p>In particular, if some feature is not present in a profile definition, then
-it is not to be interpreted as meaning the use of that feature (in a document instance)
+it is not to be interpreted as meaning the use of that feature (in a <emph>Document Instance</emph>)
 is disallowed or otherwise prohibited.</p>
 </note>
 <p>The <el>ttp:feature</el> element is illustrated by the following example.</p>
@@ -2068,14 +2104,17 @@ item definition. Therefore, if a <att>value</att> attribute is not
 specified on a <el>ttp:extension</el> element, it is equivalent to
 specifying that support for the extension is required.</p>
 </note>
+
 <p>If the value of the <att>value</att> attribute is
-<code>required</code> or <code>use</code>,
-and if the TTML processor implementation does not support the
-extension, then it must not further process the document without the
+<code>required</code> or <code>use</code>
+and the TTML processor implementation does
+not support the extension, or if the <att>value</att> attribute is
+<code>use</code> and the TTML processor implementation supports but has disabled
+that extension, then it must not further process the document without the
 presence of an explicit override from an end-user or some
 implementation specific parameter traceable to an end-user or to a
 user or system configuration setting.  If a TTML processor aborts
-processing of a TTML document instance due to the specification of a
+processing of a <emph>Document Instance</emph> due to the specification of a
 required, but unsupported extension by this element, then some
 end-user notification should be given unless the end-user or system
 has disabled such a notification, or if the processor does not permit
@@ -2092,6 +2131,14 @@ presence or reference to an optional extension by a document must not be
 considered to be a violation of document validity or a barrier to
 further processing if the syntactic expression is well-formed and
 valid.</p>
+<p>If some well known extension is not specified by
+a <el>ttp:extension</el> element in a given profile, then it must be interpreted as if the extension were specified
+with the <att>value</att> attribute equal to <code>optional</code>.</p>
+<note role="elaboration">
+<p>In particular, if some extension is not present in a profile definition, then
+it is not to be interpreted as meaning the use of that extension (in a <emph>Document Instance</emph>)
+is disallowed or otherwise prohibited.</p>
+</note>
 <p>The <el>ttp:extension</el> element is illustrated by the following example.</p>
 <table id="parameter-vocabulary-extension-example-1" role="example">
 <caption>Example Fragment &ndash; ttp:extension</caption>
@@ -2100,7 +2147,7 @@ valid.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/dfxp-transformation"&gt;
-  &lt;ttp:extensions xml:base="http://foo.bar.example.org/ttaf1/extension/"&gt;
+  &lt;ttp:extensions xml:base="http://example.org/ttaf1/extension/"&gt;
     <phrase role="strong">&lt;ttp:extension value="use"&gt;#prefilter-by-language&lt;/ttp:extension&gt;</phrase>
   &lt;/ttp:extensions&gt;
 &lt;/ttp:profile&gt;
@@ -2116,7 +2163,7 @@ specifying that support and use is required for a private extension
 defined in a third party namespace.</p>
 <p>The effect of this example is to express authorial intentions that
 a recipient processor must support the DFXP transformation profile and
-must also support and use an extension defined by a third party.</p>
+must also support and enable an extension defined by a third party.</p>
 </note>
 </div3>
 </div2>
@@ -2136,8 +2183,9 @@ must also support and use an extension defined by a third party.</p>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
 <item><p><specref ref="parameter-attribute-timeBase"/></p></item>
 </ulist>
-<p>Unless explicitly stated otherwise, linear white-space (LWSP) may
-appear between tokens of a value of a TT Parameter.</p>
+<p>Unless explicitly stated otherwise, linear white-space (LWSP) must
+appear between adjacent non-terminal components of a TT Parameter value
+unless some other delimiter is permitted and used.</p>
 <div3 id="parameter-attribute-cellResolution">
 <head>ttp:cellResolution</head>
 <p>The <att>ttp:cellResolution</att> attribute may be used by an author
@@ -2197,7 +2245,7 @@ operating with time base of <code>clock</code> as defined by <specref
 ref="parameter-attribute-timeBase"/>.</p>
 <note role="explanation">
 <p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax.</p>
+specification of time expression syntax and semantics.</p>
 </note>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-clockMode-syntax" role="syntax">
@@ -2325,7 +2373,7 @@ when specified on the <el>tt</el> element.</p>
 <div3 id="parameter-attribute-frameRate">
 <head>ttp:frameRate</head>
 <p>The <att>ttp:frameRate</att> attribute is used to specify the frame rate of a related
-media object or the intrinsic frame rate of a document instance in case it is intended
+media object or the intrinsic frame rate of a <emph>Document Instance</emph> in case it is intended
 to function as an independent media object.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-frameRate-syntax" role="syntax">
@@ -2341,14 +2389,19 @@ ttp:frameRate
 </tr>
 </tbody>
 </table>
-<p>The frame rate that applies to a document instance is used to
+<p>The frame rate that applies to a <emph>Document Instance</emph> is used to
 interpret time expressions that are expressed in <emph>frames</emph>
 as defined by <specref ref="timing-value-timeExpression"/>.</p>
-<p>A frame is interpreted as a division of a second of media
+<p>If the <code>media</code> time base applies and the effective frame rate is
+integral, then a frame is interpreted as a division of a second of media
 time, such that if the frame rate is specified as <emph>F</emph>, then
 a second of media time is divided into <emph>F</emph> intervals of
 equal duration, where each interval is labeled as frame <emph>f</emph>,
 with <emph>f</emph> &isin; [0&hellip;<emph>F&minus;1</emph>].</p>
+<note role="elaboration">
+<p>See <specref ref="time-expression-semantics-media"/> for further details
+on the interpretation of time expressions for the <code>media</code> time base.</p>
+</note>
 <p>If not specified, the frame rate must be considered to be equal to some
 application defined frame rate, or if no application defined frame rate applies,
 then thirty (30) frames per second. If specified, then the frame rate must
@@ -2544,7 +2597,7 @@ ratios while still maintaining authorial layout intentions.</p>
 <head>ttp:profile</head>
 <p>The <att>ttp:profile</att> attribute may be used by a content author
 to express the profile of the Timed Text Markup Language (TTML) used
-in a document instance.</p>
+in a <emph>Document Instance</emph>.</p>
 <p>If specified, the value of this attribute must adhere to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
 &sect;3.2.17, and, further, must specify a
@@ -2557,7 +2610,7 @@ attribute is considered to be significant only when specified on the
 <div3 id="parameter-attribute-subFrameRate">
 <head>ttp:subFrameRate</head>
 <p>The <att>ttp:subFrameRate</att> attribute is used to specify the sub-frame rate of a related
-media object or the intrinsic sub-frame rate of a document instance in case it is intended
+media object or the intrinsic sub-frame rate of a <emph>Document Instance</emph> in case it is intended
 to function as an independent media object.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-subFrameRate-syntax" role="syntax">
@@ -2573,14 +2626,19 @@ ttp:subFrameRate
 </tr>
 </tbody>
 </table>
-<p>The sub-frame rate that applies to a document instance is used to
+<p>The sub-frame rate that applies to a <emph>Document Instance</emph> is used to
 interpret time expressions that are expressed in <emph>sub-frames</emph>
 as defined by <specref ref="timing-value-timeExpression"/>.</p>
-<p>A sub-frame is interpreted as a division of a frame of media
+<p>If the <code>media</code> time base applies and the effective frame rate is
+integral, a sub-frame is interpreted as a division of a frame of media
 time, such that if the sub-frame rate is specified as <emph>S</emph>, then
 a frame of media time is divided into <emph>S</emph> intervals of
 equal duration, where each interval is labeled as sub-frame <emph>s</emph>,
 with <emph>s</emph> &isin; [0&hellip;<emph>S&minus;1</emph>].</p>
+<note role="elaboration">
+<p>See <specref ref="time-expression-semantics-media"/> for further details
+on the interpretation of time expressions for the <code>media</code> time base.</p>
+</note>
 <p>If not specified, the sub-frame rate must be considered to be
 equal to one (1). If specified, then the sub-frame rate must be greater than zero (0).</p>
 <p>A <att>ttp:subFrameRate</att> attribute is considered to be significant only
@@ -2593,7 +2651,7 @@ the context of synchronization with an interlaced video media object.</p>
 <div3 id="parameter-attribute-tickRate">
 <head>ttp:tickRate</head>
 <p>The <att>ttp:tickRate</att> attribute is used to specify the tick rate of a related
-media object or the intrinsic tick rate of content of a document instance in case it is intended
+media object or the intrinsic tick rate of content of a <emph>Document Instance</emph> in case it is intended
 to function as an independent media object.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-tickRate-syntax" role="syntax">
@@ -2609,15 +2667,20 @@ ttp:tickRate
 </tr>
 </tbody>
 </table>
-<p>The tick rate that applies to a document instance is used to
+<p>The tick rate that applies to a <emph>Document Instance</emph> is used to
 interpret time expressions that are expressed in <emph>ticks</emph> by
 using the <code>t</code> metric as defined by <specref
 ref="timing-value-timeExpression"/>.</p>
-<p>A tick is interpreted as an integral division of a second of media
+<p>If the <code>media</code> time base applies,
+a tick is interpreted as an integral division of a second of media
 time, such that if the tick rate is specified as <emph>T</emph>, then
 a second of media time is divided into <emph>T</emph> intervals of
 equal duration, where each interval is labeled as tick <emph>t</emph>,
 with <emph>t</emph> &isin; [0&hellip;<emph>T&minus;1</emph>].</p>
+<note role="elaboration">
+<p>See <specref ref="time-expression-semantics-media"/> for further details
+on the interpretation of time expressions for the <code>media</code> time base.</p>
+</note>
 <p>If not specified, then if a frame rate is specified, the tick rate
 must be considered to be the effective frame rate multiplied by the
 sub-frame rate (i.e., ticks are interpreted as sub-frames); or, if no
@@ -2637,7 +2700,7 @@ when specified on the <el>tt</el> element.</p>
 <head>ttp:timeBase</head>
 <p>The <att>ttp:timeBase</att> attribute is used to specify the
 temporal coordinate system by means of which time expressions are
-interpreted in a document instance.</p>
+interpreted in a <emph>Document Instance</emph>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-timeBase-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:timeBase</caption>
@@ -2657,13 +2720,14 @@ ttp:timeBase
 <p>If the time base is designated as <code>media</code>, then a time
 expression denotes a coordinate in some media object's time line,
 where the media object may be an external media object with which the
-content of a document instance is to be synchronized, or it may
-be the content of a document instance itself in a case where
+content of a <emph>Document Instance</emph> is to be synchronized, or it may
+be the content of a <emph>Document Instance</emph> itself in a case where
 the timed text content is intended to establish an independent time
 line.</p>
 <note role="explanation">
 <p>When using a media time base, if that time base is paused or
-scaled positively or negatively, then it is expected that the
+scaled positively or negatively, i.e., the media play rate is
+not unity, then it is expected that the
 presentation of associated Timed Text content will be similarly
 paused, accelerated, or decelerated, respectively. The means for
 controlling an external
@@ -2671,7 +2735,7 @@ media time base is outside the scope of this specification.</p>
 </note>
 <p>If the time base is designated as <code>smpte</code>,
 then a time expression denotes a <bibref ref="smpte12m"/> time
-coordinate with which the content of a document instance is to
+coordinate with which the content of a <emph>Document Instance</emph> is to
 be synchronized.  In this case, the value of the <att>ttp:markerMode</att> 
 and <att>ttp:dropMode</att> parameters apply, as defined by <specref
 ref="parameter-attribute-markerMode"/> and <specref
@@ -2693,7 +2757,7 @@ time lines.</p>
 <p>A <att>ttp:timeBase</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <p>When operating with either <code>media</code> or <code>smpte</code>
-time bases, a diachronic presentation of a document instance may
+time bases, a diachronic presentation of a <emph>Document Instance</emph> may
 be subject to transformations of the controlling time line, such as
 temporal reversal, dilation (expansion), or constriction
 (compression); however, when operating with the <code>clock</code>
@@ -2702,13 +2766,19 @@ presentation proceeds on a linear, monotonically increasing time line
 based on the passage of real time.</p>
 <note role="example">
 <p>Due to there being only one time base parameter that applies to a
-given document instance, the interpretation of time expressions
-is uniform throughout the document instance.</p>
+given <emph>Document Instance</emph>, the interpretation of time expressions
+is uniform throughout the <emph>Document Instance</emph>.</p>
 </note>
+<!-- [GA] Remove for TTML10SE - Misleading - Now expressed in Appendix N
 <p>When operating with the <code>clock</code> time base,
 the expression <emph>media time</emph> as used in this specification is
 to be interpreted as the real-time clock selected by
 <specref ref="parameter-attribute-clockMode"/>.</p>
+-->
+<note role="elaboration">
+<p>See <specref ref="time-expression-semantics"/> for further details
+on the interpretation of time expressions according to the designated time base.</p>
+</note>
 </div3>
 </div2>
 </div1>
@@ -2719,7 +2789,7 @@ vocabulary catalog.</p>
 <div2 id="content-element-vocabulary">
 <head>Content Element Vocabulary</head>
 <p>The following elements specify the structure and principal content aspects of a
-document instance:</p>
+<emph>Document Instance</emph>:</p>
 <ulist>
 <item><p><specref ref="document-structure-vocabulary-tt"/></p></item>
 <item><p><specref ref="document-structure-vocabulary-head"/></p></item>
@@ -2731,8 +2801,7 @@ document instance:</p>
 </ulist>
 <div3 id="document-structure-vocabulary-tt">
 <head>tt</head>
-<p>The <el>tt</el> element serves as the root document element of a document
-instance.</p>
+<p>The <el>tt</el> element serves as the root document element of a <emph>Document Instance</emph>.</p>
 <p>The <el>tt</el> element accepts as its children zero or one <el>head</el> element followed by
 zero or one <el>body</el> element.</p>
 <table id="elt-syntax-tt" role="syntax">
@@ -2755,25 +2824,30 @@ zero or one <el>body</el> element.</p>
 </tr>
 </tbody>
 </table>
-<p>The <emph>Root Temporal Extent</emph>, i.e., the time interval over which a document instance is active, has an implicit duration that is equal to the
-implicit duration of the <el>body</el> element of the document, if present, or zero, if not present.</p>
+<p>The <emph>Root Temporal Extent</emph>, i.e., the time interval over which a <emph>Document Instance</emph> is active, has an implicit duration that is equal to the
+implicit duration of the <el>body</el> element of the document, if the <el>body</el> element is present, or zero, if the <el>body</el> element is absent.</p>
 <p>If the <att>tts:extent</att> attribute is specified on the <el>tt</el>
 element, then it must adhere to <specref ref="style-attribute-extent"/>, in which case it
-specifies the spatial extent of the root container region in
+specifies the spatial extent of the <emph>Root Container Region</emph> in
 which content regions are located and presented. If no <att>tts:extent</att>
-attribute is specified, then the spatial extent of the root container region is
-considered to be determined by the external authoring or presentation
-context. The root container origin is determined by the <emph>Document Processing Context</emph>.</p>
-<note>
-<p>If an author desires to signal the (storage or image) aspect ratio of the root container
-region without specifying its resolution, then this may be accomplished by using metadata specified
+attribute is specified, then the spatial extent of the <emph>Root Container Region</emph> is
+considered to be determined by the <emph>Document Processing Context</emph>.
+The origin of the <emph>Root Container Region</emph> is determined by the <emph>Document Processing Context</emph>.</p>
+<note role="elaboration">
+<p>If an author desires to signal the (storage or image) aspect ratio of the <emph>Root Container Region</emph>
+without specifying its resolution, then this may be accomplished by using metadata specified
 in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bibref ref="smpte2052"/>, &sect;5.4.4.
 This would permit, for example, the interchange of information that reflects the
 the semantics of <bibref ref="cea708d"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
 </note>
+<note role="clarification">
+<p>In the absence of other requirements, and if a <emph>Related Media Object</emph> exists, then it is recommended
+that the origin of the <emph>Root Container Region</emph> be established so that it is centered in the region within
+which the <emph>Related Media Object</emph> is presented.</p>
+</note>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
-to the text contained within the document instance.</p>
+to the text contained within the <emph>Document Instance</emph>.</p>
 <p>If no <att>xml:space</att> attribute is specified upon the <el>tt</el> element, then it must
 be considered as if the attribute had been specified with a value of <code>default</code>.</p>
 </div3>
@@ -2789,10 +2863,10 @@ followed by zero or more elements in the
 followed by zero or one <el>styling</el> element,
 followed by zero or one <el>layout</el> element.</p>
 <p>Any metadata specified by children in the <code>Metadata.class</code>
-element group applies semantically to the document instance as a
+element group applies semantically to the <emph>Document Instance</emph> as a
 whole, and not just the <el>head</el> element.</p>
 <p>Any parameters specified by children in the <code>Parameters.class</code>
-element group applies semantically to the document instance as a
+element group applies semantically to the <emph>Document Instance</emph> as a
 whole, and not just the <el>head</el> element.</p>
 <p>A <el>styling</el> child element is used to specify style constructs
 that are referenced from other style constructs, by layout constructs, and by
@@ -2868,7 +2942,7 @@ of this interval remains unspecified, then the begin point is interpreted as the
 point of the <emph>Root Temporal Extent</emph>. Similarly, if the end point of this interval remains unspecified, then the
 end point is interpreted as the ending point of the <emph>Root Temporal Extent</emph>.</p>
 <note role="explanation">
-<p>A TTML document instance referenced from a SMIL presentation
+<p>A <emph>Document Instance</emph> referenced from a SMIL presentation
 is expected to follow the same timing rules as apply to other SMIL media
 objects.</p>
 </note>
@@ -2883,7 +2957,7 @@ truncated to the active end point of the <emph>Root Temporal Extent</emph>.</p>
 attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
 <p>Style properties that are associated with a <el>body</el> element
-in a document instance are available for style inheritance by
+in a <emph>Document Instance</emph> are available for style inheritance by
 descendant content elements such as <el>div</el>, <el>p</el>,
 <el>span</el>
 and <el>br</el>.</p>
@@ -2958,7 +3032,7 @@ the <att>style</att> attribute or inline style attributes or a combination there
 <note role="explanation">
 <p>Style properties that are associated
 with
-a <el>div</el> element in a document instance
+a <el>div</el> element in a <emph>Document Instance</emph>
 are available for style inheritance by descendant content elements such as
 <el>div</el>, 
 <el>p</el>,
@@ -2978,10 +3052,10 @@ elements in the <code>Metadata.class</code> element group,
 followed by zero or more
 elements in the <code>Animation.class</code> element group,
 followed by
-zero or more
-<code>span</code> element,
-<code>br</code> element,
-or text nodes interpreted as anonymous spans.</p>
+zero or more intermixed
+<code>span</code> elements,
+<code>br</code> elements,
+or text nodes interpreted as an anonymous spans.</p>
 <p>Any metadata specified by children in the <code>Metadata.class</code>
 element group applies semantically to the <el>p</el> element and its descendants as a whole.</p>
 <p>Any animation elements specified by children in the <code>Animation.class</code>
@@ -3020,7 +3094,7 @@ element group apply semantically to the <el>p</el> element.</p>
 attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
 <p>Style properties that are associated with a <el>p</el> element
-in a document instance are available for style inheritance by
+in a <emph>Document Instance</emph> are available for style inheritance by
 descendant content elements such as <el>span</el> and
 <el>br</el>.</p>
 </note>
@@ -3050,7 +3124,7 @@ elements in the <code>Metadata.class</code> element group,
 followed by zero or more
 elements in the <code>Animation.class</code> element group,
 followed by
-zero or more
+zero or more intermixed
 <el>span</el> elements,
 <el>br</el> elements,
 or text nodes interpreted as anonymous spans.</p>
@@ -3092,7 +3166,7 @@ element group apply semantically to the <el>span</el> element.</p>
 attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
 <p>Style properties that are associated with a <el>span</el> element
-in a document instance are available for style inheritance by
+in a <emph>Document Instance</emph> are available for style inheritance by
 descendant content elements such as <el>span</el> and
 <el>br</el>.</p>
 </note>
@@ -3130,7 +3204,7 @@ interpreted as a forced line break.</p>
 <p>The visual presentation of a <el>br</el> element is
 intended to produce the same effect as the control character
 <code>CR</code> (U+000D)
-followed by the control code <code>NL</code> (U+000A) when presented on a teletype device.
+followed by the control code <code>LF</code> (U+000A) when presented on a teletype device.
 Therefore, two <el>br</el> elements in sequence will produce a
 different effect than a single <el>br</el> element.</p>
 </note>
@@ -3184,7 +3258,7 @@ sequence, then remove the character.</p></item>
 -->
 <!-- NEW DEFINITION -->
 <p>The semantics of the value <code>default</code> are fixed to mean that
-when performing presentation processing of a document instance as
+when performing presentation processing of a <emph>Document Instance</emph> as
 described by <specref ref="semantics-region-layout-step-2"/>,
 processing must occur as
 if the following properties were specified on the affected
@@ -3250,7 +3324,7 @@ that content.</p>
     Styling attributes are included in TTML to enable authorial intent of presentation
     to be included within a self-contained document. This section describes
     the semantics of style presentation in terms of a standard processing
-    model. TTML Processors are not required to present TTML documents in any particular way; 
+    model. TTML Processors are not required to present <emph>Document Instances</emph> in any particular way; 
     but an implementation of this model by a TTML Presentation Processor
     that provides externally observable results that are consistent with this model is
     likely to lead to a user experience that closely resembles the experience intended by
@@ -3271,7 +3345,7 @@ by this specification.</p>
 <div2 id="styling-element-vocabulary">
 <head>Styling Element Vocabulary</head>
 <p>The following elements specify the structure and principal styling aspects of a
-document instance:</p>
+<emph>Document Instance</emph>:</p>
 <ulist>
 <item><p><specref ref="styling-vocabulary-styling"/></p></item>
 <item><p><specref ref="styling-vocabulary-style"/></p></item>
@@ -3325,10 +3399,7 @@ specified style set in accordance with
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute in TT Style namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <!-- change for future CSS compatibility
-  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*
-  -->
-  <emph>Content:</emph> EMPTY
+ <emph>Content:</emph> EMPTY
 &lt;/style&gt;
 </eg>
 </td>
@@ -3345,6 +3416,12 @@ ref="semantics-style-association-chained-referential"/>.</p>
 refer to a <el>style</el> element, then the referenced <el>style</el>
 element must appear as a descendant of the <el>styling</el> element, and
 not in any other context.</p>
+</note>
+<note role="explanation">
+<p>In this version of this specification, the <el>style</el> element is the
+only non-metadata element that is not defined to accept <code>Metadata.class</code>
+children. It is expected that this asymmetry will be corrected in the next
+revision of this specification.</p>
 </note>
 </div3>
 </div2>
@@ -3381,10 +3458,10 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-writingMode"/></p></item>
 <item><p><specref ref="style-attribute-zIndex"/></p></item>
 </ulist>
-<p>Unless explicitly stated otherwise, linear white-space (LWSP) may
-appear between tokens of a value of a TT
+<p>Unless explicitly stated otherwise, linear white-space (LWSP) must
+appear between adjacent non-terminal components of a value of a TT
 Style or TT Style Extension
-Property.</p>
+Property value unless some other delimiter is permitted and used.</p>
 <note role="explanation">
 <p>This specification makes use of <emph>lowerCamelCased</emph> local
 names for style attributes that
@@ -3417,6 +3494,9 @@ element types:</p>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
 <item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
 </ulist>
+<p>If specified, the value of a <att>style</att> attribute must
+adhere to the <code>IDREFS</code> data type defined by <bibref ref="xsd-2"/>,
+&sect; 3.3.10.</p>
 <note role="usage">
 <p>See the specific element type definitions that permit use of the
 <att>style</att> attribute, as well as <specref
@@ -5282,6 +5362,14 @@ considered to be enclosed in an anonymous span.</p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>none</code> were specified.</p>
+
+<note role="clarification">
+<p>The syntax used above in defining the value of this property is based on the
+value component syntax defined in <bibref ref="css2"/>, &sect; 1.4.2.1. In essence,
+one or more of the values separated by <code>||</code> may appear in the property
+value in any order, such as <code>"noUnderline overline lineThrough"</code>.</p>
+</note>
+
 <p>The <att>tts:textDecoration</att> style is illustrated by the following example.</p>
 <table id="style-attribute-textDecoration-example-1" role="example">
 <caption>Example Fragment &ndash; Text Decoration</caption>
@@ -5916,8 +6004,7 @@ as a style property only to those element types indicated in the following table
 <p>If two areas are associated with the same Z-index value, then, if those areas
 overlap in space, the area(s) generated by lexically subsequent elements must be
 rendered over area(s) generated by lexically prior elements, where lexical
-order is defined as the postorder traversal of a document
-instance.</p>
+order is defined as the postorder traversal of a <emph>Document Instance</emph>.</p>
 <p>The semantics of the value <code>auto</code> are those defined by
 <bibref ref="xsl11"/>, &sect; 7.30.18, where the <el>tt</el> element
 is considered to establish the root stacking context.</p>
@@ -6605,7 +6692,7 @@ using:
 <item><p><loc href="#semantics-style-inheritance-content">region style inheritance</loc></p></item>
 </ulist>
 <p>For the purpose of determining inherited styles, the element hierarchy of
-an intermediate synchronic document form of a TTML document instance must be used, where
+an intermediate synchronic document form of a <emph>Document Instance</emph> must be used, where
 such intermediate forms are defined by <specref ref="semantics-region-layout-step-1"/>.</p>
 <note role="explanation">
 <p>The intermediate synchronic document form is utilized rather than
@@ -7050,7 +7137,7 @@ matter is not embedded (inlined).</p>
 <div2 id="layout-element-vocabulary">
 <head>Layout Element Vocabulary</head>
 <p>The following elements specify the structure and principal layout aspects of a
-document instance:</p>
+<emph>Document Instance</emph>:</p>
 <ulist>
 <item><p><specref ref="layout-vocabulary-layout"/></p></item>
 <item><p><specref ref="layout-vocabulary-region"/></p></item>
@@ -7138,7 +7225,7 @@ If specified, these begin and end points are relative to the time
 interval of the nearest ancestor element associated with a time
 interval, irregardless of whether that interval is explicit or implied.</p>
 <p>The nearest ancestor element of a <el>region</el> element that is associated
-with a time interval is the document instance's root <el>tt</el> element.</p>
+with a time interval is the <emph>Document Instance</emph>'s root <el>tt</el> element.</p>
 <p>If a <att>dur</att> attribute is specified on the <el>region</el> element, then it
 specifies the simple duration of the region.</p>
 <p>For the purpose of determining the semantics of presentation processing, a
@@ -7209,7 +7296,7 @@ results are consistent with the results produced by this model.
 </p>
 <div3 id="semantics-default-region">
 <head>Default Region</head>
-<p>If a TTML document instance does not specify a
+<p>If a <emph>Document Instance</emph> does not specify a
 <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
 then a <emph>default region</emph> is implied with the following characteristics:</p>
 <ulist>
@@ -7222,19 +7309,18 @@ region;</p>
 </item>
 <item>
 <p>the temporal interval of the default region is the same as temporal
-interval of the document instance;</p>
+interval of the <emph>Document Instance</emph>;</p>
 </item>
 </ulist>
 <p>Furthermore, if no <loc
 href="#layout-vocabulary-region"><el>region</el></loc> element was
 specified, then the <loc
 href="#layout-attribute-region"><att>region</att></loc> attribute must
-not be specified on any content element in the document
-instance.</p>
-<p>If a default region is implied for a given document instance, then
+not be specified on any content element in the <emph>Document Instance</emph>.</p>
+<p>If a default region is implied for a given <emph>Document Instance</emph>, then
 the <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element
 is implicitly targeted to (associated with) the default region.</p>
-<p>When implying a default region, the document instance is to be
+<p>When implying a default region, the <emph>Document Instance</emph> is to be
 treated as if a <loc
 href="#layout-vocabulary-region"><el>region</el></loc> element and its
 parent <loc href="#layout-vocabulary-layout"><el>layout</el></loc>
@@ -7273,10 +7359,9 @@ the implied <el>region</el> element.</p>
 <div3 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
 <p>For the purposes of performing presentation processing, the active time
-duration of a document instance is divided into a sequence of time coordinates where at
+duration of a <emph>Document Instance</emph> is divided into a sequence of time coordinates where at
 each time coordinate, some element becomes temporally active or inactive,
-then, at each such time coordinate, a document
-instance is mapped from its original, source
+then, at each such time coordinate, a <emph>Document Instance</emph> is mapped from its original, source
 form, <emph>DOC<sub>source</sub></emph>&thinsp;, 
 to an intermediate
 synchronic document form,
@@ -7371,12 +7456,12 @@ REGION-OF ( E ) :=
 -->
 <p>The result of performing the processing described above will be a sequence of
 <emph>N</emph> intermediate  synchronic
-document instances,
+<emph>Document Instances</emph>,
 <emph>DOC<sub><phrase>inter<sub>0</sub></phrase></sub></emph> &hellip;
 <emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>.</p>
 <note id="semantics-smooth-scrolling-recommendation" role="elaboration">
 <p>Where an implementation is able to detect significant similarity between two
-adjacent synchronic document instances,
+adjacent synchronic <emph>Document Instances</emph>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
 <emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>,
 then it is preferred that the implementation make the transition between
@@ -7449,7 +7534,7 @@ attributes;</p>
 associated with a <att>tts:display</att> style property with the value
 <code>none</code>, map the element to a distinct <el>fo:block</el> element,
 populating the style properties of <el>fo:block</el> by using the computed
-style set associated with each original TTML content element;</p>
+style set associated with each original TTML Content element;</p>
 </item>
 <item>
 <p>for the resulting <el>fo:block</el> formatting object
@@ -7490,7 +7575,7 @@ span that is a child of a <el>p</el> or <el>span</el> element,
 map the element or
 sequence of character items to a distinct <el>fo:inline</el> element,
 populating the style properties of <el>fo:inline</el> by using the computed
-style set associated with each original TTML content element
+style set associated with each original TTML Content element
 or anonymous span;</p>
 </item>
 <item>
@@ -7512,7 +7597,7 @@ properties:</p>
 <p>for each TTML style property attribute in some computed
 style set that
 has no counterpart in <bibref ref="xsl11"/>, map that attribute directly through
-to the relevant formatting object produced by the input TTML content element to
+to the relevant formatting object produced by the input TTML Content element to
 which the style property applies;</p>
 </item>
 <item>
@@ -7558,7 +7643,7 @@ above in <specref ref="definitions"/>.</p>
 </note>
 <note>
 <p>Due to the possible presence of TTML style properties or style property values
-in a given TTML document instance for which there is no <bibref ref="xsl11"/> counterpart,
+in a given <emph>Document Instance</emph> for which there is no <bibref ref="xsl11"/> counterpart,
 Implementors should recognize that it is the layout model of <bibref ref="xsl11"/> that is being referenced
 by this specification, not the requirement to use a compliant <bibref ref="xsl11"/> formatting processor,
 since such would not necessarily be sufficient to satisfy the full presentation semantics
@@ -7585,7 +7670,7 @@ ref="region-mapping-example-1-s"/>.</p>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex1;</eg>
+<eg xml:space="preserve">&ttml-ex1;</eg>
 </td>
 </tr>
 </tbody>
@@ -7600,7 +7685,7 @@ interval [0,1), during which time only division <code>d1</code> is temporally ac
 and where paragraphs <code>p1</code> and <code>p2</code> (and their ancestors)
 are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
 <note>
-<p>The intermediate documents shown below are not valid TTML document instances,
+<p>The intermediate documents shown below are not valid <emph>Document Instances</emph>,
 but rather, are representations of possible internal processing states used for
 didactic purposes.</p>
 </note>
@@ -7609,7 +7694,7 @@ didactic purposes.</p>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex1-x-0;</eg>
+<eg xml:space="preserve">&ttml-ex1-x-0;</eg>
 </td>
 </tr>
 </tbody>
@@ -7628,7 +7713,7 @@ didactic purposes.</p>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex1-p-0;</eg>
+<eg xml:space="preserve">&ttml-ex1-p-0;</eg>
 </td>
 </tr>
 </tbody>
@@ -7644,7 +7729,7 @@ selected into region <code>r2</code>.</p>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex1-x-1;</eg>
+<eg xml:space="preserve">&ttml-ex1-x-1;</eg>
 </td>
 </tr>
 </tbody>
@@ -7658,7 +7743,7 @@ are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex1-x-2;</eg>
+<eg xml:space="preserve">&ttml-ex1-x-2;</eg>
 </td>
 </tr>
 </tbody>
@@ -7673,14 +7758,14 @@ are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
 lines for presentation processing of a document instance on a visual medium.</p>
 -->
   
-<p>If a profile that applies to a document instance
+<p>If a profile that applies to a <emph>Document Instance</emph>
 requires use of the <loc
 href="#feature-lineBreak-uax14">#lineBreak-uax14</loc> feature
 (i.e., the value attribute for the feature is specified as <code>use</code>), then
 the recommendations defined by <loc
 href="http://www.unicode.org/reports/tr14/#Algorithm">Line
 Breaking Algorithm</loc> <bibref ref="uax14"/> apply when performing
-line layout on the content of the document instance.</p>
+line layout on the content of the <emph>Document Instance</emph>.</p>
 </div2>
 </div1>
 <div1 id="timing">
@@ -7755,7 +7840,7 @@ ref="timing-value-timeExpression"/>.</p>
 is used with a <att>dur</att> attribute, it is intended to be interpreted as
 a difference between two implied clock time expressions.</p>
 </note>
-<p>When a TTML document instance specifies the use of the
+<p>When a <emph>Document Instance</emph> specifies the use of the
 <code>smpte</code> time base and <code>discontinuous</code> marker
 mode, the <att>dur</att> attribute must not be specified on any
 element.</p>
@@ -7824,18 +7909,18 @@ while taking into account any overriding semantics defined by this specification
 </ulist>
 <div3 id="timing-value-timeExpression">
 <head>&lt;timeExpression&gt;</head>
-<p>A &lt;timeExpression&gt; is used to specify a coordinate along
+<p>A &lt;timeExpression&gt; is used to specify a coordinate within
 some time base, where the applicable time base is determined by the
 <att>ttp:timeBase</att> parameter, and where the semantics defined
 by <specref ref="time-expression-semantics"/> apply.</p>
 
 <note role="example">
-<p>See <specref ref="parameter-attribute-timeBase"/>, <specref
-ref="parameter-attribute-frameRate"/>, <specref
-ref="parameter-attribute-subFrameRate"/>, and <specref
-ref="parameter-attribute-tickRate"/> for further information on
-explicit specification of time base, frame rate, sub-frame rate, and
-tick rate.</p>
+<p>See
+<specref ref="parameter-attribute-frameRate"/>,
+<specref ref="parameter-attribute-subFrameRate"/>,
+<specref ref="parameter-attribute-tickRate"/>, and
+<specref ref="parameter-attribute-timeBase"/> for further information on
+explicit specification of frame rate, sub-frame rate, tick rate, and time base.</p>
 </note>
 <table id="timeExpression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;timeExpression&gt;</caption>
@@ -8013,7 +8098,7 @@ styling of content.</p>
 <div2 id="animation-element-vocabulary">
 <head>Animation Element Vocabulary</head>
 <p>The following elements specify the structure and principal animation aspects of a
-document instance:</p>
+<emph>Document Instance</emph>:</p>
 <ulist>
 <item><p><specref ref="animation-vocabulary-set"/></p></item>
 </ulist>
@@ -8138,16 +8223,16 @@ metadata is to be understood as a separable layer of information that applies to
 parameters, content,
 style, layout, timing, and even metadata itself, where the information
 represented by metadata takes one of two forms: (1) metadata defined by this
-specification for standardized use in a document instance, and (2) arbitrary
+specification for standardized use in a <emph>Document Instance</emph>, and (2) arbitrary
 metadata defined outside of the scope of this specification, whose use and
-semantics depend entirely upon an application's use of TTML content.</p>
+semantics depend entirely upon an application's use of TTML Content.</p>
 <div2 id="metadata-element-vocabulary">
 <head>Metadata Element Vocabulary</head>
 <p>The <specref ref="metadata-vocabulary-metadata"/> element serves as
 a generic container element for grouping metadata information.</p>
 <p>In addition, the following elements, all defined in the TT Metadata Namespace,
 provide standard representations for common metadata that is expected to be commonly
-used in a document instances:
+used in a <emph>Document Instances</emph>:
 </p>
 <ulist>
 <item><p><specref ref="metadata-vocabulary-title"/></p></item>
@@ -8248,7 +8333,7 @@ usage.</p>
 <td>
 <eg xml:space="preserve">
 ...
-&lt;div xmlns:ext="http://foo.bar.example.org/ttaf1#metadata"&gt;
+&lt;div xmlns:ext="http://example.org/ttaf1#metadata"&gt;
   &lt;metadata ext:ednote="remove this division prior to publishing"/&gt;
 &lt;/div&gt;
 ...
@@ -8567,7 +8652,7 @@ agents that perform or are
 involved in the performance of the content.</p>
 <p>If specified, a <att>ttm:agent</att> attribute must reference
 <el>ttm:agent</el> element instances that appear
-as a descendent of the same document instance as
+as a descendent of the same <emph>Document Instance</emph> as
 that of the referring element.</p>
 <p>An example of the <att>ttm:agent</att> attribute is shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
@@ -8626,6 +8711,14 @@ token-char
 <p>All values of <att>ttm:role</att> that do not start with the prefix
 <code>x-</code> are reserved for future standardization.</p>
 </note>
+<note role="extensibility">
+<p>If using a custom <code>x-</code> prefixed form of <att>ttm:role</att>, it
+is recommended that an organization unique infix be used as well in order to
+prevent collisions. For example, <code>x-example-org-custom-role</code>. Furthermore,
+a registry for role values is available at
+<loc href="http://www.w3.org/wiki/TTML/RoleRegistry">http://www.w3.org/wiki/TTML/RoleRegistry</loc>
+in order to promote interoperability and collision avoidance.</p>
+</note>
 </div3>
 </div2>
 </div1>
@@ -8634,7 +8727,7 @@ token-char
 <div1 id="reduced-infoset">
 <head>Reduced XML Infoset</head>
 <p><emph>This appendix is normative.</emph></p>
-<p>For the purposes of this specification, a Reduced XML Infoset is
+<p>For the purposes of this specification, a <emph>Reduced XML Infoset</emph> is
 an XML Information Set <bibref ref="infoset"/> that consists of only the following information items
 and information item properties:</p>
 <div2 id="reduced-infoset-document">
@@ -8675,7 +8768,7 @@ but may be aggregated (chunked) into a sequence of character codes (i.e., a char
 <head>Schemas</head>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies the following schemas for use with
-DFXP Content document instances:</p>
+<emph>Document Instances</emph>:</p>
 <ulist>
 <item><p>Relax NG, Compact Syntax (RNC) Schema</p></item>
 <item><p>XML Schema Definition (XSD) Schema</p></item>
@@ -8684,22 +8777,22 @@ DFXP Content document instances:</p>
 normative definitions of document type, element type, or attribute type
 as defined by the body of this specification, then the body of this
 specification takes precedence.</p>
-<div2 id="dfxp-schema-rnc">
-<head>Relax NG Schema</head>
+<div2 id="ttml-schema-rnc">
+<head>Relax NG Compact (RNC) Schema</head>
 <p>A Relax NG Compact Syntax (RNC) <bibref ref="rng"/> based schema
 for TTML Content is available at <loc href="rnc/schema.zip">ZIP
 Archive</loc>. This schema does not normatively define the validity
 of Timed Text Markup Language content as defined by this specification.
-In particular, the formal validity of TTML content
+In particular, the formal validity of TTML Content
 is defined by <specref ref="conformance-content"/>.</p>
 </div2>
-<div2 id="dfxp-schema-xsd">
+<div2 id="ttml-schema-xsd">
 <head>XML Schema Definition (XSD) Schema</head>
 <p>A W3C XML Schema Definition (XSD) <bibref ref="xsd-1"/> based schema
 for TTML Content is available at <loc href="xsd/schema.zip">ZIP
 Archive</loc>. This schema does not normatively define the validity
 of Timed Text Markup Language content as defined by this specification.
-In particular, the formal validity of TTML content
+In particular, the formal validity of TTML Content
 is defined by <specref ref="conformance-content"/>.</p>
 </div2>
 </div1>
@@ -8746,7 +8839,7 @@ registration with the Internet Assigned Numbers Authority (IANA).</p>
 <gitem>
 <label>profile</label>
 <def>
-<p>The document profile of a TTML document may be specified using
+<p>The document profile of a <emph>Document Instance</emph> may be specified using
 an optional <code>profile</code> parameter, which, if specified,
 the value of which must adhere to the syntax and semantics of
 <att>ttp:profile</att> parameter defined by
@@ -11191,7 +11284,7 @@ is optional (O), for transformation and presentation processors.</p>
 <specref ref="feature-transformation-mandatory-table"/>, enumerates all
 mandatory features for a TTML Transformation Processor, providing additional
 comments to summarize the context of usage or the nature of the feature.
-The TTML Profile Definition Document that defines the corresponding
+The <emph>Profile Definition Document</emph> that defines the corresponding
 DFXP Transformation Profile is specified in
 <specref ref="profile-dfxp-transformation"/>.
 </p>
@@ -11256,7 +11349,7 @@ DFXP Transformation Profile is specified in
 <specref ref="feature-presentation-mandatory-table"/>, enumerates all
 mandatory features for a TTML Presentation Processor, providing additional
 comments to summarize the context of usage or the nature of the feature.
-The TTML Profile Definition Document that defines the corresponding
+The <emph>Profile Definition Document</emph> that defines the corresponding
 DFXP Presentation Profile is specified in
 <specref ref="profile-dfxp-presentation"/>.
 </p>
@@ -11363,7 +11456,7 @@ identifier.</p>
 <item><p><specref ref="profile-dfxp-presentation"/></p></item>
 <item><p><specref ref="profile-dfxp-full"/></p></item>
 </ulist>
-<p>Each TTML profile is defined in terms of a TTML Profile Definition Document,
+<p>Each TTML profile is defined in terms of a <emph>Profile Definition Document</emph>,
 which is expressed as an XML document wherein the root element adheres to
 <specref ref="parameter-vocabulary-profile"/>.</p>
 <div2 id="profile-dfxp-transformation">
@@ -12470,7 +12563,7 @@ above.</p>
 <td><loc href="#parameter-attribute-profile"><code>ttp:profile</code></loc></td>
 <td><emph>none</emph></td>
 <td></td>
-<td>expresses profile of TTML used by document instance</td>
+<td>expresses profile of TTML used by <emph>Document Instance</emph></td>
 <td></td>
 </tr>
 <tr>
@@ -13108,7 +13201,7 @@ Proposed Recommendation (PR) phase.</p>
 <item>
 <p>See criterion #3 in <specref
 ref="conformance-processor"/> and definition of
-<loc href="#doctypes">TTML Abstract Document Instance</loc>.</p>
+TTML <loc href="#doctypes">Abstract Document Instance</loc>.</p>
 </item>
 <item>
 <p>No feature is deprecated or obsoleted by this version of this specification.</p>
@@ -13132,7 +13225,7 @@ references, but uses only reverse references when necessary);</p>
 </item>
 <item>
 <p>does not require dereferencing (and subsequent loading) of any
-resources other than TTML content (i.e., no embedded URIs);</p>
+resources other than TTML Content (i.e., no embedded URIs);</p>
 </item>
 <item>
 <p>does not support alternative content forms (e.g., different
@@ -13149,10 +13242,10 @@ structures;</p>
 </item>
 </ulist>
 <p>One possible means by which TTML Content may be streamed is to
-partition a TTML document instance's information set into
+partition a <emph>Document Instance</emph>'s information set into
 non-overlapping fragments, where one particular fragment, call it the
 <emph>root fragment</emph>, represents the front matter (head) of the
-document instance as well as its top level structural elements, and
+<emph>Document Instance</emph> as well as its top level structural elements, and
 other fragments represent content whose time intervals are expected to
 be active in parallel.</p>
 <p>In applications that require arbitrary (random) entry into a
@@ -13162,7 +13255,7 @@ transmitted (inserted) into the stream in order to permit a decoder to
 resynchronize and acquire sufficient structural information in the
 information set in order to interpret subsequent content
 fragments.</p>
-<p>An example of such a fragmentation of a TTML document instance is
+<p>An example of such a fragmentation of a <emph>Document Instance</emph> is
 shown in <specref ref="fragment-streaming-graphic"/>.</p>
 <table id="fragment-streaming-graphic" role="example-images">
 <caption>Figure 3 &ndash; Fragment Streaming</caption>
@@ -13180,14 +13273,14 @@ capabilities model.</p>
 </inform-div1>
 <inform-div1 id="concrete-encoding">
 <head>Concrete Encoding</head>
-<p>In the absence of other requirements, it is recommended that a TTML document be concretely encoded as a
+<p>In the absence of other requirements, it is recommended that a <emph>Document Instance</emph> be concretely encoded as a
 well-formed XML 1.0 <bibref ref="xml10"/> document using the UTF-8 character encoding.</p>
 </inform-div1>
 
 <inform-div1 id="time-expression-semantics">
 <head>Time Expression Semantics</head>
 
-<p>This appendix describes the intended semantics for interpreting time expressions in TTML documents.</p>
+<p>This appendix describes the intended semantics for interpreting time expressions in <emph>Document Instances</emph>.</p>
 
 <note role="elaboration">
 <p>It is expected that the information in this appendix will be elevated to normative status in a future revision of this specification.</p>
@@ -13566,7 +13659,7 @@ as described in <specref ref="time-expression-semantics-media"/> above.</p>
 </inform-div1>
 <inform-div1 id="common-styling">
 <head>Common Caption Style Examples</head>
-<p>This section provides examples of the following common caption styles using TTML content
+<p>This section provides examples of the following common caption styles using TTML Content
 to obtain the desired behavior:</p>
 <ulist>
 <item><p>Pop-On Captions</p></item>
@@ -13583,7 +13676,7 @@ of its targeted region.</p>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex2-pop-on;</eg>
+<eg xml:space="preserve">&ttml-ex2-pop-on;</eg>
 </td>
 </tr>
 </tbody>
@@ -13593,14 +13686,14 @@ of its targeted region.</p>
 <head>Roll-Up Caption Example</head>
 <p>An example of roll-up captions. Roll-up effects are achieved by using overlapped time intervals, where zero, one, or two paragraphs appear in the region
 at a given time. Each paragraph consumes a single row (line) of the region since no wrapping occurs. Depending on whether a presentation processor supports
-<loc href="#semantics-smooth-scrolling-recommendation">smooth scrolling between adjacent synchronic document instances</loc>, the transitions, i.e., moving an
+<loc href="#semantics-smooth-scrolling-recommendation">smooth scrolling between adjacent synchronic intermediate document instances</loc>, the transitions, i.e., moving an
 old paragraph (line) out and a new paragraph (line) in, will be either smooth or discrete.</p>
 <table id="roll-up-example-1-s" role="example">
 <caption>Example &ndash; Roll-Up Captions</caption>
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex2-roll-up;</eg>
+<eg xml:space="preserve">&ttml-ex2-roll-up;</eg>
 </td>
 </tr>
 </tbody>
@@ -13616,7 +13709,7 @@ each inline element coincides with the end of the <el>div</el> element's paralle
 <tbody>
 <tr>
 <td>
-<eg xml:space="preserve">&dfxp-ex2-paint-on;</eg>
+<eg xml:space="preserve">&ttml-ex2-paint-on;</eg>
 </td>
 </tr>
 </tbody>

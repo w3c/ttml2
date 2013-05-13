@@ -322,7 +322,7 @@
   <xsl:template match="bibl">
     <dt class="label">
       <xsl:if test="@id">
-        <a name="{@id}" id="{@id}"/>
+        <a id="{@id}"/>
       </xsl:if>
       <xsl:choose>
         <xsl:when test="@key">
@@ -830,7 +830,7 @@
     </xsl:variable>
     <sup>
       <xsl:text>[</xsl:text>
-      <a name="FN-ANCH-{$this-note-id}" id="FN-ANCH-{$this-note-id}"
+      <a id="FN-ANCH-{$this-note-id}"
          href="#{$this-note-id}">
         <xsl:apply-templates select="." mode="number-simple"/>
       </a>
@@ -894,7 +894,7 @@
   <xsl:template match="constraintnote/head">
     <p class="prefix">
       <xsl:if test="../@id">
-        <a name="{../@id}" id="{../@id}"/>
+        <a id="{../@id}"/>
       </xsl:if>
       <b><xsl:text>Constraint: </xsl:text><xsl:apply-templates/></b>
     </p>
@@ -994,7 +994,7 @@
   <xsl:template match="vcnote/head">
     <p class="prefix">
       <xsl:if test="../@id">
-        <a name="{../@id}" id="{../@id}"/>
+        <a id="{../@id}"/>
       </xsl:if>
       <b><xsl:text>Validity constraint: </xsl:text><xsl:apply-templates/></b>
     </p>
@@ -1003,7 +1003,7 @@
   <xsl:template match="wfcnote/head">
     <p class="prefix">
       <xsl:if test="../@id">
-        <a name="{../@id}" id="{../@id}"/>
+        <a id="{../@id}"/>
       </xsl:if>
       <b><xsl:text>Well-formedness constraint: </xsl:text><xsl:apply-templates/></b>
     </p>
@@ -1178,7 +1178,7 @@
     <div class="issue">
       <p class="prefix">
         <xsl:if test="@id">
-          <a name="{@id}" id="{@id}"/>
+          <a id="{@id}"/>
         </xsl:if>
         <b>
           <xsl:text>Issue (</xsl:text>
@@ -1276,7 +1276,7 @@
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="../@id">
-          <a name="{../@id}" id="{../@id}"/>
+          <a id="{../@id}"/>
         </xsl:if>
         <xsl:apply-templates select="ancestor::prod" mode="number"/>
 <!--
@@ -2107,7 +2107,7 @@
   <!-- termdef: sentence or phrase defining a term -->
   <xsl:template match="termdef">
     <xsl:text>[</xsl:text>
-    <a name="{@id}" id="{@id}" title="{@term}">
+    <a id="{@id}" title="{@term}">
       <xsl:text>Definition</xsl:text>
     </a>
     <xsl:text>: </xsl:text>
@@ -2443,7 +2443,7 @@
     </xsl:variable>
     <dt>
       <xsl:text>[</xsl:text>
-      <a name="{$this-note-id}" id="{$this-note-id}" href="#FN-ANCH-{$this-note-id}">
+      <a id="{$this-note-id}" href="#FN-ANCH-{$this-note-id}">
         <xsl:apply-templates select="." mode="number-simple"/>
       </a>
       <xsl:text>]</xsl:text>
@@ -2471,7 +2471,7 @@
     </xsl:variable>
     <p class="table.footnote">
       <sup>
-        <a name="{$this-note-id}" id="{$this-note-id}" href="#FN-ANCH-{$this-note-id}">
+        <a id="{$this-note-id}" href="#FN-ANCH-{$this-note-id}">
           <xsl:apply-templates select="parent::footnote" mode="number-simple"/>
           <xsl:text>.</xsl:text>
         </a>
@@ -2805,7 +2805,7 @@ div.exampleHeader { font-weight: bold;
     </xsl:call-template>
   </xsl:variable>
   <xsl:if test="$conditional = 0 or $node/@id">
-    <a name="{$id}" id="{$id}"/>
+    <a id="{$id}"/>
   </xsl:if>
 </xsl:template>
 

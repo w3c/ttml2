@@ -9,13 +9,15 @@
     <property name="htmlOutputDir" value="./"/>
     <property name="stylesheet" value="xmlspec-ttaf1-dfxp.xsl"/>
     <property name="glossary" value="extract-glist.xsl"/>
-	<property name="generateBPlist" value="generateBPlist.xsl"/>
+    <property name="generateBPlist" value="generateBPlist.xsl"/>
     <property name="diffformat" value="diffspec.xsl"/>
     <property name="last-public-draft" value="20070706"/>
     
     <property name="jing.jar" value="${basedir}/jing/jing.jar"/>
     <property name="rnc.dir" value="${basedir}/rnc"/>
     <property name="rnc.schema" value="${rnc.dir}/ttaf1-dfxp.rnc"/>
+    <property name="xsd.dir" value="${basedir}/xsd"/>
+    <property name="xsd.schema" value="${xsd.dir}/ttaf1-dfxp.xsd"/>
     <property name="profiles.dir" value="${basedir}/profiles"/>
 
     <patternset id="escapable">
@@ -46,6 +48,43 @@
             <arg value="ttaf1-dfxp.rnc"/>
         </java>
     </target>
+
+    <target name="generate-schema-archive-rnc" description="Generate DFXP's RNC Schema archive." depends="validate-schema-rnc">
+        <zip destfile="${rnc.dir}/schema.zip">
+            <fileset dir="${rnc.dir}">
+                <include name="*.rnc"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="create-xsd-bindings" description="Create JAXB Bindings for DFXP's XSD Schema.">
+        <exec executable="xjc" dir="xsd">
+          <arg value="-quiet"/>
+          <arg value="-b"/>
+          <arg value="ttaf1-dfxp-bindings.xjb"/>
+          <arg value="ttaf1-dfxp.xsd"/>
+        </exec>
+    </target>
+
+    <target name="delete-xsd-bindings" description="Delete JAXB Bindings for DFXP's XSD Schema.">
+        <delete includeemptydirs="true">
+          <fileset dir="xsd/org"/>
+        </delete>
+    </target>
+
+    <target name="validate-schema-xsd" description="Validates DFXP's XSD Schema using JAXB tool set." depends="create-xsd-bindings, delete-xsd-bindings"/>
+
+    <target name="generate-schema-archive-xsd" description="Generate DFXP's XSD Schema archive." depends="validate-schema-xsd">
+        <zip destfile="${xsd.dir}/schema.zip">
+            <fileset dir="${xsd.dir}">
+                <include name="*.xsd"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="validate-schemas" description="Validate DFXP schemas" depends="validate-schema-rnc, validate-schema-xsd"/>
+
+    <target name="generate-schema-archives" description="Generate DFXP schema archives" depends="generate-schema-archive-rnc, generate-schema-archive-xsd"/>
 
     <target name="validate-profile-transformation" description="Validates transformation profile.">
         <java fork="true" jar="${jing.jar}">
@@ -153,7 +192,7 @@
         <pathelement location="${basedir}/DiffMk.properties"/>
     </path>
     <target name="generateXMLdiff">
-  <java classname="com.sun.xtc.diffmk.DiffMk" fork="true">
+        <java classname="com.sun.xtc.diffmk.DiffMk" fork="true">
             <arg value="-doctype"/>
             <arg value="xmlspec"/>
             <arg value="-diff"/>
@@ -174,7 +213,6 @@
             <arg value="diffspec.xsl"/>
         </java>
     </target>
-
     <target name="postprocess-diff">
       <java fork="true" classname="net.sf.saxon.Transform">
             <classpath refid="saxon8.classpath"/>
@@ -196,12 +234,12 @@
     </target>
 
     <target name="generate" description="Generate the specification without updating changelog and acknowledgments sections"
-	    depends="validate-tt-specs,html">
+	    depends="generate-schema-archives,validate-tt-specs,html">
       <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
     </target>
     
     <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
-	    depends="validate-tt-specs-dont-build-escapes,html">
+	    depends="generate-schema-archives,validate-tt-specs-dont-build-escapes,html">
       <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
     </target>
 

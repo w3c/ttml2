@@ -2,11 +2,12 @@
 <!-- Apache Ant script to build spec.
      Philippe Le Hegaret, W3C -->
       
-<project name="TimedText" default="main" basedir=".">
+<project name="TimedText" default="generate" basedir=".">
     <path id="saxon8.classpath">
         <pathelement location="saxon8/saxon8.jar"/>
     </path>
-    <property name="htmlOutputDir" value="./"/>
+    <property name="html.dir" value="${basedir}"/>
+    <property name="html.name" value="ttaf1-dfxp.html"/>
     <property name="stylesheet" value="xmlspec-ttaf1-dfxp.xsl"/>
     <property name="glossary" value="extract-glist.xsl"/>
     <property name="generateBPlist" value="generateBPlist.xsl"/>
@@ -40,7 +41,7 @@
     </target>
 
     <target name="clean" depends="clean-escapes">
-        <delete quiet="true" file="ttaf1-dfxp.html"/>
+        <delete quiet="true" file="${html.name}"/>
     </target>
 
     <target name="validate-schema-rnc" description="Validates DFXP's RNC Schema.">
@@ -222,7 +223,7 @@
         <java fork="true" classname="net.sf.saxon.Transform">
             <classpath refid="saxon8.classpath"/>
             <arg value="-o"/>
-            <arg value="${htmlOutputDir}ttaf1-dfxp.html"/>
+            <arg value="${html.dir}/${html.name}"/>
             <arg value="ttaf1-dfxp.xml"/>
             <arg value="${stylesheet}"/>
             <arg value="showAssertions=true"/>
@@ -250,7 +251,7 @@
         <java fork="true" classname="net.sf.saxon.Transform">
             <classpath refid="saxon8.classpath"/>
             <arg value="-o"/>
-            <arg value="${htmlOutputDir}tt-diff${last-public-draft}.html"/>
+            <arg value="${html.dir}/tt-diff${last-public-draft}.html"/>
             <arg value="tt-diff${last-public-draft}.xml"/>
             <arg value="diffspec.xsl"/>
         </java>
@@ -285,11 +286,39 @@
       <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
     </target>
 
-    <target name="main" description="Generate the specification for a CVS commit"
-	    depends="changelog,validate-tt-specs,html">
-<!--	    depends="updateAcks,changelog,validate-tt-specs,html"> -->
-      <echo>ttaf1-dfxp.html is ready for CVS commit</echo>
-      <echo>Use target "generate" to avoid regenerating changelog.xml and acknowledgments.xml</echo>
+    <property name="per.name" value="PER-ttaf1-dfxp-201305DD"/>
+    <property name="per.target" value="${basedir}/${per.name}"/>
+    <target name="per-archive" description="Create PER Archive">
+        <fail>
+          <condition>
+            <not>
+              <resourcecount count="1">
+                <fileset dir="." includes="${per.name}.html"/>
+              </resourcecount>
+            </not>
+          </condition>
+        </fail>
+        <delete includeemptydirs="true" quiet="true">
+          <fileset dir="${per.target}"/>
+        </delete>
+        <mkdir dir="${per.target}"/>
+        <mkdir dir="${per.target}/images"/>
+        <mkdir dir="${per.target}/rnc"/>
+        <mkdir dir="${per.target}/xsd"/>
+        <copy file="${per.name}.html" tofile="${per.target}/${per.name}.html"/>
+        <copy todir="${per.target}/images">
+          <fileset dir="${basedir}/images" includes="*.png"/>
+        </copy>
+        <copy file="${rnc.dir}/schema.zip" todir="${per.target}/rnc"/>
+        <copy file="${xsd.dir}/schema.zip" todir="${per.target}/xsd"/>
+        <zip destfile="${per.name}.zip">
+          <fileset dir="${per.target}">
+            <include name="**/*"/>
+          </fileset>
+        </zip>
+        <delete includeemptydirs="true" quiet="true">
+          <fileset dir="${per.target}"/>
+        </delete>
     </target>
 
 </project>

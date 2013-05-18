@@ -881,7 +881,7 @@ satisfied:</p>
 <p>When transporting a <emph>Document Instance</emph> in a <emph>Document Interchange Context</emph> in which a
 Media Type <bibref ref="media-types"/> identifies the content type of the interchanged <emph>Document Instance</emph>, then the specified media type is
 <code>application/ttml+xml</code> in conformance with <bibref
-ref="rfc3023"/> &sect; 7, with which an optional
+ref="xml-media"/> &sect; 7, with which an optional
 <code>profile</code> parameter may appear, the value of which
 conforms to
 a profile designator as
@@ -1998,14 +1998,7 @@ baseline profile. This baseline profile is then modified by two
 <el>ttp:feature</el> elements in order to
 superset the baseline profile (since neither
 <code>#fontStyle-italic</code> nor <code>#textDecoration-under</code>
-are required by the DFXP presentation profile).  
-<!-- removed text:
-Note that
-the explicit specification of <code>required</code> on the
-<att>value</att> attribute on these two
-<el>ttp:feature</el> elements is not strictly
-necessary, since it is the default value of this
-attribute.--></p> 
+are required by the DFXP presentation profile).</p> 
 <p>The effect of this example is to express authorial intentions that
 italic font style and text underlining must be
 supported.</p>
@@ -2189,7 +2182,7 @@ unless some other delimiter is permitted and used.</p>
 <div3 id="parameter-attribute-cellResolution">
 <head>ttp:cellResolution</head>
 <p>The <att>ttp:cellResolution</att> attribute may be used by an author
-to express the number of horizontal and vertical cells into which the root container region
+to express the number of horizontal and vertical cells into which the <emph>Root Container Region</emph>
 area is divided for the purpose of expressing presentation semantics in terms of
 a uniform grid.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
@@ -2232,7 +2225,7 @@ matches the cell size.</p>
 cells expresses a dimension parallel to the inline or block progression dimension,
 the cell's dimension in the inline or block progression dimension applies, respectively.
 For example, if padding (on all four edges) is specified as 0.1c, the cell resolution
-is 20 by 10, and the root container extent is 640 by 480, then, assuming top to bottom,
+is 20 by 10, and the extent of the <emph>Root Container Region</emph> is 640 by 480, then, assuming top to bottom,
 left to right writing mode, the start and end padding will be 640 / 20 * 0.1 pixels and the
 before and after padding will be 480 / 10 * 0.1 pixels.</p>
 </note>
@@ -2769,12 +2762,6 @@ based on the passage of real time.</p>
 given <emph>Document Instance</emph>, the interpretation of time expressions
 is uniform throughout the <emph>Document Instance</emph>.</p>
 </note>
-<!-- [GA] Remove for TTML10SE - Misleading - Now expressed in Appendix N
-<p>When operating with the <code>clock</code> time base,
-the expression <emph>media time</emph> as used in this specification is
-to be interpreted as the real-time clock selected by
-<specref ref="parameter-attribute-clockMode"/>.</p>
--->
 <note role="elaboration">
 <p>See <specref ref="time-expression-semantics"/> for further details
 on the interpretation of time expressions according to the designated time base.</p>
@@ -3232,39 +3219,19 @@ core vocabulary catalog.</p>
 <bibref ref="xml10"/>, &sect;2.12, <emph>Language Identification</emph>.</p>
 <p>The <att>xml:lang</att> attribute must be specified on the <el>tt</el>
 element and may be specified by an instance of any other element type
-in the core vocabulary catalog.</p>
+in the core vocabulary catalog except parameter vocabulary.</p>
 </div3>
 <div3 id="content-attribute-space">
 <head>xml:space</head>
 <p>The <att>xml:space</att> attribute is used as defined by
 <bibref ref="xml10"/>, &sect;2.10, <emph>White Space Handling</emph>.</p>
 <p>The <att>xml:space</att> attribute may be used with any element in
-the core vocabulary catalog.</p>
-<!-- OLD DEFINITION
-<p>The semantics of the value <code>default</code> are fixed to mean that
-white space that appears in element content as defined by <bibref
-ref="xml10"/>, &sect;3.2.1, must be normalized at the
-application layer during subsequent processing, such as presentation or
-transformation processing, as follows:</p>
-<olist>
-<item><p>replace each TAB character (<code>&amp;#x0009;</code>) and NEWLINE character (<code>&amp;#x000A;</code>) with a SPACE
-character (<code>&amp;#x0020;</code>);</p></item>
-<item><p>replace each sequence of two or more SPACE characters with a
-single SPACE character;</p></item>
-<item><p>for every maximum sequence of sibling character information
-items, if there is a leading or trailing SPACE character in the
-sequence, then remove the character.</p></item>
-</olist>
--->
-<!-- NEW DEFINITION -->
+the core vocabulary catalog except parameter vocabulary.</p>
 <p>The semantics of the value <code>default</code> are fixed to mean that
 when performing presentation processing of a <emph>Document Instance</emph> as
 described by <specref ref="semantics-region-layout-step-2"/>,
 processing must occur as
 if the following properties were specified on the affected
-<!-- changed for future CSS compatibility
-elements of the intermediate XSL-FO document:</p> 
--->
 elements of an equivalent intermediate XSL-FO document:</p>
 <ulist>
 <item>
@@ -3283,9 +3250,6 @@ elements of an equivalent intermediate XSL-FO document:</p>
 <p>Similarly, the semantics of the value <code>preserve</code> are fixed to mean that
 when performing presentation processing, processing must occur as
 if the following properties were specified on the affected
-<!-- changed for future CSS compatibility
-elements of the intermediate XSL-FO document:</p> 
--->
 elements of an equivalent intermediate XSL-FO document:
 </p>
 <ulist>
@@ -3309,6 +3273,10 @@ preservation as described above should be respected. For other types
 of processing, the treatment of the <att>xml:space</att> attribute
 is processor dependent, but should respect the semantics described
 above if possible.</p>
+<note role="derivation">
+<p>The semantics of the above four cited XSL-FO properties are defined by
+by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respectively.</p>
+</note>
 </div3>
 </div2>
 </div1>
@@ -3319,27 +3287,21 @@ vocabulary catalog, where
 styling is to be understood as a separable layer of information that applies to
 content and that denotes authorial intentions about the presentation of
 that content.</p>
-  <!-- added for future CSS compatibility -->
-  <p>
-    Styling attributes are included in TTML to enable authorial intent of presentation
-    to be included within a self-contained document. This section describes
-    the semantics of style presentation in terms of a standard processing
-    model. TTML Processors are not required to present <emph>Document Instances</emph> in any particular way; 
-    but an implementation of this model by a TTML Presentation Processor
-    that provides externally observable results that are consistent with this model is
-    likely to lead to a user experience that closely resembles the experience intended by
-    the documents' authors.
-  </p>
-  <p>
-    The semantics of TTML style presentation are described in terms of the model 
-    in <bibref ref="xsl11"/>. The intended effect of the attributes in this section 
-    are to be compatible with  the layout model of XSL. Presentation agents may however 
-    use any technology to satisfy the authorial intent of the document. In particular 
-    since <bibref ref="css2"/> is a subset of this model, a CSS processor may be used 
-    for the features that the models have in common.
-  </p>
-  <!-- end addition -->
-  <p>No normative use of an
+<p>Styling attributes are included in TTML to enable authorial intent of presentation
+to be included within a self-contained document. This section describes
+the semantics of style presentation in terms of a standard processing
+model. TTML Processors are not required to present <emph>Document Instances</emph> in any particular way; 
+but an implementation of this model by a TTML Presentation Processor
+that provides externally observable results that are consistent with this model is
+likely to lead to a user experience that closely resembles the experience intended by
+the documents' authors.</p>
+<p>The semantics of TTML style presentation are described in terms of the model 
+in <bibref ref="xsl11"/>. The effects of the attributes in this section 
+are intended to be compatible with the layout and formatting model of XSL; however, Presentation agents
+may use any technology to satisfy the authorial intent of the document. In particular 
+since <bibref ref="css2"/> is a subset of this model, a CSS processor may be used 
+for the features that the models have in common.</p>
+<p>No normative use of an
 <code>&lt;?xml-stylesheet ... ?&gt;</code> processing instruction is defined
 by this specification.</p>
 <div2 id="styling-element-vocabulary">
@@ -3417,12 +3379,6 @@ refer to a <el>style</el> element, then the referenced <el>style</el>
 element must appear as a descendant of the <el>styling</el> element, and
 not in any other context.</p>
 </note>
-<note role="explanation">
-<p>In this version of this specification, the <el>style</el> element is the
-only non-metadata element that is not defined to accept <code>Metadata.class</code>
-children. It is expected that this asymmetry will be corrected in the next
-revision of this specification.</p>
-</note>
 </div3>
 </div2>
 <div2 id="styling-attribute-vocabulary">
@@ -3478,12 +3434,8 @@ does not apply.</p>
 </note>
 <div3 id="style-attribute-style">
 <head>style</head>
-<p>The <att>style</att> attribute is used
-by referential style association
-to reference one or more <el>style</el>
-elements each of which define a
-specified
-style set.</p>
+<p>The <att>style</att> attribute is used by referential style association
+to reference one or more <el>style</el> elements each of which define a style (property) set.</p>
 <p>The <att>style</att> attribute may be specified by an instance of the following
 element types:</p>
 <ulist>
@@ -3587,12 +3539,10 @@ span.</p>
 </tr>
 </tbody>
 </table>
-  <!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property represented by this attribute are based upon 
 that defined by <bibref ref="xsl11"/>, &sect; 7.8.2.</p>
-</note> -->
-  
+</note>
 </div3>
 <div3 id="style-attribute-color">
 <head>tts:color</head>
@@ -3643,7 +3593,7 @@ span.</p>
 is considered to be implementation dependent. In the absence of
 end-user preference information, a conformant presentation processor
 should use an initial value that is highly contrastive to the
-background color of the root container region.</p>
+background color of the <emph>Root Container Region</emph>.</p>
 <p>The <att>tts:color</att> style is illustrated by the following example.</p>
 <table id="style-attribute-color-example-1" role="example">
 <caption>Example Fragment &ndash; Color</caption>
@@ -3676,13 +3626,11 @@ background color of the root container region.</p>
 </tr>
 </tbody>
 </table>
-  <!-- CSS compatibility - remove derivation note 
-  <note role="derivation">
+ <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.18.1.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-direction">
 <head>tts:direction</head>
@@ -3773,13 +3721,11 @@ then a presentation processor must ignore the attribute.</p>
 </tr>
 </tbody>
 </table>
-  <!-- CSS compatibility - remove derivation note 
-  <note role="derivation">
+<note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.29.1.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-display">
 <head>tts:display</head>
@@ -3908,14 +3854,10 @@ layout and presentation.</p>
 </tr>
 </tbody>
 </table>
-  <!-- CSS compatibility - remove derivation note 
-  <note role="derivation">
+<note role="derivation">
 <p>The semantics of the style property
-represented by this attribute are based upon that defined by <bibref
-ref="css2"/>,
-&sect; 9.2.5.</p>
+represented by this attribute are based upon that defined by <bibref ref="css2"/>, &sect; 9.2.4.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-displayAlign">
 <head>tts:displayAlign</head>
@@ -4018,19 +3960,17 @@ value <code>before</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-<!-- CSS compatibility - remove derivation note   
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.14.4.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-extent">
 <head>tts:extent</head>
 <p>The <att>tts:extent</att> attribute is used to specify the
 <emph>width</emph> and <emph>height</emph> of a region area
-(which may be the root container region).</p>
+(which may be the <emph>Root Container Region</emph>).</p>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
@@ -4063,7 +4003,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td>relative to width and height of root container region</td>
+<td>relative to width and height of <emph>Root Container Region</emph></td>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
@@ -4078,10 +4018,9 @@ and <emph>height</emph>, where the first specification is the
 <emph>height</emph>, where, if either <emph>width</emph> or <emph>height</emph> is negative or zero, then
 extent must be considered zero in both inline and block progression dimensions.</p>
 <p>If the value of this attribute is <code>auto</code>, then the initial value
-of the style property must be considered to be the same as the root container extent.
-</p>
+of the style property must be considered to be the same as the extent of the <emph>Root Container Region</emph>.</p>
 <p>
-The root container extent is determined either by a
+The extent of the <emph>Root Container Region</emph> is determined either by a
 <att>tts:extent</att> specified on the <el>tt</el> element, if
 present, or by the external authoring context, if not present.
 If
@@ -4235,22 +4174,18 @@ specified.</p>
 </tr>
 </tbody>
 </table>
-<!--CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.9.2.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-fontSize">
 <head>tts:fontSize</head>
 <p>The <att>tts:fontSize</att> attribute is used to specify a style property
 that defines the font size for glyphs that are selected for glyph areas
-generated by content flowed into a region, where font size is interpreted as a
-scaling transform to the font's design EM square.</p>
-<p>This attribute may be specified by any
-element type
+generated by content flowed into a region.</p>
+<p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-fontSize" role="common">
@@ -4346,13 +4281,12 @@ the <emph>cell</emph> length unit as defined by <specref ref="style-value-length
 </tr>
 </tbody>
 </table>
-<!--CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.9.4.</p>
+&sect; 7.9.4. The addition of a second length component to permit specifying font
+width and height independently is an extension introduced by TTML.</p>
 </note>
--->  
 </div3>
 <div3 id="style-attribute-fontStyle">
 <head>tts:fontStyle</head>
@@ -4405,7 +4339,7 @@ as a style property only to those element types indicated in the following table
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
 <p>Use of the value <code>oblique</code>
-denote a shear transformation (at an unspecified
+denotes a shear transformation (at an unspecified
 angle) in the inline progression dimension.</p>
 <p>If a specified font style is not available, then a
 presentation processor must attempt to map the specified font style
@@ -4448,13 +4382,11 @@ specified.</p>
 </tbody>
 </table>
 <p/>
-<!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.9.7.</p>
 </note>
--->  
 </div3>
 <div3 id="style-attribute-fontWeight">
 <head>tts:fontWeight</head>
@@ -4547,13 +4479,11 @@ specified.</p>
 </tr>
 </tbody>
 </table>
-<!--CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.9.9.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-lineHeight">
 <head>tts:lineHeight</head>
@@ -4649,13 +4579,11 @@ value <code>normal</code> were specified.</p>
 </tbody>
 </table>
 <p/>
-<!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.16.4.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-opacity">
 <head>tts:opacity</head>
@@ -4767,20 +4695,17 @@ href="#style-value-alpha">&lt;alpha&gt;</loc> value of 1.0.</p>
 </tr>
 </tbody>
 </table>
-<!--CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="css3-color"/>,
 &sect; 3.2.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-origin">
 <head>tts:origin</head>
 <p>The <att>tts:origin</att> attribute is used to specify the
 <emph>x</emph> and <emph>y</emph> coordinates of the origin of a
-region area with respect to the origin of the root container extent,
-if specified, or the external authoring context, if not specified.</p>
+region area with respect to the origin of the <emph>Root Container Region</emph>.</p>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
@@ -4812,7 +4737,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td>relative to width and height of root container region</td>
+<td>relative to width and height of <emph>Root Container Region</emph></td>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
@@ -4824,8 +4749,7 @@ as a style property only to those element types indicated in the following table
 then they must be interpreted as <emph>x</emph> and <emph>y</emph> coordinates, where the first specification
 is the <emph>x</emph> coordinate, and the second specification is the <emph>y</emph> coordinate.</p>
 <p>If the value of this attribute is <code>auto</code>, then the initial value
-of the style property must be considered to be the same as the root container
-origin.</p>
+of the style property must be considered to be the same as the origin of the <emph>Root Container Origin</emph>.</p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>auto</code> were specified.</p>
@@ -4986,13 +4910,11 @@ value <code>hidden</code> were specified.</p>
 if this were not specified, then overflow would occur in the block
 progression direction as opposed to the inline progression direction.</p>
 </note>
-<!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.21.2.</p>
 </note>
--->  
 </div3>
 <div3 id="style-attribute-padding">
 <head>tts:padding</head>
@@ -5090,15 +5012,13 @@ applies to the area is rendered into the padded portion of the area.</p>
 </tr>
 </tbody>
 </table>
- <!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.31.15, except that individual shorthand values map to writing
-  mode relative padding values as defined by <bibref ref="xsl11"/>,
+mode relative padding values as defined by <bibref ref="xsl11"/>,
 &sect; 7.8.31, 7.8.32, 7.8.33, and 7.8.34.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-showBackground">
 <head>tts:showBackground</head>
@@ -5148,7 +5068,7 @@ as a style property only to those element types indicated in the following table
 background color of a region is always rendered when performing presentation
 processing on a visual medium; if the value is <code>whenActive</code>,
 then the background color of a region is rendered only when some
-content is selected into the region.</p>
+content is flowed into the region.</p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>always</code> were specified.</p>
@@ -5182,25 +5102,11 @@ value <code>always</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-<!--
-<table id="style-attribute-showBackground-example-1-images" role="example-images">
-<caption>Example Rendition &ndash; Show Background</caption>
-<tbody>
-<tr>
-<td>
-<graphic source="images/showBackground.png" alt="TTML showBackground style property"/>
-</td>
-</tr>
-</tbody>
-</table>
--->
-<!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="smil21"/>,
-&sect; 5.3.1.</p>
+&sect; 5.3.3.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-textAlign">
 <head>tts:textAlign</head>
@@ -5296,13 +5202,11 @@ value <code>start</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-<!--CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.16.9.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-textDecoration">
 <head>tts:textDecoration</head>
@@ -5411,13 +5315,11 @@ value in any order, such as <code>"noUnderline overline lineThrough"</code>.</p>
 </tr>
 </tbody>
 </table>
-<!--CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.16.4.</p>
+&sect; 7.17.4.</p>
 </note>
--->  
 </div3>
 <div3 id="style-attribute-textOutline">
 <head>tts:textOutline</head>
@@ -5479,7 +5381,7 @@ term, if present, indicates the blur radius.</p>
 cells is used in a <att>tts:textOutline</att> value,
 the cell's dimension in the block progression dimension applies.
 For example, if text outline thickness is specified as 0.1c, the cell resolution
-is 20 by 10, and the root container extent is 640 by 480, then the
+is 20 by 10, and the extent of the <emph>Root Container Region</emph> is 640 by 480, then the
 outline thickness will be a nominal 480 / 10 * 0.1 pixels, i.e., 4.8px,
 without taking into account rasterization effects.</p>
 </note>
@@ -5618,13 +5520,11 @@ value <code>normal</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-<!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.29.6.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-visibility">
 <head>tts:visibility</head>
@@ -5743,13 +5643,11 @@ value <code>visible</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-<!-- CSS compatibility - remove derivation note
-  <note role="derivation">
+<note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.28.8.</p>
+&sect; 7.30.17.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-wrapOption">
 <head>tts:wrapOption</head>
@@ -5837,13 +5735,11 @@ value <code>wrap</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-  <!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.15.13.</p>
+&sect; 7.16.13.</p>
 </note>
--->
 </div3>
 <div3 id="style-attribute-writingMode">
 <head>tts:writingMode</head>
@@ -5950,13 +5846,11 @@ value <code>lrtb</code> were specified.</p>
 to override the normally left-to-right directionality of characters in
 the Latin script.</p>
 </note>
-<!-- CSS compatibility - remove derivation note 
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.27.7.</p>
+&sect; 7.29.7.</p>
 </note>
-  -->
 </div3>
 <div3 id="style-attribute-zIndex">
 <head>tts:zIndex</head>
@@ -6085,13 +5979,11 @@ value <code>auto</code> were specified.</p>
 </tr>
 </tbody>
 </table>
-<!-- CSS compatibility - remove derivation note
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.28.9.</p>
+&sect; 7.30.18.</p>
 </note>
--->
 </div3>
 </div2>
 <div2 id="styling-style-value-expressions">
@@ -6111,6 +6003,9 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-quotedString"/></p></item>
 <item><p><specref ref="style-value-string"/></p></item>
 </ulist>
+<p>In the syntax representations defined in this section, no
+linear whitespace (LWSP) is implied or permitted between tokens
+unless explicitly specified.</p>
 <div3 id="style-value-alpha">
 <head>&lt;alpha&gt;</head>
 <p>An &lt;alpha&gt; expression is used to express an opacity value,
@@ -6236,10 +6131,6 @@ metric
 </tbody>
 </table>
 <p>It is an error to omit the metric component of a duration.</p>
-<p>When operating with <code>smpte</code> time base and
-<code>discontinuous</code> mode, a duration expression must be
-considered to denote a duration in (local) real-time, independently of the
-governing time base.</p>
 </div3>
 <div3 id="style-value-familyName">
 <head>&lt;familyName&gt;</head>
@@ -6303,7 +6194,7 @@ or <code>monospaceSerif</code>. The generic family names <code>sansSerif</code>
 and <code>serif</code> are to be interpreted as equivalent to <code>proportionalSansSerif</code>
 and <code>proportionalSerif</code>, respectively.</p>
 <p>If the generic family name <code>default</code> is specified (or implied by
-an initial value), then its typographic characteristics is considered to be implementation
+an initial value), then its typographic characteristics are considered to be implementation
 dependent; however, it is recommended that this default font family be mapped to
 an monospaced, sans-serif font.</p>
 </div3>
@@ -6607,16 +6498,8 @@ other out-of-line style properties, thus creating a chain of references starting
 affected element. When expressed in this manner, the association of style information
 is referred to as <emph>chained referential styling</emph>.</p>
 <p>If the same style property is specified in more than one referenced
-style 
-set,
-then the last referenced style
-set
-applies, where the order of application starts from
-the affected element and proceeds to referenced style
-sets,
-and, in turn, to subsequent, recursively
-referenced style
-sets.</p>
+style set, then the last referenced style set applies, where the order of application starts from
+the affected element and proceeds to referenced style sets, and, in turn, to subsequent referenced style sets.</p>
 <p>A loop in a sequence of chained style references must be considered an error.</p>
 <p>The use of referential styling is restricted to making
 reference to <el>style</el> element descendants of a <el>styling</el>
@@ -6650,7 +6533,7 @@ given priority as described above by <specref ref="semantics-style-association-i
 </div4>
 <div4 id="semantics-style-association-nested">
 <head>Nested Styling</head>
-<p>Style properties may be expressed in an nested manner by direct specification of one or
+<p>Style properties may be expressed in a nested manner by direct specification of one or
 more <el>style</el> element children of the affected element.
 When expressed in this manner, the association of style information
 is referred to as <emph>nested styling</emph>.</p>
@@ -7173,7 +7056,7 @@ defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
 </div3>
 <div3 id="layout-vocabulary-region">
 <head>region</head>
-<p>The <el>region</el> element is used to define a space or area into which content is
+<p>The <el>region</el> element is used to define a rectangular space or area into which content is
 to be flowed for the purpose of presentation.</p>
 <p>In addition, and in accordance with
 <specref ref="semantics-style-inheritance-region"/>, 
@@ -7225,7 +7108,7 @@ If specified, these begin and end points are relative to the time
 interval of the nearest ancestor element associated with a time
 interval, irregardless of whether that interval is explicit or implied.</p>
 <p>The nearest ancestor element of a <el>region</el> element that is associated
-with a time interval is the <emph>Document Instance</emph>'s root <el>tt</el> element.</p>
+with a time interval is the <el>layout</el> element.</p>
 <p>If a <att>dur</att> attribute is specified on the <el>region</el> element, then it
 specifies the simple duration of the region.</p>
 <p>For the purpose of determining the semantics of presentation processing, a
@@ -7236,12 +7119,12 @@ presented on a visual medium.</p>
 purposes: (1) in order to temporally bound the presentation of the region and
 its content, and (2) to provide a temporal context in which animations of region
 styles may be effected.</p>
-<p>For example, an author may wish a region that is otherwise empty, but
+<p>For example, an author may wish to specify a region that is otherwise empty, but
 may have a visible background color to be presented starting at some time and
 continuing over the region's duration.  The simple duration of the region serves
 additionally to scope the presentation effects of content that is targeted to the
-region. An author may also wish to move a region within the root container
-extent or change a region's background color by means of animation effects. In
+region. An author may also wish to move a region within the <emph>Root Container Region</emph>
+or change a region's background color by means of animation effects. In
 both of these cases, it is necessary to posit an active time interval for a
 region.</p>
 </note>
@@ -7252,9 +7135,9 @@ a <el>region</el> element, then it must be interpreted as having
 href="#metadata-attribute-role"><att>ttm:role</att></loc> attribute is
 specified on a <el>region</el> element, then it must adhere to the
 value syntax defined by <specref
-ref="metadata-attribute-role-syntax"/>, and where the role(s) identified
-by this attribute expresses the semantic role(s) of the region
-independently from the semantic role(s) of any content targeted to
+ref="metadata-attribute-role-syntax"/>, and where the roles identified
+by this attribute express the semantic roles of the region
+independently from the semantic roles of any content targeted to
 (associated with) the region.</p>
 </div3>
 </div2>
@@ -7304,16 +7187,14 @@ then a <emph>default region</emph> is implied with the following characteristics
 <p>the identity of the default region is considered to be anonymous;</p>
 </item>
 <item>
-<p>the extent of the default region is the same as the root container
-region;</p>
+<p>the extent of the default region is the same as the extent of the <emph>Root Container Region</emph>;</p>
 </item>
 <item>
-<p>the temporal interval of the default region is the same as temporal
-interval of the <emph>Document Instance</emph>;</p>
+<p>the temporal interval of the default region is the same as the interval defined by the <emph>Root Temporal Extent</emph>;</p>
 </item>
 </ulist>
 <p>Furthermore, if no <loc
-href="#layout-vocabulary-region"><el>region</el></loc> element was
+href="#layout-vocabulary-region"><el>region</el></loc> element is
 specified, then the <loc
 href="#layout-attribute-region"><att>region</att></loc> attribute must
 not be specified on any content element in the <emph>Document Instance</emph>.</p>
@@ -7366,6 +7247,11 @@ form, <emph>DOC<sub>source</sub></emph>&thinsp;,
 to an intermediate
 synchronic document form,
 <emph>DOC<sub>inter</sub></emph>&thinsp;, as follows:</p>
+
+<glist>
+<gitem>
+<label>[construct intermediate document]</label>
+<def>
 <olist>
 <item>
 <p>for each temporally active region <emph>R</emph>, replicate the
@@ -7376,7 +7262,8 @@ headed by the <el>body</el> element;</p>
 <item>
 <p>evaluating this sub-tree in a postorder traversal, prune elements if they
 are not a content element, if they are temporally inactive, if they are empty,
-or if they aren't associated with region <emph>R</emph>;</p>
+or if they aren't associated with region <emph>R</emph> according to the
+<phrase role="strong">[associate region]</phrase>;</p>
 </item>
 <item>
 <p>if the pruned sub-tree is non-empty, then reparent it to the <emph>R</emph>
@@ -7397,6 +7284,11 @@ be descendants of the element's parent. When <emph>prune</emph> is used in
 reference to an attribute, it means that attribute is to be removed from its
 associated (owning) element node.</p>
 </note>
+</def>
+</gitem>
+<gitem>
+<label>[associate region]</label>
+<def>
 <p>A content element is associated with a region according
 to the following ordered rules, where the first rule satisfied
 is used and remaining rules are skipped:</p>
@@ -7419,41 +7311,9 @@ attribute;</p></item>
 then the element is associated with the default region;</p></item>
 <item><p>the element is not associated with any region.</p></item>
 </olist>
-<!--
-<p>The pseudo-code shown in <specref ref="content-hierarchy-region-mapping"/>
-provides one possible algorithm that implements these processing steps.</p>
-<table id="content-hierarchy-region-mapping" role="example">
-<caption>Example &ndash; Content Hierarchy Region Mapping</caption>
-<tbody>
-<tr>
-<td>
-<eg>
-PREPARE-CONTENT ( D ) := 
-  foreach R in SELECT ( D, "/tt/head/layout/region" )
-    if TEMPORALLY-ACTIVE? ( R )
-      APPEND-CHILDREN ( R, SELECT ( D, "/tt/body" ) )
-      foreach E in POSTORDER-TRAVERSE ( R )
-        if ! CONTENT-ELEMENT? ( E ) or ! TEMPORALLY-ACTIVE? ( E ) or EMPTY? ( E ) or REGION-OF ( E ) != R
-            then PRUNE ( E )
-  PRUNE ( SELECT ( D, "/tt/body" ) )
-  PRUNE ( SELECT ( D, "//*/@region" ) )
-  PRUNE ( SELECT ( D, "//*/@begin" ) )
-  PRUNE ( SELECT ( D, "//*/@end" ) )
-  PRUNE ( SELECT ( D, "//*/@dur" ) )
- 
-REGION-OF ( E ) :=
-  if NULL? ( E )
-    return NULL
-  else if HAS-ATTRIBUTE? ( E, "region" )
-    return VALUE-OF-ATTRIBUTE ( E, "region" )
-  else
-    return REGION-OF ( PARENT-OF ( E ) )
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
--->
+</def>
+</gitem>
+</glist>
 <p>The result of performing the processing described above will be a sequence of
 <emph>N</emph> intermediate  synchronic
 <emph>Document Instances</emph>,
@@ -7512,7 +7372,7 @@ ref="semantics-style-resolution-process-overall"/>;</p>
 <p>map the <el>tt</el> element to an <el>fo:root</el> element, populated
 initially with an <el>fo:layout-master-set</el> element that contains a valid
 <el>fo:simple-page-master</el> that, in turn, contains an
-<el>fo:region-body</el> child, where the root container extent expressed on the
+<el>fo:region-body</el> child, where the extent of the <emph>Root Container Region</emph> expressed on the
 <el>tt</el> element is mapped to <att>page-width</att> and
 <att>page-height</att> attributes on the <el>fo:simple-page-master</el>
 element;</p>
@@ -7606,29 +7466,6 @@ formatting object element that relates that element to the input element that
 resulted in that formatting object element;</p>
 </item>
 </olist>
- <!-- old definition
- <p> For each resulting XSL FO document instance
-  <emph>DOC<sub>FO</sub></emph>,
-if processing
-requires presentation on a visual medium, then apply the formatting semantics
-prescribed by <bibref ref="xsl11"/> in order to produce an XSL FO area tree that
-may then be subsequently rendered onto the visual medium.</p>
-<note role="elaboration">
-<p>In the XSL FO area tree produced by formatting
-<emph>DOC<sub>FO</sub></emph>, the <code>page-viewport-area</code>,
-which is generated by <code>fo:page-sequence</code> element by
-reference to the sole generated <code>fo:simple-page-master</code>
-element, corresponds to the <emph>root container region</emph> defined
-above in <specref ref="definitions"/>.</p>
-</note>
-<note>
-<p>Due to the possible presence of TTML style properties
-or style property values in a given DFXP document instance for which
-there is no <bibref ref="xsl11"/> counterpart, the use of a compliant <bibref ref="xsl11"/> formatting processor
-is not necessarily sufficient to satisfy the presentation
-semantics defined by this specification.</p>
-</note>
---> 
 <p>For each resulting document instance F, if processing requires presentation on a 
 visual medium, then apply formatting and rendering semantics consistent with that 
 prescribed by <bibref ref="xsl11"/>.</p>
@@ -7638,7 +7475,7 @@ an <bibref ref="xsl11"/> formatting processor,
 the <code>page-viewport-area</code>,
 which is generated by <code>fo:page-sequence</code> element by
 reference to the sole generated <code>fo:simple-page-master</code>
-element, would correspond to the <emph>root container region</emph> defined
+element, would correspond to the <emph>Root Container Region</emph> defined
 above in <specref ref="definitions"/>.</p>
 </note>
 <note>
@@ -7676,14 +7513,14 @@ ref="region-mapping-example-1-s"/>.</p>
 </tbody>
 </table>
 <p>In the above document, the content hierarchy consists of two divisions, each
-containing two paragraphs. This content is targeted (selected into) one of two
+containing two paragraphs. This content is targeted (associated with) one of two
 non-overlapping regions that are styled identically except for their position
 and their foreground colors, the latter of which is inherited by and applies to
 the (and, in this case, anonymous) spans reparented into the regions.</p>
 <p>The following, first intermediate document shows the synchronic state at time
 interval [0,1), during which time only division <code>d1</code> is temporally active,
 and where paragraphs <code>p1</code> and <code>p2</code> (and their ancestors)
-are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
+are associated with regions <code>r1</code> and <code>r2</code>, respectively.</p>
 <note>
 <p>The intermediate documents shown below are not valid <emph>Document Instances</emph>,
 but rather, are representations of possible internal processing states used for
@@ -7699,15 +7536,9 @@ didactic purposes.</p>
 </tr>
 </tbody>
 </table>
-<p>
-  <!-- old text 
-  An XSL FO document instance produced by performing flow processing
-  upon the first intermediate document is shown below.
-  -->
-  An XSL FO document instance that would yield rendering consistent with TTML, and 
-  which may be produced by performing flow processing upon the first intermediate 
-  document is illustrated below.
-</p>
+<p>An XSL FO document instance that would yield rendering consistent with TTML, and 
+which may be produced by performing flow processing upon the first intermediate 
+document is illustrated below.</p>
 <table id="region-mapping-example-1-f0" role="example">
 <caption>Example &ndash; XSL FO Document &ndash; [0s,1s)</caption>
 <tbody>
@@ -7721,9 +7552,9 @@ didactic purposes.</p>
 <p>The following, second intermediate document shows the synchronic state at
 time interval [1,2), at which time both divisions <code>d1</code> and
 <code>d2</code> are temporally active, and where paragraphs <code>p1</code> and
-<code>p4</code> (and their ancestors) are selected into region <code>r1</code>
+<code>p4</code> (and their ancestors) are associated with region <code>r1</code>
 and paragraphs <code>p2</code> and <code>p3</code> (and their ancestors) are
-selected into region <code>r2</code>.</p>
+associated with region <code>r2</code>.</p>
 <table id="region-mapping-example-1-i1" role="example">
 <caption>Example &ndash; Intermediate Document &ndash; [1s,2s)</caption>
 <tbody>
@@ -7737,7 +7568,7 @@ selected into region <code>r2</code>.</p>
 <p>The following, third intermediate document shows the synchronic state at time
 interval [2,3), at which time only division <code>d2</code> is temporally active,
 and where paragraphs <code>p4</code> and <code>p3</code> (and their ancestors)
-are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
+are associated with regions <code>r1</code> and <code>r2</code>, respectively.</p>
 <table id="region-mapping-example-1-i2" role="example">
 <caption>Example &ndash; Intermediate Document &ndash; [2s,3s)</caption>
 <tbody>
@@ -7752,12 +7583,6 @@ are selected into regions <code>r1</code> and <code>r2</code>, respectively.</p>
 </div2>
 <div2 id="semantics-line-layout">
 <head>Line Layout</head>
-  <!--
-<p>The semantics of line layout, including line breaking, defined by 
-<bibref ref="xsl11"/> apply to the performance of the composition and layout of
-lines for presentation processing of a document instance on a visual medium.</p>
--->
-  
 <p>If a profile that applies to a <emph>Document Instance</emph>
 requires use of the <loc
 href="#feature-lineBreak-uax14">#lineBreak-uax14</loc> feature
@@ -7970,14 +7795,6 @@ metric
 </tr>
 </tbody>
 </table>
-<!--
-<p>If a &lt;timeExpression&gt; is expressed in terms of an
-<emph>offset-time</emph> and no <emph>metric</emph> term is specified,
-then the default metric specified by a
-<att>ttp:defaultTimeMetric</att> parameter is used. If no
-default metric is specified, then the time count must be interpreted
-as seconds.</p>
--->
 <p>If a &lt;timeExpression&gt; is expressed in terms of a
 <emph>clock-time</emph>, then leading zeroes are used when expressing hours,
 minutes, seconds, and frames less than 10. Minutes are constrained to the range
@@ -8047,44 +7864,6 @@ expressions are considered to be equivalent to either offset
 based timing or event based timing in <bibref ref="smil21"/>, where the specific semantics of
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
-<!--
-<item>
-<p>If the governing time base is <code>smpte</code> with <code>continuous</code> marker mode,
-then time expressions must be interpreted as follows:</p>
-<ulist>
-<item>
-<p>If the time expression is an <code>offset-time</code> expression, then it must be
-interpreted as equivalent to offset based timing in <bibref ref="smil21"/>, where the
-offset is in relationship to the applicable implicit syncbase.</p>
-</item>
-<item>
-<p>If the time expression is a <code>clock-time</code> expression, then it must be
-interpreted as equivalent to offset based timing in <bibref ref="smil21"/>, where the
-offset is in relationship to the <emph>Synthetic SMPTE Document Syncbase</emph>. For example,
-if the begin time of this synthetic syncbase is associated with the
-time code <code>10:00:00:00.0</code>, then the appearance of time expression <code>11:00:00:00.0</code>
-is interpreted as equivalent to expressing an <code>offset-time</code> expression
-of <code>1h</code> where the applicable implicit syncbase is the <emph>Synthetic SMPTE Document Syncbase</emph>.</p>
-</item>
-</ulist>
-</item>
-<item>
-<p>If the governing time base is <code>smpte</code> with <code>discontinuous</code> marker mode,
-then time expressions must be interpreted as follows:</p>
-<ulist>
-<item>
-<p>If the time expression is an <code>offset-time</code> expression, then it must be
-interpreted as an error.</p>
-</item>
-<item>
-<p>If the time expression is a <code>clock-time</code> expression, then it must be
-interpreted as equivalent to marker values produced by an external marker event
-source, in which case the time expression is equivalent to event
-based timing in <bibref ref="smil21"/>.</p>
-</item>
-</ulist>
-</item>
--->
 </ulist>
 </div2>
 </div1>
@@ -8195,10 +7974,10 @@ styling is illustrated below:</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the root container region is divided into a
+<p>In the above example, the <emph>Root Container Region</emph> is divided into a
 cell grid of 40 columns and 16 rows. A region, <code>r1</code>, with
 dimensions of 24 columns and 2 rows is then positioned within the
-root container region, with its position varying over time in order to
+<emph>Root Container Region</emph>, with its position varying over time in order to
 create an effect of moving the region, which may be desirable so as
 to avoid obscuring characters in an underlying video with captions.</p>
 </note>
@@ -11485,10 +11264,14 @@ express maximum compliance for both transformation and presentation processing.<
 <blist>
 <bibl id="css2" key="CSS2">Bert Bos et al.,
 <titleref
-href="http://www.w3.org/TR/1998/REC-CSS2-19980512/">Cascading
-Style Sheets, Level 2</titleref>, W3C Recommendation, 12
-May 1998. (See
-<xspecref href="http://www.w3.org/TR/1998/REC-CSS2-19980512/">http://www.w3.org/TR/1998/REC-CSS2-19980512/</xspecref>.)
+href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading
+Style Sheets, Level 2 Revision 1</titleref>, W3C Recommendation, 07 June 2011.
+(See <xspecref href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</xspecref>.)
+</bibl>
+<bibl id="css3-color" key="CSS3 Color">Tantek &Ccedil;elik and Chris Lilley,
+<titleref href="http://www.w3.org/TR/2011/REC-css3-color-20110607/">CSS Color
+Module Level 3</titleref>, W3C Recommendation, 07 June 2011. (See
+<xspecref href="http://www.w3.org/TR/2011/REC-css3-color-20110607/">http://www.w3.org/TR/2011/REC-css3-color-20110607/</xspecref>.)
 </bibl>
 <bibl id="gps" key="GPS">
 <titleref href="http://tycho.usno.navy.mil/gpsinfo.html">Global
@@ -11532,18 +11315,18 @@ Agent Accessibility Guidelines 1.0</titleref>, W3C Recommendation, 17
 December 2002. (See
 <xspecref href="http://www.w3.org/TR/2002/REC-UAAG10-20021217/">http://www.w3.org/TR/2002/REC-UAAG10-20021217/</xspecref>.)
 </bibl>
+<bibl id="uax14" key="UAX14">Asmus Freytag, <titleref
+href="http://www.unicode.org/reports/tr14/tr14-17.html">Line Breaking
+Properties</titleref>, Unicode Consortium, 29 August 2005. (See
+<xspecref
+href="http://www.unicode.org/reports/tr14/tr14-17.html">http://www.unicode.org/reports/tr14/tr14-17.html</xspecref>.)
+</bibl>
 <bibl id="utc" key="UTC">
 Recommendation TF.460,
 <titleref
 href="http://www.itu.int/">Standard-Frequency and Time-Signal
 Emissions</titleref>, International
 Telecommunciations Union, Radio Sector (ITU-R).
-</bibl>
-<bibl id="uax14" key="UAX14">Asmus Freytag, <titleref
-href="http://www.unicode.org/reports/tr14/tr14-17.html">Line Breaking
-Properties</titleref>, Unicode Consortium, 29 August 2005. (See
-<xspecref
-href="http://www.unicode.org/reports/tr14/tr14-17.html">http://www.unicode.org/reports/tr14/tr14-17.html</xspecref>.)
 </bibl>
 <bibl id="wcag" key="WCAG">Ben Caldwell, et al., Eds.,
 <titleref href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web
@@ -11570,20 +11353,13 @@ W3C Recommendation, 28 January 2009. (See
 W3C Recommendation, 09 September 2005. (See
 <xspecref href="http://www.w3.org/TR/2005/REC-xml-id-20050909/">http://www.w3.org/TR/2005/REC-xml-id-20050909/</xspecref>.)
 </bibl>
-<bibl id="xml-media" key="XML Media">Makato Murata, Simon St. Laurent,
-Kan Khon, Eds., <titleref
-href="http://www.rfc-editor.org/rfc/rfc3023.txt">XML Media Types</titleref>,
-RFC 3023, January 2001, IETF.(See
-<xspecref
-href="http://www.rfc-editor.org/rfc/rfc3023.txt">http://www.rfc-editor.org/rfc/rfc3023.txt</xspecref>.)
-</bibl>
 <bibl id="infoset" key="XML InfoSet">John Cowan and Richard Tobin, Eds.,
 <titleref href="http://www.w3.org/TR/2004/REC-xml-infoset-20040204/">XML Information Set (Second Edition)</titleref>,
 W3C Recommendation, 04 February 2004. (See
 <xspecref href="http://www.w3.org/TR/2004/REC-xml-infoset-20040204/">http://www.w3.org/TR/2004/REC-xml-infoset-20040204/</xspecref>.)
 </bibl>
-<bibl id="rfc3023" key="XML Media Types">Makato Murata, et al.,
-<titleref
+<bibl id="xml-media" key="XML Media Types">Makato Murata, Simon St. Laurent,
+Kan Khon, Eds., <titleref
 href="http://www.rfc-editor.org/rfc/rfc3023.txt">XML Media Types</titleref>,
 RFC 3023, January 2001, IETF.(See
 <xspecref
@@ -11631,11 +11407,6 @@ Consumer Electronics Association (CEA).
 CEA-708-D,
 <titleref href="http://www.ce.org/">Digital Television (DTV) Closed Captioning</titleref>, CEA Standard,
 Consumer Electronics Association (CEA).
-</bibl>
-<bibl id="css3-color" key="CSS3 Color">Tantek &Ccedil;elik and Chris Lilley,
-<titleref href="http://www.w3.org/TR/2003/CR-css3-color-20030514/">CSS3 Color
-Module</titleref>, W3C Candidate Recommendation, 14 May 2003. (See
-<xspecref href="http://www.w3.org/TR/2003/CR-css3-color-20030514/">http://www.w3.org/TR/2003/CR-css3-color-20030514/</xspecref>.)
 </bibl>
 <bibl id="dcmes" key="DCMES 1.1">Dublin Core Metadata Initiative,
 <titleref href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1: Reference Description</titleref>. (See
@@ -12650,15 +12421,13 @@ above.</p>
 <td><code>-inherit</code></td>
 <td>1,7</td>
 </tr>
-<!--
 <tr>
 <td><loc href="#style-attribute-fontStyle"><code>tts:fontStyle</code></loc></td>
 <td><code>font-style</code></td>
 <td><bibref ref="xsl11"/></td>
-<td><code>-inherit</code>, uses alias <code>reverseOblique</code> for <code>backslant</code></td>
+<td><code>-inherit</code>, <code>-backslant</code></td>
 <td>1</td>
 </tr>
--->
 <tr>
 <td><loc href="#style-attribute-fontWeight"><code>tts:fontWeight</code></loc></td>
 <td><code>font-weight</code></td>
@@ -12691,7 +12460,7 @@ above.</p>
 <td><loc href="#style-attribute-overflow"><code>tts:overflow</code></loc></td>
 <td><code>overflow</code></td>
 <td><bibref ref="xsl11"/></td>
-<td><code>-inherit</code>, <code>-auto</code>, <code>-error-if-overflow</code>;</td>
+<td><code>-inherit</code>, <code>-auto</code>, <code>-error-if-overflow</code></td>
 <td>8</td>
 </tr>
 <tr>
@@ -13717,14 +13486,5 @@ each inline element coincides with the end of the <el>div</el> element's paralle
 </div2>
 </inform-div1>
 &acknowledgements;
-
-<!-- new change log format - not used yet -->
-<!--
-<inform-div1 id="change-log">
-<head>Change Log</head>
-<p>@@This paragraph will be replaced by the change log. DO NOT TOUCH@@</p>
-</inform-div1>
--->
-
 </back>
 </spec>

@@ -552,6 +552,15 @@ item as defined by <bibref ref="infoset"/>, &sect;2.6.</p>
 </def>
 </gitem>
 <gitem>
+<label>Computed Cell Size</label>
+<def>
+<p>The size (extent) of a cell computed by dividing the width of the <emph>Root Container
+Region</emph> (in pixels) by the column count, i.e., the number of cells in the horizontal axis, and by dividing
+the height of the <emph>Root Container Region</emph> (in pixels) by the row count, i.e., the number of cells in the vertical
+axis, where the column and row counts are determined by the <att>ttp:cellResolution</att> parameter attribute.</p>
+</def>
+</gitem>
+<gitem>
 <label>Content Processor</label>
 <def>
 <p>A processing system capable of importing (receiving) Timed Text Markup Language
@@ -680,6 +689,13 @@ constraints specify by <specref ref="reduced-infoset"/>.</p>
 to a <emph>Document Instance</emph>. For example, an aggregate audio/video media
 object for which a <emph>Document Instance</emph> provides caption or subtitle
 information, and with which that <emph>Document Instance</emph> is associated.</p>
+</def>
+</gitem>
+<gitem>
+<label>Related Media Object Region</label>
+<def>
+<p>When a non-null <emph>Related Media Object</emph> exists, the region in which
+a presentation processor presents this media object.</p>
 </def>
 </gitem>
 <gitem>
@@ -2526,8 +2542,8 @@ time.</p>
 <p>If a value of <code>discontinuous</code> applies, then time
 expressions must not be converted to real time
 coordinates, arithmetical operators (addition, multiplication) are not
-defined on time expressions, and, consequently, any expression of a
-duration must be considered to be invalid.</p>
+defined on time expressions, and, consequently, any (well-formed)
+expression of a duration must be considered to be invalid.</p>
 <note role="explanation">
 <p>When operating with <code>smpte</code> time base and
 <code>discontinuous</code> marker mode, there is no effective time coordinate
@@ -2823,17 +2839,22 @@ which content regions are located and presented. If no <att>tts:extent</att>
 attribute is specified, then the spatial extent of the <emph>Root Container Region</emph> is
 considered to be determined by the <emph>Document Processing Context</emph>.
 The origin of the <emph>Root Container Region</emph> is determined by the <emph>Document Processing Context</emph>.</p>
+<note role="clarification">
+<p>In the absence of other requirements, and if a <emph>Related Media Object</emph> exists, then it is recommended
+that the <emph>Document Processing Context</emph> determine that:</p>
+<ulist>
+<item><p>if no <att>tts:extent</att> is specified on the root <el>tt</el> element, the extent of the <emph>Root Container Region</emph> be
+established as equal to the extent of the <emph>Related Media Object Region</emph>; and</p></item>
+<item><p>the origin of the <emph>Root Container Region</emph> be established so that this region is centered in the
+<emph>Related Media Object Region</emph>.</p></item>
+</ulist>
+</note>
 <note role="elaboration">
 <p>If an author desires to signal the (storage or image) aspect ratio of the <emph>Root Container Region</emph>
 without specifying its resolution, then this may be accomplished by using metadata specified
 in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bibref ref="smpte2052"/>, &sect;5.4.4.
 This would permit, for example, the interchange of information that reflects the
 the semantics of <bibref ref="cea708d"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
-</note>
-<note role="clarification">
-<p>In the absence of other requirements, and if a <emph>Related Media Object</emph> exists, then it is recommended
-that the origin of the <emph>Root Container Region</emph> be established so that it is centered in the region within
-which the <emph>Related Media Object</emph> is presented.</p>
 </note>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
@@ -3451,7 +3472,16 @@ element types:</p>
 </ulist>
 <p>If specified, the value of a <att>style</att> attribute must
 adhere to the <code>IDREFS</code> data type defined by <bibref ref="xsd-2"/>,
-&sect; 3.3.10.</p>
+&sect; 3.3.10, and, furthermore, each IDREF must reference a <el>style</el> element
+which has a <el>styling</el> element as an ancestor.</p>
+<p>If the same IDREF, <emph>ID<sub>1</sub></emph>, appears more than one time in the value of a <att>style</att>
+attribute, then there should be an intervening IDREF, <emph>ID<sub>2</sub></emph>, where 
+<emph>ID<sub>2</sub></emph> is not equal to <emph>ID<sub>1</sub></emph>.</p>
+<note role="explanation">
+<p>This constraint is intended to discourage the use of redundant referential styling while still
+allowing the same style to be referenced multiple times in order to potentially override prior
+referenced styles, e.g., when an intervening, distinct style is referenced in the IDREFS list.</p>
+</note>
 <note role="usage">
 <p>See the specific element type definitions that permit use of the
 <att>style</att> attribute, as well as <specref
@@ -4021,20 +4051,12 @@ and <emph>height</emph>, where the first specification is the
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express extent must be non-negative.</p>
 <p>If the value of this attribute is <code>auto</code>, then the initial value
 of the style property must be considered to be the same as the extent of the <emph>Root Container Region</emph>.</p>
-<p>
-The extent of the <emph>Root Container Region</emph> is determined either by a
+<p>The extent of the <emph>Root Container Region</emph> is determined either by a
 <att>tts:extent</att> specified on the <el>tt</el> element, if
-present, or by the external authoring context, if not present.
-If
-<att>tts:extent</att> is specified on the <el>tt</el> element,
-then
-the width and height
-must be
-expressed in terms of two
-<loc href="#style-value-length">&lt;length&gt;</loc> specifications,
-and
-these specifications must be expressed as non-percentage,
-definite lengths using pixel units.</p>
+present, or as described by <specref ref="document-structure-vocabulary-tt"/> if not present.
+If <att>tts:extent</att> is specified on the <el>tt</el> element, then
+the width and height must be expressed in terms of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
+and these specifications must be expressed as non-percentage, definite lengths using pixel units.</p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>auto</code> were specified.</p>
@@ -4216,7 +4238,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td>relative to parent element's font size</td>
+<td>relative to parent element's font size, or if no parent element, then relative to the <emph>Computed Cell Size</emph></td>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
@@ -4245,6 +4267,17 @@ value <code>1c</code> were specified.</p>
 <note role="elaboration">
 <p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
 the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.</p>
+</note>
+<note role="example">
+<p>As specified above, the use of percentage units to express font size are interpreted as
+relative to <emph>Computed Cell Size</emph> when there is no parent element. For example, if cell resolution
+is 32 by 15, and the extent of the <emph>Root Container Region</emph> is 640 by 480, then the
+<emph>Computed Cell Size</emph> is [20px, 32px], i.e., 640px/32 (width) and 480px/15 (height). Consequently, if
+<att>tts:fontSize</att> were specified as 75% on the root <el>tt</el> element, then this would
+be equivalent to specifying 24px, i.e., 32px cell height * 75%.
+If two length expressions (independent horizontal and vertical font scaling) were specified, e.g.,
+"80% 75%", then this would be equivalent to specifying "16px 24px", i.e., 80% of 20px cell width is
+16px, and 75% of 32px cell height is 24px.</p>
 </note>
 <p>The <att>tts:fontSize</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontSize-example-1" role="example">
@@ -4751,7 +4784,7 @@ as a style property only to those element types indicated in the following table
 then they must be interpreted as <emph>x</emph> and <emph>y</emph> coordinates, where the first specification
 is the <emph>x</emph> coordinate, and the second specification is the <emph>y</emph> coordinate.</p>
 <p>If the value of this attribute is <code>auto</code>, then the initial value
-of the style property must be considered to be the same as the origin of the <emph>Root Container Origin</emph>.</p>
+of the style property must be considered to be the same as the origin of the <emph>Root Container Region</emph>.</p>
 <p>If a specified value of this attribute is not supported,
 then a presentation processor must interpret the attribute as if the
 value <code>auto</code> were specified.</p>
@@ -5379,6 +5412,7 @@ present, then it denotes the outline color; if no <emph>color</emph> term is
 present, the computed value of the <att>tts:color</att> applies.  The first
 <emph>length</emph> term denotes the outline thickness and the second length
 term, if present, indicates the blur radius.</p>
+<p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express thickness and blur radius must be non-negative.</p>
 <note role="elaboration">
 <p>When a <loc href="#style-value-length">&lt;length&gt;</loc> expressed in
 cells is used in a <att>tts:textOutline</att> value,
@@ -5996,15 +6030,12 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-alpha"/></p></item>
 <item><p><specref ref="style-value-color"/></p></item>
 <item><p><specref ref="style-value-digit"/></p></item>
-<item><p><specref ref="style-value-duration"/></p></item>
 <item><p><specref ref="style-value-familyName"/></p></item>
 <item><p><specref ref="style-value-genericFamilyName"/></p></item>
 <item><p><specref ref="style-value-hexDigit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
 <item><p><specref ref="style-value-namedColor"/></p></item>
-<item><p><specref ref="style-value-quotedString"/></p></item>
-<item><p><specref ref="style-value-string"/></p></item>
 </ulist>
 <p>In the syntax representations defined in this section, no
 linear whitespace (LWSP) is implied or permitted between tokens
@@ -6112,40 +6143,16 @@ to the closest supported value.</p>
 </table>
 </div3>
 <div3 id="style-value-duration">
-<head>&lt;duration&gt;</head>
-<p>A &lt;duration&gt; expression is used to express a temporal duration value.</p>
-<table id="duration-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;duration&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;duration&gt;
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+ ( "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+ )? metric
-
-metric
-  : "s"                 // seconds
-  | "ms"                // milliseconds
-  | "f"                 // frames
-  | "t"                 // ticks
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>It is an error to omit the metric component of a duration.</p>
+<head>Deleted</head>
+<note>
+<p>The information from this section has been removed due to lack of any normative
+use within this specification. This section is retained in its empty form
+in order to prevent section renumbering.</p>
+</note>
 </div3>
 <div3 id="style-value-familyName">
 <head>&lt;familyName&gt;</head>
 <p>A &lt;familyName&gt; expression specifies a font family name.</p>
-<p>If the name contains a quotation delimiter character,
-then it must be expressed as a
-&lt;quotedString&gt;. If the name contains a
-whitespace character,
-then it should be expressed as a
-&lt;quotedString&gt;; however, if it is expressed as a &lt;string&gt;, then it
-must not contain a <code>COMMA</code> ',' character.</p>
-
 <table id="familyName-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;familyName&gt;</caption>
 <tbody>
@@ -6153,13 +6160,89 @@ must not contain a <code>COMMA</code> ',' character.</p>
 <td>
 <eg xml:space="preserve">
 &lt;familyName&gt;
-  : <loc href="#style-value-string">&lt;string&gt;</loc>
-  | <loc href="#style-value-quotedString">&lt;quotedString&gt;</loc>
+  : unquoted-string
+  | quoted-string
+
+unquoted-string
+  : identifier ( lwsp identifier )*
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+
+identifier
+  : [-]? identifier-start identifier-following*
+
+identifier-start
+  : [_a-zA-Z]
+  | non-ascii-or-c1
+  | escape
+
+identifier-following
+  : [_a-zA-Z0-9-]
+  | non-ascii-or-c1
+  | escape
+
+non-ascii-or-c1
+  : [^\0-\237]
+
+escape
+  : '\\' <emph>char</emph>
+
+quoted-string
+  : double-quoted-string
+  | single-quoted-string
+
+double-quoted-string
+  : '"' ( [^"\\] | escape )+ '"'
+
+single-quoted-string
+  : "'" ( [^'\\] | escape )+ "'"
 </eg>
+<!-- " -->
 </td>
 </tr>
 </tbody>
 </table>
+<p>In addition to adhering to the syntax rules specified above, the following semantic rules apply:</p>
+<ulist>
+<item><p>the semantic value of a &lt;familyName&gt; expression is the semantic value of its <code>unquoted-string</code> or <code>quoted-string</code>
+non-terminal, according to whichever applies;</p></item>
+<item><p>the semantic value of an <code>unquoted-string</code> non-terminal is a pair <code>&lt;</code><emph>quoted</emph>, <emph>content</emph><code>&gt;</code>,
+where <emph>quoted</emph> is a boolean <code>false</code>, and
+where <emph>content</emph> is the result of appending the value of each <code>identifier</code>
+non-terminal, in lexical order, where the value of each identifier is preceded by a single SPACE (U+0020) character if it is not the first
+identifier;</p></item>
+<item><p>the semantic value of a <code>quoted-string</code> non-terminal is a pair <code>&lt;</code><emph>quoted</emph>, <emph>content</emph><code>&gt;</code>,
+where <emph>quoted</emph> is a boolean <code>true</code>, and
+where <emph>content</emph> is the unquoted content of the quoted string, i.e., the sequence of characters between the delimiting quotes.</p></item>
+<item><p>the semantic value of an <code>escape</code> non-terminal is the value of the escaped <code>char</code>;</p></item>
+<item><p>a &lt;familyName&gt; that takes the form of an <code>unquoted-string</code> that contains an <code>identifier</code> that
+starts with two <code>-</code> HYPHEN-MINUS (U+002D) characters must be considered to be invalid;</p></item>
+<item><p>a &lt;familyName&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
+matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must be interpreted as that &lt;genericFamilyName&gt;;</p></item>
+<item><p>a &lt;familyName&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
+matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must not be interpreted as that &lt;genericFamilyName&gt;, but as
+the actual name of a non-generic font family.</p></item>
+</ulist>
+<note role="notation">
+<p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
+to the <code>Char</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.2.</p>
+</note>
+<note role="elaboration">
+<p>The <code>{unicode}</code> escape mechanism defined by <bibref ref="css2"/>&nbsp;&sect;4.1.1
+is not supported by this syntax; rather, authors are expected to either (1) directly encode the character
+using the document encoding or (2) use an XML character reference according to
+<bibref ref="xml10"/>&nbsp;&sect;4.1. When a syntactically significant character needs to be used
+without its normal syntactic interpretation, it may be be escaped using the backslash
+(reverse solidus) <code>escape</code> non-terminal specified above.</p>
+<p>When using the backslash (reverse solidus) <code>escape</code> non-terminal, the above syntax does
+not place any restriction on what character may be escaped, e.g., <code>\\[\n\r\f0-9a-f]</code> are
+permitted. If one of these latter escapes appears in a &lt;familyName&gt; expression, then it will
+need to be converted to a <code>{unicode}</code> escape if it is to be used with a standard XSL-FO
+or CSS parser. In particular, a backslash followed by a newline is ignored by CSS, while it is not
+ignored by the above syntax. Such an unignored escaped newline would need to be represented using
+an equivalent <code>{unicode}</code> escape, such as <code>\a</code>, to order to express in CSS.</p>
+</note>
 </div3>
 <div3 id="style-value-genericFamilyName">
 <head>&lt;genericFamilyName&gt;</head>
@@ -6344,48 +6427,20 @@ subset of the set of named colors specified by <bibref ref="svg11"/>, &sect; 4.2
 </note>
 </div3>
 <div3 id="style-value-quotedString">
-<head>&lt;quotedString&gt;</head>
-<p>A &lt;quotedString&gt; is used to express a delimited string that may contain
-a whitespace or a quotation delimiter character. Two types of quotation delimiters
-are provided in order to accommodate strings that contain the other delimiter.</p>
-<table id="quotedString-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;quotedString&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;quotedString&gt;
-  : "\"" ( <emph>char</emph> - { "\"" } )* "\""
-  | "\'" ( <emph>char</emph> - { "\'" } )* "\'"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>In the above syntax representation, the syntactic element <emph><code>char</code></emph> must adhere to production
-[2] <code>Char</code> as defined by <bibref ref="xml10"/>&nbsp;&sect;
-2.2.</p>
+<head>Deleted</head>
+<note>
+<p>The information from this section has been incorporated into
+<specref ref="style-value-familyName"/>. This section is retained in its empty form
+in order to prevent section renumbering.</p>
+</note>
 </div3>
 <div3 id="style-value-string">
-<head>&lt;string&gt;</head>
-<p>A &lt;string&gt; expression consists of a sequence of characters where no character
-is a quotation delimiter character.</p>
-<table id="string-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;string&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;string&gt;
-  : ( <emph>char</emph> - { "\"" | "\'" } )+
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>In the above syntax representation, the syntactic element <emph><code>char</code></emph> must adhere to production
-[2] <code>Char</code> as defined by <bibref ref="xml10"/>&nbsp;&sect;
-2.2.</p>
+<head>Deleted</head>
+<note>
+<p>The information from this section has been incorporated into
+<specref ref="style-value-familyName"/>. This section is retained in its empty form
+in order to prevent section renumbering.</p>
+</note>
 </div3>
 </div2>
 <div2 id="semantics-style-resolution">
@@ -7151,6 +7206,10 @@ independently from the semantic roles of any content targeted to
 <head>region</head>
 <p>The <att>region</att> attribute is used to reference a <el>region</el>
 element which defines a space or area into which a content element is intended to be flowed.</p>
+<p>If specified, the value of a <att>region</att> attribute must
+adhere to the <code>IDREF</code> data type defined by <bibref ref="xsd-2"/>,
+&sect; 3.3.9, and, furthermore, this IDREF must reference a <el>region</el> element
+which has a <el>layout</el> element as an ancestor.</p>
 <p>The <att>region</att> attribute may be specified by an instance of the following
 element types:</p>
 <ulist>
@@ -7670,7 +7729,7 @@ a difference between two implied clock time expressions.</p>
 </note>
 <p>When a <emph>Document Instance</emph> specifies the use of the
 <code>smpte</code> time base and <code>discontinuous</code> marker
-mode, the <att>dur</att> attribute must not be specified on any
+mode, a (well-formed) <att>dur</att> attribute must not be specified on any
 element.</p>
 <p>The semantics of the <att>dur</att> attribute are those defined
 by <bibref ref="smil21"/>, &sect; 10.4.1,
@@ -8028,14 +8087,16 @@ used in a <emph>Document Instances</emph>:
 <head>metadata</head>
 <p>The <el>metadata</el> element functions as a generic container for metadata
 information.</p>
-<p>Metadata information may be expressed by a <el>metadata</el> element
-in one of two (non-mutually exclusive) manners: (1) by specifying one
-or more metadata attributes on the <el>metadata</el>
-element, and (2) by specifying one
-or more child elements
-in the <el>metadata</el> element
-that express metadata. Both types of metadata
-are referred to in this document as <emph>metadata items</emph>.</p>
+<p>A <el>metadata</el> element must not express <emph>metadata information</emph>
+by both (1) specifying this information in the form of one or more attributes and (2)
+specifying this information in the form of one or more child elements.  Both types
+of <emph>metadata information</emph> are referred to in this document as metadata
+items.</p>
+<note role="elaboration">
+<p>In other words, a given <el>metadata</el> element may specify metadata information
+either (1) as attributes, or (2) as child elements, but it may not specify both forms
+of metadata information together.</p>
+</note>
 <table id="elt-syntax-metadata" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: metadata</caption>
 <tbody>
@@ -8059,8 +8120,7 @@ are referred to in this document as <emph>metadata items</emph>.</p>
 <p>The meaning of a specific metadata item must be evaluated in the
 context of where it appears. The core vocabulary catalog permits an
 arbitrary number of <el>metadata</el> element children of any
-content element type except for the
-<el>tt</el> element. See specific element
+content element type except for the <el>tt</el> element. See specific element
 vocabulary definitions for any constraints that apply to such
 usage.</p>
 </note>
@@ -8436,6 +8496,10 @@ involved in the performance of the content.</p>
 <el>ttm:agent</el> element instances that appear
 as a descendent of the same <emph>Document Instance</emph> as
 that of the referring element.</p>
+<p>The same IDREF, <emph>ID</emph>, should not appear more than once in the value of a <att>ttm:agent</att> attribute.</p>
+<note role="explanation">
+<p>This constraint is intended to discourage the use of redundant agent references.</p>
+</note>
 <p>An example of the <att>ttm:agent</att> attribute is shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
@@ -8489,6 +8553,10 @@ token-char
 </tr>
 </tbody>
 </table>
+<p>The same <code>role</code> token, <emph>R</emph>, should not appear more than once in the value of a <att>ttm:role</att> attribute.</p>
+<note role="explanation">
+<p>This constraint is intended to discourage the use of redundant role tokens.</p>
+</note>
 <note role="extensibility">
 <p>All values of <att>ttm:role</att> that do not start with the prefix
 <code>x-</code> are reserved for future standardization.</p>

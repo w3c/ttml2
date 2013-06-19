@@ -45,12 +45,13 @@ div.exampleInner { background-color: #d5dee3;
 
 <span class="strong">Editorial Changes</span>
 
-* Add new terminology: Document Instance, Document Interchange Context, Document Processing
-  Context, Presentation Processor, Related Media Object, Root Temporal Extent, SMPTE Time Code,
-  Synthetic Document Syncbase, Synthetic SMPTE Document Syncbase, Transformation Processor
-  Valid Abstract Document Instance.
 * Change "MIME Media Types" to "Media Types" throughout.
 * Change "external time interval" to "Root Temporal Extent" throughout.
+* In 2.2, add new terminology: Computed Cell Size, Document Instance, Document Interchange
+  Context, Document Processing Context, Presentation Processor, Related Media Object,
+  Related Media Object Region, Root Temporal Extent, SMPTE Time Code, Synthetic Document
+  Syncbase, Synthetic SMPTE Document Syncbase, Transformation Processor, and Valid
+  Abstract Document Instance.
 * In 3.2.1, add notes elaborating intended meaning of "mandatory semantics" and "optional
   semantics".
 * In 4.1, change "normative schemas" to "schemas", since the included schemas do not define
@@ -98,6 +99,9 @@ div.exampleInner { background-color: #d5dee3;
   element's implicit duration.
 * In 7.1.1, add note indicating possible use of the SMPTE-TT defined m708:aspectRatio
   attribute in order to express storage aspect ratio.
+* In 7.1.1, add note recommending that the extent of the root container region be equal
+  to the extent of the related media object region, if one exists if no other requirement
+  applies;
 * In 7.1.1, add note recommending that the origin of the root container region be set so as
   to center this region in the presentation of a related media object (if it exists).
 * In 7.1.5, add note clarifying that a tt:p element implies a line break boundary.
@@ -115,29 +119,52 @@ div.exampleInner { background-color: #d5dee3;
   xs:IDREFS data type; this is not a new requirement, since it is already indicated in
   the syntax representation definitions of elements that permit this attribute. Here it
   provides a (redundant) reminder to the reader of this requirement.
-* In 8.2.7, clarify that a negative value in an extent is to be interpreted as causing
-  the corresponding region to be empty (zero in both dimensions).
+* In 8.2.1, clarify that IDREF in xs:IDREFS value of style attribute must reference a
+  style element that is a descendant of styling element.
+* In 8.2.1, clarify that duplicate IDREF in xs:IDREFS value of style attribute should
+  have an intervening IDREF that is not the same IDREF.
+* In 8.2.7, clarify that a negative value in an extent is not valid.
+* In 8.2.7, replace reference to "external authoring context" with reference to prose
+  in 7.1.1.
 * In 8.2.9, remove phrase "where font size is interpreted as a scaling transform to the
   font's design EM square", which has caused confusion for some readers, and is not
   intended to supplant or change the nominal interpretation of this property as defined
   by XSL-FO and CSS2.
 * In 8.2.9, replace "metrics" with "units".
+* In 8.2.9, clarify that meaning of percentage when expressed on root element (which has
+  no parent) is interpreted relative to cell size.
+* In 8.2.9, add note with example of using percentage on font size on root element.
+* In 8.2.9, clarify that a negative value in a font size is not valid.
+* In 8.2.12, clarify that a negative value in a line height is not valid.
 * In 8.2.14, remove "if specified, or the external authoring context, if not specified"
   from the first paragraph, since there is always a defined root container region.
+* In 8.2.16, clarify that a negative value in a padding is not valid.
 * In 8.2.20, clarify that if outline dimensions are expressed in cells, then the
   block progression cell resolution applies and is applied uniformly.
+* In 8.2.20, clarify that a negative value in thickness or blur radius is not valid.
 * In 8.3, add paragraph indicating that linear whitespace (LWSP) is not implied or
   permitted between tokens of style value expressions defined thereunder unless
   explicitly specified.
-* In 8.3.4, remove paragraph "When operating with smpte time base and discontinuous mode,
-  a duration expression must be considered to denote a duration in (local) real-time,
-  independently of the governing time base.", which contradicts normative language in
-  Section 6.2.6 (ttp:markerMode) that makes any expression of duration invalid in
-  smpte discontinuous mode.
+* In 8.3.4, remove contents of section since no normative (or other) use is made
+  of a &lt;duration&gt; syntax expression. Leave empty section in place in order
+  to prevent renumbering sections.
+* In 8.3.5, rewrite &lt;familyName&gt; syntax to clarify intention to be interoperable
+  with admissible XSL-FO and CSS values, with remaining exceptions being: (1) the
+  CSS 2.1 {unicode} escape is not supported, and (2) no constraint is placed on what
+  character may be escaped by a backslash (reverse solidus) escape, i.e., an escaped
+  newline is interpreted as a newline (and not ignored as with CSS).
+* In 8.3.11, move normative contents of this section into 8.3.5 which is the only use
+  of the &lt;quotedString&gt; syntax. Leave empty section in place in order
+  to prevent renumbering sections.
+* In 8.3.12, move normative contents of this section into 8.3.5 which is the only use
+  of the &lt;string&gt; syntax. Leave empty section in place in order
+  to prevent renumbering sections.
 * In 8.4.4.2, clarify that animation styling (produced by tt:set) is to be taken into
   account after nested styling and before implicit inheritance.
 * In 9.1.2, correctly state that the layout ancestor element is the nearest ancestor with a
   time interval, and not the tt element (although they happen to be the same).
+* In 9.2.1, clarify that IDREF value of region attribute must reference a region element
+  descendant of a layout element.
 * In 9.3.2, clarify meaning of term "prune".
 * In 9.3.2, remove non-normative, pseudo-code example of region mappingg algorithm.
 * In 9.3.2, add note recommending smooth transitions between rendition of intermediate
@@ -155,8 +182,15 @@ div.exampleInner { background-color: #d5dee3;
 * In 10.3.1, clarify that use of frames and sub-frames with clock time base is considered
   an error.
 * In 10.4, add references to new time expression semantics appendix (N).
+* In 12.1.1, improve language expressing mutual exclusion constraint on use of metadata
+  element to express either (1) attributes or (2) element children [but not both]. Add
+  note clarifying this even further.
+* In 12.2.1, clarify that a duplicate IDREF should not appear in xs:IDREFS value of
+  ttm:agent attribute.
 * In 12.2.2, add note suggesting use of infix organization identifier to prevent
   collision between custom role values. Add inline reference to role registry.
+* In 12.2.2, clarify that a duplicate token should not appear in xs:NMTOKENS value of
+  ttm:role attribute. Add note further explaining rationale is to avoide redundancy.
 * In Appendix B, remove inlined schemas (B.1 and B.2), retaining references to external
   ZIP archives that contain the schemas.
 * In Appendix C, update (1) charset optional parameter usage, encoding considerations,

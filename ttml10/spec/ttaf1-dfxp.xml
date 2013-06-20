@@ -4265,11 +4265,13 @@ units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
 <p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>1c</code> were specified.</p>
+then a presentation processor must interpret the attribute as if the closest supported value were
+specified.</p>
 <note role="elaboration">
 <p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
-the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.</p>
+the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.
+When a single &lt;length&gt; is expressed using cell units, then it refers to the height of
+the <emph>Computed Cell Size</emph>.</p>
 </note>
 <note role="example">
 <p>As specified above, the use of percentage units to express font size are interpreted as
@@ -4620,7 +4622,10 @@ value <code>normal</code> were specified.</p>
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.16.4.</p>
+&sect; 7.16.4. Furthermore, it is the intention of this specification that the
+allocation rectangle of a line be consistent with the <phrase role="strong">per-inline-height-rectangle</phrase>
+as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box stacking strategy be used.
+</p>
 </note>
 </div3>
 <div3 id="style-attribute-opacity">
@@ -7449,9 +7454,9 @@ defined by the simple page master produced above;</p>
 <item>
 <p>map each non-empty <el>region</el> element to an <el>fo:block-container</el>
 element with an <att>absolute-position</att> attribute with value
-<code>absolute</code>, and where the region's position and extent are mapped to equivalent
-<att>top</att>, <att>left</att>, <att>width</att>, and <att>height</att>
-attributes;</p>
+<code>absolute</code>, with <att>top</att>, <att>left</att>, <att>bottom</att>, and <att>right</att>
+attributes that express a rectangle equivalent to the region's origin and
+extent, and with a <att>line-stacking-strategy</att> attribute with value <code>line-height</code>;</p>
 </item>
 <item>
 <p>for each <el>body</el>, <el>div</el>, and <el>p</el> element that is not
@@ -8089,16 +8094,12 @@ used in a <emph>Document Instances</emph>:
 <head>metadata</head>
 <p>The <el>metadata</el> element functions as a generic container for metadata
 information.</p>
-<p>A <el>metadata</el> element must not express <emph>metadata information</emph>
-by both (1) specifying this information in the form of one or more attributes and (2)
-specifying this information in the form of one or more child elements.  Both types
-of <emph>metadata information</emph> are referred to in this document as metadata
-items.</p>
-<note role="elaboration">
-<p>In other words, a given <el>metadata</el> element may specify metadata information
-either (1) as attributes, or (2) as child elements, but it may not specify both forms
-of metadata information together.</p>
-</note>
+<p>Metadata information may be expressed with a <el>metadata</el> element by specifying
+(1) one or more metadata attributes on the <el>metadata</el> element,
+(2) one or more metadata child elements in the <el>metadata</el> element, or
+(3) a combination of metadata attributes and metadata child elements.  Both types
+of metadata information are referred to in this document as <emph>metadata
+items</emph>.</p>
 <table id="elt-syntax-metadata" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: metadata</caption>
 <tbody>
@@ -8120,8 +8121,8 @@ of metadata information together.</p>
 </table>
 <note role="explanation">
 <p>The meaning of a specific metadata item must be evaluated in the
-context of where it appears. The core vocabulary catalog permits an
-arbitrary number of <el>metadata</el> element children of any
+context where it appears. The core vocabulary catalog permits an
+arbitrary number of <el>metadata</el> element children on any
 content element type except for the <el>tt</el> element. See specific element
 vocabulary definitions for any constraints that apply to such
 usage.</p>

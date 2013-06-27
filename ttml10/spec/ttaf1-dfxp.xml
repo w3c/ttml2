@@ -501,19 +501,13 @@ and may specify inline overrides to styling.</p>
 </def>
 </gitem>
 <gitem>
-<label>TT AS</label>
-<def>
-<p>Timed Text Authoring System</p>
-</def>
-</gitem>
-<gitem>
-<label>TT AF</label>
+<label>TTAF</label>
 <def>
 <p>Timed Text Authoring Format</p>
 </def>
 </gitem>
 <gitem>
-<label>TT WG</label>
+<label>TTWG</label>
 <def>
 <p>Timed Text Working Group</p>
 </def>
@@ -1255,9 +1249,11 @@ the base URI.</p>
 would be
 <code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code>.</p>
 </note>
-<p>A profile designator is not restricted to the set of designators enumerated
-in <specref ref="profile-vocab-table"/>, but may be any URI that
-feasibly dereferences a TTML <emph>Profile Definition Document</emph>.</p>
+<p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
+<specref ref="profile-vocab-table"/> are reserved for future standardization, and must not be appear in a conformant
+<emph>Document Instance</emph>. Nothwithstanding this constraint, a profile designator is not restricted to the set of designators enumerated
+in <specref ref="profile-vocab-table"/>, but may be any URI that feasibly dereferences a TTML <emph>Profile Definition Document</emph>
+provided it does not use the TT Profile Namespace as a prefix.</p>
 <p>The profile of TTML that must be supported by a
 TTML <emph>Content Processor</emph> in order to process a <emph>Document Instance</emph> is determined either (1) by specifying a
 <att>ttp:profile</att> attribute on the root <el>tt</el> element, as
@@ -2162,7 +2158,7 @@ is disallowed or otherwise prohibited.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/dfxp-transformation"&gt;
-  &lt;ttp:extensions xml:base="http://example.org/ttaf1/extension/"&gt;
+  &lt;ttp:extensions xml:base="http://example.org/ttml/extension/"&gt;
     <phrase role="strong">&lt;ttp:extension value="use"&gt;#prefilter-by-language&lt;/ttp:extension&gt;</phrase>
   &lt;/ttp:extensions&gt;
 &lt;/ttp:profile&gt;
@@ -2242,14 +2238,14 @@ coordinated with this grid. Such alignment is possible, but
 requires the use of a monospaced font and a font size whose EM square exactly
 matches the cell size.</p>
 </note>
-<note role="elaboration">
 <p>Except where indicated otherwise, when a <loc href="#style-value-length">&lt;length&gt;</loc> expressed in
-cells expresses a dimension parallel to the inline or block progression dimension,
-the cell's dimension in the inline or block progression dimension applies, respectively.
-For example, if padding (on all four edges) is specified as 0.1c, the cell resolution
+cells denotes a dimension parallel to the inline or block progression dimension,
+the cell's dimension in the inline or block progression dimension applies, respectively.</p>
+<note role="example">
+<p>For example, if padding (on all four edges) is specified as 0.1c, the cell resolution
 is 20 by 10, and the extent of the <emph>Root Container Region</emph> is 640 by 480, then, assuming top to bottom,
-left to right writing mode, the start and end padding will be 640 / 20 * 0.1 pixels and the
-before and after padding will be 480 / 10 * 0.1 pixels.</p>
+left to right writing mode, the start and end padding will be (640 / 20) * 0.1 pixels and the
+before and after padding will be (480 / 10) * 0.1 pixels.</p>
 </note>
 </div3>
 <div3 id="parameter-attribute-clockMode">
@@ -7139,7 +7135,8 @@ Any animation elements specified by children in the <code>Animation.class</code>
 element group apply semantically to the <el>region</el> element.
 Any <el>style</el> child element must be considered a local style
 definition that applies only to the containing <el>region</el>
-element, i.e., does not apply for resolving referential styling.</p>
+element, i.e., does not apply for resolving referential styling (but does apply for region
+style inheritance).</p>
 <table id="elt-syntax-region" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: region</caption>
 <tbody>
@@ -7315,8 +7312,8 @@ then, at each such time coordinate, a <emph>Document Instance</emph> is mapped f
 form, <emph>DOC<sub>source</sub></emph>&thinsp;, 
 to an intermediate
 synchronic document form,
-<emph>DOC<sub>inter</sub></emph>&thinsp;, as follows:</p>
-
+<emph>DOC<sub>inter</sub></emph>&thinsp;, according to the
+<phrase role="strong">[construct intermediate document]</phrase> procedure:</p>
 <glist>
 <gitem>
 <label>[construct intermediate document]</label>
@@ -7332,7 +7329,7 @@ headed by the <el>body</el> element;</p>
 <p>evaluating this sub-tree in a postorder traversal, prune elements if they
 are not a content element, if they are temporally inactive, if they are empty,
 or if they aren't associated with region <emph>R</emph> according to the
-<phrase role="strong">[associate region]</phrase>;</p>
+<phrase role="strong">[associate region]</phrase> procedure;</p>
 </item>
 <item>
 <p>if the pruned sub-tree is non-empty, then reparent it to the <emph>R</emph>
@@ -7586,7 +7583,7 @@ containing two paragraphs. This content is targeted (associated with) one of two
 non-overlapping regions that are styled identically except for their position
 and their foreground colors, the latter of which is inherited by and applies to
 the (and, in this case, anonymous) spans reparented into the regions.</p>
-<p>The following, first intermediate document shows the synchronic state at time
+<p>The following, first intermediate document shows the synchronic state for time
 interval [0,1), during which time only division <code>d1</code> is temporally active,
 and where paragraphs <code>p1</code> and <code>p2</code> (and their ancestors)
 are associated with regions <code>r1</code> and <code>r2</code>, respectively.</p>
@@ -7618,8 +7615,8 @@ document is illustrated below.</p>
 </tr>
 </tbody>
 </table>
-<p>The following, second intermediate document shows the synchronic state at
-time interval [1,2), at which time both divisions <code>d1</code> and
+<p>The following, second intermediate document shows the synchronic state for
+time interval [1,2), during which time both divisions <code>d1</code> and
 <code>d2</code> are temporally active, and where paragraphs <code>p1</code> and
 <code>p4</code> (and their ancestors) are associated with region <code>r1</code>
 and paragraphs <code>p2</code> and <code>p3</code> (and their ancestors) are
@@ -7634,8 +7631,8 @@ associated with region <code>r2</code>.</p>
 </tr>
 </tbody>
 </table>
-<p>The following, third intermediate document shows the synchronic state at time
-interval [2,3), at which time only division <code>d2</code> is temporally active,
+<p>The following, third intermediate document shows the synchronic state for time
+interval [2,3), during which time only division <code>d2</code> is temporally active,
 and where paragraphs <code>p4</code> and <code>p3</code> (and their ancestors)
 are associated with regions <code>r1</code> and <code>r2</code>, respectively.</p>
 <table id="region-mapping-example-1-i2" role="example">
@@ -7866,9 +7863,9 @@ metric
 </table>
 <p>If a &lt;timeExpression&gt; is expressed in terms of a
 <emph>clock-time</emph>, then leading zeroes are used when expressing hours,
-minutes, seconds, and frames less than 10. Minutes are constrained to the range
-[0&hellip;59], while seconds are constrained to [0&hellip;60], where the value 60
-applies only to leap seconds.</p>
+minutes, seconds, and frames less than 10. Minutes are constrained to
+[0&hellip;59], while seconds (including any fractional part) are constrained to the closed
+interval [0,60], where the value 60 applies only to leap seconds.</p>
 <p>If a &lt;timeExpression&gt; is expressed in terms of a
 <emph>clock-time</emph> and a <emph>frames</emph> term is specified,
 then the value of this term must be constrained to the interval
@@ -8079,7 +8076,7 @@ semantics depend entirely upon an application's use of TTML Content.</p>
 <p>The <specref ref="metadata-vocabulary-metadata"/> element serves as
 a generic container element for grouping metadata information.</p>
 <p>In addition, the following elements, all defined in the TT Metadata Namespace,
-provide standard representations for common metadata that is expected to be commonly
+provide standard representations for metadata that is expected to be commonly
 used in a <emph>Document Instances</emph>:
 </p>
 <ulist>
@@ -8178,7 +8175,7 @@ usage.</p>
 <td>
 <eg xml:space="preserve">
 ...
-&lt;div xmlns:ext="http://example.org/ttaf1#metadata"&gt;
+&lt;div xmlns:ext="http://example.org/ttml#metadata"&gt;
   &lt;metadata ext:ednote="remove this division prior to publishing"/&gt;
 &lt;/div&gt;
 ...
@@ -8741,8 +8738,8 @@ or encryption would normally be employed.</p>
 behavior that must be followed when dealing with, among other things,
 unrecognized elements and attributes, both in TTML namespaces and in
 other namespaces.</p>
-<p>Because TTML is extensible, conformant "application/ttml+xml" processors must
-expect that content received is well-formed XML, but it cannot be
+<p>Because TTML is extensible, conformant "application/ttml+xml" processors may
+expect (and enforce) that content received is well-formed XML, but it cannot be
 guaranteed that the content is valid to a particular DTD or Schema or
 that the processor will recognize all of the elements and attributes
 in the document.</p>
@@ -8761,8 +8758,10 @@ href="http://www.w3.org/TR/ttaf1-dfxp/">Timed Text Markup Language (TTML) 1.0</l
 <gitem>
 <label>Applications that use this media type:</label>
 <def>
-<p>    TTML is used in the television industry for the purpose of authoring, transcoding and exchanging timed text information and for delivering captions for television material repurposed for the internet.</p>
-<p>There is partial and full support of TTML in components used by several Web browsers plugins, and in a number of caption authoring tools.</p>
+<p>TTML is used in the television industry for the purpose of authoring, transcoding and exchanging timed text information and for delivering captions, subtitles, and
+other metadata for television material repurposed for the Web or, more generally, the Internet.</p>
+<p>There is partial and full support of TTML in components used by several Web browsers plugins, and in a number of caption authoring tools. A TTML verification (including
+validation) utility is available in open source form at <loc href="http://github.com/skynav/ttv">http://github.com/skynav/ttv</loc>.</p>
 </def>
 </gitem>
 <gitem>
@@ -11542,8 +11541,8 @@ August 2002. (See
 </inform-div1>
 <inform-div1 id="requirements">
 <head>Requirements</head>
-<p>The Distribution Format Exchange Profile (DFXP) of the Timed Text Authoring
-Format (TTML) satisfies a subset of the requirements established by
+<p>The Timed Text Markup Language (TTML), also known as the Distribution Format Exchange Profile (DFXP) of the Timed Text Authoring
+Format (TTAF), satisfies a subset of the requirements established by
 <bibref ref="ttaf1-req"/>. The following table enumerates these requirements and
 indicates the extent to which they are satisfied by this specification, where
 <emph>S</emph> denotes a requirement is satisfied, <emph>P</emph> denotes
@@ -13119,44 +13118,37 @@ capabilities model.</p>
 <p>In the absence of other requirements, it is recommended that a <emph>Document Instance</emph> be concretely encoded as a
 well-formed XML 1.0 <bibref ref="xml10"/> document using the UTF-8 character encoding.</p>
 </inform-div1>
-
 <inform-div1 id="time-expression-semantics">
 <head>Time Expression Semantics</head>
-
 <p>This appendix describes the intended semantics for interpreting time expressions in <emph>Document Instances</emph>.</p>
-
 <note role="elaboration">
 <p>It is expected that the information in this appendix will be elevated to normative status in a future revision of this specification.</p>
 </note>
-
 <note role="clarification">
 <p>The phrase <emph>local real time</emph> as used below is intended to model a virtual real time clock in the document processing context, where
 <emph>local</emph> means in the immediate proximity of the implementation of this processing context. The intent
 of defining relationships with this virtual clock is to establish a locally valid physical realization of time for didactic purposes.</p>
 </note>
-
 <note role="clarification">
 <p>The phrase <emph>play rate</emph> as used below is intended to model a (possibly variable) parameter in the document processing context wherein
-the rate of playback (or interpretation) of time may artificially dilated or narrowed, for example, when speeding up or slowing down the rate of
+the rate of playback (or interpretation) of time may artificially dilated or narrowed, for example, when slowing down or speeding up the rate of
 playback of a <emph>Related Media Object</emph>. Without loss of generality, the following discussion assumes a fixed play(back) rate. In the case of
 variable play rates, appropriate adjustments may need to be made to the resulting computations.</p>
 </note>
-
 <div2 id="time-expression-semantics-clock">
 <head>Clock Time Base</head>
 <p>When operating with the <code>clock</code> time base, the following semantics should be applied for interpreting time expressions,
 as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
-
 <p>The clock time base <phrase role="strong"><code>C</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
 expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase>
 as follows:</p>
-
 <table id="clock-time-and-real-time" role="semantics">
 <caption>TTML Semantics &ndash; Clock Time and Real Time Relationship</caption>
 <tbody>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
 <code>R = C + epochOffset + discontinuityOffset</code>
 </sitem>
@@ -13202,17 +13194,15 @@ during the period between value determination and the beginning of the <emph>Roo
 </tr>
 </tbody>
 </table>
-
-
 <p>Time value expressions, as denoted by a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, are related to
 clock time <phrase role="strong"><code>C</code></phrase> as follows:</p>
-
 <table id="time-expressions-and-clock-time" role="semantics">
 <caption>TTML Semantics &ndash; Time Expressions and Clock Time Relationship</caption>
 <tbody>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
 If a time expression uses the <emph>clock-time</emph> form or an <emph>offset-time</emph> form that doesn't use the ticks (<code>t</code>) metric, then:
 </sitem>
@@ -13252,6 +13242,7 @@ the <code>clock</code> time base.</p>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
 <code>M &not;&prop; C</code>
 </sitem>
@@ -13261,7 +13252,6 @@ the <code>clock</code> time base.</p>
 </tr>
 </tbody>
 </table>
-
 <note role="elaboration">
 <p>That is to say, timing is disconnected from (not necessarily proportional to) media time when
 the <code>clock</code> time base is used. For example, if the media play rate is zero (0), media playback is suspended; however, timing coordinates
@@ -13269,23 +13259,20 @@ will continue to advance according to the natural progression of clock time in d
 during playback, presentation timing is not affected.
 </p>
 </note>
-
 </div2>
-
 <div2 id="time-expression-semantics-media">
 <head>Media Time Base</head>
 <p>When operating with the <code>media</code> time base, the following semantics should be applied for interpreting time expressions,
 as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
-
 <p>The media time base <phrase role="strong"><code>M</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
 expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase> as follows:</p>
-
 <table id="media-time-and-real-time" role="semantics">
 <caption>TTML Semantics &ndash; Media Time and Real Time Relationship</caption>
 <tbody>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
 <code>R = playRate * M + epochOffset</code>
 </sitem>
@@ -13309,30 +13296,34 @@ an epoch <code>E</code>, and where the value of <code>epochOffset</code> is the 
 </tr>
 </tbody>
 </table>
-
 <p>Time value expressions, as denoted by a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, are related to
 media time <phrase role="strong"><code>M</code></phrase> in accordance to the
 <code>ttp:frameRate</code>, <code>ttp:subFrameRate</code>, and <code>ttp:frameRateMultipler</code> parameters as follows:</p>
-
 <table id="time-expressions-and-media-time" role="semantics">
 <caption>TTML Semantics &ndash; Time Expressions and Media Time Relationship</caption>
 <tbody>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
 If a time expression uses a <emph>clock-time</emph> form or an <emph>offset-time</emph> form that doesn't use the ticks (<code>t</code>) metric, then:
 </sitem>
 <sitem/>
 <sitem>
 <code>
-M = containerBegin + 3600 * hours + 60 * minutes + seconds + ((frames + (subFrames / subFrameRate)) / effectiveFrameRate)
+M = referenceBegin + 3600 * hours + 60 * minutes + seconds + ((frames + (subFrames / subFrameRate)) / effectiveFrameRate)
 </code>
 </sitem>
 <sitem/>
 <sitem>
-where <code>containerBegin</code> is the media time that corresponds to the beginning of the nearest ancestor time container or
-zero (0) if this time container is the <emph>Root Temporal Extent</emph>;
+where <code>referenceBegin</code> is determined according to whether the nearest ancestor time container employs
+parallel (<code>par</code>) or sequential (<code>seq</code>) semantics: if parallel or if sequential and no prior sibling
+timed element exists, then <code>referenceBegin</code>
+is the media time that corresponds to the beginning of the nearest ancestor time container or
+zero (0) if this time container is the <emph>Root Temporal Extent</emph>; otherwise, if sequential and a prior sibling
+timed element exists, then <code>referenceBegin</code> is the media time that corresponds to the active end of the
+immediate prior sibling timed element;
 </sitem>
 <sitem/>
 <sitem>
@@ -13356,12 +13347,12 @@ Otherwise, if a time expression uses an <emph>offset-time</emph> form that uses 
 <sitem/>
 <sitem>
 <code>
-M = containerBegin + ticks / tickRate
+M = referenceBegin + ticks / tickRate
 </code>
 </sitem>
 <sitem/>
 <sitem>
-where <code>containerBegin</code> is as described above;
+where <code>referenceBegin</code> is as described above;
 </sitem>
 <sitem/>
 <sitem>
@@ -13385,27 +13376,24 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 this assumption doesn't hold, then an additional offset that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
 </div2>
-
 <div2 id="time-expression-semantics-smpte">
 <head>SMPTE Time Base</head>
 <p>When operating with the <code>smpte</code> time base, the following semantics should be applied for interpreting time expressions,
 as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
-
 <p>If the computed value of the <att>ttp:markerMode</att> parameter is <code>discontinuous</code>, then there is no direct relationship between
 time expressions and media time <phrase role="strong"><code>M</code></phrase> or local real time <phrase role="strong"><code>R</code></phrase>. In
 this case, time expressions refer to synchronization events (markers) emitted by the <emph>Document Processing Context</emph> when <emph>SMPTE Time
 Codes</emph> are encountered in the <emph>Related Media Object</emph>.</p>
-
 <p>Otherwise, if the computed value of the <att>ttp:markerMode</att> parameter is <code>continuous</code>, then the relationships between time expressions and
 local real time and media time are as described below in terms of a <emph>Synthetic SMPTE Document Syncbase</emph>, here referred to as the
 SMPTE time base <phrase role="strong"><code>S</code></phrase>.</p>
-
 <table id="time-expressions-and-smpte-time" role="semantics">
 <caption>TTML Semantics &ndash; Time Expressions and SMPTE Time Relationship</caption>
 <tbody>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
 <code>S = (countedFrames - droppedFrames + (subFrames / subFrameRate)) / effectiveFrameRate</code>
 </sitem>
@@ -13469,22 +13457,26 @@ should be considered to be invalid for purposes of validation assessment.
 </tr>
 </tbody>
 </table>
-
 <p>The SMPTE time base <phrase role="strong"><code>S</code></phrase> is related to the media time base <phrase role="strong"><code>M</code></phrase> as follows:</p>
-
 <table id="smpte-time-and-media-time" role="semantics">
 <caption>TTML Semantics &ndash; SMPTE Time and Media Time Relationship</caption>
 <tbody>
 <tr>
 <td>
 <slist>
+<sitem/>
 <sitem>
-<code>M = containerBegin + S</code>
+<code>M = referenceBegin + S</code>
 </sitem>
 <sitem/>
 <sitem>
-where <code>containerBegin</code> is the SMPTE time that corresponds to the beginning of the nearest ancestor time container or
-zero (0) if this time container is the <emph>Root Temporal Extent</emph>;
+where <code>referenceBegin</code> is determined according to whether the nearest ancestor time container employs
+parallel (<code>par</code>) or sequential (<code>seq</code>) semantics: if parallel or if sequential and no prior sibling
+timed element exists, then <code>referenceBegin</code>
+is the SMPTE time that corresponds to the beginning of the nearest ancestor time container or
+zero (0) if this time container is the <emph>Root Temporal Extent</emph>; otherwise, if sequential and a prior sibling
+timed element exists, then <code>referenceBegin</code> is the SMPTE time that corresponds to the active end of the
+immediate prior sibling timed element;
 </sitem>
 <sitem/>
 </slist>
@@ -13492,13 +13484,10 @@ zero (0) if this time container is the <emph>Root Temporal Extent</emph>;
 </tr>
 </tbody>
 </table>
-
 <p>Given the derived media time base as described above, then 
 media time base <phrase role="strong"><code>M</code></phrase> is related to the local real time <phrase role="strong"><code>R</code></phrase>
 as described in <specref ref="time-expression-semantics-media"/> above.</p>
-
 </div2>
-
 </inform-div1>
 <inform-div1 id="common-styling">
 <head>Common Caption Style Examples</head>

@@ -3,7 +3,7 @@
 # .......................................................................
 
 TTAF.Alpha.datatype =
-  xsd:float { minInclusive = "0" maxInclusive = "1" }
+  xsd:float
 
 TTAF.Agent.datatype =
   xsd:IDREFS
@@ -72,13 +72,14 @@ TTAF.FontWeight.datatype =
   "bold"
 
 TTAF.FrameRate.datatype =
-  xsd:nonNegativeInteger
+  xsd:positiveInteger
 
 TTAF.FrameRateMultiplier.datatype =
   xsd:string { pattern = "\p{Nd}+\s+\p{Nd}+" }
 
 TTAF.LanguageCode.datatype =
-  xsd:NMTOKEN
+  "" |
+  xsd:language
 
 TTAF.LineHeight.datatype =
   string
@@ -121,7 +122,7 @@ TTAF.MetadataRoleBaseType.datatype =
   "transcription"
 
 TTAF.Opacity.datatype =
-  string
+  TTAF.Alpha.datatype
 
 TTAF.Origin.datatype =
   string
@@ -140,7 +141,11 @@ TTAF.Profile.datatype =
   TTAF.URI.datatype
 
 TTAF.Role.datatype =
-  xsd:NMTOKENS
+  list { TTAF.RoleItem.datatype+ }
+
+TTAF.RoleItem.datatype =
+  TTAF.MetadataRoleBaseType.datatype |
+  xsd:NMTOKEN { pattern = "x-\c+" }
 
 TTAF.ShowBackground.datatype =
   "always" |
@@ -160,10 +165,74 @@ TTAF.TextDecoration.datatype =
   "none" |
   "underline" |
   "noUnderline" |
+  "lineThrough" |
+  "noLineThrough" |
   "overline" |
   "noOverline" |
-  "lineThrough" |
-  "noLineThrough"
+  "noUnderline noLineThrough" |
+  "noLineThrough noUnderline" |
+  "noUnderline lineThrough" |
+  "lineThrough noUnderline" |
+  "underline noLineThrough" |
+  "noLineThrough underline" |
+  "underline lineThrough" |
+  "lineThrough underline" |
+  "noUnderline noOverline" |
+  "noOverline noUnderline" |
+  "noUnderline overline" |
+  "overline noUnderline" |
+  "underline noOverline" |
+  "noOverline underline" |
+  "underline overline" |
+  "overline underline" |
+  "noUnderline noLineThrough noOverline" |
+  "noUnderline noOverline noLineThrough" |
+  "noLineThrough noUnderline noOverline" |
+  "noLineThrough noOverline noUnderline" |
+  "noOverline noUnderline noLineThrough" |
+  "noOverline noLineThrough noUnderline" |
+  "noUnderline noLineThrough overline" |
+  "noUnderline overline noLineThrough" |
+  "noLineThrough noUnderline overline" |
+  "noLineThrough overline noUnderline" |
+  "overline noUnderline noLineThrough" |
+  "overline noLineThrough noUnderline" |
+  "noUnderline lineThrough noOverline" |
+  "noUnderline noOverline lineThrough" |
+  "lineThrough noUnderline noOverline" |
+  "lineThrough noOverline noUnderline" |
+  "noOverline noUnderline lineThrough" |
+  "noOverline lineThrough noUnderline" |
+  "noUnderline lineThrough overline" |
+  "noUnderline overline lineThrough" |
+  "lineThrough noUnderline overline" |
+  "lineThrough overline noUnderline" |
+  "overline noUnderline lineThrough" |
+  "overline lineThrough noUnderline" |
+  "underline noLineThrough noOverline" |
+  "underline noOverline noLineThrough" |
+  "noLineThrough underline noOverline" |
+  "noLineThrough noOverline underline" |
+  "noOverline underline noLineThrough" |
+  "noOverline noLineThrough underline" |
+  "underline noLineThrough overline" |
+  "underline overline noLineThrough" |
+  "noLineThrough underline overline" |
+  "noLineThrough overline underline" |
+  "overline underline noLineThrough" |
+  "overline noLineThrough underline" |
+  "underline lineThrough noOverline" |
+  "underline noOverline lineThrough" |
+  "lineThrough underline noOverline" |
+  "lineThrough noOverline underline" |
+  "noOverline underline lineThrough" |
+  "noOverline lineThrough underline" |
+  "underline lineThrough overline" |
+  "underline overline lineThrough" |
+  "lineThrough underline overline" |
+  "lineThrough overline underline" |
+  "overline underline lineThrough" |
+  "overline lineThrough underline"
 
 TTAF.TextOutline.datatype =
   string

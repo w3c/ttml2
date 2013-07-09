@@ -3,10 +3,7 @@
         xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:ttd="http://www.w3.org/ns/ttml#datatype">
   <xs:simpleType name="alpha">
-    <xs:restriction base="xs:float">
-      <xs:minInclusive value="0"/>
-      <xs:maxInclusive value="1"/>
-    </xs:restriction>
+    <xs:restriction base="xs:float"/>
   </xs:simpleType>
   <xs:simpleType name="agent">
     <xs:restriction base="xs:IDREFS"/>
@@ -102,7 +99,7 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="frameRate">
-    <xs:restriction base="xs:nonNegativeInteger"/>
+    <xs:restriction base="xs:positiveInteger"/>
   </xs:simpleType>
   <xs:simpleType name="frameRateMultiplier">
     <xs:annotation>
@@ -170,7 +167,7 @@
     <xs:annotation>
       <xs:documentation>alpha</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string"/>
+    <xs:restriction base="ttd:alpha"/>
   </xs:simpleType>
   <xs:simpleType name="origin">
     <xs:annotation>
@@ -202,10 +199,26 @@
     <xs:restriction base="xs:anyURI"/>
   </xs:simpleType>
   <xs:simpleType name="role">
+    <xs:restriction>
+      <xs:simpleType>
+        <xs:list itemType="ttd:roleItem"/>
+      </xs:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="roleItem">
     <xs:annotation>
       <xs:documentation>metadataRoleBaseType | "x-"string</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:NMTOKENS"/>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="ttd:metadataRoleBaseType"/>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:pattern value="x-\c+"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
   </xs:simpleType>
   <xs:simpleType name="showBackground">
     <xs:restriction base="xs:token">
@@ -226,14 +239,81 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="textDecoration">
-    <xs:restriction base="xs:token">
+    <xs:annotation>
+      <xs:documentation>none | [ [ underline | noUnderline ] || [ lineThrough | noLineThrough ] || [ overline | noOverline ] ]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
       <xs:enumeration value="none"/>
       <xs:enumeration value="underline"/>
       <xs:enumeration value="noUnderline"/>
-      <xs:enumeration value="overline"/>
-      <xs:enumeration value="noOverline"/>
       <xs:enumeration value="lineThrough"/>
       <xs:enumeration value="noLineThrough"/>
+      <xs:enumeration value="overline"/>
+      <xs:enumeration value="noOverline"/>
+      <xs:enumeration value="noUnderline noLineThrough"/>
+      <xs:enumeration value="noLineThrough noUnderline"/>
+      <xs:enumeration value="noUnderline lineThrough"/>
+      <xs:enumeration value="lineThrough noUnderline"/>
+      <xs:enumeration value="underline noLineThrough"/>
+      <xs:enumeration value="noLineThrough underline"/>
+      <xs:enumeration value="underline lineThrough"/>
+      <xs:enumeration value="lineThrough underline"/>
+      <xs:enumeration value="noUnderline noOverline"/>
+      <xs:enumeration value="noOverline noUnderline"/>
+      <xs:enumeration value="noUnderline overline"/>
+      <xs:enumeration value="overline noUnderline"/>
+      <xs:enumeration value="underline noOverline"/>
+      <xs:enumeration value="noOverline underline"/>
+      <xs:enumeration value="underline overline"/>
+      <xs:enumeration value="overline underline"/>
+      <xs:enumeration value="noUnderline noLineThrough noOverline"/>
+      <xs:enumeration value="noUnderline noOverline noLineThrough"/>
+      <xs:enumeration value="noLineThrough noUnderline noOverline"/>
+      <xs:enumeration value="noLineThrough noOverline noUnderline"/>
+      <xs:enumeration value="noOverline noUnderline noLineThrough"/>
+      <xs:enumeration value="noOverline noLineThrough noUnderline"/>
+      <xs:enumeration value="noUnderline noLineThrough overline"/>
+      <xs:enumeration value="noUnderline overline noLineThrough"/>
+      <xs:enumeration value="noLineThrough noUnderline overline"/>
+      <xs:enumeration value="noLineThrough overline noUnderline"/>
+      <xs:enumeration value="overline noUnderline noLineThrough"/>
+      <xs:enumeration value="overline noLineThrough noUnderline"/>
+      <xs:enumeration value="noUnderline lineThrough noOverline"/>
+      <xs:enumeration value="noUnderline noOverline lineThrough"/>
+      <xs:enumeration value="lineThrough noUnderline noOverline"/>
+      <xs:enumeration value="lineThrough noOverline noUnderline"/>
+      <xs:enumeration value="noOverline noUnderline lineThrough"/>
+      <xs:enumeration value="noOverline lineThrough noUnderline"/>
+      <xs:enumeration value="noUnderline lineThrough overline"/>
+      <xs:enumeration value="noUnderline overline lineThrough"/>
+      <xs:enumeration value="lineThrough noUnderline overline"/>
+      <xs:enumeration value="lineThrough overline noUnderline"/>
+      <xs:enumeration value="overline noUnderline lineThrough"/>
+      <xs:enumeration value="overline lineThrough noUnderline"/>
+      <xs:enumeration value="underline noLineThrough noOverline"/>
+      <xs:enumeration value="underline noOverline noLineThrough"/>
+      <xs:enumeration value="noLineThrough underline noOverline"/>
+      <xs:enumeration value="noLineThrough noOverline underline"/>
+      <xs:enumeration value="noOverline underline noLineThrough"/>
+      <xs:enumeration value="noOverline noLineThrough underline"/>
+      <xs:enumeration value="underline noLineThrough overline"/>
+      <xs:enumeration value="underline overline noLineThrough"/>
+      <xs:enumeration value="noLineThrough underline overline"/>
+      <xs:enumeration value="noLineThrough overline underline"/>
+      <xs:enumeration value="overline underline noLineThrough"/>
+      <xs:enumeration value="overline noLineThrough underline"/>
+      <xs:enumeration value="underline lineThrough noOverline"/>
+      <xs:enumeration value="underline noOverline lineThrough"/>
+      <xs:enumeration value="lineThrough underline noOverline"/>
+      <xs:enumeration value="lineThrough noOverline underline"/>
+      <xs:enumeration value="noOverline underline lineThrough"/>
+      <xs:enumeration value="noOverline lineThrough underline"/>
+      <xs:enumeration value="underline lineThrough overline"/>
+      <xs:enumeration value="underline overline lineThrough"/>
+      <xs:enumeration value="lineThrough underline overline"/>
+      <xs:enumeration value="lineThrough overline underline"/>
+      <xs:enumeration value="overline underline lineThrough"/>
+      <xs:enumeration value="overline lineThrough underline"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="textOutline">

@@ -80,9 +80,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .strong { font-weight: bold }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2013/07/10 14:32:02 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2013/07/10 18:23:49 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language (TTML) 1.1</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2013/07/10 14:32:02 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2013/07/10 18:23:49 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml11.html">ttml11.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml11/spec/ttml11.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/tip/ttml11/spec/ttml11.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -392,11 +392,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e18629">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e19108">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e18710">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e19189">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e19994">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e20158">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e20075">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e20239">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a> (Non-Normative)<br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a> (Non-Normative)<br>
@@ -1151,7 +1151,10 @@ used (mandatory and enabled), required (mandatory),
 and optional (voluntary) features and extensions that must or
 may be supported by a <em>Content Processor</em> in order to process a
 <em>Document Instance</em> that makes (or may make) use of such features and
-extensions.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The difference between a <em>feature</em> and an
+extensions. In addition, a feature or extension may be specified as
+prohibited, in which case it must not appear in or be used by
+a <em>Document Instance</em>, and, if it does appear, may result in
+the <em>Document Instance</em> being rejected or processing otherwise aborted.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The difference between a <em>feature</em> and an
 <em>extension</em> is where it is defined and how it is labeled:
 if defined in this specification (or a future revision thereof) and
 labeled with a feature designation in <a href="#features"><b>D Features</b></a>, then
@@ -1163,7 +1166,9 @@ third parties.</p></div><p>This specification defines two distinct uses of the <
 instance;</p></li></ul><p>When a <code>tt:profile</code> element appears within a TTML <em>Document Instance</em>,
 its purpose is to express authorial intentions about which
 features and extensions must or may be supported by a recipient
-content processor. In addition, the element indirectly expresses
+content processor, as well as which features and extensions must
+not be included or otherwise used in a <em>Document Instance</em>.
+In addition, the element indirectly expresses
 information about the set of features or extensions that are (or may
 expected to be) used by the <em>Document Instance</em>.</p><p>When a <code>tt:profile</code> element is used by a TTML <em>Profile Definition Document</em> instance,
 it serves to publish a machine
@@ -1175,6 +1180,7 @@ zero or more <code>ttp:features</code> elements, followed by
 zero or more <code>ttp:extensions</code> elements.</p><a id="elt-syntax-parameter-profile"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:profile</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:profile
+  combine = (replace|union|intersection) : replace
   use = string
   <a href="#content-attribute-id">xml:id</a> = ID
   {<em>any attribute not in default or any TT namespace</em>}&gt;
@@ -1192,7 +1198,17 @@ Document</em> instance. In either case, the referenced profile serves as the
 baseline profile of the specifying <code>ttp:profile</code> element.</p><p>If the <code>use</code> attribute is not specified, then the baseline
 profile of the <code>ttp:profile</code> element must be considered to be
 the empty (null) profile, i.e., a profile definition containing no
-feature or extension specifications.</p><p>The collection of features and extensions of a profile are determined according
+feature or extension specifications.</p><p>The <code>combine</code> attribute may be used to specify how
+feature or extension specifications are combined in the case that
+multiple specifications apply to the same feature or extension, respectively.
+If the value of the <code>combine</code> attribute is <code>replace</code>, then a
+feature or extension specification contained in the <code>ttp:profile</code> element
+replaces the specification defined by the baseline profile or a lexically subsequent
+specification replaces a lexically prior specification in the case that both
+specifications appear in the same <code>ttp:profile</code> element; if the value is
+<code>union</code>, then the semantic union applies; if the value is <code>intersection</code>,
+then the semantic intersection applies. If the <code>combine</code> attribute is not
+specified, then replacement semantics apply.</p><table border="1" class="ednote" summary="Editorial note: Combine Semantics"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Combine Semantics</b></td><td align="right" valign="top">2013-07-10</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Need to elaborate semantics of union and intersection combination methods.</td></tr></table><p>The collection of features and extensions of a profile are determined according
 to the following ordered rules:</p><ol class="enumar"><li><p>initialize the features and extensions of the profile to the empty
 set;</p></li><li><p>if a <code>use</code> attribute is present, then augment the profile
 with the set of features and extensions specified by the referenced
@@ -1200,9 +1216,8 @@ baseline profile;</p></li><li><p>for each <code>ttp:feature</code> and <code>ttp
 descendant of the <code>ttp:profile</code> element, using a post-order
 traversal, merge the specified feature or extension with the features
 and extensions of the profile, where merging a feature or extension
-entails replacing an existing feature or extension specification, if
-it already exists, or adding a new feature or extension specification,
-if it does not yet exist in the profile;</p></li></ol><p>A conformant TTML processor is not required to be able to
+entails applying the combination method in accordance with the specified
+(or default) <code>combine</code> attribute value.</p></li></ol><p>A conformant TTML processor is not required to be able to
 dereference a <em>Profile Definition Document</em> that is not one of the
 standard, predefined profiles defined by <a href="#profiles"><b>F Profiles</b></a>.  Furthermore,
 a conformant TTML processor may make use of a built-in, static
@@ -1229,7 +1244,7 @@ baseline profile. This baseline profile is then supersetted (thus
 creating an additive derived profile) by requiring support for
 <code>#text-outline</code> feature.</p></div></div><div class="div3">
 <h4><a id="parameter-vocabulary-features"></a>6.1.2 ttp:features</h4><p>The <code>ttp:features</code> element is a container element used to group
-infomation about feature support requirements.</p><p>The <code>ttp:features</code> element accepts as its children zero or more
+infomation about feature support and usage requirements.</p><p>The <code>ttp:features</code> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
 zero or more <code>ttp:feature</code> elements.</p><a id="elt-syntax-parameter-features"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:features</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1252,13 +1267,13 @@ value applies, which is the TT Feature Namespace.</p><p>The <code>xml:base</code
 used to permit the abbreviation of feature designation URIs expressed
 by child <code>ttp:feature</code> elements.</p></div><div class="div3">
 <h4><a id="parameter-vocabulary-feature"></a>6.1.3 ttp:feature</h4><p>The <code>ttp:feature</code> element is used to specify
-infomation about support requirements for a particular feature.</p><p>The children of the <code>ttp:feature</code> element must express a non-empty
+infomation about support and usage requirements for a particular feature.</p><p>The children of the <code>ttp:feature</code> element must express a non-empty
 sequence of character information items that adheres to the
 <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 §3.2.17.</p><a id="elt-syntax-parameter-feature"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:feature</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:feature
-  value = (optional|required|use) : required
+  value = (optional|required|use|prohibited) : required
   <a href="#content-attribute-id">xml:id</a> = ID
   {<em>any attribute not in default or any TT namespace</em>}&gt;
   <em>Content:</em> #PCDATA
@@ -1278,9 +1293,11 @@ that starts with the fragment identifier separator '#', must
 be defined by this specification or some published version thereof (that
 has achieved REC status).</p><p>If the URI expressed by the content of the <code>ttp:feature</code> element
 is a relative URI, then an <code>xml:base</code> attribute should be
-specified on the nearest ancestor <code>ttp:features</code> element.</p><p>The <code>value</code> attribute specifies whether a conforming TTML
+specified on the nearest ancestor <code>ttp:features</code> element.</p><p>The <code>value</code> attribute specifies (1) whether a conforming TTML
 processor must or may implement the designated feature in order to
-process the document. If the value of the <code>value</code> attribute
+process the document, or (2) whether a TTML <em>Document Instance</em>
+must not include or otherwise use the designated feature.
+If the value of the <code>value</code> attribute
 is <code>optional</code>, then the processor need
 not implement or otherwise support the feature in order to process the
 document; if the value is <code>required</code>, then the processor
@@ -1289,7 +1306,9 @@ whether the feature is enabled or disabled, in order to process
 the document; if the value is
 <code>use</code>, then the processor must both (1) implement or
 otherwise support the feature and (2) have enabled (activated) use of the
-feature.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value of the <code>value</code> attribute is
+feature; if the value is <code>prohibited</code>, then the document must not
+include or otherwise use the feature, and, if it does, then the processor
+should reject or abort processing of the document.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value of the <code>value</code> attribute is
 <code>required</code>, as indicated in the above element information
 item definition. Therefore, if a <code>value</code> attribute is not
 specified on a <code>ttp:feature</code> element, it is equivalent to
@@ -1298,12 +1317,16 @@ specifying that support for the feature is required.</p></div><p>If the value of
 and the TTML processor implementation does
 not support the feature, or if the <code>value</code> attribute is
 <code>use</code> and the TTML processor implementation supports but has disabled
-that feature, then it must not further process the document
+that feature,
+or if the <code>value</code> attribute is <code>prohibited</code> and a
+<em>Document Instance</em> includes or makes use of the feature,
+then it must not further process the document
 without the presence of an explicit override from an end-user or some
 implementation specific parameter traceable to an end-user or to a
 user or system configuration setting.  If a TTML processor aborts
 processing of a <em>Document Instance</em> due to the specification of a
-required, but unsupported feature by this element, then some end-user
+required, but unsupported feature by this element, or due to the presence
+or use of a prohibited feature, then some end-user
 notification should be given unless the end-user or system has
 disabled such a notification, or if the processor does not permit or
 entail the intervention of an end-user.</p><p>If the value of the <code>value</code> attribute is
@@ -1317,29 +1340,33 @@ referenced by the document. Notwithstanding the above, the syntactic
 presence or reference to an optional feature by a document must not be
 considered to be a violation of document validity or a barrier to
 further processing if the syntactic expression is well-formed and
-valid.</p><p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
+otherwise valid.</p><p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
 a <code>ttp:feature</code> element in a given profile, then it must be interpreted as if the feature were specified
 with the <code>value</code> attribute equal to <code>optional</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In particular, if some feature is not present in a profile definition, then
 it is not to be interpreted as meaning the use of that feature (in a <em>Document Instance</em>)
-is disallowed or otherwise prohibited.</p></div><p>The <code>ttp:feature</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-feature-example-1"></a><table class="example"><caption>Example Fragment – ttp:feature</caption><tbody><tr><td>
+is disallowed or otherwise prohibited. If a feature is intended to be disallowed by a profile, then
+it should be specified using the <code>prohibited</code> value.</p></div><p>The <code>ttp:feature</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-feature-example-1"></a><table class="example"><caption>Example Fragment – ttp:feature</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/dfxp-presentation"&gt;
   &lt;ttp:features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
     <span class="strong">&lt;ttp:feature value="required"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</span>
     <span class="strong">&lt;ttp:feature value="required"&gt;#textDecoration-under&lt;/ttp:feature&gt;</span>
+    <span class="strong">&lt;ttp:feature value="prohibited"&gt;#textOutline-blurred&lt;/ttp:feature&gt;</span>
   &lt;/ttp:features&gt;
 &lt;/ttp:profile&gt;
 </pre></div>
 </td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>In the above example, the DFXP presentation profile is used as the
-baseline profile. This baseline profile is then modified by two
-<code>ttp:feature</code> elements in order to
+baseline profile. This baseline profile is then modified by three
+<code>ttp:feature</code> elements in order to (1)
 superset the baseline profile (since neither
 <code>#fontStyle-italic</code> nor <code>#textDecoration-under</code>
-are required by the DFXP presentation profile).</p><p>The effect of this example is to express authorial intentions that
+are required by the DFXP presentation profile), and
+(2) prohibit use of the <code>#textOutline-blurred</code> feature
+(which is optional in the DFXP presentation profile).</p><p>The effect of this example is to express authorial intentions that
 italic font style and text underlining must be
-supported.</p></div></div><div class="div3">
+supported, and that text outline blurring must not be used by a document.</p></div></div><div class="div3">
 <h4><a id="parameter-vocabulary-extensions"></a>6.1.4 ttp:extensions</h4><p>The <code>ttp:extensions</code> element is a container element used to group
-infomation about extension support requirements.</p><p>The <code>ttp:extensions</code> element accepts as its children zero or more
+infomation about extension support and usage requirements.</p><p>The <code>ttp:extensions</code> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
 zero or more <code>ttp:extension</code> elements.</p><a id="elt-syntax-parameter-extensions"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:extensions</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1362,13 +1389,13 @@ value applies, which is the TT Extension Namespace.</p><p>The <code>xml:base</co
 used to permit the abbreviation of feature designation URIs expressed
 by child <code>ttp:extension</code> elements.</p></div><div class="div3">
 <h4><a id="parameter-vocabulary-extension"></a>6.1.5 ttp:extension</h4><p>The <code>ttp:extension</code> element is used to specify
-infomation about support requirements for a particular extension.</p><p>The children of the <code>ttp:extension</code> element must express a non-empty
+infomation about support and usage requirements for a particular extension.</p><p>The children of the <code>ttp:extension</code> element must express a non-empty
 sequence of character information items that adheres to the
 <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 §3.2.17.</p><a id="elt-syntax-parameter-extension"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:extension</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:extension
-  value = (optional|required|use) : required
+  value = (optional|required|use|prohibited) : required
   <a href="#content-attribute-id">xml:id</a> = ID
   {<em>any attribute not in default or any TT namespace</em>}&gt;
   <em>Content:</em> #PCDATA
@@ -1385,17 +1412,22 @@ element must further adhere to the syntax of an extension designation
 as defined by <a href="#extension-designations"><b>E.1 Extension Designations</b></a>.</p><p>If the URI expressed by the content of the
 <code>ttp:feature</code> element is a relative URI, then an
 <code>xml:base</code> attribute should be specified on the nearest
-ancestor <code>ttp:extensions</code> element.</p><p>The <code>value</code> attribute specifies whether a conforming TTML
+ancestor <code>ttp:extensions</code> element.</p><p>The <code>value</code> attribute specifies (1) whether a conforming TTML
 processor must or may implement the designated extension in order to
-process the document. If the value of the <code>value</code> attribute
+process the document, or (2) whether a TTML <em>Document Instance</em>
+must not include or otherwise use the designated extension.
+If the value of the <code>value</code> attribute
 is <code>optional</code>, then the processor need
 not implement or otherwise support the extension in order to process the
 document; if the value is <code>required</code>, then the processor
-must implement or otherwise support the extension in order to process
+must implement or otherwise support the extension, irrespective of
+whether the extension is enabled or disabled, in order to process
 the document; if the value is
 <code>use</code>, then the processor must both (1) implement or
-otherwise support the extension and (2) enable (activate) use of the
-extension.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value of the <code>value</code> attribute is
+otherwise support the extension and (2) have enabled (activated) use of the
+extension; if the value is <code>prohibited</code>, then the document must not
+include or otherwise use the extension, and, if it does, then the processor
+should reject or abort processing of the document.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value of the <code>value</code> attribute is
 <code>required</code>, as indicated in the above element information
 item definition. Therefore, if a <code>value</code> attribute is not
 specified on a <code>ttp:extension</code> element, it is equivalent to
@@ -1423,11 +1455,12 @@ referenced by the document. Notwithstanding the above, the syntactic
 presence or reference to an optional extension by a document must not be
 considered to be a violation of document validity or a barrier to
 further processing if the syntactic expression is well-formed and
-valid.</p><p>If some well known extension is not specified by
+otherwise valid.</p><p>If some well known extension is not specified by
 a <code>ttp:extension</code> element in a given profile, then it must be interpreted as if the extension were specified
 with the <code>value</code> attribute equal to <code>optional</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In particular, if some extension is not present in a profile definition, then
 it is not to be interpreted as meaning the use of that extension (in a <em>Document Instance</em>)
-is disallowed or otherwise prohibited.</p></div><p>The <code>ttp:extension</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-extension-example-1"></a><table class="example"><caption>Example Fragment – ttp:extension</caption><tbody><tr><td>
+is disallowed or otherwise prohibited. If an extension is intended to be disallowed by a profile, then
+it should be specified using the <code>prohibited</code> value.</p></div><p>The <code>ttp:extension</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-extension-example-1"></a><table class="example"><caption>Example Fragment – ttp:extension</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/dfxp-transformation"&gt;
   &lt;ttp:extensions xml:base="http://example.org/ttml/extension/"&gt;
@@ -6483,7 +6516,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e18629"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e18710"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -6538,7 +6571,7 @@ elements.</p></li><li><p>Derived from the use of <code>@requiredExtensions</code
 and <code>@requiredFeatures</code> on the <code>svg:svg</code> element,
 but extended to support distinct specification of optionality.</p></li><li><p>Derived from the use of <code>@baseProfile</code>
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e19108"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+<h3><a id="d3e19189"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -6610,9 +6643,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e19994"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e20075"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e20158"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e20239"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

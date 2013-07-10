@@ -3518,6 +3518,7 @@ element types:</p>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
+<item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
 <item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
 </ulist>
@@ -7017,15 +7018,17 @@ style property <emph>P</emph> expressed as a specified styling
 attribute of <emph>E</emph>,
 merge <emph>P</emph> into the specified style
 set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
-<item><p><phrase role="strong">[animation styling]</phrase> for each
-style property <emph>P</emph> expressed as a specified styling
-attribute of an immediate animation (<el>set</el>) element child of element <emph>E</emph>,
-merge <emph>P</emph> into the specified style
-set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
+<item><p><phrase role="strong">[animation styling]</phrase> if the
+element type of <emph>E</emph> is not the animation element type
+<el>set</el>, then for each
+immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph>E</emph>,
+merge the specified style set of <emph>A</emph>,
+<emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <item>
 <p><phrase role="strong">[implicit inheritance]</phrase> if the
-element type of <emph>E</emph> is not the styling element type
-<el>style</el>, then for each inheritable style property
+element type of <emph>E</emph> is not the animation element type <el>set</el>
+or the styling element type <el>style</el>,
+then for each inheritable style property
 <emph>P<sub>INH</sub></emph> in the set of style properties defined
 above in <specref ref="styling-attribute-vocabulary"/>, perform the
 following ordered sub-steps:</p>
@@ -7066,7 +7069,7 @@ determine (obtain) the specified style set <emph>SSS</emph> of
 initialize <emph>CSS(E)</emph> to a (deep) copy of
 <emph>SSS(E)</emph>;</p></item>
 <item><p><phrase role="strong">[filter]</phrase> if
-<emph>E</emph> is a <el>style</el> element, then return
+<emph>E</emph> is a <el>set</el> or <el>style</el> element, then return
 <emph>CSS(E)</emph> as the resulting computed style set without
 further resolution; otherwise, continue with the next rule;</p></item>
 <item>
@@ -7083,13 +7086,13 @@ equivalent, non-relative (computed) value;</p></item>
 </olist>
 <note role="explanation">
 <p>As a result of the filtering rule above, the computed style set of
-a <el>style</el> element includes only specified values, in which case
+a <el>set</el> or <el>style</el> element includes only specified values, in which case
 relative value expressions remain relative; consequently, the
 resolution of relative value expressions (that may be assigned by
 means of referential style association) always takes place in the
 context of a layout or content element which has a presentation
 context, and not in the non-presentation, declaration context
-of a referentiable <el>style</el> element.</p>
+of a <el>set</el> element or a referentiable <el>style</el> element.</p>
 </note>
 </div4>
 <div4 id="semantics-style-resolution-process-overall">
@@ -7102,7 +7105,8 @@ sub-steps:</p>
 <olist>
 <item><p><phrase role="strong">[filter]</phrase> if the element type
 of <emph>E</emph> is not the styling element type <el>style</el>, is
-not the layout element type <el>region</el>, and is not one of the
+not the layout element type <el>region</el>, is not the animation
+element type <el>set</el>, and is not one of the
 content element types <el>body</el>, <el>div</el>, <el>p</el>,
 <el>span</el>, <el>br</el>, or anonymous span, then continue to the
 next element in the preorder traversal;</p></item>
@@ -8020,10 +8024,11 @@ elements in the <code>Metadata.class</code> element group.</p>
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>a single attribute in TT Style namespace</emph>}
+  {<emph>any attribute in TT Style namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*
 &lt;/set&gt;

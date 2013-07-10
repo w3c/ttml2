@@ -1744,7 +1744,10 @@ used (mandatory and enabled), required (mandatory),
 and optional (voluntary) features and extensions that must or
 may be supported by a <emph>Content Processor</emph> in order to process a
 <emph>Document Instance</emph> that makes (or may make) use of such features and
-extensions.</p>
+extensions. In addition, a feature or extension may be specified as
+prohibited, in which case it must not appear in or be used by
+a <emph>Document Instance</emph>, and, if it does appear, may result in
+the <emph>Document Instance</emph> being rejected or processing otherwise aborted.</p>
 <note role="clarification">
 <p>The difference between a <emph>feature</emph> and an
 <emph>extension</emph> is where it is defined and how it is labeled:
@@ -1769,7 +1772,9 @@ instance;</p>
 <p>When a <el>tt:profile</el> element appears within a TTML <emph>Document Instance</emph>,
 its purpose is to express authorial intentions about which
 features and extensions must or may be supported by a recipient
-content processor. In addition, the element indirectly expresses
+content processor, as well as which features and extensions must
+not be included or otherwise used in a <emph>Document Instance</emph>.
+In addition, the element indirectly expresses
 information about the set of features or extensions that are (or may
 expected to be) used by the <emph>Document Instance</emph>.</p>
 <p>When a <el>tt:profile</el> element is used by a TTML <emph>Profile Definition Document</emph> instance,
@@ -1788,6 +1793,7 @@ zero or more <el>ttp:extensions</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile
+  combine = (replace|union|intersection) : replace
   use = string
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
@@ -1811,6 +1817,22 @@ baseline profile of the specifying <el>ttp:profile</el> element.</p>
 profile of the <el>ttp:profile</el> element must be considered to be
 the empty (null) profile, i.e., a profile definition containing no
 feature or extension specifications.</p>
+<p>The <att>combine</att> attribute may be used to specify how
+feature or extension specifications are combined in the case that
+multiple specifications apply to the same feature or extension, respectively.
+If the value of the <att>combine</att> attribute is <code>replace</code>, then a
+feature or extension specification contained in the <el>ttp:profile</el> element
+replaces the specification defined by the baseline profile or a lexically subsequent
+specification replaces a lexically prior specification in the case that both
+specifications appear in the same <el>ttp:profile</el> element; if the value is
+<code>union</code>, then the semantic union applies; if the value is <code>intersection</code>,
+then the semantic intersection applies. If the <att>combine</att> attribute is not
+specified, then replacement semantics apply.</p>
+<ednote>
+<name>Combine Semantics</name>
+<date>2013-07-10</date>
+<edtext>Need to elaborate semantics of union and intersection combination methods.</edtext>
+</ednote>
 <p>The collection of features and extensions of a profile are determined according
 to the following ordered rules:</p>
 <olist>
@@ -1828,9 +1850,8 @@ baseline profile;</p>
 descendant of the <el>ttp:profile</el> element, using a post-order
 traversal, merge the specified feature or extension with the features
 and extensions of the profile, where merging a feature or extension
-entails replacing an existing feature or extension specification, if
-it already exists, or adding a new feature or extension specification,
-if it does not yet exist in the profile;</p>
+entails applying the combination method in accordance with the specified
+(or default) <att>combine</att> attribute value.</p>
 </item>
 </olist>
 <p>A conformant TTML processor is not required to be able to
@@ -1876,7 +1897,7 @@ creating an additive derived profile) by requiring support for
 <div3 id="parameter-vocabulary-features">
 <head>ttp:features</head>
 <p>The <el>ttp:features</el> element is a container element used to group
-infomation about feature support requirements.</p>
+infomation about feature support and usage requirements.</p>
 <p>The <el>ttp:features</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
 zero or more <el>ttp:feature</el> elements.</p>
@@ -1913,7 +1934,7 @@ by child <el>ttp:feature</el> elements.</p>
 <div3 id="parameter-vocabulary-feature">
 <head>ttp:feature</head>
 <p>The <el>ttp:feature</el> element is used to specify
-infomation about support requirements for a particular feature.</p>
+infomation about support and usage requirements for a particular feature.</p>
 <p>The children of the <el>ttp:feature</el> element must express a non-empty
 sequence of character information items that adheres to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
@@ -1925,7 +1946,7 @@ sequence of character information items that adheres to the
 <td>
 <eg xml:space="preserve">
 &lt;ttp:feature
-  value = (optional|required|use) : required
+  value = (optional|required|use|prohibited) : required
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -1951,9 +1972,11 @@ has achieved REC status).</p>
 <p>If the URI expressed by the content of the <el>ttp:feature</el> element
 is a relative URI, then an <att>xml:base</att> attribute should be
 specified on the nearest ancestor <el>ttp:features</el> element.</p>
-<p>The <att>value</att> attribute specifies whether a conforming TTML
+<p>The <att>value</att> attribute specifies (1) whether a conforming TTML
 processor must or may implement the designated feature in order to
-process the document. If the value of the <att>value</att> attribute
+process the document, or (2) whether a TTML <emph>Document Instance</emph>
+must not include or otherwise use the designated feature.
+If the value of the <att>value</att> attribute
 is <code>optional</code>, then the processor need
 not implement or otherwise support the feature in order to process the
 document; if the value is <code>required</code>, then the processor
@@ -1962,7 +1985,9 @@ whether the feature is enabled or disabled, in order to process
 the document; if the value is
 <code>use</code>, then the processor must both (1) implement or
 otherwise support the feature and (2) have enabled (activated) use of the
-feature.</p>
+feature; if the value is <code>prohibited</code>, then the document must not
+include or otherwise use the feature, and, if it does, then the processor
+should reject or abort processing of the document.</p>
 <note role="clarification">
 <p>The default value of the <att>value</att> attribute is
 <code>required</code>, as indicated in the above element information
@@ -1970,17 +1995,22 @@ item definition. Therefore, if a <att>value</att> attribute is not
 specified on a <el>ttp:feature</el> element, it is equivalent to
 specifying that support for the feature is required.</p>
 </note>
+
 <p>If the value of the <att>value</att> attribute is
 <code>required</code> or <code>use</code>
 and the TTML processor implementation does
 not support the feature, or if the <att>value</att> attribute is
 <code>use</code> and the TTML processor implementation supports but has disabled
-that feature, then it must not further process the document
+that feature,
+or if the <att>value</att> attribute is <code>prohibited</code> and a
+<emph>Document Instance</emph> includes or makes use of the feature,
+then it must not further process the document
 without the presence of an explicit override from an end-user or some
 implementation specific parameter traceable to an end-user or to a
 user or system configuration setting.  If a TTML processor aborts
 processing of a <emph>Document Instance</emph> due to the specification of a
-required, but unsupported feature by this element, then some end-user
+required, but unsupported feature by this element, or due to the presence
+or use of a prohibited feature, then some end-user
 notification should be given unless the end-user or system has
 disabled such a notification, or if the processor does not permit or
 entail the intervention of an end-user.</p>
@@ -1995,14 +2025,15 @@ referenced by the document. Notwithstanding the above, the syntactic
 presence or reference to an optional feature by a document must not be
 considered to be a violation of document validity or a barrier to
 further processing if the syntactic expression is well-formed and
-valid.</p>
+otherwise valid.</p>
 <p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
 a <el>ttp:feature</el> element in a given profile, then it must be interpreted as if the feature were specified
 with the <att>value</att> attribute equal to <code>optional</code>.</p>
 <note role="elaboration">
 <p>In particular, if some feature is not present in a profile definition, then
 it is not to be interpreted as meaning the use of that feature (in a <emph>Document Instance</emph>)
-is disallowed or otherwise prohibited.</p>
+is disallowed or otherwise prohibited. If a feature is intended to be disallowed by a profile, then
+it should be specified using the <code>prohibited</code> value.</p>
 </note>
 <p>The <el>ttp:feature</el> element is illustrated by the following example.</p>
 <table id="parameter-vocabulary-feature-example-1" role="example">
@@ -2015,6 +2046,7 @@ is disallowed or otherwise prohibited.</p>
   &lt;ttp:features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</phrase>
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#textDecoration-under&lt;/ttp:feature&gt;</phrase>
+    <phrase role="strong">&lt;ttp:feature value="prohibited"&gt;#textOutline-blurred&lt;/ttp:feature&gt;</phrase>
   &lt;/ttp:features&gt;
 &lt;/ttp:profile&gt;
 </eg>
@@ -2024,20 +2056,22 @@ is disallowed or otherwise prohibited.</p>
 </table>
 <note role="explanation">
 <p>In the above example, the DFXP presentation profile is used as the
-baseline profile. This baseline profile is then modified by two
-<el>ttp:feature</el> elements in order to
+baseline profile. This baseline profile is then modified by three
+<el>ttp:feature</el> elements in order to (1)
 superset the baseline profile (since neither
 <code>#fontStyle-italic</code> nor <code>#textDecoration-under</code>
-are required by the DFXP presentation profile).</p> 
+are required by the DFXP presentation profile), and
+(2) prohibit use of the <code>#textOutline-blurred</code> feature
+(which is optional in the DFXP presentation profile).</p> 
 <p>The effect of this example is to express authorial intentions that
 italic font style and text underlining must be
-supported.</p>
+supported, and that text outline blurring must not be used by a document.</p>
 </note>
 </div3>
 <div3 id="parameter-vocabulary-extensions">
 <head>ttp:extensions</head>
 <p>The <el>ttp:extensions</el> element is a container element used to group
-infomation about extension support requirements.</p>
+infomation about extension support and usage requirements.</p>
 <p>The <el>ttp:extensions</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
 zero or more <el>ttp:extension</el> elements.</p>
@@ -2074,7 +2108,7 @@ by child <el>ttp:extension</el> elements.</p>
 <div3 id="parameter-vocabulary-extension">
 <head>ttp:extension</head>
 <p>The <el>ttp:extension</el> element is used to specify
-infomation about support requirements for a particular extension.</p>
+infomation about support and usage requirements for a particular extension.</p>
 <p>The children of the <el>ttp:extension</el> element must express a non-empty
 sequence of character information items that adheres to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
@@ -2086,7 +2120,7 @@ sequence of character information items that adheres to the
 <td>
 <eg xml:space="preserve">
 &lt;ttp:extension
-  value = (optional|required|use) : required
+  value = (optional|required|use|prohibited) : required
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -2109,17 +2143,22 @@ as defined by <specref ref="extension-designations"/>.</p>
 <el>ttp:feature</el> element is a relative URI, then an
 <att>xml:base</att> attribute should be specified on the nearest
 ancestor <el>ttp:extensions</el> element.</p>
-<p>The <att>value</att> attribute specifies whether a conforming TTML
+<p>The <att>value</att> attribute specifies (1) whether a conforming TTML
 processor must or may implement the designated extension in order to
-process the document. If the value of the <att>value</att> attribute
+process the document, or (2) whether a TTML <emph>Document Instance</emph>
+must not include or otherwise use the designated extension.
+If the value of the <att>value</att> attribute
 is <code>optional</code>, then the processor need
 not implement or otherwise support the extension in order to process the
 document; if the value is <code>required</code>, then the processor
-must implement or otherwise support the extension in order to process
+must implement or otherwise support the extension, irrespective of
+whether the extension is enabled or disabled, in order to process
 the document; if the value is
 <code>use</code>, then the processor must both (1) implement or
-otherwise support the extension and (2) enable (activate) use of the
-extension.</p>
+otherwise support the extension and (2) have enabled (activated) use of the
+extension; if the value is <code>prohibited</code>, then the document must not
+include or otherwise use the extension, and, if it does, then the processor
+should reject or abort processing of the document.</p>
 <note role="clarification">
 <p>The default value of the <att>value</att> attribute is
 <code>required</code>, as indicated in the above element information
@@ -2153,14 +2192,15 @@ referenced by the document. Notwithstanding the above, the syntactic
 presence or reference to an optional extension by a document must not be
 considered to be a violation of document validity or a barrier to
 further processing if the syntactic expression is well-formed and
-valid.</p>
+otherwise valid.</p>
 <p>If some well known extension is not specified by
 a <el>ttp:extension</el> element in a given profile, then it must be interpreted as if the extension were specified
 with the <att>value</att> attribute equal to <code>optional</code>.</p>
 <note role="elaboration">
 <p>In particular, if some extension is not present in a profile definition, then
 it is not to be interpreted as meaning the use of that extension (in a <emph>Document Instance</emph>)
-is disallowed or otherwise prohibited.</p>
+is disallowed or otherwise prohibited. If an extension is intended to be disallowed by a profile, then
+it should be specified using the <code>prohibited</code> value.</p>
 </note>
 <p>The <el>ttp:extension</el> element is illustrated by the following example.</p>
 <table id="parameter-vocabulary-extension-example-1" role="example">

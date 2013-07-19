@@ -7,17 +7,17 @@
         <pathelement location="saxon8/saxon8.jar"/>
     </path>
     <property name="html.dir" value="${basedir}"/>
-    <property name="html.name" value="ttml11.html"/>
-    <property name="stylesheet" value="xmlspec-ttml11.xsl"/>
+    <property name="html.name" value="ttml2.html"/>
+    <property name="stylesheet" value="xmlspec-ttml2.xsl"/>
     <property name="glossary" value="extract-glist.xsl"/>
     <property name="generateBPlist" value="generateBPlist.xsl"/>
     <property name="last-public-draft" value="20070706"/>
     
     <property name="jing.jar" value="${basedir}/jing/jing.jar"/>
     <property name="rnc.dir" value="${basedir}/rnc"/>
-    <property name="rnc.schema" value="${rnc.dir}/ttml11.rnc"/>
+    <property name="rnc.schema" value="${rnc.dir}/ttml2.rnc"/>
     <property name="xsd.dir" value="${basedir}/xsd"/>
-    <property name="xsd.schema" value="${xsd.dir}/ttml11.xsd"/>
+    <property name="xsd.schema" value="${xsd.dir}/ttml2.xsd"/>
     <property name="profiles.dir" value="${basedir}/profiles"/>
     <property name="examples.dir" value="${basedir}/examples"/>
 
@@ -46,7 +46,7 @@
     <target name="validate-schema-rnc" description="Validates DFXP's RNC Schema.">
         <java fork="true" jar="${jing.jar}" dir="${rnc.dir}">
             <arg value="-c"/>
-            <arg value="ttml11.rnc"/>
+            <arg value="ttml2.rnc"/>
         </java>
     </target>
 
@@ -62,8 +62,8 @@
         <exec executable="xjc" dir="xsd">
           <arg value="-quiet"/>
           <arg value="-b"/>
-          <arg value="ttml11-bindings.xjb"/>
-          <arg value="ttml11.xsd"/>
+          <arg value="ttml2-bindings.xjb"/>
+          <arg value="ttml2.xsd"/>
         </exec>
     </target>
 
@@ -184,22 +184,22 @@
 
     <target name="validate-tt-specs" description="Validates all Timed Text spec files."
         depends="build-escapes">
-        <xmlvalidate lenient="false" warn="yes" file="ttml11.xml"/>
+        <xmlvalidate lenient="false" warn="yes" file="ttml2.xml"/>
     </target>
 
     <target name="validate-tt-specs-dont-build-escapes" description="Validates all Timed Text spec files.">
-        <xmlvalidate lenient="false" warn="yes" file="ttml11.xml"/>
+        <xmlvalidate lenient="false" warn="yes" file="ttml2.xml"/>
     </target>
 
     <target name="validate" depends="validate-schemas,validate-examples,validate-xsl,validate-svg,validate-tt-specs,validate-schema-rnc,validate-profiles"/>
 
     <target name="html" description="Transforms xml into html.">
-        <echo>Generating ttml11.html</echo>
+        <echo>Generating ttml2.html</echo>
         <java fork="true" classname="net.sf.saxon.Transform">
             <classpath refid="saxon8.classpath"/>
             <arg value="-o"/>
             <arg value="${html.dir}/${html.name}"/>
-            <arg value="ttml11.xml"/>
+            <arg value="ttml2.xml"/>
             <arg value="${stylesheet}"/>
             <arg value="showAssertions=true"/>
         </java>    

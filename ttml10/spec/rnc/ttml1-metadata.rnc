@@ -1,0 +1,39 @@
+# .......................................................................
+# TT-AF 1.0 DFXP Metadata Module ........................................
+# .......................................................................
+
+# namespace prefix bindings
+namespace tt = "http://www.w3.org/ns/ttml"
+namespace ttm = "http://www.w3.org/ns/ttml#metadata"
+namespace local = ""
+
+# meta - generic metadata
+TTAF.metadata =
+  element metadata {
+    TTAF.metadata.attlist,
+    TTAF.metadata.content
+  }
+
+TTAF.metadata.attlist &=
+  TTAF.Core.attrib.class
+
+TTAF.External.class =
+  element * - ( tt:* | ttm:* ) {
+    ( attribute * - ( xml:id ) { text }
+      | TTAF.External.class
+    )*
+  }
+
+TTAF.metadata.content.extra = empty
+TTAF.metadata.content =
+  (TTAF.MetadataItems.class |
+   TTAF.External.class |
+   TTAF.metadata.content.extra)*
+
+TTAF.Metadata.class |=
+  TTAF.MetadataItems.class |
+  TTAF.metadata
+
+# .......................................................................
+# .......................................................................
+# .......................................................................

@@ -321,4 +321,34 @@
         </delete>
     </target>
 
+    <target name="kwexpand">
+        <exec executable="hg">
+          <arg value="kwexpand"/>
+          <arg value="ttml1.xml"/>
+        </exec>
+    </target>
+
+    <target name="kwshrink">
+        <exec executable="hg">
+          <arg value="kwshrink"/>
+          <arg value="ttml1.xml"/>
+        </exec>
+    </target>
+
+    <target name="rg" description="Regenerate using shortened generation, while expanding keywords."
+            depends="kwexpand,sg,kwshrink">
+    </target>
+
+    <target name="commit">
+        <exec executable="hg">
+          <arg value="commit"/>
+          <arg value="-m"/>
+          <arg value="[ttml1] regenerate ED"/>
+        </exec>
+    </target>
+
+    <target name="rgc" description="Regenerate and commit."
+            depends="rg,commit">
+    </target>
+
 </project>

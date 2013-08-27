@@ -2,17 +2,46 @@
 <xs:schema targetNamespace="http://www.w3.org/ns/ttml#datatype"
         xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:ttd="http://www.w3.org/ns/ttml#datatype">
-  <xs:simpleType name="alpha">
-    <xs:restriction base="xs:float"/>
+  <xs:simpleType name="accumulate">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="sum"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="additive">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="replace"/>
+      <xs:enumeration value="sum"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="agent">
     <xs:restriction base="xs:IDREFS"/>
+  </xs:simpleType>
+  <xs:simpleType name="alpha">
+    <xs:restriction base="xs:float"/>
+  </xs:simpleType>
+  <xs:simpleType name="animationValue">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="animationValueList">
+    <xs:annotation>
+      <xs:documentation>animationValue [ ";" animationValue ]*</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="border">
     <xs:annotation>
       <xs:documentation>[ borderWidth || borderStyle || borderColor ]</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="calcMode">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="discrete"/>
+      <xs:enumeration value="linear"/>
+      <xs:enumeration value="displaced"/>
+      <xs:enumeration value="spline"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="cellResolution">
     <xs:annotation>
@@ -84,6 +113,12 @@
       <xs:enumeration value="prohibited"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="fill">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="freeze"/>
+      <xs:enumeration value="remove"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="fontFamily">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
@@ -106,6 +141,37 @@
       <xs:enumeration value="bold"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="fragmentIdentifier">
+    <xs:annotation>
+      <xs:documentation>
+        fragmentIdentifier
+          : "#" fragment
+
+        fragment
+          : uric+
+
+        uric
+          : reserved
+          | unreserved
+          | escaped
+
+        reserved
+          : [;/?:@&amp;=+$,]
+
+        unreserved
+          : [a-zA-Z]
+          | [0-9]
+          | [-_.!~*'()]
+
+        escaped
+          : "%" hex hex
+
+        hex
+          : [0-9a-fA-F]
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
   <xs:simpleType name="frameRate">
     <xs:restriction base="xs:positiveInteger"/>
   </xs:simpleType>
@@ -116,6 +182,55 @@
     <xs:restriction base="xs:string">
       <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
     </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="keySplines">
+    <xs:annotation>
+      <xs:documentation>
+        keySplines
+          : control [ lwsp? ";" lwsp? control ]*
+
+        control
+          : x1 comma? y1 comma? x2 comma? y2
+
+        x1, x2, y1, y2
+          : coordinate
+
+        coordinate                                // 0 ≥ value ≥ 1
+          : whole
+          | whole "." fraction
+          | "." fraction
+
+        whole, fraction
+          : digit+
+
+        comma
+          : ","
+
+        lwsp
+          : ( ' ' | '\t' | '\n' | '\r' )+
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="keyTimes">
+    <xs:annotation>
+      <xs:documentation>
+        keyTimes
+          : time [ lwsp? ";" lwsp? time ]*
+
+        time                                // 0 ≥ value ≥ 1
+          : whole
+          | whole "." fraction
+          | "." fraction
+
+        whole, fraction
+          : digit+
+
+        lwsp
+          : ( ' ' | '\t' | '\n' | '\r' )+
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="lineHeight">
     <xs:annotation>
@@ -205,6 +320,32 @@
   </xs:simpleType>
   <xs:simpleType name="profile">
     <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+  <xs:simpleType name="qualifiedName">
+    <xs:restriction base="xs:QName"/>
+  </xs:simpleType>
+  <xs:simpleType name="repeatCount">
+    <xs:annotation>
+      <xs:documentation>
+        repeatCount
+          : count
+          | "indefinite"
+
+        count:
+          : digit+                         // value > 0
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="repeatDur">
+    <xs:annotation>
+      <xs:documentation>
+        repeatDur
+          : timeExpression
+          | "indefinite"
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="role">
     <xs:restriction>

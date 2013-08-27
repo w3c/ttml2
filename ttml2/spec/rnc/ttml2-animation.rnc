@@ -2,26 +2,76 @@
 # TT-AF 1.0 DFXP Animation Module .......................................
 # .......................................................................
 
-# set - discrete animation
-TTAF.set =
-  element set {
-    TTAF.set.attlist,
-    TTAF.set.content
+namespace xlink = "http://www.w3.org/1999/xlink"
+
+# animation - generic animation container
+TTAF.animation =
+  element animation {
+    TTAF.animation.attlist,
+    TTAF.animation.content
   }
 
-TTAF.set.attlist &=
+TTAF.animation.attlist &=
+  TTAF.Core.attrib.class
+
+TTAF.animation.content.extra = empty
+TTAF.animation.content =
+  (TTAF.Metadata.class*,
+   TTAF.animation.animate*,
+   TTAF.animation.content.extra*)
+
+# animate - general animation
+TTAF.animation.animate =
+  element animate {
+    TTAF.animation.animate.attlist,
+    TTAF.animation.animate.content
+  }
+
+TTAF.animation.animate.attlist &=
+  TTAF.Core.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.Timed.attrib.class,
+  attribute accumulate { TTAF.Accumulate.datatype }?,
+  attribute additive { TTAF.Accumulate.datatype }?,
+  attribute attributeName { TTAF.QualifiedName.datatype },
+  attribute by { TTAF.AnimationValue.datatype }?,
+  attribute calcMode { TTAF.CalcMode.datatype }?,
+  attribute fill { TTAF.Fill.datatype }?,
+  attribute from { TTAF.AnimationValue.datatype }?,
+  attribute keySplines { TTAF.KeySplines.datatype }?,
+  attribute keyTimes { TTAF.KeyTimes.datatype }?,
+  attribute repeatCount { TTAF.RepeatCount.datatype }?,
+  attribute repeatDur { TTAF.RepeatDur.datatype }?,
+  attribute to { TTAF.AnimationValue.datatype }?,
+  attribute values { TTAF.AnimationValueList.datatype }?,
+  attribute xlink:href { xsd:anyURI }?
+
+TTAF.animation.animate.content.extra = empty
+TTAF.animation.animate.content =
+  (TTAF.Metadata.class*,
+   TTAF.animation.animate.content.extra*)
+
+# set - discrete animation
+TTAF.animation.set =
+  element set {
+    TTAF.animation.set.attlist,
+    TTAF.animation.set.content
+  }
+
+TTAF.animation.set.attlist &=
   TTAF.Core.attrib.class,
   TTAF.Styled.attrib.class,
   TTAF.Timed.attrib.class
 
-TTAF.set.content.extra = empty
-TTAF.set.content =
+TTAF.animation.set.content.extra = empty
+TTAF.animation.set.content =
   (TTAF.Metadata.class*,
-   TTAF.set.content.extra*)
+   TTAF.animation.set.content.extra*)
 
 TTAF.Animation.extra = empty
 TTAF.Animation.class |=
-  TTAF.set |
+  TTAF.animation.animate |
+  TTAF.animation.set |
   TTAF.Animation.extra
 
 # .......................................................................

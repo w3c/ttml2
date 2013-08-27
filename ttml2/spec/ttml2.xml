@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 051853298288 2013/08/25 16:46:58 glenn $ -->
+<!-- $Id: ttml2.xml,v 1d13586de640 2013/08/27 01:04:37 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/08/25 16:46:58 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/08/27 01:04:37 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -120,11 +120,11 @@ formats, TTML Content may be used directly as a distribution format,
 for example, providing a standard content format to reference from a <el>&lt;track&gt;</el>
 element in an HTML5 document, or a <el>&lt;text&gt;</el> or 
 <el>&lt;textstream&gt;</el> media element in a <bibref
-ref="smil21"/> document.</p>
+ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/08/25 16:46:58 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/08/27 01:04:37 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -144,7 +144,7 @@ formats, TTML Content may be used directly as a distribution format, providing, 
 example, a standard content format to reference from a <el>&lt;track&gt;</el>
 element in an HTML5 document, or a <el>&lt;text&gt;</el> or 
 <el>&lt;textstream&gt;</el> media element in a <bibref
-ref="smil21"/> document. Certain properties of TTML support
+ref="smil3"/> document. Certain properties of TTML support
 streamability of content, as described in <specref ref="streaming"/>.</p>
 <note>
 <p>While TTML is not expressly designed for direct (embedded) integration into an
@@ -736,8 +736,8 @@ as a broadcast audio/video stream.</p>
 <gitem>
 <label>Synthetic Document Syncbase</label>
 <def>
-<p>A document level <xspecref href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/smil-timing.html#Timing-Syncbases">syncbase</xspecref>
-<bibref ref="smil21"/>, &sect; 10.7.1, synthesized or otherwise established by
+<p>A document level <xspecref href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/smil30.html#smil-timing-q158">syncbase</xspecref>
+<bibref ref="smil3"/>, &sect; 5.7.1, synthesized or otherwise established by
 the <emph>Document Processing Context</emph> in accordance with the
 <emph>Related Media Object</emph> or other processing criteria.</p>
 </def>
@@ -1447,6 +1447,8 @@ in the following sections:</p>
 Animation
 </td>
 <td>
+<loc href="#animation-vocabulary-animate">animate</loc>,
+<loc href="#animation-vocabulary-animation">animation</loc>,
 <loc href="#animation-vocabulary-set">set</loc>
 </td>
 </tr>
@@ -1545,6 +1547,7 @@ for TTML element types are enumerated in <specref ref="element-vocab-group-table
 Animation.class
 </td>
 <td>
+<loc href="#animation-vocabulary-animate">animate</loc> |
 <loc href="#animation-vocabulary-set">set</loc>
 </td>
 </tr>
@@ -2821,7 +2824,7 @@ ref="parameter-attribute-dropMode"/>, respectively.</p>
 <note role="explanation">
 <p>When the time base is designated as <code>smpte</code>,
 every time expression denotes a media marker value akin to that
-defined by <bibref ref="smil21"/>, &sect; 10.4.1, except instead
+defined by <bibref ref="smil3"/>, &sect; 5.4.1, except instead
 of using an opaque marker name, a structured <bibref ref="smpte12m"/>
 time coordinate serves as the marker name.</p>
 </note>
@@ -2938,7 +2941,8 @@ elements in the <code>Metadata.class</code> element group,
 followed by zero or more elements in the
 <code>Parameters.class</code> element group,
 followed by zero or one <el>styling</el> element,
-followed by zero or one <el>layout</el> element.</p>
+followed by zero or one <el>layout</el> element,
+followed by zero or one <el>animation</el> element.</p>
 <p>Any metadata specified by children in the <code>Metadata.class</code>
 element group applies semantically to the <emph>Document Instance</emph> as a
 whole, and not just the <el>head</el> element.</p>
@@ -2950,6 +2954,9 @@ that are referenced from other style constructs, by layout constructs, and by
 <loc href="#element-vocab-type-content">Content</loc> elements.</p>
 <p>A <el>layout</el> child element is used to specify layout constructs that
 are referenced by <loc href="#element-vocab-type-content">Content</loc> elements.</p>
+<p>An <el>animation</el> child element is used to specify animation constructs that
+target animatable <loc href="#element-vocab-type-content">Content</loc>
+or <loc href="#element-vocab-type-layout">Layout</loc> elements.</p>
 <table id="elt-syntax-head" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: head</caption>
 <tbody>
@@ -2961,7 +2968,7 @@ are referenced by <loc href="#element-vocab-type-content">Content</loc> elements
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Parameters.class</loc>*, <loc href="#styling-vocabulary-styling">styling</loc>?, <loc href="#layout-vocabulary-layout">layout</loc>?
+  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Parameters.class</loc>*, <loc href="#styling-vocabulary-styling">styling</loc>?, <loc href="#layout-vocabulary-layout">layout</loc>?, <loc href="#animation-vocabulary-animation">animation</loc>?
 &lt;/head&gt;
 </eg>
 </td>
@@ -3559,6 +3566,7 @@ to reference one or more <el>style</el> elements each of which define a style (p
 <p>The <att>style</att> attribute may be specified by an instance of the following
 element types:</p>
 <ulist>
+<item><p><loc href="#animation-vocabulary-animate"><el>animate</el></loc></p></item>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
@@ -5358,8 +5366,8 @@ value <code>always</code> were specified.</p>
 </table>
 <note role="derivation">
 <p>The semantics of the style property
-represented by this attribute are based upon that defined by <bibref ref="smil21"/>,
-&sect; 5.3.3.</p>
+represented by this attribute are based upon that defined by <bibref ref="smil3"/>,
+&sect; 7.4.2.</p>
 </note>
 </div3>
 <div3 id="style-attribute-textAlign">
@@ -6603,11 +6611,9 @@ matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must be inter
 <item><p>a &lt;familyName&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
 matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must not be interpreted as that &lt;genericFamilyName&gt;, but as
 the actual name of a non-generic font family.</p></item>
+<item><p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
+to the <code>Char</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.2.</p></item>
 </ulist>
-<note role="notation">
-<p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
-to the <code>Char</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.2.</p>
-</note>
 <note role="elaboration">
 <p>The <code>{unicode}</code> escape mechanism defined by <bibref ref="css2"/>&nbsp;&sect;4.1.1
 is not supported by this syntax; rather, authors are expected to either (1) directly encode the character
@@ -8078,7 +8084,7 @@ ref="timing-value-timeExpression"/>.</p>
 <p>The begin point of a temporal interval is included in the
 interval; i.e., the interval is left-wise closed.</p>
 <p>The semantics of the <att>begin</att> attribute are those defined
-by <bibref ref="smil21"/>, &sect; 10.4.1,
+by <bibref ref="smil3"/>, &sect; 5.4.1,
 while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-end">
@@ -8102,7 +8108,7 @@ with frame 0). The same holds if the active interval is specified
 as [300f,310f).</p>
 </note>
 <p>The semantics of the <att>end</att> attribute are those defined
-by <bibref ref="smil21"/>, &sect; 10.4.1,
+by <bibref ref="smil3"/>, &sect; 5.4.1,
 while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-dur">
@@ -8122,10 +8128,10 @@ a difference between two implied clock time expressions.</p>
 mode, a (well-formed) <att>dur</att> attribute must not be specified on any
 element.</p>
 <p>The semantics of the <att>dur</att> attribute are those defined
-by <bibref ref="smil21"/>, &sect; 10.4.1,
+by <bibref ref="smil3"/>, &sect; 5.4.1,
 while taking into account any overriding semantics defined by this specification.</p>
 <note role="elaboration">
-<p>In the context of the subset of <bibref ref="smil21"/> semantics supported by
+<p>In the context of the subset of <bibref ref="smil3"/> semantics supported by
 this specification, the active duration of an element that specifies both
 <att>end</att> and <att>dur</att> attributes is equal to the lesser of the value of
 the <att>dur</att> attribute and the difference between the value of the
@@ -8147,11 +8153,11 @@ then the temporal intervals of child elements are considered to apply in
 parallel, i.e., simultaneously in time. Furthermore, the specification of
 the time interval of each child element is considered to be relative to the temporal
 interval of the container element instance. For the purpose of determining the
-<bibref ref="smil21"/> <code>endsync</code> semantics of a <code>par</code>
+<bibref ref="smil3"/> <code>endsync</code> semantics of a <code>par</code>
 time container, a default value of <code>all</code> applies.</p>
 <note role="elaboration">
 <p>The use of a default value of <code>all</code> for the <code>endsync</code>
-behavior is distinct from <bibref ref="smil21"/> which uses a default value
+behavior is distinct from <bibref ref="smil3"/> which uses a default value
 of <code>last</code>.</p>
 </note>
 <p>If the time container semantics of an element instance is <code>seq</code>,
@@ -8174,7 +8180,7 @@ has time container semantics, then <code>par</code> time container semantics mus
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
 </ulist>
 <p>The semantics of parallel and sequential time
-containment are those defined by <bibref ref="smil21"/>, &sect; 10.4.2,
+containment are those defined by <bibref ref="smil3"/>, &sect; 5.4.2,
 while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 </div2>
@@ -8273,7 +8279,7 @@ when the <code>clock</code> time base applies.</p>
 <div2 id="timing-time-intervals">
 <head>Time Intervals</head>
 <p>The semantics of time containment, durations, and intervals defined by
-<bibref ref="smil21"/> apply to the interpretation of like-named timed elements and timing
+<bibref ref="smil3"/> apply to the interpretation of like-named timed elements and timing
 vocabulary defined by this specification, given the following
 constraints:</p>
 <ulist>
@@ -8281,7 +8287,7 @@ constraints:</p>
 <p>The implicit duration of an anonymous span is defined as follows: if
 the anonymous span's parent time container is a parallel time container, then
 the implicit duration is equivalent to the <code>indefinite</code>
-duration value as defined by <bibref ref="smil21"/>; if the anonymous span's
+duration value as defined by <bibref ref="smil3"/>; if the anonymous span's
 parent time container is a sequential time container, then the implicit duration
 is equivalent to zero.</p>
 </item>
@@ -8290,30 +8296,30 @@ is equivalent to zero.</p>
 or <el>span</el> element is determined in accordance to (1) whether
 the element is a parallel or sequential time container, (2) the default
 <code>endsync</code> semantics defined above by <specref ref="timing-attribute-timeContainer"/>,
-and (3) the semantics of <bibref ref="smil21"/> as applied to these time
+and (3) the semantics of <bibref ref="smil3"/> as applied to these time
 containers.</p>
 </item>
 <item>
 <p>The implicit duration of the <el>region</el> element is defined to
 be equivalent to the <code>indefinite</code>
-duration value as defined by <bibref ref="smil21"/>.</p>
+duration value as defined by <bibref ref="smil3"/>.</p>
 </item>
 <item>
 <p>If the governing time base is <code>clock</code>, then time
 expressions are considered to be equivalent to wall-clock
-based timing in <bibref ref="smil21"/>, where the specific semantics of
+based timing in <bibref ref="smil3"/>, where the specific semantics of
 <specref ref="time-expression-semantics-clock"/> apply.</p>
 </item>
 <item>
 <p>If the governing time base is <code>media</code>, then time
 expressions are considered to be equivalent to offset based timing
-in <bibref ref="smil21"/>, where the specific semantics of
+in <bibref ref="smil3"/>, where the specific semantics of
 <specref ref="time-expression-semantics-media"/> apply.</p>
 </item>
 <item>
 <p>If the governing time base is <code>smpte</code>, then time
 expressions are considered to be equivalent to either offset
-based timing or event based timing in <bibref ref="smil21"/>, where the specific semantics of
+based timing or event based timing in <bibref ref="smil3"/>, where the specific semantics of
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
 </ulist>
@@ -8331,8 +8337,175 @@ styling of content.</p>
 <p>The following elements specify the structure and principal animation aspects of a
 <emph>Document Instance</emph>:</p>
 <ulist>
+<item><p><specref ref="animation-vocabulary-animation"/></p></item>
+<item><p><specref ref="animation-vocabulary-animate"/></p></item>
 <item><p><specref ref="animation-vocabulary-set"/></p></item>
 </ulist>
+<div3 id="animation-vocabulary-animation">
+<head>animation</head>
+<p>The <el>animation</el> element is a container element used to group
+animation matter, including metadata that applies to animation matter.</p>
+<p>The <el>animation</el> element accepts as its children zero or more
+elements in the <code>Metadata.class</code> element group, followed by
+zero or more <el>animate</el> elements.</p>
+<table id="elt-syntax-animation" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: animation</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;animation
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#animation-vocabulary-animate">animate</loc>*
+&lt;/animation&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To the extent that time semantics apply to the content of the
+<el>animation</el> element, the implied time interval of this element is
+defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
+</div3>
+<div3 id="animation-vocabulary-animate">
+<head>animate</head>
+<p>The <el>animate</el> element expresses a series of changes (animations) to be applied to a targetted attribute
+of a targetted element.</p>
+<p>An <el>animate</el> element may appear as either (1) a child of a
+<loc href="#element-vocab-type-content">Content</loc> or <el>region</el> element or
+(2) a child of an <loc href="#animation-vocabulary-animation">animation</loc> element. In the former
+case, the targetted element of the animation is the parent of the <el>animate</el> element; in the latter
+case, the targetted element is the element referenced by the <att>xlink:href</att> attribute on the
+<el>animate</el> element.</p>
+<p>The targetted attribute (property) is specified by the <att>attributeName</att> attribute.</p>
+<p>The <el>animate</el> element accepts as its children zero or more
+elements in the <code>Metadata.class</code> element group.</p>
+<table id="elt-syntax-animate" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: animate</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;animate
+  accumulate = <loc href="#animation-value-accumulate">&lt;accumulate&gt;</loc>
+  additive = <loc href="#animation-value-additive">&lt;additive&gt;</loc>
+  <phrase role="strong">attributeName</phrase> = <loc href="#animation-value-qualifiedName">&lt;qualifiedName&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  by = <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc>
+  calcMode = <loc href="#animation-value-calcMode">&lt;calcMode&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
+  from = <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc>
+  keySplines = <loc href="#animation-value-keySplines">&lt;keySplines&gt;</loc>
+  keyTimes = <loc href="#animation-value-keyTimes">&lt;keyTimes&gt;</loc>
+  repeatCount = <loc href="#animation-value-repeatCount">&lt;repeatCount&gt;</loc>
+  repeatDur = <loc href="#animation-value-repeatDur">&lt;repeatDur&gt;</loc>
+  <loc href="#style-attribute-style">style</loc> = IDREFS
+  to = <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc>
+  values = <loc href="#animation-value-animationValueList">&lt;animationValueList&gt;</loc>
+  <loc href="#content-attribute-id">xlink:href</loc> = <loc href="#animation-value-fragmentIdentifier">&lt;fragmentIdentifier&gt;</loc>
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*
+&lt;/animate&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>
+<p>Except for the constraints or variations enumerated below, the semantics of the <el>animate</el> element and its attributes
+enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.12:</p>
+<olist>
+<item><p>For the purpose of interpreting an <att>attributeName</att> attribute, an <att>attributeType</att>
+with a value of <code>XML</code> applies, about which see <bibref ref="svg11"/>, &sect;19.2.5.</p></item>
+<item><p>If no <att>accumulate</att> attribute is specified, then an <emph>accumlate</emph> value of <code>none</code> applies.</p></item>
+<item><p>If no <att>additive</att> attribute is specified, then an <emph>additive</emph> value of <code>replace</code> applies.</p></item>
+<item><p>If no <att>calcMode</att> attribute is specified, then a <emph>calcMode</emph> value of <code>linear</code> applies.</p></item>
+<item><p>If no <att>fill</att> attribute is specified, then a <emph>fill</emph> value of <code>remove</code> applies.</p></item>
+<item><p>If an <att>xlink:href</att> attribute is specified, then the <el>animate</el> element must be a child of an
+<loc href="#animation-vocabulary-animation">animation</loc> element; conversely, if an <el>animate</el> element is a child of
+an <loc href="#animation-vocabulary-animation">animation</loc> element, then it must specify an <att>xlink:href</att> attribute.</p></item>
+</olist>
+<p>An example of using the <el>animate</el> element to animate content
+styling is illustrated below:</p>
+<table id="animation-vocabulary-animate-example-1" role="example">
+<caption>Example Fragment &ndash; Content Style Animation</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+...
+&lt;p dur="5s" tts:color="yellow"&gt;
+<phrase role="strong">&lt;animate attributeName="tts:color" values="yellow,red,green,blue,yellow"/&gt;</phrase>
+Text with Continuously Varying Colors!
+&lt;/p&gt;
+...
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="explanation">
+<p>In the above example, the foreground color of the content "Text
+with Continuously Varying Colors!" is continuously animated from yellow, to red, to green, to
+red, then back to yellow over a 5 second period.</p>
+</note>
+
+<p>An example of using the <el>animate</el> element to animate region
+styling is illustrated below:</p>
+<table id="animation-vocabulary-animate-example-2" role="example">
+<caption>Example Fragment &ndash; Region Style Animation</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"
+    xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling"
+    ttp:extent="640px 480px"&gt;
+    &lt;head&gt;
+      &lt;layout&gt;
+	&lt;region xml:id="r1" timeContainer="seq" tts:opacity="0"&gt;
+	  <phrase role="strong">&lt;animate dur="1s" attributeName="tts:opacity" to="1"/&gt;</phrase>
+	  &lt;set dur="5s" tts:opacity="1"/&gt;
+	  <phrase role="strong">&lt;animate dur="1s" attributeName="tts:opacity" to="0"/&gt;</phrase>
+	  &lt;style tts:extent="480px 60px"/&gt;
+	  &lt;style tts:origin="80px 400px"/&gt;
+	&lt;/region&gt;
+      &lt;/layout&gt;
+    &lt;/head&gt;
+    &lt;body region="r1"&gt;...&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="explanation">
+<p>In the above example, a region, <code>r1</code>, is initially set to 0% opacity,
+fully transparent, then is faded in to 100% opacity, fully opaque, over a one second
+interval. Opacity remains at 100% for five more seconds, and then is faded out to 0%
+over a one second interval, where it remains.</p>
+</note>
+<p></p>
+<ednote>
+<name>Animate Example Images</name>
+<date>2013-08-25</date>
+<edtext>Insert animated SVG images of animate examples.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the <el>animate</el> element
+are based upon that defined by <bibref ref="svg11"/>,
+&sect; 6.2.12, which, in turn, is based upon <bibref ref="smil3"/>, &sect;12.</p>
+</note>
+</div3>
 <div3 id="animation-vocabulary-set">
 <head>set</head>
 <p>The <el>set</el> element is used as a child element of a
@@ -8399,7 +8572,7 @@ Text with Flashing Colors!
 </table>
 <note role="explanation">
 <p>In the above example, the foreground color of the content "Text
-with Flashing Colors" is animated from yellow, to red, to green, to
+with Flashing Colors!" is animated from yellow, to red, to green, to
 red, then back to yellow over a 5 second period.</p>
 </note>
 
@@ -8442,10 +8615,16 @@ dimensions of 24 columns and 2 rows is then positioned within the
 create an effect of moving the region, which may be desirable so as
 to avoid obscuring characters in an underlying video with captions.</p>
 </note>
+<p></p>
+<ednote>
+<name>Set Example Images</name>
+<date>2013-08-25</date>
+<edtext>Insert animated SVG images of set examples.</edtext>
+</ednote>
 <note role="derivation">
 <p>The semantics of the <el>set</el> element
-are based upon that defined by <bibref ref="smil21"/>,
-&sect; 3.6.2.</p>
+are based upon that defined by <bibref ref="svg11"/>,
+&sect; 6.2.13, which, in turn, is based upon <bibref ref="smil3"/>, &sect;12.</p>
 </note>
 </div3>
 </div2>
@@ -8453,6 +8632,346 @@ are based upon that defined by <bibref ref="smil21"/>,
 <head>Animation Attribute Vocabulary</head>
 <p>No animation related attribute vocabulary is defined for use in the
 core vocabulary catalog.</p>
+</div2>
+<div2 id="animation-value-expressions">
+<head>Animation Value Expressions</head>
+<p>Animation attribute values include the use of the following expressions:</p>
+<ulist>
+<item><p><specref ref="animation-value-accumulate"/></p></item>
+<item><p><specref ref="animation-value-additive"/></p></item>
+<item><p><specref ref="animation-value-animationValue"/></p></item>
+<item><p><specref ref="animation-value-animationValueList"/></p></item>
+<item><p><specref ref="animation-value-calcMode"/></p></item>
+<item><p><specref ref="animation-value-fill"/></p></item>
+<item><p><specref ref="animation-value-fragmentIdentifier"/></p></item>
+<item><p><specref ref="animation-value-keySplines"/></p></item>
+<item><p><specref ref="animation-value-keyTimes"/></p></item>
+<item><p><specref ref="animation-value-qualifiedName"/></p></item>
+<item><p><specref ref="animation-value-repeatCount"/></p></item>
+<item><p><specref ref="animation-value-repeatDur"/></p></item>
+</ulist>
+<div3 id="animation-value-accumulate">
+<head>&lt;accumulate&gt;</head>
+<p>An &lt;accumulate&gt; expression is used to control whether animation is cumulative or not.</p>
+<table id="accumulate-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;accumulate&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;accumulate&gt;
+  : "none"
+  | "sum"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of an &lt;accumulate&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.10.</p>
+</div3>
+<div3 id="animation-value-additive">
+<head>&lt;additive&gt;</head>
+<p>An &lt;additive&gt; expression is used to control whether animation is additive.</p>
+<table id="additive-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;additive&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;additive&gt;
+  : "replace"
+  | "sum"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of an &lt;additive&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.10.</p>
+</div3>
+<div3 id="animation-value-animationValue">
+<head>&lt;animationValue&gt;</head>
+<p>An &lt;animationValue&gt; expression is used to specify the starting (initial), intermediate,
+or ending (final) of the attribute targetted by the animation.</p>
+<table id="animationValue-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;animationValue&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;animationValue&gt;
+  : string
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The syntax of an &lt;animationValue&gt; expression must satisfy all syntax
+requirements that apply to the attribute targetted by the animation.</p>
+<p>The semantics of an &lt;animationValue&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9.</p>
+</div3>
+<div3 id="animation-value-animationValueList">
+<head>&lt;animationValueList&gt;</head>
+<p>An &lt;animationValueList&gt; expression is used to specify a list of animation values that sequentially
+apply to the attribute targetted by the animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
+optionally surrounded by linear white-space (LWSP) characters.</p>
+<table id="animationValueList-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;animationValueList&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;animationValueList&gt;
+  : <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> [ ";" <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> ]*
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The syntax of an &lt;animationValue&gt; in an &lt;animationValueList&gt; expression must satisfy all syntax
+requirements that apply to the attribute targetted by the animation.</p>
+<p>The semantics of an &lt;animationValueList&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9.</p>
+</div3>
+<div3 id="animation-value-calcMode">
+<head>&lt;calcMode&gt;</head>
+<p>A &lt;calcMode&gt; expression is used to control the interpolation mode of the animation.</p>
+<table id="calcMode-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;calcMode&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;calcMode&gt;
+  : "discrete"
+  | "linear"
+  | "displaced"
+  | "spline"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of a &lt;calcMode&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9.</p>
+</div3>
+<div3 id="animation-value-fill">
+<head>&lt;fill&gt;</head>
+<p>A &lt;fill&gt; expression is used to determine effect of the animation after the active end of the animation.</p>
+<table id="fill-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;fill&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;fill&gt;
+  : "freeze"
+  | "remove"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of a &lt;fill&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.8.</p>
+</div3>
+<div3 id="animation-value-fragmentIdentifier">
+<head>&lt;fragmentIdentifier&gt;</head>
+<p>A &lt;fragmentIdentifier&gt; expression is used to target (refer to) an animation to a specific element in the same <emph>Document Instance</emph>.</p>
+<table id="fragmentIdentifier-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;fragmentIdentifier&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;fragmentIdentifier&gt;
+  : "#" fragment
+
+fragment
+  : uric+
+
+uric
+  : reserved
+  | unreserved
+  | escaped
+
+reserved
+  : [;/?:@&amp;=+$,]
+
+unreserved
+  : [a-zA-Z]
+  | [0-9]
+  | [-_.!~*'()]
+
+escaped
+  : "%" hex hex
+
+hex
+  : [0-9a-fA-F]
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Except for the constraints on syntax and semantics that follow below, the semantics of a &lt;fragmentIdentifier&gt;
+expression are those defined to apply to an "&lt;iri&gt;" expression in <bibref ref="svg11"/>, &sect;19.2.4.</p>
+<p>A &lt;fragmentIdentifer&gt; must adhere
+to the <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>. Furthermore, it
+must adhere to the fragment identifer syntax defined by <bibref ref="uri"/>,
+Section 4.1, and is a strict subset thereof, since at least one character must appear in
+the fragment component.</p>
+<p>No linear white-space (LWSP) is permitted to appear within a fragment identifier.</p>
+<p>A &lt;fragmentIdentifer&gt; expression must refer to an element in the same <emph>Document Instance</emph>,
+i.e., the fragment component must be a valid IDREF.</p>
+</div3>
+<div3 id="animation-value-keySplines">
+<head>&lt;keySplines&gt;</head>
+<p>An &lt;keySplines&gt; expression is used to specify a list of Bezier control points that control the pacing of an
+animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
+optionally surrounded by linear white-space (LWSP) characters.</p>
+<table id="keySplines-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;keySplines&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;keySplines&gt;
+  : control [ lwsp? ";" lwsp? control ]*
+
+control
+  : x1 comma? y1 comma? x2 comma? y2
+
+x1, x2, y1, y2
+  : coordinate
+
+coordinate                                // 0 &ge; <emph>value</emph> &ge; 1
+  : whole
+  | whole "." fraction
+  | "." fraction
+
+whole, fraction
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+
+comma
+  : ","
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of a &lt;keySplines&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>keySplines</att> attribute.</p>
+</div3>
+<div3 id="animation-value-keyTimes">
+<head>&lt;keyTimes&gt;</head>
+<p>An &lt;keyTimes&gt; expression is used to specify a list of relative time values that control the pacing of an
+animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
+optionally surrounded by linear white-space (LWSP) characters.</p>
+<table id="keyTimes-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;keyTimes&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;keyTimes&gt;
+  : time [ lwsp? ";" lwsp? time ]*
+
+time                                // 0 &ge; <emph>value</emph> &ge; 1
+  : whole
+  | whole "." fraction
+  | "." fraction
+
+whole, fraction
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of a &lt;keyTimes&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>keyTimes</att> attribute.</p>
+</div3>
+<div3 id="animation-value-qualifiedName">
+<head>&lt;qualifiedName&gt;</head>
+<p>A &lt;qualifiedName&gt; expression is used to specify the attribute targetted by the animation.</p>
+<table id="qualifiedName-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;qualifiedName&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;qualifiedName&gt;
+  : prefix ":" local
+  | local
+
+prefix
+  : <emph>nmchar</emph>+
+
+local
+  : <emph>nmchar</emph>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The syntactic element <emph><code>nmchar</code></emph> is to be interpreted according
+to the <code>NameChar</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.3,
+except that the COLON (U+003A) character is excluded.</p>
+<p>The semantics of a &lt;qualifiedName&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.5, as applying to an <code>attributeName</code> attribute
+according to an implied <code>attributeType</code> of <code>XML</code>.</p>
+</div3>
+<div3 id="animation-value-repeatCount">
+<head>&lt;repeatCount&gt;</head>
+<p>A &lt;repeatCount&gt; expression is used to determine the number of iterations of a repeated animation.</p>
+<table id="repeatCount-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;repeatCount&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;repeatCount&gt;
+  : count
+  | "indefinite"
+
+count:
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+                       // <emph>value</emph> > 0
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of a &lt;repeatCount&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.8.</p>
+</div3>
+<div3 id="animation-value-repeatDur">
+<head>&lt;repeatDur&gt;</head>
+<p>A &lt;repeatDur&gt; expression is used to control the total duration for a repeated animation.</p>
+<table id="repeatDur-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;repeatDur&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;repeatDur&gt;
+  : <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  | "indefinite"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of a &lt;repeatDur&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.8.</p>
+</div3>
 </div2>
 </div1>
 <div1 id="metadata">
@@ -9085,17 +9604,9 @@ for future standardization.</p>
 as relative URIs (fragment identifiers) with respect to the 
 TT Feature Namespace base URI.</p>
 <ednote>
-<name>#animation-referential</name>
-<date>2013-07-10</date>
-<edtext>Consider adding <code>#animation-referential</code> to designate use of <code>style</code> attribute
-on <el>set</el> element.</edtext>
-</ednote>
-<p/>
-<ednote>
-<name>#animation-targeted</name>
-<date>2013-07-10</date>
-<edtext>Consider adding <code>#animation-targeted</code> to designate use of <code>xml:href</code> or
-<code>targetElement</code> attribute on <el>set</el> element (if added).</edtext>
+<name>#animation subset features</name>
+<date>2013-08-26</date>
+<edtext>Add fine grained subset features of #animation.</edtext>
 </ednote>
 <div3 id="feature-animation">
 <head>#animation</head>
@@ -9103,6 +9614,8 @@ on <el>set</el> element.</edtext>
 feature if it recognizes and is capable of transforming the following
 vocabulary defined by <specref ref="animation"/>:</p>
 <ulist>
+<item><p><loc href="#animation-vocabulary-animation"><el>animation</el></loc></p></item>
+<item><p><loc href="#animation-vocabulary-animate"><el>animate</el></loc></p></item>
 <item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
 </ulist>
 <p>A TTML presentation processor supports the <code>#animation</code>
@@ -11650,11 +12163,11 @@ RFC 2046, November 1996, IETF.(See
 Schema Definition Language (DSDL) &ndash; Part 2: Regular-grammar-based validation &ndash; RELAX NG</titleref>,
 International Organization for Standardization (ISO).
 </bibl>
-<bibl id="smil21" key="SMIL 2.1">Dick Bultermann, et al.,
-<titleref href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/">Synchronized
-Multimedia Integration Language (SMIL 2.1)</titleref>,
-W3C Recommendation, 13 December 2005. (See
-<xspecref href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/">http://www.w3.org/TR/2005/REC-SMIL2-20051213/</xspecref>.)
+<bibl id="smil3" key="SMIL 3.0">Dick Bultermann, et al.,
+<titleref href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">Synchronized
+Multimedia Integration Language (SMIL 3.0)</titleref>,
+W3C Recommendation, 1 December 2008. (See
+<xspecref href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">http://www.w3.org/TR/2008/REC-SMIL3-20081201/</xspecref>.)
 </bibl>
 <bibl id="smpte12m" key="SMPTE 12M">ANSI/SMPTE 12M,
 <titleref href="https://www.smpte.org/">Television, Audio and Film &ndash;
@@ -11668,6 +12181,13 @@ systems and equipment &ndash; Colour measurement and management
 &ndash; sRGB</titleref>, International Electrotechnical
 Commission (IEC).
 </bibl>
+<bibl id="svg11" key="SVG 1.1">Erik Dahlström et al., Eds.,
+<titleref
+href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable
+Vector Graphics (SVG) 1.1 Second Edition</titleref>, W3C Recommendation, 16
+August 2011. (See
+<xspecref href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</xspecref>.)
+</bibl>
 <bibl id="uaag" key="UAAG">Ian Jacobs, Jon Gunderson, and Eric Hansen, Eds.,
 <titleref href="http://www.w3.org/TR/2002/REC-UAAG10-20021217/">User
 Agent Accessibility Guidelines 1.0</titleref>, W3C Recommendation, 17
@@ -11679,6 +12199,12 @@ href="http://www.unicode.org/reports/tr14/tr14-17.html">Line Breaking
 Properties</titleref>, Unicode Consortium, 29 August 2005. (See
 <xspecref
 href="http://www.unicode.org/reports/tr14/tr14-17.html">http://www.unicode.org/reports/tr14/tr14-17.html</xspecref>.)
+</bibl>
+<bibl id="uri" key="URI">T. Berner-Lee, R. Fielding, and L. Masinter,
+<titleref
+href="http://www.rfc-editor.org/rfc/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</titleref>,
+RFC 2396, August 1998, IETF.(See
+<xspecref href="http://www.rfc-editor.org/rfc/rfc2396.txt">http://www.rfc-editor.org/rfc/rfc2396.txt</xspecref>.)
 </bibl>
 <bibl id="utc" key="UTC">
 Recommendation TF.460,
@@ -11805,19 +12331,17 @@ Signal &ndash; NTSC for Studio Applications</titleref>, SMPTE Standard.
 href="http://www.smpte.org/">Conversion from CEA-708 Caption Data to SMPTE-TT</titleref>,
 SMPTE Recommended Practice.
 </bibl>
-<bibl id="svg11" key="SVG 1.1">Jon Ferraiolo, Jun Fujisawa, Dean Jackson, Eds.,
-<titleref
-href="http://www.w3.org/TR/2003/REC-SVG11-20030114/">Scalable
-Vector Graphics (SVG) 1.1 Specification</titleref>, W3C Recommendation, 14
-January 2003. (See
-<xspecref href="http://www.w3.org/TR/2003/REC-SVG11-20030114/">http://www.w3.org/TR/2003/REC-SVG11-20030114/</xspecref>.)
-</bibl>
 <bibl id="ttaf1-req" key="TTAF1-REQ">Glenn Adams, Ed.,
 <titleref href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">Timed Text (TT) Authoring Format 1.0 Use
 Cases and Requirements</titleref>,
 W3C Working Group Note, 27 April 2006. (See
 <xspecref
 href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</xspecref>.)
+</bibl>
+<bibl id="ttml1" key="TTML1">Glenn Adams, Ed.,
+<titleref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
+W3C Editor's Draft. (See
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html</xspecref>.)
 </bibl>
 <bibl id="xhtml10" key="XHTML 1.0">Steven Pemberton, et al.,
 <titleref
@@ -12306,6 +12830,20 @@ element.</p>
 <td><phrase role="strong">Notes</phrase></td>
 </tr>
 <tr>
+<td><loc href="#animation-vocabulary-animate"><code>tt:animate</code></loc></td>
+<td><code>svg:animate</code></td>
+<td><bibref ref="svg11"/></td>
+<td>-@* except begin, dur, end; +@tts:*, +@xml:lang, +@xml:space</td>
+<td>3,6</td>
+</tr>
+<tr>
+<td><loc href="#animation-vocabulary-animation"><code>tt:animation</code></loc></td>
+<td><code>tt:layout</code></td>
+<td><bibref ref="ttml1"/></td>
+<td>conceptual derivation</td>
+<td>12</td>
+</tr>
+<tr>
 <td><loc href="#document-structure-vocabulary-body"><code>tt:body</code></loc></td>
 <td><code>xhtml:body</code></td>
 <td><bibref ref="xhtml10"/></td>
@@ -12550,6 +13088,11 @@ but extended to support distinct specification of optionality.</p>
 <p>Derived from the use of <code>@baseProfile</code>
 and <code>@version</code> on the <code>svg:svg</code> element.</p>
 </item>
+<item>
+<p>Conceptually derived from existing <el>tt:layout</el> element,
+which is a generic container for layout specifications, but for use
+in defining animation specifications that apply to targetted elements.</p>
+</item>
 </olist>
 </note>
 </div2>
@@ -12598,21 +13141,21 @@ above.</p>
 <tr>
 <td><loc href="#timing-attribute-begin"><code>begin</code></loc></td>
 <td><code>begin</code></td>
-<td><bibref ref="smil21"/></td>
+<td><bibref ref="smil3"/></td>
 <td>see notes</td>
 <td>2,3,4</td>
 </tr>
 <tr>
 <td><loc href="#timing-attribute-dur"><code>dur</code></loc></td>
 <td><code>dur</code></td>
-<td><bibref ref="smil21"/></td>
+<td><bibref ref="smil3"/></td>
 <td>see notes</td>
 <td>2,3,4</td>
 </tr>
 <tr>
 <td><loc href="#timing-attribute-end"><code>end</code></loc></td>
 <td><code>end</code></td>
-<td><bibref ref="smil21"/></td>
+<td><bibref ref="smil3"/></td>
 <td>see notes</td>
 <td>2,3,4</td>
 </tr>
@@ -12633,7 +13176,7 @@ above.</p>
 <tr>
 <td><loc href="#timing-attribute-timeContainer"><code>timeContainer</code></loc></td>
 <td><code>timeContainer</code></td>
-<td><bibref ref="smil21"/></td>
+<td><bibref ref="smil3"/></td>
 <td>
 -<code>excl</code>,
 -<code>none</code>;
@@ -12847,7 +13390,7 @@ no default attribute value
 <tr>
 <td><loc href="#style-attribute-showBackground"><code>tts:showBackground</code></loc></td>
 <td><code>showBackground</code></td>
-<td><bibref ref="smil21"/></td>
+<td><bibref ref="smil3"/></td>
 <td>-<code>inherit</code></td>
 <td></td>
 </tr>
@@ -12971,7 +13514,7 @@ time.</p>
 </item>
 <item>
 <p>Syntactically subsets and supersets the <bibref
-ref="smil21"/>&nbsp;<code>Clock-value</code> syntax as follows:
+ref="smil3"/>&nbsp;<code>Clock-value</code> syntax as follows:
 (1) requires non-negative <code>Full-clock-value</code> or
 <code>Timecount-value</code>;
 (2) if <code>Full-clock-value</code>

@@ -80,9 +80,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .strong { font-weight: bold }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2013/08/25 16:46:58 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2013/08/27 01:04:37 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2013/08/25 16:46:58 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2013/08/27 01:04:37 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -99,7 +99,7 @@ subtitling and captioning functions.</p><p>In addition to being used for interch
 formats, TTML Content may be used directly as a distribution format,
 for example, providing a standard content format to reference from a <code>&lt;track&gt;</code>
 element in an HTML5 document, or a <code>&lt;text&gt;</code> or 
-<code>&lt;textstream&gt;</code> media element in a <a href="#smil21">[SMIL 2.1]</a> document.</p></div><div>
+<code>&lt;textstream&gt;</code> media element in a <a href="#smil3">[SMIL 3.0]</a> document.</p></div><div>
 <h2><a id="status"></a>Status of this Document</h2><p><strong>This document is an editor's copy that has
         no official standing.</strong></p><p></p></div><div class="toc">
 <h2><a id="contents"></a>Table of Contents</h2><p class="toc">1 <a href="#intro">Introduction</a><br>
@@ -246,8 +246,23 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 &nbsp;&nbsp;&nbsp;&nbsp;10.4 <a href="#timing-time-intervals">Time Intervals</a><br>
 11 <a href="#animation">Animation</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;11.1 <a href="#animation-element-vocabulary">Animation Element Vocabulary</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.1.1 <a href="#animation-vocabulary-set">set</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.1.1 <a href="#animation-vocabulary-animation">animation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.1.2 <a href="#animation-vocabulary-animate">animate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.1.3 <a href="#animation-vocabulary-set">set</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;11.2 <a href="#animation-attribute-vocabulary">Animation Attribute Vocabulary</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;11.3 <a href="#animation-value-expressions">Animation Value Expressions</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.1 <a href="#animation-value-accumulate">&lt;accumulate&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.2 <a href="#animation-value-additive">&lt;additive&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.3 <a href="#animation-value-animationValue">&lt;animationValue&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.4 <a href="#animation-value-animationValueList">&lt;animationValueList&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.5 <a href="#animation-value-calcMode">&lt;calcMode&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.6 <a href="#animation-value-fill">&lt;fill&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.7 <a href="#animation-value-fragmentIdentifier">&lt;fragmentIdentifier&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.8 <a href="#animation-value-keySplines">&lt;keySplines&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.9 <a href="#animation-value-keyTimes">&lt;keyTimes&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.10 <a href="#animation-value-qualifiedName">&lt;qualifiedName&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.11 <a href="#animation-value-repeatCount">&lt;repeatCount&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.3.12 <a href="#animation-value-repeatDur">&lt;repeatDur&gt;</a><br>
 12 <a href="#metadata">Metadata</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;12.1 <a href="#metadata-element-vocabulary">Metadata Element Vocabulary</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12.1.1 <a href="#metadata-vocabulary-metadata">metadata</a><br>
@@ -399,11 +414,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e19336">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e19818">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e20115">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e20632">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e20798">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e20962">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e21612">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e21776">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a><br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a><br>
@@ -426,7 +441,7 @@ satisfied.</p><p>In addition to being used for interchange among legacy distribu
 formats, TTML Content may be used directly as a distribution format, providing, for
 example, a standard content format to reference from a <code>&lt;track&gt;</code>
 element in an HTML5 document, or a <code>&lt;text&gt;</code> or 
-<code>&lt;textstream&gt;</code> media element in a <a href="#smil21">[SMIL 2.1]</a> document. Certain properties of TTML support
+<code>&lt;textstream&gt;</code> media element in a <a href="#smil3">[SMIL 3.0]</a> document. Certain properties of TTML support
 streamability of content, as described in <a href="#streaming"><b>L Streaming TTML Content</b></a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>While TTML is not expressly designed for direct (embedded) integration into an
 HTML or a SMIL document instance, such integration is not precluded.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>In some contexts of use, it may be appropriate to employ
 animated content to depict sign language representations of the same content
@@ -655,8 +670,8 @@ related media object.</p></dd><dt class="label">Root Container Region</dt><dd><p
 The temporal extent (interval) defined by the temporal beginning and ending of a <em>Document Instance</em> in relationship with some external application or presentation context.
 </p></dd><dt class="label">SMPTE Time Code</dt><dd><p>A time code whose format and semantics are established by <a href="#smpte12m">[SMPTE 12M]</a>,
 which may be embedded into or otherwise associated with media content, such
-as a broadcast audio/video stream.</p></dd><dt class="label">Synthetic Document Syncbase</dt><dd><p>A document level <a href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/smil-timing.html#Timing-Syncbases">syncbase</a>
-<a href="#smil21">[SMIL 2.1]</a>, § 10.7.1, synthesized or otherwise established by
+as a broadcast audio/video stream.</p></dd><dt class="label">Synthetic Document Syncbase</dt><dd><p>A document level <a href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/smil30.html#smil-timing-q158">syncbase</a>
+<a href="#smil3">[SMIL 3.0]</a>, § 5.7.1, synthesized or otherwise established by
 the <em>Document Processing Context</em> in accordance with the
 <em>Related Media Object</em> or other processing criteria.</p></dd><dt class="label">Synthetic SMPTE Document Syncbase</dt><dd><p>A <em>Synthetic Document Syncbase</em> constructed from <em>SMPTE Time
 Code</em> values embedded in or associated with the <em>Related Media Object</em> or
@@ -986,6 +1001,8 @@ in the following sections:</p><ul><li><p><a href="#parameters"><b>6 Parameters</
 <a href="#element-vocab-table"><b>Table 3 – Element Vocabulary</b></a>.</p><a id="element-vocab-table"></a><table class="common"><caption>Table 3 – Element Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Elements</th></tr><tr id="element-vocab-type-animation"><td>
 Animation
 </td><td>
+<a href="#animation-vocabulary-animate">animate</a>,
+<a href="#animation-vocabulary-animation">animation</a>,
 <a href="#animation-vocabulary-set">set</a>
 </td></tr><tr id="element-vocab-type-content"><td>
 Content
@@ -1035,6 +1052,7 @@ Styling
 for TTML element types are enumerated in <a href="#element-vocab-group-table"><b>Table 4 – Element Vocabulary Groups</b></a>.</p><a id="element-vocab-group-table"></a><table class="common"><caption>Table 4 – Element Vocabulary Groups</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Group</th><th>Elements</th></tr><tr><td>
 Animation.class
 </td><td>
+<a href="#animation-vocabulary-animate">animate</a> |
 <a href="#animation-vocabulary-set">set</a>
 </td></tr><tr><td>
 Block.class
@@ -1808,7 +1826,7 @@ coordinate with which the content of a <em>Document Instance</em> is to
 be synchronized.  In this case, the value of the <code>ttp:markerMode</code> 
 and <code>ttp:dropMode</code> parameters apply, as defined by <a href="#parameter-attribute-markerMode"><b>6.2.6 ttp:markerMode</b></a> and <a href="#parameter-attribute-dropMode"><b>6.2.3 ttp:dropMode</b></a>, respectively.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>When the time base is designated as <code>smpte</code>,
 every time expression denotes a media marker value akin to that
-defined by <a href="#smil21">[SMIL 2.1]</a>, § 10.4.1, except instead
+defined by <a href="#smil3">[SMIL 3.0]</a>, § 5.4.1, except instead
 of using an opaque marker name, a structured <a href="#smpte12m">[SMPTE 12M]</a>
 time coordinate serves as the marker name.</p></div><p>If the time base is designated as <code>clock</code>, then the time
 expression denotes a coordinate in some real-world time line as
@@ -1869,21 +1887,24 @@ elements in the <code>Metadata.class</code> element group,
 followed by zero or more elements in the
 <code>Parameters.class</code> element group,
 followed by zero or one <code>styling</code> element,
-followed by zero or one <code>layout</code> element.</p><p>Any metadata specified by children in the <code>Metadata.class</code>
+followed by zero or one <code>layout</code> element,
+followed by zero or one <code>animation</code> element.</p><p>Any metadata specified by children in the <code>Metadata.class</code>
 element group applies semantically to the <em>Document Instance</em> as a
 whole, and not just the <code>head</code> element.</p><p>Any parameters specified by children in the <code>Parameters.class</code>
 element group applies semantically to the <em>Document Instance</em> as a
 whole, and not just the <code>head</code> element.</p><p>A <code>styling</code> child element is used to specify style constructs
 that are referenced from other style constructs, by layout constructs, and by
 <a href="#element-vocab-type-content">Content</a> elements.</p><p>A <code>layout</code> child element is used to specify layout constructs that
-are referenced by <a href="#element-vocab-type-content">Content</a> elements.</p><a id="elt-syntax-head"></a><table class="syntax"><caption>XML Representation – Element Information Item: head</caption><tbody><tr><td>
+are referenced by <a href="#element-vocab-type-content">Content</a> elements.</p><p>An <code>animation</code> child element is used to specify animation constructs that
+target animatable <a href="#element-vocab-type-content">Content</a>
+or <a href="#element-vocab-type-layout">Layout</a> elements.</p><a id="elt-syntax-head"></a><table class="syntax"><caption>XML Representation – Element Information Item: head</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;head
   <a href="#content-attribute-id">xml:id</a> = ID
   <a href="#content-attribute-lang">xml:lang</a> = string
   <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
   {<em>any attribute not in default or any TT namespace</em>}&gt;
-  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, <a href="#element-vocab-group-table">Parameters.class</a>*, <a href="#styling-vocabulary-styling">styling</a>?, <a href="#layout-vocabulary-layout">layout</a>?
+  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, <a href="#element-vocab-group-table">Parameters.class</a>*, <a href="#styling-vocabulary-styling">styling</a>?, <a href="#layout-vocabulary-layout">layout</a>?, <a href="#animation-vocabulary-animation">animation</a>?
 &lt;/head&gt;
 </pre></div>
 </td></tr></tbody></table><p>To the extent that time semantics apply to the content of the
@@ -2210,7 +2231,7 @@ conformant from a content validity perspective. Content authors may wish to make
 content verification tools that detect and warn about such usage.</p></div><div class="div3">
 <h4><a id="style-attribute-style"></a>8.2.1 style</h4><p>The <code>style</code> attribute is used by referential style association
 to reference one or more <code>style</code> elements each of which define a style (property) set.</p><p>The <code>style</code> attribute may be specified by an instance of the following
-element types:</p><ul><li><p><a href="#document-structure-vocabulary-body"><code>body</code></a></p></li><li><p><a href="#content-vocabulary-div"><code>div</code></a></p></li><li><p><a href="#content-vocabulary-p"><code>p</code></a></p></li><li><p><a href="#layout-vocabulary-region"><code>region</code></a></p></li><li><p><a href="#animation-vocabulary-set"><code>set</code></a></p></li><li><p><a href="#content-vocabulary-span"><code>span</code></a></p></li><li><p><a href="#styling-vocabulary-style"><code>style</code></a></p></li></ul><p>If specified, the value of a <code>style</code> attribute must
+element types:</p><ul><li><p><a href="#animation-vocabulary-animate"><code>animate</code></a></p></li><li><p><a href="#document-structure-vocabulary-body"><code>body</code></a></p></li><li><p><a href="#content-vocabulary-div"><code>div</code></a></p></li><li><p><a href="#content-vocabulary-p"><code>p</code></a></p></li><li><p><a href="#layout-vocabulary-region"><code>region</code></a></p></li><li><p><a href="#animation-vocabulary-set"><code>set</code></a></p></li><li><p><a href="#content-vocabulary-span"><code>span</code></a></p></li><li><p><a href="#styling-vocabulary-style"><code>style</code></a></p></li></ul><p>If specified, the value of a <code>style</code> attribute must
 adhere to the <code>IDREFS</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 § 3.3.10, and, furthermore, each IDREF must reference a <code>style</code> element
 which has a <code>styling</code> element as an ancestor.</p><p>If the same IDREF, <em>ID<sub>1</sub></em>, appears more than one time in the value of a <code>style</code>
@@ -2969,8 +2990,8 @@ value <code>always</code> were specified.</p><p>The <code>tts:showBackground</co
 &lt;/region&gt;
 </pre></div>
 </td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The semantics of the style property
-represented by this attribute are based upon that defined by <a href="#smil21">[SMIL 2.1]</a>,
-§ 5.3.3.</p></div></div><div class="div3">
+represented by this attribute are based upon that defined by <a href="#smil3">[SMIL 3.0]</a>,
+§ 7.4.2.</p></div></div><div class="div3">
 <h4><a id="style-attribute-textAlign"></a>8.2.19 tts:textAlign</h4><p>The <code>tts:textAlign</code> attribute is used to specify a style property that
 defines how inline areas are aligned within a containing block area in the inline progression
 direction.</p><p>This attribute may be specified by any
@@ -3559,8 +3580,8 @@ where <em>content</em> is the unquoted content of the quoted string, i.e., the s
 starts with two <code>-</code> HYPHEN-MINUS (U+002D) characters must be considered to be invalid;</p></li><li><p>a &lt;familyName&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
 matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must be interpreted as that &lt;genericFamilyName&gt;;</p></li><li><p>a &lt;familyName&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
 matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must not be interpreted as that &lt;genericFamilyName&gt;, but as
-the actual name of a non-generic font family.</p></li></ul><div class="note"><p class="prefix"><b>Note:</b></p><p>The syntactic element <em><code>char</code></em> is to be interpreted according
-to the <code>Char</code> production defined by <a href="#xml10">[XML 1.0]</a>&nbsp;§2.2.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>The <code>{unicode}</code> escape mechanism defined by <a href="#css2">[CSS2]</a>&nbsp;§4.1.1
+the actual name of a non-generic font family.</p></li><li><p>The syntactic element <em><code>char</code></em> is to be interpreted according
+to the <code>Char</code> production defined by <a href="#xml10">[XML 1.0]</a>&nbsp;§2.2.</p></li></ul><div class="note"><p class="prefix"><b>Note:</b></p><p>The <code>{unicode}</code> escape mechanism defined by <a href="#css2">[CSS2]</a>&nbsp;§4.1.1
 is not supported by this syntax; rather, authors are expected to either (1) directly encode the character
 using the document encoding or (2) use an XML character reference according to
 <a href="#xml10">[XML 1.0]</a>&nbsp;§4.1. When a syntactically significant character needs to be used
@@ -4565,7 +4586,7 @@ point of a temporal interval associated with a timed element. If
 specified, the value of a <code>begin</code> attribute must adhere to
 a &lt;timeExpression&gt; specification as defined by <a href="#timing-value-timeExpression"><b>10.3.1 &lt;timeExpression&gt;</b></a>.</p><p>The begin point of a temporal interval is included in the
 interval; i.e., the interval is left-wise closed.</p><p>The semantics of the <code>begin</code> attribute are those defined
-by <a href="#smil21">[SMIL 2.1]</a>, § 10.4.1,
+by <a href="#smil3">[SMIL 3.0]</a>, § 5.4.1,
 while taking into account any overriding semantics defined by this specification.</p></div><div class="div3">
 <h4><a id="timing-attribute-end"></a>10.2.2 end</h4><p>The <code>end</code> attribute is used to specify the ending point
 of a temporal interval associated with a timed element. If
@@ -4579,7 +4600,7 @@ frame rate is 30 frames per second, then the presentation effects of the interva
 are limited to frames 300 through 309 only (assuming that 0s corresponds
 with frame 0). The same holds if the active interval is specified
 as [300f,310f).</p></div><p>The semantics of the <code>end</code> attribute are those defined
-by <a href="#smil21">[SMIL 2.1]</a>, § 10.4.1,
+by <a href="#smil3">[SMIL 3.0]</a>, § 5.4.1,
 while taking into account any overriding semantics defined by this specification.</p></div><div class="div3">
 <h4><a id="timing-attribute-dur"></a>10.2.3 dur</h4><p>The <code>dur</code> attribute is used to specify the duration of a
 temporal interval associated with a timed element. If specified,
@@ -4590,8 +4611,8 @@ a difference between two implied clock time expressions.</p></div><p>When a <em>
 <code>smpte</code> time base and <code>discontinuous</code> marker
 mode, a (well-formed) <code>dur</code> attribute must not be specified on any
 element.</p><p>The semantics of the <code>dur</code> attribute are those defined
-by <a href="#smil21">[SMIL 2.1]</a>, § 10.4.1,
-while taking into account any overriding semantics defined by this specification.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In the context of the subset of <a href="#smil21">[SMIL 2.1]</a> semantics supported by
+by <a href="#smil3">[SMIL 3.0]</a>, § 5.4.1,
+while taking into account any overriding semantics defined by this specification.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In the context of the subset of <a href="#smil3">[SMIL 3.0]</a> semantics supported by
 this specification, the active duration of an element that specifies both
 <code>end</code> and <code>dur</code> attributes is equal to the lesser of the value of
 the <code>dur</code> attribute and the difference between the value of the
@@ -4603,9 +4624,9 @@ then the temporal intervals of child elements are considered to apply in
 parallel, i.e., simultaneously in time. Furthermore, the specification of
 the time interval of each child element is considered to be relative to the temporal
 interval of the container element instance. For the purpose of determining the
-<a href="#smil21">[SMIL 2.1]</a> <code>endsync</code> semantics of a <code>par</code>
+<a href="#smil3">[SMIL 3.0]</a> <code>endsync</code> semantics of a <code>par</code>
 time container, a default value of <code>all</code> applies.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The use of a default value of <code>all</code> for the <code>endsync</code>
-behavior is distinct from <a href="#smil21">[SMIL 2.1]</a> which uses a default value
+behavior is distinct from <a href="#smil3">[SMIL 3.0]</a> which uses a default value
 of <code>last</code>.</p></div><p>If the time container semantics of an element instance is <code>seq</code>,
 then the temporal intervals of child elements are considered to apply in
 sequence, i.e., sequentially in time. Furthermore, the specification of
@@ -4615,7 +4636,7 @@ it is considered to be relative to the temporal interval of the container
 element instance.</p><p>Each time container is considered to constitute an independent time base, i.e.,
 time coordinate system.</p><p>If a <code>timeContainer</code> attribute is not specified on an element that
 has time container semantics, then <code>par</code> time container semantics must apply.</p><p>Time container semantics applies only to the following element types:</p><ul><li><p><a href="#document-structure-vocabulary-body"><code>body</code></a></p></li><li><p><a href="#content-vocabulary-div"><code>div</code></a></p></li><li><p><a href="#content-vocabulary-p"><code>p</code></a></p></li><li><p><a href="#layout-vocabulary-region"><code>region</code></a></p></li><li><p><a href="#content-vocabulary-span"><code>span</code></a></p></li></ul><p>The semantics of parallel and sequential time
-containment are those defined by <a href="#smil21">[SMIL 2.1]</a>, § 10.4.2,
+containment are those defined by <a href="#smil3">[SMIL 3.0]</a>, § 5.4.2,
 while taking into account any overriding semantics defined by this specification.</p></div></div><div class="div2">
 <h3><a id="timing-time-value-expressions"></a>10.3 Time Value Expressions</h3><p>Timing attribute values include the use of the following expressions:</p><ul><li><p><a href="#timing-value-timeExpression"><b>10.3.1 &lt;timeExpression&gt;</b></a></p></li></ul><div class="div3">
 <h4><a id="timing-value-timeExpression"></a>10.3.1 &lt;timeExpression&gt;</h4><p>A &lt;timeExpression&gt; is used to specify a coordinate within
@@ -4685,29 +4706,29 @@ sub-frame rate determined by the <code>ttp:subFrameRate</code> parameter as defi
 It is considered an error if a <em>sub-frames</em> term is specified
 when the <code>clock</code> time base applies.</p></div></div><div class="div2">
 <h3><a id="timing-time-intervals"></a>10.4 Time Intervals</h3><p>The semantics of time containment, durations, and intervals defined by
-<a href="#smil21">[SMIL 2.1]</a> apply to the interpretation of like-named timed elements and timing
+<a href="#smil3">[SMIL 3.0]</a> apply to the interpretation of like-named timed elements and timing
 vocabulary defined by this specification, given the following
 constraints:</p><ul><li><p>The implicit duration of an anonymous span is defined as follows: if
 the anonymous span's parent time container is a parallel time container, then
 the implicit duration is equivalent to the <code>indefinite</code>
-duration value as defined by <a href="#smil21">[SMIL 2.1]</a>; if the anonymous span's
+duration value as defined by <a href="#smil3">[SMIL 3.0]</a>; if the anonymous span's
 parent time container is a sequential time container, then the implicit duration
 is equivalent to zero.</p></li><li><p>The implicit duration of a <code>body</code>, <code>div</code>, <code>p</code>,
 or <code>span</code> element is determined in accordance to (1) whether
 the element is a parallel or sequential time container, (2) the default
 <code>endsync</code> semantics defined above by <a href="#timing-attribute-timeContainer"><b>10.2.4 timeContainer</b></a>,
-and (3) the semantics of <a href="#smil21">[SMIL 2.1]</a> as applied to these time
+and (3) the semantics of <a href="#smil3">[SMIL 3.0]</a> as applied to these time
 containers.</p></li><li><p>The implicit duration of the <code>region</code> element is defined to
 be equivalent to the <code>indefinite</code>
-duration value as defined by <a href="#smil21">[SMIL 2.1]</a>.</p></li><li><p>If the governing time base is <code>clock</code>, then time
+duration value as defined by <a href="#smil3">[SMIL 3.0]</a>.</p></li><li><p>If the governing time base is <code>clock</code>, then time
 expressions are considered to be equivalent to wall-clock
-based timing in <a href="#smil21">[SMIL 2.1]</a>, where the specific semantics of
+based timing in <a href="#smil3">[SMIL 3.0]</a>, where the specific semantics of
 <a href="#time-expression-semantics-clock"><b>N.1 Clock Time Base</b></a> apply.</p></li><li><p>If the governing time base is <code>media</code>, then time
 expressions are considered to be equivalent to offset based timing
-in <a href="#smil21">[SMIL 2.1]</a>, where the specific semantics of
+in <a href="#smil3">[SMIL 3.0]</a>, where the specific semantics of
 <a href="#time-expression-semantics-media"><b>N.2 Media Time Base</b></a> apply.</p></li><li><p>If the governing time base is <code>smpte</code>, then time
 expressions are considered to be equivalent to either offset
-based timing or event based timing in <a href="#smil21">[SMIL 2.1]</a>, where the specific semantics of
+based timing or event based timing in <a href="#smil3">[SMIL 3.0]</a>, where the specific semantics of
 <a href="#time-expression-semantics-smpte"><b>N.3 SMPTE Time Base</b></a> apply.</p></li></ul></div></div><div class="div1">
 <h2><a id="animation"></a>11 Animation</h2><p>This section specifies the <em>animation</em> matter of the
 core vocabulary catalog, where
@@ -4715,8 +4736,102 @@ animation is to be understood as a separable layer of information that combines
 timing and styling in order to denote authorial intention about (temporally) dynamic
 styling of content.</p><div class="div2">
 <h3><a id="animation-element-vocabulary"></a>11.1 Animation Element Vocabulary</h3><p>The following elements specify the structure and principal animation aspects of a
-<em>Document Instance</em>:</p><ul><li><p><a href="#animation-vocabulary-set"><b>11.1.1 set</b></a></p></li></ul><div class="div3">
-<h4><a id="animation-vocabulary-set"></a>11.1.1 set</h4><p>The <code>set</code> element is used as a child element of a
+<em>Document Instance</em>:</p><ul><li><p><a href="#animation-vocabulary-animation"><b>11.1.1 animation</b></a></p></li><li><p><a href="#animation-vocabulary-animate"><b>11.1.2 animate</b></a></p></li><li><p><a href="#animation-vocabulary-set"><b>11.1.3 set</b></a></p></li></ul><div class="div3">
+<h4><a id="animation-vocabulary-animation"></a>11.1.1 animation</h4><p>The <code>animation</code> element is a container element used to group
+animation matter, including metadata that applies to animation matter.</p><p>The <code>animation</code> element accepts as its children zero or more
+elements in the <code>Metadata.class</code> element group, followed by
+zero or more <code>animate</code> elements.</p><a id="elt-syntax-animation"></a><table class="syntax"><caption>XML Representation – Element Information Item: animation</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;animation
+  <a href="#content-attribute-id">xml:id</a> = ID
+  <a href="#content-attribute-lang">xml:lang</a> = string
+  <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, <a href="#animation-vocabulary-animate">animate</a>*
+&lt;/animation&gt;
+</pre></div>
+</td></tr></tbody></table><p>To the extent that time semantics apply to the content of the
+<code>animation</code> element, the implied time interval of this element is
+defined to be coterminous with the <em>Root Temporal Extent</em>.</p></div><div class="div3">
+<h4><a id="animation-vocabulary-animate"></a>11.1.2 animate</h4><p>The <code>animate</code> element expresses a series of changes (animations) to be applied to a targetted attribute
+of a targetted element.</p><p>An <code>animate</code> element may appear as either (1) a child of a
+<a href="#element-vocab-type-content">Content</a> or <code>region</code> element or
+(2) a child of an <a href="#animation-vocabulary-animation">animation</a> element. In the former
+case, the targetted element of the animation is the parent of the <code>animate</code> element; in the latter
+case, the targetted element is the element referenced by the <code>xlink:href</code> attribute on the
+<code>animate</code> element.</p><p>The targetted attribute (property) is specified by the <code>attributeName</code> attribute.</p><p>The <code>animate</code> element accepts as its children zero or more
+elements in the <code>Metadata.class</code> element group.</p><a id="elt-syntax-animate"></a><table class="syntax"><caption>XML Representation – Element Information Item: animate</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;animate
+  accumulate = <a href="#animation-value-accumulate">&lt;accumulate&gt;</a>
+  additive = <a href="#animation-value-additive">&lt;additive&gt;</a>
+  <span class="strong">attributeName</span> = <a href="#animation-value-qualifiedName">&lt;qualifiedName&gt;</a>
+  <a href="#timing-attribute-begin">begin</a> = <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>
+  by = <a href="#animation-value-animationValue">&lt;animationValue&gt;</a>
+  calcMode = <a href="#animation-value-calcMode">&lt;calcMode&gt;</a>
+  <a href="#timing-attribute-dur">dur</a> = <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>
+  <a href="#timing-attribute-end">end</a> = <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>
+  fill = <a href="#animation-value-fill">&lt;fill&gt;</a>
+  from = <a href="#animation-value-animationValue">&lt;animationValue&gt;</a>
+  keySplines = <a href="#animation-value-keySplines">&lt;keySplines&gt;</a>
+  keyTimes = <a href="#animation-value-keyTimes">&lt;keyTimes&gt;</a>
+  repeatCount = <a href="#animation-value-repeatCount">&lt;repeatCount&gt;</a>
+  repeatDur = <a href="#animation-value-repeatDur">&lt;repeatDur&gt;</a>
+  <a href="#style-attribute-style">style</a> = IDREFS
+  to = <a href="#animation-value-animationValue">&lt;animationValue&gt;</a>
+  values = <a href="#animation-value-animationValueList">&lt;animationValueList&gt;</a>
+  <a href="#content-attribute-id">xlink:href</a> = <a href="#animation-value-fragmentIdentifier">&lt;fragmentIdentifier&gt;</a>
+  <a href="#content-attribute-id">xml:id</a> = ID
+  <a href="#content-attribute-lang">xml:lang</a> = string
+  <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*
+&lt;/animate&gt;
+</pre></div>
+</td></tr></tbody></table><p></p><p>Except for the constraints or variations enumerated below, the semantics of the <code>animate</code> element and its attributes
+enumerated above are defined to be those specified by <a href="#svg11">[SVG 1.1]</a>, §19.2.12:</p><ol class="enumar"><li><p>For the purpose of interpreting an <code>attributeName</code> attribute, an <code>attributeType</code>
+with a value of <code>XML</code> applies, about which see <a href="#svg11">[SVG 1.1]</a>, §19.2.5.</p></li><li><p>If no <code>accumulate</code> attribute is specified, then an <em>accumlate</em> value of <code>none</code> applies.</p></li><li><p>If no <code>additive</code> attribute is specified, then an <em>additive</em> value of <code>replace</code> applies.</p></li><li><p>If no <code>calcMode</code> attribute is specified, then a <em>calcMode</em> value of <code>linear</code> applies.</p></li><li><p>If no <code>fill</code> attribute is specified, then a <em>fill</em> value of <code>remove</code> applies.</p></li><li><p>If an <code>xlink:href</code> attribute is specified, then the <code>animate</code> element must be a child of an
+<a href="#animation-vocabulary-animation">animation</a> element; conversely, if an <code>animate</code> element is a child of
+an <a href="#animation-vocabulary-animation">animation</a> element, then it must specify an <code>xlink:href</code> attribute.</p></li></ol><p>An example of using the <code>animate</code> element to animate content
+styling is illustrated below:</p><a id="animation-vocabulary-animate-example-1"></a><table class="example"><caption>Example Fragment – Content Style Animation</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+...
+&lt;p dur="5s" tts:color="yellow"&gt;
+<span class="strong">&lt;animate attributeName="tts:color" values="yellow,red,green,blue,yellow"/&gt;</span>
+Text with Continuously Varying Colors!
+&lt;/p&gt;
+...
+</pre></div>
+</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>In the above example, the foreground color of the content "Text
+with Continuously Varying Colors!" is continuously animated from yellow, to red, to green, to
+red, then back to yellow over a 5 second period.</p></div><p>An example of using the <code>animate</code> element to animate region
+styling is illustrated below:</p><a id="animation-vocabulary-animate-example-2"></a><table class="example"><caption>Example Fragment – Region Style Animation</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"
+    xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling"
+    ttp:extent="640px 480px"&gt;
+    &lt;head&gt;
+      &lt;layout&gt;
+	&lt;region xml:id="r1" timeContainer="seq" tts:opacity="0"&gt;
+	  <span class="strong">&lt;animate dur="1s" attributeName="tts:opacity" to="1"/&gt;</span>
+	  &lt;set dur="5s" tts:opacity="1"/&gt;
+	  <span class="strong">&lt;animate dur="1s" attributeName="tts:opacity" to="0"/&gt;</span>
+	  &lt;style tts:extent="480px 60px"/&gt;
+	  &lt;style tts:origin="80px 400px"/&gt;
+	&lt;/region&gt;
+      &lt;/layout&gt;
+    &lt;/head&gt;
+    &lt;body region="r1"&gt;...&lt;/body&gt;
+&lt;/tt&gt;
+</pre></div>
+</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>In the above example, a region, <code>r1</code>, is initially set to 0% opacity,
+fully transparent, then is faded in to 100% opacity, fully opaque, over a one second
+interval. Opacity remains at 100% for five more seconds, and then is faded out to 0%
+over a one second interval, where it remains.</p></div><p></p><table border="1" class="ednote" summary="Editorial note: Animate Example Images"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Animate Example Images</b></td><td align="right" valign="top">2013-08-25</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Insert animated SVG images of animate examples.</td></tr></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The semantics of the <code>animate</code> element
+are based upon that defined by <a href="#svg11">[SVG 1.1]</a>,
+§ 6.2.12, which, in turn, is based upon <a href="#smil3">[SMIL 3.0]</a>, §12.</p></div></div><div class="div3">
+<h4><a id="animation-vocabulary-set"></a>11.1.3 set</h4><p>The <code>set</code> element is used as a child element of a
 <a href="#element-vocab-type-content">Content</a> element or a <code>region</code> element
 in order to express a discrete change of some style parameter value
 that applies over some time interval.</p><p>The <code>set</code> element accepts as its children zero or more
@@ -4751,7 +4866,7 @@ Text with Flashing Colors!
 ...
 </pre></div>
 </td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>In the above example, the foreground color of the content "Text
-with Flashing Colors" is animated from yellow, to red, to green, to
+with Flashing Colors!" is animated from yellow, to red, to green, to
 red, then back to yellow over a 5 second period.</p></div><p>An example of using the <code>set</code> element to animate region
 styling is illustrated below:</p><a id="animation-vocabulary-set-example-2"></a><table class="example"><caption>Example Fragment – Region Style Animation</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -4779,11 +4894,184 @@ cell grid of 40 columns and 16 rows. A region, <code>r1</code>, with
 dimensions of 24 columns and 2 rows is then positioned within the
 <em>Root Container Region</em>, with its position varying over time in order to
 create an effect of moving the region, which may be desirable so as
-to avoid obscuring characters in an underlying video with captions.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>The semantics of the <code>set</code> element
-are based upon that defined by <a href="#smil21">[SMIL 2.1]</a>,
-§ 3.6.2.</p></div></div></div><div class="div2">
+to avoid obscuring characters in an underlying video with captions.</p></div><p></p><table border="1" class="ednote" summary="Editorial note: Set Example Images"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Set Example Images</b></td><td align="right" valign="top">2013-08-25</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Insert animated SVG images of set examples.</td></tr></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The semantics of the <code>set</code> element
+are based upon that defined by <a href="#svg11">[SVG 1.1]</a>,
+§ 6.2.13, which, in turn, is based upon <a href="#smil3">[SMIL 3.0]</a>, §12.</p></div></div></div><div class="div2">
 <h3><a id="animation-attribute-vocabulary"></a>11.2 Animation Attribute Vocabulary</h3><p>No animation related attribute vocabulary is defined for use in the
-core vocabulary catalog.</p></div></div><div class="div1">
+core vocabulary catalog.</p></div><div class="div2">
+<h3><a id="animation-value-expressions"></a>11.3 Animation Value Expressions</h3><p>Animation attribute values include the use of the following expressions:</p><ul><li><p><a href="#animation-value-accumulate"><b>11.3.1 &lt;accumulate&gt;</b></a></p></li><li><p><a href="#animation-value-additive"><b>11.3.2 &lt;additive&gt;</b></a></p></li><li><p><a href="#animation-value-animationValue"><b>11.3.3 &lt;animationValue&gt;</b></a></p></li><li><p><a href="#animation-value-animationValueList"><b>11.3.4 &lt;animationValueList&gt;</b></a></p></li><li><p><a href="#animation-value-calcMode"><b>11.3.5 &lt;calcMode&gt;</b></a></p></li><li><p><a href="#animation-value-fill"><b>11.3.6 &lt;fill&gt;</b></a></p></li><li><p><a href="#animation-value-fragmentIdentifier"><b>11.3.7 &lt;fragmentIdentifier&gt;</b></a></p></li><li><p><a href="#animation-value-keySplines"><b>11.3.8 &lt;keySplines&gt;</b></a></p></li><li><p><a href="#animation-value-keyTimes"><b>11.3.9 &lt;keyTimes&gt;</b></a></p></li><li><p><a href="#animation-value-qualifiedName"><b>11.3.10 &lt;qualifiedName&gt;</b></a></p></li><li><p><a href="#animation-value-repeatCount"><b>11.3.11 &lt;repeatCount&gt;</b></a></p></li><li><p><a href="#animation-value-repeatDur"><b>11.3.12 &lt;repeatDur&gt;</b></a></p></li></ul><div class="div3">
+<h4><a id="animation-value-accumulate"></a>11.3.1 &lt;accumulate&gt;</h4><p>An &lt;accumulate&gt; expression is used to control whether animation is cumulative or not.</p><a id="accumulate-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;accumulate&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;accumulate&gt;
+  : "none"
+  | "sum"
+</pre></div>
+</td></tr></tbody></table><p>The semantics of an &lt;accumulate&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.10.</p></div><div class="div3">
+<h4><a id="animation-value-additive"></a>11.3.2 &lt;additive&gt;</h4><p>An &lt;additive&gt; expression is used to control whether animation is additive.</p><a id="additive-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;additive&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;additive&gt;
+  : "replace"
+  | "sum"
+</pre></div>
+</td></tr></tbody></table><p>The semantics of an &lt;additive&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.10.</p></div><div class="div3">
+<h4><a id="animation-value-animationValue"></a>11.3.3 &lt;animationValue&gt;</h4><p>An &lt;animationValue&gt; expression is used to specify the starting (initial), intermediate,
+or ending (final) of the attribute targetted by the animation.</p><a id="animationValue-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;animationValue&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;animationValue&gt;
+  : string
+</pre></div>
+</td></tr></tbody></table><p>The syntax of an &lt;animationValue&gt; expression must satisfy all syntax
+requirements that apply to the attribute targetted by the animation.</p><p>The semantics of an &lt;animationValue&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.9.</p></div><div class="div3">
+<h4><a id="animation-value-animationValueList"></a>11.3.4 &lt;animationValueList&gt;</h4><p>An &lt;animationValueList&gt; expression is used to specify a list of animation values that sequentially
+apply to the attribute targetted by the animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
+optionally surrounded by linear white-space (LWSP) characters.</p><a id="animationValueList-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;animationValueList&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;animationValueList&gt;
+  : <a href="#animation-value-animationValue">&lt;animationValue&gt;</a> [ ";" <a href="#animation-value-animationValue">&lt;animationValue&gt;</a> ]*
+</pre></div>
+</td></tr></tbody></table><p>The syntax of an &lt;animationValue&gt; in an &lt;animationValueList&gt; expression must satisfy all syntax
+requirements that apply to the attribute targetted by the animation.</p><p>The semantics of an &lt;animationValueList&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.9.</p></div><div class="div3">
+<h4><a id="animation-value-calcMode"></a>11.3.5 &lt;calcMode&gt;</h4><p>A &lt;calcMode&gt; expression is used to control the interpolation mode of the animation.</p><a id="calcMode-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;calcMode&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;calcMode&gt;
+  : "discrete"
+  | "linear"
+  | "displaced"
+  | "spline"
+</pre></div>
+</td></tr></tbody></table><p>The semantics of a &lt;calcMode&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.9.</p></div><div class="div3">
+<h4><a id="animation-value-fill"></a>11.3.6 &lt;fill&gt;</h4><p>A &lt;fill&gt; expression is used to determine effect of the animation after the active end of the animation.</p><a id="fill-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;fill&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;fill&gt;
+  : "freeze"
+  | "remove"
+</pre></div>
+</td></tr></tbody></table><p>The semantics of a &lt;fill&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.8.</p></div><div class="div3">
+<h4><a id="animation-value-fragmentIdentifier"></a>11.3.7 &lt;fragmentIdentifier&gt;</h4><p>A &lt;fragmentIdentifier&gt; expression is used to target (refer to) an animation to a specific element in the same <em>Document Instance</em>.</p><a id="fragmentIdentifier-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;fragmentIdentifier&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;fragmentIdentifier&gt;
+  : "#" fragment
+
+fragment
+  : uric+
+
+uric
+  : reserved
+  | unreserved
+  | escaped
+
+reserved
+  : [;/?:@&amp;=+$,]
+
+unreserved
+  : [a-zA-Z]
+  | [0-9]
+  | [-_.!~*'()]
+
+escaped
+  : "%" hex hex
+
+hex
+  : [0-9a-fA-F]
+</pre></div>
+</td></tr></tbody></table><p>Except for the constraints on syntax and semantics that follow below, the semantics of a &lt;fragmentIdentifier&gt;
+expression are those defined to apply to an "&lt;iri&gt;" expression in <a href="#svg11">[SVG 1.1]</a>, §19.2.4.</p><p>A &lt;fragmentIdentifer&gt; must adhere
+to the <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>. Furthermore, it
+must adhere to the fragment identifer syntax defined by <a href="#uri">[URI]</a>,
+Section 4.1, and is a strict subset thereof, since at least one character must appear in
+the fragment component.</p><p>No linear white-space (LWSP) is permitted to appear within a fragment identifier.</p><p>A &lt;fragmentIdentifer&gt; expression must refer to an element in the same <em>Document Instance</em>,
+i.e., the fragment component must be a valid IDREF.</p></div><div class="div3">
+<h4><a id="animation-value-keySplines"></a>11.3.8 &lt;keySplines&gt;</h4><p>An &lt;keySplines&gt; expression is used to specify a list of Bezier control points that control the pacing of an
+animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
+optionally surrounded by linear white-space (LWSP) characters.</p><a id="keySplines-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;keySplines&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;keySplines&gt;
+  : control [ lwsp? ";" lwsp? control ]*
+
+control
+  : x1 comma? y1 comma? x2 comma? y2
+
+x1, x2, y1, y2
+  : coordinate
+
+coordinate                                // 0 ≥ <em>value</em> ≥ 1
+  : whole
+  | whole "." fraction
+  | "." fraction
+
+whole, fraction
+  : <a href="#style-value-digit">&lt;digit&gt;</a>+
+
+comma
+  : ","
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+</pre></div>
+</td></tr></tbody></table><p>The semantics of a &lt;keySplines&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.9, as apply to the <code>keySplines</code> attribute.</p></div><div class="div3">
+<h4><a id="animation-value-keyTimes"></a>11.3.9 &lt;keyTimes&gt;</h4><p>An &lt;keyTimes&gt; expression is used to specify a list of relative time values that control the pacing of an
+animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
+optionally surrounded by linear white-space (LWSP) characters.</p><a id="keyTimes-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;keyTimes&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;keyTimes&gt;
+  : time [ lwsp? ";" lwsp? time ]*
+
+time                                // 0 ≥ <em>value</em> ≥ 1
+  : whole
+  | whole "." fraction
+  | "." fraction
+
+whole, fraction
+  : <a href="#style-value-digit">&lt;digit&gt;</a>+
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+</pre></div>
+</td></tr></tbody></table><p>The semantics of a &lt;keyTimes&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.9, as apply to the <code>keyTimes</code> attribute.</p></div><div class="div3">
+<h4><a id="animation-value-qualifiedName"></a>11.3.10 &lt;qualifiedName&gt;</h4><p>A &lt;qualifiedName&gt; expression is used to specify the attribute targetted by the animation.</p><a id="qualifiedName-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;qualifiedName&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;qualifiedName&gt;
+  : prefix ":" local
+  | local
+
+prefix
+  : <em>nmchar</em>+
+
+local
+  : <em>nmchar</em>+
+</pre></div>
+</td></tr></tbody></table><p>The syntactic element <em><code>nmchar</code></em> is to be interpreted according
+to the <code>NameChar</code> production defined by <a href="#xml10">[XML 1.0]</a>&nbsp;§2.3,
+except that the COLON (U+003A) character is excluded.</p><p>The semantics of a &lt;qualifiedName&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.5, as applying to an <code>attributeName</code> attribute
+according to an implied <code>attributeType</code> of <code>XML</code>.</p></div><div class="div3">
+<h4><a id="animation-value-repeatCount"></a>11.3.11 &lt;repeatCount&gt;</h4><p>A &lt;repeatCount&gt; expression is used to determine the number of iterations of a repeated animation.</p><a id="repeatCount-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;repeatCount&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;repeatCount&gt;
+  : count
+  | "indefinite"
+
+count:
+  : <a href="#style-value-digit">&lt;digit&gt;</a>+                       // <em>value</em> &gt; 0
+</pre></div>
+</td></tr></tbody></table><p>The semantics of a &lt;repeatCount&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.8.</p></div><div class="div3">
+<h4><a id="animation-value-repeatDur"></a>11.3.12 &lt;repeatDur&gt;</h4><p>A &lt;repeatDur&gt; expression is used to control the total duration for a repeated animation.</p><a id="repeatDur-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;repeatDur&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;repeatDur&gt;
+  : <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>
+  | "indefinite"
+</pre></div>
+</td></tr></tbody></table><p>The semantics of a &lt;repeatDur&gt; expression are those defined by
+<a href="#svg11">[SVG 1.1]</a>, §19.2.8.</p></div></div></div><div class="div1">
 <h2><a id="metadata"></a>12 Metadata</h2><p>This section specifies the <em>metadata</em> matter of the core
 vocabulary catalog, where
 metadata is to be understood as a separable layer of information that applies to
@@ -5110,12 +5398,10 @@ token-char
 </pre></div><p>All values of <code>feature-designation</code> not defined by this specification are reserved
 for future standardization.</p><p>The following sub-sections define all feature designations, expressed
 as relative URIs (fragment identifiers) with respect to the 
-TT Feature Namespace base URI.</p><table border="1" class="ednote" summary="Editorial note: #animation-referential"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: #animation-referential</b></td><td align="right" valign="top">2013-07-10</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Consider adding <code>#animation-referential</code> to designate use of <code>style</code> attribute
-on <code>set</code> element.</td></tr></table><p></p><table border="1" class="ednote" summary="Editorial note: #animation-targeted"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: #animation-targeted</b></td><td align="right" valign="top">2013-07-10</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Consider adding <code>#animation-targeted</code> to designate use of <code>xml:href</code> or
-<code>targetElement</code> attribute on <code>set</code> element (if added).</td></tr></table><div class="div3">
+TT Feature Namespace base URI.</p><table border="1" class="ednote" summary="Editorial note: #animation subset features"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: #animation subset features</b></td><td align="right" valign="top">2013-08-26</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Add fine grained subset features of #animation.</td></tr></table><div class="div3">
 <h4><a id="feature-animation"></a>D.1.1 #animation</h4><p>A TTML transformation processor supports the <code>#animation</code>
 feature if it recognizes and is capable of transforming the following
-vocabulary defined by <a href="#animation"><b>11 Animation</b></a>:</p><ul><li><p><a href="#animation-vocabulary-set"><code>set</code></a></p></li></ul><p>A TTML presentation processor supports the <code>#animation</code>
+vocabulary defined by <a href="#animation"><b>11 Animation</b></a>:</p><ul><li><p><a href="#animation-vocabulary-animation"><code>animation</code></a></p></li><li><p><a href="#animation-vocabulary-animate"><code>animate</code></a></p></li><li><p><a href="#animation-vocabulary-set"><code>set</code></a></p></li></ul><p>A TTML presentation processor supports the <code>#animation</code>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p></div><div class="div3">
 <h4><a id="feature-backgroundColor"></a>D.1.2 #backgroundColor</h4><p>A TTML transformation processor supports the
@@ -6507,11 +6793,11 @@ RFC 2046, November 1996, IETF.(See
 <a href="http://www.iso.org/"><cite>Information technology – Document
 Schema Definition Language (DSDL) – Part 2: Regular-grammar-based validation – RELAX NG</cite></a>,
 International Organization for Standardization (ISO).
-</dd><dt class="label"><a id="smil21"></a>SMIL 2.1</dt><dd>Dick Bultermann, et al.,
-<a href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/"><cite>Synchronized
-Multimedia Integration Language (SMIL 2.1)</cite></a>,
-W3C Recommendation, 13 December 2005. (See
-<a href="http://www.w3.org/TR/2005/REC-SMIL2-20051213/">http://www.w3.org/TR/2005/REC-SMIL2-20051213/</a>.)
+</dd><dt class="label"><a id="smil3"></a>SMIL 3.0</dt><dd>Dick Bultermann, et al.,
+<a href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/"><cite>Synchronized
+Multimedia Integration Language (SMIL 3.0)</cite></a>,
+W3C Recommendation, 1 December 2008. (See
+<a href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">http://www.w3.org/TR/2008/REC-SMIL3-20081201/</a>.)
 </dd><dt class="label"><a id="smpte12m"></a>SMPTE 12M</dt><dd>ANSI/SMPTE 12M,
 <a href="https://www.smpte.org/"><cite>Television, Audio and Film –
 Time and Control Code</cite></a>, SMPTE Standard.
@@ -6521,6 +6807,11 @@ systems and equipment – Colour measurement and management
 – Part 2-1: Colour management – Default RGB colour space
 – sRGB</cite></a>, International Electrotechnical
 Commission (IEC).
+</dd><dt class="label"><a id="svg11"></a>SVG 1.1</dt><dd>Erik Dahlström et al., Eds.,
+<a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/"><cite>Scalable
+Vector Graphics (SVG) 1.1 Second Edition</cite></a>, W3C Recommendation, 16
+August 2011. (See
+<a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a>.)
 </dd><dt class="label"><a id="uaag"></a>UAAG</dt><dd>Ian Jacobs, Jon Gunderson, and Eric Hansen, Eds.,
 <a href="http://www.w3.org/TR/2002/REC-UAAG10-20021217/"><cite>User
 Agent Accessibility Guidelines 1.0</cite></a>, W3C Recommendation, 17
@@ -6529,6 +6820,10 @@ December 2002. (See
 </dd><dt class="label"><a id="uax14"></a>UAX14</dt><dd>Asmus Freytag, <a href="http://www.unicode.org/reports/tr14/tr14-17.html"><cite>Line Breaking
 Properties</cite></a>, Unicode Consortium, 29 August 2005. (See
 <a href="http://www.unicode.org/reports/tr14/tr14-17.html">http://www.unicode.org/reports/tr14/tr14-17.html</a>.)
+</dd><dt class="label"><a id="uri"></a>URI</dt><dd>T. Berner-Lee, R. Fielding, and L. Masinter,
+<a href="http://www.rfc-editor.org/rfc/rfc2396.txt"><cite>Uniform Resource Identifiers (URI): Generic Syntax</cite></a>,
+RFC 2396, August 1998, IETF.(See
+<a href="http://www.rfc-editor.org/rfc/rfc2396.txt">http://www.rfc-editor.org/rfc/rfc2396.txt</a>.)
 </dd><dt class="label"><a id="utc"></a>UTC</dt><dd>
 Recommendation TF.460,
 <a href="http://www.itu.int/"><cite>Standard-Frequency and Time-Signal
@@ -6619,16 +6914,15 @@ Signal – NTSC for Studio Applications</cite></a>, SMPTE Standard.
 </dd><dt class="label"><a id="smpte2052"></a>SMPTE 2052-11</dt><dd>SMPTE 2052-11,
 <a href="http://www.smpte.org/"><cite>Conversion from CEA-708 Caption Data to SMPTE-TT</cite></a>,
 SMPTE Recommended Practice.
-</dd><dt class="label"><a id="svg11"></a>SVG 1.1</dt><dd>Jon Ferraiolo, Jun Fujisawa, Dean Jackson, Eds.,
-<a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/"><cite>Scalable
-Vector Graphics (SVG) 1.1 Specification</cite></a>, W3C Recommendation, 14
-January 2003. (See
-<a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/">http://www.w3.org/TR/2003/REC-SVG11-20030114/</a>.)
 </dd><dt class="label"><a id="ttaf1-req"></a>TTAF1-REQ</dt><dd>Glenn Adams, Ed.,
 <a href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/"><cite>Timed Text (TT) Authoring Format 1.0 Use
 Cases and Requirements</cite></a>,
 W3C Working Group Note, 27 April 2006. (See
 <a href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</a>.)
+</dd><dt class="label"><a id="ttml1"></a>TTML1</dt><dd>Glenn Adams, Ed.,
+<a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html"><cite>Timed Text Markup Language 1 (TTML1) (Second Edition)</cite></a>,
+W3C Editor's Draft. (See
+<a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html</a>.)
 </dd><dt class="label"><a id="xhtml10"></a>XHTML 1.0</dt><dd>Steven Pemberton, et al.,
 <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/"><cite>XHTML™ 1.0,
 The Extensible Hypertext Markup Language (Second Edition)</cite></a>,
@@ -6649,7 +6943,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e19336"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e20115"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -6665,7 +6959,7 @@ details column includes "-@class", which denotes that the
 corresponding TTML element; in contrast, the details column includes
 "+@begin", which denotes that a <code>begin</code> attribute is added
 that is not specified for use with the <code>xhtml:div</code> model
-element.</p><a id="element-vocab-derivation-table"></a><table class="common"><caption>Table J-1 – Elements</caption><col width="20%" span="1"><col width="17%" span="1"><col width="13%" align="center" span="1"><col width="40%" span="1"><col width="10%" align="center" span="1"><tbody><tr><td><span class="strong">Element</span></td><td><span class="strong">Model</span></td><td><span class="strong">Reference</span></td><td><span class="strong">Details</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="#document-structure-vocabulary-body"><code>tt:body</code></a></td><td><code>xhtml:body</code></td><td><a href="#xhtml10">[XHTML 1.0]</a></td><td>-@class, -@dir, -@lang, -@on*, -@title; +@begin, +@dur, +@end, +@region,
+element.</p><a id="element-vocab-derivation-table"></a><table class="common"><caption>Table J-1 – Elements</caption><col width="20%" span="1"><col width="17%" span="1"><col width="13%" align="center" span="1"><col width="40%" span="1"><col width="10%" align="center" span="1"><tbody><tr><td><span class="strong">Element</span></td><td><span class="strong">Model</span></td><td><span class="strong">Reference</span></td><td><span class="strong">Details</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="#animation-vocabulary-animate"><code>tt:animate</code></a></td><td><code>svg:animate</code></td><td><a href="#svg11">[SVG 1.1]</a></td><td>-@* except begin, dur, end; +@tts:*, +@xml:lang, +@xml:space</td><td>3,6</td></tr><tr><td><a href="#animation-vocabulary-animation"><code>tt:animation</code></a></td><td><code>tt:layout</code></td><td><a href="#ttml1">[TTML1]</a></td><td>conceptual derivation</td><td>12</td></tr><tr><td><a href="#document-structure-vocabulary-body"><code>tt:body</code></a></td><td><code>xhtml:body</code></td><td><a href="#xhtml10">[XHTML 1.0]</a></td><td>-@class, -@dir, -@lang, -@on*, -@title; +@begin, +@dur, +@end, +@region,
 +@timeContainer, +@ttm:*, +@tts:*; content model
 subsetted to zero or more division (div) children, and supersetted by
 optional metadata and animation children</td><td>1,2</td></tr><tr><td><a href="#content-vocabulary-br"><code>tt:br</code></a></td><td><code>xhtml:br</code></td><td><a href="#xhtml10">[XHTML 1.0]</a></td><td>-@class, -@title; +@ttm:*, +@tts:*, +@xml:lang, +@xml:space;
@@ -6703,8 +6997,10 @@ attributes defined in the TT Style Namespace.</p></li><li><p>The <code>xml:id</c
 <a href="#element-vocab-type-content">Content</a> elements.</p></li><li><p>Derived from the use of <code>@requiredExtensions</code>
 and <code>@requiredFeatures</code> on the <code>svg:svg</code> element,
 but extended to support distinct specification of optionality.</p></li><li><p>Derived from the use of <code>@baseProfile</code>
-and <code>@version</code> on the <code>svg:svg</code> element.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e19818"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+and <code>@version</code> on the <code>svg:svg</code> element.</p></li><li><p>Conceptually derived from existing <code>tt:layout</code> element,
+which is a generic container for layout specifications, but for use
+in defining animation specifications that apply to targetted elements.</p></li></ol></div></div><div class="div2">
+<h3><a id="d3e20632"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -6725,11 +7021,11 @@ element type are listed below. Those per-element namespace attributes
 that are uniquely defined for a specific TTML element type are not
 listed below, but are considered to be part of the specific element
 type's derivation described in <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
-above.</p><a id="attribute-vocab-derivation-table"></a><table class="common"><caption>Table J-2 – Attributes</caption><col width="20%" span="1"><col width="17%" span="1"><col width="13%" align="center" span="1"><col width="40%" span="1"><col width="10%" align="center" span="1"><tbody><tr><td><span class="strong">Attribute</span></td><td><span class="strong">Model</span></td><td><span class="strong">Reference</span></td><td><span class="strong">Details</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="#timing-attribute-begin"><code>begin</code></a></td><td><code>begin</code></td><td><a href="#smil21">[SMIL 2.1]</a></td><td>see notes</td><td>2,3,4</td></tr><tr><td><a href="#timing-attribute-dur"><code>dur</code></a></td><td><code>dur</code></td><td><a href="#smil21">[SMIL 2.1]</a></td><td>see notes</td><td>2,3,4</td></tr><tr><td><a href="#timing-attribute-end"><code>end</code></a></td><td><code>end</code></td><td><a href="#smil21">[SMIL 2.1]</a></td><td>see notes</td><td>2,3,4</td></tr><tr><td><a href="#layout-attribute-region"><code>region</code></a></td><td><code>master-reference</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>conceptual derivation</td><td></td></tr><tr><td><a href="#style-attribute-style"><code>style</code></a></td><td><code>class</code></td><td><a href="#css2">[CSS2]</a></td><td>dereferences style specification(s) directly</td><td></td></tr><tr><td><a href="#timing-attribute-timeContainer"><code>timeContainer</code></a></td><td><code>timeContainer</code></td><td><a href="#smil21">[SMIL 2.1]</a></td><td>
+above.</p><a id="attribute-vocab-derivation-table"></a><table class="common"><caption>Table J-2 – Attributes</caption><col width="20%" span="1"><col width="17%" span="1"><col width="13%" align="center" span="1"><col width="40%" span="1"><col width="10%" align="center" span="1"><tbody><tr><td><span class="strong">Attribute</span></td><td><span class="strong">Model</span></td><td><span class="strong">Reference</span></td><td><span class="strong">Details</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="#timing-attribute-begin"><code>begin</code></a></td><td><code>begin</code></td><td><a href="#smil3">[SMIL 3.0]</a></td><td>see notes</td><td>2,3,4</td></tr><tr><td><a href="#timing-attribute-dur"><code>dur</code></a></td><td><code>dur</code></td><td><a href="#smil3">[SMIL 3.0]</a></td><td>see notes</td><td>2,3,4</td></tr><tr><td><a href="#timing-attribute-end"><code>end</code></a></td><td><code>end</code></td><td><a href="#smil3">[SMIL 3.0]</a></td><td>see notes</td><td>2,3,4</td></tr><tr><td><a href="#layout-attribute-region"><code>region</code></a></td><td><code>master-reference</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>conceptual derivation</td><td></td></tr><tr><td><a href="#style-attribute-style"><code>style</code></a></td><td><code>class</code></td><td><a href="#css2">[CSS2]</a></td><td>dereferences style specification(s) directly</td><td></td></tr><tr><td><a href="#timing-attribute-timeContainer"><code>timeContainer</code></a></td><td><code>timeContainer</code></td><td><a href="#smil3">[SMIL 3.0]</a></td><td>
 -<code>excl</code>,
 -<code>none</code>;
 no default attribute value
-</td><td>5</td></tr><tr><td><a href="#metadata-attribute-agent"><code>ttm:agent</code></a></td><td><em>none</em></td><td></td><td>used to attribute agent of content</td><td></td></tr><tr><td><a href="#metadata-attribute-role"><code>ttm:role</code></a></td><td><em>none</em></td><td></td><td>used to attribute role of content</td><td></td></tr><tr><td><a href="#parameter-attribute-cellResolution"><code>ttp:cellResolution</code></a></td><td><em>none</em></td><td></td><td>expresses uniform grid resolution for cell based coordinates</td><td></td></tr><tr><td><a href="#parameter-attribute-clockMode"><code>ttp:clockMode</code></a></td><td><em>none</em></td><td></td><td>determines how to interpret time expressions</td><td></td></tr><tr><td><a href="#parameter-attribute-frameRate"><code>ttp:frameRate</code></a></td><td><em>none</em></td><td></td><td>expresses integral frame rate</td><td></td></tr><tr><td><a href="#parameter-attribute-frameRateMultiplier"><code>ttp:frameRateMultiplier</code></a></td><td><em>none</em></td><td></td><td>used to express non-integral, rational frame rates</td><td></td></tr><tr><td><a href="#parameter-attribute-markerMode"><code>ttp:markerMode</code></a></td><td><em>none</em></td><td></td><td>expresses marker continuity semantics</td><td></td></tr><tr><td><a href="#parameter-attribute-pixelAspectRatio"><code>ttp:pixelAspectRatio</code></a></td><td><em>none</em></td><td></td><td>expresses pixel aspect ratio of related media</td><td></td></tr><tr><td><a href="#parameter-attribute-profile"><code>ttp:profile</code></a></td><td><em>none</em></td><td></td><td>expresses profile of TTML used by a <em>Document Instance</em></td><td></td></tr><tr><td><a href="#parameter-attribute-dropMode"><code>ttp:dropMode</code></a></td><td><em>none</em></td><td></td><td>expresses frame counting (drop) modes</td><td></td></tr><tr><td><a href="#parameter-attribute-subFrameRate"><code>ttp:subFrameRate</code></a></td><td><em>none</em></td><td></td><td>expresses sub-frame rate</td><td></td></tr><tr><td><a href="#parameter-attribute-tickRate"><code>ttp:tickRate</code></a></td><td><em>none</em></td><td></td><td>used to interpret tick based time expressions</td><td></td></tr><tr><td><a href="#parameter-attribute-timeBase"><code>ttp:timeBase</code></a></td><td><em>none</em></td><td></td><td>used to interpret semantics of time expressions</td><td></td></tr><tr><td><a href="#style-attribute-backgroundColor"><code>tts:backgroundColor</code></a></td><td><code>background-color</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,6</td></tr><tr><td><a href="#style-attribute-border"><code>tts:border</code></a></td><td><code>border</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,6</td></tr><tr><td><a href="#style-attribute-color"><code>tts:color</code></a></td><td><code>color</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>6</td></tr><tr><td><a href="#style-attribute-direction"><code>tts:direction</code></a></td><td><code>direction</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td></td></tr><tr><td><a href="#style-attribute-display"><code>tts:display</code></a></td><td><code>display</code></td><td><a href="#css2">[CSS2]</a></td><td>only <code>auto</code>, <code>none</code></td><td></td></tr><tr><td><a href="#style-attribute-displayAlign"><code>tts:displayAlign</code></a></td><td><code>display-align</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1</td></tr><tr><td><a href="#style-attribute-extent"><code>tts:extent</code></a></td><td><code>width</code>, <code>height</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>shorthand property</td><td></td></tr><tr><td><a href="#style-attribute-fontFamily"><code>tts:fontFamily</code></a></td><td><code>font-family</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, extends generic family names</td><td>1</td></tr><tr><td><a href="#style-attribute-fontSize"><code>tts:fontSize</code></a></td><td><code>font-size</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,7</td></tr><tr><td><a href="#style-attribute-fontStyle"><code>tts:fontStyle</code></a></td><td><code>font-style</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>backslant</code></td><td>1</td></tr><tr><td><a href="#style-attribute-fontWeight"><code>tts:fontWeight</code></a></td><td><code>font-weight</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>bolder</code>, -<code>lighter</code>, -<code>&lt;number&gt;</code></td><td>1</td></tr><tr><td><a href="#style-attribute-lineHeight"><code>tts:lineHeight</code></a></td><td><code>line-height</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>&lt;number&gt;</code>, -<code>&lt;space&gt;</code></td><td>1</td></tr><tr><td><a href="#style-attribute-opacity"><code>tts:opacity</code></a></td><td><code>opacity</code></td><td><a href="#css3-color">[CSS3 Color]</a></td><td>-<code>inherit</code></td><td></td></tr><tr><td><a href="#style-attribute-origin"><code>tts:origin</code></a></td><td><code>top</code>, <code>left</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>shorthand property</td><td></td></tr><tr><td><a href="#style-attribute-overflow"><code>tts:overflow</code></a></td><td><code>overflow</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>auto</code>, -<code>error-if-overflow</code></td><td></td></tr><tr><td><a href="#style-attribute-padding"><code>tts:padding</code></a></td><td><code>padding</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>8</td></tr><tr><td><a href="#style-attribute-showBackground"><code>tts:showBackground</code></a></td><td><code>showBackground</code></td><td><a href="#smil21">[SMIL 2.1]</a></td><td>-<code>inherit</code></td><td></td></tr><tr><td><a href="#style-attribute-textAlign"><code>tts:textAlign</code></a></td><td><code>text-align</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1</td></tr><tr><td><a href="#style-attribute-textDecoration"><code>tts:textDecoration</code></a></td><td><code>text-decoration</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,9,12</td></tr><tr><td><a href="#style-attribute-textOrientation"><code>tts:textOrientation</code></a></td><td><code>text-orientation</code></td><td><a href="#css3-wm">[CSS Writing Modes Level 3]</a></td><td>
+</td><td>5</td></tr><tr><td><a href="#metadata-attribute-agent"><code>ttm:agent</code></a></td><td><em>none</em></td><td></td><td>used to attribute agent of content</td><td></td></tr><tr><td><a href="#metadata-attribute-role"><code>ttm:role</code></a></td><td><em>none</em></td><td></td><td>used to attribute role of content</td><td></td></tr><tr><td><a href="#parameter-attribute-cellResolution"><code>ttp:cellResolution</code></a></td><td><em>none</em></td><td></td><td>expresses uniform grid resolution for cell based coordinates</td><td></td></tr><tr><td><a href="#parameter-attribute-clockMode"><code>ttp:clockMode</code></a></td><td><em>none</em></td><td></td><td>determines how to interpret time expressions</td><td></td></tr><tr><td><a href="#parameter-attribute-frameRate"><code>ttp:frameRate</code></a></td><td><em>none</em></td><td></td><td>expresses integral frame rate</td><td></td></tr><tr><td><a href="#parameter-attribute-frameRateMultiplier"><code>ttp:frameRateMultiplier</code></a></td><td><em>none</em></td><td></td><td>used to express non-integral, rational frame rates</td><td></td></tr><tr><td><a href="#parameter-attribute-markerMode"><code>ttp:markerMode</code></a></td><td><em>none</em></td><td></td><td>expresses marker continuity semantics</td><td></td></tr><tr><td><a href="#parameter-attribute-pixelAspectRatio"><code>ttp:pixelAspectRatio</code></a></td><td><em>none</em></td><td></td><td>expresses pixel aspect ratio of related media</td><td></td></tr><tr><td><a href="#parameter-attribute-profile"><code>ttp:profile</code></a></td><td><em>none</em></td><td></td><td>expresses profile of TTML used by a <em>Document Instance</em></td><td></td></tr><tr><td><a href="#parameter-attribute-dropMode"><code>ttp:dropMode</code></a></td><td><em>none</em></td><td></td><td>expresses frame counting (drop) modes</td><td></td></tr><tr><td><a href="#parameter-attribute-subFrameRate"><code>ttp:subFrameRate</code></a></td><td><em>none</em></td><td></td><td>expresses sub-frame rate</td><td></td></tr><tr><td><a href="#parameter-attribute-tickRate"><code>ttp:tickRate</code></a></td><td><em>none</em></td><td></td><td>used to interpret tick based time expressions</td><td></td></tr><tr><td><a href="#parameter-attribute-timeBase"><code>ttp:timeBase</code></a></td><td><em>none</em></td><td></td><td>used to interpret semantics of time expressions</td><td></td></tr><tr><td><a href="#style-attribute-backgroundColor"><code>tts:backgroundColor</code></a></td><td><code>background-color</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,6</td></tr><tr><td><a href="#style-attribute-border"><code>tts:border</code></a></td><td><code>border</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,6</td></tr><tr><td><a href="#style-attribute-color"><code>tts:color</code></a></td><td><code>color</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>6</td></tr><tr><td><a href="#style-attribute-direction"><code>tts:direction</code></a></td><td><code>direction</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td></td></tr><tr><td><a href="#style-attribute-display"><code>tts:display</code></a></td><td><code>display</code></td><td><a href="#css2">[CSS2]</a></td><td>only <code>auto</code>, <code>none</code></td><td></td></tr><tr><td><a href="#style-attribute-displayAlign"><code>tts:displayAlign</code></a></td><td><code>display-align</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1</td></tr><tr><td><a href="#style-attribute-extent"><code>tts:extent</code></a></td><td><code>width</code>, <code>height</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>shorthand property</td><td></td></tr><tr><td><a href="#style-attribute-fontFamily"><code>tts:fontFamily</code></a></td><td><code>font-family</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, extends generic family names</td><td>1</td></tr><tr><td><a href="#style-attribute-fontSize"><code>tts:fontSize</code></a></td><td><code>font-size</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,7</td></tr><tr><td><a href="#style-attribute-fontStyle"><code>tts:fontStyle</code></a></td><td><code>font-style</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>backslant</code></td><td>1</td></tr><tr><td><a href="#style-attribute-fontWeight"><code>tts:fontWeight</code></a></td><td><code>font-weight</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>bolder</code>, -<code>lighter</code>, -<code>&lt;number&gt;</code></td><td>1</td></tr><tr><td><a href="#style-attribute-lineHeight"><code>tts:lineHeight</code></a></td><td><code>line-height</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>&lt;number&gt;</code>, -<code>&lt;space&gt;</code></td><td>1</td></tr><tr><td><a href="#style-attribute-opacity"><code>tts:opacity</code></a></td><td><code>opacity</code></td><td><a href="#css3-color">[CSS3 Color]</a></td><td>-<code>inherit</code></td><td></td></tr><tr><td><a href="#style-attribute-origin"><code>tts:origin</code></a></td><td><code>top</code>, <code>left</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>shorthand property</td><td></td></tr><tr><td><a href="#style-attribute-overflow"><code>tts:overflow</code></a></td><td><code>overflow</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code>, -<code>auto</code>, -<code>error-if-overflow</code></td><td></td></tr><tr><td><a href="#style-attribute-padding"><code>tts:padding</code></a></td><td><code>padding</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>8</td></tr><tr><td><a href="#style-attribute-showBackground"><code>tts:showBackground</code></a></td><td><code>showBackground</code></td><td><a href="#smil3">[SMIL 3.0]</a></td><td>-<code>inherit</code></td><td></td></tr><tr><td><a href="#style-attribute-textAlign"><code>tts:textAlign</code></a></td><td><code>text-align</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1</td></tr><tr><td><a href="#style-attribute-textDecoration"><code>tts:textDecoration</code></a></td><td><code>text-decoration</code></td><td><a href="#xsl11">[XSL 1.1]</a></td><td>-<code>inherit</code></td><td>1,9,12</td></tr><tr><td><a href="#style-attribute-textOrientation"><code>tts:textOrientation</code></a></td><td><code>text-orientation</code></td><td><a href="#css3-wm">[CSS Writing Modes Level 3]</a></td><td>
 -<code>inherit</code>,
 -<code>sideways-left</code>,
 -<code>sideways-right</code>,
@@ -6753,7 +7049,7 @@ or <code>clock</code>, respectively:
 (1) an offset from an implicit syncbase that is linked to a media time
 line, (2) an event time
 that represents the occurrence of an implicit media marker, or (3) a wall-clock
-time.</p></li><li><p>Syntactically subsets and supersets the <a href="#smil21">[SMIL 2.1]</a>&nbsp;<code>Clock-value</code> syntax as follows:
+time.</p></li><li><p>Syntactically subsets and supersets the <a href="#smil3">[SMIL 3.0]</a>&nbsp;<code>Clock-value</code> syntax as follows:
 (1) requires non-negative <code>Full-clock-value</code> or
 <code>Timecount-value</code>;
 (2) if <code>Full-clock-value</code>
@@ -6796,9 +7092,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e20798"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e21612"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e20962"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e21776"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

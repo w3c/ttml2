@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v bb877bfc347c 2013/08/28 15:34:54 glenn $ -->
+<!-- $Id: ttml2.xml,v c78dca2ae3ca 2013/08/28 18:01:03 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/08/28 15:34:54 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/08/28 18:01:03 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/08/28 15:34:54 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/08/28 18:01:03 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -579,6 +579,7 @@ Timed Text Markup Language content.</p>
 <date>2013-08-23</date>
 <edtext>Need to update and elaborate definition of content profile based on new profiling mechanisms.</edtext>
 </ednote>
+<p></p>
 </def>
 </gitem>
 <gitem>
@@ -644,6 +645,48 @@ future revision of this specification).</p>
 </def>
 </gitem>
 <gitem>
+<label>Inline Animation</label>
+<def>
+<p>An animation specification that is defined inline as an immediate child of
+a <loc href="#element-vocab-type-content">Content</loc> or region element targetted by the animation. There is a one-to-one relation between
+an inline animation element and its parent <loc href="#element-vocab-type-content">Content</loc> or region element.
+An inline animation does not specify an <att>xlink:href</att> attribute.</p>
+</def>
+</gitem>
+<gitem>
+<label>Inline Region</label>
+<def>
+<p>A region specification that is defined inline as an immediate child of
+a <loc href="#element-vocab-type-content">Content</loc> element to be selected into (targetted to) the region.
+There is a one-to-one relation between an inline region element and its
+parent <loc href="#element-vocab-type-content">Content</loc> element. An inline region is assigned its parent element's time interval as its active
+time interval. No <att>region</att> attribute makes reference to an inline region.</p>
+</def>
+</gitem>
+<gitem>
+<label>Out-of-line Animation</label>
+<def>
+<p>An animation specification that is defined out-of-line from
+the <loc href="#element-vocab-type-content">Content</loc> or region element targetted by the animation. An out-of-line animation appears
+as a child of an <el>animation</el> element in the header (<el>head</el> element)
+of a <emph>Document Instance</emph>, and specifies an <att>xlink:href</att> attribute
+in order to associate it with an element to be animated. There is a one-to-one relation between
+an out-of-line animation element and a <loc href="#element-vocab-type-content">Content</loc> or region element.</p>
+</def>
+</gitem>
+<gitem>
+<label>Out-of-line Region</label>
+<def>
+<p>A region specification that is defined out-of-line from
+the <loc href="#element-vocab-type-content">Content</loc> element(s) to be selected into (targetted to) the region. An out-of-line region appears
+as a child of a <el>layout</el> element in the header (<el>head</el> element)
+of a <emph>Document Instance</emph>, and specifies an <att>xml:id</att> attribute
+in order to allow <loc href="#element-vocab-type-content">Content</loc> elements associated with the region by means of a
+<att>region</att> attribute. There is a one-to-many relationship between an out-of-line region
+and the <loc href="#element-vocab-type-content">Content</loc> element(s) to be selected into (targetted to) the region.</p>
+</def>
+</gitem>
+<gitem>
 <label>Presentation Processor</label>
 <def>
 <p>A <emph>Content Processor</emph> which purpose is to layout, format, and render,
@@ -667,6 +710,7 @@ a content processor.</p>
 <date>2013-08-23</date>
 <edtext>Need to update and elaborate definition of processor profile based on new profiling mechanisms.</edtext>
 </ednote>
+<p></p>
 </def>
 </gitem>
 <gitem>
@@ -2996,8 +3040,6 @@ logical divisions.</p>
 elements in the <code>Metadata.class</code> element group,
 followed by zero or more
 elements in the <code>Animation.class</code> element group,
-followed by zero or more
-elements in the <code>Layout.class</code> element group,
 followed by
 zero or more <el>div</el> elements.</p>
 <p>Any metadata specified by children in the <code>Metadata.class</code>
@@ -3026,7 +3068,6 @@ element group apply semantically to the <el>body</el> element.</p>
   <emph>Content:</emph> <loc
   href="#element-vocab-group-table">Metadata.class</loc>*, <loc
   href="#element-vocab-group-table">Animation.class</loc>*, <loc
-  href="#element-vocab-group-table">Layout.class</loc>*, <loc
   href="#content-vocabulary-div">div</loc>*
 &lt;/body&gt;
 </eg>
@@ -3554,8 +3595,7 @@ in order to provide a means to independently express styling of the four differe
 </ednote>
 <p>Unless explicitly stated otherwise, linear white-space (LWSP) must
 appear between adjacent non-terminal components of a value of a TT
-Style or TT Style Extension
-Property value unless some other delimiter is permitted and used.</p>
+Style property value unless some other delimiter is permitted and used.</p>
 <note role="explanation">
 <p>This specification makes use of <emph>lowerCamelCased</emph> local
 names for style attributes that
@@ -4922,6 +4962,7 @@ as a style property only to those element types indicated in the following table
 <date>2013-08-26</date>
 <edtext>Enhance opacity example to demonstrate opacity on content elements.</edtext>
 </ednote>
+<p></p>
 <table id="style-attribute-opacity-example-1" role="example">
 <caption>Example Fragment &ndash; Opacity</caption>
 <tbody>
@@ -5269,6 +5310,7 @@ value <code>0px</code> were specified.</p>
 <date>2013-08-24</date>
 <edtext>Enhance padding example to demonstrate padding on content elements.</edtext>
 </ednote>
+<p></p>
 <table id="style-attribute-padding-example-1" role="example">
 <caption>Example Fragment &ndash; Padding</caption>
 <tbody>
@@ -7522,7 +7564,7 @@ matter is not embedded (inlined).</p>
 <div3 id="layout-vocabulary-layout">
 <head>layout</head>
 <p>The <el>layout</el> element is a container element used to group
-layout matter, including metadata that applies to layout matter.</p>
+out-of-line layout matter, including metadata that applies to layout matter.</p>
 <p>The <el>layout</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
 zero or more <el>region</el> elements.</p>
@@ -7552,6 +7594,12 @@ defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
 <head>region</head>
 <p>The <el>region</el> element is used to define a rectangular space or area into which content is
 to be flowed for the purpose of presentation.</p>
+<p>A <el>region</el> element may appear as either (1) a child of a
+<loc href="#layout-vocabulary-layout">layout</loc> element or (2) a child of block level
+<loc href="#element-vocab-type-content">Content</loc> elements, specifically, of elements
+in the <loc href="#element-vocab-group-table">Block.class</loc> element group.
+In the former case, the region is referred to as an <emph>Out-of-line Region</emph>, while in the latter
+case, it is referred to as an <emph>Inline Region</emph>.</p>
 <p>In addition, and in accordance with
 <specref ref="semantics-style-inheritance-region"/>, 
 the <el>region</el> element may be used to specify inheritable style properties to be
@@ -7595,26 +7643,32 @@ style inheritance).</p>
 </tr>
 </tbody>
 </table>
-<p>If <att>begin</att> and (or) <att>end</att> attributes are specified on a
+<p>An out-of-line region may specify one or more of the timing attributes:
+<att>begin</att>, <att>end</att>, <att>dur</att>. An inline region must not
+specifiy a timing attribute, and, if specified, must be ignored for the purpose
+of presentation processing.</p>
+<p>If <att>begin</att> and (or) <att>end</att> attributes are specified on an out-of-line
 <el>region</el> element, then they specify the beginning and (or) ending points
 of a time interval during which the region is eligible for activation and with
 respect to which animation child elements of the region are timed.
 If specified, these begin and end points are relative to the time
 interval of the nearest ancestor element associated with a time
-interval, irregardless of whether that interval is explicit or implied.</p>
-<p>The nearest ancestor element of a <el>region</el> element that is associated
-with a time interval is the <el>layout</el> element.</p>
-<p>If a <att>dur</att> attribute is specified on the <el>region</el> element, then it
+interval, irregardless of whether that interval is explicit or implied.
+The nearest ancestor element of an out-of-line <el>region</el> element that is associated
+with a time interval is the <el>layout</el> element.
+If a <att>dur</att> attribute is specified on an out-of-line <el>region</el> element, then it
 specifies the simple duration of the region.</p>
+<p>The active time interval of an inline <el>region</el> element is the
+active time interval of its parent <loc href="#element-vocab-type-content">Content</loc> element.</p>
 <p>For the purpose of determining the semantics of presentation processing, a
 region that is temporally inactive must not produce any visible marks when
 presented on a visual medium.</p>
 <note role="motivation">
-<p>A <el>region</el> element may be associated with a time interval for two
+<p>An out-of-line <el>region</el> element may be associated with a time interval for two
 purposes: (1) in order to temporally bound the presentation of the region and
 its content, and (2) to provide a temporal context in which animations of region
 styles may be effected.</p>
-<p>For example, an author may wish to specify a region that is otherwise empty, but
+<p>For example, an author may wish to specify an out-of-line region that is otherwise empty, but
 may have a visible background color to be presented starting at some time and
 continuing over the region's duration.  The simple duration of the region serves
 additionally to scope the presentation effects of content that is targeted to the
@@ -7622,6 +7676,9 @@ region. An author may also wish to move a region within the <emph>Root Container
 or change a region's background color by means of animation effects. In
 both of these cases, it is necessary to posit an active time interval for a
 region.</p>
+<p>In contrast to out-of-line regions, inline regions are specifically bound to
+the temporal context of their parent <loc href="#element-vocab-type-content">Content</loc> elements,
+and, as such, do not require (or admit) the specification of independent timing.</p>
 </note>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>region</el> element, then it must be interpreted as having
@@ -7668,6 +7725,7 @@ presentation in terms of a standard processing model as
 follows:</p>
 <ulist>
 <item><p><specref ref="semantics-default-region"/></p></item>
+<item><p><specref ref="semantics-inline-regions"/></p></item>
 <item><p><specref ref="semantics-region-layout-step-1"/></p></item>
 <item><p><specref ref="semantics-region-layout-step-2"/></p></item>
 <item><p><specref ref="semantics-region-layout-example"/></p></item>
@@ -7736,6 +7794,10 @@ attribute are implied. In addition, a <el>layout</el> container element is impli
 the implied <el>region</el> element.</p>
 </note>
 </div3>
+<div3 id="semantics-inline-regions">
+<head>Inline Regions</head>
+<p>&tbd;</p>
+</div3>
 <div3 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
 <p>For the purposes of performing presentation processing, the active time
@@ -7788,6 +7850,12 @@ associated (owning) element node.</p>
 <gitem>
 <label>[associate region]</label>
 <def>
+<p></p>
+<ednote>
+<name>Inline Region Association</name>
+<date>2013-08-28</date>
+<edtext>Define inline region association.</edtext>
+</ednote>
 <p>A <loc href="#element-vocab-type-content">Content</loc> element is associated with a region according
 to the following ordered rules, where the first rule satisfied
 is used and remaining rules are skipped:</p>
@@ -8391,10 +8459,10 @@ styling of content.</p>
 <div3 id="animation-vocabulary-animation">
 <head>animation</head>
 <p>The <el>animation</el> element is a container element used to group
-animation matter, including metadata that applies to animation matter.</p>
+out-of-line animation matter, including metadata that applies to animation matter.</p>
 <p>The <el>animation</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group, followed by
-zero or more <el>animate</el> elements.</p>
+zero or more elements in the <code>Animation.class</code> element group.</p>
 <table id="elt-syntax-animation" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: animation</caption>
 <tbody>
@@ -8406,7 +8474,7 @@ zero or more <el>animate</el> elements.</p>
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#animation-vocabulary-animate">animate</loc>*
+  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#element-vocab-group-table">Animation.class</loc>*
 &lt;/animation&gt;
 </eg>
 </td>
@@ -8422,9 +8490,9 @@ defined to be coterminous with the <emph>Root Temporal Extent</emph>.</p>
 <p>The <el>animate</el> element expresses a series of changes (animations) to be applied to a targetted attribute
 of a targetted element.</p>
 <p>An <el>animate</el> element may appear as either (1) a child of a
-<loc href="#element-vocab-type-content">Content</loc> or <el>region</el> element or
-(2) a child of an <loc href="#animation-vocabulary-animation">animation</loc> element. In the former
-case, the targetted element of the animation is the parent of the <el>animate</el> element; in the latter
+<loc href="#element-vocab-type-content">Content</loc> or <el>region</el> element, referred to as inline animation, or
+(2) a child of an <loc href="#animation-vocabulary-animation">animation</loc> element, referred to as out-of-line animation.
+In the former case, the targetted element of the animation is the parent of the <el>animate</el> element; in the latter
 case, the targetted element is the element referenced by the <att>xlink:href</att> attribute on the
 <el>animate</el> element.</p>
 <p>The targetted attribute (property) is specified by the <att>attributeName</att> attribute.</p>
@@ -8466,7 +8534,7 @@ elements in the <code>Metadata.class</code> element group.</p>
 </tr>
 </tbody>
 </table>
-<p/>
+<p></p>
 <p>Except for the constraints or variations enumerated below, the semantics of the <el>animate</el> element and its attributes
 enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.12:</p>
 <olist>
@@ -8550,15 +8618,20 @@ over a one second interval, where it remains.</p>
 <note role="derivation">
 <p>The semantics of the <el>animate</el> element
 are based upon that defined by <bibref ref="svg11"/>,
-&sect; 6.2.12, which, in turn, is based upon <bibref ref="smil3"/>, &sect;12.</p>
+&sect;19.2.12, which, in turn, is based upon <bibref ref="smil3"/>, &sect;12.</p>
 </note>
 </div3>
 <div3 id="animation-vocabulary-set">
 <head>set</head>
-<p>The <el>set</el> element is used as a child element of a
-<loc href="#element-vocab-type-content">Content</loc> element or a <el>region</el> element
-in order to express a discrete change of some style parameter value
-that applies over some time interval.</p>
+<p>The <el>set</el> element expresses one or more a discrete changes (animations) to be applied to targetted attributes
+of a targetted element.</p>
+<p>A <el>set</el> element may appear as either (1) a child of a
+<loc href="#element-vocab-type-content">Content</loc> or <el>region</el> element, referred to as inline animation, or
+(2) a child of an <loc href="#animation-vocabulary-animation">animation</loc> element, referred to as out-of-line animation.
+In the former case, the targetted element of the animation is the parent of the <el>set</el> element; in the latter
+case, the targetted element is the element referenced by the <att>xlink:href</att> attribute on the
+<el>set</el> element.</p>
+<p>The targetted attributes of a <el>set</el> element are specified using attributes in the TT Style namespace.</p>
 <p>The <el>set</el> element accepts as its children zero or more
 elements in the <code>Metadata.class</code> element group.</p>
 <table id="elt-syntax-set" role="syntax">
@@ -8572,6 +8645,7 @@ elements in the <code>Metadata.class</code> element group.</p>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
+  <loc href="#content-attribute-id">xlink:href</loc> = <loc href="#animation-value-fragmentIdentifier">&lt;fragmentIdentifier&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -8584,17 +8658,22 @@ elements in the <code>Metadata.class</code> element group.</p>
 </tr>
 </tbody>
 </table>
-<p/>
-<ednote>
-<name>Targeted Animation</name>
-<date>2013-07-10</date>
-<edtext>Consider adding <code>xlink:href</code> or <code>targetElement</code> attribute as a way to target another
-element than the immediate parent element. SVG uses xlink:href while SMIL uses either <code>xlink:href</code> or
-<code>targetElement</code>.</edtext>
-</ednote>
-<note role="example">
-<p>The use of multiple <el>set</el> element children may be used to effect fade and
-position transitions.</p>
+<p></p>
+<p>Except for the constraints or variations enumerated below, the semantics of the <el>set</el> element and its attributes
+enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.13:</p>
+<olist>
+<item><p>The attributes targetted by a <el>set</el> element and the discrete values to be applied to these attributes are
+specified by direct use of attributes in the TT Style namespace (as opposed to using
+<att>attributeName</att> and <att>to</att> attributes). For example, specifying <code>tts:color="red"</code> is to be
+considered equivalent to specifying <code>attributeName="tts:color"</code> and <code>to="red"</code> in <bibref ref="svg11"/>.</p></item>
+<item><p>If an <att>xlink:href</att> attribute is specified, then the <el>set</el> element must be a child of an
+<loc href="#animation-vocabulary-animation">animation</loc> element; conversely, if a <el>set</el> element is a child of
+an <loc href="#animation-vocabulary-animation">animation</loc> element, then it must specify an <att>xlink:href</att> attribute.</p></item>
+</olist>
+<note role="elaboration">
+<p>In contrast with <bibref ref="svg11"/>, &sect;19.2.13, a single <el>set</el> element, as defined here, may be used to
+perform discrete animations on a set of targetted attributes instead of being limited to targeting a single attribute.
+In <bibref ref="svg11"/>, this would require the use of multiple <el>set</el> elements rather than a single <el>set</el> element.</p>
 </note>
 <p>An example of using the <el>set</el> element to animate content
 styling is illustrated below:</p>
@@ -8671,7 +8750,7 @@ to avoid obscuring characters in an underlying video with captions.</p>
 <note role="derivation">
 <p>The semantics of the <el>set</el> element
 are based upon that defined by <bibref ref="svg11"/>,
-&sect; 6.2.13, which, in turn, is based upon <bibref ref="smil3"/>, &sect;12.</p>
+&sect;19.2.13, which, in turn, is based upon <bibref ref="smil3"/>, &sect;12.</p>
 </note>
 </div3>
 </div2>

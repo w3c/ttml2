@@ -80,9 +80,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .strong { font-weight: bold }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2013/08/28 18:01:03 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2013/08/28 19:21:15 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2013/08/28 18:01:03 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2013/08/28 19:21:15 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest version:</dt><dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8">http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -415,11 +415,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e20428">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e20945">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e20460">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e20977">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e21925">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e22089">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e21957">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e22121">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a><br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a><br>
@@ -2318,9 +2318,12 @@ as a style property only to those element types indicated in the following table
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
 span.</p><p>If no border width is specified in the value of the <code>tts:border</code> property,
 then the border width must be interpreted as if a width of
-<code>medium</code> were specified.</p><p>If no border style is specified in the value of the <code>tts:border</code> property,
+<code>medium</code> were specified.</p><p>If a computed value of the border width associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+the computed border width and the supported border width is minimized.</p></div><p>If no border style is specified in the value of the <code>tts:border</code> property,
 then the border style must be interpreted as if a style of
-<code>none</code> were specified.</p><p>If no border color is specified in the value of the <code>tts:border</code> property,
+<code>none</code> were specified.</p><p>If a computed value of the border style associated with this attribute is not supported,
+then a presentation processor must use the value <code>solid</code>.</p><p>If no border color is specified in the value of the <code>tts:border</code> property,
 then the border color must be interpreted as if a color equal
 to the computed value of the element's <code>tts:color</code> property were specified.</p><p>The <code>tts:border</code> style is illustrated by the following example.</p><a id="style-attribute-border-example-1"></a><table class="example"><caption>Example Fragment – Background Color</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -2385,8 +2388,8 @@ as a style property only to those element types indicated in the following table
 <a href="#content-vocabulary-span"><code>span</code></a>
 </td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
-span.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must ignore the attribute.</p><p>The <code>tts:direction</code> style is illustrated by the following example.</p><a id="style-attribute-direction-example-1"></a><table class="example"><caption>Example Fragment – Direction</caption><tbody><tr><td>
+span.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>ltr</code>.</p><p>The <code>tts:direction</code> style is illustrated by the following example.</p><a id="style-attribute-direction-example-1"></a><table class="example"><caption>Example Fragment – Direction</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="265px 84px"/&gt;
@@ -2483,9 +2486,8 @@ as a style property only to those element types indicated in the following table
 <code>before</code>
 </td></tr><tr><td><em>Applies to:</em></td><td>
 <a href="#layout-vocabulary-region"><code>region</code></a>
-</td></tr><tr><td><em>Inherited:</em></td><td>no</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>before</code> were specified.</p><p>The <code>tts:displayAlign</code> style is illustrated by the following example.</p><a id="style-attribute-displayAlign-example-1"></a><table class="example"><caption>Example Fragment – Display Align</caption><tbody><tr><td>
+</td></tr><tr><td><em>Inherited:</em></td><td>no</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>before</code>.</p><p>The <code>tts:displayAlign</code> style is illustrated by the following example.</p><a id="style-attribute-displayAlign-example-1"></a><table class="example"><caption>Example Fragment – Display Align</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="128px 66px" tts:origin="0px 0px"
@@ -2542,9 +2544,9 @@ of the style property must be considered to be the same as the extent of the <em
 present, or as described by <a href="#document-structure-vocabulary-tt"><b>7.1.1 tt</b></a> if not present.
 If <code>tts:extent</code> is specified on the <code>tt</code> element, then
 the width and height must be expressed in terms of two <a href="#style-value-length">&lt;length&gt;</a> specifications,
-and these specifications must be expressed as non-percentage, definite lengths using pixel units.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>auto</code> were specified.</p><p>The <code>tts:extent</code> style is illustrated by the following example.</p><a id="style-attribute-extent-example-1"></a><table class="example"><caption>Example Fragment – Extent</caption><tbody><tr><td>
+and these specifications must be expressed as non-percentage, definite lengths using pixel units.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+the computed extent and the supported extent is minimized.</p></div><p>The <code>tts:extent</code> style is illustrated by the following example.</p><a id="style-attribute-extent-example-1"></a><table class="example"><caption>Example Fragment – Extent</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style <span class="strong">tts:extent="330px 122px"</span>/&gt;
@@ -2576,12 +2578,11 @@ as a style property only to those element types indicated in the following table
 </td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The initial value, <code>default</code>, is a generic font family name, and is
 further described in <a href="#style-value-genericFamilyName"><b>8.3.9 &lt;genericFamilyName&gt;</b></a> below.</p></div><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
-span.</p><p>If a specified font family is not available, then a
-presentation processor must attempt to map the specified font family
-to an available font family that has similar typographic
+span.</p><p>If a computed value of the property associated with this attribute is not supported, then a
+presentation processor must attempt to map the computed font family
+to a supported font family that has similar typographic
 characteristics, or, in the absence of such a mapping, it must
-interpret the font family as if the value <code>default</code> were
-specified.</p><p>The <code>tts:fontFamily</code> style is illustrated by the following example.</p><a id="style-attribute-fontFamily-example-1"></a><table class="example"><caption>Example Fragment – Font Family</caption><tbody><tr><td>
+use the value <code>default</code>.</p><p>The <code>tts:fontFamily</code> style is illustrated by the following example.</p><a id="style-attribute-fontFamily-example-1"></a><table class="example"><caption>Example Fragment – Font Family</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="474px 146px"/&gt;
@@ -2629,9 +2630,8 @@ one column in width.</p></div><div class="note"><p class="prefix"><b>Note:</b></
 glyphs do not have an EM square that is distinct from their font's EM square.</p></div><p>If horizontal and vertical sizes are expressed independently, then the
 units of the <a href="#style-value-length">&lt;length&gt;</a> values must be the same.</p><p>The <a href="#style-value-length">&lt;length&gt;</a> value(s) used to express font size must be non-negative.</p><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
-span.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the closest supported value were
-specified.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+span.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
 the computed font size and the supported font size is minimized.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
 the <em>cell</em> length unit as defined by <a href="#style-value-length"><b>8.3.12 &lt;length&gt;</b></a>.
 When a single &lt;length&gt; is expressed using cell units, then it refers to the height of
@@ -2678,12 +2678,8 @@ as a style property only to those element types indicated in the following table
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
 span.</p><p>Use of the value <code>oblique</code>
 denotes a shear transformation (at an unspecified
-angle) in the inline progression dimension.</p><p>If a specified font style is not available, then a
-presentation processor must attempt to map the specified font style
-to an available font style that has similar typographic
-characteristics, or, in the absence of such a mapping, it must
-interpret the font style as if the value <code>normal</code> were
-specified.</p><p>The <code>tts:fontStyle</code> style is illustrated by the following example.</p><a id="style-attribute-fontStyle-example-1"></a><table class="example"><caption>Example Fragment – Font Style</caption><tbody><tr><td>
+angle) in the inline progression dimension.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>normal</code>.</p><p>The <code>tts:fontStyle</code> style is illustrated by the following example.</p><a id="style-attribute-fontStyle-example-1"></a><table class="example"><caption>Example Fragment – Font Style</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="331px 84px"/&gt;
@@ -2716,12 +2712,8 @@ as a style property only to those element types indicated in the following table
 <a href="#content-vocabulary-span"><code>span</code></a>
 </td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
-span.</p><p>If a specified font weight is not available, then a
-presentation processor must attempt to map the specified font weight
-to an available font weight that has similar typographic
-characteristics, or, in the absence of such a mapping, it must
-interpret the font weight as if the value <code>normal</code> were
-specified.</p><p>The <code>tts:fontWeight</code> style is illustrated by the following example.</p><a id="style-attribute-fontWeight-example-1"></a><table class="example"><caption>Example Fragment – Font Weight</caption><tbody><tr><td>
+span.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>normal</code>.</p><p>The <code>tts:fontWeight</code> style is illustrated by the following example.</p><a id="style-attribute-fontWeight-example-1"></a><table class="example"><caption>Example Fragment – Font Weight</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="376px 95px"/&gt;
@@ -2756,9 +2748,9 @@ computed value of the style property must be considered to be the same
 as 120% of the largest font size that applies to the element and its
 descendant elements in the intermediate synchronic document as determined by
 <a href="#semantics-region-layout-step-1"><b>9.3.3 Intermediate Synchronic Document Construction</b></a>.</p><p>If specified as a <a href="#style-value-length">&lt;length&gt;</a>, then the length must
-be non-negative.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>normal</code> were specified.</p><p>The <code>tts:lineHeight</code> style is illustrated by the following example.</p><a id="style-attribute-lineHeight-example-1"></a><table class="example"><caption>Example Fragment – Line Height</caption><tbody><tr><td>
+be non-negative.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+the computed line height and the supported line height is minimized.</p></div><p>The <code>tts:lineHeight</code> style is illustrated by the following example.</p><a id="style-attribute-lineHeight-example-1"></a><table class="example"><caption>Example Fragment – Line Height</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="255px 190px"/&gt;
@@ -2848,9 +2840,9 @@ as a style property only to those element types indicated in the following table
 </td></tr><tr><td><em>Inherited:</em></td><td>no</td></tr><tr><td><em>Percentages:</em></td><td>relative to width and height of <em>Root Container Region</em></td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If the value of this attribute consists of two <a href="#style-value-length">&lt;length&gt;</a> specifications,
 then they must be interpreted as <em>x</em> and <em>y</em> coordinates, where the first specification
 is the <em>x</em> coordinate, and the second specification is the <em>y</em> coordinate.</p><p>If the value of this attribute is <code>auto</code>, then the computed value
-of the style property must be considered to be the same as the origin of the <em>Root Container Region</em>.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>auto</code> were specified.</p><p>The <code>tts:origin</code> style is illustrated by the following example.</p><a id="style-attribute-origin-example-1"></a><table class="example"><caption>Example Fragment – Origin</caption><tbody><tr><td>
+of the style property must be considered to be the same as the origin of the <em>Root Container Region</em>.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+the computed origin and the supported origin is minimized.</p></div><p>The <code>tts:origin</code> style is illustrated by the following example.</p><a id="style-attribute-origin-example-1"></a><table class="example"><caption>Example Fragment – Origin</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style <span class="strong">tts:origin="40px 40px"</span>/&gt;
@@ -2888,9 +2880,8 @@ be clipped outside of the affected region.</p><div class="note"><p class="prefix
 a paragraph of a given region will generate no more than one line area in that
 region if the value of the <code>tts:overflow</code> style that applies to the
 region is <code>visible</code> and if the applicable <code>tts:wrapOption</code>
-style is <code>noWrap</code>.</p></div><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>hidden</code> were specified.</p><p>The <code>tts:overflow</code> style is illustrated by the following example.</p><a id="style-attribute-overflow-example-1"></a><table class="example"><caption>Example Fragment – Overflow</caption><tbody><tr><td>
+style is <code>noWrap</code>.</p></div><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>hidden</code>.</p><p>The <code>tts:overflow</code> style is illustrated by the following example.</p><a id="style-attribute-overflow-example-1"></a><table class="example"><caption>Example Fragment – Overflow</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="232px 40px"/&gt;
@@ -2955,9 +2946,9 @@ If three <a href="#style-value-length">&lt;length&gt;</a> specifications are pro
 before edge, the second applies to the start and end edges, and the third applies
 to the after edge.
 If four <a href="#style-value-length">&lt;length&gt;</a> specifications are provided, then they apply to before, end,
-after, and start edges, respectively.</p><p>The <a href="#style-value-length">&lt;length&gt;</a> value(s) used to express padding must be non-negative.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>0px</code> were specified.</p><p>The <code>tts:padding</code> style is illustrated by the following example.</p><table border="1" class="ednote" summary="Editorial note: Enhance Padding Example"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Enhance Padding Example</b></td><td align="right" valign="top">2013-08-24</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Enhance padding example to demonstrate padding on content elements.</td></tr></table><p></p><a id="style-attribute-padding-example-1"></a><table class="example"><caption>Example Fragment – Padding</caption><tbody><tr><td>
+after, and start edges, respectively.</p><p>The <a href="#style-value-length">&lt;length&gt;</a> value(s) used to express padding must be non-negative.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+the computed padding and the supported padding is minimized.</p></div><p>The <code>tts:padding</code> style is illustrated by the following example.</p><table border="1" class="ednote" summary="Editorial note: Enhance Padding Example"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Enhance Padding Example</b></td><td align="right" valign="top">2013-08-24</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Enhance padding example to demonstrate padding on content elements.</td></tr></table><p></p><a id="style-attribute-padding-example-1"></a><table class="example"><caption>Example Fragment – Padding</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="446px 104px"/&gt;
@@ -2997,9 +2988,8 @@ as a style property only to those element types indicated in the following table
 background color of a region is always rendered when performing presentation
 processing on a visual medium; if the value is <code>whenActive</code>,
 then the background color of a region is rendered only when some
-content is flowed into the region.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>always</code> were specified.</p><p>The <code>tts:showBackground</code> style is illustrated by the following example.</p><a id="style-attribute-showBackground-example-1"></a><table class="example"><caption>Example Fragment – Show Background</caption><tbody><tr><td>
+content is flowed into the region.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>always</code>.</p><p>The <code>tts:showBackground</code> style is illustrated by the following example.</p><a id="style-attribute-showBackground-example-1"></a><table class="example"><caption>Example Fragment – Show Background</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:origin="0px 0px"/&gt;
@@ -3036,9 +3026,8 @@ as a style property only to those element types indicated in the following table
 <code>end</code>
 </td></tr><tr><td><em>Initial:</em></td><td><code>start</code></td></tr><tr><td><em>Applies to:</em></td><td>
 <a href="#content-vocabulary-p"><code>p</code></a>
-</td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>start</code> were specified.</p><p>The <code>tts:textAlign</code> style is illustrated by the following example.</p><a id="style-attribute-textAlign-example-1"></a><table class="example"><caption>Example Fragment – Text Align</caption><tbody><tr><td>
+</td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>start</code>.</p><p>The <code>tts:textAlign</code> style is illustrated by the following example.</p><a id="style-attribute-textAlign-example-1"></a><table class="example"><caption>Example Fragment – Text Align</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="355px 43px"/&gt;
@@ -3086,9 +3075,8 @@ as a style property only to those element types indicated in the following table
 ] ]
 </td></tr><tr><td><em>Initial:</em></td><td><code>none</code></td></tr><tr><td><em>Applies to:</em></td><td><a href="#content-vocabulary-span"><code>span</code></a></td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>For the purpose of determining applicability of this
 style property, each character child of a <code>p</code> element is
-considered to be enclosed in an anonymous span.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>none</code> were specified.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The syntax used above in defining the value of this property is based on the
+considered to be enclosed in an anonymous span.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>none</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The syntax used above in defining the value of this property is based on the
 value component syntax defined in <a href="#css2">[CSS2]</a>, § 1.4.2.1. In essence,
 one or more of the values separated by <code>||</code> may appear in the property
 value in any order, such as <code>"noUnderline overline lineThrough"</code>.</p></div><p>The <code>tts:textDecoration</code> style is illustrated by the following example.</p><a id="style-attribute-textDecoration-example-1"></a><table class="example"><caption>Example Fragment – Text Decoration</caption><tbody><tr><td>
@@ -3143,9 +3131,8 @@ a <code>tts:direction</code> of <code>ltr</code> and <code>tts:unicodeOverride</
 glyphs from horizontal scripts are set sideways, either 90° clockwise or
 90° counter-clockwise, according to whether the writing mode is
 <code>tbrl</code> or <code>tblr</code>, respectively. Glyphs from vertical scripts are not
-affected.</p><p>If a vertical writing mode does not apply, then this style property has no effect.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>mixed</code> were specified.</p><p>The <code>tts:textOrientation</code> style is illustrated by the following
+affected.</p><p>If a vertical writing mode does not apply, then this style property has no effect.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>mixed</code>.</p><p>The <code>tts:textOrientation</code> style is illustrated by the following
 example.</p><table border="1" class="ednote" summary="Editorial note: Text Orientation Example"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Text Orientation Example</b></td><td align="right" valign="top">2013-08-24</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Insert example fragment and image of text orientation.</td></tr></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The semantics of the style property
 represented by this attribute are based upon that defined by <a href="#css3-wm">[CSS Writing Modes Level 3]</a>,
 § 5.1.</p></div></div><div class="div3">
@@ -3174,9 +3161,8 @@ the cell's dimension in the block progression dimension applies.
 For example, if text outline thickness is specified as 0.1c, the cell resolution
 is 20 by 10, and the extent of the <em>Root Container Region</em> is 640 by 480, then the
 outline thickness will be a nominal 480 / 10 * 0.1 pixels, i.e., 4.8px,
-without taking into account rasterization effects.</p></div><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>none</code> were specified.</p><p>The <code>tts:textOutline</code> style is illustrated by the following
+without taking into account rasterization effects.</p></div><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>none</code>.</p><p>The <code>tts:textOutline</code> style is illustrated by the following
 example.</p><a id="style-attribute-textOutline-example-1"></a><table class="example"><caption>Example Fragment – Text Outline</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
@@ -3215,9 +3201,8 @@ as a style property only to those element types indicated in the following table
 <a href="#content-vocabulary-span"><code>span</code></a>
 </td></tr><tr><td><em>Inherited:</em></td><td>no</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
-span.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>normal</code> were specified.</p><p>The <code>tts:unicodeBidi</code> style is illustrated by the following example.</p><a id="style-attribute-unicodeBidi-example-1"></a><table class="example"><caption>Example Fragment – Unicode Bidirectionality</caption><tbody><tr><td>
+span.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>normal</code>.</p><p>The <code>tts:unicodeBidi</code> style is illustrated by the following example.</p><a id="style-attribute-unicodeBidi-example-1"></a><table class="example"><caption>Example Fragment – Unicode Bidirectionality</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="265px 84px"/&gt;
@@ -3258,9 +3243,8 @@ as a style property only to those element types indicated in the following table
 </td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
 span.</p><p>The <code>tts:visibility</code> style has no affect on content layout or
-composition, but merely determines whether composed content is visible or not.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>visible</code> were specified.</p><p>The <code>tts:visibility</code> style is illustrated by the following example.</p><a id="style-attribute-visibility-example-1"></a><table class="example"><caption>Example Fragment – Visibility</caption><tbody><tr><td>
+composition, but merely determines whether composed content is visible or not.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>visible</code>.</p><p>The <code>tts:visibility</code> style is illustrated by the following example.</p><a id="style-attribute-visibility-example-1"></a><table class="example"><caption>Example Fragment – Visibility</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="398px 121px"/&gt;
@@ -3307,9 +3291,8 @@ as a style property only to those element types indicated in the following table
 <a href="#content-vocabulary-span"><code>span</code></a>
 </td></tr><tr><td><em>Inherited:</em></td><td>yes</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>For the purpose of determining applicability of this style property,
 each character child of a <code>p</code> element is considered to be enclosed in an anonymous
-span.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>wrap</code> were specified.</p><p>The <code>tts:wrapOption</code> style is illustrated by the following example.</p><a id="style-attribute-wrapOption-example-1"></a><table class="example"><caption>Example Fragment – Wrap Option</caption><tbody><tr><td>
+span.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>wrap</code>.</p><p>The <code>tts:wrapOption</code> style is illustrated by the following example.</p><a id="style-attribute-wrapOption-example-1"></a><table class="example"><caption>Example Fragment – Wrap Option</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="192px 117px"/&gt;
@@ -3345,9 +3328,8 @@ as a style property only to those element types indicated in the following table
 <code>tb</code>
 </td></tr><tr><td><em>Initial:</em></td><td><code>lrtb</code></td></tr><tr><td><em>Applies to:</em></td><td>
 <a href="#layout-vocabulary-region"><code>region</code></a>
-</td></tr><tr><td><em>Inherited:</em></td><td>no</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>lrtb</code> were specified.</p><p>The <code>tts:writingMode</code> style is illustrated by the following example.</p><a id="style-attribute-writingMode-example-1"></a><table class="example"><caption>Example Fragment – Writing Mode</caption><tbody><tr><td>
+</td></tr><tr><td><em>Inherited:</em></td><td>no</td></tr><tr><td><em>Percentages:</em></td><td>N/A</td></tr><tr><td><em>Animatable:</em></td><td>discrete</td></tr></tbody></table><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the value <code>lrtb</code>.</p><p>The <code>tts:writingMode</code> style is illustrated by the following example.</p><a id="style-attribute-writingMode-example-1"></a><table class="example"><caption>Example Fragment – Writing Mode</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="50px 570px"/&gt;
@@ -3396,9 +3378,9 @@ overlap in space, the area(s) generated by lexically subsequent elements must be
 rendered over area(s) generated by lexically prior elements, where lexical
 order is defined as the postorder traversal of a <em>Document Instance</em>.</p><p>The semantics of the value <code>auto</code> are those defined by
 <a href="#xsl11">[XSL 1.1]</a>, § 7.30.18, where the <code>tt</code> element
-is considered to establish the root stacking context.</p><p>If a specified value of this attribute is not supported,
-then a presentation processor must interpret the attribute as if the
-value <code>auto</code> were specified.</p><p>The <code>tts:zIndex</code> style is illustrated by the following example.</p><a id="style-attribute-zIndex-example-1"></a><table class="example"><caption>Example Fragment – Z Index</caption><tbody><tr><td>
+is considered to establish the root stacking context.</p><p>If a computed value of the property associated with this attribute is not supported,
+then a presentation processor must use the closest supported value.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In this context, the phrase <em>closest supported value</em> means the value for which the Euclidean distance between
+the computed z-index and the supported z-index is minimized.</p></div><p>The <code>tts:zIndex</code> style is illustrated by the following example.</p><a id="style-attribute-zIndex-example-1"></a><table class="example"><caption>Example Fragment – Z Index</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:origin="0px 0px"/&gt;
@@ -7002,7 +6984,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e20428"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e20460"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7059,7 +7041,7 @@ but extended to support distinct specification of optionality.</p></li><li><p>De
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li><li><p>Conceptually derived from existing <code>tt:layout</code> element,
 which is a generic container for layout specifications, but for use
 in defining animation specifications that apply to targetted elements.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e20945"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+<h3><a id="d3e20977"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7151,9 +7133,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e21925"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e21957"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e22089"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e22121"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

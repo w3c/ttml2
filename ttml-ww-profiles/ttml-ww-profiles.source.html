@@ -1,0 +1,2323 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39">
+  <meta charset='utf-8'>
+
+  <title>TTML Text and Image Profiles for Internet Media Subtitles and Captions</title>
+  <script src='respec-w3c-common.js' class='remove'>
+</script>
+  <script class='remove'>
+var respecConfig = {
+				specStatus:   "unofficial"
+             /*specStatus:   "Member-SUBM"*/
+          ,   shortName:    "ttml-ww-profiles"
+                  ,   overrideCopyright: ["<p class='copyright'>Copyright © 2013 Motion Picture Laboratories, Inc. Derived from the Common File Format & Media Formats Specification 1.0.6 and Common File Format Timed Text XML Schemas 1.0.6 posted at http://www.uvvuwiki.com, © Digital Entertainment Content Ecosystem (DECE) LLC and used with permission.This document is available under the <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>W3C Document License</a>. See the <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>W3C Intellectual Rights Notice and Legal Disclaimers</a>for additional information.</p>"]
+          ,   editors:      [{ name: "Pierre Lemieux", mailto: "pal@sandflow.com" }]
+		  ,   wg: "TBD"
+		  ,   wgPublicList: "TBD"
+		  ,   localBiblio:  {
+                  "TTML2":  "World Wide Web Consortium (W3C). Timed Text Markup Language (TTML) 2.0.",
+				  "CEA-608": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/Line-21-Data-Service.aspx'>Line-21 Data Services</a>, ANSI/CEA Standard.",
+				  "CEA-708": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx'>Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.",
+				  "MHP" : "ETSI TS 101 812 V1.3.1, Digital Video Broadcasting (DVB); Multimedia Home",
+				  "ST2052-1": "SMPTE ST 2052-1, Timed Text Format (SMPTE-TT)"
+              }
+        };
+  </script>
+</head>
+
+<body>
+  <section id='abstract'>
+    <p>This submission specifies two profiles of the Timed Text Markup Language (TTML) Version 2.0: a text-only profile and an
+    image-only profile. These profiles are intended to be used across subtitle and caption delivery applications worldwide, thereby
+    simplifying interoperability, consistent rendering and conversion to other subtitling and captioning formats.</p>
+
+    <p>Both profiles are based on the <a href="http://www.uvvuwiki.com/">Common File Format &amp; Media Formats Specification
+    (CFF)</a> developed by <a href="http://www.uvvu.com/partners.php">Digital Entertainment Content Ecosystem (DECE)</a>, and
+    benefit from the technical consensus, conformance testing and implementation experience gathered there. The text
+    profile is intended as a superset of <a href="http://www.w3.org/TR/ttml10-sdp-us/">SDP-US</a>, which is a subset of CFF. The
+    image profile extends a subset of TTML with <a href="https://www.smpte.org/sites/default/files/st2052-1-2010.pdf">SMPTE
+    Timed Text (SMPTE-TT)</a> image support.</p>
+
+    <p>DECE is an industry forum with more than 80 members across the content and consumer electronics communities.</p>
+  </section>
+
+  <section id='scope'>
+    <h2>Scope</h2>
+
+    <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only
+    profile. These profiles are intended for subtitle and caption delivery worldwide, including dialog language translation,
+    content description, captions for deaf and hard of hearing, etc.</p>
+  </section>
+
+  <section id="conformance">
+    <p>A subtitle document SHALL conform to a profile defined herein if it meets all normative provisions associated with the
+    profile.</p>
+
+    <p>A TTML presentation processor SHALL conform to a profile if it is capable of presenting any subtitle document conforming to
+    the profile, i.e. if it implements all features and provisions of the profile</p>
+  </section>
+
+  <section>
+    <h2>Profiles</h2>
+
+    <section>
+      <h3>General</h3>
+
+      <p>A subtitle document SHALL NOT conform to the Text and Image Profiles simultaneously.</p>
+    </section>
+
+    <section>
+      <h3>Text Profile</h3>
+
+      <p>A subtitle document conforming to the Text Profile SHALL conform to Sections <a href="#common-constraints"></a> and
+      <a href="#text-profile-constraints"></a>.</p>
+    </section>
+
+    <section>
+      <h3>Image Profile</h3>
+
+      <p>A subtitle document conforming to the Image Profile SHALL conform to Sections <a href="#common-constraints"></a> and
+      <a href="#image-profile-constraints"></a>.</p>
+    </section>
+  </section>
+
+  <section>
+    <h2>Common Constraints</h2>
+
+    <section>
+      <h3>Document Encoding</h3>
+
+      <p>A subtitle document SHALL use UTF-8 character encoding as specified in [[!UNICODE]].</p>
+    </section>
+
+    <section>
+      <h3>Related Video Object</h3>
+
+      <section>
+        <h4>General</h4>
+
+        <p>A subtitle document MAY be associated with a related video object, which SHALL consist of a sequence of frames, each a
+        rectangular array of pixels.</p>
+      </section>
+
+      <section>
+        <h4>Root Container</h4>
+
+        <p class='note'>The following assumes the addition of a <code>ttp:aspectRatio</code> attribute to [[!TTML2]].</p>
+
+        <p>The root container of a subtitle document SHALL be mapped to the related video object frame according to the
+        following:</p>
+
+        <ol>
+          <li>
+            <p>If <code>ttp:aspectRatio</code> is present, the root container SHALL be mapped to a rectangular area within the
+            related video object such that:</p>
+
+            <ol style="list-style-type: lower-roman;">
+              <li>the aspect ratio of the rectangular area is equal to <code>ttp:aspectRatio</code>,</li>
+
+              <li>the center of the rectangular area is colocated with the center of the related video object frame,</li>
+
+              <li>the rectangular area is entirely contained within the related video object frame and</li>
+
+              <li>the rectangular area has a height or width equal to that of the related video object frame.</li>
+            </ol>
+          </li>
+
+          <li>
+            <p>Otherwise, the root container of a subtitle document SHALL be mapped to the related video object frame in its
+            entirety. If <code>tts:extent</code> is present on the <code>tt</code> element, the extents of the root container SHALL
+            be equal to the dimensions of the related video object frame.</p>
+          </li>
+        </ol>
+
+        <p><code>ttp:aspectRatio</code> SHALL NOT be present if <code>tts:extent</code> is present.<br></p>
+
+        <p class='note'>As specified in Section <a href="#features"></a>, <code>tts:extent</code> is present if the <code>px</code>
+        length measure is used anywhere within the document.</p>
+
+        <p>Integer pixel positions on the related video object frame computed from real percentage length values SHALL use half-up
+        rounding, i.e. round(x) = floor(x+0.5).</p>
+      </section>
+
+      <section>
+        <h4>Synchronization</h4>
+
+        <p>Each intermediate synchronic document of the subtitle document is intended to be displayed on a specific frame and
+        removed on a specific frame of the related video object.</p>
+
+        <p>A media time expression M SHALL correspond to the frame of the related video object with the presentation time that is
+        the closest to, but not less, than M.</p>
+
+        <p>If <code>ttp:frameRate</code> is specified, then the product of <code>ttp:frameRate</code> and
+        <code>ttp:frameRateMultiplier</code> SHALL be the frame rate of the related video object.</p>
+
+        <aside class="example">
+          A media time expression of 00:00:05.1 corresponds to frame ceiling(5.1 × ( 1000 / 1001 × 30) = 153 of a related video
+          object with a frame rate of 1000 / 1001 × 30 ≈ 29.97.
+        </aside>
+      </section>
+    </section>
+
+    <section>
+      <h3>Language</h3>
+
+      <p>All instances of the <code>xml:lang</code> attribute within a subtitle document SHALL have identical values.</p>
+
+      <p class='note'><code>xml:lang</code> can have a value of &quot;&quot;.</p>
+    </section>
+
+    <section>
+      <h3>Region</h3>
+
+      <section>
+        <h4>Presented Region</h4>
+
+        <p>A region, as defined in [[!TTML2]], SHALL be considered presented in a given intermediate synchronic document if both of the
+        following conditions are true:</p>
+
+        <ol>
+          <li>
+            <p><code>tts:opacity</code> is not equal to &quot;0.0&quot; for the region; and</p>
+          </li>
+
+          <li>
+            <p>content is selected into the region or <code>tts:showBackground</code> is equal to &quot;always&quot; for the
+            region.</p>
+          </li>
+        </ol>
+		
+		<!-- add note: why was tts:display ignored -> simplicity? how can the same be achieved: nothing selected -->
+
+        <p class='note'>As specified in [[!TTML2]], the initial value of <code>tts:opacity</code> is &quot;1.0&quot; and the default
+        value of <code>tts:showBackground</code> is &quot;always&quot;.</p>
+      </section>
+
+      <section>
+        <h4>Dimensions and Position</h4>
+
+        <p>All regions SHALL be entirely contained within the root container.</p>
+
+        <p>No two regions presented in a given intermediate synchronic document SHALL overlap</p>
+      </section>
+
+      <section>
+        <h4>Maximum number</h4>
+
+        <p>The number of presented regions in a given intermediate synchronic document SHALL be smaller than or equal to 4.</p>
+      </section>
+    </section>
+
+    <section>
+      <h3>Hypothetical Render Model</h3>
+
+      <p>Any sequence of consecutive intermediate synchronic documents SHALL be reproducible without error by the Hypothetical
+      Render Model specified in Section <a href="#hypothetical-render-model"></a>.</p>
+    </section>
+
+    <section>
+      <h3>Features</h3>
+
+      <table class='simple'>
+        <thead>
+          <tr>
+            <th>Feature</th>
+
+            <th>Provisions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><code>#animation</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#cellResolution</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#clockMode</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#content</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#core</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#display-block</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#display-inline</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#display-region</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#display</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#dropMode</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#extent-region</code></td>
+
+            <td>MAY be used. The <code>tts:extent</code> attribute SHALL be present on all <code>region</code> elements.</td>
+          </tr>
+
+          <tr>
+            <td><code>#extent-root</code></td>
+
+            <td>MAY be used. If the document includes any length value that uses the <code>px</code> expression,
+            <code>tts:extent</code> SHALL be present on the <code>tt</code> element.</td>
+          </tr>
+
+          <tr>
+            <td><code>#extent</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#frameRate</code></td>
+
+            <td>If the document includes any time expression that uses the frame field, the <code>ttp:frameRate</code> attribute
+            SHALL be present on the <code>tt</code> element.</td>
+          </tr>
+
+          <tr>
+            <td><code>#frameRateMultiplier</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#layout</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-cell</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-integer</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-negative</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-percentage</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-pixel</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-positive</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-real</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#markerMode</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#metadata</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#opacity</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#origin</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#overflow</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#pixelAspectRatio</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#presentation</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#profile</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#showBackground</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#structure</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling-chained</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling-inheritance-content</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling-inheritance-region</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling-inline</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling-nested</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling-referential</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#styling</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#subFrameRate</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#tickRate</code></td>
+
+            <td>MAY be used. <code>ttp:tickRate</code> SHALL be present on the <code>tt</code> element.</td>
+          </tr>
+
+          <tr>
+            <td><code>#timeBase-clock</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#timeBase-media</code></td>
+
+            <td>SHALL be used. <code>ttp:timeBase</code> SHALL be present on the <code>tt</code> element and SHALL be equal to
+            &quot;media&quot;.</td>
+          </tr>
+
+          <tr>
+            <td><code>#timeBase-smpte</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#time-clock-with-frames</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#time-clock</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#time-offset-with-frames</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#time-offset-with-ticks</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#time-offset</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#timeBase-media</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#timeContainer</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#timing</code></td>
+
+            <td>MAY be used. The same syntax of <code>#clock-time</code> or <code>#offset-time</code> SHOULD be used throughout the
+            subtitle document.</td>
+          </tr>
+
+          <tr>
+            <td><code>#transformation</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#unicodeBidi</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#visibility-block</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#visibility-inline</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#visibility-region</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#visibility</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#writingMode-horizontal-lr</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#writingMode-horizontal-rl</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#writingMode-horizontal</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#writingMode</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#zIndex</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#aspectRatio</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#forcedDisplay</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class='note'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/230">ISSUE-230</a> for a description of
+      <code>#forcedDisplay</code></p>
+
+      <p class='note'>This initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> and
+      <code>tts:textAlign</code> are those specified by [[ST2052-1]].</p>
+
+      <p class='note'>As specified in [[!TTML2]], a <code>#time-offset-with-frames</code> expression is translated to a media time M
+      according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
+      <code>ttp:frameRate</code>)).</p>
+    </section>
+  </section>
+
+  <section>
+    <h2>Text Profile Constraints</h2>
+
+    <section>
+      <h3>Document Conformance</h3>
+
+      <p>A subtitle document conforming to the Text Profile SHALL be designated by the document conformance designator specified
+      below.</p>
+      <pre>
+http://www.w3.org/ns/ttml/profile/imsc-text
+</pre>
+
+      <p class='note'>The ttp:profile mechanism of TTML 1.0 allows a document to indicate the profile(s) that a processor SHALL
+      support in order to process the document. This mechanism cannot be used to indicate that a processor implementing any of the
+      referenced profiles can process the document. The document conformance concept introduced below extends the TTML 1.0
+      ttp:profile mechanism by allowing a document to signal that it conforms to a specified set of normative provisions.</p>
+    </section>
+
+    <section>
+      <h3>Features</h3>
+
+      <p class='note'>The following assumes, but does not require, the porting of the [[ST2052-1]]
+      <code>#backgroundImage</code>, <code>#backgroundImageHorizontal</code>, <code>#backgroundImageVertical</code> and
+      <code>#image</code> features to [[!TTML2]].</p>
+
+      <table class='simple'>
+        <thead>
+          <tr>
+            <th>Feature</th>
+
+            <th>Provisions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><code>#backgroundColor-block</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundColor-inline</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundColor-region</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundColor</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundImage</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundImageHorizontal</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundImageVertical</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#bidi</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#color</code></td>
+
+            <td>MAY be used. The initial value of <code>tts:color</code> SHALL be &quot;white&quot;.</td>
+          </tr>
+
+          <tr>
+            <td><code>#direction</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#displayAlign</code></td>
+
+            <td>MAY be used. The initial value of <code>tts:displayAlign</code> SHALL be &quot;after&quot;.</td>
+          </tr>
+
+          <tr>
+            <td><code>#extent-region</code></td>
+
+            <td>The <code>tts:extent</code> attribute when applied to a region element SHALL use <code>px</code> units or
+            &quot;percentage&quot; representation, and SHALL NOT use <code>em</code> units.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontFamily-generic</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontFamily-non-generic</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontFamily</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontSize-anamorphic</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontSize-isomorphic</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontSize</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontStyle-italic</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontStyle-oblique</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontStyle</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontWeight-bold</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontWeight</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#image</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-em</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#lineBreak-uax14</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#lineHeight</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#nested-div</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#nested-span</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#origin</code></td>
+
+            <td>The <code>tts:origin</code> attribute SHALL use <code>px</code> units or &quot;percentage&quot; representation, and
+            SHALL NOT use <code>em</code> units.</td>
+          </tr>
+
+          <tr>
+            <td><code>#padding-1</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#padding-2</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#padding-3</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#padding-4</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#padding</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textAlign-absolute</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textAlign-relative</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textAlign</code></td>
+
+            <td>MAY be used. The initial value of <code>tts:textAlign</code> SHALL be &quot;center&quot;.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textDecoration-over</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textDecoration-through</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textDecoration-under</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textDecoration</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textOutline-blurred</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textOutline-unblurred</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textOutline</code></td>
+
+            <td>MAY be used. If specified, the border thickness SHALL be 10% or less than the associated font size.</td>
+          </tr>
+
+          <tr>
+            <td><code>#wrapOption</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#writingMode-vertical</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <section>
+    <h2>Image Profile Constraints</h2>
+
+    <section>
+      <h3>Document Conformance</h3>
+
+      <p>The Image Profile SHALL be designated by the document conformance designator specified below:</p>
+      <pre>
+http://www.w3.org/ns/ttml/profile/imsc-image
+</pre>
+
+      <p class='note'>The ttp:profile mechanism of TTML 1.0 allows a document to indicate the profile(s) that a processor SHALL
+      support in order to process the document. This mechanism cannot be used to indicate that a processor implementing any of the
+      referenced profiles can process the document. The document conformance concept introduced below extends the TTML 1.0
+      ttp:profile mechanism by allowing a document to signal that it conforms to a specified set of normative
+      provisions.</p>
+    </section>
+
+    <section>
+      <h3>Features</h3>
+	  
+      <p class='note'>The following assumes, but does not require, the porting of the [[ST2052-1]]
+      <code>#backgroundImage</code>, <code>#backgroundImageHorizontal</code>, <code>#backgroundImageVertical</code> and
+      <code>#image</code> features to [[!TTML2]].</p>
+
+      <table class='simple'>
+        <thead>
+          <tr>
+            <th>Feature</th>
+
+            <th>Provisions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><code>#backgroundImage</code></td>
+
+            <td>MAY be used. The backgroundImage attribute SHALL reference a complete image that conforms to the PNG image coding
+            as specified in Sections 7.1.1.3 and 15.1 of [[!MHP]].<br>
+            If a pHYs chunk is present, it SHALL indicate square pixels. Note: If no pixel aspect ratio is carried, the default of
+            square pixels will be assumed.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundImageHorizontal</code></td>
+
+            <td>SHALL NOT be used. <code>#backgroundImage</code> remains available for use.</td>
+          </tr>
+
+          <tr>
+            <td><code>#backgroundImageVertical</code></td>
+
+            <td>SHALL NOT be used. <code>#backgroundImage</code> remains available for use.</td>
+          </tr>
+
+          <tr>
+            <td><code>#bidi</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#color</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#content</code></td>
+
+            <td>The <code>p</code>, <code>span</code> and <code>br</code> elements SHALL NOT be present.</td>
+          </tr>
+
+          <tr>
+            <td><code>#direction</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#displayAlign</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#extent-region</code></td>
+
+            <td>If a <code>tts:backgroundImage</code> attribute is applied to a region, the width and height of the region extent
+            SHALL be present and SHALL be equal to the width and height of the image source referenced by the
+            <code>tts:backgroundImage</code>.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontFamily</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontSize</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontStyle</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#fontWeight</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#image</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#length-em</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#lineBreak-uax14</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#lineHeight</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#nested-div</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#nested-span</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#padding</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textAlign</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textDecoration</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#textOutline</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#wrapOption</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>#writingMode-vertical</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <section>
+    <h2>Hypothetical Render Model</h2>
+
+    <section>
+      <h3>Overview</h3>
+
+      <p>This Section specifies the Hypothetical Render Model illustrated in <a href="#fig-hypothetical-render-model"></a>.</p>
+
+      <p>The purpose of the model is to limit subtitle document complexity. It is not however intended to serve as basis for
+      implementation. For instance, while the model defines a glyph buffer for the purpose of limiting the number of glyphs
+      displayed at any given point in time, it does not require an implementation to implement such a buffer.</p>
+
+      <figure>
+        <img src="hypothetical-render-figure-1.png" alt="Hypothetical Render Model">
+
+        <figcaption>
+          Hypothetical Render Model
+        </figcaption>
+      </figure>
+
+      <p>The model operates on successive intermediate synchronic documents obtained from an input subtitle document, and uses a
+      simple double buffering model: while an intermediate synchronic document E<sub>n</sub> is being painted into Presentation
+      Buffer P<sub>n</sub> (the &quot;front buffer&quot; of the model), the previous intermediate synchronic document
+      E<sub>n-1</sub> is available for display in Presentation Buffer P<sub>n-1</sub> (the &quot;back buffer&quot; of the
+      model).</p>
+
+      <p>The model specifies an (hypothetical) time required for completely painting an intermediate synchronic document as a proxy
+      for complexity. Painting includes drawing region backgrounds, rendering and copying glyphs, and decoding and copying images.
+      Complexity is then limited by requiring that painting of intermediate synchronic document E<sub>n</sub> completes before the
+      end of intermediate synchronic document E<sub>n-1</sub>.</p>
+
+      <p>Whenever applicable, constraints are specified relative to root container dimensions, allowing subtitle sequences to be
+      authored independently of related video object resolution.</p>
+
+      <p>To enables scenarios where the same glyphs are used in multiple successive intermediate synchronic documents, e.g. to
+      convey a CEA-608/708-style roll-up (see [[CEA-608]] and [[CEA-708]]), the Glyph Buffers G<sub>n</sub> and G<sub>n-1</sub> store rendered glyphs across
+      intermediate synchronic documents, allowing glyphs to be copied into the Presentation Buffer instead of rendered, a more
+      costly operation.</p>
+
+      <p>Similarly, Decoded Image Buffers D<sub>n</sub> and D<sub>n-1</sub> store decoded images across intermediate synchronic
+      documents, allowing images to be copied into the Presentation Buffer instead of decoded.</p>
+    </section>
+
+    <section>
+      <h3>Model</h3>
+
+      <section>
+        <h4>General</h4>The Presentation Compositor SHALL render in Presentation Buffer P<sub>n</sub> each successive intermediate
+        synchronic document E<sub>n</sub> using the following steps in order:
+
+        <ol>
+          <li>clear the pixels, except for the first intermediate synchronic document E<sub>0</sub> for the which the pixels of
+          P<sub>0</sub> SHALL be assumed to have been cleared;</li>
+
+          <li>paint, according to stacking order, all background pixels for each region;</li>
+
+          <li>paint all pixels for background colors associated with text or image subtitle content; and</li>
+
+          <li>paint the text or image subtitle content.</li>
+        </ol>
+
+        <p>The Presentation Compositor SHALL start rendering E<sub>n</sub>:</p>
+
+        <ul>
+          <li>at the presentation time of E<sub>0</sub> minus Initial Painting Delay (IPD), if n = 0</li>
+
+          <li>at the presentation time of E<sub>n-1</sub>, if n &gt; 0</li>
+        </ul>
+
+        <p>The duration DUR(E<sub>n</sub>) for painting an intermediate synchronic document E<sub>n</sub> in the Presentation
+        Buffer P<sub>n</sub> SHALL be:</p>
+
+        <p>DUR(E<sub>n</sub>) = S(E<sub>n</sub>) / BDraw + DUR<sub>T</sub>(E<sub>n</sub>) + DUR<sub>I</sub>(E<sub>n</sub>)</p>
+
+        <p>Where:</p>
+
+        <ul>
+          <li>S(E<sub>n</sub>) is the total normalized drawing area for intermediate synchronic document E<sub>n</sub>, as
+          specified in <a href="#paint-regions"></a>
+          </li>
+
+          <li>BDraw is the normalized background drawing performance factor.</li>
+
+          <li>DUR<sub>T</sub>(E<sub>n</sub>) is the duration, in seconds, for painting the text subtitle content for intermediate
+          synchronic document E<sub>n</sub>, as specified in Section <a href="#paint-text"></a>
+          </li>
+
+          <li>DUR<sub>I</sub>(E<sub>n</sub>) is the duration, in seconds, for painting the image subtitle content for intermediate
+          synchronic document E<sub>n</sub>, as specified in Section <a href="#paint-images"></a>
+          </li>
+        </ul>
+
+        <p>The contents of the Presentation Buffer P<sub>n</sub> SHALL be transferred instantaneously to Presentation Buffer
+        P<sub>n-1</sub> at the presentation time of intermediate synchronic document E<sub>n</sub>, making the latter available for
+        display.</p>
+
+        <p class='note'>It is possible for the contents of Presentation Buffer P<sub>n-1</sub> to never be displayed. This can
+        happen if Presentation Buffer P<sub>n</sub> is copied twice to Presentation Buffer P<sub>n-1</sub> between two consecutive
+        video frame boundaries of the related video object.</p>
+
+        <p>It SHALL be an error for the Presentation Compositor to fail to complete painting pixels for E<sub>n</sub> before the
+        presentation time of E<sub>n</sub>.</p>
+
+        <p>Unless specified otherwise, the following table SHALL specify values for IPD and BDraw.</p>
+
+        <table class='simple'>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+
+              <th>Initial value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Initial Painting Delay (IPD)</td>
+
+              <td>1 s</td>
+            </tr>
+
+            <tr>
+              <td>Normalized background drawing performance factor (BDraw)</td>
+
+              <td>12 s<sup>-1</sup></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class='note'>BDraw effectively sets a limit on fillings regions - for example, assuming that the root container is
+        ultimately rendered at 1920×1080 resolution, a BDraw of 12 s<sup>-1</sup> would correspond to a fill rate of
+        1920×1080×12/s=23.7×2<sup>20</sup>pixels s<sup>-1</sup>.</p>
+
+        <p class='note'>IPD effectively sets a limit on the complexity of any given intermediate synchronic document.</p>
+      </section>
+
+      <section>
+        <h3>Paint Regions</h3>
+
+        <p>The total normalized drawing area S(E<sub>n</sub>) for intermediate synchronic document E<sub>n</sub> SHALL be</p>
+
+        <p>S(E<sub>n</sub>) = CLEAR(E<sub>n</sub>) + PAINT(E<sub>n</sub> )</p>
+
+        <p>where CLEAR(E<sub>0</sub>) = 0 and CLEAR(E<sub>n | n &gt; 0</sub>) = 1, i.e. the root container in its entirety.</p>
+
+        <p class='note'>To ensure consistency of the Presentation Buffer, a new intermediate synchronic document requires clearing
+        of the root container.</p>
+
+        <p>PAINT(E<sub>n</sub>) SHALL be the normalized area to be painted for all regions that are used in intermediate synchronic
+        document E<sub>n</sub> according to</p>
+
+        <p>PAINT(E<sub>n</sub>) = ∑<sub>R<sub>i</sub>∈R<sub>p</sub></sub> SIZE(R<sub>i</sub>) ∙ NBG(R<sub>i</sub>)</p>
+
+        <p>where R_p SHALL be the set of regions presented in the intermediate synchronic document E<sub>n</sub> – see Section
+        <a href="#presented-region"></a> for the definition of presented region.</p>
+
+        <p>NSIZE(R<sub>i</sub>) SHALL be given by:</p>
+
+        <p>NSIZE(R<sub>i</sub>) = (width of R<sub>i</sub> ∙ height of R<sub>i</sub> ) ÷ (root container height ∙ root container
+        width)</p>
+
+        <aside class='example'>
+          For a region R<sub>i</sub> in with <code>tts:extent=&quot;250px 50px&quot;</code> within a root container with
+          <code>tts:extent=&quot;1920px 1080px&quot;</code>, NSIZE(R<sub>i</sub>) = 0.603.
+        </aside>
+
+        <p>NBG(R<sub>i</sub>) SHALL be the total number of <code>tts:backgroundColor</code> attributes associated with the given
+        region R<sub>i</sub> in the intermediate synchronic document. A <code>tts:backgroundColor</code> attribute is associated
+        with a region when it is explicitly specified (either as an attribute in the element, or by reference to a declared style)
+        in the following circumstances:</p>
+
+        <ul>
+          <li>It is specified on the <code>region</code> layout element that defines the region.</li>
+
+          <li>It is specified on a <code>div</code>, <code>p</code>, <code>span</code> or <code>br</code> content element that is
+          to be flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on when
+          a content element is followed into a region).</li>
+
+          <li>It is specified on a <code>set</code> animation element that is to be applied to content elements that are to be
+          flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on when a
+          <code>set</code> animation element is applied to content elements).</li>
+        </ul>
+
+        <p>Even if a specified <code>tts:backgroundColor</code> is the same as specified on the nearest ancestor content element or
+        animation element, specifying any <code>tts:backgroundColor</code> SHALL require an additional fill operation for all
+        region pixels.</p>
+      </section>
+
+      <section>
+        <h3>Paint Images</h3>
+
+        <p>The Presentation Compositor SHALL paint into the Presentation Buffer P<sub>n</sub> all visible pixels of presented
+        images of intermediate synchronic document E<sub>n</sub>.</p>
+
+        <p>A presented image SHALL be a <code>div</code> element with a smpte:backgroundImage attribute that is contained within a
+        presented region.</p>
+
+        <p>For each presented image, the Presentation Compositor SHALL either:</p>
+
+        <ul>
+          <li>if an identical image is present in Decoded Image Buffer D<sub>n</sub>, copy the image from Decoded Image Buffer
+          D<sub>n</sub> to the Presentation Buffer P<sub>n</sub> using the Image Copier; or</li>
+
+          <li>if an identical image is present in Decoded Image Buffer D<sub>n-1</sub>, i.e. an identical image was present in
+          intermediate synchronic document E<sub>n-1</sub>, copy using the Image Copier the glyph from Decoded Image Buffer
+          D<sub>n-1</sub> to both the Decoded Image Buffer D<sub>n</sub> and the Presentation Buffer P<sub>n</sub>; or</li>
+
+          <li>Otherwise, decode the image using the Image Decoder the image into the Presentation Buffer P<sub>n</sub> and Decoded
+          Image Buffer D<sub>n</sub>.</li>
+        </ul>
+
+        <p>Two images SHALL be identical if and only if they reference the same encoded image source.</p>
+
+        <p>The duration DUR<sub>I</sub>(E<sub>n</sub>) for painting images of an intermediate synchronic document E<sub>n</sub> in
+        the Presentation Buffer SHALL be as follows:</p>
+
+        <p>DUR<sub>I</sub>(E<sub>n</sub>) = ∑<sub>I<sub>i</sub> ∈ I<sub>c</sub></sub> NRGA(I<sub>i</sub>) / ICpy +
+        ∑<sub>I<sub>j</sub> ∈ I<sub>d</sub></sub> NSIZ(I<sub>j</sub>) / IDec</p>
+
+        <p>where</p>
+
+        <ul>
+          <li>I<sub>c</sub> is the set of images copied when painting intermediate synchronic document E<sub>n</sub></li>
+
+          <li>I<sub>d</sub> is the set of images decoded when painting intermediate synchronic document E<sub>n</sub></li>
+
+          <li>IDec is the image decoding rate</li>
+
+          <li>ICpy is the normalized image copy performance factor.</li>
+        </ul>
+
+        <p>NRGA(I<sub>i</sub>) is the Normalized Image Area of presented image I<sub>i</sub> and SHALL be equal to:</p>
+
+        <p>NRGA(I<sub>i</sub>)= (width of I<sub>i</sub> ) ∙ height of I<sub>i</sub> ) ÷ ( root container height ∙ root container
+        width )</p>
+
+        <p>NSIZ(I<sub>i</sub>) SHALL be the number of pixels of presented image I<sub>i</sub>.</p>
+
+        <p>The contents of the Decoded Image Buffer D<sub>n</sub> SHALL be transferred instantaneously to Decoded Image Buffer
+        D<sub>n-1</sub> at the presentation time of intermediate synchronic document E<sub>n</sub>.</p>
+
+        <p>The total size occupied by images stored in Decoded Image Buffers D<sub>n</sub> or D<sub>n-1</sub> SHALL be the sum of
+        their Normalized Image Area.</p>
+
+        <p>The size of Decoded Image Buffers D<sub>n</sub> or D<sub>n-1</sub> SHALL be the Normalized Decoded Image Buffer Size
+        (NDIBS).</p>
+
+        <p>Unless specified otherwise, the following table SHALL specify ICpy, Idec, and NDBIS.</p>
+
+        <table class='simple'>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+
+              <th>Initial value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Normalized image copy performance factor (ICpy)</td>
+
+              <td>6</td>
+            </tr>
+
+            <tr>
+              <td>Image Decoding rate (Idec)</td>
+
+              <td>1 × 2<sup>20</sup> pixels s<sup>-1</sup></td>
+            </tr>
+
+            <tr>
+              <td>Normalized Decoded Image Buffer Size (NDIBS)</td>
+
+              <td>0.9885</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h3>Paint Text</h3>
+
+        <p>For each glyph displayed in intermediate synchronic document E<sub>n</sub>, the Presentation Compositor SHALL:</p>
+
+        <ul>
+          <li>if an identical glyph is present in Glyph Buffer G<sub>n</sub>, copy the glyph from Glyph Buffer G<sub>n</sub> to the
+          Presentation Buffer P<sub>n</sub> using the Glyph Copier; or</li>
+
+          <li>if an identical glyph is present in Glyph Buffer G<sub>n-1</sub>, i.e. an identical glyph was present in intermediate
+          synchronic document E<sub>n-1</sub>, copy using the Glyph Copier the glyph from Glyph Buffer G<sub>n-1</sub> to both the
+          Glyph Buffer G<sub>n</sub> and the Presentation Buffer P<sub>n</sub>; or</li>
+
+          <li>Otherwise render using the Glyph Renderer the glyph into the Presentation Buffer P<sub>n</sub> and Glyph Buffer
+          G<sub>n</sub> using the corresponding style information.</li>
+        </ul>
+
+        <p>Two glyphs are identical if and only if the following [[!TTML2]] styles are identical:</p>
+
+        <ul>
+          <li><code>tts:color</code></li>
+
+          <li><code>tts:fontFamily</code></li>
+
+          <li><code>tts:fontSize</code></li>
+
+          <li><code>tts:fontStyle</code></li>
+
+          <li><code>tts:fontWeight</code></li>
+
+          <li><code>tts:textDecoration</code></li>
+
+          <li><code>tts:textOutline</code></li>
+        </ul>
+
+        <figure>
+          <img src="text-render-example-figure-2.png" alt="Example of Presentation Compositor Behavior for Text Rendering">
+
+          <figcaption>
+            Example of Presentation Compositor Behavior for Text Rendering
+          </figcaption>
+        </figure>
+
+        <p>The duration DUR<sub>T</sub>(E<sub>n</sub>) for painting the text of an intermediate synchronic document E<sub>n</sub>
+        in the Presentation Buffer is as follows:</p>
+
+        <p>DUR<sub>T</sub>(E<sub>n</sub>) = ∑<sub>G<sub>i</sub> ∈ G<sub>r</sub></sub> NRGA(G<sub>i</sub>) / Ren(G<sub>i</sub>) +
+        ∑<sub>G<sub>j</sub> ∈ G<sub>c</sub></sub> NRGA(G<sub>j</sub>) / GCpy</p>
+
+        <p>Where:</p>
+
+        <ul>
+          <li>G<sub>r</sub> is the set of glyphs rendered into the Presentation Buffer P<sub>n</sub> using the Glyph Renderer in
+          intermediate synchronic document E<sub>n</sub>.</li>
+
+          <li>G<sub>c</sub> is the set of glyphs copied to the Presentation Buffer P<sub>n</sub> using the Glyph Copier in
+          intermediate synchronic document E<sub>n</sub>.</li>
+
+          <li>Ren(G<sub>i</sub>) is the text rendering performance factor glyph G<sub>i</sub></li>
+
+          <li>GCpy is the normalized glyph copy performance factor</li>
+        </ul>
+
+        <p>G<sub>r</sub> and G<sub>c</sub> SHALL include only glyphs in presented regions and SHALL NOT include a [[!UNICODE]] Code
+        Point if it does not result in a change to presentation, e.g. the Code Point is ignored.</p>
+
+        <p>The Normalized Rendered Glyph Area NRGA(G<sub>i</sub>) of a glyph G<sub>i</sub> SHALL be equal to:</p>
+
+        <p>NRGA(G<sub>i</sub>)= (fontSize of G<sub>i</sub> as percentage of root container height)<sup>2</sup></p>
+
+        <p>The contents of the Glyph Buffer G<sub>n</sub> SHALL be copied instantaneously to Glyph Buffer G<sub>n-1</sub> at the
+        presentation time of intermediate synchronic document E<sub>n</sub>.</p>
+
+        <p>The total size occupied by the glyphs stored in Glyph Buffers G<sub>n</sub> or G<sub>n-1</sub> SHALL be the sum of their
+        Normalized Rendered Glyph Area.</p>
+
+        <p>The size of Glyph Buffers G<sub>n</sub> and G<sub>n-1</sub> SHALL be the Normalized Glyph Buffer Size (NGBS).</p>
+
+        <p>Unless specified otherwise, the following table SHALL specify GCpy, Ren and NGBS, and SHALL apply to all
+        supported font styles (including provision of outline border).</p>
+
+        <table class='simple'>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+
+              <th>Initial value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Normalized glyph copy performance factor (GCpy)</td>
+
+              <td>12</td>
+            </tr>
+
+            <tr>
+              <td>Text rendering performance factor Ren(G<sub>i</sub> if G<sub>i</sub> is not a CJK Unified Ideograph as specified
+              in [[!UNICODE]].</td>
+
+              <td>1.2</td>
+            </tr>
+
+            <tr>
+              <td>Text rendering performance factor Ren(G<sub>i</sub>) if G<sub>i</sub> is a CJK Unified Ideograph as specified in
+              [[!UNICODE]].</td>
+
+              <td>0.6</td>
+            </tr>
+
+            <tr>
+              <td>Normalized Glyph Buffer Size (NGBS)</td>
+
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class='note'>NRGA(G<sub>i</sub>) does not take into account glyph decorations (e.g. underline), glyph effects (e.g.
+        outline) or actual glyph aspect ratio. An implementation can determine an actual buffer size needs based on worst-case
+        glyph size complexity.</p>
+
+        <aside class='example'>
+          Setting a Glyph Buffer Normalized Size effectively sets a limit on the total number of distinct glyphs present in any
+          given intermediate synchronic document E<sub>n</sub>. For example, assuming a maximum Normalized Glyph Buffer Size of 1
+          and the default tts:fontSize of 1c are used, the glyph&#39;s height as percentage of root container height is 1/15 , and
+          the maximum number of distinct glyphs that can be buffered is 1÷(1÷15)^2=225 glyphs. In this example, an implementation
+          rendering at 1920x1080 would need to allocate a glyph buffer no smaller than (1920÷32)×(1080÷15)×225=~1 Mpixels.
+        </aside>
+
+        <aside class='example'>
+          GCpy effectively sets a limit on animating glyphs. For example, assuming that the root container is ultimately rendered
+          at 1920×1080 resolution and no regions need to have background color painted (so only a CLEAR(E<sub>n</sub>) operation is
+          required for the normalized drawing area for the intermediate synchronic document), a GCpy and BDraw of 12 s-1 would mean
+          that a group of 160 glyphs with a tts:fontSize equal to 5% of the root container height could be moved at most
+          approximately 12 s<sup>-1</sup> ÷ (1 + ( 160 × 0.05<sup>2</sup> )) = 8.6 times per second.
+        </aside>
+
+        <aside class='example'>
+          Ren(G<sub>i</sub>) effectively sets a limit on the glyph rendering rate. For example, assuming that the root container is
+          ultimately rendered at a 1920×1080 resolution, a Ren(G<sub>i</sub>) of 1.2 s-1 would mean that at most 120 glyphs with a
+          fontSize of 108 px (10% of 1080 px and NRGA(G<sub>i</sub>) = 0.01) could be rendered every second.
+        </aside>
+      </section>
+    </section>
+  </section>
+
+  <section class='appendix'>
+    <h2>Recommended Unicode Code Points per Language</h2>
+
+    <p>The following table lists common code points (see [[!UNICODE]]) definitions used in this Appendix:</p>
+
+    <table class='simple'>
+      <tr>
+        <th>(Basic Latin)</th>
+      </tr>
+
+      <tr>
+        <td>U+0020 - U+007E (Letterlike Symbols)</td>
+      </tr>
+
+      <tr>
+        <td>U+2103 : DEGREES CELSIUS</td>
+      </tr>
+
+      <tr>
+        <td>U+2109 : DEGREES FAHRENHEIT</td>
+      </tr>
+
+      <tr>
+        <td>U+2120 : SERVICE MARK SIGN</td>
+      </tr>
+
+      <tr>
+        <td>U+2122 : TRADE MARK SIGN</td>
+      </tr>
+
+      <tr>
+        <th>(Latin-1 Supplement)</th>
+      </tr>
+
+      <tr>
+        <td>U+00A0 - U+00FF (Number Forms)</td>
+      </tr>
+
+      <tr>
+        <td>U+2153 – U+215F : Fractions</td>
+      </tr>
+
+      <tr>
+        <th>(Latin Extended-A)</th>
+      </tr>
+
+      <tr>
+        <td>U+0152 : LATIN CAPITAL LIGATURE OE</td>
+      </tr>
+
+      <tr>
+        <td>U+0153 : LATIN SMALL LIGATURE OE</td>
+      </tr>
+
+      <tr>
+        <td>U+0160 : LATIN CAPITAL LETTER S WITH CARON</td>
+      </tr>
+
+      <tr>
+        <td>U+0161 : LATIN SMALL LETTER S WITH CARON</td>
+      </tr>
+
+      <tr>
+        <td>U+0178 : LATIN CAPITAL LETTER Y WITH DIAERESIS</td>
+      </tr>
+
+      <tr>
+        <td>U+017D : LATIN CAPITAL LETTER Z WITH CARON</td>
+      </tr>
+
+      <tr>
+        <td>U+017E : LATIN SMALL LETTER Z WITH CARON (Box Drawing)</td>
+      </tr>
+
+      <tr>
+        <td>U+2500 : BOX DRAWINGS LIGHT HORIZONTAL</td>
+      </tr>
+
+      <tr>
+        <td>U+2502 : BOX DRAWINGS LIGHT VERTICAL</td>
+      </tr>
+
+      <tr>
+        <td>U+250C : BOX DRAWINGS LIGHT DOWN AND RIGHT</td>
+      </tr>
+
+      <tr>
+        <td>U+2510 : BOX DRAWINGS LIGHT DOWN AND LEFT</td>
+      </tr>
+
+      <tr>
+        <td>U+2514 : BOX DRAWINGS LIGHT UP AND RIGHT</td>
+      </tr>
+
+      <tr>
+        <td>U+2518 : BOX DRAWINGS LIGHT UP AND LEFT</td>
+      </tr>
+
+      <tr>
+        <th>(Latin Extended-B)</th>
+      </tr>
+
+      <tr>
+        <td>U+0192 : LATIN SMALL LETTER F WITH HOOK (Block Elements)</td>
+      </tr>
+
+      <tr>
+        <td>U+2588 : FULL BLOCK</td>
+      </tr>
+
+      <tr>
+        <th>(Spacing Modifier Letters)</th>
+      </tr>
+
+      <tr>
+        <td>U+02DC : SMALL TILDE (Geometric Shapes)</td>
+      </tr>
+
+      <tr>
+        <td>U+25A1 : WHITE SQUARE</td>
+      </tr>
+
+      <tr>
+        <th>(General Punctuation)</th>
+      </tr>
+
+      <tr>
+        <td>U+2010 - U+2015 : Dashes</td>
+      </tr>
+
+      <tr>
+        <td>U+2016 - U+2027 : General punctuation</td>
+      </tr>
+
+      <tr>
+        <td>U+2030 - U+203A : General punctuation (Musical Symbols)</td>
+      </tr>
+
+      <tr>
+        <td>U+2669 : QUARTER NOTE</td>
+      </tr>
+
+      <tr>
+        <td>U+266A : EIGHTH NOTE</td>
+      </tr>
+
+      <tr>
+        <td>U+266B : BEAMED EIGHTH NOTES</td>
+      </tr>
+
+      <tr>
+        <th>(Currency symbols)</th>
+      </tr>
+
+      <tr>
+        <td>U+20AC : EURO SIGN</td>
+      </tr>
+    </table>
+
+    <p>The following table specifies the [[!UNICODE]] code points that SHOULD be used in a document&#39;s textual content if
+    <code>xml:lang</code> is present (Primary language subtag is as defined in IETF RFC 5646).</p>
+
+    <table class='simple'>
+      <thead>
+        <tr>
+          <th>Languages</th>
+
+          <th>Primary language subtag of<br>
+          <code>xml:lang</code></th>
+
+          <th>[[!UNICODE]] Code Points</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <th colspan="3">Albanian Languages</th>
+        </tr>
+
+        <tr>
+          <td>Albanian</td>
+
+          <td>&quot;sq&quot;</td>
+
+          <td>As defined in the table above</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Baltic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Latvian, Lithuanian</td>
+
+          <td>&quot;lv&quot;, &quot;lt&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Finnic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Finish</td>
+
+          <td>&quot;fi&quot;</td>
+
+          <td>As defined in the table above</td>
+        </tr>
+
+        <tr>
+          <td>Estonian</td>
+
+          <td>&quot;et&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Germanic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Danish, Dutch/Flemish, English, German, Icelandic, Norwegian, Swedish</td>
+
+          <td>&quot;da&quot;, &quot;nl&quot;, &quot;en&quot;, &quot;de&quot;, &quot;is&quot;, &quot;no&quot;, &quot;sv&quot;</td>
+		  
+		  <td>As defined in the table above.</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Greek Languages</th>
+        </tr>
+
+        <tr>
+          <td>Greek</td>
+
+          <td>&quot;el&quot;</td>
+
+          <td>As defined in the table above<br>
+          (Greek and Coptic)<br>
+          U+0386 : GREEK CAPITAL LETTER ALPHA WITH TONOS<br>
+          U+0387 : GREEK ANO TELEIA<br>
+          U+0388 – U+03CE : Letters</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Romanic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Catalan, French, Italian</td>
+
+          <td>&quot;ca&quot;, &quot;fr&quot;, &quot;it&quot;</td>
+
+          <td>As defined in the table above</td>
+        </tr>
+
+        <tr>
+          <td>Portuguese, Spanish</td>
+
+          <td>&quot;pt&quot;, &quot;es&quot;</td>
+
+          <td>(Currency symbols)<br>
+          U+20A1 : COLON SIGN<br>
+          U+20A2 : CRUZEIRO SIGN<br>
+          U+20B3 : AUSTRAL SIGN</td>
+        </tr>
+
+        <tr>
+          <td>Romanian</td>
+
+          <td>&quot;ro&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Semitic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Arabic</td>
+
+          <td>&quot;ar&quot;</td>
+
+          <td>As defined in the table above<br>
+          U+060C – U+060D : Punctuation<br>
+          U+061B : ARABIC SEMICOLON<br>
+          U+061E : ARABIC TRIPLE DOT PUNCTUATION MARK<br>
+          U+061F : ARABIC QUESTION MARK<br>
+          U+0621 – U+063A : Based on ISO 8859-6<br>
+          U+0640 – U+064A : Based on ISO 8859-6<br>
+          U+064B – U+0652 : Points from ISO 5559-6<br>
+          U+0660 – U+0669 : Arabic-Indic digits<br>
+          U+066A – U+066D : Punctuation</td>
+        </tr>
+
+        <tr>
+          <td>Hebrew</td>
+
+          <td>&quot;he&quot;</td>
+
+          <td>As defined in the table above<br>
+          (Hebrew)<br>
+          U+05B0 – U+05C3 : Points and punctuation<br>
+          U+05D0 – U+05EA : Based on ISO 8859-8<br>
+          U+05F3 – U+05F4 : Additional punctuation</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Slavic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Croatian, Czech, Polish, Slovenian, Slovak</td>
+
+          <td>&quot;hr&quot;, &quot;cs&quot;, &quot;pl&quot;, &quot;sl&quot;, &quot;sk&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F</td>
+        </tr>
+
+        <tr>
+          <td>Bosnian, Bulgarian, Macedonian, Russian, Serbian, Ukrainian</td>
+
+          <td>&quot;bs&quot;, &quot;bg&quot;, &quot;mk&quot;, &quot;ru&quot;, &quot;sr&quot;, &quot;uk&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F<br>
+          (Cyrillic)<br>
+          U+0400 – U+040F : Cyrillic extensions<br>
+          U+0410 – U+044F : Basic Russian alphabet<br>
+          U+0450 – U+045F : Cyrillic extensions</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Turkic Languages</th>
+        </tr>
+
+        <tr>
+          <td>Turkish</td>
+
+          <td>&quot;tr&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F</td>
+        </tr>
+
+        <tr>
+          <td>Kazakh</td>
+
+          <td>&quot;kk&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F<br>
+          (Cyrillic)<br>
+          U+0400 – U+040F : Cyrillic extensions<br>
+          U+0410 – U+044F : Basic Russian alphabet<br>
+          U+0450 – U+045F : Cyrillic extensions</td>
+        </tr>
+
+        <tr>
+          <th colspan="3">Ugric Languages</th>
+        </tr>
+
+        <tr>
+          <td>Hungarian</td>
+
+          <td>&quot;hu&quot;</td>
+
+          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          (Latin Extended-A)<br>
+          U+0100 - U+017F</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class='appendix informative'>
+    <h2>Typical Practice for Subtitles per Region (Informative)</h2>
+
+    <p>The following table summarizes subtitle languages commonly used in the listed regions. The Language Tag is as specified in
+    RFC 5646.</p>
+
+    <table class='simple'>
+      <tr>
+        <th>Region</th>
+
+        <th>Subtitle Languages (Language Tag)</th>
+      </tr>
+
+      <tbody>
+        <tr>
+          <td>ALL (worldwide)</td>
+
+          <td>English (&quot;en&quot;)</td>
+        </tr>
+
+        <tr>
+          <th colspan="2">America (North)</th>
+        </tr>
+
+        <tr>
+          <td>ALL</td>
+
+          <td>French (&quot;fr&quot;) [Québécois (&quot;fr-CA&quot;) or Parisian (&quot;fr-FR&quot;)]</td>
+        </tr>
+
+        <tr>
+          <td>United States</td>
+
+          <td>Spanish (&quot;es&quot;) [Latin American (&quot;es-419&quot;)]</td>
+        </tr>
+
+        <tr>
+          <th colspan="2">America (Central and South)</th>
+        </tr>
+
+        <tr>
+          <td>ALL</td>
+
+          <td>Spanish (&quot;es&quot;) [Latin American (&quot;es-419&quot;)]</td>
+        </tr>
+
+        <tr>
+          <td>Brazil</td>
+
+          <td>Portuguese (&quot;pt&quot;) [Brazilian (&quot;pt-BR&quot;)]</td>
+        </tr>
+
+        <tr>
+          <th colspan="2">Asia, Middle East, and Africa</th>
+        </tr>
+
+        <tr>
+          <td>China</td>
+
+          <td>Chinese (&quot;zh&quot;) [Simplified Mandarin (&quot;zh-cmn-Hans&quot;)]</td>
+        </tr>
+
+        <tr>
+          <td>Egypt</td>
+
+          <td>Arabic (&quot;ar&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Hong Kong</td>
+
+          <td>Chinese (&quot;zh&quot;) [Cantonese (&quot;zh-yue&quot;)]</td>
+        </tr>
+
+        <tr>
+          <td>India</td>
+
+          <td>Hindi (&quot;hi&quot;)<br>
+          Tamil (&quot;ta&quot;)<br>
+          Telugu (&quot;te&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Indonesia</td>
+
+          <td>Indonesian (&quot;id&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Israel</td>
+
+          <td>Hebrew (&quot;he&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Japan</td>
+
+          <td>Japanese (&quot;ja&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Kazakhstan</td>
+
+          <td>Kazakh (&quot;kk&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Malaysia</td>
+
+          <td>Standard Malay (&quot;zsm&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>South Korea</td>
+
+          <td>Korean (&quot;ko&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Taiwan</td>
+
+          <td>Chinese (&quot;zh&quot;) [Traditional Mandarin (&quot;zh-cmn-Hant&quot;)]</td>
+        </tr>
+
+        <tr>
+          <td>Thailand</td>
+
+          <td>Thai (&quot;th&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Vietnam</td>
+
+          <td>Vietnamese (&quot;vi&quot;)</td>
+        </tr>
+
+        <tr>
+          <th colspan="2">Europe</th>
+        </tr>
+
+        <tr>
+          <td>Benelux (Belgium, Netherlands, and Luxembourg)</td>
+
+          <td>French (&quot;fr&quot;) [Parisian (&quot;fr-FR&quot;)]<br>
+          Dutch/Flemish (&quot;nl&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Denmark</td>
+
+          <td>Danish (&quot;da&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Finland</td>
+
+          <td>Finnish (&quot;fi&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>France</td>
+
+          <td>French (&quot;fr&quot;) [Parisian (&quot;fr-FR&quot;)]<br>
+          Arabic (&quot;ar&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Germany</td>
+
+          <td>German (&quot;de&quot;)<br>
+          Turkish (&quot;tr&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Italy</td>
+
+          <td>Italian (&quot;it&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Norway</td>
+
+          <td>Norwegian (&quot;no&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Spain</td>
+
+          <td>Spanish (&quot;sp&quot;) [Castilian (&quot;sp-ES&quot;)]<br>
+          Catalan (&quot;ca&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Sweden</td>
+
+          <td>Swedish (&quot;sv&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Switzerland</td>
+
+          <td>French (&quot;fr&quot;) [&quot;fr-CH&quot; or &quot;fr-FR&quot;]<br>
+          German (&quot;de&quot;) [&quot;de-CH&quot;]<br>
+          Italian (&quot;it&quot;) [&quot;it-CH&quot;]</td>
+        </tr>
+
+        <tr>
+          <td>Albania</td>
+
+          <td>Albanian (&quot;sq&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Bulgaria</td>
+
+          <td>Bulgarian (&quot;bg&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Croatia</td>
+
+          <td>Croatian (&quot;hr&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Czech Republic</td>
+
+          <td>Czech (&quot;cs&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Estonia</td>
+
+          <td>Estonian (&quot;et&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Greece</td>
+
+          <td>Greek (&quot;el&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Hungary</td>
+
+          <td>Hungarian (&quot;hu&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Iceland</td>
+
+          <td>Icelandic (&quot;is&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Latvia</td>
+
+          <td>Latvian (&quot;lv&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Lithuania</td>
+
+          <td>Lithuanian (&quot;lt&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Macedonia</td>
+
+          <td>Macedonian (&quot;mk&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Poland</td>
+
+          <td>Polish (&quot;pl&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Portugal</td>
+
+          <td>Portuguese (&quot;pt&quot;) [Iberian (&quot;pt-PT&quot;)]</td>
+        </tr>
+
+        <tr>
+          <td>Romania</td>
+
+          <td>Romanian (&quot;ro&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Russia</td>
+
+          <td>Russian (&quot;ru&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Serbia</td>
+
+          <td>Serbian (&quot;sr&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Slovakia</td>
+
+          <td>Slovak (&quot;sk&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Slovenia</td>
+
+          <td>Slovenian (&quot;sl&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Turkey</td>
+
+          <td>Turkish (&quot;tr&quot;)</td>
+        </tr>
+
+        <tr>
+          <td>Ukraine</td>
+
+          <td>Ukrainian (&quot;uk&quot;)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class='appendix'>
+    <h2>Schema</h2>
+	<p><em>TBD</em></p>
+  </section>
+</body>
+</html>

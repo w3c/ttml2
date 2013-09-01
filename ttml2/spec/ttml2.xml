@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 48c4f001dfbe 2013/09/01 17:28:08 glenn $ -->
+<!-- $Id: ttml2.xml,v a2d38356480a 2013/09/01 19:21:01 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/09/01 17:28:08 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/09/01 19:21:01 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -42,9 +42,9 @@
 <!ENTITY ttml-ex2-pop-on SYSTEM "./examples/ex2-pop-on.xml.esc">
 <!ENTITY ttml-ex2-roll-up SYSTEM "./examples/ex2-roll-up.xml.esc">
 <!ENTITY ttml-ex2-paint-on SYSTEM "./examples/ex2-paint-on.xml.esc">
-<!ENTITY profile-dfxp-presentation SYSTEM "./profiles/dfxp-presentation.xml.esc">
-<!ENTITY profile-dfxp-transformation SYSTEM "./profiles/dfxp-transformation.xml.esc">
-<!ENTITY profile-dfxp-full SYSTEM "./profiles/dfxp-full.xml.esc">
+<!ENTITY profile-ttml2-presentation SYSTEM "./profiles/ttml2-presentation.xml.esc">
+<!ENTITY profile-ttml2-transformation SYSTEM "./profiles/ttml2-transformation.xml.esc">
+<!ENTITY profile-ttml2-full SYSTEM "./profiles/ttml2-full.xml.esc">
 ]>
 <?xml-stylesheet type='text/xsl' href='xmlspec-ttml2.xsl'?>
 <spec w3c-doctype="&doctype;" role="&document.role;">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/09/01 17:28:08 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/09/01 19:21:01 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -646,7 +646,7 @@ specification.</p>
 <label>[feature]</label>
 <def>
 <p>A syntactic or semantic expression or capability that is defined and
-labeled (using a feature designation) in this specification (or a
+labeled (using a feature designation) in this specification (or a past or
 future revision of this specification).</p>
 </def>
 </gitem>
@@ -1011,7 +1011,7 @@ instantiating a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc>
 representation of a conformant <loc href="#terms-document-instance">document instance</loc>.</p>
 </item>
 <item>
-<p>If a process does or can perform validation of a candidate 
+<p>If a processor does or can perform validation of a candidate 
 <loc href="#terms-document-instance">document instance</loc>, then it provides at least one mechanism to
 implicitly or explicitly associate the
 <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> representation
@@ -1058,8 +1058,8 @@ the following criteria are satisfied:</p>
 <specref ref="conformance-generic-processor"/>.</p>
 </item>
 <item>
-<p>The processor supports the DFXP Transformation profile as specified
-by <specref ref="profile-dfxp-transformation"/>.</p>
+<p>The processor supports the TTML Transformation profile as specified
+by <specref ref="profile-ttml2-transformation"/>.</p>
 </item>
 </olist>
 </div3>
@@ -1073,8 +1073,8 @@ the following criteria are satisfied:</p>
 <specref ref="conformance-generic-processor"/>.</p>
 </item>
 <item>
-<p>The processor supports the DFXP Presentation profile as specified
-by <specref ref="profile-dfxp-presentation"/>.</p>
+<p>The processor supports the TTML Presentation profile as specified
+by <specref ref="profile-ttml2-presentation"/>.</p>
 </item>
 </olist>
 </div3>
@@ -1101,7 +1101,9 @@ as defined by <specref ref="parameter-attribute-profile"/>
 or (2)
 a <el>ttp:profile</el> element as a child of the
 <el>head</el> element as defined by
-<specref ref="parameter-vocabulary-profile"/>.</p>
+<specref ref="parameter-vocabulary-profile"/>. In addition, it must specify a
+<att>ttp:version</att> attribute on its root <el>tt</el> element if it requires
+support for a <loc href="#terms-feature">feature</loc> not defined by <bibref ref="ttml1"/>.</p>
 </div2>
 </div1>
 <div1 id="doctypes">
@@ -1285,7 +1287,8 @@ a normative name
 and designator for each
 predefined profile,
 and where each of these profiles is formally elaborated in
-<specref ref="profiles"/> or in another TTWG specification.</p>
+<specref ref="profiles"/>, in <bibref ref="ttml1"/>,
+or in another TTWG specification.</p>
 <table id="profile-vocab-table" role="common">
 <caption>Table 2 &ndash; Profiles</caption>
 <col width="25%"/>
@@ -1311,9 +1314,23 @@ and where each of these profiles is formally elaborated in
 <td>SDP US</td>
 <td><code>http://www.w3.org/ns/ttml/profile/sdp-us</code></td>
 </tr>
+<tr>
+<td>TTML2 Transformation</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td>
+</tr>
+<tr>
+<td>TTML2 Presentation</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code></td>
+</tr>
+<tr>
+<td>TTML2 Full</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td>
+</tr>
 </tbody>
 </table>
-<p></p>
+<note role="seealso">
+<p>For definitions of the DFXP profiles, see <bibref ref="ttml1"/>. For definition of the SDP US profile, see <bibref ref="sdpus"/>.</p>
+</note>
 <p>A profile designator must adhere to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
 &sect;3.2.17. If the profile designator is expressed as a relative URI,
@@ -1321,9 +1338,9 @@ then it must be absolutized by using the TT Profile Namespace value as
 the base URI.</p>
 <note role="example">
 <p>For example, if a profile designator is expressed as
-<code>dfxp-presentation</code>, then the absolutized profile designator
+<code>ttml2-presentation</code>, then the absolutized profile designator
 would be
-<code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code>.</p>
+<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p>
 </note>
 <p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
 <specref ref="profile-vocab-table"/> are reserved for future standardization, and must not be appear in a conformant
@@ -1364,7 +1381,7 @@ interchange context</loc>
 does not make an implicit or explicit
 reference to a pre-defined profile or does not specify a <emph>Profile Definition
 Document</emph> or another equivalent set of feature designations,
-then the DFXP Transformation profile applies.</p>
+then the TTML Transformation profile applies.</p>
 <note role="elaboration">
 <p>It is not a requirement on a conformant <loc href="#terms-document-instance">document instance</loc> that a profile be internally
 defined by use of a <el>ttp:profile</el> element or internally referenced by a
@@ -1428,18 +1445,18 @@ element where the value of its <att>value</att> attribute is
 respectively.</p>
 </note>
 <p>An example of an author defined
-additive, derived profile of the DFXP Presentation
+additive, derived profile of the TTML Presentation
 profile is shown
 below in <specref ref="ttml-example-sub-profile"/>.</p>
 <table id="ttml-example-sub-profile" role="example">
-<caption>Example Fragment &ndash; DFXP Additive Profile</caption>
+<caption>Example Fragment &ndash; TTML Additive Profile</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
 &lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
  &lt;head&gt;
-   &lt;profile use="dfxp-presentation" xmlns="http://www.w3.org/ns/ttml#parameter"&gt;
+   &lt;profile use="ttml2-presentation" xmlns="http://www.w3.org/ns/ttml#parameter"&gt;
      &lt;features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
        &lt;feature value="required"&gt;#fontStyle-italic&lt;/feature&gt;
      &lt;/features&gt;
@@ -1453,10 +1470,10 @@ below in <specref ref="ttml-example-sub-profile"/>.</p>
 </table>
 <note role="explanation">
 <p>In the above example, the baseline profile is declared to be
-the DFXP Presentation profile, which is then additively modified by making the
+the TTML Presentation profile, which is then additively modified by making the
 <code>#fontStyle-italic</code> feature required (rather than
 optional as it is defined
-in <specref ref="profile-dfxp-presentation"/>). Note also the resetting of the
+in <specref ref="profile-ttml2-presentation"/>). Note also the resetting of the
 default XMLNS binding on the <el>profile</el> element to the TT Parameter Namespace.</p>
 </note>
 </div2>
@@ -1708,7 +1725,8 @@ Parameter Attributes
 <loc href="#parameter-attribute-profile">ttp:profile</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
-<loc href="#parameter-attribute-timeBase">ttp:timeBase</loc>
+<loc href="#parameter-attribute-timeBase">ttp:timeBase</loc>,
+<loc href="#parameter-attribute-version">ttp:version</loc>
 </td>
 </tr>
 <tr>
@@ -1955,7 +1973,7 @@ or entail the intervention of an end-user.</p>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttp:profile use="dfxp-presentation"&gt;
+&lt;ttp:profile use="ttml2-presentation"&gt;
   &lt;ttp:features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
     &lt;ttp:feature&gt;#text-outline&lt;/ttp:feature&gt;
   &lt;/ttp:features&gt;
@@ -1966,7 +1984,7 @@ or entail the intervention of an end-user.</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the DFXP presentation profile is used as the
+<p>In the above example, the TTML presentation profile is used as the
 baseline profile. This baseline profile is then supersetted (thus
 creating an additive derived profile) by requiring support for
 <code>#text-outline</code> feature.</p>
@@ -2124,7 +2142,7 @@ it should be specified using the <code>prohibited</code> value.</p>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/dfxp-presentation"&gt;
+&lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/ttml2-presentation"&gt;
   &lt;ttp:features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#fontStyle-italic&lt;/ttp:feature&gt;</phrase>
     <phrase role="strong">&lt;ttp:feature value="required"&gt;#textDecoration-under&lt;/ttp:feature&gt;</phrase>
@@ -2137,14 +2155,14 @@ it should be specified using the <code>prohibited</code> value.</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the DFXP presentation profile is used as the
+<p>In the above example, the TTML presentation profile is used as the
 baseline profile. This baseline profile is then modified by three
 <el>ttp:feature</el> elements in order to (1)
 superset the baseline profile (since neither
 <code>#fontStyle-italic</code> nor <code>#textDecoration-under</code>
-are required by the DFXP presentation profile), and
+are required by the TTML presentation profile), and
 (2) prohibit use of the <code>#textOutline-blurred</code> feature
-(which is optional in the DFXP presentation profile).</p> 
+(which is optional in the TTML presentation profile).</p> 
 <p>The effect of this example is to express authorial intentions that
 italic font style and text underlining must be
 supported, and that text outline blurring must not be used by a document.</p>
@@ -2291,7 +2309,7 @@ it should be specified using the <code>prohibited</code> value.</p>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/dfxp-transformation"&gt;
+&lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/ttml2-transformation"&gt;
   &lt;ttp:extensions xml:base="http://example.org/ttml/extension/"&gt;
     <phrase role="strong">&lt;ttp:extension value="use"&gt;#prefilter-by-language&lt;/ttp:extension&gt;</phrase>
   &lt;/ttp:extensions&gt;
@@ -2302,12 +2320,12 @@ it should be specified using the <code>prohibited</code> value.</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the DFXP transformation profile is used as
+<p>In the above example, the TTML transformation profile is used as
 the baseline profile. This baseline profile is then supersetted by
 specifying that support and use is required for a private extension
 defined in a third party namespace.</p>
 <p>The effect of this example is to express authorial intentions that
-a recipient processor must support the DFXP transformation profile and
+a recipient processor must support the TTML transformation profile and
 must also support and enable an extension defined by a third party.</p>
 </note>
 </div3>
@@ -2917,6 +2935,47 @@ is uniform throughout the <loc href="#terms-document-instance">document instance
 <note role="elaboration">
 <p>See <specref ref="time-expression-semantics"/> for further details
 on the interpretation of time expressions according to the designated time base.</p>
+</note>
+</div3>
+<div3 id="parameter-attribute-version">
+<head>ttp:version</head>
+<p>The <att>ttp:version</att> attribute is used to specify which version of the
+<loc href="#terms-timed-text-markup-language">Timed Text Markup Language</loc>
+specification was used in authoring a TTML <loc href="#terms-document-instance">document instance</loc>.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-version-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:version</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:version
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+                                // <emph>value</emph> > 0
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A <att>ttp:version</att> attribute must be specified on the root <el>tt</el>
+element of a <loc href="#terms-document-instance">document instance</loc> if it
+requires support for a <loc href="#terms-feature">feature</loc> not defined by <bibref ref="ttml1"/>.</p>
+<p>If not specified, the version must be considered to be
+equal to one (1). If specified, then the version must be greater than zero (0). The version associated
+with this version of the <loc href="#terms-timed-text-markup-language">Timed Text Markup Language</loc>
+specification is two (2).</p>
+<p>A <att>ttp:version</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+<note role="elaboration">
+<p>A <loc href="#terms-content-processor">content processor</loc> may use the
+declared version to perform a preliminary assessment of whether it is capable of
+processing a given <loc href="#terms-document-instance">document instance</loc>.
+However, it must not assume that the <loc href="#terms-document-instance">document instance</loc>
+actually uses or requires support for a <loc href="#terms-feature">feature</loc>
+not defined in prior versions. In other
+words, a <loc href="#terms-content-processor">content processor</loc> must not reject
+a <loc href="#terms-document-instance">document instance</loc> simply because it declares
+it was authored against a version of the <loc href="#terms-timed-text-markup-language">Timed Text Markup Language</loc>
+specification that was not yet published at the time the processor was implemented.</p>
 </note>
 </div3>
 </div2>
@@ -11330,6 +11389,19 @@ for all defined values of the <loc
 href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-version">
+<head>#version</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#version</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#parameter-attribute-version"><att>ttp:version</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#version</code> feature if it implements presentation semantic support
+for the <loc
+href="#parameter-attribute-version"><att>ttp:version</att></loc>
+attribute.</p>
+</div3>
 <div3 id="feature-visibility">
 <head>#visibility</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -12032,6 +12104,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
+<td><loc href="#feature-version"><code>#version</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-visibility"><code>#visibility</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -12093,8 +12170,8 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 mandatory features for a TTML <loc href="#terms-transformation-processor">transformation processor</loc>, providing additional
 comments to summarize the context of usage or the nature of the feature.
 The <loc href="#terms-profile-definition-document">profile definition document</loc> that defines the corresponding
-DFXP Transformation Profile is specified in
-<specref ref="profile-dfxp-transformation"/>.
+TTML Transformation Profile is specified in
+<specref ref="profile-ttml2-transformation"/>.
 </p>
 <table id="feature-transformation-mandatory-table" role="common">
 <caption>Table D-2 &ndash; Mandatory Features - Transformation</caption>
@@ -12158,8 +12235,8 @@ DFXP Transformation Profile is specified in
 mandatory features for a TTML <loc href="#terms-presentation-processor">presentation processor</loc>, providing additional
 comments to summarize the context of usage or the nature of the feature.
 The <loc href="#terms-profile-definition-document">profile definition document</loc> that defines the corresponding
-DFXP Presentation Profile is specified in
-<specref ref="profile-dfxp-presentation"/>.
+TTML Presentation Profile is specified in
+<specref ref="profile-ttml2-presentation"/>.
 </p>
 <table id="feature-presentation-mandatory-table" role="common">
 <caption>Table D-3 &ndash; Mandatory Features - Presentation</caption>
@@ -12260,32 +12337,49 @@ identifier.</p>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies the following standard TTML profiles:</p>
 <ulist>
-<item><p><specref ref="profile-dfxp-transformation"/></p></item>
-<item><p><specref ref="profile-dfxp-presentation"/></p></item>
-<item><p><specref ref="profile-dfxp-full"/></p></item>
+<item><p><specref ref="profile-ttml2-transformation"/></p></item>
+<item><p><specref ref="profile-ttml2-presentation"/></p></item>
+<item><p><specref ref="profile-ttml2-full"/></p></item>
 </ulist>
-<p>The SDP US profile is defined in
-<xspecref href="http://www.w3.org/TR/ttml10-sdp-us/">TTML Simple Delivery Profile for Closed Captions (US)</xspecref>.</p>
 <p>Each TTML profile is defined in terms of a <loc href="#terms-profile-definition-document">profile definition document</loc>,
 which is expressed as an XML document wherein the root element adheres to
 <specref ref="parameter-vocabulary-profile"/>.</p>
-<div2 id="profile-dfxp-transformation">
-<head>DFXP Transformation Profile</head>
-<p>The DFXP Transformation Profile is intended to be used to
+<div2 id="profile-ttml2-transformation">
+<head>TTML2 Transformation Profile</head>
+<p>The TTML2 Transformation Profile is intended to be used to
 express minimum compliance for transformation processing.</p>
-<eg xml:space="preserve">&profile-dfxp-transformation;</eg>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
+it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-transformation;</eg>
 </div2>
-<div2 id="profile-dfxp-presentation">
-<head>DFXP Presentation Profile</head>
-<p>The DFXP Presentation Profile is intended to be used to
+<div2 id="profile-ttml2-presentation">
+<head>TTML2 Presentation Profile</head>
+<p>The TTML2 Presentation Profile is intended to be used to
 express minimum compliance for presentation processing.</p>
-<eg xml:space="preserve">&profile-dfxp-presentation;</eg>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
+it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-presentation;</eg>
 </div2>
-<div2 id="profile-dfxp-full">
-<head>DFXP Full Profile</head>
-<p>The DFXP Full Profile is intended to be used to
+<div2 id="profile-ttml2-full">
+<head>TTML2 Full Profile</head>
+<p>The TTML2 Full Profile is intended to be used to
 express maximum compliance for both transformation and presentation processing.</p>
-<eg xml:space="preserve">&profile-dfxp-full;</eg>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-full">DFXP Full Profile</xspecref>:
+it requires support for the
+<loc href="#feature-version"><code>#border</code></loc>,
+<loc href="#feature-version"><code>#textOrientation</code></loc>, and
+<loc href="#feature-version"><code>#version</code></loc>
+features.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-full;</eg>
 </div2>
 </div1>
 
@@ -12479,6 +12573,12 @@ href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework: Specifications Guidelines</titleref>, W3C Recommendation, 17
 August 2005. (See
 <xspecref href="http://www.w3.org/TR/qaframe-spec/">http://www.w3.org/TR/qaframe-spec/</xspecref>.)
+</bibl>
+<bibl id="sdpus" key="SDP US">G. Adams, et al.,
+<titleref
+href="http://www.w3.org/TR/2013/NOTE-ttml10-sdp-us-20130205/">TTML Simple Delivery Profile for Closed Captions (US)</titleref>,
+W3C WG Note, 5 February 2013. (See
+<xspecref href="http://www.w3.org/TR/2013/NOTE-ttml10-sdp-us-20130205/">http://www.w3.org/TR/2013/NOTE-ttml10-sdp-us-20130205/</xspecref>.)
 </bibl>
 <bibl id="smpte170m" key="SMPTE 170M">ANSI/SMPTE 170M, 
 <titleref
@@ -13432,6 +13532,13 @@ no default attribute value
 <td><emph>none</emph></td>
 <td></td>
 <td>used to interpret semantics of time expressions</td>
+<td></td>
+</tr>
+<tr>
+<td><loc href="#parameter-attribute-version"><code>ttp:version</code></loc></td>
+<td><code>version</code></td>
+<td><bibref ref="svg11"/></td>
+<td>used only integer values</td>
 <td></td>
 </tr>
 <tr>

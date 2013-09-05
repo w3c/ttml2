@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 74244b606fc8 2013/09/05 06:23:28 glenn $ -->
+<!-- $Id: ttml2.xml,v 23bdfe4eecaf 2013/09/05 23:02:48 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/09/05 06:23:28 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/09/05 23:02:48 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/09/05 06:23:28 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/09/05 23:02:48 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -1890,6 +1890,7 @@ zero or more <el>ttp:extensions</el> elements.</p>
 <eg xml:space="preserve">
 &lt;ttp:profile
   combine = (replace|union|intersection) : replace
+  designator = string
   use = string
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
@@ -1900,19 +1901,6 @@ zero or more <el>ttp:extensions</el> elements.</p>
 </tr>
 </tbody>
 </table>
-<p>If specified, the <att>use</att> attribute must adhere to the
-<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17, and, furthermore, must denote a profile designator in
-accordance with <specref ref="vocabulary-profiles"/>. In this case,
-the profile designator must refer to (1) a standard, predefined
-<loc href="#terms-profile-definition-document">profile definition document</loc> as defined by <specref ref="profiles"/>,
-or (2) a feasibly dereferenceable resource representing a valid <emph>Profile Definition
-Document</emph> instance. In either case, the referenced profile serves as the
-baseline profile of the specifying <el>ttp:profile</el> element.</p>
-<p>If the <att>use</att> attribute is not specified, then the baseline
-profile of the <el>ttp:profile</el> element must be considered to be
-the empty (null) profile, i.e., a profile definition containing no
-feature or extension specifications.</p>
 <p>The <att>combine</att> attribute may be used to specify how
 feature or extension specifications are combined in the case that
 multiple specifications apply to the same feature or extension, respectively.
@@ -1929,6 +1917,32 @@ specified, then replacement semantics apply.</p>
 <date>2013-07-10</date>
 <edtext>Need to elaborate semantics of union and intersection combination methods.</edtext>
 </ednote>
+<p>If specified, the <att>designator</att> attribute must (1) adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17 and (2) express an absolute URI that denotes a profile designator in
+accordance with <specref ref="vocabulary-profiles"/>.</p>
+<p>A <att>designator</att> attribute may
+be specified on a <el>ttp:profile</el> element that appears in a TTML
+<loc href="#terms-document-instance">document instance</loc>, and, if not specified,
+the defined profile is considered to be an anonymous (undesignated) profile.
+A <att>designator</att> attribute should
+be specified on a <el>ttp:profile</el> element that appears in a TTML
+<loc href="#terms-profile-definition-document">profile definition document</loc> instance,
+and, if not specified, the defining context (e.g., an external specification) must specify
+a designator in its accompanying definition text.</p>
+<p>If specified, the <att>use</att> attribute must adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17, and, furthermore, must denote a profile designator in
+accordance with <specref ref="vocabulary-profiles"/>. In this case,
+the profile designator must refer to (1) a standard, predefined
+<loc href="#terms-profile-definition-document">profile definition document</loc> as defined by <specref ref="profiles"/>,
+or (2) a feasibly dereferenceable resource representing a valid <emph>Profile Definition
+Document</emph> instance. In either case, the referenced profile serves as the
+baseline profile of the specifying <el>ttp:profile</el> element.</p>
+<p>If the <att>use</att> attribute is not specified, then the baseline
+profile of the <el>ttp:profile</el> element must be considered to be
+the empty (null) profile, i.e., a profile definition containing no
+feature or extension specifications.</p>
 <p>The collection of features and extensions of a profile are determined according
 to the following ordered rules:</p>
 <olist>
@@ -2962,6 +2976,13 @@ ttp:version
 </tr>
 </tbody>
 </table>
+<p></p>
+<ednote>
+<name>Possibly change ttp:version to ttm:version</name>
+<date>2013-09-05</date>
+<edtext>Unless normative processing or conformance language makes use of <att>ttp:version</att> then it
+should be changed to live in the TT Metadata Namespace, i.e., as <att>ttm:version</att>.</edtext>
+</ednote>
 <p>A <att>ttp:version</att> attribute must be specified on the root <el>tt</el>
 element of a <loc href="#terms-document-instance">document instance</loc> if it
 requires support for a <loc href="#terms-feature">feature</loc> not defined by <bibref ref="ttml1"/>.</p>
@@ -3459,6 +3480,13 @@ in the core vocabulary catalog:</p>
 <bibref ref="xmlid"/>.</p>
 <p>The <att>xml:id</att> attribute may be used with any element in the
 core vocabulary catalog.</p>
+<ednote>
+<name>Deprecating xml:id in favor of unqualified id</name>
+<date>2013-09-05</date>
+<edtext>Consider deprecating <att>xml:id</att>, using unqualified <att>id</att> instead. If deprecated, then require
+a document to only use <att>xml:id</att> or <att>id</att>, i.e., mixed use to be prohibited. See
+<loc href="https://www.w3.org/AudioVideo/TT/tracker/issues/205">Issue 205</loc>.</edtext>
+</ednote>
 </div3>
 <div3 id="content-attribute-lang">
 <head>xml:lang</head>
@@ -7192,6 +7220,13 @@ using:
 <item><p><loc href="#semantics-style-inheritance-content">content style inheritance</loc></p></item>
 <item><p><loc href="#semantics-style-inheritance-content">region style inheritance</loc></p></item>
 </ulist>
+<ednote>
+<name>Layout Style Inheritance</name>
+<date>2013-09-05</date>
+<edtext>Regions should be able to inherit styles from a common ancestor in order to prevent
+having to full populate region styles. <loc href="https://www.w3.org/AudioVideo/TT/tracker/issues/277">Issue 277</loc> proposes
+inheritance from the layout element.</edtext>
+</ednote>
 <p>For the purpose of determining inherited styles, the element hierarchy of
 an intermediate synchronic document form of a <loc href="#terms-document-instance">document instance</loc> must be used, where
 such intermediate forms are defined by <specref ref="semantics-region-layout-step-1"/>.</p>
@@ -8625,6 +8660,12 @@ elements in the <code>Metadata.class</code> element group.</p>
 </tbody>
 </table>
 <p></p>
+<ednote>
+<name>Change xlink:href to href</name>
+<date>2013-09-05</date>
+<edtext>The SVG WG is deprecating xlink:href, in favor of using an unqualified href attribute. See
+<loc href="http://www.w3.org/Graphics/SVG/WG/wiki/Href">SVG Wiki: Href</loc>. We should probably just specify the use of unqualified href.</edtext>
+</ednote>
 <p>Except for the constraints or variations enumerated below, the semantics of the <el>animate</el> element and its attributes
 enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.12:</p>
 <olist>
@@ -8750,6 +8791,12 @@ elements in the <code>Metadata.class</code> element group.</p>
 </tbody>
 </table>
 <p></p>
+<ednote>
+<name>Change xlink:href to href</name>
+<date>2013-09-05</date>
+<edtext>The SVG WG is deprecating xlink:href, in favor of using an unqualified href attribute. See
+<loc href="http://www.w3.org/Graphics/SVG/WG/wiki/Href">SVG Wiki: Href</loc>. We should probably just specify the use of unqualified href.</edtext>
+</ednote>
 <p>Except for the constraints or variations enumerated below, the semantics of the <el>set</el> element and its attributes
 enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.13:</p>
 <olist>

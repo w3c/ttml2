@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v f8ba72a0098d 2013/09/06 02:31:56 glenn $ -->
+<!-- $Id: ttml2.xml,v bda2b2918b85 2013/09/06 03:38:20 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/09/06 02:31:56 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/09/06 03:38:20 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/09/06 02:31:56 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/09/06 03:38:20 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -1362,6 +1362,11 @@ a <el>ttp:profile</el> element and a <att>ttp:profile</att>
 attribute are present (in a given <loc href="#terms-document-instance">document instance</loc>), then the
 <att>ttp:profile</att> attribute must be ignored for the purpose of
 determining the declared profile requirements.</p>
+<ednote>
+<name>Profile Combination Semantics</name>
+<date>2013-09-05</date>
+<edtext>Need to incorporate affects of <att>ttp:profileCombination</att> parameter into the following paragraph.</edtext>
+</ednote>
 <p>If more than one <el>ttp:profile</el> element appears in
 a <loc href="#terms-document-instance">document instance</loc>, then all specified profiles apply
 simultaneously.  In such a case, if some feature or some extension is
@@ -1723,6 +1728,7 @@ Parameter Attributes
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-profile">ttp:profile</loc>,
+<loc href="#parameter-attribute-cellResolution">ttp:profileCombination</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
 <loc href="#parameter-attribute-timeBase">ttp:timeBase</loc>,
@@ -1943,6 +1949,11 @@ baseline profile of the specifying <el>ttp:profile</el> element.</p>
 profile of the <el>ttp:profile</el> element must be considered to be
 the empty (null) profile, i.e., a profile definition containing no
 feature or extension specifications.</p>
+<ednote>
+<name>Combine Semantics</name>
+<date>2013-09-05</date>
+<edtext>Need to incorporate affects of <att>combine</att> attribute into following rules.</edtext>
+</ednote>
 <p>The collection of features and extensions of a profile are determined according
 to the following ordered rules:</p>
 <olist>
@@ -2789,6 +2800,43 @@ profile designator in accordance with
 <p>A <att>ttp:profile</att>
 attribute is considered to be significant only when specified on the
 <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-profileCombination">
+<head>ttp:profileCombination</head>
+<p>The <att>ttp:profileCombination</att> attribute is used to specify the
+method for combining multiple profiles.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-profileCombination-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:profileCombination</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:profileCombination
+  : "leastRestrictive"
+  | "mostRestrictive"
+  | "replace"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If this parameter's value is <code>leastRestrictive</code> or <code>mostRestrictive</code>,
+then, when combining features or extensions from any two profiles, the least or most restrictive value applies,
+respectively, where the order of restriction is as follows (from most to least): <code>prohibited</code>,
+<code>use</code>, <code>required</code>, then <code>optional</code>.</p>
+<p>If this parameter's value is <code>replace</code>, then, when combining features or extensions from any two
+profiles, the lexically subsequent profile's feature or extension specification applies, i.e., replaces the
+lexically prior specification.</p>
+<p>A <att>ttp:profileCombination</att> attribute is considered to be significant only
+when specified on the <el>tt</el> or <el>ttp:profile</el> elements.</p>
+<p>When specified on the <el>tt</el> element, it determines how multiple top-level (or nested) profile definitions are
+combined. When specified on an <el>ttp:profile</el> element, it determines how multiple, nested profile definition
+children of that <el>ttp:profile</el> element are combined.</p>
+<p>If not specified on a given <el>ttp:profile</el> element, then, if specified on an ancestor
+<el>ttp:profile</el> or <el>tt</el> element, then the value specified by the most immediate
+of these ancestors applies. However, if no value is specified by an ancestor <el>ttp:profile</el> or <el>tt</el> element,
+then the value of this parameter must be considered to be <code>replace</code>.</p>
 </div3>
 <div3 id="parameter-attribute-subFrameRate">
 <head>ttp:subFrameRate</head>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v bda2b2918b85 2013/09/06 03:38:20 glenn $ -->
+<!-- $Id: ttml2.xml,v 7e69af3fd4ce 2013/09/06 04:01:47 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/09/06 03:38:20 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/09/06 04:01:47 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/09/06 03:38:20 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/09/06 04:01:47 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -595,6 +595,12 @@ Timed Text Markup Language content.</p>
 performing presentation processing.</p>
 </def>
 </gitem>
+<gitem id="terms-designated-profile">
+<label>[designated profile]</label>
+<def>
+<p>&tbd;</p>
+</def>
+</gitem>
 <gitem id="terms-document-instance">
 <label>[document instance]</label>
 <def>
@@ -836,6 +842,12 @@ or rewrites TTML features so as to conform to a profile of TTML. An example of t
 a processor that translates TTML into a completely different timed text format. Because this
 specification does not otherwise define a target profile or format for transformation processing,
 no further transformation semantics are defined by this specification.</p>
+</def>
+</gitem>
+<gitem id="terms-undesignated-profile">
+<label>[undesignated profile]</label>
+<def>
+<p>&tbd;</p>
 </def>
 </gitem>
 <gitem id="terms-valid-abstract-document-instance">
@@ -1331,6 +1343,12 @@ or in another TTWG specification.</p>
 <note role="seealso">
 <p>For definitions of the DFXP profiles, see <bibref ref="ttml1"/>. For definition of the SDP US profile, see <bibref ref="sdpus"/>.</p>
 </note>
+<ednote>
+<name>Referencing Undesignated Profile</name>
+<date>2013-09-05</date>
+<edtext>Need to update following to allow referring to a local (embedded) profile definition using
+a fragment identifier that references an undesignated ttp:profile element rather than a profile designator URI.</edtext>
+</ednote>
 <p>A profile designator must adhere to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
 &sect;3.2.17. If the profile designator is expressed as a relative URI,
@@ -1722,6 +1740,7 @@ Parameter Attributes
 <td>
 <loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc>,
 <loc href="#parameter-attribute-clockMode">ttp:clockMode</loc>,
+<loc href="#parameter-attribute-clockMode">ttp:contentProfile</loc>,
 <loc href="#parameter-attribute-dropMode">ttp:dropMode</loc>,
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc>,
@@ -1930,7 +1949,7 @@ accordance with <specref ref="vocabulary-profiles"/>.</p>
 <p>A <att>designator</att> attribute may
 be specified on a <el>ttp:profile</el> element that appears in a TTML
 <loc href="#terms-document-instance">document instance</loc>, and, if not specified,
-the defined profile is considered to be an anonymous (undesignated) profile.
+the defined profile is considered to be an undesignated profile.
 A <att>designator</att> attribute should
 be specified on a <el>ttp:profile</el> element that appears in a TTML
 <loc href="#terms-profile-definition-document">profile definition document</loc> instance,
@@ -2477,6 +2496,21 @@ to be <code>utc</code>.</p>
 <p>A <att>ttp:clockMode</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
+<div3 id="parameter-attribute-contentProfile">
+<head>ttp:contentProfile</head>
+<p>The <att>ttp:contentProfile</att> attribute may be used by a content author
+to express a <loc href="#terms-content-profile">content profile</loc> of
+the Timed Text Markup Language (TTML) to which
+a <loc href="#terms-document-instance">document instance</loc> conforms.</p>
+<p>If specified, the value of this attribute must adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17, and, further, must specify a
+profile designator in accordance with
+<specref ref="vocabulary-profiles"/>.</p>
+<p>A <att>ttp:contentProfile</att>
+attribute is considered to be significant only when specified on the
+<el>tt</el> element.</p>
+</div3>
 <div3 id="parameter-attribute-dropMode">
 <head>ttp:dropMode</head>
 <p>The <att>ttp:dropMode</att> attribute is used to specify
@@ -2790,8 +2824,9 @@ ratios while still maintaining authorial layout intentions.</p>
 <div3 id="parameter-attribute-profile">
 <head>ttp:profile</head>
 <p>The <att>ttp:profile</att> attribute may be used by a content author
-to express the profile of the Timed Text Markup Language (TTML) used
-in a <loc href="#terms-document-instance">document instance</loc>.</p>
+to express a <loc href="#terms-processor-profile">processor profile</loc>
+of the Timed Text Markup Language (TTML) that applies when processing
+a <loc href="#terms-document-instance">document instance</loc>.</p>
 <p>If specified, the value of this attribute must adhere to the
 <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
 &sect;3.2.17, and, further, must specify a

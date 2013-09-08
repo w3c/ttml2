@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" typeof="bibo:Document " about="" property="dcterms:language" content="en">
+<head>
+<meta charset="utf-8">
+<title>TTML API Level 1</title>
+
+
+<style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #ff4500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+</style><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.issue-title span, div.note-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child { margin-top: 0 }
+.issue, .note {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+
+</style><style>/* --- WEB IDL --- */
+pre.idl {
+    border-top: 1px solid #90b8de;
+    border-bottom: 1px solid #90b8de;
+    padding:    1em;
+    line-height:    120%;
+}
+
+pre.idl::before {
+    content:    "WebIDL";
+    display:    block;
+    width:      150px;
+    background: #90b8de;
+    color:  #fff;
+    font-family:    initial;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+.idlType {
+    color:  #ff4500;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+
+/*.idlModule*/
+/*.idlModuleID*/
+/*.idlInterface*/
+.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
+    font-weight:    bold;
+    color:  #005a9c;
+}
+a.idlEnumItem {
+    color:  #000;
+    border-bottom:  1px dotted #ccc;
+    text-decoration: none;
+}
+
+.idlSuperclass {
+    font-style: italic;
+    color:  #005a9c;
+}
+
+/*.idlAttribute*/
+.idlAttrType, .idlFieldType, .idlMemberType {
+    color:  #005a9c;
+}
+.idlAttrName, .idlFieldName, .idlMemberName {
+    color:  #ff4500;
+}
+.idlAttrName a, .idlFieldName a, .idlMemberName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlMethod*/
+.idlMethType, .idlCallbackType {
+    color:  #005a9c;
+}
+.idlMethName {
+    color:  #ff4500;
+}
+.idlMethName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlCtor*/
+.idlCtorName {
+    color:  #ff4500;
+}
+.idlCtorName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlParam*/
+.idlParamType {
+    color:  #005a9c;
+}
+.idlParamName, .idlDefaultValue {
+    font-style: italic;
+}
+
+.extAttr {
+    color:  #666;
+}
+
+/*.idlSectionComment*/
+.idlSectionComment {
+    color: gray;
+}
+
+/*.idlConst*/
+.idlConstType {
+    color:  #005a9c;
+}
+.idlConstName {
+    color:  #ff4500;
+}
+.idlConstName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlException*/
+.idlExceptionID {
+    font-weight:    bold;
+    color:  #c00;
+}
+
+.idlTypedefID, .idlTypedefType {
+    color:  #005a9c;
+}
+
+.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+    color:  #c00;
+    font-weight:    normal;
+}
+
+.excName a {
+    font-family:    monospace;
+}
+
+.idlRaises a.idlType, .excName a.idlType {
+    border-bottom:  1px dotted #c00;
+}
+
+.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+    width:  45px;
+    text-align: center;
+}
+.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+
+.idlImplements a {
+    font-weight:    bold;
+}
+
+dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
+    margin-left:    2em;
+}
+
+.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
+    font-weight:    normal;
+}
+
+.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
+    font-weight:    bold;
+    color:  #000;
+    font-family:    monospace;
+}
+
+.attributes dt code, .fields dt code, .dictionary-members dt code {
+    background:  #ffffd2;
+}
+
+.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+    color:  #005a9c;
+    background:  transparent;
+    font-family:    inherit;
+    font-weight:    normal;
+    font-style: italic;
+}
+
+.methods dt code {
+    background:  #d9e6f8;
+}
+
+.constants dt code {
+    background:  #ddffd2;
+}
+
+.constructors dt code {
+    background:  #cfc;
+}
+
+.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
+    margin-bottom:  1em;
+}
+
+table.parameters, table.exceptions {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    margin: 0.5em 0;
+    width:  100%;
+}
+table.parameters { border-bottom:  1px solid #90b8de; }
+table.exceptions { border-bottom:  1px solid #deb890; }
+
+.parameters th, .exceptions th {
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+    font-family:    initial;
+    font-weight:    normal;
+    text-shadow:    #666 1px 1px 0;
+}
+.parameters th { background: #90b8de; }
+.exceptions th { background: #deb890; }
+
+.parameters td, .exceptions td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.parameters tr:first-child td, .exceptions tr:first-child td {
+    border-top: none;
+}
+
+.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+    width:  100px;
+}
+
+.parameters td.prmType {
+    width:  120px;
+}
+
+table.exceptions table {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    width:  100%;
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-ED"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+<body class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <p>
+    
+      <a href="http://www.w3.org/"><img width="72" height="48" src="https://www.w3.org/Icons/w3c_home" alt="W3C"></a>
+    
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">TTML API Level 1</h1>
+  
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2013-09-09T02:32:06.000Z" id="w3c-editor-s-draft-08-september-2013"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2013-09-08">08 September 2013</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html">http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/ttml1-api/">http://www.w3.org/TR/ttml1-api/</a></dd>
+    
+    
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html">http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html</a></dd>
+    
+    
+    
+    
+      
+    
+    
+    
+    <dt>Editor:</dt>
+    <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Glenn Adams</span>, <a rel="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.cox.com/">Cox Communications, Inc.</a></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2013
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved.
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.
+      </p>
+    
+  
+  <hr>
+</div>
+<section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#abstract" rel="bibo:chapter"><h2 aria-level="1" role="heading" id="h2_abstract">Abstract</h2>
+<p>This document defines a Level 1 API for exposing unparsed Timed Text Markup Language (TTML) content to Web Applications.</p>
+</section>
+
+<section id="sotd">
+<h2>Status of this Document</h2>
+<p><b>This document is an editor's draft that has no official standing.</b></p>
+</section>
+
+<section id="toc"><h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents</h2><ul class="toc" role="directory" id="respecContents"><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">1. </span>Introduction</a></li><li class="tocline"><a href="#use-cases" class="tocxref"><span class="secno">2. </span>Use Cases</a><ul class="toc"><li class="tocline"><a href="#web-application-rendering-of-unparsed-in-band-ttml-content" class="tocxref"><span class="secno">2.1 </span>Web Application Rendering of Unparsed In-band TTML Content</a></li><li class="tocline"><a href="#web-application-use-of-metadata-in-unparsed-in-band-ttml-content" class="tocxref"><span class="secno">2.2 </span>Web Application Use of Metadata in Unparsed In-band TTML Content</a></li></ul></li><li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">3. </span>Conformance</a></li><li class="tocline"><a href="#dependencies" class="tocxref"><span class="secno">4. </span>Dependencies</a></li><li class="tocline"><a href="#apis" class="tocxref"><span class="secno">5. </span>API Definitions</a><ul class="toc"><li class="tocline"><a href="#UnparsedTTMLCue" class="tocxref"><span class="secno">5.1 </span>UnparsedTTMLCue Interface</a><ul class="toc"><li class="tocline"><a href="#attributes" class="tocxref"><span class="secno">5.1.1 </span>Attributes</a></li><li class="tocline"><a href="#constructors" class="tocxref"><span class="secno">5.1.2 </span>Constructors</a></li></ul></li></ul></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li></ul></li></ul></section>
+
+<section id="introduction" typeof="bibo:Chapter" resource="#introduction" rel="bibo:chapter">
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_introduction"><span class="secno">1. </span>Introduction</h2>
+<p><em>This section is non-normative.</em></p>
+<p>This document defines a Level 1 API for exposing unparsed Timed Text Markup Language (TTML) content to Web Applications. It is expected
+that a Level 2 API will be defined that builds upon this API in order to expose parsed Timed Text Markup Language (TTML) content to Web Applications.</p>
+</section>
+<section id="use-cases" typeof="bibo:Chapter" resource="#use-cases" rel="bibo:chapter">
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_use-cases"><span class="secno">2. </span>Use Cases</h2>
+<p><em>This section is non-normative.</em></p>
+<p>This section describes common use cases for the TTML API Level 1.</p>
+<section id="web-application-rendering-of-unparsed-in-band-ttml-content">
+<h3 aria-level="2" role="heading" id="h3_web-application-rendering-of-unparsed-in-band-ttml-content"><span class="secno">2.1 </span>Web Application Rendering of Unparsed In-band TTML Content</h3>
+<p>Some <a title="user agent" href="#dfn-user-agent" class="internalDFN">HTML user agents</a> do not parse or render <a href="#dfn-ttml-content" class="internalDFN">TTML content</a> that is embedded in a media resource and potentially exposed to
+Web Applications as a <a href="#dfn-media-resource-specific-text-track" class="internalDFN">media-resource-specific text track</a> (i.e., <em>in-band</em> text track).
+In such cases, it is possible for a Web Application to parse and render this
+content by making use of client-side script provided the <a href="#dfn-ttml-content" class="internalDFN">TTML content</a> is exposed by some well defined API.</p>
+</section>
+<section id="web-application-use-of-metadata-in-unparsed-in-band-ttml-content">
+<h3 aria-level="2" role="heading" id="h3_web-application-use-of-metadata-in-unparsed-in-band-ttml-content"><span class="secno">2.2 </span>Web Application Use of Metadata in Unparsed In-band TTML Content</h3>
+<p>Authors of <a href="#dfn-ttml-content" class="internalDFN">TTML content</a> may include a variety of arbitrary metadata that provide additional layers of information about that content. For example, the
+<a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#metadata-attribute-agent"><code>ttp:agent</code></a> attribute may be used to specify the
+agent(s) involved in the performance (production) of content (such as '<code>James Bond</code>', '<code>Doctor No</code>', etc.), and the
+<a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#metadata-attribute-role"><code>ttp:role</code></a> attribute may be used to
+specify the role(s) of content (such as <code>action</code>, <code>dialog</code>, <code>music</code>, etc.),
+and so forth. In such cases, it is possible for a Web Application to parse and utilize this metadata
+by making use of client-side script provided the <a href="#dfn-ttml-content" class="internalDFN">TTML content</a> containing the metadata is exposed by some well defined API.</p>
+<p>An example of utilizing this metadata would be providing a client script generated user interface to search for <a href="#dfn-ttml-content" class="internalDFN">TTML content</a> associated with particular
+agents or roles, or automatically provide links from content so marked to other Web content or explanatory material.</p>
+</section>
+</section>
+<section id="conformance" typeof="bibo:Chapter" resource="#conformance" rel="bibo:chapter"><!--OddPage--><h2 aria-level="1" role="heading" id="h2_conformance"><span class="secno">3. </span>Conformance</h2>
+<p>
+  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,
+  and notes in this specification are non-normative. Everything else in this specification is
+  normative.
+</p>
+<p>
+  The key words <em class="rfc2119" title="MUST">MUST</em>, <em class="rfc2119" title="MUST NOT">MUST NOT</em>, <em class="rfc2119" title="REQUIRED">REQUIRED</em>, <em class="rfc2119" title="SHOULD">SHOULD</em>, <em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>, <em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em>, <em class="rfc2119" title="MAY">MAY</em>,
+  and <em class="rfc2119" title="OPTIONAL">OPTIONAL</em> in this specification are to be interpreted as described in [<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>].
+</p>
+
+<p>An <a title="user agent" href="#dfn-user-agent" class="internalDFN">HTML user agent</a> that claims to support any profile of [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>], or any subsequent version thereof, must implement
+support for the TTML Level 1 API defined herein, and, if it exposes <a href="#dfn-ttml-content" class="internalDFN">TTML content</a> to Web Applications in any fashion, then it must also expose that
+content to Web Applications using this API.</p>
+</section>
+<section id="dependencies" typeof="bibo:Chapter" resource="#dependencies" rel="bibo:chapter">
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_dependencies"><span class="secno">4. </span>Dependencies</h2>
+<p>This specification relies upon the certain concepts and APIs defined in other specifications as follows:</p>
+<dl>
+<dt>DOM</dt>
+<dd>The concept
+<a href="http://dom.spec.whatwg.org#concept-throw"><dfn id="dfn-throw">throw</dfn></a>,
+and the exception
+<a href="http://dom.spec.whatwg.org#syntaxerror"><dfn id="dfn-syntaxerror"><code>SyntaxError</code></dfn></a>.
+</dd>
+<dt>HTML</dt>
+<dd>The concepts
+<a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#interactive"><dfn id="dfn-interactive-browsers">interactive browsers</dfn></a>,
+<a href="http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#media-resource-specific-text-track"><dfn id="dfn-media-resource-specific-text-track">media-resource-specific text track</dfn></a>,
+<a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#non-interactive"><dfn id="dfn-non-interactive-browsers">non-interactive browsers</dfn></a>, and
+<a href="http://www.w3.org/html/wg/drafts/html/master/introduction.html#a-quick-introduction-to-html"><dfn id="dfn-user-agent">user agent</dfn></a>,
+and the interface
+<a href="http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#texttrackcue"><dfn id="dfn-texttrackcue"><code>TextTrackCue</code></dfn></a>.
+[<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>]</dd>
+<dt>TTML</dt>
+<dd>The concepts
+<a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#ttml-content-doctype"><dfn id="dfn-ttml-content">TTML content</dfn></a>,
+<a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#semantics-region-layout-step-1"><dfn id="dfn-ttml-intermediate-synchronic-document">TTML intermediate synchronic document</dfn></a>, and
+<a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#time-expression-semantics-media"><dfn id="dfn-ttml-media-time">TTML media time</dfn></a>.
+[<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>]</dd>
+<dt>WebIDL</dt>
+<dd>The generic semantics that apply to IDL specifications. [<cite><a class="bibref" href="#bib-WEBIDL">WEBIDL</a></cite>]</dd>
+</dl>
+</section>
+<section id="apis" typeof="bibo:Chapter" resource="#apis" rel="bibo:chapter">
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_apis"><span class="secno">5. </span>API Definitions</h2>
+<section id="UnparsedTTMLCue" typeof="bibo:Chapter" resource="#UnparsedTTMLCue" rel="bibo:chapter">
+<h3 aria-level="2" role="heading" id="h3_UnparsedTTMLCue"><span class="secno">5.1 </span>UnparsedTTMLCue Interface</h3>
+<div class="issue"><div class="issue-title" aria-level="3" role="heading" id="h_issue_1"><span>Issue 1</span></div><p class="">If a generic <code>UnparsedCue</code> interface is added to [<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>] or defined in some other <abbr title="World Wide Web Consortium">W3C</abbr> REC track specification, then
+redefine the following to inherit from that interface rather than <code>TextTrackCue</code>.</p></div>
+<div class="issue"><div class="issue-title" aria-level="3" role="heading" id="h_issue_2"><span>Issue 2</span></div><p class="">Need a better definition of <a href="#dfn-ttml-intermediate-synchronic-document" class="internalDFN">TTML intermediate synchronic document</a> than presently defined in
+[<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>], which does not define a concrete syntax. It is probably best to create a new specification that formally defines such concrete syntax and
+refer to that specification, which can in turn refer to [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>].</p></div>
+<div class="issue"><div class="issue-title" aria-level="3" role="heading" id="h_issue_3"><span>Issue 3</span></div><p class="">Need to cite definitions of <em>well-formed</em> and <em>UTF-16 encoded XML serialization</em>.</p></div>
+<pre class="idl"><span class="idlInterface" id="idl-def-UnparsedTTMLCue">[<span class="extAttr">Constructor(double startTime, double endTime, DOMString text)</span>]
+interface <span class="idlInterfaceID">UnparsedTTMLCue</span> : <span class="idlSuperclass"><a href="#dfn-texttrackcue" class="internalDFN">TextTrackCue</a></span> {
+<span class="idlAttribute">                attribute <span class="idlAttrType"><a>DOMString</a></span> <span class="idlAttrName"><a href="#widl-UnparsedTTMLCue-text">text</a></span>;</span>
+};</span></pre><section id="attributes"><h4 aria-level="3" role="heading" id="h4_attributes"><span class="secno">5.1.1 </span>Attributes</h4><dl class="attributes"><dt id="widl-UnparsedTTMLCue-text"><code>text</code> of type <span class="idlAttrType"><a>DOMString</a></span>,            </dt><dd>Access text representation of cue. Upon read, returns UTF-16 encoded XML serialization of the <a href="#dfn-ttml-intermediate-synchronic-document" class="internalDFN">TTML intermediate synchronic document</a> associated with cue.
+Upon write, if specified value is a well-formed UTF-16 encoded XML serialization of a <a href="#dfn-ttml-intermediate-synchronic-document" class="internalDFN">TTML intermediate synchronic document</a>, then the content of the cue is
+set to the new value; otherwise, <a href="#dfn-throw" class="internalDFN">throw</a> a <a href="#dfn-syntaxerror" class="internalDFN"><code>SyntaxError</code></a> exception.</dd></dl></section>
+<section id="constructors">
+<h4 aria-level="3" role="heading" id="h4_constructors"><span class="secno">5.1.2 </span>Constructors</h4>
+<dl class="constructors">
+<dt id="widl-UnparsedTTMLCue-UnparsedTTMLCue-double-startTime-double-endTime-DOMString-text"><code>UnparsedTTMLCue</code></dt>
+<dd>
+<table class="parameters">
+<tbody><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Nullable</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+<tr>
+<td class="prmName">startTime</td>
+<td class="prmType"><code><a>double</a></code></td>
+<td class="prmNullFalse">✘</td>
+<td class="prmOptFalse">✘</td>
+<td class="prmDesc">
+A <a href="#dfn-ttml-media-time" class="internalDFN">TTML media time</a> relative cue starting time, as further defined by
+<a href="http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#dom-TextTrackCue-startTime"><dfn id="dfn-starttime"><code>startTime</code></dfn></a> [<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>].
+</td>
+</tr>
+<tr>
+<td class="prmName">endTime</td>
+<td class="prmType"><code><a>double</a></code></td>
+<td class="prmNullFalse">✘</td>
+<td class="prmOptFalse">✘</td>
+<td class="prmDesc">
+A <a href="#dfn-ttml-media-time" class="internalDFN">TTML media time</a> relative cue ending time, as further defined by
+<a href="http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#dom-TextTrackCue-endTime"><dfn id="dfn-endtime"><code>endTime</code></dfn></a> [<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>].
+</td>
+</tr>
+<tr>
+<td class="prmName">text</td>
+<td class="prmType"><code><a>DOMString</a></code></td>
+<td class="prmNullFalse">✘</td>
+<td class="prmOptFalse">✘</td>
+<td class="prmDesc">
+A non-empty string representing a well-formed UTF-16 encoded XML serialization of a <a href="#dfn-ttml-intermediate-synchronic-document" class="internalDFN">TTML intermediate synchronic document</a>.
+</td>
+</tr>
+</tbody></table>
+<p>If the <code>endTime</code> parameter is less than <code>startTime</code>, then set the cue's end time to <code>startTime</code>.</p>
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_1"><span>Note</span></div><p class="">The value of the <code>text</code> parameter may be an empty string, in which case the constructed cue object represents
+a <dfn id="dfn-cue-with-no-content">cue with no content</dfn>.</p></div>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+<section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" rel="bibo:chapter"><!--OddPage--><h2 aria-level="1" role="heading" id="h2_references"><span class="secno">A. </span>References</h2><section id="normative-references" typeof="bibo:Chapter" resource="#normative-references" rel="bibo:chapter"><h3 aria-level="2" role="heading" id="h3_normative-references"><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography" about=""><dt id="bib-HTML5">[HTML5]</dt><dd rel="dcterms:requires">R. Berjon et al., Eds. <a href="http://www.w3.org/html/wg/drafts/html/master/Overview.html"><cite>HTML 5.1 Nightly</cite></a>, W3C Editor's Draft, URL: <a href="http://www.w3.org/html/wg/drafts/html/master/Overview.html">http://www.w3.org/html/wg/drafts/html/master/Overview.html</a>
+</dd><dt id="bib-RFC2119">[RFC2119]</dt><dd rel="dcterms:requires">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> 
+</dd><dt id="bib-TTML1">[TTML1]</dt><dd rel="dcterms:requires">G. Adams et al., Eds. <a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html"><cite>Timed Text Markup Language 1 (TTML1) (Second Edition)</cite></a>, W3C Editor's Draft, URL: <a href="http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html</a>
+</dd><dt id="bib-WEBIDL">[WEBIDL]</dt><dd rel="dcterms:requires">C. McCormack et al., Eds. <a href="http://dev.w3.org/2006/webapi/WebIDL/"><cite>HTML 5.1 Nightly</cite></a>, W3C Editor's Draft, URL: <a href="http://dev.w3.org/2006/webapi/WebIDL/">http://dev.w3.org/2006/webapi/WebIDL/</a>
+</dd></dl></section></section></body></html>

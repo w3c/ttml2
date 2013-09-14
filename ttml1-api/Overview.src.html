@@ -68,7 +68,7 @@ function example(doc, content) {
 </head>
 <body>
 <section id='abstract'>
-<p>This document defines a Level 1 API for exposing unparsed Timed Text Markup Language (TTML) content to Web Applications.</p>
+<p>This document defines a Level 1 API for exposing raw Timed Text Markup Language (TTML) content to <a title='Web application'>Web applications</a>.</p>
 </section>
 <section id='sotd'>
 <p><b>This document is an editor's draft that has no official standing.</b></p>
@@ -76,40 +76,46 @@ function example(doc, content) {
 <section id='introduction'>
 <h2>Introduction</h2>
 <p><em>This section is non-normative.</em></p>
-<p>This document defines a Level 1 API for exposing unparsed Timed Text Markup Language (TTML) content to Web Applications. It is expected
-that a Level 2 API will be defined that builds upon this API in order to expose parsed Timed Text Markup Language (TTML) content to Web Applications.</p>
+<p>This document defines a Level 1 API for exposing raw Timed Text Markup Language (TTML) content to <a title='Web application'>Web applications</a>. It is expected
+that a Level 2 API will be defined that builds upon this API in order to expose parsed Timed Text Markup Language (TTML) content
+to <a title='Web application'>Web applications</a>.</p>
 </section>
 <section id='use-cases'>
 <h2>Use Cases</h2>
 <p><em>This section is non-normative.</em></p>
 <p>This section describes common use cases for the TTML API Level 1.</p>
 <section>
-<h3>Web Application Rendering of Unparsed In-band TTML Content</h3>
+<h3>Web Application Rendering of Raw In-band TTML Content</h3>
 <p>Some <a title='user agent'>HTML user agents</a> do not parse or render <a>TTML content</a> that is embedded in a media resource and potentially exposed to
-Web Applications as a <a>media-resource-specific text track</a> (i.e., <em>in-band</em> text track).
-In such cases, it is possible for a Web Application to parse and render this
+<a title='Web application'>Web applications</a> as a <a>media-resource-specific text track</a> (i.e., <em>in-band</em> text track).
+In such cases, it is possible for a <a>Web application</a> to parse and render this
 content by making use of client-side script provided the <a>TTML content</a> is exposed by some well defined API.</p>
 </section>
 <section>
-<h3>Web Application Use of Metadata in Unparsed In-band TTML Content</h3>
+<h3>Web Application Use of Metadata in Raw In-band TTML Content</h3>
 <p>Authors of <a>TTML content</a> may include a variety of arbitrary metadata that provide additional layers of information about that content. For example, the
 <a href='https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#metadata-attribute-agent'><code>ttp:agent</code></a> attribute may be used to specify the
 agent(s) involved in the performance (production) of content (such as '<code>James Bond</code>', '<code>Doctor No</code>', etc.), and the
 <a href='https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#metadata-attribute-role'><code>ttp:role</code></a> attribute may be used to
 specify the role(s) of content (such as <code>action</code>, <code>dialog</code>, <code>music</code>, etc.),
-and so forth. In such cases, it is possible for a Web Application to parse and utilize this metadata
+and so forth. In such cases, it is possible for a <a>Web application</a> to parse and utilize this metadata
 by making use of client-side script provided the <a>TTML content</a> containing the metadata is exposed by some well defined API.</p>
 <p>An example of utilizing this metadata would be providing a client script generated user interface to search for <a>TTML content</a> associated with particular
 agents or roles, or automatically provide links from content so marked to other Web content or explanatory material.</p>
 </section>
 </section>
-<section id='conformance'>
-<p>An <a title='user agent'>HTML user agent</a> that claims to support any profile of [[!TTML1]], or any subsequent version thereof, MUST implement
-support for the TTML Level 1 API defined herein, and, if it exposes <a>TTML content</a> to Web Applications in any fashion, then it also MUST expose that
-content to Web Applications using this API.</p>
+<section id='terminology'>
+<h2>Definitions</h2>
+<section id='terminology'>
+<h3>Terminology</h3>
+<dl>
+<dt id='terms-raw-ttml-content'>[raw TTML content]</dt>
+<dd>An unparsed form of <a>TTML content</a> suitable for representation as a string data type.</dd>
+</dd>
+</dl>
 </section>
-<section id='dependencies'>
-<h2>Dependencies</h2>
+<section id='externals'>
+<h3>External Definitions</h3>
 <p>This specification relies upon the certain concepts and APIs defined in other specifications as follows:</p>
 <dl>
 <dt>DOM</dt>
@@ -124,6 +130,7 @@ and the exception
 <a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#media-resource-specific-text-track'><dfn>media-resource-specific text track</dfn></a>,
 <a href='http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#non-interactive'><dfn>non-interactive browsers</dfn></a>, and
 <a href='http://www.w3.org/html/wg/drafts/html/master/introduction.html#a-quick-introduction-to-html'><dfn>user agent</dfn></a>,
+<a href='http://www.w3.org/html/wg/drafts/html/master/introduction.html#background'><dfn>Web application</dfn></a>,
 and the interface
 <a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#texttrackcue'><dfn><code>TextTrackCue</code></dfn></a>.
 [[!HTML5]]</dd>
@@ -137,17 +144,25 @@ and the interface
 <dd>The generic semantics that apply to IDL specifications. [[!WEBIDL]]</dd>
 </dl>
 </section>
+</section>
+<section id='conformance'>
+<p>An <a title='user agent'>HTML user agent</a> that claims to support any profile of [[!TTML1]], or any subsequent version thereof, MUST implement
+support for the TTML Level 1 API defined herein, and, if it exposes <a>TTML content</a> to <a title='Web application'>Web applications</a> in any fashion,
+then it also MUST expose that content to <a title='Web application'>Web applications</a> using this API.</p>
+<p class='note'>The above conformance requirement is not intended to proscribe exposing <a>TTML content</a> to a <a>Web application</a> using an alternative mechanism to that defined herein. That is, <a>TTML content</a> may be exposed to a <a>Web application</a> in multiple ways, provided one of those ways is the mechanism defined here.</p>
+</section>
 <section id='apis'>
 <h2>API Definitions</h2>
-<section id='UnparsedTTMLCue'>
-<h2>UnparsedTTMLCue Interface</h2>
-<p class='issue'>If a generic <code>UnparsedCue</code> interface is added to [[!HTML5]] or defined in some other W3C REC track specification, then
+<section id='RawTTMLCue'>
+<h2>RawTTMLCue Interface</h2>
+<p class='issue'>If a generic <code>GenericCue</code> interface is added to [[!HTML5]] or defined in some other W3C REC track specification, and
+that interface is appropriate for exposing raw cue content (in a text form), then
 redefine the following to inherit from that interface rather than <code>TextTrackCue</code>.</p>
 <p class='issue'>Need a better definition of <a>TTML intermediate synchronic document</a> than presently defined in
 [[!TTML1]], which does not define a concrete syntax. It is probably best to create a new specification that formally defines such concrete syntax and
 refer to that specification, which can in turn refer to [[!TTML1]].</p>
 <p class='issue'>Need to cite definitions of <em>well-formed</em> and <em>UTF-16 encoded XML serialization</em>.</p>
-<dl class='idl' title='[Constructor(double startTime, double endTime, DOMString text)] interface UnparsedTTMLCue : TextTrackCue'>
+<dl class='idl' title='[Constructor(double startTime, double endTime, DOMString text)] interface RawTTMLCue : TextTrackCue'>
 <dt>attribute DOMString text</dt>
 <dd>Access text representation of cue. Upon read, returns UTF-16 encoded XML serialization of the <a>TTML intermediate synchronic document</a> associated with cue.
 Upon write, if specified value is a well-formed UTF-16 encoded XML serialization of a <a>TTML intermediate synchronic document</a>, then the content of the cue is
@@ -156,7 +171,7 @@ set to the new value; otherwise, <a>throw</a> a <a><code>SyntaxError</code></a> 
 <section>
 <h3>Constructors</h3>
 <dl class='constructors'>
-<dt id='widl-UnparsedTTMLCue-UnparsedTTMLCue-double-startTime-double-endTime-DOMString-text'><code>UnparsedTTMLCue</code></dt>
+<dt id='widl-RawTTMLCue-RawTTMLCue-double-startTime-double-endTime-DOMString-text'><code>RawTTMLCue</code></dt>
 <dd>
 <table class='parameters'>
 <tr>

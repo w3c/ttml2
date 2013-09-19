@@ -118,6 +118,155 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
   </html>
 </xsl:template>
 
+<!-- header: metadata about the spec -->
+<!-- pull out information into standard W3C layout -->
+<xsl:template match="header">
+  <div class="head">
+    <xsl:if test="not(/spec/@role='editors-copy')">
+      <p>
+        <a href="http://www.w3.org/">
+          <img src="http://www.w3.org/Icons/w3c_home"
+            alt="W3C" height="48" width="72"/>
+        </a>
+        <xsl:choose>
+          <xsl:when test="/spec/@w3c-doctype='memsub'">
+            <a href='http://www.w3.org/Submission/'>
+              <img alt='Member Submission'
+                   src='http://www.w3.org/Icons/member_subm'/>
+            </a>
+          </xsl:when>
+          <xsl:when test="/spec/@w3c-doctype='teamsub'">
+            <a href='http://www.w3.org/2003/06/TeamSubmission'>
+              <img alt='Team Submission'
+                   src='http://www.w3.org/Icons/team_subm'/>
+            </a>
+          </xsl:when>
+        </xsl:choose>
+      </p>
+    </xsl:if>
+    <xsl:text>&#10;</xsl:text>
+    <h1>
+      <xsl:call-template name="anchor">
+        <xsl:with-param name="node" select="title[1]"/>
+        <xsl:with-param name="conditional" select="0"/>
+        <xsl:with-param name="default.id" select="'title'"/>
+      </xsl:call-template>
+
+      <xsl:apply-templates select="title"/>
+      <xsl:if test="version">
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates select="version"/>
+      </xsl:if>
+    </h1>
+    <xsl:if test="subtitle">
+      <xsl:text>&#10;</xsl:text>
+      <h2>
+        <xsl:call-template name="anchor">
+          <xsl:with-param name="node" select="subtitle[1]"/>
+          <xsl:with-param name="conditional" select="0"/>
+          <xsl:with-param name="default.id" select="'subtitle'"/>
+        </xsl:call-template>
+        <xsl:apply-templates select="subtitle"/>
+      </h2>
+    </xsl:if>
+    <xsl:text>&#10;</xsl:text>
+    <h2>
+      <xsl:call-template name="anchor">
+        <xsl:with-param name="node" select="w3c-doctype[1]"/>
+        <xsl:with-param name="conditional" select="0"/>
+        <xsl:with-param name="default.id" select="'w3c-doctype'"/>
+      </xsl:call-template>
+
+      <xsl:choose>
+        <xsl:when test="/spec/@w3c-doctype = 'review'">
+          <xsl:text>Editor's Draft</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="w3c-doctype[1]"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text> </xsl:text>
+      <xsl:if test="pubdate/day">
+        <xsl:apply-templates select="pubdate/day"/>
+        <xsl:text> </xsl:text>
+      </xsl:if>
+      <xsl:apply-templates select="pubdate/month"/>
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates select="pubdate/year"/>
+    </h2>
+    <dl>
+      <xsl:apply-templates select="publoc"/>
+      <xsl:apply-templates select="latestloc"/>
+      <xsl:apply-templates select="prevlocs"/>
+      <xsl:apply-templates select="prevrecs"/>
+      <xsl:apply-templates select="authlist"/>
+    </dl>
+
+    <!-- output the errataloc and altlocs -->
+    <xsl:apply-templates select="errataloc"/>
+    <xsl:apply-templates select="preverrataloc"/>
+    <xsl:apply-templates select="translationloc"/>
+    <xsl:apply-templates select="altlocs"/>
+
+    <xsl:choose>
+      <xsl:when test="copyright">
+        <xsl:apply-templates select="copyright"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <p class="copyright">
+          <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
+            <xsl:text>Copyright</xsl:text>
+          </a>
+          <xsl:text>&#xa0;&#xa9;&#xa0;</xsl:text>
+          <xsl:apply-templates select="pubdate/year"/>
+          <xsl:text>&#xa0;</xsl:text>
+          <a href="http://www.w3.org/">
+            <acronym title="World Wide Web Consortium">W3C</acronym>
+          </a>
+          <sup>&#xae;</sup>
+          <xsl:text> (</xsl:text>
+          <a href="http://www.csail.mit.edu/">
+            <acronym title="Massachusetts Institute of Technology">MIT</acronym>
+          </a>
+          <xsl:text>, </xsl:text>
+          <a href="http://www.ercim.eu/">
+            <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
+          </a>
+          <xsl:text>, </xsl:text>
+          <a href="http://www.keio.ac.jp/">Keio</a>
+          <xsl:text>, </xsl:text>
+          <a href="http://ev.buaa.edu.cn/">Beihang</a>
+          <xsl:text>), All Rights Reserved. W3C </xsl:text>
+          <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
+          <xsl:text>, </xsl:text>
+          <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>
+          <xsl:text> and </xsl:text>
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+          <xsl:text> rules apply.</xsl:text>
+        </p>
+      </xsl:otherwise>
+    </xsl:choose>
+  </div>
+  <hr/>
+  <xsl:apply-templates select="notice"/>
+  <xsl:apply-templates select="abstract"/>
+  <xsl:apply-templates select="status"/>
+  <xsl:apply-templates select="revisiondesc"/>
+</xsl:template>
+
+<!-- prevrecs: previous locations for this spec -->
+<!-- called in a <dl> context from header -->
+<xsl:template match="prevrecs">
+  <dt>
+    <xsl:text>Previous recommendation</xsl:text>
+    <xsl:if test="count(loc) &gt; 1">s</xsl:if>
+    <xsl:text>:</xsl:text>
+  </dt>
+  <dd>
+    <xsl:apply-templates/>
+  </dd>
+</xsl:template>
+
 <!-- specref: reference to another part of teh current specification -->
 <xsl:template match="specref">
   <xsl:param name="target" select="key('ids', @ref)[1]"/>

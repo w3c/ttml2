@@ -267,6 +267,16 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
   </dd>
 </xsl:template>
 
+<!-- errataloc: define errata location -->
+<xsl:template match="errataloc">
+  <p>
+    <xsl:text>Please refer to the </xsl:text>
+    <a href="{@href}"><strong>errata</strong></a>
+    <xsl:text> for this document, which may
+    include normative corrections.</xsl:text>
+  </p>
+</xsl:template>
+
 <!-- specref: reference to another part of teh current specification -->
 <xsl:template match="specref">
   <xsl:param name="target" select="key('ids', @ref)[1]"/>

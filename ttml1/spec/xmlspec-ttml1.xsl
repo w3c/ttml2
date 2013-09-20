@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 <xsl:import href="xmlspec.xsl"/>
-<xsl:import href="changelog.xsl"/>
 <xsl:param name="toc.level" select="5"/>
 <xsl:param name="show.ednotes">1</xsl:param>
 <!-- [GA] remove 2013-05-09

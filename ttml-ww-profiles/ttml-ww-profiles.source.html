@@ -1,38 +1,54 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 <head>
   <meta charset='utf-8'>
 
   <title>TTML Text and Image Profiles for Internet Media Subtitles and Captions</title>
-  <script src='http://www.w3.org/Tools/respec/respec-w3c-common.js' class='remove'>
+  <script src='respec-w3c-common.js' class='remove'>
 </script>
   <script class='remove'>
 var respecConfig = {
-			specStatus:   "WD"
+                        specStatus:   "WD"
           ,   shortName:    "ttml-ww-profiles"
           ,   editors:      [{ name: "Pierre Lemieux", mailto: "pal@sandflow.com" }]
-		  ,   wg: "Timed Text Working Group"
-		  ,   wgURI: "http://www.w3.org/AudioVideo/TT/"
-		  ,   wgPublicList: "public-tt"
-		  ,   prevVersion: "http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/"
-		  ,   localBiblio:  {
+                  ,   wg: "Timed Text Working Group"
+                  ,   wgURI: "http://www.w3.org/AudioVideo/TT/"
+                  ,   wgPublicList: "public-tt"
+                  ,   wgPatentURI: "http://www.w3.org/2004/01/pp-impl/34314/status"
+                  ,   prevVersion: "http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/"
+                  ,   localBiblio:  {
                   "TTML2":  "World Wide Web Consortium (W3C). Timed Text Markup Language 2 (TTML 2)",
-				  "CEA-608": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/Line-21-Data-Service.aspx'>Line-21 Data Services</a>, ANSI/CEA Standard.",
-				  "CEA-708": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx'>Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.",
-				  "MHP" : "ETSI TS 101 812 V1.3.1, Digital Video Broadcasting (DVB); Multimedia Home",
-				  "ST2052-1": "SMPTE ST 2052-1, Timed Text Format (SMPTE-TT)"
+                  "CEA-608": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/Line-21-Data-Service.aspx'>Line-21 Data Services</a>, ANSI/CEA Standard.",
+                  "CEA-708": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx'>Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.",
+                  "MHP" : "ETSI TS 101 812 V1.3.1, Digital Video Broadcasting (DVB); Multimedia Home",
+                  "ST2052-1": "SMPTE ST 2052-1, Timed Text Format (SMPTE-TT)"
               }
         };
   </script>
+  <style type="text/css">
+table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
+  table.syntax caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
+  table.syntax th { border: 0px solid black; text-align: left }
+  table.syntax td { border: 0px solid black }
+  table.syntax div { background-color: #ffffc8 }
+  div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+  </style>
 </head>
 
 <body>
   <section id='abstract'>
-    <p>This submission specifies two profiles of the Timed Text Markup Language 2 (TTML 2): a text-only profile and an
-    image-only profile. These profiles are intended to be used across subtitle and caption delivery applications worldwide, thereby
-    simplifying interoperability, consistent rendering and conversion to other subtitling and captioning formats. The text
-    profile is a superset of <a href="http://www.w3.org/TR/ttml10-sdp-us/">SDP-US</a>.</p>
+    <p>This submission specifies two profiles of the Timed Text Markup Language 2 (TTML 2): a text-only profile and an image-only
+    profile. These profiles are intended to be used across subtitle and caption delivery applications worldwide, thereby
+    simplifying interoperability, consistent rendering and conversion to other subtitling and captioning formats. The text profile
+    is a superset of <a href="http://www.w3.org/TR/ttml10-sdp-us/">SDP-US</a>.</p>
 
     <p>Both profiles are based on the <a href="http://www.uvvuwiki.com/">Common File Format &amp; Media Formats Specification
     (CFF)</a> developed by <a href="http://www.uvvu.com/partners.php">Digital Entertainment Content Ecosystem (DECE)</a>.</p>
@@ -41,9 +57,9 @@ var respecConfig = {
   <section id='scope'>
     <h2>Scope</h2>
 
-    <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only
-    profile. These profiles are intended for subtitle and caption delivery worldwide, including dialog language translation,
-    content description, captions for deaf and hard of hearing, etc.</p>
+    <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only profile. These profiles are
+    intended for subtitle and caption delivery worldwide, including dialog language translation, content description, captions for
+    deaf and hard of hearing, etc.</p>
   </section>
 
   <section id="conformance">
@@ -88,6 +104,33 @@ var respecConfig = {
     </section>
 
     <section>
+      <h3>Namespaces</h3>
+
+      <p>The following namespaces (see [[!xml-names]]) are used in this specification:</p>
+
+      <table class='simple'>
+        <thead>
+          <tr>
+            <th>Prefix</th>
+
+            <th>Value</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>imsc</td>
+
+            <td>http://www.w3.org/ns/ttml/profile/imsc</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The namespace prefix values defined above are for convenience and document instances may use any prefix value that
+      conforms to [[!xml-names]].</p>
+    </section>
+
+    <section>
       <h3>Related Video Object</h3>
 
       <section>
@@ -100,7 +143,8 @@ var respecConfig = {
       <section>
         <h4>Root Container</h4>
 
-        <p class='note'>The following assumes the addition of a <code>ttp:aspectRatio</code> attribute to [[!TTML2]].</p>
+        <p class='issue'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/201">ISSUE-201</a> for a discussion of aspect
+        ratio in the context of [[!TTML2]].</p>
 
         <p>The root container of a subtitle document SHALL be mapped to the related video object frame according to the
         following:</p>
@@ -165,13 +209,62 @@ var respecConfig = {
     </section>
 
     <section>
+      <h3>Progressively Decodable</h3>
+
+      <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the document
+      is received in its entirety. It shall conform to the following:</p>
+
+      <ol>
+        <li>elements are sorted according to their resolved begin time;</li>
+
+        <li>elements with identical resolved begin time appear in the order desired for flow;</li>
+
+        <li>no element references another element with a larger resolved begin time;</li>
+
+        <li>no element references another element occurring later in the subtitle document; and</li>
+
+        <li>a <code>imsc:progressivelyDecodable</code> attribute with value &quot;true&quot; is present on the <code>tt</code>
+        element.</li>
+      </ol>
+
+      <p>The <code>imsc:progressivelyDecodable</code> attribute shall conform to the following syntax:</p>
+
+      <table class="syntax">
+        <tbody>
+          <tr>
+            <td>
+              <div class="exampleInner">
+                <pre>
+imsc:progressivelyDecodable
+  : &quot;true&quot;
+  | &quot;false&quot;
+</pre>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The initial value of <code>imsc:progressivelyDecodable</code> shall be &quot;false&quot;.</p>
+
+      <p>A <code>imsc:progressivelyDecodable</code> attribute with value &quot;false&quot; may be present on the <code>tt</code>
+      element if the subtitle document is not a progressively decodable subtitle document.</p>
+
+      <p>A <code>imsc:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
+      <code>tt</code> element.</p>
+
+      <p class='note'>The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
+      attributes, and (ii) the use of <code>set</code>.</p>
+    </section>
+
+    <section>
       <h3>Region</h3>
 
       <section>
         <h4>Presented Region</h4>
 
-        <p>A region, as defined in [[!TTML2]], SHALL be considered presented in a given intermediate synchronic document if both of the
-        following conditions are true:</p>
+        <p>A region, as defined in [[!TTML2]], SHALL be considered presented in a given intermediate synchronic document if both of
+        the following conditions are true:</p>
 
         <ol>
           <li>
@@ -179,15 +272,18 @@ var respecConfig = {
           </li>
 
           <li>
+            <p><code>tts:display</code> is not &quot;none&quot;; and</p>
+          </li>
+
+          <li>
             <p>content is selected into the region or <code>tts:showBackground</code> is equal to &quot;always&quot; for the
             region.</p>
           </li>
         </ol>
-		
-		<!-- add note: why was tts:display ignored -> simplicity? how can the same be achieved: nothing selected -->
 
-        <p class='note'>As specified in [[!TTML2]], the initial value of <code>tts:opacity</code> is &quot;1.0&quot; and the default
-        value of <code>tts:showBackground</code> is &quot;always&quot;.</p>
+        <p class='note'>As specified in [[!TTML2]], the initial value of <code>tts:opacity</code> is &quot;1.0&quot;, the initial
+        value of <code>tts:showBackground</code> is &quot;always&quot;, and the initial value of <code>tts:display</code> is
+        &quot;auto&quot;</p>
       </section>
 
       <section>
@@ -482,7 +578,8 @@ var respecConfig = {
           <tr>
             <td><code>#tickRate</code></td>
 
-            <td>MAY be used. <code>ttp:tickRate</code> SHALL be present on the <code>tt</code> element.</td>
+            <td>MAY be used. <code>ttp:tickRate</code> SHALL be present on the <code>tt</code> element if the
+            #time-offset-with-ticks feature is used in the document.</td>
           </tr>
 
           <tr>
@@ -530,12 +627,6 @@ var respecConfig = {
 
           <tr>
             <td><code>#time-offset</code></td>
-
-            <td>MAY be used.</td>
-          </tr>
-
-          <tr>
-            <td><code>#timeBase-media</code></td>
 
             <td>MAY be used.</td>
           </tr>
@@ -633,14 +724,14 @@ var respecConfig = {
         </tbody>
       </table>
 
-      <p class='note'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/230">ISSUE-230</a> for a description of
+      <p class='issue'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/230">ISSUE-230</a> for a description of
       <code>#forcedDisplay</code></p>
 
-      <p class='note'>This initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> and
+      <p class='note'>The initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> and
       <code>tts:textAlign</code> are those specified by [[ST2052-1]].</p>
 
-      <p class='note'>As specified in [[!TTML2]], a <code>#time-offset-with-frames</code> expression is translated to a media time M
-      according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
+      <p class='note'>As specified in [[!TTML2]], a <code>#time-offset-with-frames</code> expression is translated to a media time
+      M according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
       <code>ttp:frameRate</code>)).</p>
     </section>
   </section>
@@ -651,24 +742,23 @@ var respecConfig = {
     <section>
       <h3>Document Conformance</h3>
 
-      <p>A subtitle document conforming to the Text Profile SHALL be designated by the document conformance designator specified
-      below.</p>
+      <p>A subtitle document conforming to the Text Profile SHALL be associated with the following profile designator and profile
+      definition document:</p>
       <pre>
-http://www.w3.org/ns/ttml/profile/imsc-text
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/text/definition&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
+  &lt;extensions&gt;
+    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/imsc/text/definition&lt;/extension&gt;
+  &lt;/extensions&gt;
+&lt;/profile&gt;
 </pre>
-
-      <p class='note'>The ttp:profile mechanism of TTML 1.0 allows a document to indicate the profile(s) that a processor SHALL
-      support in order to process the document. This mechanism cannot be used to indicate that a processor implementing any of the
-      referenced profiles can process the document. The document conformance concept introduced below extends the TTML 1.0
-      ttp:profile mechanism by allowing a document to signal that it conforms to a specified set of normative provisions.</p>
     </section>
 
     <section>
       <h3>Features</h3>
 
-      <p class='note'>The following assumes, but does not require, the porting of the [[ST2052-1]]
-      <code>#backgroundImage</code>, <code>#backgroundImageHorizontal</code>, <code>#backgroundImageVertical</code> and
-      <code>#image</code> features to [[!TTML2]].</p>
+      <p class='issue'>The following assumes, but does not require, the porting of the [[ST2052-1]] <code>#backgroundImage</code>
+      features to [[!TTML2]]. See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/238">ISSUE-238</a>.</p>
 
       <table class='simple'>
         <thead>
@@ -749,14 +839,19 @@ http://www.w3.org/ns/ttml/profile/imsc-text
           <tr>
             <td><code>#extent-region</code></td>
 
-            <td>The <code>tts:extent</code> attribute when applied to a region element SHALL use <code>px</code> units or
-            &quot;percentage&quot; representation, and SHALL NOT use <code>em</code> units.</td>
+            <td>
+              The <code>tts:extent</code> attribute when applied to a region element SHALL use <code>px</code> units or
+              &quot;percentage&quot; representation, and SHALL NOT use <code>em</code> units.<br>
+              Section <a href="#layout-model"></a> SHOULD be used to calculate a region extent that avoids clipping.
+            </td>
           </tr>
 
           <tr>
             <td><code>#fontFamily-generic</code></td>
 
-            <td>MAY be used.</td>
+            <td>MAY be used. A <code>tts:fontFamily</code> of either &quot;monospaceSerif&quot; or
+            &quot;proportionalSansSerif&quot; SHOULD be specified for all presented text content. A tts:fontFamily of
+            &quot;default&quot; SHALL be equivalent to &quot;monospaceSerif&quot;.</td>
           </tr>
 
           <tr>
@@ -974,24 +1069,49 @@ http://www.w3.org/ns/ttml/profile/imsc-text
     <section>
       <h3>Document Conformance</h3>
 
-      <p>The Image Profile SHALL be designated by the document conformance designator specified below:</p>
+      <p>A subtitle document conforming to the Image Profile SHALL be associated with the following profile designator and profile
+      definition document:</p>
       <pre>
-http://www.w3.org/ns/ttml/profile/imsc-image
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/image/definition&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
+  &lt;extensions&gt;
+    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/definition/imsc/image/definition&lt;/extension&gt;
+  &lt;/extensions&gt;
+&lt;/profile&gt;
 </pre>
+    </section>
 
-      <p class='note'>The ttp:profile mechanism of TTML 1.0 allows a document to indicate the profile(s) that a processor SHALL
-      support in order to process the document. This mechanism cannot be used to indicate that a processor implementing any of the
-      referenced profiles can process the document. The document conformance concept introduced below extends the TTML 1.0
-      ttp:profile mechanism by allowing a document to signal that it conforms to a specified set of normative
-      provisions.</p>
+    <section>
+      <h3>Presented Image</h3>
+
+      <section>
+        <h4>Definition</h4>
+
+        <p>A presented image SHALL be a <code>div</code> element with a smpte:backgroundImage attribute that is contained within a
+        presented region.</p>
+      </section>
+
+      <section>
+        <h4>Number per Region</h4><!-- start CFF-TT 1.0.7 -->
+
+        <p>In a given synchronic document, there shall be at most one presented image per presented region.</p>
+        <!-- end CFF-TT 1.0.7 -->
+      </section>
+    </section>
+
+    <section>
+      <h3><code>div</code> element</h3>
+
+      <p>If a <code>tts:backgroundImage</code> attribute is applied to a <code>div</code> element, the width and height of the
+      region extent associated with the <code>div</code> element SHALL be present and SHALL be equal to the width and height of the
+      image source referenced by the <code>tts:backgroundImage</code>.</p>
     </section>
 
     <section>
       <h3>Features</h3>
-	  
-      <p class='note'>The following assumes, but does not require, the porting of the [[ST2052-1]]
-      <code>#backgroundImage</code>, <code>#backgroundImageHorizontal</code>, <code>#backgroundImageVertical</code> and
-      <code>#image</code> features to [[!TTML2]].</p>
+
+      <p class='issue'>The following assumes, but does not require, the porting of the [[ST2052-1]] <code>#backgroundImage</code>
+      features to [[!TTML2]]. See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/238">ISSUE-238</a>.</p>
 
       <table class='simple'>
         <thead>
@@ -1052,14 +1172,6 @@ http://www.w3.org/ns/ttml/profile/imsc-image
             <td><code>#displayAlign</code></td>
 
             <td>SHALL NOT be used.</td>
-          </tr>
-
-          <tr>
-            <td><code>#extent-region</code></td>
-
-            <td>If a <code>tts:backgroundImage</code> attribute is applied to a region, the width and height of the region extent
-            SHALL be present and SHALL be equal to the width and height of the image source referenced by the
-            <code>tts:backgroundImage</code>.</td>
           </tr>
 
           <tr>
@@ -1166,51 +1278,53 @@ http://www.w3.org/ns/ttml/profile/imsc-image
     <h2>Hypothetical Render Model</h2>
 
     <section>
-      <h3>Overview</h3>
-
-      <p>This Section specifies the Hypothetical Render Model illustrated in <a href="#fig-hypothetical-render-model"></a>.</p>
-
-      <p>The purpose of the model is to limit subtitle document complexity. It is not however intended to serve as basis for
-      implementation. For instance, while the model defines a glyph buffer for the purpose of limiting the number of glyphs
-      displayed at any given point in time, it does not require an implementation to implement such a buffer.</p>
-
-      <figure>
-        <img src="hypothetical-render-figure-1.png" alt="Hypothetical Render Model">
-
-        <figcaption>
-          Hypothetical Render Model
-        </figcaption>
-      </figure>
-
-      <p>The model operates on successive intermediate synchronic documents obtained from an input subtitle document, and uses a
-      simple double buffering model: while an intermediate synchronic document E<sub>n</sub> is being painted into Presentation
-      Buffer P<sub>n</sub> (the &quot;front buffer&quot; of the model), the previous intermediate synchronic document
-      E<sub>n-1</sub> is available for display in Presentation Buffer P<sub>n-1</sub> (the &quot;back buffer&quot; of the
-      model).</p>
-
-      <p>The model specifies an (hypothetical) time required for completely painting an intermediate synchronic document as a proxy
-      for complexity. Painting includes drawing region backgrounds, rendering and copying glyphs, and decoding and copying images.
-      Complexity is then limited by requiring that painting of intermediate synchronic document E<sub>n</sub> completes before the
-      end of intermediate synchronic document E<sub>n-1</sub>.</p>
-
-      <p>Whenever applicable, constraints are specified relative to root container dimensions, allowing subtitle sequences to be
-      authored independently of related video object resolution.</p>
-
-      <p>To enables scenarios where the same glyphs are used in multiple successive intermediate synchronic documents, e.g. to
-      convey a CEA-608/708-style roll-up (see [[CEA-608]] and [[CEA-708]]), the Glyph Buffers G<sub>n</sub> and G<sub>n-1</sub> store rendered glyphs across
-      intermediate synchronic documents, allowing glyphs to be copied into the Presentation Buffer instead of rendered, a more
-      costly operation.</p>
-
-      <p>Similarly, Decoded Image Buffers D<sub>n</sub> and D<sub>n-1</sub> store decoded images across intermediate synchronic
-      documents, allowing images to be copied into the Presentation Buffer instead of decoded.</p>
-    </section>
-
-    <section>
-      <h3>Model</h3>
+      <h3>Performance Model</h3>
 
       <section>
-        <h4>General</h4>The Presentation Compositor SHALL render in Presentation Buffer P<sub>n</sub> each successive intermediate
-        synchronic document E<sub>n</sub> using the following steps in order:
+        <h4>Overview</h4>
+
+        <p>This Section specifies the Hypothetical Render Model illustrated in <a href="#fig-hypothetical-render-model"></a>.</p>
+
+        <p>The purpose of the model is to limit subtitle document complexity. It is not however intended to serve as basis for
+        implementation. For instance, while the model defines a glyph buffer for the purpose of limiting the number of glyphs
+        displayed at any given point in time, it does not require an implementation to implement such a buffer.</p>
+
+        <figure>
+          <img src="hypothetical-render-figure-1.png" alt="Hypothetical Render Model">
+
+          <figcaption>
+            Hypothetical Render Model
+          </figcaption>
+        </figure>
+
+        <p>The model operates on successive intermediate synchronic documents obtained from an input subtitle document, and uses a
+        simple double buffering model: while an intermediate synchronic document E<sub>n</sub> is being painted into Presentation
+        Buffer P<sub>n</sub> (the &quot;front buffer&quot; of the model), the previous intermediate synchronic document
+        E<sub>n-1</sub> is available for display in Presentation Buffer P<sub>n-1</sub> (the &quot;back buffer&quot; of the
+        model).</p>
+
+        <p>The model specifies an (hypothetical) time required for completely painting an intermediate synchronic document as a
+        proxy for complexity. Painting includes drawing region backgrounds, rendering and copying glyphs, and decoding and copying
+        images. Complexity is then limited by requiring that painting of intermediate synchronic document E<sub>n</sub> completes
+        before the end of intermediate synchronic document E<sub>n-1</sub>.</p>
+
+        <p>Whenever applicable, constraints are specified relative to root container dimensions, allowing subtitle sequences to be
+        authored independently of related video object resolution.</p>
+
+        <p>To enables scenarios where the same glyphs are used in multiple successive intermediate synchronic documents, e.g. to
+        convey a CEA-608/708-style roll-up (see [[CEA-608]] and [[CEA-708]]), the Glyph Buffers G<sub>n</sub> and G<sub>n-1</sub>
+        store rendered glyphs across intermediate synchronic documents, allowing glyphs to be copied into the Presentation Buffer
+        instead of rendered, a more costly operation.</p>
+
+        <p>Similarly, Decoded Image Buffers D<sub>n</sub> and D<sub>n-1</sub> store decoded images across intermediate synchronic
+        documents, allowing images to be copied into the Presentation Buffer instead of decoded.</p>
+      </section>
+
+      <section>
+        <h4>General</h4>
+
+        <p>The Presentation Compositor SHALL render in Presentation Buffer P<sub>n</sub> each successive intermediate synchronic
+        document E<sub>n</sub> using the following steps in order:</p>
 
         <ol>
           <li>clear the pixels, except for the first intermediate synchronic document E<sub>0</sub> for the which the pixels of
@@ -1299,7 +1413,7 @@ http://www.w3.org/ns/ttml/profile/imsc-image
       </section>
 
       <section>
-        <h3>Paint Regions</h3>
+        <h4>Paint Regions</h4>
 
         <p>The total normalized drawing area S(E<sub>n</sub>) for intermediate synchronic document E<sub>n</sub> SHALL be</p>
 
@@ -1320,8 +1434,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
 
         <p>NSIZE(R<sub>i</sub>) SHALL be given by:</p>
 
-        <p>NSIZE(R<sub>i</sub>) = (width of R<sub>i</sub> ∙ height of R<sub>i</sub> ) ÷ (root container height ∙ root container
-        width)</p>
+        <p>NSIZE(R<sub>i</sub>) = (width of R<sub>i</sub> ∙ height of R<sub>i</sub> ) ÷ (root container height ∙ root
+        container width)</p>
 
         <aside class='example'>
           For a region R<sub>i</sub> in with <code>tts:extent=&quot;250px 50px&quot;</code> within a root container with
@@ -1337,12 +1451,12 @@ http://www.w3.org/ns/ttml/profile/imsc-image
           <li>It is specified on the <code>region</code> layout element that defines the region.</li>
 
           <li>It is specified on a <code>div</code>, <code>p</code>, <code>span</code> or <code>br</code> content element that is
-          to be flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on when
-          a content element is followed into a region).</li>
+          to be flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on
+          when a content element is followed into a region).</li>
 
           <li>It is specified on a <code>set</code> animation element that is to be applied to content elements that are to be
-          flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on when a
-          <code>set</code> animation element is applied to content elements).</li>
+          flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on when
+          a <code>set</code> animation element is applied to content elements).</li>
         </ul>
 
         <p>Even if a specified <code>tts:backgroundColor</code> is the same as specified on the nearest ancestor content element or
@@ -1351,13 +1465,10 @@ http://www.w3.org/ns/ttml/profile/imsc-image
       </section>
 
       <section>
-        <h3>Paint Images</h3>
+        <h4>Paint Images</h4>
 
         <p>The Presentation Compositor SHALL paint into the Presentation Buffer P<sub>n</sub> all visible pixels of presented
         images of intermediate synchronic document E<sub>n</sub>.</p>
-
-        <p>A presented image SHALL be a <code>div</code> element with a smpte:backgroundImage attribute that is contained within a
-        presented region.</p>
 
         <p>For each presented image, the Presentation Compositor SHALL either:</p>
 
@@ -1395,8 +1506,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
 
         <p>NRGA(I<sub>i</sub>) is the Normalized Image Area of presented image I<sub>i</sub> and SHALL be equal to:</p>
 
-        <p>NRGA(I<sub>i</sub>)= (width of I<sub>i</sub> ) ∙ height of I<sub>i</sub> ) ÷ ( root container height ∙ root container
-        width )</p>
+        <p>NRGA(I<sub>i</sub>)= (width of I<sub>i</sub> ) ∙ height of I<sub>i</sub> ) ÷ ( root container height ∙ root
+        container width )</p>
 
         <p>NSIZ(I<sub>i</sub>) SHALL be the number of pixels of presented image I<sub>i</sub>.</p>
 
@@ -1443,7 +1554,7 @@ http://www.w3.org/ns/ttml/profile/imsc-image
       </section>
 
       <section>
-        <h3>Paint Text</h3>
+        <h4>Paint Text</h4>
 
         <p>For each glyph displayed in intermediate synchronic document E<sub>n</sub>, the Presentation Compositor SHALL:</p>
 
@@ -1478,7 +1589,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
         </ul>
 
         <figure>
-          <img src="text-render-example-figure-2.png" alt="Example of Presentation Compositor Behavior for Text Rendering">
+          <img src="text-render-example-figure-2.png" alt="Example of Presentation Compositor Behavior for Text Rendering" height=
+          "150" width="324">
 
           <figcaption>
             Example of Presentation Compositor Behavior for Text Rendering
@@ -1488,8 +1600,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
         <p>The duration DUR<sub>T</sub>(E<sub>n</sub>) for painting the text of an intermediate synchronic document E<sub>n</sub>
         in the Presentation Buffer is as follows:</p>
 
-        <p>DUR<sub>T</sub>(E<sub>n</sub>) = ∑<sub>G<sub>i</sub> ∈ G<sub>r</sub></sub> NRGA(G<sub>i</sub>) / Ren(G<sub>i</sub>) +
-        ∑<sub>G<sub>j</sub> ∈ G<sub>c</sub></sub> NRGA(G<sub>j</sub>) / GCpy</p>
+        <p>DUR<sub>T</sub>(E<sub>n</sub>) = ∑<sub>G<sub>i</sub> ∈ G<sub>r</sub></sub> NRGA(G<sub>i</sub>) / Ren(G<sub>i</sub>)
+        + ∑<sub>G<sub>j</sub> ∈ G<sub>c</sub></sub> NRGA(G<sub>j</sub>) / GCpy</p>
 
         <p>Where:</p>
 
@@ -1520,8 +1632,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
 
         <p>The size of Glyph Buffers G<sub>n</sub> and G<sub>n-1</sub> SHALL be the Normalized Glyph Buffer Size (NGBS).</p>
 
-        <p>Unless specified otherwise, the following table SHALL specify GCpy, Ren and NGBS, and SHALL apply to all
-        supported font styles (including provision of outline border).</p>
+        <p>Unless specified otherwise, the following table SHALL specify GCpy, Ren and NGBS, and SHALL apply to all supported font
+        styles (including provision of outline border).</p>
 
         <table class='simple'>
           <thead>
@@ -1575,9 +1687,9 @@ http://www.w3.org/ns/ttml/profile/imsc-image
 
         <aside class='example'>
           GCpy effectively sets a limit on animating glyphs. For example, assuming that the root container is ultimately rendered
-          at 1920×1080 resolution and no regions need to have background color painted (so only a CLEAR(E<sub>n</sub>) operation is
-          required for the normalized drawing area for the intermediate synchronic document), a GCpy and BDraw of 12 s-1 would mean
-          that a group of 160 glyphs with a tts:fontSize equal to 5% of the root container height could be moved at most
+          at 1920×1080 resolution and no regions need to have background color painted (so only a CLEAR(E<sub>n</sub>) operation
+          is required for the normalized drawing area for the intermediate synchronic document), a GCpy and BDraw of 12 s-1 would
+          mean that a group of 160 glyphs with a tts:fontSize equal to 5% of the root container height could be moved at most
           approximately 12 s<sup>-1</sup> ÷ (1 + ( 160 × 0.05<sup>2</sup> )) = 8.6 times per second.
         </aside>
 
@@ -1586,6 +1698,108 @@ http://www.w3.org/ns/ttml/profile/imsc-image
           ultimately rendered at a 1920×1080 resolution, a Ren(G<sub>i</sub>) of 1.2 s-1 would mean that at most 120 glyphs with a
           fontSize of 108 px (10% of 1080 px and NRGA(G<sub>i</sub>) = 0.01) could be rendered every second.
         </aside>
+      </section>
+    </section><!-- start CFF-TT 1.0.7 -->
+
+    <section>
+      <h3>Layout Model</h3>
+
+      <section>
+        <h4>General</h4>
+
+        <p>The height and width of the area occupied by text within a region depend on line height as well as the width of, and
+        spacing between (kerning), individual glyphs. The following allows the area occupied by text to be precisely determined,
+        and thus region extent to be set such that text flows without clipping.</p>
+      </section>
+
+      <section>
+        <h4>Reference Fonts</h4>
+
+        <p>Glyphs that match a computed font families and code points combination listed in the table below SHALL be laid out using
+        a font with metrics equal to the metrics of the corresponding reference font, unless the glyph is not defined by the
+        reference font.</p>
+
+        <table class='simple'>
+          <thead>
+            <tr>
+              <th>Computed Font Family</th>
+
+              <th>Code Points</th>
+
+              <th>Reference Font</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>monospaceSerif</td>
+
+              <td>
+                All code points specified in <a href="#recommended-unicode-code-points-per-language"></a>
+              </td>
+
+              <td>
+                <a href=
+                "http://www.microsoft.com/typography/fonts/family.aspx?FID=10">http://www.microsoft.com/typography/fonts/family.aspx?FID=10</a>
+                (Courier New)
+              </td>
+            </tr>
+
+            <tr>
+              <td>proportionalSansSerif</td>
+
+              <td>
+                All code points specified in <a href="#recommended-unicode-code-points-per-language"></a>, excluding the code
+                points defined for Semitic languages alone.
+              </td>
+
+              <td>
+                <a href=
+                "http://www.microsoft.com/typography/fonts/family.aspx?FID=8">http://www.microsoft.com/typography/fonts/family.aspx?FID=8</a>
+                (Arial) or <a href=
+                "http://www.linotype.com/en/526/Helvetica-family.html">http://www.linotype.com/en/526/Helvetica-family.html</a>
+                (Helvetica)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="note">Implementations can use use fonts other than those specified above. Two fonts with equal metrics can have a
+        different appearance, but flow identically.</p>
+
+        <p class="note">proportionalSansSerif is not used in practice for Hebrew and Arabic captions and subtitles.</p>
+      </section>
+
+      <section>
+        <h4>Line Height and Centering</h4>
+
+        <p>The computed value of <code>tts:lineHeight</code> shall be equal to 120% if tts:lineHeight=&quot;normal&quot;.</p>
+
+        <p><code>tts:lineHeight</code> values expressed using the percentage metric shall be relative to the largest font size on
+        the line.</p>
+
+        <aside class="example">
+          Assuming that the root container is ultimately rendered at a 1920×1080 resolution and
+          <code>tts:lineHeight</code>=&quot;100%&quot;, a line mixing glyphs with font size of &quot;10px&quot;, &quot;36px&quot;
+          and &quot;1c&quot; has a computed value of <code>tts:lineHeight</code> equal to &quot;72px&quot;.
+        </aside>
+
+        <p>If the computed value of <code>tts:lineHeight</code> is not supported, then a presentation processor SHALL use the next
+        highest supported value.</p>
+
+        <aside class="example">
+          Three lines of 12px characters with <code>tts:lineHeight</code>=&quot;normal&quot; has a height of 45px = ⌈12px *
+          120%⌉ × 3 assuming line heights have 1px resolution.
+        </aside>
+
+        <p>White space in excess of the largest font size on the line SHALL be allocated evenly top and bottom (half-leading). Note
+        that inter-baseline separation includes any leading.</p><!-- end CFF-TT 1.0.7 -->
+
+        <p class="note">Since font size can change on a line and text can wrap, it is necessary to first determine the glyphs
+        present on a line before determining line height.</p>
+
+        <p class="note">Glyphs that do not extend beyond the specific <code>tts:fontSize</code> value will not clip top or
+        bottom.</p>
       </section>
     </section>
   </section>
@@ -1821,8 +2035,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
           <td>Danish, Dutch/Flemish, English, German, Icelandic, Norwegian, Swedish</td>
 
           <td>&quot;da&quot;, &quot;nl&quot;, &quot;en&quot;, &quot;de&quot;, &quot;is&quot;, &quot;no&quot;, &quot;sv&quot;</td>
-		  
-		  <td>As defined in the table above.</td>
+
+          <td>As defined in the table above.</td>
         </tr>
 
         <tr>
@@ -2311,7 +2525,8 @@ http://www.w3.org/ns/ttml/profile/imsc-image
 
   <section class='appendix'>
     <h2>Schema</h2>
-	<p><em>TBD</em></p>
+
+    <p><em>TBD</em></p>
   </section>
 </body>
 </html>

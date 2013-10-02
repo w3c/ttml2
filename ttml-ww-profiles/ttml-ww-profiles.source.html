@@ -18,6 +18,7 @@ var respecConfig = {
                   ,   wgPatentURI: "http://www.w3.org/2004/01/pp-impl/34314/status"
                   ,   prevVersion: "http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/"
                   ,   localBiblio:  {
+				  "SUBM": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/'>TTML Text and Image Profiles for Internet Media Subtitles and Captions</a> (Member Submission, 07 June 2013)",
                   "TTML2":  "World Wide Web Consortium (W3C). Timed Text Markup Language 2 (TTML 2)",
                   "CEA-608": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/Line-21-Data-Service.aspx'>Line-21 Data Services</a>, ANSI/CEA Standard.",
                   "CEA-708": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx'>Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.",
@@ -45,13 +46,12 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
 <body>
   <section id='abstract'>
-    <p>This submission specifies two profiles of the Timed Text Markup Language 2 (TTML 2): a text-only profile and an image-only
+    <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only
     profile. These profiles are intended to be used across subtitle and caption delivery applications worldwide, thereby
     simplifying interoperability, consistent rendering and conversion to other subtitling and captioning formats. The text profile
     is a superset of <a href="http://www.w3.org/TR/ttml10-sdp-us/">SDP-US</a>.</p>
 
-    <p>Both profiles are based on the <a href="http://www.uvvuwiki.com/">Common File Format &amp; Media Formats Specification
-    (CFF)</a> developed by <a href="http://www.uvvu.com/partners.php">Digital Entertainment Content Ecosystem (DECE)</a>.</p>
+    <p>Both profiles are based on [[!SUBM]].</p>
   </section>
 
   <section id='scope'>
@@ -159,7 +159,7 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
               <li>the center of the rectangular area is colocated with the center of the related video object frame,</li>
 
-              <li>the rectangular area is entirely contained within the related video object frame and</li>
+              <li>the rectangular area (including its boundary) is entirely within the related video object frame (including its boundary), and</li>
 
               <li>the rectangular area has a height or width equal to that of the related video object frame.</li>
             </ol>
@@ -215,13 +215,9 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       is received in its entirety. It shall conform to the following:</p>
 
       <ol>
-        <li>elements are sorted according to their resolved begin time;</li>
+        <li>elements appear in the document in increasing order according to their resolved begin time;</li>
 
-        <li>elements with identical resolved begin time appear in the order desired for flow;</li>
-
-        <li>no element references another element with a larger resolved begin time;</li>
-
-        <li>no element references another element occurring later in the subtitle document; and</li>
+        <li>no element references another element (i) occurring later in the document or (ii) with a later begin time; and</li>
 
         <li>a <code>imsc:progressivelyDecodable</code> attribute with value &quot;true&quot; is present on the <code>tt</code>
         element.</li>
@@ -289,9 +285,9 @@ imsc:progressivelyDecodable
       <section>
         <h4>Dimensions and Position</h4>
 
-        <p>All regions SHALL be entirely contained within the root container.</p>
+        <p>All regions SHALL be entirely contained within the root container, i.e. the intersection of the sets of coordinates belonging to a region (including its boundary) and the sets of coordinates belonging to the root container (including its boundary) is the set of coordinates belonging to the region (including its boundary).</p>
 
-        <p>No two regions presented in a given intermediate synchronic document SHALL overlap</p>
+        <p>No two presented regions in a given intermediate synchronic document SHALL overlap, i.e. the intersection of the sets of coordinates within each region (including its boundary) is empty.</p>
       </section>
 
       <section>
@@ -310,6 +306,8 @@ imsc:progressivelyDecodable
 
     <section>
       <h3>Features</h3>
+	  
+	  <p>Unless specified otherwise, the features included in a subtitle document SHALL conform to the Table below:</p>
 
       <table class='simple'>
         <thead>
@@ -728,7 +726,7 @@ imsc:progressivelyDecodable
       <code>#forcedDisplay</code></p>
 
       <p class='note'>The initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> and
-      <code>tts:textAlign</code> are those specified by [[ST2052-1]].</p>
+      <code>tts:textAlign</code> are those specified by [[ST2052-1]] if the selected region is the root container.</p>
 
       <p class='note'>As specified in [[!TTML2]], a <code>#time-offset-with-frames</code> expression is translated to a media time
       M according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
@@ -740,7 +738,7 @@ imsc:progressivelyDecodable
     <h2>Text Profile Constraints</h2>
 
     <section>
-      <h3>Document Conformance</h3>
+      <h3>Profile Designator and Definition Document</h3>
 
       <p>A subtitle document conforming to the Text Profile SHALL be associated with the following profile designator and profile
       definition document:</p>
@@ -756,9 +754,11 @@ imsc:progressivelyDecodable
 
     <section>
       <h3>Features</h3>
-
+		
       <p class='issue'>The following assumes, but does not require, the porting of the [[ST2052-1]] <code>#backgroundImage</code>
       features to [[!TTML2]]. See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/238">ISSUE-238</a>.</p>
+	  
+	  <p>The features included in a subtitle document SHALL conform to the Table below:</p>
 
       <table class='simple'>
         <thead>
@@ -1067,7 +1067,7 @@ imsc:progressivelyDecodable
     <h2>Image Profile Constraints</h2>
 
     <section>
-      <h3>Document Conformance</h3>
+      <h3>Profile Designator and Definition Document</h3>
 
       <p>A subtitle document conforming to the Image Profile SHALL be associated with the following profile designator and profile
       definition document:</p>
@@ -1112,6 +1112,9 @@ imsc:progressivelyDecodable
 
       <p class='issue'>The following assumes, but does not require, the porting of the [[ST2052-1]] <code>#backgroundImage</code>
       features to [[!TTML2]]. See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/238">ISSUE-238</a>.</p>
+
+	  
+	   <p>The features included in a subtitle document SHALL conform to the Table below:</p>
 
       <table class='simple'>
         <thead>
@@ -1715,8 +1718,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Reference Fonts</h4>
 
-        <p>Glyphs that match a computed font families and code points combination listed in the table below SHALL be laid out using
-        a font with metrics equal to the metrics of the corresponding reference font, unless the glyph is not defined by the
+        <p>A glyph that matches one of the combinations of computed font family and code point listed in the table below SHALL be laid out using  metrics equal to the metrics of the specified reference font, unless the glyph is not defined by the
         reference font.</p>
 
         <table class='simple'>

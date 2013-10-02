@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Apache Ant script to build spec.
-     Philippe Le Hegaret, W3C -->
+<!-- Apache Ant script to build spec. Philippe Le Hegaret, W3C -->
       
 <project name="TimedText" default="generate" basedir=".">
     <path id="saxon8.classpath">
@@ -9,10 +8,6 @@
     <property name="html.dir" value="${basedir}"/>
     <property name="html.name" value="ttml1.html"/>
     <property name="stylesheet" value="xmlspec-ttml1.xsl"/>
-    <property name="glossary" value="extract-glist.xsl"/>
-    <property name="generateBPlist" value="generateBPlist.xsl"/>
-    <property name="diffformat" value="diffspec.xsl"/>
-    <property name="last-public-draft" value="20070706"/>
     
     <property name="jing.jar" value="${basedir}/jing/jing.jar"/>
     <property name="rnc.dir" value="${basedir}/rnc"/>
@@ -194,30 +189,6 @@
 
     <target name="validate" depends="validate-schemas,validate-examples,validate-xsl,validate-svg,validate-tt-specs,validate-schema-rnc,validate-profiles"/>
 
-    <target name="updateAcks"
-        description="Update acknowledgements. Before running this, 
-	update ackcurrent.xml via  and ackold.xml
-	via http://www.w3.org/2000/09/dbwg/details?group=34314&amp;former=1&amp;public=1 .">
-        <get src="http://www.w3.org/2000/09/dbwg/details?group=34314&amp;public=1" dest="ackcurrent.xml"/>
-        <get src="http://www.w3.org/2000/09/dbwg/details?group=34314&amp;former=1&amp;public=1" dest="ackold.xml"/>
-        <java fork="true" classname="net.sf.saxon.Transform">
-            <classpath refid="saxon8.classpath"/>
-            <arg value="-o"/>
-            <arg value="acknowledgements-current.txt"/>
-            <arg value="ackcurrent.xml"/>
-            <arg value="generate-acknowledgements.xsl"/>
-            <arg value="participating=1"/>
-        </java>
-        <java fork="true" classname="net.sf.saxon.Transform">
-            <classpath refid="saxon8.classpath"/>
-            <arg value="-o"/>
-            <arg value="acknowledgements-old.txt"/>
-            <arg value="ackold.xml"/>
-            <arg value="generate-acknowledgements.xsl"/>
-            <arg value="participating=0"/>
-        </java>
-    </target>
-
     <target name="html" description="Transforms xml into html.">
         <echo>Generating ttml1.html</echo>
         <java fork="true" classname="net.sf.saxon.Transform">
@@ -230,60 +201,12 @@
         </java>    
     </target>
 
-    <path id="diffmk.classpath">
-        <pathelement location="${basedir}/diffmk.jar"/>
-        <pathelement location="${basedir}/DiffMk.properties"/>
-    </path>
-    <target name="generateXMLdiff">
-        <java classname="com.sun.xtc.diffmk.DiffMk" fork="true">
-            <arg value="-doctype"/>
-            <arg value="xmlspec"/>
-            <arg value="-diff"/>
-            <arg value="both"/>
-            <arg value="-words"/>
-            <arg value="tt-tr${last-public-draft}.xml"/>
-            <arg value="ttml1.xml"/>
-            <arg value="tt-diff${last-public-draft}.xml"/>
-            <classpath path="diffmk.jar:DiffMk.properties"> </classpath>
-        </java>
-    </target>
-    <target name="generateHTMLdiff">
-        <java fork="true" classname="net.sf.saxon.Transform">
-            <classpath refid="saxon8.classpath"/>
-            <arg value="-o"/>
-            <arg value="${html.dir}/tt-diff${last-public-draft}.html"/>
-            <arg value="tt-diff${last-public-draft}.xml"/>
-            <arg value="diffspec.xsl"/>
-        </java>
-    </target>
-    <target name="postprocess-diff">
-      <java fork="true" classname="net.sf.saxon.Transform">
-            <classpath refid="saxon8.classpath"/>
-            <arg value="-o"/>
-            <arg value="temp-tt-diff${last-public-draft}.xml"/>
-            <arg value="tt-diff${last-public-draft}.xml"/>
-            <arg value="diff-postprocess.xsl"/>
-        </java>
-        <copy tofile="tt-diff${last-public-draft}.xml"
-            file="temp-tt-diff${last-public-draft}.xml" overwrite="true"/>
-        <delete file="temp-tt-diff${last-public-draft}.xml"/>
-    </target>
-
-    <target name="diff" depends="generateXMLdiff, postprocess-diff, generateHTMLdiff"/>
-
-    <target name="changelog" description="Update the CVS change log to be added into the specification">
-      <!--        <cvschangelog destfile="changelog.xml"/> -->
-      <get src="http://www.w3.org/2000/06/webdata/xslt?xslfile=http%3A%2F%2Fwww.w3.org%2F2008%2F05%2Fcvswebrss.xsl&amp;xmlfile=http%3A%2F%2Fcgi.w3.org%2Fcgi-bin%2Ftidy%3FdocAddr%3Dhttp%253A%252F%252Fdev.w3.org%252Fcvsweb%252F2008%252Fws%252Ftt%252Fttml1.xml%26forceXML%3Don" dest="changelog.xml"/>
-    </target>
-
-    <target name="generate" description="Generate the specification without updating changelog and acknowledgments sections"
+    <target name="generate" description="Generate the specification"
 	    depends="generate-schema-archives,validate-tt-specs,html">
-      <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
     </target>
     
-    <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
+    <target name="sg" description="Shortened generation of the specification, but without rebuilding escapes."
 	    depends="generate-schema-archives,validate-tt-specs-dont-build-escapes,html">
-      <echo>WARNING: changelog.xml and acknowledgments.xml MAY be out of date. Use "main" target if necessary.</echo>
     </target>
 
     <property name="per.name" value="PER-ttaf1-dfxp-20130709"/>
@@ -318,6 +241,44 @@
         </zip>
         <delete includeemptydirs="true" quiet="true">
           <fileset dir="${per.target}"/>
+        </delete>
+    </target>
+
+    <property name="rec.shortname" value="ttml1"/>
+    <property name="rec.name" value="REC-${rec.shortname}-20130924"/>
+    <property name="rec.target" value="${basedir}/${rec.name}"/>
+    <target name="rec-archive" description="Create REC Archive">
+        <fail>
+          <condition>
+            <not>
+              <resourcecount count="1">
+                <fileset dir="." includes="${rec.shortname}.html"/>
+              </resourcecount>
+            </not>
+          </condition>
+        </fail>
+        <delete includeemptydirs="true" quiet="true">
+          <fileset dir="${rec.target}"/>
+        </delete>
+        <mkdir dir="${rec.target}"/>
+        <mkdir dir="${rec.target}/images"/>
+        <mkdir dir="${rec.target}/rnc"/>
+        <mkdir dir="${rec.target}/xsd"/>
+        <copy file="${rec.shortname}.html" tofile="${rec.target}/${rec.name}.html"/>
+        <copy file="${rec.shortname}-changes.html" tofile="${rec.target}/${rec.shortname}-changes.html"/>
+        <copy file="${rec.shortname}-errata.html" tofile="${rec.target}/${rec.shortname}-errata.html"/>
+        <copy todir="${rec.target}/images">
+          <fileset dir="${basedir}/images" includes="*.png"/>
+        </copy>
+        <copy file="${rnc.dir}/schema.zip" todir="${rec.target}/rnc"/>
+        <copy file="${xsd.dir}/schema.zip" todir="${rec.target}/xsd"/>
+        <zip destfile="${rec.name}.zip">
+          <fileset dir="${rec.target}">
+            <include name="**/*"/>
+          </fileset>
+        </zip>
+        <delete includeemptydirs="true" quiet="true">
+          <fileset dir="${rec.target}"/>
         </delete>
     </target>
 

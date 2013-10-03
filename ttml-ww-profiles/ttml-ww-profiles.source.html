@@ -9,7 +9,7 @@
 </script>
   <script class='remove'>
 var respecConfig = {
-                        specStatus:   "WD"
+                        specStatus:   "ED"
           ,   shortName:    "ttml-ww-profiles"
           ,   editors:      [{ name: "Pierre Lemieux", mailto: "pal@sandflow.com" }]
                   ,   wg: "Timed Text Working Group"
@@ -61,6 +61,8 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
     <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only profile. These profiles are
     intended for subtitle and caption delivery worldwide, including dialog language translation, content description, captions for
     deaf and hard of hearing, etc.</p>
+	
+	 <p>The profiles are strict subset of [[!TTML2]] and the text-only profile a strict supersets of [[!SDPUS]].</p>
   </section>
 
   <section id="conformance">
@@ -260,7 +262,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Presented Region</h4>
 
-        <p>A region, as defined in [[!TTML2]], SHALL be considered presented in a given intermediate synchronic document if both of
+        <p>A region, as defined in [[!TTML2]], SHALL be considered presented in a given intermediate synchronic document if all of
         the following conditions are true:</p>
 
         <ol>
@@ -302,7 +304,7 @@ imsc:progressivelyDecodable
       <h3>Hypothetical Render Model</h3>
 
       <p>Any sequence of consecutive intermediate synchronic documents SHALL be reproducible without error by the Hypothetical
-      Render Model specified in Section <a href="#hypothetical-render-model"></a>.</p>
+      Render Model specified in Section <a href="#h2_hypothetical-render-model-1"></a>.</p>
     </section>
 
     <section>
@@ -726,9 +728,6 @@ imsc:progressivelyDecodable
       <p class='issue'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/230">ISSUE-230</a> for a description of
       <code>#forcedDisplay</code></p>
 
-      <p class='note'>The initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> and
-      <code>tts:textAlign</code> are those specified by [[ST2052-1]] if the selected region is the root container.</p>
-
       <p class='note'>As specified in [[!TTML2]], a <code>#time-offset-with-frames</code> expression is translated to a media time
       M according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
       <code>ttp:frameRate</code>)).</p>
@@ -740,14 +739,16 @@ imsc:progressivelyDecodable
 
     <section>
       <h3>Profile Designator and Definition Document</h3>
+	  
+	    <p class='issue'>This Section is a placeholder and will be revisited based the outcome of the [[!TTML2]] profile discussions.</p>
 
       <p>A subtitle document conforming to the Text Profile SHALL be associated with the following profile designator and profile
       definition document:</p>
       <pre>
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/text/definition&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
+&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/text/designator&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
   &lt;extensions&gt;
-    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/imsc/text/definition&lt;/extension&gt;
+    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/imsc/text/feature#all&lt;/extension&gt;
   &lt;/extensions&gt;
 &lt;/profile&gt;
 </pre>
@@ -834,7 +835,7 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#displayAlign</code></td>
 
-            <td>MAY be used. The initial value of <code>tts:displayAlign</code> SHALL be &quot;after&quot;.</td>
+            <td>MAY be used. The initial value of <code>tts:displayAlign</code> SHALL be &quot;after&quot; for the default region, as defined in [[!TTML2]].</td>
           </tr>
 
           <tr>
@@ -1003,7 +1004,7 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#textAlign</code></td>
 
-            <td>MAY be used. The initial value of <code>tts:textAlign</code> SHALL be &quot;center&quot;.</td>
+            <td>MAY be used. The initial value of <code>tts:textAlign</code> SHALL be &quot;center&quot; for the default region, as defined in [[!TTML2]].</td>
           </tr>
 
           <tr>
@@ -1061,6 +1062,8 @@ imsc:progressivelyDecodable
           </tr>
         </tbody>
       </table>
+	  
+	        <p class='note'>The initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> are those specified by [[ST2052-1]].</p>
     </section>
   </section>
 
@@ -1069,14 +1072,16 @@ imsc:progressivelyDecodable
 
     <section>
       <h3>Profile Designator and Definition Document</h3>
+	  
+	  	    <p class='issue'>This Section is a placeholder and will be revisited based the outcome of the [[!TTML2]] profile discussions.</p>
 
       <p>A subtitle document conforming to the Image Profile SHALL be associated with the following profile designator and profile
       definition document:</p>
       <pre>
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/image/definition&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
+&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/image/designator&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
   &lt;extensions&gt;
-    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/definition/imsc/image/definition&lt;/extension&gt;
+    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/definition/imsc/image/feature#all&lt;/extension&gt;
   &lt;/extensions&gt;
 &lt;/profile&gt;
 </pre>

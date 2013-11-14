@@ -2727,7 +2727,7 @@ div.exampleHeader { font-weight: bold;
     </style>
     <link rel="stylesheet" type="text/css">
       <xsl:attribute name="href">
-        <xsl:text>http://www.w3.org/StyleSheets/TR/</xsl:text>
+        <xsl:text>https://www.w3.org/StyleSheets/TR/</xsl:text>
         <xsl:choose>
           <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
           <xsl:otherwise>

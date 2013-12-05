@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 45150fa4ecd2 2013/12/05 20:32:56 glenn $ -->
+<!-- $Id: ttml2.xml,v 4b056bc52a0d 2013/12/05 22:38:51 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/12/05 20:32:56 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/12/05 22:38:51 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/12/05 20:32:56 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/12/05 22:38:51 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -4716,6 +4716,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -4820,6 +4821,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -4949,6 +4951,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -5044,6 +5047,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -5152,10 +5156,39 @@ as a style property only to those element types indicated in the following table
 </tbody>
 </table>
 <p>If the value of this attribute is <code>normal</code>, then the
-computed value of the style property must be considered to be the same
-as 125% of the largest font size that applies to the element and its
-descendant elements in the intermediate synchronic document as determined by
-<specref ref="semantics-region-layout-step-1"/>.</p>
+computed value of this style property is determined as follows:</p>
+<olist>
+<item><p>
+Let <emph>P</emph> be the <el>p</el> element to which this style property applies.
+</p></item>
+<item><p>
+Let <emph>FF</emph> be the computed value of the <att>tts:fontFamily</att> style property that applies to <emph>P</emph>.
+</p></item>
+<item><p>
+Let <emph>FS</emph> be the computed value of the <att>tts:fontSize</att> style property that applies to <emph>P</emph>.
+</p></item>
+<item><p>
+Let <emph>F0</emph> be the first font obtained when sequentially mapping each font family in <emph>FF</emph> to a set of available fonts,
+where this set of available fonts is constrained as needed to satisfy the computed values of the <att>tts:fontStyle</att> and <att>tts:fontWeight</att>
+style properties that apply to <emph>P</emph>.
+</p></item>
+<item><p>
+If <emph>F0</emph> is associated with font metrics that specify altitude <emph>A</emph>, descent <emph>D</emph>, and line gap <emph>G</emph>,
+then set <emph>LH</emph> to the sum of scaled(<emph>A</emph>), scaled(<emph>D</emph>), and scaled(<emph>G</emph>),
+where scaled(<emph>X</emph>) denotes font metric <emph>X</emph> scaled according to font size <emph>FS</emph>.
+</p></item>
+<item><p>
+Otherwise, set <emph>LH</emph> to 125% of <emph>FS</emph>.
+</p></item>
+<item><p>
+Set the computed value of this style property to <emph>LH</emph>.
+</p></item>
+</olist>
+<note role="elaboration">
+<p>If a content author wishes to avoid the possibility of different interpretations of <code>normal</code>, for example, due to differences in
+the set of available fonts, then it is recommended that a 
+<loc href="#style-value-length">&lt;length&gt;</loc> value expression be used to explicitly specify line height value.</p>
+</note>
 <p>If specified as a <loc
 href="#style-value-length">&lt;length&gt;</loc>, then the length must
 be non-negative.</p>

@@ -24,7 +24,8 @@ var respecConfig = {
                   "CEA-708": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx'>Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.",
                   "MHP" : "ETSI TS 101 812 V1.3.1, Digital Video Broadcasting (DVB); Multimedia Home",
                   "ST2052-1": "SMPTE ST 2052-1, Timed Text Format (SMPTE-TT)",
-				  "SDPUS": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/TR/ttml10-sdp-us/'>TTML Simple Delivery Profile for Closed Captions (US)</a> (W3C Working Group Note, 05 February 2013"
+				  "SDPUS": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/TR/ttml10-sdp-us/'>TTML Simple Delivery Profile for Closed Captions (US)</a> (W3C Working Group Note, 05 February 2013)",
+				  "CLDR": "Unicode Consortium. <a href='http://cldr.unicode.org'>The Common Locale Data Repository Project</a>"
               }
         };
   </script>
@@ -201,14 +202,6 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
           object with a frame rate of 1000 / 1001 × 30 ≈ 29.97.
         </aside>
       </section>
-    </section>
-
-    <section>
-      <h3>Language</h3>
-
-      <p>All instances of the <code>xml:lang</code> attribute within a subtitle document SHALL have identical values.</p>
-
-      <p class='note'><code>xml:lang</code> can have a value of &quot;&quot;.</p>
     </section>
 
     <section>
@@ -753,7 +746,11 @@ imsc:progressivelyDecodable
 &lt;/profile&gt;
 </pre>
     </section>
-
+<section>
+      <h3>Recommended Character Sets</h3>
+	
+	</p>Authors should to select from the sets of characters specified in <a href="#recommended-character-sets-1"></a></p>
+	  </section>
     <section>
       <h3>Features</h3>
 		
@@ -1813,11 +1810,24 @@ imsc:progressivelyDecodable
   </section>
 
   <section class='appendix'>
-    <h2>Recommended Unicode Code Points per Language</h2>
+    <h2>Recommended Character Sets</h2>
+	
+	
+	<p>When authoring textual content, authors are encouraged to select from sets of characters based on the language expressed using the xml:lang. The idea is to increase the confidence that the text will be presented correctly by implementations targeting specific locales.</p>
 
-    <p>The following table lists common code points (see [[!UNICODE]]) definitions used in this Appendix:</p>
+	<p>Specifically, for a given language X, an author should choose characters from the set resulting from the union of the following sets:
+          <li>the main basic exemplar character set specified for the language in [[CLDR]]; and</li>
+          <li>the common character set specified in Table 1; and</li>
+          <li>supplementary characters specified for the language in Table 2, if any</li>
+        </ul>
+	</p>
+	
+<p>In other words, the character set specified in Table XXXX is available to authors across all languages, and Table XXXX specifies characters that have proven useful in captioning and subtitling applications for a given language. Some of these sets may overlap.</p>
+	
+	 <p>The terms used in this table are defined in [[!UNICODE]].</p>
 
     <table class='simple'>
+	<caption>Table 1. Common Character Set.</caption>
       <tr>
         <th>(Basic Latin)</th>
       </tr>
@@ -1847,7 +1857,11 @@ imsc:progressivelyDecodable
       </tr>
 
       <tr>
-        <td>U+00A0 - U+00FF (Number Forms)</td>
+        <td>U+00A0 - U+00FF</td>
+      </tr>
+	  
+	  <tr>
+        <th>(Number Forms)</th>
       </tr>
 
       <tr>
@@ -1883,7 +1897,11 @@ imsc:progressivelyDecodable
       </tr>
 
       <tr>
-        <td>U+017E : LATIN SMALL LETTER Z WITH CARON (Box Drawing)</td>
+        <td>U+017E : LATIN SMALL LETTER Z WITH CARON</td>
+      </tr>
+	  
+	  <tr>
+        <th>(Box Drawing)</th>
       </tr>
 
       <tr>
@@ -1915,7 +1933,11 @@ imsc:progressivelyDecodable
       </tr>
 
       <tr>
-        <td>U+0192 : LATIN SMALL LETTER F WITH HOOK (Block Elements)</td>
+        <td>U+0192 : LATIN SMALL LETTER F WITH HOOK</td>
+      </tr>
+	  
+	 <tr>
+        <th>(Block Elements)</th>
       </tr>
 
       <tr>
@@ -1927,7 +1949,10 @@ imsc:progressivelyDecodable
       </tr>
 
       <tr>
-        <td>U+02DC : SMALL TILDE (Geometric Shapes)</td>
+        <td>U+02DC : SMALL TILDE</td>
+      </tr>
+	        <tr>
+        <th>(Geometric Shapes)</th>
       </tr>
 
       <tr>
@@ -1947,7 +1972,11 @@ imsc:progressivelyDecodable
       </tr>
 
       <tr>
-        <td>U+2030 - U+203A : General punctuation (Musical Symbols)</td>
+        <td>U+2030 - U+203A : General punctuation</td>
+      </tr>
+	  
+	        <tr>
+        <th>(Musical Symbols)</th>
       </tr>
 
       <tr>
@@ -1971,561 +2000,174 @@ imsc:progressivelyDecodable
       </tr>
     </table>
 
-    <p>The following table specifies the [[!UNICODE]] code points that SHOULD be used in a document&#39;s textual content if
-    <code>xml:lang</code> is present (Primary language subtag is as defined in IETF RFC 5646).</p>
-
     <table class='simple'>
+	<caption>Table 2. Supplementary Character Sets.</caption>
       <thead>
         <tr>
-          <th>Languages</th>
 
-          <th>Primary language subtag of<br>
-          <code>xml:lang</code></th>
+          <th>Primary language subtag</th>
 
-          <th>[[!UNICODE]] Code Points</th>
+          <th>Characters</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr>
-          <th colspan="3">Albanian Languages</th>
-        </tr>
 
-        <tr>
-          <td>Albanian</td>
 
-          <td>&quot;sq&quot;</td>
+		<tr>
 
-          <td>As defined in the table above</td>
-        </tr>
+          <td>lv, lt, et, tr, hr, cs, pl, sl, sk</td>
 
-        <tr>
-          <th colspan="3">Baltic Languages</th>
-        </tr>
-
-        <tr>
-          <td>Latvian, Lithuanian</td>
-
-          <td>&quot;lv&quot;, &quot;lt&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          <td>
           (Latin Extended-A)<br>
-          U+0100 - U+017F</td>
+          U+0100 – U+017F</td>
         </tr>
+		
+		<tr>
 
-        <tr>
-          <th colspan="3">Finnic Languages</th>
+          <td>nl</td>
+
+          <td>
+           (Combining Diacritical Marks)<br>
+          U+0301</td>
+
         </tr>
+		
+				<tr>
 
-        <tr>
-          <td>Finish</td>
+          <td>ro</td>
 
-          <td>&quot;fi&quot;</td>
-
-          <td>As defined in the table above</td>
-        </tr>
-
-        <tr>
-          <td>Estonian</td>
-
-          <td>&quot;et&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          <td>
           (Latin Extended-A)<br>
-          U+0100 - U+017F</td>
+          U+0100 – U+017F<br>
+		  (Latin Extended-B)<br>
+		  U+0218 – U+0219<br>
+U+021A – U+021B
         </tr>
+		
+	
 
-        <tr>
-          <th colspan="3">Germanic Languages</th>
-        </tr>
+          <td>el</td>
 
-        <tr>
-          <td>Danish, Dutch/Flemish, English, German, Icelandic, Norwegian, Swedish</td>
-
-          <td>&quot;da&quot;, &quot;nl&quot;, &quot;en&quot;, &quot;de&quot;, &quot;is&quot;, &quot;no&quot;, &quot;sv&quot;</td>
-
-          <td>As defined in the table above.</td>
-        </tr>
-
-        <tr>
-          <th colspan="3">Greek Languages</th>
-        </tr>
-
-        <tr>
-          <td>Greek</td>
-
-          <td>&quot;el&quot;</td>
-
-          <td>As defined in the table above<br>
+          <td>
+		  (Combining Diacritical Marks)<br>
+		  U+0301<br>
+		U+0308<br>
           (Greek and Coptic)<br>
-          U+0386 : GREEK CAPITAL LETTER ALPHA WITH TONOS<br>
-          U+0387 : GREEK ANO TELEIA<br>
-          U+0388 – U+03CE : Letters</td>
+          U+0386 – U+0387<br>
+          U+0388 – U+03CE 
+		  </td>
         </tr>
 
-        <tr>
-          <th colspan="3">Romanic Languages</th>
-        </tr>
 
         <tr>
-          <td>Catalan, French, Italian</td>
 
-          <td>&quot;ca&quot;, &quot;fr&quot;, &quot;it&quot;</td>
-
-          <td>As defined in the table above</td>
-        </tr>
-
-        <tr>
-          <td>Portuguese, Spanish</td>
-
-          <td>&quot;pt&quot;, &quot;es&quot;</td>
+          <td>pt, es</td>
 
           <td>(Currency symbols)<br>
-          U+20A1 : COLON SIGN<br>
-          U+20A2 : CRUZEIRO SIGN<br>
-          U+20B3 : AUSTRAL SIGN</td>
+          U+20A1 – U+20A2<br>
+          U+20B3</td>
+        </tr>
+
+
+
+        <tr>
+          <td>ar</td>
+
+          <td>
+		  (Arabic)<br>
+          U+060C – U+060D<br>
+          U+061B<br>
+          U+061E – U+061F<br>
+          U+0621 – U+063A<br>
+          U+0640 – U+0652<br>
+          U+0660 – U+066D<br>
+		  U+0670<br>
+		  </td>
         </tr>
 
         <tr>
-          <td>Romanian</td>
+          <td>he</td>
 
-          <td>&quot;ro&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
-          (Latin Extended-A)<br>
-          U+0100 - U+017F</td>
-        </tr>
-
-        <tr>
-          <th colspan="3">Semitic Languages</th>
-        </tr>
-
-        <tr>
-          <td>Arabic</td>
-
-          <td>&quot;ar&quot;</td>
-
-          <td>As defined in the table above<br>
-          U+060C – U+060D : Punctuation<br>
-          U+061B : ARABIC SEMICOLON<br>
-          U+061E : ARABIC TRIPLE DOT PUNCTUATION MARK<br>
-          U+061F : ARABIC QUESTION MARK<br>
-          U+0621 – U+063A : Based on ISO 8859-6<br>
-          U+0640 – U+064A : Based on ISO 8859-6<br>
-          U+064B – U+0652 : Points from ISO 5559-6<br>
-          U+0660 – U+0669 : Arabic-Indic digits<br>
-          U+066A – U+066D : Punctuation</td>
-        </tr>
-
-        <tr>
-          <td>Hebrew</td>
-
-          <td>&quot;he&quot;</td>
-
-          <td>As defined in the table above<br>
+          <td>
           (Hebrew)<br>
-          U+05B0 – U+05C3 : Points and punctuation<br>
-          U+05D0 – U+05EA : Based on ISO 8859-8<br>
-          U+05F3 – U+05F4 : Additional punctuation</td>
+          U+05B0 – U+05C3<br>
+          U+05D0 – U+05EA<br>
+          U+05F3 – U+05F4</td>
         </tr>
 
-        <tr>
-          <th colspan="3">Slavic Languages</th>
-        </tr>
+
+
 
         <tr>
-          <td>Croatian, Czech, Polish, Slovenian, Slovak</td>
 
-          <td>&quot;hr&quot;, &quot;cs&quot;, &quot;pl&quot;, &quot;sl&quot;, &quot;sk&quot;</td>
+          <td>bs, bg, mk, ru, sr</td>
 
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          <td>
           (Latin Extended-A)<br>
-          U+0100 - U+017F</td>
-        </tr>
-
-        <tr>
-          <td>Bosnian, Bulgarian, Macedonian, Russian, Serbian, Ukrainian</td>
-
-          <td>&quot;bs&quot;, &quot;bg&quot;, &quot;mk&quot;, &quot;ru&quot;, &quot;sr&quot;, &quot;uk&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
-          (Latin Extended-A)<br>
-          U+0100 - U+017F<br>
+          U+0100 – U+017F<br>
           (Cyrillic)<br>
-          U+0400 – U+040F : Cyrillic extensions<br>
-          U+0410 – U+044F : Basic Russian alphabet<br>
-          U+0450 – U+045F : Cyrillic extensions</td>
+          U+0400 – U+045F</td>
         </tr>
 
         <tr>
-          <th colspan="3">Turkic Languages</th>
-        </tr>
 
-        <tr>
-          <td>Turkish</td>
+          <td>uk</td>
 
-          <td>&quot;tr&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined<br>
+          <td>
           (Latin Extended-A)<br>
-          U+0100 - U+017F</td>
-        </tr>
-
-        <tr>
-          <td>Kazakh</td>
-
-          <td>&quot;kk&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined<br>
-          (Latin Extended-A)<br>
-          U+0100 - U+017F<br>
+          U+0100 – U+017F<br>
           (Cyrillic)<br>
-          U+0400 – U+040F : Cyrillic extensions<br>
-          U+0410 – U+044F : Basic Russian alphabet<br>
-          U+0450 – U+045F : Cyrillic extensions</td>
+          U+0400 – U+045F<br>	
+		  			U+0490 – U+0491<br>
+		  (Spacing Modifier Letters)<br>
+		  U+02BC<br>
+(Letterlike Symbols)<br>
+		U+2116
+
+		  
+		  
+		  </td>
+        </tr>
+
+
+
+
+        <tr>
+
+          <td>kk</td>
+
+          <td>
+		   (Latin Extended-A)<br>
+          U+0100 – U+017F<br>
+          (Cyrillic)<br>
+          U+0400 – U+045F<br>
+		  U+0492 – U+0493<br>
+			U+049A – U+049B<br>
+			U+04A2 – U+04A3<br>
+			U+04AE – U+04B1<br>
+			U+04BA – U+04BB<br>
+			U+04D8 – U+04D9<br>
+			U+04E8 – U+04E9<br>
+
+		  
+		  
+		  
+		  </td>
         </tr>
 
         <tr>
-          <th colspan="3">Ugric Languages</th>
-        </tr>
 
-        <tr>
-          <td>Hungarian</td>
+          <td>hu</td>
 
-          <td>&quot;hu&quot;</td>
-
-          <td>As defined in the table above, except for &quot;(Latin Extended-A)&quot; which is re-defined below<br>
+          <td>
           (Latin Extended-A)<br>
-          U+0100 - U+017F</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class='appendix informative'>
-    <h2>Typical Practice for Subtitles per Region (Informative)</h2>
-
-    <p>The following table summarizes subtitle languages commonly used in the listed regions. The Language Tag is as specified in
-    RFC 5646.</p>
-
-    <table class='simple'>
-      <tr>
-        <th>Region</th>
-
-        <th>Subtitle Languages (Language Tag)</th>
-      </tr>
-
-      <tbody>
-        <tr>
-          <td>ALL (worldwide)</td>
-
-          <td>English (&quot;en&quot;)</td>
-        </tr>
-
-        <tr>
-          <th colspan="2">America (North)</th>
-        </tr>
-
-        <tr>
-          <td>ALL</td>
-
-          <td>French (&quot;fr&quot;) [Québécois (&quot;fr-CA&quot;) or Parisian (&quot;fr-FR&quot;)]</td>
-        </tr>
-
-        <tr>
-          <td>United States</td>
-
-          <td>Spanish (&quot;es&quot;) [Latin American (&quot;es-419&quot;)]</td>
-        </tr>
-
-        <tr>
-          <th colspan="2">America (Central and South)</th>
-        </tr>
-
-        <tr>
-          <td>ALL</td>
-
-          <td>Spanish (&quot;es&quot;) [Latin American (&quot;es-419&quot;)]</td>
-        </tr>
-
-        <tr>
-          <td>Brazil</td>
-
-          <td>Portuguese (&quot;pt&quot;) [Brazilian (&quot;pt-BR&quot;)]</td>
-        </tr>
-
-        <tr>
-          <th colspan="2">Asia, Middle East, and Africa</th>
-        </tr>
-
-        <tr>
-          <td>China</td>
-
-          <td>Chinese (&quot;zh&quot;) [Simplified Mandarin (&quot;zh-cmn-Hans&quot;)]</td>
-        </tr>
-
-        <tr>
-          <td>Egypt</td>
-
-          <td>Arabic (&quot;ar&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Hong Kong</td>
-
-          <td>Chinese (&quot;zh&quot;) [Cantonese (&quot;zh-yue&quot;)]</td>
-        </tr>
-
-        <tr>
-          <td>India</td>
-
-          <td>Hindi (&quot;hi&quot;)<br>
-          Tamil (&quot;ta&quot;)<br>
-          Telugu (&quot;te&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Indonesia</td>
-
-          <td>Indonesian (&quot;id&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Israel</td>
-
-          <td>Hebrew (&quot;he&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Japan</td>
-
-          <td>Japanese (&quot;ja&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Kazakhstan</td>
-
-          <td>Kazakh (&quot;kk&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Malaysia</td>
-
-          <td>Standard Malay (&quot;zsm&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>South Korea</td>
-
-          <td>Korean (&quot;ko&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Taiwan</td>
-
-          <td>Chinese (&quot;zh&quot;) [Traditional Mandarin (&quot;zh-cmn-Hant&quot;)]</td>
-        </tr>
-
-        <tr>
-          <td>Thailand</td>
-
-          <td>Thai (&quot;th&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Vietnam</td>
-
-          <td>Vietnamese (&quot;vi&quot;)</td>
-        </tr>
-
-        <tr>
-          <th colspan="2">Europe</th>
-        </tr>
-
-        <tr>
-          <td>Benelux (Belgium, Netherlands, and Luxembourg)</td>
-
-          <td>French (&quot;fr&quot;) [Parisian (&quot;fr-FR&quot;)]<br>
-          Dutch/Flemish (&quot;nl&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Denmark</td>
-
-          <td>Danish (&quot;da&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Finland</td>
-
-          <td>Finnish (&quot;fi&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>France</td>
-
-          <td>French (&quot;fr&quot;) [Parisian (&quot;fr-FR&quot;)]<br>
-          Arabic (&quot;ar&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Germany</td>
-
-          <td>German (&quot;de&quot;)<br>
-          Turkish (&quot;tr&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Italy</td>
-
-          <td>Italian (&quot;it&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Norway</td>
-
-          <td>Norwegian (&quot;no&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Spain</td>
-
-          <td>Spanish (&quot;sp&quot;) [Castilian (&quot;sp-ES&quot;)]<br>
-          Catalan (&quot;ca&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Sweden</td>
-
-          <td>Swedish (&quot;sv&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Switzerland</td>
-
-          <td>French (&quot;fr&quot;) [&quot;fr-CH&quot; or &quot;fr-FR&quot;]<br>
-          German (&quot;de&quot;) [&quot;de-CH&quot;]<br>
-          Italian (&quot;it&quot;) [&quot;it-CH&quot;]</td>
-        </tr>
-
-        <tr>
-          <td>Albania</td>
-
-          <td>Albanian (&quot;sq&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Bulgaria</td>
-
-          <td>Bulgarian (&quot;bg&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Croatia</td>
-
-          <td>Croatian (&quot;hr&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Czech Republic</td>
-
-          <td>Czech (&quot;cs&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Estonia</td>
-
-          <td>Estonian (&quot;et&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Greece</td>
-
-          <td>Greek (&quot;el&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Hungary</td>
-
-          <td>Hungarian (&quot;hu&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Iceland</td>
-
-          <td>Icelandic (&quot;is&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Latvia</td>
-
-          <td>Latvian (&quot;lv&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Lithuania</td>
-
-          <td>Lithuanian (&quot;lt&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Macedonia</td>
-
-          <td>Macedonian (&quot;mk&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Poland</td>
-
-          <td>Polish (&quot;pl&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Portugal</td>
-
-          <td>Portuguese (&quot;pt&quot;) [Iberian (&quot;pt-PT&quot;)]</td>
-        </tr>
-
-        <tr>
-          <td>Romania</td>
-
-          <td>Romanian (&quot;ro&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Russia</td>
-
-          <td>Russian (&quot;ru&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Serbia</td>
-
-          <td>Serbian (&quot;sr&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Slovakia</td>
-
-          <td>Slovak (&quot;sk&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Slovenia</td>
-
-          <td>Slovenian (&quot;sl&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Turkey</td>
-
-          <td>Turkish (&quot;tr&quot;)</td>
-        </tr>
-
-        <tr>
-          <td>Ukraine</td>
-
-          <td>Ukrainian (&quot;uk&quot;)</td>
+          U+0100 – U+017F<br>
+		  (General Punctuation)<br>
+		  U+2052<br>
+		  (Miscellaneous Mathematical Symbols-A)<br>
+U+27E8–U+27E9
+</td>
         </tr>
       </tbody>
     </table>

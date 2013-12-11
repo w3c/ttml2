@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 205bdb69436e 2013/09/19 20:35:12 glenn $ -->
+<!-- $Id: ttml2.xml,v 4b056bc52a0d 2013/12/05 22:38:51 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2013/09/19 20:35:12 $">
+<!ENTITY document.status "Editors' copy $Date: 2013/12/05 22:38:51 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2013/09/19 20:35:12 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2013/12/05 22:38:51 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -539,6 +539,12 @@ and may specify inline overrides to styling.</p>
 Sets</emph> <bibref ref="infoset"/>.</p>
 </def>
 </gitem>
+<gitem id="terms-anonymous-profile">
+<label>[anonymous profile]</label>
+<def>
+<p>See <loc href="#terms-undesignated-profile">undesignated profile</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-attribute-information-item">
 <label>[attribute information item]</label>
 <def>
@@ -578,7 +584,7 @@ content for the purpose of transforming, presenting, or otherwise processing the
 <gitem id="terms-content-profile">
 <label>[content profile]</label>
 <def>
-<p>A collection of <loc href="#terms-feature">features</loc> and <loc href="#terms-extension">extensions</loc> that are (or may be) employed by
+<p>A collection of <loc href="#terms-feature">features</loc> and <loc href="#terms-extension">extensions</loc> that must, may, or must not be employed by
 Timed Text Markup Language content.</p>
 <ednote>
 <name>Content Profile</name>
@@ -598,7 +604,8 @@ performing presentation processing.</p>
 <gitem id="terms-designated-profile">
 <label>[designated profile]</label>
 <def>
-<p>&tbd;</p>
+<p>A <loc href="#terms-profile">profile</loc> that is associated with a <loc href="#terms-profile-designator">profile designator</loc> by
+means of a <att>designator</att> attribute or prose text in a specification of profile.</p>
 </def>
 </gitem>
 <gitem id="terms-document-instance">
@@ -654,6 +661,13 @@ specification.</p>
 <p>A syntactic or semantic expression or capability that is defined and
 labeled (using a feature designation) in this specification (or a past or
 future revision of this specification).</p>
+</def>
+</gitem>
+<gitem id="terms-fragment-identifier">
+<label>[fragment identifier]</label>
+<def>
+<p>A syntactic expression that adheres to the fragment identifer syntax defined by <bibref ref="uri"/>,
+Section 4.1.</p>
 </def>
 </gitem>
 <gitem id="terms-inline-animation">
@@ -730,12 +744,31 @@ a content processor.</p>
 <p></p>
 </def>
 </gitem>
+<gitem id="terms-profile">
+<label>[profile]</label>
+<def>
+<p>A <loc href="#terms-content-profile">content profile</loc> or <loc href="#terms-processor-profile">processor profile</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-profile-definition-document">
 <label>[profile definition document]</label>
 <def>
-<p>A document that defines a specific collection of <loc href="#terms-feature">features</loc> and <loc href="#terms-extension">extensions</loc>
-for which support is required or optional in a recipient content
-processor.</p>
+<p>A document that formally specifies a <loc href="#terms-profile">profile</loc>, where such document is a valid TTML document instance
+which has a root element type of <el>ttp:profile</el>.</p>
+</def>
+</gitem>
+<gitem id="terms-profile-designator">
+<label>[profile designator]</label>
+<def>
+<p>An absolute URI used to label or reference an externally defined <loc href="#terms-profile">profile</loc>, where
+external refers to being external to a <loc href="#terms-document-instance">document instance</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-profile-fragment-identifier">
+<label>[profile fragment identifier]</label>
+<def>
+<p>A <loc href="#terms-fragment-identifier">fragment identifier</loc> used to label or reference an internally defined <loc href="#terms-profile">profile</loc>, where
+internal refers to being internal to a <loc href="#terms-document-instance">document instance</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-region">
@@ -847,7 +880,8 @@ no further transformation semantics are defined by this specification.</p>
 <gitem id="terms-undesignated-profile">
 <label>[undesignated profile]</label>
 <def>
-<p>&tbd;</p>
+<p>A <loc href="#terms-profile">profile</loc> that is not associated with a <loc href="#terms-profile-designator">profile designator</loc>, and which is
+referred to implicitly in the context of the profile's definition. Also referred to as an <emph>anonymous profile</emph>.</p>
 </def>
 </gitem>
 <gitem id="terms-valid-abstract-document-instance">
@@ -1290,10 +1324,74 @@ standardization by the W3C.</p>
 </div2>
 <div2 id="vocabulary-profiles">
 <head>Profiles</head>
+
+<p>This section describes the TTML profiling sub-system and high level requirements that apply to this sub-system. At the end of this section
+appears a sub-section containing examples of profile specifications and examples of how these specifications are referenced and used.</p>
+
+<div3 id="vocabulary-profile-introduction">
+<head>Introduction</head>
+
+<p><emph>This sub-section is non-normative.</emph></p>
+
+<p>A given profile may be used by a Timed Text Markup Language content author for one of two functions: (1) to declare that a
+<loc href="#terms-document-instance">document instance</loc> adheres to a collection of constraints on what
+vocabulary is used and how it is used, or (2) to declare that a <loc href="#terms-processor">processor</loc> must satisfy certain conditions on how
+content is processed. The first of these functions is termed a <loc href="#terms-content-profile">content profile</loc>, while
+the second is termed a <loc href="#terms-processor-profile">processor profile</loc>.</p>
+
+<p>A <loc href="#terms-content-profile">content profile</loc> is generally used to allow an author to declare, at authoring time,
+what constraints the author intends to apply to a <loc href="#terms-document-instance">document instance</loc>. Such a
+declaration permits downstream processors to perform content validation or verification, as well as to guide or limit subsequent
+transformation or editing of content in order to maintain adherence to an author specified content profile. In addition, a
+downstream processor may use a content profile declaration to perform an early determination of its ability to process the features
+implied by the content profile.</p>
+
+<p>A <loc href="#terms-processor-profile">processor profile</loc> is generally used to allow an author to declare, at authoring time,
+what processing must be supported when processing a <loc href="#terms-document-instance">document instance</loc>, such that, if a
+processor is not able to perform the indicated processing, then processing should be aborted. Such a declaration permits downstream
+processors to avoid processing content that cannot be processed in a manner that meets the requirements of the content author.</p>
+
+<p>A content author is not limited to using a single profile, but may make reference to multiple profiles of either type, i.e.,
+multiple content profiles and/or multiple processor profiles. When multiple profiles are referenced, their respective specifications
+are combined to form a single effective content profile that applies to the document and a single effective processor profile
+that applies to a processor when processing the document. In addition, an author is not limited to making reference to externally
+defined profiles, but may define one or more profiles inline within a document.</p>
+
+</div3>
+
+<div3 id="vocabulary-profile-designators">
+<head>Profile Designators</head>
+
+<p>A profile is referenced in one of two ways according to whether the profile is defined externally to the referring document or
+is defined inline within the referring document. When defined externally, a profile is referenced by means of a
+<loc href="#terms-profile-designator">profile designator</loc>. When defined internally (inline), a profile is referenced either implicitly
+or by means of <loc href="#terms-profile-fragment-identifier">profile fragment identifier</loc>.</p>
+
+<p>A profile designator must adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17. If the profile designator is expressed as a relative URI,
+then it must be absolutized by using the TT Profile Namespace value as
+the base URI.</p>
+<note role="example">
+<p>For example, if a profile designator is expressed as
+<code>ttml2-presentation</code>, then the absolutized profile designator
+would be
+<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p>
+</note>
+<p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
+<specref ref="profile-vocab-table"/> are reserved for future standardization, and must not appear in a conformant
+<loc href="#terms-document-instance">document instance</loc>. Nothwithstanding this constraint, a profile designator is not restricted to the set of designators enumerated
+in <specref ref="profile-vocab-table"/>, but may be any URI that feasibly dereferences a TTML <loc href="#terms-profile-definition-document">profile definition document</loc>
+provided it does not use the TT Profile Namespace as a prefix.</p>
+
+<div4 id="vocabulary-profile-standard-designators">
+<head>Standard Designators</head>
+
 <p>The Timed Text Markup Language (TTML) employs a number of
 standard, predefined profiles of its
-vocabulary and associated semantics.
-The following table specifies this set of
+vocabulary and associated semantics.</p>
+
+<p>The following table specifies this set of
 profiles, indicating
 a normative name
 and designator for each
@@ -1343,28 +1441,26 @@ or in another TTWG specification.</p>
 <note role="seealso">
 <p>For definitions of the DFXP profiles, see <bibref ref="ttml1"/>. For definition of the SDP US profile, see <bibref ref="sdpus"/>.</p>
 </note>
-<ednote>
-<name>Referencing Undesignated Profile</name>
-<date>2013-09-05</date>
-<edtext>Need to update following to allow referring to a local (embedded) profile definition using
-a fragment identifier that references an undesignated ttp:profile element rather than a profile designator URI.</edtext>
-</ednote>
-<p>A profile designator must adhere to the
-<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17. If the profile designator is expressed as a relative URI,
-then it must be absolutized by using the TT Profile Namespace value as
-the base URI.</p>
-<note role="example">
-<p>For example, if a profile designator is expressed as
-<code>ttml2-presentation</code>, then the absolutized profile designator
-would be
-<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p>
-</note>
-<p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
-<specref ref="profile-vocab-table"/> are reserved for future standardization, and must not be appear in a conformant
-<loc href="#terms-document-instance">document instance</loc>. Nothwithstanding this constraint, a profile designator is not restricted to the set of designators enumerated
-in <specref ref="profile-vocab-table"/>, but may be any URI that feasibly dereferences a TTML <loc href="#terms-profile-definition-document">profile definition document</loc>
-provided it does not use the TT Profile Namespace as a prefix.</p>
+</div4>
+
+</div3>
+
+<div3 id="vocabulary-profile-semantics">
+<head>Profile Semantics</head>
+
+<div4 id="vocabulary-profile-combination">
+<head>Profile Combination</head>
+
+</div4>
+
+<div4 id="vocabulary-content-profile-processing">
+<head>Content Profile Semantics</head>
+
+</div4>
+
+<div4 id="vocabulary-processor-profile-processing">
+<head>Processor Profile Semantics</head>
+
 <p>The profile of TTML that must be supported by a
 TTML <loc href="#terms-content-processor">content processor</loc> in order to process a <loc href="#terms-document-instance">document instance</loc> is determined either (1) by specifying a
 <att>ttp:profile</att> attribute on the root <el>tt</el> element, as
@@ -1467,6 +1563,14 @@ element where the value of its <att>value</att> attribute is
 <code>required</code> or <code>use</code>,
 respectively.</p>
 </note>
+
+</div4>
+
+</div3>
+
+<div3 id="vocabulary-profile-examples">
+<head>Profile Examples</head>
+
 <p>An example of an author defined
 additive, derived profile of the TTML Presentation
 profile is shown
@@ -1499,6 +1603,9 @@ optional as it is defined
 in <specref ref="profile-ttml2-presentation"/>). Note also the resetting of the
 default XMLNS binding on the <el>profile</el> element to the TT Parameter Namespace.</p>
 </note>
+
+</div3>
+
 </div2>
 <div2 id="vocabulary-overview">
 <head>Catalog</head>
@@ -1860,15 +1967,18 @@ or <loc href="#terms-content-processor">content processor</loc>:</p>
 </ulist>
 <div3 id="parameter-vocabulary-profile">
 <head>ttp:profile</head>
-<p>The <el>ttp:profile</el> element is used to specify a collection of
-used (mandatory and enabled), required (mandatory),
-and optional (voluntary) features and extensions that must or
+<p>The <el>ttp:profile</el> element is used to specify a
+<loc href="#terms-processor-profile">processor profile</loc> or a
+<loc href="#terms-content-profile">content profile</loc>.
+A <loc href="#terms-processor-profile">processor profile</loc> specifies a
+collection of required (mandatory) and optional (voluntary) features and extensions that must or
 may be supported by a <loc href="#terms-content-processor">content processor</loc> in order to process a
 <loc href="#terms-document-instance">document instance</loc> that makes (or may make) use of such features and
-extensions. In addition, a feature or extension may be specified as
-prohibited, in which case it must not appear (be specified) in
-a <loc href="#terms-document-instance">document instance</loc>, and, if it does appear, may result in
-the <loc href="#terms-document-instance">document instance</loc> being rejected or processing otherwise aborted.</p>
+extensions.
+A <loc href="#terms-content-profile">content profile</loc> specifies a
+collection of required, optional, and prohibited features and extensions that, respectively,
+must, may, and must not be present in a <loc href="#terms-document-instance">document instance</loc> that declares its
+adherence to the profile.</p>
 <note role="clarification">
 <p>The difference between a <emph>feature</emph> and an
 <emph>extension</emph> is where it is defined and how it is labeled:
@@ -1880,7 +1990,7 @@ to be an extension. In general, features are expected to be defined by
 the W3C standards process, while extensions are expected to be defined by
 third parties.</p>
 </note>
-<p>This specification defines two distinct uses of the <el>ttp:profile</el> element:</p>
+<p>This specification defines two distinct contexts of use of the <el>ttp:profile</el> element:</p>
 <ulist>
 <item>
 <p>as a child of the <el>head</el> element within a TTML <loc href="#terms-document-instance">document instance</loc>;</p>
@@ -1916,6 +2026,7 @@ zero or more <el>ttp:extensions</el> elements.</p>
 &lt;ttp:profile
   combine = (replace|union|intersection) : replace
   designator = string
+  type = (processor|content) : processor
   use = string
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
@@ -1926,6 +2037,11 @@ zero or more <el>ttp:extensions</el> elements.</p>
 </tr>
 </tbody>
 </table>
+<p>The <att>type</att> attribute is used to determine whether a profile is a
+<loc href="#terms-processor-profile">processor profile</loc> or a
+<loc href="#terms-content-profile">content profile</loc>. If not specified,
+the profile is considered to be a <loc href="#terms-processor-profile">processor profile</loc>.
+</p>
 <p>The <att>combine</att> attribute may be used to specify how
 feature or extension specifications are combined in the case that
 multiple specifications apply to the same feature or extension, respectively.
@@ -4600,6 +4716,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -4704,6 +4821,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -4833,6 +4951,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -4928,6 +5047,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -5036,10 +5156,39 @@ as a style property only to those element types indicated in the following table
 </tbody>
 </table>
 <p>If the value of this attribute is <code>normal</code>, then the
-computed value of the style property must be considered to be the same
-as 125% of the largest font size that applies to the element and its
-descendant elements in the intermediate synchronic document as determined by
-<specref ref="semantics-region-layout-step-1"/>.</p>
+computed value of this style property is determined as follows:</p>
+<olist>
+<item><p>
+Let <emph>P</emph> be the <el>p</el> element to which this style property applies.
+</p></item>
+<item><p>
+Let <emph>FF</emph> be the computed value of the <att>tts:fontFamily</att> style property that applies to <emph>P</emph>.
+</p></item>
+<item><p>
+Let <emph>FS</emph> be the computed value of the <att>tts:fontSize</att> style property that applies to <emph>P</emph>.
+</p></item>
+<item><p>
+Let <emph>F0</emph> be the first font obtained when sequentially mapping each font family in <emph>FF</emph> to a set of available fonts,
+where this set of available fonts is constrained as needed to satisfy the computed values of the <att>tts:fontStyle</att> and <att>tts:fontWeight</att>
+style properties that apply to <emph>P</emph>.
+</p></item>
+<item><p>
+If <emph>F0</emph> is associated with font metrics that specify altitude <emph>A</emph>, descent <emph>D</emph>, and line gap <emph>G</emph>,
+then set <emph>LH</emph> to the sum of scaled(<emph>A</emph>), scaled(<emph>D</emph>), and scaled(<emph>G</emph>),
+where scaled(<emph>X</emph>) denotes font metric <emph>X</emph> scaled according to font size <emph>FS</emph>.
+</p></item>
+<item><p>
+Otherwise, set <emph>LH</emph> to 125% of <emph>FS</emph>.
+</p></item>
+<item><p>
+Set the computed value of this style property to <emph>LH</emph>.
+</p></item>
+</olist>
+<note role="elaboration">
+<p>If a content author wishes to avoid the possibility of different interpretations of <code>normal</code>, for example, due to differences in
+the set of available fonts, then it is recommended that a 
+<loc href="#style-value-length">&lt;length&gt;</loc> value expression be used to explicitly specify line height value.</p>
+</note>
 <p>If specified as a <loc
 href="#style-value-length">&lt;length&gt;</loc>, then the length must
 be non-negative.</p>
@@ -5873,8 +6022,10 @@ as a style property only to those element types indicated in the following table
 <td><emph>Values:</emph></td>
 <td>
 <code>mixed</code> |
-<code>upright</code> |
-<code>sideways</code>
+<code>sideways</code> |
+<code>sidewaysLeft</code> |
+<code>sidewaysRight</code> |
+<code>upright</code>
 </td>
 </tr>
 <tr>
@@ -5908,6 +6059,15 @@ span.</p>
 glyphs from horizontal scripts are set sideways, i.e., 90&deg; clockwise from
 their nominal orientation in horizontal text, while glyphs from vertical scripts are not
 affected.</p>
+<p>If the value of this attribute is <code>sidewaysLeft</code>, then, in vertical writing modes,
+glyphs from horizontal scripts are set sideways with 90&deg; counter-clockwise rotation.</p>
+<p>If the value of this attribute is <code>sidewaysRight</code>, then, in vertical writing modes,
+glyphs from horizontal scripts are set sideways with 90&deg; clockwise rotation.</p>
+<p>If the value of this attribute is <code>sideways</code>, then, in vertical writing modes,
+glyphs from horizontal scripts are set sideways, either 90&deg; clockwise or
+90&deg; counter-clockwise, according to whether the writing mode is
+<code>tbrl</code> or <code>tblr</code>, respectively. Glyphs from vertical scripts are not
+affected.</p>
 <p>If the value of this attribute is <code>upright</code>, then, in vertical writing modes,
 glyphs from horizontal scripts are set upright, i.e., using their
 nominal orientation in horizontal text, while glyphs from vertical scripts are not
@@ -5915,11 +6075,6 @@ affected. In addition, for purposes of bidirectional processing, this value caus
 affected characters to be treated as strong left-to-right, i.e., to be treated as if
 a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeOverride</att> of
 <code>override</code> were applied.</p>
-<p>If the value of this attribute is <code>sideways</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways, either 90&deg; clockwise or
-90&deg; counter-clockwise, according to whether the writing mode is
-<code>tbrl</code> or <code>tblr</code>, respectively. Glyphs from vertical scripts are not
-affected.</p>
 <p>If a vertical writing mode does not apply, then this style property has no effect.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>mixed</code>.</p>
@@ -8759,6 +8914,46 @@ elements in the <code>Metadata.class</code> element group.</p>
 <edtext>The SVG WG is deprecating xlink:href, in favor of using an unqualified href attribute. See
 <loc href="http://www.w3.org/Graphics/SVG/WG/wiki/Href">SVG Wiki: Href</loc>. We should probably just specify the use of unqualified href.</edtext>
 </ednote>
+<p></p>
+<ednote>
+<name>Extend style property expression syntax to support multi-valued expressions.</name>
+<date>2013-11-14</date>
+<edtext>The <code>animate</code> element will require multi-valued style property expressions.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Remove @accumulate</name>
+<date>2013-11-13</date>
+<edtext>CSS Animation does not support SVG @accumulate functionality. Consequently, it should be removed from TTML2. It can be re-introduced in
+the feature when CSS adds support for accumulate semantics.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Remove @additive</name>
+<date>2013-11-13</date>
+<edtext>CSS Animation does not support SVG @additive functionality. Consequently, it should be removed from TTML2. It can be re-introduced in
+the feature when CSS adds support for additive semantics.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Remove @attributeName</name>
+<date>2013-11-14</date>
+<edtext>Use only style value expression syntax introduced by TTML1.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Remove @by, @from, @to, @values</name>
+<date>2013-11-14</date>
+<edtext>Use of @by, @from, @to, and @values can be expressed by multi-valued style property expression.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Remove @repeatDur</name>
+<date>2013-11-13</date>
+<edtext>CSS Animation does not support a repeat duration parameter on an animation; however, it supports non-integer values of
+repeat count (via <code>animation-iteration-count</code>). Since the duration of a single animation iteration is known, it is
+straightforward to map @repeatDur to an appropriate non-integer repeat count.</edtext>
+</ednote>
 <p>Except for the constraints or variations enumerated below, the semantics of the <el>animate</el> element and its attributes
 enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.12:</p>
 <olist>
@@ -9104,7 +9299,7 @@ requirements that apply to the attribute targetted by the animation.</p>
 &lt;calcMode&gt;
   : "discrete"
   | "linear"
-  | "displaced"
+  | "paced"
   | "spline"
 </eg>
 </td>
@@ -9113,6 +9308,13 @@ requirements that apply to the attribute targetted by the animation.</p>
 </table>
 <p>The semantics of a &lt;calcMode&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
+<p></p>
+<ednote>
+<name>Consider removing support for paced.</name>
+<date>2013-11-14</date>
+<edtext>CSS Animations doesn't directly support paced values; however, it is possible to translate a paced timing function to a linear function
+with explicit @keyTimes.</edtext>
+</ednote>
 </div3>
 <div3 id="animation-value-fill">
 <head>&lt;fill&gt;</head>

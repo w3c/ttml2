@@ -16,7 +16,7 @@ var respecConfig = {
                   ,   wgURI: "http://www.w3.org/AudioVideo/TT/"
                   ,   wgPublicList: "public-tt"
                   ,   wgPatentURI: "http://www.w3.org/2004/01/pp-impl/34314/status"
-                  ,   prevVersion: "http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/"
+				  ,   edDraftURI: "ttml-ww-profiles.html"
                   ,   localBiblio:  {
 				  "SUBM": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/'>TTML Text and Image Profiles for Internet Media Subtitles and Captions</a> (Member Submission, 07 June 2013)",
                   "TTML2":  "World Wide Web Consortium (W3C). Timed Text Markup Language 2 (TTML 2)",
@@ -55,6 +55,11 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
     <p>Both profiles are based on [[!SUBM]].</p>
   </section>
+  
+      <section id='sotd'>
+       <p>
+          </p>
+    </section>
 
   <section id='scope'>
     <h2>Scope</h2>
@@ -255,7 +260,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Presented Region</h4>
 
-        <p>A region, as defined in [[!TTML2]], SHALL be considered presented in a given intermediate synchronic document if all of
+        <p>A region, as defined in [[!TTML2]], is presented in a given intermediate synchronic document if all of
         the following conditions are true:</p>
 
         <ol>
@@ -281,7 +286,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Dimensions and Position</h4>
 
-        <p>All regions SHALL be entirely contained within the root container, i.e. the intersection of the sets of coordinates belonging to a region (including its boundary) and the sets of coordinates belonging to the root container (including its boundary) is the set of coordinates belonging to the region (including its boundary).</p>
+        <p>All regions SHALL NOT extend beyond the root container, i.e. the intersection of the sets of coordinates belonging to a region (including its boundary) and the sets of coordinates belonging to the root container (including its boundary) is the set of coordinates belonging to the region (including its boundary).</p>
 
         <p>No two presented regions in a given intermediate synchronic document SHALL overlap, i.e. the intersection of the sets of coordinates within each region (including its boundary) is empty.</p>
       </section>
@@ -289,7 +294,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Maximum number</h4>
 
-        <p>The number of presented regions in a given intermediate synchronic document SHALL be smaller than or equal to 4.</p>
+        <p>The number of presented regions in a given intermediate synchronic document SHALL NOT be greater than 4.</p>
       </section>
     </section>
 
@@ -1090,7 +1095,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Definition</h4>
 
-        <p>A presented image SHALL be a <code>div</code> element with a smpte:backgroundImage attribute that is contained within a
+        <p>A presented image is a <code>div</code> element with a smpte:backgroundImage attribute that does not extend beyond
         presented region.</p>
       </section>
 
@@ -1106,7 +1111,7 @@ imsc:progressivelyDecodable
       <h3><code>div</code> element</h3>
 
       <p>If a <code>tts:backgroundImage</code> attribute is applied to a <code>div</code> element, the width and height of the
-      region extent associated with the <code>div</code> element SHALL be present and SHALL be equal to the width and height of the
+      region extent associated with the <code>div</code> element SHALL be specified and SHALL be equal to the width and height of the
       image source referenced by the <code>tts:backgroundImage</code>.</p>
     </section>
 
@@ -1815,14 +1820,15 @@ imsc:progressivelyDecodable
 	
 	<p>When authoring textual content, authors are encouraged to select from sets of characters based on the language expressed using the xml:lang. The idea is to increase the confidence that the text will be presented correctly by implementations targeting specific locales.</p>
 
-	<p>Specifically, for a given language X, an author should choose characters from the set resulting from the union of the following sets:
-          <li>the main basic exemplar character set specified for the language in [[CLDR]]; and</li>
+	<p>Specifically, for a given language, an author should choose characters from the set resulting from the union of the following sets:
+          <li>the main and punctuation exemplar character sets specified for the language in [[CLDR]]; and</li>
+          <li>the digits and symbols included in all numberSystems specified for the language in [[CLDR]]; and</li>
           <li>the common character set specified in Table 1; and</li>
           <li>supplementary characters specified for the language in Table 2, if any</li>
         </ul>
 	</p>
 	
-<p>In other words, the character set specified in Table XXXX is available to authors across all languages, and Table XXXX specifies characters that have proven useful in captioning and subtitling applications for a given language. Some of these sets may overlap.</p>
+<p>In other words, the character set specified in Table 1 is available to authors across all languages, and Table 2 specifies characters that have proven useful in captioning and subtitling applications for a given language. Some of these sets may overlap.</p>
 	
 	 <p>The terms used in this table are defined in [[!UNICODE]].</p>
 
@@ -2000,6 +2006,8 @@ imsc:progressivelyDecodable
       </tr>
     </table>
 
+	<br>
+	
     <table class='simple'>
 	<caption>Table 2. Supplementary Character Sets.</caption>
       <thead>

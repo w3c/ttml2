@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v f5bb0840fe03 2014/03/27 03:47:13 glenn $ -->
+<!-- $Id: ttml2.xml,v c9fd49837446 2014/03/27 07:14:23 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/03/27 03:47:13 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/03/27 07:14:23 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/03/27 03:47:13 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/03/27 07:14:23 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -668,6 +668,14 @@ future revision of this specification).</p>
 <def>
 <p>A syntactic expression that adheres to the fragment identifer syntax defined by <bibref ref="uri"/>,
 Section 4.1.</p>
+</def>
+</gitem>
+<gitem id="terms-implied-inline-region">
+<label>[implied inline region]</label>
+<def>
+<p>An anonymous (unidentified) <loc href="#terms-inline-region">inline region</loc> that is implied in the context of a block level content element
+due the presence of a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> or <loc href="#style-attribute-origin"><att>tts:origin</att></loc>
+style attribute on the content element.</p>
 </def>
 </gitem>
 <gitem id="terms-inline-animation">
@@ -3478,6 +3486,10 @@ are available for style inheritance by descendant <loc href="#terms-content-elem
 <el>span</el>, and
 <el>br</el>.</p>
 </note>
+<p>If a <att>tts:extent</att> or <att>tts:origin</att> style attribute is specified on a <el>div</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> element, where the
+extent or origin of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of the respective attribute. If both style attributes are specified, then both apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>div</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
@@ -3540,6 +3552,10 @@ in a <loc href="#terms-document-instance">document instance</loc> are available 
 descendant <loc href="#terms-content-element">content elements</loc> such as <el>span</el> and
 <el>br</el>.</p>
 </note>
+<p>If a <att>tts:extent</att> or <att>tts:origin</att> style attribute is specified on a <el>p</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>p</el> element, where the
+extent or origin of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of the respective attribute. If both style attributes are specified, then both apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>p</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
@@ -4615,6 +4631,8 @@ as a style property only to those element types indicated in the following table
 <td><emph>Applies to:</emph></td>
 <td>
 <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>
 </td>
 </tr>
@@ -4645,6 +4663,10 @@ present, or as described by <specref ref="document-structure-vocabulary-tt"/> if
 If <att>tts:extent</att> is specified on the <el>tt</el> element, then
 the width and height must be expressed in terms of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
 and these specifications must be expressed as non-percentage, definite lengths using pixel units.</p>
+<p>If a <att>tts:extent</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
+extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of this attribute.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -5399,6 +5421,8 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>
 </td>
 </tr>
@@ -5421,6 +5445,10 @@ then they must be interpreted as <emph>x</emph> and <emph>y</emph> coordinates, 
 is the <emph>x</emph> coordinate, and the second specification is the <emph>y</emph> coordinate.</p>
 <p>If the value of this attribute is <code>auto</code>, then the computed value
 of the style property must be considered to be the same as the origin of the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<p>If a <att>tts:origin</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
+origin of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of this attribute.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">

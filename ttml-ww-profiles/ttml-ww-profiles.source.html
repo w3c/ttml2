@@ -4,8 +4,8 @@
 <head>
   <meta charset='utf-8'>
 
-  <title>TTML Text and Image Profiles for Internet Media Subtitles and Captions</title>
-  <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'>
+  <title>TTML Text and Image Profiles for Internet Media Subtitles and Captions 1.0</title>
+  <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async="" class='remove'>
 </script>
   <script class='remove'>
 var respecConfig = {
@@ -16,16 +16,16 @@ var respecConfig = {
                   ,   wgURI: "http://www.w3.org/AudioVideo/TT/"
                   ,   wgPublicList: "public-tt"
                   ,   wgPatentURI: "http://www.w3.org/2004/01/pp-impl/34314/status"
-				  ,   edDraftURI: "ttml-ww-profiles.html"
+                                  ,   edDraftURI: "ttml-ww-profiles.html"
                   ,   localBiblio:  {
-				  "SUBM": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/'>TTML Text and Image Profiles for Internet Media Subtitles and Captions</a> (Member Submission, 07 June 2013)",
-                  "TTML2":  "World Wide Web Consortium (W3C). Timed Text Markup Language 2 (TTML 2)",
+                                  "SUBM": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/'>TTML Text and Image Profiles for Internet Media Subtitles and Captions</a> (Member Submission, 07 June 2013)",
+                  "TTML1":  "World Wide Web Consortium (W3C). Timed Text Markup Language 1 (TTML1) (Second Edition)",
                   "CEA-608": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/Line-21-Data-Service.aspx'>Line-21 Data Services</a>, ANSI/CEA Standard.",
                   "CEA-708": "<a href='http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx'>Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.",
                   "MHP" : "ETSI TS 101 812 V1.3.1, Digital Video Broadcasting (DVB); Multimedia Home",
                   "ST2052-1": "SMPTE ST 2052-1, Timed Text Format (SMPTE-TT)",
-				  "SDPUS": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/TR/ttml10-sdp-us/'>TTML Simple Delivery Profile for Closed Captions (US)</a> (W3C Working Group Note, 05 February 2013)",
-				  "CLDR": "Unicode Consortium. <a href='http://cldr.unicode.org'>The Common Locale Data Repository Project</a>"
+                                  "SDPUS": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/TR/ttml10-sdp-us/'>TTML Simple Delivery Profile for Closed Captions (US)</a> (W3C Working Group Note, 05 February 2013)",
+                                  "CLDR": "Unicode Consortium. <a href='http://cldr.unicode.org'>The Common Locale Data Repository Project</a>"
               }
         };
   </script>
@@ -48,27 +48,25 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
 <body>
   <section id='abstract'>
-    <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only
-    profile. These profiles are intended to be used across subtitle and caption delivery applications worldwide, thereby
-    simplifying interoperability, consistent rendering and conversion to other subtitling and captioning formats. The text profile
-    is a superset of [[!SDPUS]].</p>
+    <p>This document specifies two profiles of [[!TTML1]]: a text-only profile and an image-only profile. These profiles are
+    intended to be used across subtitle and caption delivery applications worldwide, thereby simplifying interoperability,
+    consistent rendering and conversion to other subtitling and captioning formats. The text profile is a superset of
+    [[SDPUS]].</p>
 
-    <p>Both profiles are based on [[!SUBM]].</p>
+    <p>Both profiles are based on [[SUBM]].</p>
   </section>
-  
-      <section id='sotd'>
-       <p>
-          </p>
-    </section>
+
+  <section id='sotd'></section>
 
   <section id='scope'>
     <h2>Scope</h2>
 
-    <p>This document specifies two profiles of [[!TTML2]]: a text-only profile and an image-only profile. These profiles are
+    <p>This document specifies two profiles of [[!TTML1]]: a text-only profile and an image-only profile. These profiles are
     intended for subtitle and caption delivery worldwide, including dialog language translation, content description, captions for
     deaf and hard of hearing, etc.</p>
-	
-	 <p>The profiles are strict subset of [[!TTML2]] and the text-only profile a strict supersets of [[!SDPUS]].</p>
+
+    <p>The text-only profile is a strict superset of [[SDPUS]] and the image-only profile uses extensions specified in
+    [[!ST2052-1]].</p>
   </section>
 
   <section id="conformance">
@@ -132,6 +130,30 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
             <td>http://www.w3.org/ns/ttml/profile/imsc</td>
           </tr>
+
+          <tr>
+            <td>ttp</td>
+
+            <td>http://www.w3.org/ns/ttml#parameter</td>
+          </tr>
+
+          <tr>
+            <td>tts</td>
+
+            <td>http://www.w3.org/ns/ttml#styling</td>
+          </tr>
+
+          <tr>
+            <td><em>none</em></td>
+
+            <td>http://www.w3.org/ns/ttml/feature/</td>
+          </tr>
+
+          <tr>
+            <td><em>none</em></td>
+
+            <td>http://www.w3.org/ns/ttml/extension/</td>
+          </tr>
         </tbody>
       </table>
 
@@ -142,18 +164,36 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
     <section>
       <h3>Related Video Object</h3>
 
+      <p>A subtitle document MAY be associated with a related video object, which SHALL consist of a sequence of frames, each a
+      rectangular array of pixels.</p>
+    </section>
+
+    <section>
+      <h3>Synchronization</h3>
+
+      <p>Each intermediate synchronic document of the subtitle document is intended to be displayed on a specific frame and removed
+      on a specific frame of the related video object.</p>
+
+      <p>A media time expression M SHALL correspond to the frame of the related video object with the presentation time that is the
+      closest to, but not less, than M.</p>
+
+      <p>If <code>ttp:frameRate</code> is specified, then the product of <code>ttp:frameRate</code> and
+      <code>ttp:frameRateMultiplier</code> SHALL be the frame rate of the related video object.</p>
+
+      <aside class="example">
+        A media time expression of 00:00:05.1 corresponds to frame ceiling(5.1 × ( 1000 / 1001 × 30) = 153 of a related video
+        object with a frame rate of 1000 / 1001 × 30 ≈ 29.97.
+      </aside>
+    </section>
+
+    <section>
+      <h3>Extensions</h3>
+
       <section>
-        <h4>General</h4>
+        <h4>ttp:aspectRatio</h4>
 
-        <p>A subtitle document MAY be associated with a related video object, which SHALL consist of a sequence of frames, each a
-        rectangular array of pixels.</p>
-      </section>
-
-      <section>
-        <h4>Root Container</h4>
-
-        <p class='issue'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/201">ISSUE-201</a> for a discussion of aspect
-        ratio in the context of [[!TTML2]].</p>
+        <p>The <code>ttp:aspectRatio</code> attributes allows authorial control of the mapping of the root container of a subtitle
+        document to the related video object frame.</p>
 
         <p>The root container of a subtitle document SHALL be mapped to the related video object frame according to the
         following:</p>
@@ -168,7 +208,8 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
               <li>the center of the rectangular area is colocated with the center of the related video object frame,</li>
 
-              <li>the rectangular area (including its boundary) is entirely within the related video object frame (including its boundary), and</li>
+              <li>the rectangular area (including its boundary) is entirely within the related video object frame (including its
+              boundary), and</li>
 
               <li>the rectangular area has a height or width equal to that of the related video object frame.</li>
             </ol>
@@ -191,67 +232,107 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       </section>
 
       <section>
-        <h4>Synchronization</h4>
+        <h4>ttp:progressivelyDecodable</h4>
 
-        <p>Each intermediate synchronic document of the subtitle document is intended to be displayed on a specific frame and
-        removed on a specific frame of the related video object.</p>
+        <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the
+        document is received in its entirety. It shall conform to the following:</p>
 
-        <p>A media time expression M SHALL correspond to the frame of the related video object with the presentation time that is
-        the closest to, but not less, than M.</p>
+        <ol>
+          <li>elements appear in the document in increasing order according to their resolved begin time;</li>
 
-        <p>If <code>ttp:frameRate</code> is specified, then the product of <code>ttp:frameRate</code> and
-        <code>ttp:frameRateMultiplier</code> SHALL be the frame rate of the related video object.</p>
+          <li>no element references another element (i) occurring later in the document or (ii) with a later begin time; and</li>
 
-        <aside class="example">
-          A media time expression of 00:00:05.1 corresponds to frame ceiling(5.1 × ( 1000 / 1001 × 30) = 153 of a related video
-          object with a frame rate of 1000 / 1001 × 30 ≈ 29.97.
-        </aside>
-      </section>
-    </section>
+          <li>a <code>ttp:progressivelyDecodable</code> attribute with value &quot;true&quot; is present on the <code>tt</code>
+          element.</li>
+        </ol>
 
-    <section>
-      <h3>Progressively Decodable</h3>
+        <p>The <code>ttp:progressivelyDecodable</code> attribute shall conform to the following syntax:</p>
 
-      <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the document
-      is received in its entirety. It shall conform to the following:</p>
-
-      <ol>
-        <li>elements appear in the document in increasing order according to their resolved begin time;</li>
-
-        <li>no element references another element (i) occurring later in the document or (ii) with a later begin time; and</li>
-
-        <li>a <code>imsc:progressivelyDecodable</code> attribute with value &quot;true&quot; is present on the <code>tt</code>
-        element.</li>
-      </ol>
-
-      <p>The <code>imsc:progressivelyDecodable</code> attribute shall conform to the following syntax:</p>
-
-      <table class="syntax">
-        <tbody>
-          <tr>
-            <td>
-              <div class="exampleInner">
-                <pre>
+        <table class="syntax">
+          <tbody>
+            <tr>
+              <td>
+                <div class="exampleInner">
+                  <pre>
 imsc:progressivelyDecodable
   : &quot;true&quot;
   | &quot;false&quot;
 </pre>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-      <p>The initial value of <code>imsc:progressivelyDecodable</code> shall be &quot;false&quot;.</p>
+        <p>The initial value of <code>ttp:progressivelyDecodable</code> shall be &quot;false&quot;.</p>
 
-      <p>A <code>imsc:progressivelyDecodable</code> attribute with value &quot;false&quot; may be present on the <code>tt</code>
-      element if the subtitle document is not a progressively decodable subtitle document.</p>
+        <p>A <code>ttp:progressivelyDecodable</code> attribute with value &quot;false&quot; may be present on the <code>tt</code>
+        element if the subtitle document is not a progressively decodable subtitle document.</p>
 
-      <p>A <code>imsc:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
-      <code>tt</code> element.</p>
+        <p>A <code>ttp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
+        <code>tt</code> element.</p>
 
-      <p class='note'>The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
-      attributes, and (ii) the use of <code>set</code>.</p>
+        <p class='note'>The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
+        attributes, and (ii) the use of <code>set</code>.</p>
+      </section>
+
+      <section>
+        <h4>tts:forcedDisplay</h4>
+
+        <p>The tts:forcedDisplay signals that a block of subtitle content is identified as <em>Forced</em> subtitle content.
+        <em>Forced</em> subtitle content is subtitle content that represents audio (e.g. foreign language) or text (e.g. a sign)
+        that is not translated in the audio/video presentation.</p>
+
+        <table class="simple">
+          <colgroup>
+            <col width="25%" span="1">
+            <col span="1">
+          </colgroup>
+
+          <tbody>
+            <tr>
+              <td><em>Values:</em></td>
+
+              <td><code>false | true</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Initial:</em></td>
+
+              <td><code>false</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Applies to:</em></td>
+
+              <td><code>body</code>, <code>div</code>, <code>p</code>, <code>region</code>, <code>span</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Inherited:</em></td>
+
+              <td>yes</td>
+            </tr>
+
+            <tr>
+              <td><em>Percentages:</em></td>
+
+              <td>N/A</td>
+            </tr>
+
+            <tr>
+              <td><em>Animatable:</em></td>
+
+              <td>discrete</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class='note'>Although <code>tts:forcedDisplay</code>, like all the TTML style attributes, has no defined semantics on a
+        <code>br</code> content element, forcedDisplayMode will apply to a <code>br</code> content element if it is either defined
+        on an ancestor content element of the <code>br</code> content element or it is applied to a region element corresponding to
+        a region that the <code>br</code> content element is being flowed into.</p>
+      </section>
     </section>
 
     <section>
@@ -260,8 +341,8 @@ imsc:progressivelyDecodable
       <section>
         <h4>Presented Region</h4>
 
-        <p>A region, as defined in [[!TTML2]], is presented in a given intermediate synchronic document if all of
-        the following conditions are true:</p>
+        <p>A region, as defined in [[!TTML1]], is presented in a given intermediate synchronic document if all of the following
+        conditions are true:</p>
 
         <ol>
           <li>
@@ -278,7 +359,7 @@ imsc:progressivelyDecodable
           </li>
         </ol>
 
-        <p class='note'>As specified in [[!TTML2]], the initial value of <code>tts:opacity</code> is &quot;1.0&quot;, the initial
+        <p class='note'>As specified in [[!TTML1]], the initial value of <code>tts:opacity</code> is &quot;1.0&quot;, the initial
         value of <code>tts:showBackground</code> is &quot;always&quot;, and the initial value of <code>tts:display</code> is
         &quot;auto&quot;</p>
       </section>
@@ -286,9 +367,12 @@ imsc:progressivelyDecodable
       <section>
         <h4>Dimensions and Position</h4>
 
-        <p>All regions SHALL NOT extend beyond the root container, i.e. the intersection of the sets of coordinates belonging to a region (including its boundary) and the sets of coordinates belonging to the root container (including its boundary) is the set of coordinates belonging to the region (including its boundary).</p>
+        <p>All regions SHALL NOT extend beyond the root container, i.e. the intersection of the sets of coordinates belonging to a
+        region (including its boundary) and the sets of coordinates belonging to the root container (including its boundary) is the
+        set of coordinates belonging to the region (including its boundary).</p>
 
-        <p>No two presented regions in a given intermediate synchronic document SHALL overlap, i.e. the intersection of the sets of coordinates within each region (including its boundary) is empty.</p>
+        <p>No two presented regions in a given intermediate synchronic document SHALL overlap, i.e. the intersection of the sets of
+        coordinates within each region (including its boundary) is empty.</p>
       </section>
 
       <section>
@@ -307,19 +391,17 @@ imsc:progressivelyDecodable
 
     <section>
       <h3>Features</h3>
-	  
-	  <p>Unless specified otherwise, the features included in a subtitle document SHALL conform to the Table below:</p>
+
+      <p>Unless specified otherwise,a subtitle document SHALL conform to the following:</p>
 
       <table class='simple'>
-        <thead>
+        <tbody>
           <tr>
             <th>Feature</th>
 
             <th>Provisions</th>
           </tr>
-        </thead>
 
-        <tbody>
           <tr>
             <td><code>#animation</code></td>
 
@@ -710,23 +792,32 @@ imsc:progressivelyDecodable
           </tr>
 
           <tr>
-            <td><code>#aspectRatio</code></td>
+            <th>Extension</th>
+
+            <th>Provisions</th>
+          </tr>
+
+          <tr>
+            <td><code>http://www.w3.org/ns/ttml/extension/#aspectRatio</code></td>
 
             <td>MAY be used.</td>
           </tr>
 
           <tr>
-            <td><code>#forcedDisplay</code></td>
+            <td><code>http://www.w3.org/ns/ttml/extension/#forcedDisplay</code></td>
+
+            <td>MAY be used.</td>
+          </tr>
+
+          <tr>
+            <td><code>http://www.w3.org/ns/ttml/extension/#progressivelyDecodable</code></td>
 
             <td>MAY be used.</td>
           </tr>
         </tbody>
       </table>
 
-      <p class='issue'>See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/230">ISSUE-230</a> for a description of
-      <code>#forcedDisplay</code></p>
-
-      <p class='note'>As specified in [[!TTML2]], a <code>#time-offset-with-frames</code> expression is translated to a media time
+      <p class='note'>As specified in [[!TTML1]], a <code>#time-offset-with-frames</code> expression is translated to a media time
       M according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
       <code>ttp:frameRate</code>)).</p>
     </section>
@@ -736,44 +827,47 @@ imsc:progressivelyDecodable
     <h2>Text Profile Constraints</h2>
 
     <section>
-      <h3>Profile Designator and Definition Document</h3>
-	  
-	    <p class='issue'>This Section is a placeholder and will be revisited based the outcome of the [[!TTML2]] profile discussions.</p>
+      <h3>Profile Designator</h3>
 
-      <p>A subtitle document conforming to the Text Profile SHALL be associated with the following profile designator and profile
-      definition document:</p>
-      <pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/text/designator&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
-  &lt;extensions&gt;
-    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/imsc/text/feature#all&lt;/extension&gt;
-  &lt;/extensions&gt;
-&lt;/profile&gt;
-</pre>
-    </section>
-<section>
-      <h3>Recommended Character Sets</h3>
-	
-	</p>Authors should to select from the sets of characters specified in <a href="#recommended-character-sets-1"></a></p>
-	  </section>
-    <section>
-      <h3>Features</h3>
-		
-      <p class='issue'>The following assumes, but does not require, the porting of the [[ST2052-1]] <code>#backgroundImage</code>
-      features to [[!TTML2]]. See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/238">ISSUE-238</a>.</p>
-	  
-	  <p>The features included in a subtitle document SHALL conform to the Table below:</p>
+      <p>A subtitle document conforming to the Text Profile SHALL be associated with the following profile designator:</p>
 
       <table class='simple'>
         <thead>
+          <tr>
+            <th>Profile Name</th>
+
+            <th>Profile Designator</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>IMSC Text</td>
+
+            <td><code>http://www.w3.org/ns/ttml/profile/imsc/text</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Recommended Character Sets</h3>Authors should to select from the sets of characters specified in <a href=
+      "#recommended-character-sets-1"></a>
+    </section>
+
+    <section>
+      <h3>Features</h3>
+
+      <p>The subtitle document SHALL conform to the following:</p>
+
+      <table class='simple'>
+        <tbody>
           <tr>
             <th>Feature</th>
 
             <th>Provisions</th>
           </tr>
-        </thead>
 
-        <tbody>
           <tr>
             <td><code>#backgroundColor-block</code></td>
 
@@ -799,24 +893,6 @@ imsc:progressivelyDecodable
           </tr>
 
           <tr>
-            <td><code>#backgroundImage</code></td>
-
-            <td>SHALL NOT be used.</td>
-          </tr>
-
-          <tr>
-            <td><code>#backgroundImageHorizontal</code></td>
-
-            <td>SHALL NOT be used.</td>
-          </tr>
-
-          <tr>
-            <td><code>#backgroundImageVertical</code></td>
-
-            <td>SHALL NOT be used.</td>
-          </tr>
-
-          <tr>
             <td><code>#bidi</code></td>
 
             <td>MAY be used.</td>
@@ -825,7 +901,8 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#color</code></td>
 
-            <td>MAY be used. The initial value of <code>tts:color</code> SHALL be &quot;white&quot;.</td>
+            <td>MAY be used. The initial value of <code>tts:color</code> SHALL be &quot;white&quot;. NOTE: This is consistent with
+            [[ST2052-1]].</td>
           </tr>
 
           <tr>
@@ -837,17 +914,15 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#displayAlign</code></td>
 
-            <td>MAY be used. The initial value of <code>tts:displayAlign</code> SHALL be &quot;after&quot; for the default region, as defined in [[!TTML2]].</td>
+            <td>MAY be used. The initial value of <code>tts:displayAlign</code> SHALL be &quot;after&quot; for the default region.
+            NOTE: This is consistent with [[ST2052-1]].</td>
           </tr>
 
           <tr>
             <td><code>#extent-region</code></td>
 
-            <td>
-              The <code>tts:extent</code> attribute when applied to a region element SHALL use <code>px</code> units or
-              &quot;percentage&quot; representation, and SHALL NOT use <code>em</code> units.<br>
-              Section <a href="#layout-model"></a> SHOULD be used to calculate a region extent that avoids clipping.
-            </td>
+            <td>The <code>tts:extent</code> attribute when applied to a region element SHALL use <code>px</code> units or
+            &quot;percentage&quot; representation, and SHALL NOT use <code>em</code> units.<br></td>
           </tr>
 
           <tr>
@@ -939,7 +1014,9 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#lineHeight</code></td>
 
-            <td>MAY be used.</td>
+            <td>MAY be used.<br>
+            An explicit <code>&lt;length&gt;</code> SHOULD be specified as there is no uniform implementation of the
+            &quot;normal&quot; value at the time of this writing.</td>
           </tr>
 
           <tr>
@@ -1006,7 +1083,8 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#textAlign</code></td>
 
-            <td>MAY be used. The initial value of <code>tts:textAlign</code> SHALL be &quot;center&quot; for the default region, as defined in [[!TTML2]].</td>
+            <td>MAY be used. The initial value of <code>tts:textAlign</code> SHALL be &quot;center&quot; for the default region.
+            NOTE: This is consistent with [[ST2052-1]].</td>
           </tr>
 
           <tr>
@@ -1062,10 +1140,20 @@ imsc:progressivelyDecodable
 
             <td>MAY be used.</td>
           </tr>
+
+          <tr>
+            <th>Extension</th>
+
+            <th>Provisions</th>
+          </tr>
+
+          <tr>
+            <td><code>http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#image</code></td>
+
+            <td>SHALL NOT be used.</td>
+          </tr>
         </tbody>
       </table>
-	  
-	        <p class='note'>The initial values specified for <code>tts:color</code>, <code>tts:displayAlign</code> are those specified by [[ST2052-1]].</p>
     </section>
   </section>
 
@@ -1073,20 +1161,25 @@ imsc:progressivelyDecodable
     <h2>Image Profile Constraints</h2>
 
     <section>
-      <h3>Profile Designator and Definition Document</h3>
-	  
-	  	    <p class='issue'>This Section is a placeholder and will be revisited based the outcome of the [[!TTML2]] profile discussions.</p>
+      <h3>Profile Designator</h3>
 
-      <p>A subtitle document conforming to the Image Profile SHALL be associated with the following profile designator and profile
-      definition document:</p>
-      <pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;profile designator=&quot;http://www.w3.org/ns/ttml/profile/imsc/image/designator&quot; xmlns=&quot;http://www.w3.org/ns/ttml#parameter&quot;&gt;
-  &lt;extensions&gt;
-    &lt;extension&gt;http://www.w3.org/ns/ttml/profile/definition/imsc/image/feature#all&lt;/extension&gt;
-  &lt;/extensions&gt;
-&lt;/profile&gt;
-</pre>
+      <p>A subtitle document conforming to the Image Profile SHALL be associated with the following profile designator:</p>
+
+      <table class='simple'>
+        <tbody>
+          <tr>
+            <th>Profile Name</th>
+
+            <th>Profile Designator</th>
+          </tr>
+
+          <tr>
+            <td>IMSC Image</td>
+
+            <td><code>http://www.w3.org/ns/ttml/profile/imsc/image</code></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
@@ -1111,48 +1204,21 @@ imsc:progressivelyDecodable
       <h3><code>div</code> element</h3>
 
       <p>If a <code>tts:backgroundImage</code> attribute is applied to a <code>div</code> element, the width and height of the
-      region extent associated with the <code>div</code> element SHALL be specified and SHALL be equal to the width and height of the
-      image source referenced by the <code>tts:backgroundImage</code>.</p>
+      region extent associated with the <code>div</code> element SHALL be specified and SHALL be equal to the width and height of
+      the image source referenced by the <code>tts:backgroundImage</code>.</p>
     </section>
 
     <section>
       <h3>Features</h3>
 
-      <p class='issue'>The following assumes, but does not require, the porting of the [[ST2052-1]] <code>#backgroundImage</code>
-      features to [[!TTML2]]. See <a href="http://www.w3.org/AudioVideo/TT/tracker/issues/238">ISSUE-238</a>.</p>
-
-	  
-	   <p>The features included in a subtitle document SHALL conform to the Table below:</p>
+      <p>The features included in a subtitle document SHALL conform to the Table below:</p>
 
       <table class='simple'>
-        <thead>
+        <tbody>
           <tr>
             <th>Feature</th>
 
             <th>Provisions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td><code>#backgroundImage</code></td>
-
-            <td>MAY be used. The backgroundImage attribute SHALL reference a complete image that conforms to the PNG image coding
-            as specified in Sections 7.1.1.3 and 15.1 of [[!MHP]].<br>
-            If a pHYs chunk is present, it SHALL indicate square pixels. Note: If no pixel aspect ratio is carried, the default of
-            square pixels will be assumed.</td>
-          </tr>
-
-          <tr>
-            <td><code>#backgroundImageHorizontal</code></td>
-
-            <td>SHALL NOT be used. <code>#backgroundImage</code> remains available for use.</td>
-          </tr>
-
-          <tr>
-            <td><code>#backgroundImageVertical</code></td>
-
-            <td>SHALL NOT be used. <code>#backgroundImage</code> remains available for use.</td>
           </tr>
 
           <tr>
@@ -1279,6 +1345,22 @@ imsc:progressivelyDecodable
             <td><code>#writingMode-vertical</code></td>
 
             <td>SHALL NOT be used.</td>
+          </tr>
+
+          <tr>
+            <th>Extension</th>
+
+            <th>Provisions</th>
+          </tr>
+
+          <tr>
+            <td><code>http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#image</code></td>
+
+            <td><code>smpte:backgroundImage</code> MAY be used. The backgroundImage attribute SHALL reference a complete image that
+            conforms to the PNG image coding as specified in Sections 7.1.1.3 and 15.1 of [[!MHP]]. If a pHYs chunk is present, it
+            SHALL indicate square pixels. Note: If no pixel aspect ratio is carried, the default of square pixels is assumed.<br>
+            <code>smpte:backgroundImageHorizontal</code> and <code>smpte:backgroundImageVertical</code> SHALL NOT be used.<br>
+            <code>smpte:image</code> SHALL NOT be used.</td>
           </tr>
         </tbody>
       </table>
@@ -1462,11 +1544,11 @@ imsc:progressivelyDecodable
           <li>It is specified on the <code>region</code> layout element that defines the region.</li>
 
           <li>It is specified on a <code>div</code>, <code>p</code>, <code>span</code> or <code>br</code> content element that is
-          to be flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on
+          to be flowed into the region for presentation in the intermediate synchronic document (see [[!TTML1]] for more details on
           when a content element is followed into a region).</li>
 
           <li>It is specified on a <code>set</code> animation element that is to be applied to content elements that are to be
-          flowed into the region for presentation in the intermediate synchronic document (see [[!TTML2]] for more details on when
+          flowed into the region for presentation in the intermediate synchronic document (see [[!TTML1]] for more details on when
           a <code>set</code> animation element is applied to content elements).</li>
         </ul>
 
@@ -1581,7 +1663,7 @@ imsc:progressivelyDecodable
           G<sub>n</sub> using the corresponding style information.</li>
         </ul>
 
-        <p>Two glyphs are identical if and only if the following [[!TTML2]] styles are identical:</p>
+        <p>Two glyphs are identical if and only if the following [[!TTML1]] styles are identical:</p>
 
         <ul>
           <li><code>tts:color</code></li>
@@ -1713,129 +1795,98 @@ imsc:progressivelyDecodable
     </section><!-- start CFF-TT 1.0.7 -->
 
     <section>
-      <h3>Layout Model</h3>
+      <h3>Reference Fonts</h3>
 
-      <section>
-        <h4>General</h4>
+      <p>The height and width of the area occupied by text within a region depend on line height as well as the width of, and
+      spacing between (kerning), individual glyphs. The following allows the area occupied by text to be closely determined, and
+      thus the region extent to be set such that text flows without clipping.</p>
 
-        <p>The height and width of the area occupied by text within a region depend on line height as well as the width of, and
-        spacing between (kerning), individual glyphs. The following allows the area occupied by text to be precisely determined,
-        and thus region extent to be set such that text flows without clipping.</p>
-      </section>
+      <p>A glyph that matches one of the combinations of computed font family and code point listed in the table below SHALL be
+      laid out using metrics equal to the metrics of the specified reference font, unless the glyph is not defined by the reference
+      font.</p>
 
-      <section>
-        <h4>Reference Fonts</h4>
+      <table class='simple'>
+        <thead>
+          <tr>
+            <th>Computed Font Family</th>
 
-        <p>A glyph that matches one of the combinations of computed font family and code point listed in the table below SHALL be laid out using
-		metrics equal to the metrics of the specified reference font, unless the glyph is not defined by the
-        reference font.</p>
+            <th>Code Points</th>
 
-        <table class='simple'>
-          <thead>
-            <tr>
-              <th>Computed Font Family</th>
+            <th>Reference Font</th>
+          </tr>
+        </thead>
 
-              <th>Code Points</th>
+        <tbody>
+          <tr>
+            <td>monospaceSerif</td>
 
-              <th>Reference Font</th>
-            </tr>
-          </thead>
+            <td>
+              All code points specified in <a href="#recommended-unicode-code-points-per-language"></a>
+            </td>
 
-          <tbody>
-            <tr>
-              <td>monospaceSerif</td>
+            <td>
+              <a href=
+              "http://www.microsoft.com/typography/fonts/family.aspx?FID=10">http://www.microsoft.com/typography/fonts/family.aspx?FID=10</a>
+              (Courier New)
+            </td>
+          </tr>
 
-              <td>
-                All code points specified in <a href="#recommended-unicode-code-points-per-language"></a>
-              </td>
+          <tr>
+            <td>proportionalSansSerif</td>
 
-              <td>
-                <a href=
-                "http://www.microsoft.com/typography/fonts/family.aspx?FID=10">http://www.microsoft.com/typography/fonts/family.aspx?FID=10</a>
-                (Courier New)
-              </td>
-            </tr>
+            <td>
+              All code points specified in <a href="#recommended-unicode-code-points-per-language"></a>, excluding the code points
+              defined for Semitic languages alone.
+            </td>
 
-            <tr>
-              <td>proportionalSansSerif</td>
+            <td>
+              <a href=
+              "http://www.microsoft.com/typography/fonts/family.aspx?FID=8">http://www.microsoft.com/typography/fonts/family.aspx?FID=8</a>
+              (Arial) or <a href=
+              "http://www.linotype.com/en/526/Helvetica-family.html">http://www.linotype.com/en/526/Helvetica-family.html</a>
+              (Helvetica)
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-              <td>
-                All code points specified in <a href="#recommended-unicode-code-points-per-language"></a>, excluding the code
-                points defined for Semitic languages alone.
-              </td>
+      <p class="note">Implementations can use use fonts other than those specified above. Two fonts with equal metrics can have a
+      different appearance, but flow identically.</p>
 
-              <td>
-                <a href=
-                "http://www.microsoft.com/typography/fonts/family.aspx?FID=8">http://www.microsoft.com/typography/fonts/family.aspx?FID=8</a>
-                (Arial) or <a href=
-                "http://www.linotype.com/en/526/Helvetica-family.html">http://www.linotype.com/en/526/Helvetica-family.html</a>
-                (Helvetica)
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p class="note">Implementations can use use fonts other than those specified above. Two fonts with equal metrics can have a
-        different appearance, but flow identically.</p>
-
-        <p class="note">proportionalSansSerif is not used in practice for Hebrew and Arabic captions and subtitles.</p>
-      </section>
-
-      <section>
-        <h4>Line Height and Centering</h4>
-
-        <p>The computed value of <code>tts:lineHeight</code> shall be equal to 120% if tts:lineHeight=&quot;normal&quot;.</p>
-
-        <p><code>tts:lineHeight</code> values expressed using the percentage metric shall be relative to the largest font size on
-        the line.</p>
-
-        <aside class="example">
-          Assuming that the root container is ultimately rendered at a 1920×1080 resolution and
-          <code>tts:lineHeight</code>=&quot;100%&quot;, a line mixing glyphs with font size of &quot;10px&quot;, &quot;36px&quot;
-          and &quot;1c&quot; has a computed value of <code>tts:lineHeight</code> equal to &quot;72px&quot;.
-        </aside>
-
-        <p>If the computed value of <code>tts:lineHeight</code> is not supported, then a presentation processor SHALL use the next
-        highest supported value.</p>
-
-        <aside class="example">
-          Three lines of 12px characters with <code>tts:lineHeight</code>=&quot;normal&quot; has a height of 45px = ⌈12px *
-          120%⌉ × 3 assuming line heights have 1px resolution.
-        </aside>
-
-        <p>White space in excess of the largest font size on the line SHALL be allocated evenly top and bottom (half-leading). Note
-        that inter-baseline separation includes any leading.</p><!-- end CFF-TT 1.0.7 -->
-
-        <p class="note">Since font size can change on a line and text can wrap, it is necessary to first determine the glyphs
-        present on a line before determining line height.</p>
-
-        <p class="note">Glyphs that do not extend beyond the specific <code>tts:fontSize</code> value will not clip top or
-        bottom.</p>
-      </section>
+      <p class="note">proportionalSansSerif is not used in practice for Hebrew and Arabic captions and subtitles.</p>
     </section>
   </section>
 
   <section class='appendix'>
     <h2>Recommended Character Sets</h2>
-	
-	
-	<p>When authoring textual content, authors are encouraged to select from sets of characters based on the language expressed using the xml:lang. The idea is to increase the confidence that the text will be presented correctly by implementations targeting specific locales.</p>
 
-	<p>Specifically, for a given language, an author should choose characters from the set resulting from the union of the following sets:
-          <li>the main and punctuation exemplar character sets specified for the language in [[CLDR]]; and</li>
-          <li>the digits and symbols included in all numberSystems specified for the language in [[CLDR]]; and</li>
-          <li>the common character set specified in Table 1; and</li>
-          <li>supplementary characters specified for the language in Table 2, if any</li>
-        </ul>
-	</p>
-	
-<p>Some of these sets may overlap.</p>
+    <p>When authoring textual content, authors are encouraged to select from sets of characters based on the language expressed
+    using the xml:lang. The idea is to increase the confidence that the text will be presented correctly by implementations
+    targeting specific locales.</p>
 
-<p>Table 1 captures the set of characters intended to be available to authors across all languages.
-The terms used in the table are defined in [[!UNICODE]].</p>
+    <p>Specifically, for a given language, an author should choose characters from the set resulting from the union of the
+    following sets:</p>
+
+    <ul>
+      <li>the main and punctuation exemplar character sets specified for the language in [[CLDR]]; and</li>
+
+      <li>the digits and symbols included in all numberSystems specified for the language in [[CLDR]]; and</li>
+
+      <li>the common character set specified in Table 1; and</li>
+
+      <li>supplementary characters specified for the language in Table 2, if any</li>
+    </ul>
+
+    <p>Some of these sets may overlap.</p>
+
+    <p>Table 1 captures the set of characters intended to be available to authors across all languages. The terms used in the table
+    are defined in [[!UNICODE]].</p>
 
     <table class='simple'>
-	<caption>Table 1. Common Character Set.</caption>
+      <caption>
+        Table 1. Common Character Set.
+      </caption>
+
       <tr>
         <th>(Basic Latin)</th>
       </tr>
@@ -1867,8 +1918,8 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       <tr>
         <td>U+00A0 - U+00FF</td>
       </tr>
-	  
-	  <tr>
+
+      <tr>
         <th>(Number Forms)</th>
       </tr>
 
@@ -1907,8 +1958,8 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       <tr>
         <td>U+017E : LATIN SMALL LETTER Z WITH CARON</td>
       </tr>
-	  
-	  <tr>
+
+      <tr>
         <th>(Box Drawing)</th>
       </tr>
 
@@ -1943,8 +1994,8 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       <tr>
         <td>U+0192 : LATIN SMALL LETTER F WITH HOOK</td>
       </tr>
-	  
-	 <tr>
+
+      <tr>
         <th>(Block Elements)</th>
       </tr>
 
@@ -1959,7 +2010,8 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       <tr>
         <td>U+02DC : SMALL TILDE</td>
       </tr>
-	        <tr>
+
+      <tr>
         <th>(Geometric Shapes)</th>
       </tr>
 
@@ -1982,8 +2034,8 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       <tr>
         <td>U+2030 - U+203A : General punctuation</td>
       </tr>
-	  
-	        <tr>
+
+      <tr>
         <th>(Musical Symbols)</th>
       </tr>
 
@@ -2006,17 +2058,18 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       <tr>
         <td>U+20AC : EURO SIGN</td>
       </tr>
-    </table>
+    </table><br>
 
-	<br>
-	<p>
-	Table 2 specifies supplementary character set that have proven useful in captioning and subtitling applications for a number of selected languages. Table 2 is non-exhaustive, and will be extended as needs arise.</p>
-	
+    <p>Table 2 specifies supplementary character set that have proven useful in captioning and subtitling applications for a number
+    of selected languages. Table 2 is non-exhaustive, and will be extended as needs arise.</p>
+
     <table class='simple'>
-	<caption>Table 2. Supplementary Character Sets.</caption>
+      <caption>
+        Table 2. Supplementary Character Sets.
+      </caption>
+
       <thead>
         <tr>
-
           <th>Primary language subtag</th>
 
           <th>Characters</th>
@@ -2024,56 +2077,42 @@ The terms used in the table are defined in [[!UNICODE]].</p>
       </thead>
 
       <tbody>
-
-
-		<tr>
-
+        <tr>
           <td>lv, lt, et, tr, hr, cs, pl, sl, sk</td>
 
-          <td>
-          (Latin Extended-A)<br>
+          <td>(Latin Extended-A)<br>
           U+0100 – U+017F</td>
         </tr>
-		
-		<tr>
-
-          <td>nl</td>
-
-          <td>
-           (Combining Diacritical Marks)<br>
-          U+0301</td>
-
-        </tr>
-		
-				<tr>
-
-          <td>ro</td>
-
-          <td>
-          (Latin Extended-A)<br>
-          U+0100 – U+017F<br>
-		  (Latin Extended-B)<br>
-		  U+0218 – U+0219<br>
-U+021A – U+021B
-        </tr>
-		
-	
-
-          <td>el</td>
-
-          <td>
-		  (Combining Diacritical Marks)<br>
-		  U+0301<br>
-		U+0308<br>
-          (Greek and Coptic)<br>
-          U+0386 – U+0387<br>
-          U+0388 – U+03CE 
-		  </td>
-        </tr>
-
 
         <tr>
+          <td>nl</td>
 
+          <td>(Combining Diacritical Marks)<br>
+          U+0301</td>
+        </tr>
+
+        <tr>
+          <td>ro</td>
+
+          <td>(Latin Extended-A)<br>
+          U+0100 – U+017F<br>
+          (Latin Extended-B)<br>
+          U+0218 – U+0219<br>
+          U+021A – U+021B</td>
+        </tr>
+
+        <tr>
+          <td>el</td>
+
+          <td>(Combining Diacritical Marks)<br>
+          U+0301<br>
+          U+0308<br>
+          (Greek and Coptic)<br>
+          U+0386 – U+0387<br>
+          U+0388 – U+03CE</td>
+        </tr>
+
+        <tr>
           <td>pt, es</td>
 
           <td>(Currency symbols)<br>
@@ -2081,114 +2120,127 @@ U+021A – U+021B
           U+20B3</td>
         </tr>
 
-
-
         <tr>
           <td>ar</td>
 
-          <td>
-		  (Arabic)<br>
+          <td>(Arabic)<br>
           U+060C – U+060D<br>
           U+061B<br>
           U+061E – U+061F<br>
           U+0621 – U+063A<br>
           U+0640 – U+0652<br>
           U+0660 – U+066D<br>
-		  U+0670<br>
-		  </td>
+          U+0670<br></td>
         </tr>
 
         <tr>
           <td>he</td>
 
-          <td>
-          (Hebrew)<br>
+          <td>(Hebrew)<br>
           U+05B0 – U+05C3<br>
           U+05D0 – U+05EA<br>
           U+05F3 – U+05F4</td>
         </tr>
 
-
-
-
         <tr>
-
           <td>bs, bg, mk, ru, sr</td>
 
-          <td>
-          (Latin Extended-A)<br>
+          <td>(Latin Extended-A)<br>
           U+0100 – U+017F<br>
           (Cyrillic)<br>
           U+0400 – U+045F</td>
         </tr>
 
         <tr>
-
           <td>uk</td>
 
-          <td>
-          (Latin Extended-A)<br>
-          U+0100 – U+017F<br>
-          (Cyrillic)<br>
-          U+0400 – U+045F<br>	
-		  			U+0490 – U+0491<br>
-		  (Spacing Modifier Letters)<br>
-		  U+02BC<br>
-(Letterlike Symbols)<br>
-		U+2116
-
-		  
-		  
-		  </td>
-        </tr>
-
-
-
-
-        <tr>
-
-          <td>kk</td>
-
-          <td>
-		   (Latin Extended-A)<br>
+          <td>(Latin Extended-A)<br>
           U+0100 – U+017F<br>
           (Cyrillic)<br>
           U+0400 – U+045F<br>
-		  U+0492 – U+0493<br>
-			U+049A – U+049B<br>
-			U+04A2 – U+04A3<br>
-			U+04AE – U+04B1<br>
-			U+04BA – U+04BB<br>
-			U+04D8 – U+04D9<br>
-			U+04E8 – U+04E9<br>
-
-		  
-		  
-		  
-		  </td>
+          U+0490 – U+0491<br>
+          (Spacing Modifier Letters)<br>
+          U+02BC<br>
+          (Letterlike Symbols)<br>
+          U+2116</td>
         </tr>
 
         <tr>
+          <td>kk</td>
 
+          <td>(Latin Extended-A)<br>
+          U+0100 – U+017F<br>
+          (Cyrillic)<br>
+          U+0400 – U+045F<br>
+          U+0492 – U+0493<br>
+          U+049A – U+049B<br>
+          U+04A2 – U+04A3<br>
+          U+04AE – U+04B1<br>
+          U+04BA – U+04BB<br>
+          U+04D8 – U+04D9<br>
+          U+04E8 – U+04E9<br></td>
+        </tr>
+
+        <tr>
           <td>hu</td>
 
-          <td>
-          (Latin Extended-A)<br>
+          <td>(Latin Extended-A)<br>
           U+0100 – U+017F<br>
-		  (General Punctuation)<br>
-		  U+2052<br>
-		  (Miscellaneous Mathematical Symbols-A)<br>
-U+27E8–U+27E9
-</td>
+          (General Punctuation)<br>
+          U+2052<br>
+          (Miscellaneous Mathematical Symbols-A)<br>
+          U+27E8–U+27E9</td>
         </tr>
       </tbody>
     </table>
   </section>
 
   <section class='appendix'>
-    <h2>Schema</h2>
+    <h2>Extensions</h2>
 
-    <p><em>TBD</em></p>
+    <section class='appendix'>
+      <h3>General</h3>
+
+      <p>The following sections define extension designations, expressed as relative URIs (fragment identifiers) with respect to
+      the TT Extension Namespace base URI (see [[!TTML1]].</p>
+    </section>
+
+    <section class='appendix'>
+      <h3>#progressivelyDecodable</h3>
+
+      <p>A TTML transformation processor supports the <code>#progressivelyDecodable</code> feature if it recognizes and is capable
+      of transforming values of the <a href="#h3_ttp-progressivelydecodable"><code>ttp:progressivelyDecodable</code></a>.</p>
+
+      <p>A TTML presentation processor supports the <code>#progressivelyDecodable</code> feature if it implements presentation
+      semantic support for values of the <a href="#h3_ttp-progressivelydecodable"><code>ttp:progressivelyDecodable</code></a>
+      attribute.</p>
+    </section>
+
+    <section class='appendix'>
+      <h3>#aspectRatio</h3>
+
+      <p>A TTML transformation processor supports the <code>#aspectRatio</code> feature if it recognizes and is capable of
+      transforming values of the <a href="#h3_ttp-aspectratio"><code>ttp:aspectRatio</code></a>.</p>
+
+      <p>A TTML presentation processor supports the <code>#aspectRatio</code> feature if it implements presentation semantic
+      support for values of the <a href="#h3_ttp-aspectratio"><code>ttp:aspectRatio</code></a> attribute.</p>
+    </section>
+
+    <section class='appendix'>
+      <h3>#forcedDisplay</h3>
+
+      <p>A TTML transformation processor supports the <code>#forcedDisplay</code> feature if it recognizes and is capable of
+      transforming values of the <a href="#h3_tts-forceddisplay"><code>tts:forcedDisplay</code></a>.</p>
+
+      <p>A TTML presentation processor supports the <code>#forcedDisplay</code> feature if it implements presentation semantic
+      support for values of the <a href="#h3_tts-forceddisplay"><code>tts:forcedDisplay</code></a> attribute.</p>
+    </section>
+
+    <section class='appendix'>
+      <h3>http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#image</h3>
+
+      <p>The <code>http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#image</code> extension is specified in [[ST2052-1]].</p>
+    </section>
   </section>
 </body>
 </html>

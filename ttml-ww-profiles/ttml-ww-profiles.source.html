@@ -9,14 +9,15 @@
 </script>
   <script class='remove'>
 var respecConfig = {
-                        specStatus:   "ED"
-          ,   shortName:    "ttml-ww-profiles"
+                        specStatus:   "FPWD"
+          ,   shortName:    "ttml-imsc1"
           ,   editors:      [{ name: "Pierre Lemieux", mailto: "pal@sandflow.com" }]
                   ,   wg: "Timed Text Working Group"
                   ,   wgURI: "http://www.w3.org/AudioVideo/TT/"
                   ,   wgPublicList: "public-tt"
                   ,   wgPatentURI: "http://www.w3.org/2004/01/pp-impl/34314/status"
-                                  ,   edDraftURI: "ttml-ww-profiles.html"
+									,		subjectPrefix: "[imsc]"
+                  ,   edDraftURI: "https://dvcs.w3.org/hg/ttml/raw-file/tip/ttml-ww-profiles/ttml-ww-profiles.html"
                   ,   localBiblio:  {
                                   "SUBM": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/'>TTML Text and Image Profiles for Internet Media Subtitles and Captions</a> (Member Submission, 07 June 2013)",
                   "TTML1":  "World Wide Web Consortium (W3C). Timed Text Markup Language 1 (TTML1) (Second Edition)",
@@ -77,7 +78,7 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
     the profile, i.e. if it implements all features and provisions of the profile</p>
   </section>
 
-  <section>
+  <section id='profiles'>
     <h2>Profiles</h2>
 
     <section>
@@ -101,7 +102,7 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
     </section>
   </section>
 
-  <section>
+  <section id='common-constraints'>
     <h2>Common Constraints</h2>
 
     <section>
@@ -121,39 +122,68 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
             <th>Prefix</th>
 
             <th>Value</th>
+						
+						<th>Defining Specification</th>
           </tr>
         </thead>
 
         <tbody>
           <tr>
-            <td>imsc</td>
-
-            <td>http://www.w3.org/ns/ttml/profile/imsc</td>
-          </tr>
-
-          <tr>
             <td>ttp</td>
 
             <td>http://www.w3.org/ns/ttml#parameter</td>
+						
+						<td>[[!TTML1]]</td>
           </tr>
 
           <tr>
             <td>tts</td>
 
             <td>http://www.w3.org/ns/ttml#styling</td>
+						
+						<td>[[!TTML1]]</td>
           </tr>
 
           <tr>
             <td><em>none</em></td>
 
             <td>http://www.w3.org/ns/ttml/feature/</td>
+						
+						<td>[[!TTML1]]</td>
           </tr>
 
           <tr>
             <td><em>none</em></td>
 
             <td>http://www.w3.org/ns/ttml/extension/</td>
+						
+						<td>[[!TTML1]]</td>
           </tr>
+					
+					 <tr>
+            <td>smpte</td>
+
+            <td>http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt</td>
+						
+						<td>[[!ST2052-1]]</td>
+          </tr>
+					
+					          <tr>
+            <td><em>none</em></td>
+
+            <td>http://www.w3.org/ns/ttml/profile/imsc1/text</td>
+						
+						<td><a href="#text-profile-designator"></a></td>
+          </tr>
+					
+					 <tr>
+            <td><em>none</em></td>
+
+            <td>http://www.w3.org/ns/ttml/profile/imsc1/image</td>
+						
+						<td><a href="#image-profile-designator"></a></td>
+          </tr>
+					
         </tbody>
       </table>
 
@@ -189,7 +219,7 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
     <section>
       <h3>Extensions</h3>
 
-      <section>
+      <section id='ttp-aspectRatio'>
         <h4>ttp:aspectRatio</h4>
 
         <p>The <code>ttp:aspectRatio</code> attributes allows authorial control of the mapping of the root container of a subtitle
@@ -224,14 +254,14 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
 
         <p><code>ttp:aspectRatio</code> SHALL NOT be present if <code>tts:extent</code> is present.<br></p>
 
-        <p class='note'>As specified in Section <a href="#features"></a>, <code>tts:extent</code> is present if the <code>px</code>
+        <p class='note'>As specified in Section <a href="#common-features"></a>, <code>tts:extent</code> is present if the <code>px</code>
         length measure is used anywhere within the document.</p>
 
         <p>Integer pixel positions on the related video object frame computed from real percentage length values SHALL use half-up
         rounding, i.e. round(x) = floor(x+0.5).</p>
       </section>
 
-      <section>
+      <section id='ttp-progressivelyDecodable'>
         <h4>ttp:progressivelyDecodable</h4>
 
         <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the
@@ -276,7 +306,7 @@ imsc:progressivelyDecodable
         attributes, and (ii) the use of <code>set</code>.</p>
       </section>
 
-      <section>
+      <section id='tts-forcedDisplay'>
         <h4>tts:forcedDisplay</h4>
 
         <p>The tts:forcedDisplay signals that a block of subtitle content is identified as <em>Forced</em> subtitle content.
@@ -285,7 +315,7 @@ imsc:progressivelyDecodable
 
         <table class="simple">
           <colgroup>
-            <col width="25%" span="1">
+            <col style="width:25%" span="1">
             <col span="1">
           </colgroup>
 
@@ -386,10 +416,10 @@ imsc:progressivelyDecodable
       <h3>Hypothetical Render Model</h3>
 
       <p>Any sequence of consecutive intermediate synchronic documents SHALL be reproducible without error by the Hypothetical
-      Render Model specified in Section <a href="#h2_hypothetical-render-model-1"></a>.</p>
+      Render Model specified in Section <a href="#hypothetical-render-model"></a>.</p>
     </section>
 
-    <section>
+    <section id='common-features'>
       <h3>Features</h3>
 
       <p>Unless specified otherwise,a subtitle document SHALL conform to the following:</p>
@@ -823,10 +853,10 @@ imsc:progressivelyDecodable
     </section>
   </section>
 
-  <section>
+  <section id='text-profile-constraints'>
     <h2>Text Profile Constraints</h2>
 
-    <section>
+    <section id='text-profile-designator'>
       <h3>Profile Designator</h3>
 
       <p>A subtitle document conforming to the Text Profile SHALL be associated with the following profile designator:</p>
@@ -844,7 +874,7 @@ imsc:progressivelyDecodable
           <tr>
             <td>IMSC Text</td>
 
-            <td><code>http://www.w3.org/ns/ttml/profile/imsc/text</code></td>
+            <td><code>http://www.w3.org/ns/ttml/profile/imsc1/text</code></td>
           </tr>
         </tbody>
       </table>
@@ -1157,10 +1187,10 @@ imsc:progressivelyDecodable
     </section>
   </section>
 
-  <section>
+  <section id='image-profile-constraints'>
     <h2>Image Profile Constraints</h2>
 
-    <section>
+    <section id='image-profile-designator'>
       <h3>Profile Designator</h3>
 
       <p>A subtitle document conforming to the Image Profile SHALL be associated with the following profile designator:</p>
@@ -1176,7 +1206,7 @@ imsc:progressivelyDecodable
           <tr>
             <td>IMSC Image</td>
 
-            <td><code>http://www.w3.org/ns/ttml/profile/imsc/image</code></td>
+            <td><code>http://www.w3.org/ns/ttml/profile/imsc1/image</code></td>
           </tr>
         </tbody>
       </table>
@@ -1188,7 +1218,7 @@ imsc:progressivelyDecodable
       <section>
         <h4>Definition</h4>
 
-        <p>A presented image is a <code>div</code> element with a smpte:backgroundImage attribute that does not extend beyond
+        <p>A presented image is a <code>div</code> element with a <code>smpte:backgroundImage</code> attribute that does not extend beyond
         presented region.</p>
       </section>
 
@@ -1356,7 +1386,7 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#image</code></td>
 
-            <td><code>smpte:backgroundImage</code> MAY be used. The backgroundImage attribute SHALL reference a complete image that
+            <td><code>smpte:backgroundImage</code> MAY be used. The <code>smpte:backgroundImage</code> attribute SHALL reference a complete image that
             conforms to the PNG image coding as specified in Sections 7.1.1.3 and 15.1 of [[!MHP]]. If a pHYs chunk is present, it
             SHALL indicate square pixels. Note: If no pixel aspect ratio is carried, the default of square pixels is assumed.<br>
             <code>smpte:backgroundImageHorizontal</code> and <code>smpte:backgroundImageVertical</code> SHALL NOT be used.<br>
@@ -1367,7 +1397,7 @@ imsc:progressivelyDecodable
     </section>
   </section>
 
-  <section>
+  <section id='hypothetical-render-model'>
     <h2>Hypothetical Render Model</h2>
 
     <section>
@@ -1382,7 +1412,7 @@ imsc:progressivelyDecodable
         implementation. For instance, while the model defines a glyph buffer for the purpose of limiting the number of glyphs
         displayed at any given point in time, it does not require an implementation to implement such a buffer.</p>
 
-        <figure>
+        <figure id='fig-hypothetical-render-model'>
           <img src="hypothetical-render-figure-1.png" alt="Hypothetical Render Model">
 
           <figcaption>
@@ -1505,7 +1535,7 @@ imsc:progressivelyDecodable
         <p class='note'>IPD effectively sets a limit on the complexity of any given intermediate synchronic document.</p>
       </section>
 
-      <section>
+      <section id='paint-regions'>
         <h4>Paint Regions</h4>
 
         <p>The total normalized drawing area S(E<sub>n</sub>) for intermediate synchronic document E<sub>n</sub> SHALL be</p>
@@ -1557,7 +1587,7 @@ imsc:progressivelyDecodable
         region pixels.</p>
       </section>
 
-      <section>
+      <section id='paint-images'>
         <h4>Paint Images</h4>
 
         <p>The Presentation Compositor SHALL paint into the Presentation Buffer P<sub>n</sub> all visible pixels of presented
@@ -1646,7 +1676,7 @@ imsc:progressivelyDecodable
         </table>
       </section>
 
-      <section>
+      <section id='paint-text'>
         <h4>Paint Text</h4>
 
         <p>For each glyph displayed in intermediate synchronic document E<sub>n</sub>, the Presentation Compositor SHALL:</p>
@@ -1857,7 +1887,7 @@ imsc:progressivelyDecodable
     </section>
   </section>
 
-  <section class='appendix'>
+  <section class='appendix' id='recommended-unicode-code-points-per-language'>
     <h2>Recommended Character Sets</h2>
 
     <p>When authoring textual content, authors are encouraged to select from sets of characters based on the language expressed
@@ -2209,10 +2239,10 @@ imsc:progressivelyDecodable
       <h3>#progressivelyDecodable</h3>
 
       <p>A TTML transformation processor supports the <code>#progressivelyDecodable</code> feature if it recognizes and is capable
-      of transforming values of the <a href="#h3_ttp-progressivelydecodable"><code>ttp:progressivelyDecodable</code></a>.</p>
+      of transforming values of the <a href="#ttp-progressivelyDecodable"><code>ttp:progressivelyDecodable</code></a>.</p>
 
       <p>A TTML presentation processor supports the <code>#progressivelyDecodable</code> feature if it implements presentation
-      semantic support for values of the <a href="#h3_ttp-progressivelydecodable"><code>ttp:progressivelyDecodable</code></a>
+      semantic support for values of the <a href="#ttp-progressivelyDecodable"><code>ttp:progressivelyDecodable</code></a>
       attribute.</p>
     </section>
 
@@ -2220,20 +2250,20 @@ imsc:progressivelyDecodable
       <h3>#aspectRatio</h3>
 
       <p>A TTML transformation processor supports the <code>#aspectRatio</code> feature if it recognizes and is capable of
-      transforming values of the <a href="#h3_ttp-aspectratio"><code>ttp:aspectRatio</code></a>.</p>
+      transforming values of the <a href="#ttp-aspectRatio"><code>ttp:aspectRatio</code></a>.</p>
 
       <p>A TTML presentation processor supports the <code>#aspectRatio</code> feature if it implements presentation semantic
-      support for values of the <a href="#h3_ttp-aspectratio"><code>ttp:aspectRatio</code></a> attribute.</p>
+      support for values of the <a href="#ttp-aspectRatio"><code>ttp:aspectRatio</code></a> attribute.</p>
     </section>
 
     <section class='appendix'>
       <h3>#forcedDisplay</h3>
 
       <p>A TTML transformation processor supports the <code>#forcedDisplay</code> feature if it recognizes and is capable of
-      transforming values of the <a href="#h3_tts-forceddisplay"><code>tts:forcedDisplay</code></a>.</p>
+      transforming values of the <a href="#tts-forcedDisplay"><code>tts:forcedDisplay</code></a>.</p>
 
       <p>A TTML presentation processor supports the <code>#forcedDisplay</code> feature if it implements presentation semantic
-      support for values of the <a href="#h3_tts-forceddisplay"><code>tts:forcedDisplay</code></a> attribute.</p>
+      support for values of the <a href="#tts-forcedDisplay"><code>tts:forcedDisplay</code></a> attribute.</p>
     </section>
 
     <section class='appendix'>

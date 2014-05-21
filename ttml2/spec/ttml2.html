@@ -78,11 +78,13 @@ table.example-images-bordered caption { font-weight: bold; text-align: center; p
 table.example-images-bordered td { border: 1px solid red; text-align: left }
 .tbd { background-color: #ffff33; border: 2px solid black; width: 85% }
 .strong { font-weight: bold }
+.deprecated { background-color: #fbaf5c }
+.obsoleted { background-color: #f26d7d }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/04/24 18:53:45 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/05/21 07:42:54 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/04/24 18:53:45 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/05/21 07:42:54 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest version:</dt><dd><a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -122,13 +124,13 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 &nbsp;&nbsp;&nbsp;&nbsp;5.1 <a href="#vocabulary-namespaces">Namespaces</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;5.2 <a href="#vocabulary-profiles">Profiles</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.1 <a href="#vocabulary-profile-introduction">Introduction</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.2 <a href="#vocabulary-profile-designators">Profile Designators</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.2.1 <a href="#vocabulary-profile-standard-designators">Standard Designators</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.3 <a href="#vocabulary-profile-semantics">Profile Semantics</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.3.1 <a href="#vocabulary-profile-combination">Profile Combination</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.3.2 <a href="#vocabulary-content-profile-processing">Content Profile Semantics</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.3.3 <a href="#vocabulary-processor-profile-processing">Processor Profile Semantics</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.4 <a href="#vocabulary-profile-examples">Profile Examples</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.2 <a href="#semantics-profile-examples">Profile Examples</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.3 <a href="#vocabulary-profile-designators">Profile Designators</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.3.1 <a href="#vocabulary-profile-standard-designators">Standard Designators</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.4 <a href="#semantics-profile-semantics">Profile Semantics</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.4.1 <a href="#semantics-profile-state">Profile State Object Concepts</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.4.2 <a href="#semantics-content-profile-processing">Content Profile Semantics</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2.4.3 <a href="#semantics-processor-profile-processing">Processor Profile Semantics</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;5.3 <a href="#vocabulary-overview">Catalog</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.3.1 <a href="#core-vocabulary-overview">Core Catalog</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.3.2 <a href="#extension-vocabulary-overview">Extension Catalog</a><br>
@@ -142,18 +144,24 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 &nbsp;&nbsp;&nbsp;&nbsp;6.2 <a href="#parameter-attribute-vocabulary">Parameter Attribute Vocabulary</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.1 <a href="#parameter-attribute-cellResolution">ttp:cellResolution</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.2 <a href="#parameter-attribute-clockMode">ttp:clockMode</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.3 <a href="#parameter-attribute-contentProfile">ttp:contentProfile</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.4 <a href="#parameter-attribute-dropMode">ttp:dropMode</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.5 <a href="#parameter-attribute-frameRate">ttp:frameRate</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.6 <a href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.7 <a href="#parameter-attribute-markerMode">ttp:markerMode</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.8 <a href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.9 <a href="#parameter-attribute-profile">ttp:profile</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.10 <a href="#parameter-attribute-profileCombination">ttp:profileCombination</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.11 <a href="#parameter-attribute-subFrameRate">ttp:subFrameRate</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.12 <a href="#parameter-attribute-tickRate">ttp:tickRate</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.13 <a href="#parameter-attribute-timeBase">ttp:timeBase</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.14 <a href="#parameter-attribute-version">ttp:version</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.3 <a href="#parameter-attribute-contentProfiles">ttp:contentProfiles</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.4 <a href="#parameter-attribute-contentProfileCombination">ttp:contentProfileCombination</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.5 <a href="#parameter-attribute-dropMode">ttp:dropMode</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.6 <a href="#parameter-attribute-frameRate">ttp:frameRate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.7 <a href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.8 <a href="#parameter-attribute-inferProcessorProfileMethod">ttp:inferProcessorProfileMethod</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.9 <a href="#parameter-attribute-inferProcessorProfileSource">ttp:inferProcessorProfileSource</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.10 <a href="#parameter-attribute-markerMode">ttp:markerMode</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.11 <a href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.12 <a href="#parameter-attribute-profile">ttp:profile</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.13 <a href="#parameter-attribute-processorProfiles">ttp:processorProfiles</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.14 <a href="#parameter-attribute-processorProfileCombination">ttp:processorProfileCombination</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.15 <a href="#parameter-attribute-subFrameRate">ttp:subFrameRate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.16 <a href="#parameter-attribute-tickRate">ttp:tickRate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.17 <a href="#parameter-attribute-timeBase">ttp:timeBase</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.18 <a href="#parameter-attribute-validation">ttp:validation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.19 <a href="#parameter-attribute-validationAction">ttp:validationAction</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2.20 <a href="#parameter-attribute-version">ttp:version</a><br>
 7 <a href="#content">Content</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;7.1 <a href="#content-element-vocabulary">Content Element Vocabulary</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.1.1 <a href="#document-structure-vocabulary-tt">tt</a><br>
@@ -427,11 +435,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e22452">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e22969">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e24064">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e24581">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e23962">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e24126">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e25574">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e25738">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a><br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a><br>
@@ -645,13 +653,14 @@ and may specify inline overrides to styling.</p></div></div><div class="div1">
 <h3><a id="terms"></a>2.2 Terminology</h3><dl><dt class="label"><a id="terms-abstract-document-instance"></a>[abstract document instance]</dt><dd><p>An instance of an abstract data set as represented by a
 <a href="#terms-reduced-xml-infoset">reduced xml infoset</a>.</p></dd><dt class="label"><a id="terms-abstract-document-type"></a>[abstract document type]</dt><dd><p>A set of constraints that defines a class of <em>XML Information
 Sets</em> <a href="#infoset">[XML InfoSet]</a>.</p></dd><dt class="label"><a id="terms-anonymous-profile"></a>[anonymous profile]</dt><dd><p>See <a href="#terms-undesignated-profile">undesignated profile</a>.</p></dd><dt class="label"><a id="terms-attribute-information-item"></a>[attribute information item]</dt><dd><p>Each specified or defaulted attribute  of an XML document corresponds with an attribute information
-item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.3.</p></dd><dt class="label"><a id="terms-character-information-item"></a>[character information item]</dt><dd><p>Each data character appearing in an XML document corresponds with a character information
+item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.3.</p></dd><dt class="label"><a id="terms-baseline-profile"></a>[baseline profile]</dt><dd><p>A <a href="#terms-profile">profile</a> referenced by the <code>use</code> attribute of a <code>ttp:profile</code> element,
+which serves as a baseline (initial) set of specifications with which to populate the referencing profile.</p></dd><dt class="label"><a id="terms-character-information-item"></a>[character information item]</dt><dd><p>Each data character appearing in an XML document corresponds with a character information
 item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.6.</p></dd><dt class="label"><a id="terms-computed-cell-size"></a>[computed cell size]</dt><dd><p>The size (extent) of a cell computed by dividing the width of the <a href="#terms-root-container-region">root container region</a>
 by the column count, i.e., the number of cells in the horizontal axis, and by dividing
 the height of the <a href="#terms-root-container-region">root container region</a> by the row count, i.e., the number of cells in the vertical
 axis, where the column and row counts are determined by the <code>ttp:cellResolution</code> parameter attribute.</p></dd><dt class="label"><a id="terms-content-element"></a>[content element]</dt><dd><p>Any of the element types defined by the <a href="#element-vocab-type-content">Content Module</a>.</p></dd><dt class="label"><a id="terms-content-processor"></a>[content processor]</dt><dd><p>A processing system capable of importing (receiving) Timed Text Markup Language
 content for the purpose of transforming, presenting, or otherwise processing the content.</p></dd><dt class="label"><a id="terms-content-profile"></a>[content profile]</dt><dd><p>A collection of <a href="#terms-feature">features</a> and <a href="#terms-extension">extensions</a> that must, may, or must not be employed by
-Timed Text Markup Language content.</p><table border="1" class="ednote" summary="Editorial note: Content Profile"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Content Profile</b></td><td align="right" valign="top">2013-08-23</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Need to update and elaborate definition of content profile based on new profiling mechanisms.</td></tr></table><p></p></dd><dt class="label"><a id="terms-content-region"></a>[content region]</dt><dd><p>A logical region into which rendered content is placed when modeling or
+Timed Text Markup Language content.</p><p></p></dd><dt class="label"><a id="terms-content-region"></a>[content region]</dt><dd><p>A logical region into which rendered content is placed when modeling or
 performing presentation processing.</p></dd><dt class="label"><a id="terms-designated-profile"></a>[designated profile]</dt><dd><p>A <a href="#terms-profile">profile</a> that is associated with a <a href="#terms-profile-designator">profile designator</a> by
 means of a <code>designator</code> attribute or prose text in a specification of profile.</p></dd><dt class="label"><a id="terms-document-instance"></a>[document instance]</dt><dd><p>A concrete realization of a Timed Text Markup Language document, where the concrete form
 is specific to the context of reference. For example, a sequence of bytes that represents an
@@ -661,12 +670,24 @@ which document interchange occurs, and in which out-of-band protocols or specifi
 may define certain behavioral defaults, such as an implied profile.</p></dd><dt class="label"><a id="terms-document-processing-context"></a>[document processing context]</dt><dd><p>The implied context or environment internal to a <a href="#terms-content-processor">content processor</a> in
 which document processing occurs, and in which out-of-band protocols or specifications
 may define certain behavioral defaults, such as the establishment or creation of a
-<a href="#terms-synthetic-document-syncbase">synthetic document syncbase</a>.</p></dd><dt class="label"><a id="terms-element-information-item"></a>[element information item]</dt><dd><p>Each element appearing in an XML document corresponds with an element information
+<a href="#terms-synthetic-document-syncbase">synthetic document syncbase</a>.</p></dd><dt class="label"><a id="terms-effective-content-profile"></a>[effective content profile]</dt><dd><p>The <a href="#terms-content-profile">content profile</a> computed from the set of all <a href="#terms-content-profile">content profiles</a>
+explicitly or implicitly referenced by or assigned to a TTML <a href="#terms-document-instance">document instance</a> after applying any
+explicit or implicit profile and profile specification combination methods. When performing validation on a given <a href="#terms-document-instance">document instance</a>,
+then this validation is performed by making use of a document's <a href="#terms-effective-content-profile">effective content profile</a>.</p></dd><dt class="label"><a id="terms-effective-processor-profile"></a>[effective processor profile]</dt><dd><p>The <a href="#terms-processor-profile">processor profile</a> computed from the set of all <a href="#terms-processor-profile">processor profiles</a>
+explicitly or implicitly referenced by or assigned to a TTML <a href="#terms-document-instance">document instance</a> after applying any
+explicit or implicit profile and profile specification combination methods. When determining if a <a href="#terms-content-processor">content processor</a>
+can or cannot process a given <a href="#terms-document-instance">document instance</a>, then this determination is performed
+by making use of a document's <a href="#terms-effective-processor-profile">effective processor profile</a>.</p></dd><dt class="label"><a id="terms-enclosing-document-instance"></a>[enclosing document instance]</dt><dd><p>The <a href="#terms-document-instance">document instance</a> that encloses or otherwise contains
+an enclosed feature or component.</p></dd><dt class="label"><a id="terms-element-information-item"></a>[element information item]</dt><dd><p>Each element appearing in an XML document corresponds with an element information
 item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.2.</p></dd><dt class="label"><a id="terms-exchange-profile"></a>[exchange profile]</dt><dd><p>A profile of content that serves a set of needs for content interchange.</p></dd><dt class="label"><a id="terms-extension"></a>[extension]</dt><dd><p>A syntactic or semantic expression or capability that is defined and
 labeled (using a extension designation) in another (public or private)
-specification.</p></dd><dt class="label"><a id="terms-feature"></a>[feature]</dt><dd><p>A syntactic or semantic expression or capability that is defined and
+specification.</p></dd><dt class="label"><a id="terms-extension-specification"></a>[extension specification]</dt><dd><p>A specification of a constraint or requirement that relates to an
+<a href="#terms-extension">extension</a>, typically expressed by
+an <a href="#parameter-vocabulary-extension"><code>ttp:extension</code></a> element.</p></dd><dt class="label"><a id="terms-feature"></a>[feature]</dt><dd><p>A syntactic or semantic expression or capability that is defined and
 labeled (using a feature designation) in this specification (or a past or
-future revision of this specification).</p></dd><dt class="label"><a id="terms-fragment-identifier"></a>[fragment identifier]</dt><dd><p>A syntactic expression that adheres to the fragment identifer syntax defined by <a href="#uri">[URI]</a>,
+future revision of this specification).</p></dd><dt class="label"><a id="terms-feature-specification"></a>[feature specification]</dt><dd><p>A specification of a constraint or requirement that relates to an
+<a href="#terms-feature">feature</a>, typically expressed by
+an <a href="#parameter-vocabulary-feature"><code>ttp:feature</code></a> element.</p></dd><dt class="label"><a id="terms-fragment-identifier"></a>[fragment identifier]</dt><dd><p>A syntactic expression that adheres to the fragment identifer syntax defined by <a href="#uri">[URI]</a>,
 Section 4.1.</p></dd><dt class="label"><a id="terms-implied-inline-region"></a>[implied inline region]</dt><dd><p>An anonymous (unidentified) <a href="#terms-inline-region">inline region</a> that is implied in the context of a block level content element
 due the presence of a <a href="#style-attribute-extent"><code>tts:extent</code></a> or <a href="#style-attribute-origin"><code>tts:origin</code></a>
 style attribute on the content element.</p></dd><dt class="label"><a id="terms-inline-animation"></a>[inline animation]</dt><dd><p>An <a href="#animation-vocabulary-animate"><code>animate</code></a> or <a href="#animation-vocabulary-set"><code>set</code></a> element
@@ -678,7 +699,11 @@ An inline animation does not specify an <code>xlink:href</code> attribute.</p></
 a <a href="#terms-content-element">content element</a> to be selected into (targetted to) the region.
 There is a one-to-one relation between an inline <a href="#layout-vocabulary-region"><code>region</code></a> element and its
 parent <a href="#terms-content-element">content element</a>. An inline region is assigned its parent element's time interval as its active
-time interval. No <code>region</code> attribute makes reference to an inline region.</p></dd><dt class="label"><a id="terms-out-of-line-animation"></a>[out-of-line animation]</dt><dd><p>An <a href="#animation-vocabulary-animate"><code>animate</code></a> or <a href="#animation-vocabulary-set"><code>set</code></a> element that is defined out-of-line from
+time interval. No <code>region</code> attribute makes reference to an inline region.</p></dd><dt class="label"><a id="terms-nested-profile"></a>[nested profile]</dt><dd><p>A constituent <a href="#terms-profile">profile</a> of a <a href="#terms-nesting-profile">nesting profile</a>, i.e., one of the
+descendant <code>ttp:profile</code> element(s) of a higher level (ancestor) <code>ttp:profile</code> element. A given <code>ttp:profile</code> may serve
+as both a <a href="#terms-nested-profile">nested profile</a> and a <a href="#terms-nesting-profile">nesting profile</a>.</p></dd><dt class="label"><a id="terms-nesting-profile"></a>[nesting profile]</dt><dd><p>A <a href="#terms-profile">profile</a> defined my making reference to one or more child <code>ttp:profile</code> element(s), wherein a
+profile combination method determines how profile specifications from the multiple child <code>ttp:profile</code> element(s) are combined.</p></dd><dt class="label"><a id="terms-non-nesting-profile"></a>[non-nesting profile]</dt><dd><p>A <a href="#terms-profile">profile</a> defined without making reference to one or more child <code>ttp:profile</code> element(s); that is,
+by including only child <code>ttp:features</code> and <code>ttp:extensions</code> element(s).</p></dd><dt class="label"><a id="terms-out-of-line-animation"></a>[out-of-line animation]</dt><dd><p>An <a href="#animation-vocabulary-animate"><code>animate</code></a> or <a href="#animation-vocabulary-set"><code>set</code></a> element that is defined out-of-line from
 the <a href="#terms-content-element">content element</a> or <a href="#layout-vocabulary-region"><code>region</code></a> element targetted by the animation.
 An out-of-line animation appears as a child of an <a href="#animation-vocabulary-animation"><code>animation</code></a> element in the header
 (<a href="#document-structure-vocabulary-head"><code>head</code></a> element)
@@ -695,10 +720,11 @@ in order to allow <a href="#terms-content-element">content elements</a> to be as
 and the <a href="#terms-content-element">content element(s)</a> to be selected into (targetted to) the region.</p></dd><dt class="label"><a id="terms-presentation-processor"></a>[presentation processor]</dt><dd><p>A <a href="#terms-content-processor">content processor</a> which purpose is to layout, format, and render,
 i.e., to present, <a href="#terms-timed-text-markup-language">Timed Text Markup Language</a> content by applying the presentation semantics
 defined in this specification.</p></dd><dt class="label"><a id="terms-processor"></a>[processor]</dt><dd><p>See <a href="#terms-content-processor">content processor</a>.</p></dd><dt class="label"><a id="terms-processor-profile"></a>[processor profile]</dt><dd><p>A collection of <a href="#terms-feature">features</a> and <a href="#terms-extension">extensions</a> that must or may be implemented (supported) by
-a content processor.</p><table border="1" class="ednote" summary="Editorial note: [processor profile]"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: [processor profile]</b></td><td align="right" valign="top">2013-08-23</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Need to update and elaborate definition of processor profile based on new profiling mechanisms.</td></tr></table><p></p></dd><dt class="label"><a id="terms-profile"></a>[profile]</dt><dd><p>A <a href="#terms-content-profile">content profile</a> or <a href="#terms-processor-profile">processor profile</a>.</p></dd><dt class="label"><a id="terms-profile-definition-document"></a>[profile definition document]</dt><dd><p>A document that formally specifies a <a href="#terms-profile">profile</a>, where such document is a valid TTML document instance
+a content processor.</p></dd><dt class="label"><a id="terms-profile"></a>[profile]</dt><dd><p>A <a href="#terms-content-profile">content profile</a> or <a href="#terms-processor-profile">processor profile</a>.</p></dd><dt class="label"><a id="terms-profile-definition-document"></a>[profile definition document]</dt><dd><p>A document that formally specifies a <a href="#terms-profile">profile</a>, where such document is a valid TTML document instance
 which has a root element type of <code>ttp:profile</code>.</p></dd><dt class="label"><a id="terms-profile-designator"></a>[profile designator]</dt><dd><p>An absolute URI used to label or reference an externally defined <a href="#terms-profile">profile</a>, where
 external refers to being external to a <a href="#terms-document-instance">document instance</a>.</p></dd><dt class="label"><a id="terms-profile-fragment-identifier"></a>[profile fragment identifier]</dt><dd><p>A <a href="#terms-fragment-identifier">fragment identifier</a> used to label or reference an internally defined <a href="#terms-profile">profile</a>, where
-internal refers to being internal to a <a href="#terms-document-instance">document instance</a>.</p></dd><dt class="label"><a id="terms-region"></a>[region]</dt><dd><p>A logical construct that models authorial intention regarding
+internal refers to being internal to a <a href="#terms-document-instance">document instance</a>.</p></dd><dt class="label"><a id="terms-profile-specification"></a>[profile specification]</dt><dd><p>A <a href="#terms-feature-specification">feature specification</a> or an <a href="#terms-extension-specification">extension specification</a>
+or the internal state representation thereof.</p></dd><dt class="label"><a id="terms-region"></a>[region]</dt><dd><p>A logical construct that models authorial intention regarding
 desired or potential presentation processing, and which is represented as
 a rectangular area of a presentation surface into which content
 is composed and rendered during presentation processing.</p></dd><dt class="label"><a id="terms-reduced-xml-infoset"></a>[reduced xml infoset]</dt><dd><p>An XML Information Set <a href="#infoset">[XML InfoSet]</a> that satisfies the
@@ -708,7 +734,7 @@ object for which a <a href="#terms-document-instance">document instance</a> prov
 information, and with which that <a href="#terms-document-instance">document instance</a> is associated.</p></dd><dt class="label"><a id="terms-related-media-object-region"></a>[related media object region]</dt><dd><p>When a non-null <a href="#terms-related-media-object">related media object</a> exists, the region of this media object,
 expressed in the coordinate system that applies to the <a href="#terms-document-instance">document instance</a> that is associated with the
 related media object.</p></dd><dt class="label"><a id="terms-root-container-region"></a>[root container region]</dt><dd><p>A logical region that establishes a coordinate system into which
-<a href="terms-content-region">content regions</a> are placed and optionally clipped.</p></dd><dt class="label"><a id="terms-root-temporal-extent"></a>[root temporal extent]</dt><dd><p>
+<a href="#terms-content-region">content regions</a> are placed and optionally clipped.</p></dd><dt class="label"><a id="terms-root-temporal-extent"></a>[root temporal extent]</dt><dd><p>
 The temporal extent (interval) defined by the temporal beginning and ending of a <a href="#terms-document-instance">document instance</a> in relationship with some external application or presentation context.
 </p></dd><dt class="label"><a id="terms-smpte-time-code"></a>[smpte time code]</dt><dd><p>A time code whose format and semantics are established by <a href="#smpte12m">[SMPTE 12M]</a>,
 which may be embedded into or otherwise associated with media content, such
@@ -720,7 +746,8 @@ values embedded in or associated with the <a href="#terms-related-media-object">
 otherwise determined by the <a href="#terms-document-processing-context">document processing context</a>.</p></dd><dt class="label"><a id="terms-timed-text"></a>[timed text]</dt><dd><p>Textual information that is intrinsically or extrinsically
 associated with timing information.</p></dd><dt class="label"><a id="terms-timed-text-markup-language"></a>[timed text markup language]</dt><dd><p>A content type that represents timed text media for the purpose of
 interchange among authoring systems.</p></dd><dt class="label"><a id="terms-timed-text-authoring-system"></a>[timed text authoring system]</dt><dd><p>A content authoring system capable of importing and exporting
-Timed Text Markup Language content.</p></dd><dt class="label"><a id="terms-transformation-processor"></a>[transformation processor]</dt><dd><p>A <a href="#terms-content-processor">content processor</a> which purpose is to transform or otherwise rewrite
+Timed Text Markup Language content.</p></dd><dt class="label"><a id="terms-top-level-profile"></a>[top-level profile]</dt><dd><p>A <a href="#terms-profile">profile</a> defined by a <code>ttp:profile</code> element that appears as a child
+of the <code>head</code> element.</p></dd><dt class="label"><a id="terms-transformation-processor"></a>[transformation processor]</dt><dd><p>A <a href="#terms-content-processor">content processor</a> which purpose is to transform or otherwise rewrite
 <a href="#terms-timed-text-markup-language">Timed Text Markup Language</a> content to either <a href="#terms-timed-text-markup-language">Timed Text Markup Language</a>
 or to another (arbitrary) content format. An example of the first is a processor that removes
 or rewrites TTML features so as to conform to a profile of TTML. An example of the latter is
@@ -750,7 +777,7 @@ as in the following:</p><a id="elt-syntax-example"></a><table class="syntax"><ca
 <div class="exampleInner"><pre>
 &lt;example
   <span class="reqattr">count</span> = integer
-  size = (<em>large</em>|<em>medium</em>|<em>small</em>) : medium&gt;
+  size = (<em>large</em>|<em>medium</em>|<em>small</em>|<em><span class="deprecated">tiny</span></em>|<em><span class="obsoleted">micro</span></em>) : medium&gt;
   <em>Content:</em> (all | any*)
 &lt;/example&gt;
 </pre></div>
@@ -759,9 +786,13 @@ information item, and the rest are optional. Where an attribute
 information item has an enumerated type definition, the values are
 shown separated by vertical bars, as for <code>size</code> above; if
 there is a default value, it is shown following a colon. Where an
-<a href="terms-attribute-information-item">attribute information item</a> has a built-in simple type definition
+<a href="#terms-attribute-information-item">attribute information item</a> has a built-in simple type definition
 defined in <a href="#xsd-2">[XML Schema Part 2]</a>, a hyperlink to its definition
-therein is given.</p><p>The allowed content of the information item is shown as a grammar
+therein is given.</p><p>An information item depicted with a <span class="deprecated">light yellow orange</span> background color is deprecated (e.g.,
+the <span class="deprecated">tiny</span> value of the <code>size</code> attribute shown above).
+An information item depicted with a <span class="obsoleted">light magenta red</span> background color is obsoleted (e.g.,
+the <span class="obsoleted">micro</span> value of the <code>size</code> attribute shown above). These designations of the item
+are also explicitly called out in specification text.</p><p>The allowed content of the information item is shown as a grammar
 fragment, using the Kleene operators <code>?</code>, <code>*</code>
 and <code>+</code>. Each element name therein is a hyperlink to its
 own illustration.</p><p>The term linear white-space (LWSP) is to be interpreted as a non-empty sequence of
@@ -804,7 +835,7 @@ semantic constraints defined by this specification. In addition, this Infoset
 should satisfy the web content accessibility guidelines specified by
 <a href="#wcag">[WCAG]</a>.</p></li></ol></div><div class="div2">
 <h3><a id="conformance-processor"></a>3.2 Processor Conformance</h3><div class="div3">
-<h4><a id="conformance-generic-processor"></a>3.2.1 Generic Processor Conformance</h4><p>A TTML <a href="#terms-content-processor">content processor</a> conforms to this specification if the following
+<h4><a id="conformance-generic-processor"></a>3.2.1 Generic Processor Conformance</h4><table border="1" class="ednote" summary="Editorial note: Profile Processing"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Profile Processing</b></td><td align="right" valign="top">2014-05-21</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Add requirement to invoke <span class="strong">abort if unsupported processor profile</span> procedure.</td></tr></table><p></p><table border="1" class="ednote" summary="Editorial note: Validation Processing"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Validation Processing</b></td><td align="right" valign="top">2014-05-21</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Add requirement to invoke validation processing procedure.</td></tr></table><p>A TTML <a href="#terms-content-processor">content processor</a> conforms to this specification if the following
 generic processor criteria are
 satisfied:</p><ol class="enumar"><li><p>The processor provides at least one mechanism for notionally
 instantiating a <a href="#terms-reduced-xml-infoset">reduced xml infoset</a>
@@ -849,7 +880,7 @@ either (1)
 a <code>ttp:profile</code> attribute on its root
 <code>tt</code>
 element
-as defined by <a href="#parameter-attribute-profile"><b>6.2.9 ttp:profile</b></a>
+as defined by <a href="#parameter-attribute-profile"><b>6.2.12 ttp:profile</b></a>
 or (2)
 a <code>ttp:profile</code> element as a child of the
 <code>head</code> element as defined by
@@ -866,7 +897,7 @@ information item children from any remaining element in case that all
 character children of the element denote XML whitespace characters and the element's type
 is defined as empty in the associated <a href="#terms-abstract-document-type">abstract document type</a>, and then</p></li><li><p>pruning all attribute
 information items having expanded names such that the namespace URI of the
-expanded names are not listed in <a href="#namespace-vocab-table"><b>Table 1 – Namespaces</b></a>,</p></li></ol><p>then the document element is one of the document
+expanded names are not listed in <a href="#namespace-vocab-table"><b>Table 5-1 – Namespaces</b></a>,</p></li></ol><p>then the document element is one of the document
 element types permitted by the associated <a href="#terms-abstract-document-type">abstract document type</a>,
 the descendants of the document
 element satisfy their respective element type's content
@@ -907,7 +938,7 @@ global attributes. The following table specifies this set of namespaces
 and indicates the default prefix used within this specification and the
 normative URI that denotes each namespace.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In a specific <a href="#terms-document-instance">document instance</a>, it is not required that the default
 prefixes shown below are used. Any prefix or namespace binding that satisfies the constraints
-of XML Namespaces <a href="#xmlns10">[XML Namespaces 1.0]</a>  may be used that is associated with the specified namespace URI.</p></div><a id="namespace-vocab-table"></a><table class="common"><caption>Table 1 – Namespaces</caption><col width="30%" span="1"><col span="1"><col span="1"><tbody><tr><th>Name</th><th>Prefix</th><th>Value</th></tr><tr><td>TT</td><td><code>tt:</code></td><td><code>http://www.w3.org/ns/ttml</code></td></tr><tr><td>TT Parameter</td><td><code>ttp:</code></td><td><code>http://www.w3.org/ns/ttml#parameter</code></td></tr><tr><td>TT Style</td><td><code>tts:</code></td><td><code>http://www.w3.org/ns/ttml#styling</code></td></tr><tr><td>TT Metadata</td><td><code>ttm:</code></td><td><code>http://www.w3.org/ns/ttml#metadata</code></td></tr><tr><td>TT Profile</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/profile/</code></td></tr><tr><td>TT Feature</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/feature/</code></td></tr><tr><td>TT Extension</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/extension/</code></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>If a reference to an element type is used in this specification and the name
+of XML Namespaces <a href="#xmlns10">[XML Namespaces 1.0]</a>  may be used that is associated with the specified namespace URI.</p></div><a id="namespace-vocab-table"></a><table class="common"><caption>Table 5-1 – Namespaces</caption><col width="30%" span="1"><col span="1"><col span="1"><tbody><tr><th>Name</th><th>Prefix</th><th>Value</th></tr><tr><td>TT</td><td><code>tt:</code></td><td><code>http://www.w3.org/ns/ttml</code></td></tr><tr><td>TT Parameter</td><td><code>ttp:</code></td><td><code>http://www.w3.org/ns/ttml#parameter</code></td></tr><tr><td>TT Style</td><td><code>tts:</code></td><td><code>http://www.w3.org/ns/ttml#styling</code></td></tr><tr><td>TT Metadata</td><td><code>ttm:</code></td><td><code>http://www.w3.org/ns/ttml#metadata</code></td></tr><tr><td>TT Profile</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/profile/</code></td></tr><tr><td>TT Feature</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/feature/</code></td></tr><tr><td>TT Extension</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/extension/</code></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>If a reference to an element type is used in this specification and the name
 of the element type is not namespace qualified, then the TT Namespace applies.</p><p>For certain namespaces defined above, the default prefix
 is specified as <em>none</em> if no XML vocabulary is defined in
 the namespace by this specification (nor expected to be defined in a
@@ -923,84 +954,27 @@ appears a sub-section containing examples of profile specifications and examples
 <a href="#terms-document-instance">document instance</a> adheres to a collection of constraints on what
 vocabulary is used and how it is used, or (2) to declare that a <a href="#terms-processor">processor</a> must satisfy certain conditions on how
 content is processed. The first of these functions is termed a <a href="#terms-content-profile">content profile</a>, while
-the second is termed a <a href="#terms-processor-profile">processor profile</a>.</p><p>A <a href="#terms-content-profile">content profile</a> is generally used to allow an author to declare, at authoring time,
+the second is termed a <a href="#terms-processor-profile">processor profile</a>.</p><p>A <a href="#terms-content-profile">content profile</a> is used to allow an author to declare, at authoring time,
 what constraints the author intends to apply to a <a href="#terms-document-instance">document instance</a>. Such a
 declaration permits downstream processors to perform content validation or verification, as well as to guide or limit subsequent
 transformation or editing of content in order to maintain adherence to an author specified content profile. In addition, a
 downstream processor may use a content profile declaration to perform an early determination of its ability to process the features
-implied by the content profile.</p><p>A <a href="#terms-processor-profile">processor profile</a> is generally used to allow an author to declare, at authoring time,
+implied by the content profile.</p><p>Content profiles are declared by using (1) the <a href="#parameter-attribute-contentProfiles"><code>ttp:contentProfiles</code></a>
+attribute on the root <code>tt</code> element, (2) one or more top-level <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a>
+elements of type <code>content</code>, or (3) a combination of these two mechanisms. If not declared, no content profile is implied.</p><p>A <a href="#terms-processor-profile">processor profile</a> is used to allow an author to declare, at authoring time,
 what processing must be supported when processing a <a href="#terms-document-instance">document instance</a>, such that, if a
 processor is not able to perform the indicated processing, then processing should be aborted. Such a declaration permits downstream
-processors to avoid processing content that cannot be processed in a manner that meets the requirements of the content author.</p><p>A content author is not limited to using a single profile, but may make reference to multiple profiles of either type, i.e.,
-multiple content profiles and/or multiple processor profiles. When multiple profiles are referenced, their respective specifications
-are combined to form a single effective content profile that applies to the document and a single effective processor profile
-that applies to a processor when processing the document. In addition, an author is not limited to making reference to externally
-defined profiles, but may define one or more profiles inline within a document.</p></div><div class="div3">
-<h4><a id="vocabulary-profile-designators"></a>5.2.2 Profile Designators</h4><p>A profile is referenced in one of two ways according to whether the profile is defined externally to the referring document or
-is defined inline within the referring document. When defined externally, a profile is referenced by means of a
-<a href="#terms-profile-designator">profile designator</a>. When defined internally (inline), a profile is referenced either implicitly
-or by means of <a href="#terms-profile-fragment-identifier">profile fragment identifier</a>.</p><p>A profile designator must adhere to the
-<code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
-§3.2.17. If the profile designator is expressed as a relative URI,
-then it must be absolutized by using the TT Profile Namespace value as
-the base URI.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>For example, if a profile designator is expressed as
-<code>ttml2-presentation</code>, then the absolutized profile designator
-would be
-<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p></div><p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
-<a href="#profile-vocab-table"><b>Table 2 – Profiles</b></a> are reserved for future standardization, and must not appear in a conformant
-<a href="#terms-document-instance">document instance</a>. Nothwithstanding this constraint, a profile designator is not restricted to the set of designators enumerated
-in <a href="#profile-vocab-table"><b>Table 2 – Profiles</b></a>, but may be any URI that feasibly dereferences a TTML <a href="#terms-profile-definition-document">profile definition document</a>
-provided it does not use the TT Profile Namespace as a prefix.</p><div class="div4">
-<h5><a id="vocabulary-profile-standard-designators"></a>5.2.2.1 Standard Designators</h5><p>The Timed Text Markup Language (TTML) employs a number of
-standard, predefined profiles of its
-vocabulary and associated semantics.</p><p>The following table specifies this set of
-profiles, indicating
-a normative name
-and designator for each
-predefined profile,
-and where each of these profiles is formally elaborated in
-<a href="#profiles"><b>F Profiles</b></a>, in <a href="#ttml1">[TTML1]</a>,
-or in another TTWG specification.</p><a id="profile-vocab-table"></a><table class="common"><caption>Table 2 – Profiles</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Name</th><th>Designator</th></tr><tr><td>DFXP Transformation</td><td><code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code></td></tr><tr><td>DFXP Presentation</td><td><code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code></td></tr><tr><td>DFXP Full</td><td><code>http://www.w3.org/ns/ttml/profile/dfxp-full</code></td></tr><tr><td>SDP US</td><td><code>http://www.w3.org/ns/ttml/profile/sdp-us</code></td></tr><tr><td>TTML2 Transformation</td><td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td></tr><tr><td>TTML2 Presentation</td><td><code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code></td></tr><tr><td>TTML2 Full</td><td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>For definitions of the DFXP profiles, see <a href="#ttml1">[TTML1]</a>. For definition of the SDP US profile, see <a href="#sdpus">[SDP US]</a>.</p></div></div></div><div class="div3">
-<h4><a id="vocabulary-profile-semantics"></a>5.2.3 Profile Semantics</h4><div class="div4">
-<h5><a id="vocabulary-profile-combination"></a>5.2.3.1 Profile Combination</h5></div><div class="div4">
-<h5><a id="vocabulary-content-profile-processing"></a>5.2.3.2 Content Profile Semantics</h5></div><div class="div4">
-<h5><a id="vocabulary-processor-profile-processing"></a>5.2.3.3 Processor Profile Semantics</h5><p>The profile of TTML that must be supported by a
-TTML <a href="#terms-content-processor">content processor</a> in order to process a <a href="#terms-document-instance">document instance</a> is determined either (1) by specifying a
-<code>ttp:profile</code> attribute on the root <code>tt</code> element, as
-defined by <a href="#parameter-attribute-profile"><b>6.2.9 ttp:profile</b></a>, or (2) by
-including one or more <code>ttp:profile</code>
-elements in the <code>head</code> element, in
-accordance with <a href="#parameter-vocabulary-profile"><b>6.1.1 ttp:profile</b></a>.</p><p>If a <code>ttp:profile</code> element appears as a
-descendant of the <code>tt</code> element, then the <a href="#parameter-attribute-profile"><code>ttp:profile</code></a>
-attribute should not be specified on the <code>tt</code> element. If both
-a <code>ttp:profile</code> element and a <code>ttp:profile</code>
-attribute are present (in a given <a href="#terms-document-instance">document instance</a>), then the
-<code>ttp:profile</code> attribute must be ignored for the purpose of
-determining the declared profile requirements.</p><table border="1" class="ednote" summary="Editorial note: Profile Combination Semantics"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Profile Combination Semantics</b></td><td align="right" valign="top">2013-09-05</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Need to incorporate affects of <code>ttp:profileCombination</code> parameter into the following paragraph.</td></tr></table><p>If more than one <code>ttp:profile</code> element appears in
-a <a href="#terms-document-instance">document instance</a>, then all specified profiles apply
-simultaneously.  In such a case, if some feature or some extension is
-specified by one profile to be <code>used</code> (mandatory and enabled) and by
-another profile to be <code>required</code> (mandatory) or <code>optional</code> (voluntary),
-then that feature or extension must be considered to be <code>used</code>
-(mandatory and enabled); if some feature or some extension is
-specified by one profile to be merely <code>required</code> (mandatory) and by
-another profile to be <code>optional</code> (voluntary), then that feature or
-extension must be considered to be <code>required</code> (mandatory).</p><p>If neither
-<a href="#parameter-attribute-profile"><code>ttp:profile</code></a>
-attribute nor
-<a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a>
-element is present in a <a href="#terms-document-instance">document instance</a>, and if the <a href="#terms-document-interchange-context">document
-interchange context</a>
-does not make an implicit or explicit
-reference to a pre-defined profile or does not specify a <em>Profile Definition
-Document</em> or another equivalent set of feature designations,
-then the TTML Transformation profile applies.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>It is not a requirement on a conformant <a href="#terms-document-instance">document instance</a> that a profile be internally
-defined by use of a <code>ttp:profile</code> element or internally referenced by a
-<code>ttp:profile</code> attribute. More specifically, it is permitted that the <a href="#terms-document-interchange-context">document
-interchange context</a> determines the applicable profile through private
-agreement, out-of-band protocol, or common use (between sender and receiver) of a profile defined
-by an external specification.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>It is intended that the <code>ttp:profile</code> attribute be used when
-the author wishes to reference one of the standard, predefined profiles of
+processors to avoid processing content that cannot be processed in a manner that meets the requirements of the content author.</p><p>Processor profiles are declared by using (1) the <a href="#parameter-attribute-processorProfiles"><code>ttp:processorProfiles</code></a>
+attribute on the root <code>tt</code> element, (2) one or more <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a>
+elements of type <code>processor</code>, or (3) a combination of these two mechanisms.
+If not declared, a processor profile is inferred from content profile or from a default processor profile.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>It is not a requirement on a conformant <a href="#terms-document-instance">document instance</a> that a processor profile be internally
+declared by use of a <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element or internally referenced by a
+<a href="#parameter-attribute-processorProfiles"><code>ttp:processorProfiles</code></a> attribute. More specifically, it is
+permitted that the <a href="#terms-document-interchange-context">document
+interchange context</a> determines the applicable processor profile through private
+agreement, out-of-band protocol, or common use (between sender and receiver) of a processor profile defined
+by an external specification.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>It is intended that the <code>ttp:processorProfiles</code> attribute be used when
+the author wishes to reference one (or more) of the standard, predefined processor profiles of
 TTML Content, and does not wish to modify (by supersetting or subsetting)
 that profile. This attribute may also be used by an author to indicate the use
 of a non-standard profile, in which case the specified profile designator expresses
@@ -1018,30 +992,12 @@ in the underlying, baseline profile.</p><p>When a baseline profile is modified b
 is referred to as a <em>subtractive</em> profile; when modified by supersetting, the result
 is referred to as an <em>additive</em> profile.
 It is also possible to define a derived profile that is simultaneously subtractive
-and additive.</p></div><p>If a <a href="#terms-document-instance">document instance</a> makes use of a feature defined by
-<a href="#feature-designations"><b>D.1 Feature Designations</b></a> and if the intended use of the
-document requires the recognition and processing of that feature, then
-the document must include a <em>required feature</em> or
-a <em>used feature</em>
-specification in one of its declared or
-referenced profiles.  If a <a href="#terms-document-instance">document instance</a> makes use
-of an extension designatable by <a href="#extension-designations"><b>E.1 Extension Designations</b></a> and if the intended use of the document
-requires the recognition and processing of that extension, then the
-document must include a <em>required extension</em> or
-a <em>used extension</em> specification
-in one of its declared or referenced
-profiles.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A <em>required feature</em> or <em>used feature</em>
-specification is expressed directly (or indirectly by referring to a
-profile) by means of a <a href="#parameter-vocabulary-feature"><code>ttp:feature</code></a>
-element where the value of its <code>value</code> attribute is
-<code>required</code> or <code>use</code>,
-respectively.  A <em>required extension</em> or <em>used
-extension</em> specification is expressed directly (or indirectly by
-referring to a profile) by means of a <a href="#parameter-vocabulary-extension"><code>ttp:extension</code></a>
-element where the value of its <code>value</code> attribute is
-<code>required</code> or <code>use</code>,
-respectively.</p></div></div></div><div class="div3">
-<h4><a id="vocabulary-profile-examples"></a>5.2.4 Profile Examples</h4><p>An example of an author defined
+and additive.</p></div><p>A content author is not limited to using a single profile, but may make reference to multiple profiles of either type, i.e.,
+multiple content profiles and/or multiple processor profiles. When multiple profiles are referenced, their respective specifications
+are combined to form a single effective content profile that applies to the document and a single effective processor profile
+that applies to a processor when processing the document. In addition, an author is not limited to making reference to externally
+defined profiles, but may define one or more profiles inline within a document.</p></div><div class="div3">
+<h4><a id="semantics-profile-examples"></a>5.2.2 Profile Examples</h4><p><em>This sub-section is non-normative.</em></p><table border="1" class="ednote" summary="Editorial note: More profile examples."><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: More profile examples.</b></td><td align="right" valign="top">2014-05-21</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Add more examples depicting new profiling features defined in TTML2.</td></tr></table><p>An example of an author defined
 additive, derived profile of the TTML Presentation
 profile is shown
 below in <a href="#ttml-example-sub-profile"><b>Example Fragment – TTML Additive Profile</b></a>.</p><a id="ttml-example-sub-profile"></a><table class="example"><caption>Example Fragment – TTML Additive Profile</caption><tbody><tr><td>
@@ -1062,7 +1018,126 @@ the TTML Presentation profile, which is then additively modified by making the
 <code>#fontStyle-italic</code> feature required (rather than
 optional as it is defined
 in <a href="#profile-ttml2-presentation"><b>F.2 TTML2 Presentation Profile</b></a>). Note also the resetting of the
-default XMLNS binding on the <code>profile</code> element to the TT Parameter Namespace.</p></div></div></div><div class="div2">
+default XMLNS binding on the <code>profile</code> element to the TT Parameter Namespace.</p></div></div><div class="div3">
+<h4><a id="vocabulary-profile-designators"></a>5.2.3 Profile Designators</h4><p>A profile is referenced in one of two ways according to whether the profile is defined externally to the referring document or
+is defined inline within the referring document. When defined externally, a profile is referenced by means of a
+<a href="#terms-profile-designator">profile designator</a>. When defined internally (inline), a profile is referenced either implicitly
+or by means of <a href="#terms-profile-fragment-identifier">profile fragment identifier</a>.</p><p>A profile designator must adhere to the
+<code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
+§3.2.17. If the profile designator is expressed as a relative URI,
+then it must be absolutized by using the TT Profile Namespace value as
+the base URI.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>For example, if a profile designator is expressed as
+<code>ttml2-presentation</code>, then the absolutized profile designator
+would be
+<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p></div><p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
+<a href="#profile-vocab-table"><b>Table 5-2 – Profiles</b></a> are reserved for future standardization, and must not appear in a conformant
+<a href="#terms-document-instance">document instance</a>. Nothwithstanding this constraint, a profile designator is not restricted to the set of designators enumerated
+in <a href="#profile-vocab-table"><b>Table 5-2 – Profiles</b></a>, but may be any URI that feasibly dereferences a TTML <a href="#terms-profile-definition-document">profile definition document</a>
+provided it does not use the TT Profile Namespace as a prefix.</p><div class="div4">
+<h5><a id="vocabulary-profile-standard-designators"></a>5.2.3.1 Standard Designators</h5><p>The Timed Text Markup Language (TTML) employs a number of
+standard, predefined profiles of its
+vocabulary and associated semantics.</p><p>The following table specifies this set of
+profiles, indicating
+a normative name
+and designator for each
+predefined profile,
+and where each of these profiles is formally elaborated in
+<a href="#profiles"><b>F Profiles</b></a>, in <a href="#ttml1">[TTML1]</a>,
+or in another TTWG specification.</p><a id="profile-vocab-table"></a><table class="common"><caption>Table 5-2 – Profiles</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Name</th><th>Designator</th></tr><tr><td>DFXP Transformation</td><td><code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code></td></tr><tr><td>DFXP Presentation</td><td><code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code></td></tr><tr><td>DFXP Full</td><td><code>http://www.w3.org/ns/ttml/profile/dfxp-full</code></td></tr><tr><td>SDP US</td><td><code>http://www.w3.org/ns/ttml/profile/sdp-us</code></td></tr><tr><td>TTML2 Transformation</td><td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td></tr><tr><td>TTML2 Presentation</td><td><code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code></td></tr><tr><td>TTML2 Full</td><td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>For definitions of the DFXP profiles, see <a href="#ttml1">[TTML1]</a>. For definition of the SDP US profile, see <a href="#sdpus">[SDP US]</a>.</p></div></div></div><div class="div3">
+<h4><a id="semantics-profile-semantics"></a>5.2.4 Profile Semantics</h4><div class="div4">
+<h5><a id="semantics-profile-state"></a>5.2.4.1 Profile State Object Concepts</h5><p>This section defines a number of conceptual state objects used by subsequently defined algorithms (procedures and functions). It is not required that an
+implementation create such objects in the form specified here, but may use any convenient, internal representation that represents equivalent information.</p><dl><dt class="label"><a id="semantics-profile-state-profile-specification"></a>[profile specification]</dt><dd><p>a <a href="#semantics-profile-state-profile-specification"><span class="strong">profile specification</span></a>
+represents the following internal state information that corresponds with
+a <a href="#parameter-vocabulary-feature"><code>ttp:feature</code></a> or <a href="#parameter-vocabulary-extension"><code>ttp:extension</code></a>
+element</p><dl><dt class="label"><a id="semantics-profile-state-profile-specification-designator"></a>designator</dt><dd><p>an absolute xsd:anyURI denoting a feature or extension designator depending upon the <em><code>type</code></em></p></dd><dt class="label"><a id="semantics-profile-state-profile-specification-type"></a>type</dt><dd><p><code>feature|extension</code></p></dd><dt class="label"><a id="semantics-profile-state-profile-specification-value"></a>value</dt><dd><p><code>optional|required|prohibited</code></p></dd></dl></dd><dt class="label"><a id="semantics-profile-state-combined-profile-specification-set"></a>[combined profile specification set]</dt><dd><p>a <a href="#semantics-profile-state-combined-profile-specification-set"><span class="strong">combined profile specification set</span></a>
+represents the following internal state information
+that corresponds with a set of <a href="#semantics-profile-state-profile-specification"><span class="strong">profile specifications</span></a>,
+additionally recording the constituent
+profiles from which these specifications were obtained (or derived)</p><dl><dt class="label"><a id="semantics-profile-state-combined-profile-specification-set-constituents"></a>constituents</dt><dd><p>ordered list of absolute profile designators, where each designator denotes a constituent profile, i.e.,
+a profile from which this combined profile specification set is composed</p></dd><dt class="label"><a id="semantics-profile-state-combined-profile-specification-set-specifications"></a>specifications</dt><dd><p>ordered list of <a href="#semantics-profile-state-profile-specification"><span class="strong">profile specifications</span></a></p></dd></dl></dd><dt class="label"><a id="semantics-profile-state-empty-profile-specification-set"></a>[empty profile specification set]</dt><dd><p>a <a href="#semantics-profile-state-combined-profile-specification-set"><span class="strong">combined profile specification set</span></a> which 
+<a href="#semantics-profile-state-combined-profile-specification-set-constituents"><span class="strong">constituents</span></a> and
+<a href="#semantics-profile-state-combined-profile-specification-set-specifications"><span class="strong">specifications</span></a> fields are empty sets</p></dd><dt class="label"><a id="semantics-profile-state-profile"></a>[profile]</dt><dd><p>a <a href="#semantics-profile-state-profile"><span class="strong">profile</span></a> represents the following internal state information
+that corresponds with a <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element, whether specified explicitly or implied</p><dl><dt class="label"><a id="semantics-profile-state-profile-designator"></a>designator</dt><dd><p>an absolute profile designator that is associated with (and uniquely labels) this profile</p></dd><dt class="label"><a id="semantics-profile-state-profile-type"></a>type</dt><dd><p><code>content|processor</code></p></dd><dt class="label"><a id="semantics-profile-state-profile-combine"></a>combine</dt><dd><p><code>leastRestrictive|mostRestrictive|replace</code></p></dd><dt class="label"><a id="semantics-profile-state-profile-use"></a>use</dt><dd><p>either <code>null</code> or an absolute profile designator denoting a profile that serves as the baseline profile for this profile</p></dd><dt class="label"><a id="semantics-profile-state-profile-constituents"></a>constituents</dt><dd><p>if profile is a <a href="#terms-nesting-profile">nesting profile</a>, then an ordered list of absolute profile designators, where each designator denotes a
+constituent <a href="#terms-nested-profile">nested profile</a>; otherwise, <code>null</code></p></dd><dt class="label"><a id="semantics-profile-state-profile-specifications"></a>specifications</dt><dd><p>if profile is a <a href="#terms-non-nesting-profile">non-nesting profile</a>, then an ordered list of
+<a href="#semantics-profile-state-profile-specification"><span class="strong">profile specifications</span></a>; otherwise, <code>null</code></p></dd><dt class="label"><a id="semantics-profile-state-profile-combined-specification-set"></a>combined specification set</dt><dd><p>a <a href="#semantics-profile-state-combined-profile-specification-set"><span class="strong">combined profile specification set</span></a> that
+represents the results of combining the specifications specified or referenced by this profile</p></dd></dl></dd></dl></div><div class="div4">
+<h5><a id="semantics-content-profile-processing"></a>5.2.4.2 Content Profile Semantics</h5><table border="1" class="ednote" summary="Editorial note: Validation Processing"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Validation Processing</b></td><td align="right" valign="top">2014-05-21</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Add validation processing procedures.</td></tr></table><dl><dt class="label"><a id="semantics-procedure-construct-effective-content-profile"></a>[construct effective content profile]</dt><dd><p>Every TTML <a href="#terms-document-instance">document instance</a> is associated with an
+<a href="#terms-effective-content-profile">effective content profile</a> which may be used by
+a <a href="#terms-content-processor">content processor</a> to perform any (or all) of the following:</p><ol class="enumar"><li><p>infer an effective processor profile;</p></li><li><p>perform validation processing on the <a href="#terms-document-instance">document instance</a>;</p></li><li><p>constrain transformation processing on the <a href="#terms-document-instance">document instance</a>
+in order to maintain content profile invariants.</p></li></ol><p>The <a href="#terms-effective-content-profile">effective content profile</a> is determined according to the
+<a href="#semantics-procedure-construct-effective-content-profile"><span class="strong">construct effective content profile</span></a> procedure
+defined as follows:</p><ol class="enumar"><li><p>if a <code>ttp:contentProfiles</code> attribute is specified on the root <code>tt</code> element, then</p><ol class="enumla"><li><p>if the <code>ttp:contentProfiles</code> attribute is specified using the <code>all(...)</code> function syntax or
+using no function syntax, i.e., as only a list of designators, then the
+<a href="#terms-effective-content-profile">effective content profile</a> is the combined profile specification set
+produced by combining the combined profile specification sets of the designated profiles, where the <code>mostRestrictive</code>
+content profile combination method applies;</p></li><li><p>otherwise, if the <code>ttp:contentProfiles</code> attribute is specified using the <code>any(...)</code> function syntax, then the
+<a href="#terms-effective-content-profile">effective content profile</a> is the combined profile specification set
+produced by combining the combined profile specification sets of the designated profiles, where the <code>leastRestrictive</code>
+content profile combination method applies;</p></li></ol></li><li><p>otherwise, if one or more <a href="#terms-top-level-profile">top-level</a> <a href="#terms-content-profile">content profiles</a>
+are defined, then the
+<a href="#terms-effective-content-profile">effective content profile</a> is the combined profile specification set
+produced by combining the combined profile specification sets of all such
+<a href="#terms-top-level-profile">top-level</a> <a href="#terms-content-profile">content profiles</a>, where the
+content profile combination method specified by (or the default value of) the <code>ttp:contentProfileCombination</code>
+attribute on the root <code>tt</code> element applies;
+</p></li><li><p>otherwise, the <a href="#terms-effective-content-profile">effective content profile</a> is <code>null</code>;</p></li></ol></dd></dl></div><div class="div4">
+<h5><a id="semantics-processor-profile-processing"></a>5.2.4.3 Processor Profile Semantics</h5><dl><dt class="label"><a id="semantics-procedure-abort-if-unsupported-processor-profile"></a>[abort if unsupported processor profile]</dt><dd><ol class="enumar"><li><p>set <em>EPP</em> to the <a href="#terms-effective-processor-profile">effective processor profile</a> obtained by performing the
+<a href="#semantics-procedure-construct-effective-processor-profile"><span class="strong">construct effective processor profile</span></a> procedure;</p></li><li><p>for each profile specification <em>S</em> in the combined profile specification set of <em>EPP</em>, perform the following steps:</p><ol class="enumla"><li><p>if the <span class="strong">value</span> field of <em>S</em> is <code>required</code>, and the <a href="#terms-content-processor">content processor</a>
+does not support <em>S</em>, then abort processing of the <a href="#terms-document-instance">document instance</a> unless overridden
+by the end-user or someimplementation specific parameter traceable to an end-user or to a user or system configuration setting;</p></li></ol></li></ol></dd><dt class="label"><a id="semantics-procedure-construct-effective-processor-profile"></a>[construct effective processor profile]</dt><dd><p>Every TTML <a href="#terms-document-instance">document instance</a> is associated with an
+<a href="#terms-effective-processor-profile">effective processor profile</a> which is used by
+a <a href="#terms-content-processor">content processor</a> to determine whether it meets the
+minimum processing requirements signaled by the content author, and if not, then must abort further
+processing unless overridden by the end-user or an implementation specific parameter traceable to
+an end-user or to a user or system configuration setting.
+The <a href="#terms-effective-processor-profile">effective processor profile</a> is determined according to the
+<a href="#semantics-procedure-construct-effective-processor-profile"><span class="strong">construct effective processor profile</span></a> procedure
+defined as follows:</p><ol class="enumar"><li><p>if a <code>ttp:processorProfiles</code> attribute is specified on the root <code>tt</code> element, then</p><ol class="enumla"><li><p>if the <code>ttp:processorProfiles</code> attribute is specified using the <code>all(...)</code> function syntax or
+using no function syntax, i.e., as only a list of designators, then the
+<a href="#terms-effective-processor-profile">effective processor profile</a> is the combined profile specification set
+produced by combining the combined profile specification sets of the designated profiles, where the <code>mostRestrictive</code>
+processor profile combination method applies;</p></li><li><p>otherwise, if the <code>ttp:processorProfiles</code> attribute is specified using the <code>any(...)</code> function syntax,
+then, for each designated profile, the 
+<a href="#terms-effective-processor-profile">effective processor profile</a> is the combined profile specification set
+of the first profile in the list of designated profiles that is supported by the
+<a href="#terms-content-processor">content processor</a>;</p></li></ol></li><li><p>otherwise, if one or more <a href="#terms-top-level-profile">top-level</a> <a href="#terms-processor-profile">processor profiles</a>
+are defined, then the
+<a href="#terms-effective-processor-profile">effective processor profile</a> is the combined profile specification set
+produced by combining the combined profile specification sets of all such
+<a href="#terms-top-level-profile">top-level</a> <a href="#terms-processor-profile">processor profiles</a>, where the
+processor profile combination method specified by (or the default value of) the <code>ttp:processorProfileCombination</code>
+attribute on the root <code>tt</code> element applies;
+</p></li><li><p>otherwise, if a <code>ttp:profile</code> attribute is specified on the root <code>tt</code> element, then the
+<a href="#terms-effective-processor-profile">effective processor profile</a> is the combined profile specification set
+of the profile designated by this attribute;
+</p></li><li><p>otherwise, the <a href="#terms-effective-processor-profile">effective processor profile</a> is the
+result of performing the <a href="#semantics-procedure-construct-inferred-processor-profile"><span class="strong">construct inferred processor profile</span></a>
+procedure;</p></li></ol></dd><dt class="label"><a id="semantics-procedure-construct-inferred-processor-profile"></a>[construct inferred processor profile]</dt><dd><ol class="enumar"><li><p>set <em>ECP</em> to the <a href="#terms-effective-content-profile">effective content profile</a>;</p></li><li><p>if <em>ECP</em> is not <code>null</code>, then perform the following steps:</p><ol class="enumla"><li><p>if the computed value of the <code>ttp:inferProcessorProfileSource</code> attribute is <code>combine</code>, then
+the <a href="#terms-inferred-processor-profile">inferred processor profile</a> is the result of applying the
+<a href="#semantics-procedure-infer-processor-profile"><span class="strong">infer processor profile</span></a> function
+to the combined profile specification set of <em>ECP</em>;</p></li><li><p>otherwise, if the computed value of the <code>ttp:inferProcessorProfileSource</code> attribute is <code>first</code>, then
+the <a href="#terms-inferred-processor-profile">inferred processor profile</a> is the first inferred processor profile, <em>IPP</em>, produced by applying the
+<a href="#semantics-procedure-infer-processor-profile"><span class="strong">infer processor profile</span></a> function
+to the combined profile specification set of each constituent of <em>ECP</em> such that
+<em>IPP</em> is supported by the <a href="#terms-content-processor">content processor</a>;</p></li></ol></li><li><p>otherwise, the <a href="#terms-inferred-processor-profile">inferred processor profile</a> is the
+result of performing the <a href="#semantics-procedure-construct-default-processor-profile"><span class="strong">construct default processor profile</span></a>
+procedure;</p></li></ol></dd><dt class="label"><a id="semantics-procedure-infer-processor-profile"></a>[infer processor profile](content profile <em>CP</em>)</dt><dd><ol class="enumar"><li><p>initialize inferred processor profile <em>IPP</em> to the empty combined profile specification set;</p></li><li><p>for each profile specification, <em>S</em>, in the combined profile specification set of content profile <em>CP</em>:</p><ol class="enumla"><li><p>map content profile specification <em>S</em> to processor profile specification <em>S'&nbsp;</em> according to the computed
+value of the <code>ttp:inferPresentationProfileMethod</code> attribute and <a href="#infer-processor-profile-method-table"><b>Table 6-2 – Infer Processor Profile Method</b></a>;</p></li><li><p>add <em>S'&nbsp;</em> to the combined profile specification set of <em>IPP</em>;</p></li></ol></li><li><p>return <em>IPP</em> as the inferred processor profile;</p></li></ol></dd><dt class="label"><a id="semantics-procedure-construct-default-processor-profile"></a>[construct default processor profile]</dt><dd><ol class="enumar"><li><p>if the <a href="#terms-document-interchange-context">document interchange context</a> is associated with a
+<a href="#terms-processor-profile">processor profile</a> or with a <a href="#terms-content-profile">content profile</a>
+from which a <a href="#terms-processor-profile">processor profile</a> can be inferred, then the
+<a href="#terms-default-processor-profile">default processor profile</a> is that <a href="#terms-processor-profile">processor profile</a>;</p></li><li><p>otherwise, if the <a href="#terms-content-processor">content processor</a> is primarily characterized as a
+<a href="#terms-presentation-processor">presentation processor</a>, then:</p><ol class="enumla"><li><p>if the <a href="#parameter-attribute-version"><code>ttp:version</code></a> is not specified on the root <code>tt</code> element or
+if its computed value is <code>1</code> (one), then the <a href="#terms-default-processor-profile">default processor profile</a> is
+the <a href="#semantics-profile-state-profile">profile</a> constructed by interning the DFXP Presentation profile
+(<code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code>);</p></li><li><p>otherwise, the <a href="#terms-default-processor-profile">default processor profile</a> is
+the <a href="#semantics-profile-state-profile">profile</a> constructed by interning the TTML2 Presentation profile
+(<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>);</p></li></ol></li><li><p>otherwise, if the <a href="#terms-content-processor">content processor</a> is primarily characterized as a
+<a href="#terms-transformation-processor">transformation processor</a>, then:</p><ol class="enumla"><li><p>if the <a href="#parameter-attribute-version"><code>ttp:version</code></a> is not specified on the root <code>tt</code> element or
+if its computed value is <code>1</code> (one), then the <a href="#terms-default-processor-profile">default processor profile</a> is
+the <a href="#semantics-profile-state-profile">profile</a> constructed by interning the DFXP Transformation profile
+(<code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code>);</p></li><li><p>otherwise, the <a href="#terms-default-processor-profile">default processor profile</a> is
+the <a href="#semantics-profile-state-profile">profile</a> constructed by interning the TTML2 Transformation profile
+(<code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code>);</p></li></ol></li></ol></dd></dl></div></div></div><div class="div2">
 <h3><a id="vocabulary-overview"></a>5.3 Catalog</h3><p>The vocabulary of the Timed Text Markup Language (TTML) is
 defined in the following major catalogs (divisions of vocabulary):</p><ul><li><p><a href="#core-vocabulary-overview"><b>5.3.1 Core Catalog</b></a></p></li><li><p><a href="#extension-vocabulary-overview"><b>5.3.2 Extension Catalog</b></a></p></li></ul><p>The core catalog defines the baseline, core vocabulary of TTML,
 and, in particular, the vocabulary of TTML Content. The extension catalog
@@ -1072,7 +1147,7 @@ by TTML.</p><div class="div3">
 TTML while providing a baseline vocabulary for future profiles. This vocabulary
 is divided into distinct categories, specified in detail
 in the following sections:</p><ul><li><p><a href="#parameters"><b>6 Parameters</b></a></p></li><li><p><a href="#content"><b>7 Content</b></a></p></li><li><p><a href="#styling"><b>8 Styling</b></a></p></li><li><p><a href="#layout"><b>9 Layout</b></a></p></li><li><p><a href="#timing"><b>10 Timing</b></a></p></li><li><p><a href="#animation"><b>11 Animation</b></a></p></li><li><p><a href="#metadata"><b>12 Metadata</b></a></p></li></ul><p>The core element vocabulary specified for use with a <a href="#terms-document-instance">document instance</a> is enumerated in
-<a href="#element-vocab-table"><b>Table 3 – Element Vocabulary</b></a>.</p><a id="element-vocab-table"></a><table class="common"><caption>Table 3 – Element Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Elements</th></tr><tr id="element-vocab-type-animation"><td>
+<a href="#element-vocab-table"><b>Table 5-3 – Element Vocabulary</b></a>.</p><a id="element-vocab-table"></a><table class="common"><caption>Table 5-3 – Element Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Elements</th></tr><tr id="element-vocab-type-animation"><td>
 Animation
 </td><td>
 <a href="#animation-vocabulary-animate">animate</a>,
@@ -1123,7 +1198,7 @@ Styling
 <a href="#styling-vocabulary-styling">styling</a>,
 <a href="#styling-vocabulary-style">style</a>
 </td></tr></tbody></table><p></p><p>Element vocabulary groups that are used in defining content models
-for TTML element types are enumerated in <a href="#element-vocab-group-table"><b>Table 4 – Element Vocabulary Groups</b></a>.</p><a id="element-vocab-group-table"></a><table class="common"><caption>Table 4 – Element Vocabulary Groups</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Group</th><th>Elements</th></tr><tr><td>
+for TTML element types are enumerated in <a href="#element-vocab-group-table"><b>Table 5-4 – Element Vocabulary Groups</b></a>.</p><a id="element-vocab-group-table"></a><table class="common"><caption>Table 5-4 – Element Vocabulary Groups</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Group</th><th>Elements</th></tr><tr><td>
 Animation.class
 </td><td>
 <a href="#animation-vocabulary-animate">animate</a> |
@@ -1153,7 +1228,7 @@ Metadata.class
 <a href="#metadata-vocabulary-title">ttm:title</a>
 </td></tr><tr><td>Parameters.class</td><td><a href="#parameter-vocabulary-profile">ttp:profile</a></td></tr></tbody></table><p></p><p>The attribute vocabulary specified for use with the core vocabulary
 catalog is enumerated in
-<a href="#attribute-vocab-table"><b>Table 5 – Attribute Vocabulary</b></a>.</p><a id="attribute-vocab-table"></a><table class="common"><caption>Table 5 – Attribute Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Attributes</th></tr><tr><td>
+<a href="#attribute-vocab-table"><b>Table 5-5 – Attribute Vocabulary</b></a>.</p><a id="attribute-vocab-table"></a><table class="common"><caption>Table 5-5 – Attribute Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Attributes</th></tr><tr><td>
 Core Attributes
 </td><td>
 <a href="#content-attribute-id">xml:id</a>,
@@ -1173,17 +1248,23 @@ Parameter Attributes
 </td><td>
 <a href="#parameter-attribute-cellResolution">ttp:cellResolution</a>,
 <a href="#parameter-attribute-clockMode">ttp:clockMode</a>,
-<a href="#parameter-attribute-clockMode">ttp:contentProfile</a>,
+<a href="#parameter-attribute-contentProfiles">ttp:contentProfiles</a>,
+<a href="#parameter-attribute-contentProfileCombination">ttp:contentProfileCombination</a>,
 <a href="#parameter-attribute-dropMode">ttp:dropMode</a>,
 <a href="#parameter-attribute-frameRate">ttp:frameRate</a>,
 <a href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</a>,
+<a href="#parameter-attribute-inferProcessorProfileMethod">ttp:inferProcessorProfileMethod</a>,
+<a href="#parameter-attribute-inferProcessorProfileSource">ttp:inferProcessorProfileSource</a>,
 <a href="#parameter-attribute-markerMode">ttp:markerMode</a>,
 <a href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</a>,
 <a href="#parameter-attribute-profile">ttp:profile</a>,
-<a href="#parameter-attribute-cellResolution">ttp:profileCombination</a>,
+<a href="#parameter-attribute-processorProfiles">ttp:processorProfiles</a>,
+<a href="#parameter-attribute-processorProfileCombination">ttp:processorProfileCombination</a>,
 <a href="#parameter-attribute-subFrameRate">ttp:subFrameRate</a>,
 <a href="#parameter-attribute-tickRate">ttp:tickRate</a>,
 <a href="#parameter-attribute-timeBase">ttp:timeBase</a>,
+<a href="#parameter-attribute-validation">ttp:validation</a>,
+<a href="#parameter-attribute-validationAction">ttp:validationAction</a>,
 <a href="#parameter-attribute-version">ttp:version</a>
 </td></tr><tr><td>
 Styling
@@ -1227,7 +1308,7 @@ Timing Attributes
 <a href="#timing-attribute-timeContainer">timeContainer</a>
 </td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>Only those attributes defined as either (1) global, i.e., namespace qualified, or
 (2) shared element-specific, i.e., not namespace qualified but shared across multiple
-element types, are listed in <a href="#attribute-vocab-table"><b>Table 5 – Attribute Vocabulary</b></a> above.
+element types, are listed in <a href="#attribute-vocab-table"><b>Table 5-5 – Attribute Vocabulary</b></a> above.
 </p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>All vocabulary defined by TTML consistently makes use of
 the so-called <em>lowerCamelCase</em> naming convention. In some cases, this results in the
 change of a name when the name was based upon another specification
@@ -1261,8 +1342,8 @@ may be supported by a <a href="#terms-content-processor">content processor</a> i
 <a href="#terms-document-instance">document instance</a> that makes (or may make) use of such features and
 extensions.
 A <a href="#terms-content-profile">content profile</a> specifies a
-collection of required, optional, and prohibited features and extensions that, respectively,
-must, may, and must not be present in a <a href="#terms-document-instance">document instance</a> that declares its
+collection of prohibited, required, and optional features and extensions that, respectively,
+must not, must, and may be present in a <a href="#terms-document-instance">document instance</a> that declares its
 adherence to the profile.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The difference between a <em>feature</em> and an
 <em>extension</em> is where it is defined and how it is labeled:
 if defined in this specification (or a future revision thereof) and
@@ -1271,51 +1352,55 @@ it is considered to be a feature; if defined in another specification
 and labeled there with an extension designation, then it is considered
 to be an extension. In general, features are expected to be defined by
 the W3C standards process, while extensions are expected to be defined by
-third parties.</p></div><p>This specification defines two distinct contexts of use of the <code>ttp:profile</code> element:</p><ul><li><p>as a child of the <code>head</code> element within a TTML <a href="#terms-document-instance">document instance</a>;</p></li><li><p>as the root element of a TTML <a href="#terms-profile-definition-document">profile definition document</a>
+third parties.</p></div><p>This specification defines two distinct contexts of use for the <code>ttp:profile</code> element:</p><ul><li><p>as a child of the <code>head</code> element or a <code>ttp:profile</code> element within a TTML <a href="#terms-document-instance">document instance</a>;</p></li><li><p>as the root element of a TTML <a href="#terms-profile-definition-document">profile definition document</a>
 instance;</p></li></ul><p>When a <code>ttp:profile</code> element appears within a TTML <a href="#terms-document-instance">document instance</a>,
-its purpose is to express authorial intentions about which
+its purpose is to express authorial intentions about (1) which
 features and extensions must or may be supported by a recipient
-content processor, as well as which features and extensions must
-not be included or otherwise used in a <a href="#terms-document-instance">document instance</a>.
-In addition, the element indirectly expresses
-information about the set of features or extensions that are (or may
-expected to be) used by the <a href="#terms-document-instance">document instance</a>.</p><p>When a <code>ttp:profile</code> element is used by a TTML <a href="#terms-profile-definition-document">profile definition document</a> instance,
+content processor in order to process that document or (2) which features and extensions must not, must, or may be
+included or otherwise used in that <a href="#terms-document-instance">document instance</a>.</p><p>When a <code>ttp:profile</code> element is used by a TTML <a href="#terms-profile-definition-document">profile definition document</a> instance,
 it serves to publish a machine
-readable specification of a specific TTML profile, of which
-this specification defines three such <em>Profile Definition Documents</em> in
+readable specification of a specific TTML profile that may be referenced by TTML <a href="#terms-document-instance">document instances</a>.
+This specification defines a number of standard <em>Profile Definition Documents</em> in
 <a href="#profiles"><b>F Profiles</b></a>.</p><p>The <code>ttp:profile</code> element accepts as its children zero or more
-elements in the <code>Metadata.class</code> element group, followed by
-zero or more <code>ttp:features</code> elements, followed by
-zero or more <code>ttp:extensions</code> elements.</p><a id="elt-syntax-parameter-profile"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:profile</caption><tbody><tr><td>
+elements in the <code>Metadata.class</code> element group, followed by either (1)
+zero or more <code>ttp:features</code> elements followed by
+zero or more <code>ttp:extensions</code> elements or (2)
+zero or more <code>ttp:profile</code> elements.
+When a <code>ttp:profile</code> element contains a child <code>ttp:profile</code> element, then the child is referred to as
+a <a href="#terms-nested-profile">nested profile</a> and the parent is referred to as a <a href="#terms-nesting-profile">nesting profile</a>;
+otherwise it is referred to as a <a href="#terms-non-nesting-profile">non-nesting profile</a>.</p><a id="elt-syntax-parameter-profile"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:profile</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:profile
-  combine = (replace|union|intersection) : replace
+  combine = (leastRestrictive|mostRestrictive|replace) : replace
   designator = string
   type = (processor|content) : processor
   use = string
   <a href="#content-attribute-id">xml:id</a> = ID
   {<em>any attribute not in default or any TT namespace</em>}&gt;
-  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, <a href="#parameter-vocabulary-features">ttp:features</a>*, <a href="#parameter-vocabulary-extensions">ttp:extensions</a>*
+  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, ((<a href="#parameter-vocabulary-features">ttp:features</a>*, <a href="#parameter-vocabulary-extensions">ttp:extensions</a>*)|<a href="#parameter-vocabulary-profile">ttp:profile</a>*)
 &lt;/ttp:profile&gt;
 </pre></div>
 </td></tr></tbody></table><p>The <code>type</code> attribute is used to determine whether a profile is a
 <a href="#terms-processor-profile">processor profile</a> or a
 <a href="#terms-content-profile">content profile</a>. If not specified,
 the profile is considered to be a <a href="#terms-processor-profile">processor profile</a>.
-</p><p>The <code>combine</code> attribute may be used to specify how
+If a <code>ttp:profile</code> element references a <a href="#terms-baseline-profile">baseline profile</a> or a
+<a href="#terms-nested-profile">nested profile</a>, then the type of the referenced profile must be the same as the type of the referencing profile. For
+example, a <code>ttp:profile</code> element that defines a <a href="#terms-processor-profile">processor profile</a> may only make reference to other
+<a href="#terms-processor-profile">processor profiles</a>, and may not reference a <a href="#terms-content-profile">content profile</a>.</p><p>The <code>combine</code> attribute is used to specify how
 feature or extension specifications are combined in the case that
-multiple specifications apply to the same feature or extension, respectively.
-If the value of the <code>combine</code> attribute is <code>replace</code>, then a
-feature or extension specification contained in the <code>ttp:profile</code> element
-replaces the specification defined by the baseline profile or a lexically subsequent
-specification replaces a lexically prior specification in the case that both
-specifications appear in the same <code>ttp:profile</code> element; if the value is
-<code>union</code>, then the semantic union applies; if the value is <code>intersection</code>,
-then the semantic intersection applies. If the <code>combine</code> attribute is not
-specified, then replacement semantics apply.</p><table border="1" class="ednote" summary="Editorial note: Combine Semantics"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Combine Semantics</b></td><td align="right" valign="top">2013-07-10</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Need to elaborate semantics of union and intersection combination methods.</td></tr></table><p>If specified, the <code>designator</code> attribute must (1) adhere to the
+multiple specifications apply to the same feature or extension, respectively.</p><p>If the value of the <code>combine</code> attribute is <code>replace</code>, then a
+lexically subsequent feature or extension specification replaces a lexically prior
+specification, where specification elements are ordered as follows:</p><ol class="enumar"><li><p>specifications defined by a <a href="#terms-baseline-profile">baseline profile</a> referenced by a <code>use</code>
+attribute;</p></li><li><p>specifications defined by descendant <code>ttp:profile</code> elements in post-order
+traversal order;</p></li><li><p>specifications defined as descendant <code>ttp:feature</code> or <code>ttp:extension</code>
+elements in post-order traversal order.</p></li></ol><p>If the value is <code>leastRestrictive</code>, then the least restrictive specification value applies;
+if the value is <code>mostRestrictive</code>, then the most restrictive specification value
+applies. The order of restrictiveness is as follows (from least to most):
+<em>optional</em>, <em>required</em>, <em>prohibited</em>.</p><p>If the <code>combine</code> attribute is not specified, then replacement semantics apply.</p><p>If specified, the <code>designator</code> attribute must (1) adhere to the
 <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 §3.2.17 and (2) express an absolute URI that denotes a profile designator in
-accordance with <a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>.</p><p>A <code>designator</code> attribute may
+accordance with <a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>. A <code>designator</code> attribute may
 be specified on a <code>ttp:profile</code> element that appears in a TTML
 <a href="#terms-document-instance">document instance</a>, and, if not specified,
 the defined profile is considered to be an undesignated profile.
@@ -1331,19 +1416,19 @@ the profile designator must refer to (1) a standard, predefined
 <a href="#terms-profile-definition-document">profile definition document</a> as defined by <a href="#profiles"><b>F Profiles</b></a>,
 or (2) a feasibly dereferenceable resource representing a valid <em>Profile Definition
 Document</em> instance. In either case, the referenced profile serves as the
-baseline profile of the specifying <code>ttp:profile</code> element.</p><p>If the <code>use</code> attribute is not specified, then the baseline
-profile of the <code>ttp:profile</code> element must be considered to be
+<a href="#terms-baseline-profile">baseline profile</a> of the specifying <code>ttp:profile</code> element.</p><p>If the <code>use</code> attribute is not specified, then the <a href="#terms-baseline-profile">baseline profile</a>
+of the <code>ttp:profile</code> element must be considered to be
 the empty (null) profile, i.e., a profile definition containing no
-feature or extension specifications.</p><table border="1" class="ednote" summary="Editorial note: Combine Semantics"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Combine Semantics</b></td><td align="right" valign="top">2013-09-05</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Need to incorporate affects of <code>combine</code> attribute into following rules.</td></tr></table><p>The collection of features and extensions of a profile are determined according
-to the following ordered rules:</p><ol class="enumar"><li><p>initialize the features and extensions of the profile to the empty
-set;</p></li><li><p>if a <code>use</code> attribute is present, then augment the profile
-with the set of features and extensions specified by the referenced
-baseline profile;</p></li><li><p>for each <code>ttp:feature</code> and <code>ttp:extension</code> element
-descendant of the <code>ttp:profile</code> element, using a post-order
-traversal, merge the specified feature or extension with the features
-and extensions of the profile, where merging a feature or extension
-entails applying the combination method in accordance with the specified
-(or default) <code>combine</code> attribute value.</p></li></ol><p>A conformant TTML processor is not required to be able to
+feature or extension specifications.</p><p>The combined specification set <em>CSS</em> of features and extensions of a profile <em>P</em>
+is determined according to the following ordered rules, where merging a specification <em>S</em>
+into <em>CSS</em> entails applying a combination method in accordance with the specified
+(or default) value of the <code>combine</code> attribute, and where merging a combined specification set <em>CSS'&nbsp;</em> into
+<em>CSS</em> entails merging each ordered specification of <em>CSS'&nbsp;</em> into <em>CSS</em>:</p><ol class="enumar"><li><p>initialize <em>CSS</em> to the empty set;</p></li><li><p>if a <code>use</code> attribute is present, then merge
+the combined specification set of the referenced <a href="#terms-baseline-profile">baseline profile</a> into <em>CSS</em>;</p></li><li><p>for each <code>ttp:profile</code> child of the <em>P</em>,
+using a post-order traversal, merge the combined specification set of the child profile
+into <em>CSS</em>;</p></li><li><p>for each <code>ttp:feature</code> and <code>ttp:extension</code> child of the <code>ttp:profile</code> element,
+using a post-order traversal, merge the feature or extension specification
+into <em>CSS</em>.</p></li></ol><p>A conformant TTML processor is not required to be able to
 dereference a <a href="#terms-profile-definition-document">profile definition document</a> that is not one of the
 standard, predefined profiles defined by <a href="#profiles"><b>F Profiles</b></a>.  Furthermore,
 a conformant TTML processor may make use of a built-in, static
@@ -1394,12 +1479,12 @@ used to permit the abbreviation of feature designation URIs expressed
 by child <code>ttp:feature</code> elements.</p></div><div class="div3">
 <h4><a id="parameter-vocabulary-feature"></a>6.1.3 ttp:feature</h4><p>The <code>ttp:feature</code> element is used to specify
 infomation about support and usage requirements for a particular feature.</p><p>The children of the <code>ttp:feature</code> element must express a non-empty
-sequence of <a href="terms-character-information-item">character information items</a> that adheres to the
+sequence of <a href="#terms-character-information-item">character information items</a> that adheres to the
 <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 §3.2.17.</p><a id="elt-syntax-parameter-feature"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:feature</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:feature
-  value = (optional|required|use|prohibited) : required
+  value = (optional|required|<span class="deprecated">use</span>|prohibited) : <em>see prose below</em>
   <a href="#content-attribute-id">xml:id</a> = ID
   {<em>any attribute not in default or any TT namespace</em>}&gt;
   <em>Content:</em> #PCDATA
@@ -1419,61 +1504,48 @@ that starts with the fragment identifier separator '#', must
 be defined by this specification or some published version thereof (that
 has achieved REC status).</p><p>If the URI expressed by the content of the <code>ttp:feature</code> element
 is a relative URI, then an <code>xml:base</code> attribute should be
-specified on the nearest ancestor <code>ttp:features</code> element.</p><p>The <code>value</code> attribute specifies (1) whether a conforming TTML
-processor must or may implement the designated feature in order to
-process the document, or (2) whether a TTML <a href="#terms-document-instance">document instance</a>
-must not include or otherwise use the designated feature.
-If the value of the <code>value</code> attribute
-is <code>optional</code>, then the processor need
-not implement or otherwise support the feature in order to process the
-document; if the value is <code>required</code>, then the processor
-must implement or otherwise support the feature, irrespective of
-whether the feature is enabled or disabled, in order to process
-the document; if the value is
-<code>use</code>, then the processor must both (1) implement or
-otherwise support the feature and (2) have enabled (activated) use of the
-feature; if the value is <code>prohibited</code>, then the document must not
-include or otherwise specify any use of the feature, and, if it does, then the processor
-should reject or abort processing of the document.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value of the <code>value</code> attribute is
-<code>required</code>, as indicated in the above element information
-item definition. Therefore, if a <code>value</code> attribute is not
-specified on a <code>ttp:feature</code> element, it is equivalent to
-specifying that support for the feature is required.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Use of <code>prohibited</code> for a feature value is not to be
-interpreted as meaning that a conformant processor need not or must not support
-the default semantics that apply for that feature.</p></div><p>If the value of the <code>value</code> attribute is
-<code>required</code> or <code>use</code>
-and the TTML processor implementation does
-not support the feature, or if the <code>value</code> attribute is
-<code>use</code> and the TTML processor implementation supports but has disabled
-that feature,
-or if the <code>value</code> attribute is <code>prohibited</code> and a
-<a href="#terms-document-instance">document instance</a> includes or makes use of the feature,
-then it must not further process the document
-without the presence of an explicit override from an end-user or some
-implementation specific parameter traceable to an end-user or to a
-user or system configuration setting.  If a TTML processor aborts
-processing of a <a href="#terms-document-instance">document instance</a> due to the specification of a
-required, but unsupported feature by this element, or due to the presence
-or use of a prohibited feature, then some end-user
-notification should be given unless the end-user or system has
-disabled such a notification, or if the processor does not permit or
-entail the intervention of an end-user.</p><p>If the value of the <code>value</code> attribute is
-<code>optional</code>, and if the TTML processor implementation does
-not support the feature, then it may further process the document even
-in the case that some use of the feature is present in the document.
-In the case of actual use of a feature designated as optional, the
-default semantics associated with that feature apply; that is, the
-processor may behave as if the feature were not actually used or
-referenced by the document. Notwithstanding the above, the syntactic
-presence or reference to an optional feature by a document must not be
-considered to be a violation of document validity or a barrier to
-further processing if the syntactic expression is well-formed and
-otherwise valid.</p><p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
-a <code>ttp:feature</code> element in a given profile, then it must be interpreted as if the feature were specified
-with the <code>value</code> attribute equal to <code>optional</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In particular, if some feature is not present in a profile definition, then
+specified on the nearest ancestor <code>ttp:features</code> element.</p><p>The <code>value</code> attribute specifies constraints on support for or use of
+the designated feature according to the profile type.</p><p>If the profile is a <a href="#terms-processor-profile">processor profile</a>
+then the following semantics apply:</p><ul><li><p>
+if the value of the <code>value</code> attribute
+is <code>optional</code>, then a processor may but need
+not implement or otherwise support the feature in order to process the document;
+</p></li><li><p>
+if the value is <code>required</code>, then a processor
+must implement or otherwise support the feature in order to process
+the document;
+</p></li><li><p>
+if the value attribute is not specified, then the feature specification
+must be interpreted as if the value <code>required</code> were specified;
+</p></li></ul><p>If the profile is a <a href="#terms-content-profile">content profile</a>
+then the following semantics apply:</p><ul><li><p>
+if the value of the <code>value</code> attribute
+is <code>optional</code>, then the feature may but need not appear in a document that
+claims conformance with that profile;
+</p></li><li><p>
+if the value of the <code>value</code> attribute
+is <code>required</code>, then the feature must appear in a document that
+claims conformance with that profile;
+</p></li><li><p>
+if the value of the <code>value</code> attribute
+is <code>prohibited</code>, then the feature must not appear in a document that
+claims conformance with that profile;
+</p></li><li><p>
+if the value attribute is not specified, then the feature specification
+must be interpreted as if the value <code>optional</code> were specified;
+</p></li></ul><p>The value <code>use</code> of the <code>value</code> attribute is <span class="deprecated">deprecated</span>. If it
+appears in a profile specification, then it must be interpreted as if <code>required</code>
+had been specified.</p><p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
+a <code>ttp:feature</code> element in a content profile, then it must be interpreted as if the feature were specified
+with the <code>value</code> attribute equal to <code>optional</code>. However, if not specified in a processor profile, no claim
+about support or absence of support for the feature is implied.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In particular, if some feature is not present in a content profile definition, then
 it is not to be interpreted as meaning the use of that feature (in a <a href="#terms-document-instance">document instance</a>)
-is disallowed or otherwise prohibited. If a feature is intended to be disallowed by a profile, then
-it should be specified using the <code>prohibited</code> value.</p></div><p>The <code>ttp:feature</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-feature-example-1"></a><table class="example"><caption>Example Fragment – ttp:feature</caption><tbody><tr><td>
+is disallowed or otherwise prohibited. If a feature is intended to be disallowed by a content profile, then
+it should be specified using the <code>prohibited</code> value.</p></div><p>If a <a href="#terms-document-instance">document instance</a> makes use of a feature defined by
+<a href="#feature-designations"><b>D.1 Feature Designations</b></a> and if the intended use of the
+document requires the recognition and processing of that feature, then
+the document must include a <em>required</em> feature specification in one of its declared or
+referenced profiles.</p><p>The <code>ttp:feature</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-feature-example-1"></a><table class="example"><caption>Example Fragment – ttp:feature</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/ttml2-presentation"&gt;
   &lt;ttp:features xml:base="http://www.w3.org/ns/ttml/feature/"&gt;
@@ -1518,12 +1590,12 @@ used to permit the abbreviation of feature designation URIs expressed
 by child <code>ttp:extension</code> elements.</p></div><div class="div3">
 <h4><a id="parameter-vocabulary-extension"></a>6.1.5 ttp:extension</h4><p>The <code>ttp:extension</code> element is used to specify
 infomation about support and usage requirements for a particular extension.</p><p>The children of the <code>ttp:extension</code> element must express a non-empty
-sequence of <a href="terms-character-information-item">character information items</a> that adheres to the
+sequence of <a href="#terms-character-information-item">character information items</a> that adheres to the
 <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 §3.2.17.</p><a id="elt-syntax-parameter-extension"></a><table class="syntax"><caption>XML Representation – Element Information Item: ttp:extension</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:extension
-  value = (optional|required|use|prohibited) : required
+  value = (optional|required|<span class="deprecated">use</span>|prohibited) : <em>see prose below</em>
   <a href="#content-attribute-id">xml:id</a> = ID
   {<em>any attribute not in default or any TT namespace</em>}&gt;
   <em>Content:</em> #PCDATA
@@ -1540,55 +1612,19 @@ element must further adhere to the syntax of an extension designation
 as defined by <a href="#extension-designations"><b>E.1 Extension Designations</b></a>.</p><p>If the URI expressed by the content of the
 <code>ttp:feature</code> element is a relative URI, then an
 <code>xml:base</code> attribute should be specified on the nearest
-ancestor <code>ttp:extensions</code> element.</p><p>The <code>value</code> attribute specifies (1) whether a conforming TTML
-processor must or may implement the designated extension in order to
-process the document, or (2) whether a TTML <a href="#terms-document-instance">document instance</a>
-must not include or otherwise use the designated extension.
-If the value of the <code>value</code> attribute
-is <code>optional</code>, then the processor need
-not implement or otherwise support the extension in order to process the
-document; if the value is <code>required</code>, then the processor
-must implement or otherwise support the extension, irrespective of
-whether the extension is enabled or disabled, in order to process
-the document; if the value is
-<code>use</code>, then the processor must both (1) implement or
-otherwise support the extension and (2) have enabled (activated) use of the
-extension; if the value is <code>prohibited</code>, then the document must not
-include or otherwise use the extension, and, if it does, then the processor
-should reject or abort processing of the document.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value of the <code>value</code> attribute is
-<code>required</code>, as indicated in the above element information
-item definition. Therefore, if a <code>value</code> attribute is not
-specified on a <code>ttp:extension</code> element, it is equivalent to
-specifying that support for the extension is required.</p></div><p>If the value of the <code>value</code> attribute is
-<code>required</code> or <code>use</code>
-and the TTML processor implementation does
-not support the extension, or if the <code>value</code> attribute is
-<code>use</code> and the TTML processor implementation supports but has disabled
-that extension, then it must not further process the document without the
-presence of an explicit override from an end-user or some
-implementation specific parameter traceable to an end-user or to a
-user or system configuration setting.  If a TTML processor aborts
-processing of a <a href="#terms-document-instance">document instance</a> due to the specification of a
-required, but unsupported extension by this element, then some
-end-user notification should be given unless the end-user or system
-has disabled such a notification, or if the processor does not permit
-or entail the intervention of an end-user.</p><p>If the value of the <code>value</code> attribute is
-<code>optional</code>, and if the TTML processor implementation does
-not support the extension, then it may further process the document even
-in the case that some use of the extension is present in the document.
-In the case of actual use of an extension designated as optional, the
-default semantics associated with that extension apply; that is, the
-processor may behave as if the extension were not actually used or
-referenced by the document. Notwithstanding the above, the syntactic
-presence or reference to an optional extension by a document must not be
-considered to be a violation of document validity or a barrier to
-further processing if the syntactic expression is well-formed and
-otherwise valid.</p><p>If some well known extension is not specified by
-a <code>ttp:extension</code> element in a given profile, then it must be interpreted as if the extension were specified
-with the <code>value</code> attribute equal to <code>optional</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In particular, if some extension is not present in a profile definition, then
+ancestor <code>ttp:extensions</code> element.</p><p>The <code>value</code> attribute has the same syntactic usage and semantics as defined
+above in <a href="#parameter-vocabulary-feature"><b>6.1.3 ttp:feature</b></a>, except that a reference there to a <em>feature</em>
+is to be understood in the present context as a reference to an <em>extension</em>.</p><p>If some well known extension is not specified by
+a <code>ttp:extension</code> element in a content profile, then it must be interpreted as if the extension were specified
+with the <code>value</code> attribute equal to <code>optional</code>. However, if not specified in a processor profile, no claim
+about support or absence of support for the extension is implied.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In particular, if some extension is not present in a content profile definition, then
 it is not to be interpreted as meaning the use of that extension (in a <a href="#terms-document-instance">document instance</a>)
-is disallowed or otherwise prohibited. If an extension is intended to be disallowed by a profile, then
-it should be specified using the <code>prohibited</code> value.</p></div><p>The <code>ttp:extension</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-extension-example-1"></a><table class="example"><caption>Example Fragment – ttp:extension</caption><tbody><tr><td>
+is disallowed or otherwise prohibited. If an extension is intended to be disallowed by a content profile, then
+it should be specified using the <code>prohibited</code> value.</p></div><p>If a <a href="#terms-document-instance">document instance</a> makes use
+of an extension designatable by <a href="#extension-designations"><b>E.1 Extension Designations</b></a> and if the intended use of the document
+requires the recognition and processing of that extension, then the
+document must include a <em>required</em> extension specification
+in one of its declared or referenced profiles.</p><p>The <code>ttp:extension</code> element is illustrated by the following example.</p><a id="parameter-vocabulary-extension-example-1"></a><table class="example"><caption>Example Fragment – ttp:extension</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/ttml2-transformation"&gt;
   &lt;ttp:extensions xml:base="http://example.org/ttml/extension/"&gt;
@@ -1602,7 +1638,7 @@ specifying that support and use is required for a private extension
 defined in a third party namespace.</p><p>The effect of this example is to express authorial intentions that
 a recipient processor must support the TTML transformation profile and
 must also support and enable an extension defined by a third party.</p></div></div></div><div class="div2">
-<h3><a id="parameter-attribute-vocabulary"></a>6.2 Parameter Attribute Vocabulary</h3><p>The following attributes are defined in the TT Parameter Namespace.</p><ul><li><p><a href="#parameter-attribute-cellResolution"><b>6.2.1 ttp:cellResolution</b></a></p></li><li><p><a href="#parameter-attribute-clockMode"><b>6.2.2 ttp:clockMode</b></a></p></li><li><p><a href="#parameter-attribute-dropMode"><b>6.2.4 ttp:dropMode</b></a></p></li><li><p><a href="#parameter-attribute-frameRate"><b>6.2.5 ttp:frameRate</b></a></p></li><li><p><a href="#parameter-attribute-frameRateMultiplier"><b>6.2.6 ttp:frameRateMultiplier</b></a></p></li><li><p><a href="#parameter-attribute-markerMode"><b>6.2.7 ttp:markerMode</b></a></p></li><li><p><a href="#parameter-attribute-pixelAspectRatio"><b>6.2.8 ttp:pixelAspectRatio</b></a></p></li><li><p><a href="#parameter-attribute-profile"><b>6.2.9 ttp:profile</b></a></p></li><li><p><a href="#parameter-attribute-subFrameRate"><b>6.2.11 ttp:subFrameRate</b></a></p></li><li><p><a href="#parameter-attribute-tickRate"><b>6.2.12 ttp:tickRate</b></a></p></li><li><p><a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a></p></li></ul><p>Unless explicitly stated otherwise, linear white-space (LWSP) must
+<h3><a id="parameter-attribute-vocabulary"></a>6.2 Parameter Attribute Vocabulary</h3><p>The following attributes are defined in the TT Parameter Namespace.</p><ul><li><p><a href="#parameter-attribute-cellResolution"><b>6.2.1 ttp:cellResolution</b></a></p></li><li><p><a href="#parameter-attribute-clockMode"><b>6.2.2 ttp:clockMode</b></a></p></li><li><p><a href="#parameter-attribute-contentProfiles"><b>6.2.3 ttp:contentProfiles</b></a></p></li><li><p><a href="#parameter-attribute-contentProfileCombination"><b>6.2.4 ttp:contentProfileCombination</b></a></p></li><li><p><a href="#parameter-attribute-dropMode"><b>6.2.5 ttp:dropMode</b></a></p></li><li><p><a href="#parameter-attribute-frameRate"><b>6.2.6 ttp:frameRate</b></a></p></li><li><p><a href="#parameter-attribute-frameRateMultiplier"><b>6.2.7 ttp:frameRateMultiplier</b></a></p></li><li><p><a href="#parameter-attribute-inferProcessorProfileMethod"><b>6.2.8 ttp:inferProcessorProfileMethod</b></a></p></li><li><p><a href="#parameter-attribute-inferProcessorProfileSource"><b>6.2.9 ttp:inferProcessorProfileSource</b></a></p></li><li><p><a href="#parameter-attribute-markerMode"><b>6.2.10 ttp:markerMode</b></a></p></li><li><p><a href="#parameter-attribute-pixelAspectRatio"><b>6.2.11 ttp:pixelAspectRatio</b></a></p></li><li><p><a href="#parameter-attribute-profile"><b>6.2.12 ttp:profile</b></a></p></li><li><p><a href="#parameter-attribute-processorProfiles"><b>6.2.13 ttp:processorProfiles</b></a></p></li><li><p><a href="#parameter-attribute-processorProfileCombination"><b>6.2.14 ttp:processorProfileCombination</b></a></p></li><li><p><a href="#parameter-attribute-subFrameRate"><b>6.2.15 ttp:subFrameRate</b></a></p></li><li><p><a href="#parameter-attribute-tickRate"><b>6.2.16 ttp:tickRate</b></a></p></li><li><p><a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a></p></li><li><p><a href="#parameter-attribute-validation"><b>6.2.18 ttp:validation</b></a></p></li><li><p><a href="#parameter-attribute-validationAction"><b>6.2.19 ttp:validationAction</b></a></p></li><li><p><a href="#parameter-attribute-version"><b>6.2.20 ttp:version</b></a></p></li></ul><p>Unless explicitly stated otherwise, linear white-space (LWSP) must
 appear between adjacent non-terminal components of a TT Parameter value
 unless some other delimiter is permitted and used.</p><div class="div3">
 <h4><a id="parameter-attribute-cellResolution"></a>6.2.1 ttp:cellResolution</h4><p>The <code>ttp:cellResolution</code> attribute may be used by an author
@@ -1633,7 +1669,7 @@ left to right writing mode, the start and end padding will be (640 / 20) * 0.1 p
 before and after padding will be (480 / 10) * 0.1 pixels.</p></div></div><div class="div3">
 <h4><a id="parameter-attribute-clockMode"></a>6.2.2 ttp:clockMode</h4><p>The <code>ttp:clockMode</code> attribute is used to specify the
 interpretation of time expressions as real-time time coordinates when
-operating with time base of <code>clock</code> as defined by <a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See <a href="#timing-time-value-expressions"><b>10.3 Time Value Expressions</b></a> for the
+operating with time base of <code>clock</code> as defined by <a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See <a href="#timing-time-value-expressions"><b>10.3 Time Value Expressions</b></a> for the
 specification of time expression syntax and semantics.</p></div><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-clockMode-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:clockMode</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 ttp:clockMode
@@ -1641,7 +1677,7 @@ ttp:clockMode
   | "gps"
   | "utc"
 </pre></div>
-</td></tr></tbody></table><p>If the time base, defined by <a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a>, is designated as
+</td></tr></tbody></table><p>If the time base, defined by <a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a>, is designated as
 <code>clock</code>, then this parameter applies as follows: if the
 parameter's value is <code>local</code>, then time expressions are
 interpreted as local wall-clock time coordinates;
@@ -1660,28 +1696,60 @@ Observatory which is kept within a close but unspecified
 tolerance of TAI.</p></div><p>If not specified, the value of this parameter must be considered
 to be <code>utc</code>.</p><p>A <code>ttp:clockMode</code> attribute is considered to be significant only
 when specified on the <code>tt</code> element.</p></div><div class="div3">
-<h4><a id="parameter-attribute-contentProfile"></a>6.2.3 ttp:contentProfile</h4><p>The <code>ttp:contentProfile</code> attribute may be used by a content author
-to express a <a href="#terms-content-profile">content profile</a> of
-the Timed Text Markup Language (TTML) to which
-a <a href="#terms-document-instance">document instance</a> conforms.</p><p>If specified, the value of this attribute must adhere to the
-<code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
-§3.2.17, and, further, must specify a
-profile designator in accordance with
-<a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>.</p><p>A <code>ttp:contentProfile</code>
+<h4><a id="parameter-attribute-contentProfiles"></a>6.2.3 ttp:contentProfiles</h4><p>The <code>ttp:contentProfiles</code> attribute may be used by a content author
+to express one or more <a href="#terms-content-profile">content profiles</a> of
+the Timed Text Markup Language (TTML) where the
+<a href="#terms-enclosing-document-instance">enclosing document instance</a> claims conformance to any or all of the
+specified <a href="#terms-content-profile">content profiles</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax,
+where each <code>profile-designator</code> item adheres to the <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
+§3.2.17, and, further, adheres to constraints defined on a profile designator in accordance with
+<a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>.</p><a id="parameter-attribute-contentProfiles-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:contentProfiles</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:contentProfiles
+  : designators
+  | "all(" designators ")"
+  | "any(" designators ")"
+
+designators
+  : designator (lwsp designator)*
+
+designator
+  : xsd:anyURI
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+</pre></div>
+</td></tr></tbody></table><p>If the list of designators is enclosed in the function syntax <code>all(...)</code> or no function syntax is used,
+then conformance is claimed with all designated <a href="#terms-content-profile">content profiles</a>. If the list
+of designators is enclosed in the function syntax <code>any(...)</code>, then conformance is claimed with at least one
+of the designated <a href="#terms-content-profile">content profiles</a>.</p><p>A <code>ttp:contentProfiles</code>
 attribute is considered to be significant only when specified on the
 <code>tt</code> element.</p></div><div class="div3">
-<h4><a id="parameter-attribute-dropMode"></a>6.2.4 ttp:dropMode</h4><p>The <code>ttp:dropMode</code> attribute is used to specify
+<h4><a id="parameter-attribute-contentProfileCombination"></a>6.2.4 ttp:contentProfileCombination</h4><p>The <code>ttp:contentProfileCombination</code> attribute is used to specify the
+method for combining multiple <a href="#terms-content-profile">content profiles</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-contentProfileCombination-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:contentProfileCombination</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:contentProfileCombination
+  : "leastRestrictive"
+  | "mostRestrictive"
+  | "replace"
+</pre></div>
+</td></tr></tbody></table><p>Given two ordered profile specification values, <em>arg1</em> and <em>arg2</em>, and a content profile combination method,
+<a href="#content-profile-combination-table"><b>Table 6-1 – Content Profile Combination</b></a> specifies the result of combining the two specification values, where the order
+of arguments is determined in accordance with the lexical order of
+<a href="#terms-content-profile">content profiles</a> in a <a href="#terms-document-instance">document instance</a>.</p><a id="content-profile-combination-table"></a><table class="common"><caption>Table 6-1 – Content Profile Combination</caption><col width="16.67%" span="1"><col width="16.67%" span="1"><col width="22%" span="1"><col width="22%" span="1"><col width="22%" span="1"><tbody><tr><th><em>arg1</em></th><th><em>arg2</em></th><th><code>leastRestrictive</code></th><th><code>mostRestrictive</code></th><th><code>replace</code></th></tr><tr><td>optional</td><td>optional</td><td>optional</td><td>optional</td><td>optional</td></tr><tr><td>optional</td><td>required</td><td>optional</td><td>required</td><td>required</td></tr><tr><td>optional</td><td>prohibited</td><td>optional</td><td>prohibited</td><td>prohibited</td></tr><tr><td>required</td><td>optional</td><td>optional</td><td>required</td><td>optional</td></tr><tr><td>required</td><td>required</td><td>required</td><td>required</td><td>required</td></tr><tr><td>required</td><td>prohibited</td><td>required</td><td>prohibited</td><td>prohibited</td></tr><tr><td>prohibited</td><td>optional</td><td>optional</td><td>prohibited</td><td>optional</td></tr><tr><td>prohibited</td><td>required</td><td>required</td><td>prohibited</td><td>required</td></tr><tr><td>prohibited</td><td>prohibited</td><td>prohibited</td><td>prohibited</td><td>prohibited</td></tr></tbody></table><p>A <code>ttp:contentProfileCombination</code> attribute is considered to be significant only
+when specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-dropMode"></a>6.2.5 ttp:dropMode</h4><p>The <code>ttp:dropMode</code> attribute is used to specify
 constraints on the interpretation and use of frame counts
 that correspond with <a href="#smpte12m">[SMPTE 12M]</a> time coordinates when operating
 with time base of <code>smpte</code> as defined by
-<a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-dropMode-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:dropMode</caption><tbody><tr><td>
+<a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-dropMode-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:dropMode</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 ttp:dropMode
   : "dropNTSC"
   | "dropPAL"
   | "nonDrop"
 </pre></div>
-</td></tr></tbody></table><p>If the time base, defined by <a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a>, is designated as
+</td></tr></tbody></table><p>If the time base, defined by <a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a>, is designated as
 <code>smpte</code>, then this parameter applies as follows: if the
 parameter's value is <code>nonDrop</code>, then, within any given
 second of a time expression, frames count from 0 to
@@ -1727,7 +1795,7 @@ following sequence of time expressions: <code>01:09:59:28</code>,
 code, which uses PAL modulation with the NTSC frame rate of ~29.97
 frames/second. The M/PAL system is used primarily in Brazil.</p></div><p>If not specified, then <code>nonDrop</code> must be assumed to apply.</p><p>A <code>ttp:dropMode</code> attribute is considered to be significant only
 when specified on the <code>tt</code> element.</p></div><div class="div3">
-<h4><a id="parameter-attribute-frameRate"></a>6.2.5 ttp:frameRate</h4><p>The <code>ttp:frameRate</code> attribute is used to specify the frame rate of a related
+<h4><a id="parameter-attribute-frameRate"></a>6.2.6 ttp:frameRate</h4><p>The <code>ttp:frameRate</code> attribute is used to specify the frame rate of a related
 media object or the intrinsic frame rate of a <a href="#terms-document-instance">document instance</a> in case it is intended
 to function as an independent media object.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-frameRate-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:frameRate</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1747,7 +1815,7 @@ application defined frame rate, or if no application defined frame rate applies,
 then thirty (30) frames per second. If specified, then the frame rate must
 be greater than zero (0).</p><p>A <code>ttp:frameRate</code> attribute is considered to be significant only
 when specified on the <code>tt</code> element.</p></div><div class="div3">
-<h4><a id="parameter-attribute-frameRateMultiplier"></a>6.2.6 ttp:frameRateMultiplier</h4><p>The <code>ttp:frameRateMultiplier</code> attribute is used to
+<h4><a id="parameter-attribute-frameRateMultiplier"></a>6.2.7 ttp:frameRateMultiplier</h4><p>The <code>ttp:frameRateMultiplier</code> attribute is used to
 specify a multiplier to be applied to the frame rate specified by a
 <code>ttp:frameRate</code> attribute in order to compute the effective
 frame rate.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-frameRateMultiplier-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:frameRateMultiplier</caption><tbody><tr><td>
@@ -1770,18 +1838,47 @@ rate of 29.970029970029… (= 30 × 1000/1001) frames per
 second. Other frame rate multipliers apply to different regions of
 usage and video format standards.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Except in the case of PAL/M, the frame rate multiplier used for synchronizing with PAL
 formatted video objects at 25 frames per second is nominally 1:1.</p></div></div><div class="div3">
-<h4><a id="parameter-attribute-markerMode"></a>6.2.7 ttp:markerMode</h4><table border="1" class="ednote" summary="Editorial note: Obsolete ttp:markerMode"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Obsolete ttp:markerMode</b></td><td align="right" valign="top">2013-09-05</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Designate ttp:markerMode as obsolete. If specified, and if feature #markerMode or #markerMode-continuous is not
-required, then the specified value is to be ignored and the default value 'discontinuous' applies.</td></tr></table><p>The <code>ttp:markerMode</code> attribute is used to specify
+<h4><a id="parameter-attribute-inferProcessorProfileMethod"></a>6.2.8 ttp:inferProcessorProfileMethod</h4><p>The <code>ttp:inferProcessorProfileMethod</code> attribute is used to specify the
+method for mapping a content profile specification value to a corresponding processor
+profile specification value.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-inferProcessorProfileMethod-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:inferProcessorProfileMethod</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:inferProcessorProfileMethod
+  : "loose"
+  | "strict"
+</pre></div>
+</td></tr></tbody></table><p>If this parameter's value is <code>loose</code>, then, when inferring a processor profile specification from a content profile specification,
+a loose (liberal) mapping applies.</p><p>If this parameter's value is <code>strict</code>, then, when inferring a processor profile specification from a content profile specification,
+a strict (conservative) mapping applies.</p><p>If not specified, the value of this parameter must be considered
+to be <code>loose</code>.</p><p>Given an input content profile specification value, <em>input</em>, and an infer processor profile method,
+<a href="#infer-processor-profile-method-table"><b>Table 6-2 – Infer Processor Profile Method</b></a> specifies the result of mapping the input specification value.</p><a id="infer-processor-profile-method-table"></a><table class="common"><caption>Table 6-2 – Infer Processor Profile Method</caption><col width="33%" span="1"><col width="33%" span="1"><col width="33%" span="1"><tbody><tr><th><em>input</em></th><th><code>loose</code></th><th><code>strict</code></th></tr><tr><td>optional</td><td>optional</td><td>required</td></tr><tr><td>required</td><td>required</td><td>required</td></tr><tr><td>prohibited</td><td>optional</td><td>optional</td></tr></tbody></table><p>A <code>ttp:inferProcessorProfileMethod</code> attribute is considered to be significant only
+when specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-inferProcessorProfileSource"></a>6.2.9 ttp:inferProcessorProfileSource</h4><p>The <code>ttp:inferProcessorProfileSource</code> attribute is used to specify the
+source for mapping a content profile specification value to a corresponding processor
+profile specification value.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-inferProcessorProfileSource-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:inferProcessorProfileSource</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:inferProcessorProfileSource
+  : "combined"
+  | "first"
+</pre></div>
+</td></tr></tbody></table><p>If this parameter's value is <code>combined</code>, then, when inferring a processor profile, the combined profile specification
+set of the <a href="#terms-effective-content-profile">effective content profile</a> is used as the source of inference.</p><p>If this parameter's value is <code>first</code>, then, when inferring a processor profile, the first constituent profile of
+the <a href="#terms-effective-content-profile">effective content profile</a>, where the processor profile inferred from that
+constituent profile is supported by the <a href="#terms-content-processor">content processor</a>, is used as the source of inference.</p><p>If not specified, the value of this parameter must be considered
+to be <code>combined</code>.</p><p>A <code>ttp:inferProcessorProfileSource</code> attribute is considered to be significant only
+when specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-markerMode"></a>6.2.10 ttp:markerMode</h4><p>The <code>ttp:markerMode</code> attribute is <span class="deprecated">deprecated</span>. In <a href="#ttml1">[TTML1]</a>, it was used to specify
 constraints on the interpretation and use of time expressions
 that correspond with <a href="#smpte12m">[SMPTE 12M]</a> time coordinates when operating
 with time base of <code>smpte</code> as defined by
-<a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-markerMode-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:markerMode</caption><tbody><tr><td>
+<a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a>.</p><p>If specified and support for neither <code>#markerMode</code> nor <code>#markerMode-continuous</code> feature
+is required by a document's <a href="#terms-effective-processor-profile">effective processor profile</a>,
+then the specified value must be ignored and the value <code>discontinuous</code> applied.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-markerMode-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:markerMode</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
-ttp:markerMode
+<span class="deprecated">ttp:markerMode</span>
   : "continuous"
   | "discontinuous"
 </pre></div>
-</td></tr></tbody></table><p>If the time base, defined by <a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a>, is designated as
+</td></tr></tbody></table><p>If the time base, defined by <a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a>, is designated as
 <code>smpte</code>, then this parameter applies as follows: if the
 parameter's value is <code>continuous</code>, then <a href="#smpte12m">[SMPTE 12M]</a> time coordinates
 may be assumed to be linear and either monotonically increasing or
@@ -1789,11 +1886,8 @@ decreasing; however, if <code>discontinuous</code>, then any assumption
 must not be made regarding linearity or monotonicity of time coordinates.</p><p>If not specified, the value of this parameter must be considered
 to be <code>discontinuous</code>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The default value for this parameter was originally specified
 (in <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">TTML 1.0 First Edition</a>)
-as <code>continuous</code>; however, further evaluation of the state of the industry indicates this
-choice was incorrect, and that the most common default is <code>discontinuous</code>.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>Due to lack of industry consensus on the utility and interpretation of the
-<code>continuous</code> marker mode, authors are advised to avoid its use. Furthermore, the
-<code>ttp:markerMode</code> is being considered for deprecation in the next revision of this
-specification.</p></div><p>A <code>ttp:markerMode</code> attribute is considered to be significant only
+as <code>continuous</code>; however, further evaluation of the state of the industry indicated this
+choice was incorrect, and that the most common default is <code>discontinuous</code>.</p></div><p>A <code>ttp:markerMode</code> attribute is considered to be significant only
 when specified on the <code>tt</code> element.</p><p>If a value of <code>continuous</code> applies, then time
 expressions may be converted to real time
 coordinates by taking into account the computed frame rate
@@ -1843,7 +1937,7 @@ were some other non-linearity or discontinuity in marker labeling, for
 example, two consecutive frames labeled as <code>10:00:00:00</code>
 and <code>10:00:01:00</code>.
 </p></div></div><div class="div3">
-<h4><a id="parameter-attribute-pixelAspectRatio"></a>6.2.8 ttp:pixelAspectRatio</h4><p>The <code>ttp:pixelAspectRatio</code> attribute may be used by a content author
+<h4><a id="parameter-attribute-pixelAspectRatio"></a>6.2.11 ttp:pixelAspectRatio</h4><p>The <code>ttp:pixelAspectRatio</code> attribute may be used by a content author
 to express the aspect ratio of non-square pixels in the production of content that
 makes use of pixel coordinates.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-pixelAspectRatio-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:pixelAspectRatio</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1858,37 +1952,73 @@ If specified, then both width and height must be non-zero.</p><p>A <code>ttp:pix
 when specified on the <code>tt</code> element.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>This parameter may be used by a content transcoder or translator in
 order to convert pixel measurements between different pixel aspect
 ratios while still maintaining authorial layout intentions.</p></div></div><div class="div3">
-<h4><a id="parameter-attribute-profile"></a>6.2.9 ttp:profile</h4><p>The <code>ttp:profile</code> attribute may be used by a content author
-to express a <a href="#terms-processor-profile">processor profile</a>
+<h4><a id="parameter-attribute-profile"></a>6.2.12 ttp:profile</h4><p>The <code>ttp:profile</code> attribute is <span class="deprecated">deprecated</span>. If creating a TTML document instance for TTML2 (or later versions),
+then the <code>ttp:profile</code> attribute should not be used; instead, the content author should use the <code>ttp:processorProfiles</code>
+attribute, specified at <a href="#parameter-attribute-processorProfiles"><b>6.2.13 ttp:processorProfiles</b></a>.</p><p>If used in a document, the <code>ttp:profile</code> attribute
+denotes a <a href="#terms-processor-profile">processor profile</a>
 of the Timed Text Markup Language (TTML) that applies when processing
-a <a href="#terms-document-instance">document instance</a>.</p><p>If specified, the value of this attribute must adhere to the
+a <a href="#terms-document-instance">document instance</a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>For information on signaling content profile(s), see <a href="#parameter-attribute-contentProfiles"><b>6.2.3 ttp:contentProfiles</b></a>.</p></div><p>If specified, the value of this attribute must adhere to the following syntax
+where the <code>designator</code> adheres to the
 <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
 §3.2.17, and, further, must specify a
 profile designator in accordance with
-<a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>.</p><p>A <code>ttp:profile</code>
+<a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>.</p><a id="parameter-attribute-profile-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:profile</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+<span class="deprecated">ttp:profile</span>
+  : designator
+
+designator
+  : xsd:anyURI
+</pre></div>
+</td></tr></tbody></table><p>A <code>ttp:profile</code>
+attribute is considered to be significant only when specified on the
+<code>tt</code> element.</p><p>If a <a href="#terms-top-level-profile">top-level</a> <a href="#terms-processor-profile">processor profile</a>
+is defined in a <a href="#terms-document-instance">document instance</a>, then the
+<a href="#parameter-attribute-profile"><code>ttp:profile</code></a>
+attribute should not be specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-processorProfiles"></a>6.2.13 ttp:processorProfiles</h4><p>The <code>ttp:processorProfiles</code> attribute may be used by a content author
+to express one or more <a href="#terms-processor-profile">processor profiles</a> of
+the Timed Text Markup Language (TTML) where the
+<a href="#terms-enclosing-document-instance">enclosing document instance</a> requires support for each and all
+specified <a href="#terms-processor-profile">processor profiles</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax,
+where each <code>profile-designator</code> item adheres to the <code>xsd:anyURI</code> data type defined by <a href="#xsd-2">[XML Schema Part 2]</a>,
+§3.2.17, and, further, adheres to constraints defined on a profile designator in accordance with
+<a href="#vocabulary-profiles"><b>5.2 Profiles</b></a>.</p><a id="parameter-attribute-processorProfiles-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:processorProfiles</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:processorProfiles
+  : designators
+  | "all(" designators ")"
+  | "any(" designators ")"
+
+designators
+  : designator (lwsp designator)*
+
+designator
+  : xsd:anyURI
+
+lwsp
+  : ( ' ' | '\t' | '\n' | '\r' )+
+</pre></div>
+</td></tr></tbody></table><p>If the list of designators is enclosed in the function syntax <code>all(...)</code> or no function syntax is used,
+then support is required for all designated <a href="#terms-processor-profile">processor profiles</a>. If the list
+of designators is enclosed in the function syntax <code>any(...)</code>, then support is required for at least one
+of the designated <a href="#terms-processor-profile">processor profiles</a>.</p><p>A <code>ttp:processorProfiles</code>
 attribute is considered to be significant only when specified on the
 <code>tt</code> element.</p></div><div class="div3">
-<h4><a id="parameter-attribute-profileCombination"></a>6.2.10 ttp:profileCombination</h4><p>The <code>ttp:profileCombination</code> attribute is used to specify the
-method for combining multiple profiles.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-profileCombination-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:profileCombination</caption><tbody><tr><td>
+<h4><a id="parameter-attribute-processorProfileCombination"></a>6.2.14 ttp:processorProfileCombination</h4><p>The <code>ttp:processorProfileCombination</code> attribute is used to specify the
+method for combining multiple <a href="#terms-processor-profile">processor profiles</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-processorProfileCombination-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:processorProfileCombination</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
-ttp:profileCombination
+ttp:processorProfileCombination
   : "leastRestrictive"
   | "mostRestrictive"
   | "replace"
 </pre></div>
-</td></tr></tbody></table><p>If this parameter's value is <code>leastRestrictive</code> or <code>mostRestrictive</code>,
-then, when combining features or extensions from any two profiles, the least or most restrictive value applies,
-respectively, where the order of restriction is as follows (from most to least): <code>prohibited</code>,
-<code>use</code>, <code>required</code>, then <code>optional</code>.</p><p>If this parameter's value is <code>replace</code>, then, when combining features or extensions from any two
-profiles, the lexically subsequent profile's feature or extension specification applies, i.e., replaces the
-lexically prior specification.</p><p>A <code>ttp:profileCombination</code> attribute is considered to be significant only
-when specified on the <code>tt</code> or <code>ttp:profile</code> elements.</p><p>When specified on the <code>tt</code> element, it determines how multiple top-level (or nested) profile definitions are
-combined. When specified on an <code>ttp:profile</code> element, it determines how multiple, nested profile definition
-children of that <code>ttp:profile</code> element are combined.</p><p>If not specified on a given <code>ttp:profile</code> element, then, if specified on an ancestor
-<code>ttp:profile</code> or <code>tt</code> element, then the value specified by the most immediate
-of these ancestors applies. However, if no value is specified by an ancestor <code>ttp:profile</code> or <code>tt</code> element,
-then the value of this parameter must be considered to be <code>replace</code>.</p></div><div class="div3">
-<h4><a id="parameter-attribute-subFrameRate"></a>6.2.11 ttp:subFrameRate</h4><p>The <code>ttp:subFrameRate</code> attribute is used to specify the sub-frame rate of a related
+</td></tr></tbody></table><p>Given two ordered profile specification values, <em>arg1</em> and <em>arg2</em>, and a processor profile combination method,
+<a href="#processor-profile-combination-table"><b>Table 6-3 – Processor Profile Combination</b></a> specifies the result of combining the two specification values, where the order
+of arguments is determined in accordance with the lexical order of
+<a href="#terms-processor-profile">processor profiles</a> in a <a href="#terms-document-instance">document instance</a>.</p><a id="processor-profile-combination-table"></a><table class="common"><caption>Table 6-3 – Processor Profile Combination</caption><col width="16.67%" span="1"><col width="16.67%" span="1"><col width="22%" span="1"><col width="22%" span="1"><col width="22%" span="1"><tbody><tr><th><em>arg1</em></th><th><em>arg2</em></th><th><code>leastRestrictive</code></th><th><code>mostRestrictive</code></th><th><code>replace</code></th></tr><tr><td>optional</td><td>optional</td><td>optional</td><td>optional</td><td>optional</td></tr><tr><td>optional</td><td>required</td><td>optional</td><td>required</td><td>required</td></tr><tr><td>required</td><td>optional</td><td>optional</td><td>required</td><td>optional</td></tr><tr><td>required</td><td>required</td><td>required</td><td>required</td><td>required</td></tr></tbody></table><p>A <code>ttp:processorProfileCombination</code> attribute is considered to be significant only
+when specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-subFrameRate"></a>6.2.15 ttp:subFrameRate</h4><p>The <code>ttp:subFrameRate</code> attribute is used to specify the sub-frame rate of a related
 media object or the intrinsic sub-frame rate of a <a href="#terms-document-instance">document instance</a> in case it is intended
 to function as an independent media object.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-subFrameRate-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:subFrameRate</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1907,7 +2037,7 @@ on the interpretation of time expressions for the <code>media</code> time base.<
 equal to one (1). If specified, then the sub-frame rate must be greater than zero (0).</p><p>A <code>ttp:subFrameRate</code> attribute is considered to be significant only
 when specified on the <code>tt</code> element.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The sub-frame is sometimes referred to as a <em>field</em> in
 the context of synchronization with an interlaced video media object.</p></div></div><div class="div3">
-<h4><a id="parameter-attribute-tickRate"></a>6.2.12 ttp:tickRate</h4><p>The <code>ttp:tickRate</code> attribute is used to specify the tick rate of a related
+<h4><a id="parameter-attribute-tickRate"></a>6.2.16 ttp:tickRate</h4><p>The <code>ttp:tickRate</code> attribute is used to specify the tick rate of a related
 media object or the intrinsic tick rate of content of a <a href="#terms-document-instance">document instance</a> in case it is intended
 to function as an independent media object.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-tickRate-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:tickRate</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1932,7 +2062,7 @@ sub-frames. Ticks are an arbitrary division of seconds that permit
 use of fixed point arithmetic rather than fractional (and potentially
 inexact) expressions of seconds.</p></div><p>A <code>ttp:tickRate</code> attribute is considered to be significant only
 when specified on the <code>tt</code> element.</p></div><div class="div3">
-<h4><a id="parameter-attribute-timeBase"></a>6.2.13 ttp:timeBase</h4><p>The <code>ttp:timeBase</code> attribute is used to specify the
+<h4><a id="parameter-attribute-timeBase"></a>6.2.17 ttp:timeBase</h4><p>The <code>ttp:timeBase</code> attribute is used to specify the
 temporal coordinate system by means of which time expressions are
 interpreted in a <a href="#terms-document-instance">document instance</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-timeBase-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:timeBase</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -1957,7 +2087,7 @@ media time base is outside the scope of this specification.</p></div><p>If the t
 then a time expression denotes a <a href="#smpte12m">[SMPTE 12M]</a> time
 coordinate with which the content of a <a href="#terms-document-instance">document instance</a> is to
 be synchronized.  In this case, the value of the <code>ttp:markerMode</code> 
-and <code>ttp:dropMode</code> parameters apply, as defined by <a href="#parameter-attribute-markerMode"><b>6.2.7 ttp:markerMode</b></a> and <a href="#parameter-attribute-dropMode"><b>6.2.4 ttp:dropMode</b></a>, respectively.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>When the time base is designated as <code>smpte</code>,
+and <code>ttp:dropMode</code> parameters apply, as defined by <a href="#parameter-attribute-markerMode"><b>6.2.10 ttp:markerMode</b></a> and <a href="#parameter-attribute-dropMode"><b>6.2.5 ttp:dropMode</b></a>, respectively.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>When the time base is designated as <code>smpte</code>,
 every time expression denotes a media marker value akin to that
 defined by <a href="#smil3">[SMIL 3.0]</a>, § 5.4.3, except instead
 of using an opaque marker name, a structured <a href="#smpte12m">[SMPTE 12M]</a>
@@ -1978,7 +2108,38 @@ based on the passage of real time.</p><div class="note"><p class="prefix"><b>Not
 given <a href="#terms-document-instance">document instance</a>, the interpretation of time expressions
 is uniform throughout the <a href="#terms-document-instance">document instance</a>.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>See <a href="#time-expression-semantics"><b>N Time Expression Semantics</b></a> for further details
 on the interpretation of time expressions according to the designated time base.</p></div></div><div class="div3">
-<h4><a id="parameter-attribute-version"></a>6.2.14 ttp:version</h4><p>The <code>ttp:version</code> attribute is used to specify which version of the
+<h4><a id="parameter-attribute-validation"></a>6.2.18 ttp:validation</h4><p>The <code>ttp:validation</code> attribute is used to specify whether validation processing
+may or must be performed on a <a href="#terms-document-instance">document instance</a> by a
+<a href="#terms-validating-content-processor">validating content processor</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-validation-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:validation</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:validation
+  : "optional"
+  | "required"
+</pre></div>
+</td></tr></tbody></table><p>If this parameter's value is <code>optional</code>, then, a <a href="#terms-validating-content-processor">validating content processor</a>
+may, but need not, perform validation processing on a TTML <a href="#terms-document-instance">document instance</a> prior to performing
+other types of processing, e.g., presentation or transformation processing.</p><p>If this parameter's value is <code>required</code>, then, a <a href="#terms-validating-content-processor">validating content processor</a>
+must perform validation processing on a TTML <a href="#terms-document-instance">document instance</a> prior to performing
+other types of processing, e.g., presentation or transformation processing.</p><p>If validation processing is performed on a TTML <a href="#terms-document-instance">document instance</a> and validation fails, then the computed value of
+the <code>ttp:validationAction</code> attribute is used to determine what action to take before performing further processing.</p><p>If not specified, the value of this parameter must be considered
+to be <code>optional</code>.</p><p>A <code>ttp:validation</code> attribute is considered to be significant only
+when specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-validationAction"></a>6.2.19 ttp:validationAction</h4><p>The <code>ttp:validationAction</code> attribute is used to specify what action is to be taken
+by a <a href="#terms-validating-content-processor">validating content processor</a> when
+validation of a <a href="#terms-document-instance">document instance</a> fails.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-validationAction-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:validationAction</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+ttp:validationAction
+  : "abort"
+  | "warn"
+  | "ignore"
+</pre></div>
+</td></tr></tbody></table><p>If this parameter's value is <code>abort</code>, then, a <a href="#terms-validating-content-processor">validating content processor</a>
+must abort processing of a TTML <a href="#terms-document-instance">document instance</a> when validation processing fails.</p><p>If this parameter's value is <code>warn</code>, then, a <a href="#terms-validating-content-processor">validating content processor</a>
+should warn the end-user when validation processing fails, and, give the end-user the option to continue or abort processing.</p><p>If this parameter's value is <code>ignore</code>, then, a <a href="#terms-validating-content-processor">validating content processor</a>
+should not abort and should not warn the end-user when validation processing fails.</p><p>If not specified, the value of this parameter must be considered
+to be <code>abort</code>.</p><p>A <code>ttp:validationAction</code> attribute is considered to be significant only
+when specified on the <code>tt</code> element.</p></div><div class="div3">
+<h4><a id="parameter-attribute-version"></a>6.2.20 ttp:version</h4><p>The <code>ttp:version</code> attribute is used to specify which version of the
 <a href="#terms-timed-text-markup-language">Timed Text Markup Language</a>
 specification was used in authoring a TTML <a href="#terms-document-instance">document instance</a>.</p><p>If specified, the value of this attribute must adhere to the following syntax:</p><a id="parameter-attribute-version-syntax"></a><table class="syntax"><caption>Syntax Representation – ttp:version</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -2023,7 +2184,7 @@ zero or one <code>body</code> element.</p><a id="elt-syntax-tt"></a><table class
 implicit duration of the <code>body</code> element of the document, if the <code>body</code> element is present, or zero, if the <code>body</code> element is absent.</p><p>If the <code>tts:extent</code> attribute is specified on the <code>tt</code>
 element, then it must adhere to <a href="#style-attribute-extent"><b>8.2.8 tts:extent</b></a>, in which case it
 specifies the spatial extent of the <a href="#terms-root-container-region">root container region</a> in
-which <a href="terms-content-region">content regions</a> are located and presented. If no <code>tts:extent</code>
+which <a href="#terms-content-region">content regions</a> are located and presented. If no <code>tts:extent</code>
 attribute is specified, then the spatial extent of the <a href="#terms-root-container-region">root container region</a> is
 considered to be determined by the <a href="#terms-document-processing-context">document processing context</a>.
 The origin of the <a href="#terms-root-container-region">root container region</a> is determined by the <a href="#terms-document-processing-context">document processing context</a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In the absence of other requirements, and if a <a href="#terms-related-media-object">related media object</a> exists, then it is recommended
@@ -2211,7 +2372,7 @@ extent or origin of the corresponding region, also referred to as an <a href="#t
 value of the respective attribute. If both style attributes are specified, then both apply to the same <a href="#terms-implied-inline-region">implied inline region</a>.</p><p>If no <code>timeContainer</code> attribute is specified on
 a <code>p</code> element, then it must be interpreted as having
 <em>parallel</em> time containment semantics.</p><p>If a sequence of children of a <code>p</code> element
-consists solely of <a href="terms-character-information-item">character information items</a>, then that sequence must
+consists solely of <a href="#terms-character-information-item">character information items</a>, then that sequence must
 be considered to be an <em>anonymous span</em> for the purpose of
 applying style properties that apply to <code>span</code> elements.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The presentation semantics of TTML effectively
 implies that a <code>p</code> element constitutes a line break. In particular,
@@ -4877,10 +5038,10 @@ while taking into account any overriding semantics defined by this specification
 some time base, where the applicable time base is determined by the
 <code>ttp:timeBase</code> parameter, and where the semantics defined
 by <a href="#time-expression-semantics"><b>N Time Expression Semantics</b></a> apply.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See
-<a href="#parameter-attribute-frameRate"><b>6.2.5 ttp:frameRate</b></a>,
-<a href="#parameter-attribute-subFrameRate"><b>6.2.11 ttp:subFrameRate</b></a>,
-<a href="#parameter-attribute-tickRate"><b>6.2.12 ttp:tickRate</b></a>, and
-<a href="#parameter-attribute-timeBase"><b>6.2.13 ttp:timeBase</b></a> for further information on
+<a href="#parameter-attribute-frameRate"><b>6.2.6 ttp:frameRate</b></a>,
+<a href="#parameter-attribute-subFrameRate"><b>6.2.15 ttp:subFrameRate</b></a>,
+<a href="#parameter-attribute-tickRate"><b>6.2.16 ttp:tickRate</b></a>, and
+<a href="#parameter-attribute-timeBase"><b>6.2.17 ttp:timeBase</b></a> for further information on
 explicit specification of frame rate, sub-frame rate, tick rate, and time base.</p></div><a id="timeExpression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;timeExpression&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;timeExpression&gt;
@@ -4930,13 +5091,13 @@ interval [0,60], where the value 60 applies only to leap seconds.</p><p>If a &lt
 then the value of this term must be constrained to the interval
 [0…<em>F-1</em>], where <em>F</em> is the frame rate
 determined by the <code>ttp:frameRate</code> parameter as defined
-by <a href="#parameter-attribute-frameRate"><b>6.2.5 ttp:frameRate</b></a>.
+by <a href="#parameter-attribute-frameRate"><b>6.2.6 ttp:frameRate</b></a>.
 It is considered an error if a <em>frames</em> term or
 <code>f</code> (frames) metric is specified when the <code>clock</code> time base applies.</p><p>If a &lt;timeExpression&gt; is expressed in terms of a
 <em>clock-time</em> and a <em>sub-frames</em> term is
 specified, then the value of this term must be constrained to the
 interval [0…<em>S-1</em>], where <em>S</em> is the
-sub-frame rate determined by the <code>ttp:subFrameRate</code> parameter as defined by <a href="#parameter-attribute-subFrameRate"><b>6.2.11 ttp:subFrameRate</b></a>.
+sub-frame rate determined by the <code>ttp:subFrameRate</code> parameter as defined by <a href="#parameter-attribute-subFrameRate"><b>6.2.15 ttp:subFrameRate</b></a>.
 It is considered an error if a <em>sub-frames</em> term is specified
 when the <code>clock</code> time base applies.</p></div></div><div class="div2">
 <h3><a id="timing-time-intervals"></a>10.4 Time Intervals</h3><p>The semantics of time containment, durations, and intervals defined by
@@ -5602,11 +5763,11 @@ an XML Information Set <a href="#infoset">[XML InfoSet]</a> that consists of onl
 and information item properties:</p><div class="div2">
 <h3><a id="reduced-infoset-document"></a>A.1 Document Information Item</h3><ul><li><p><code>[document element]</code></p></li></ul></div><div class="div2">
 <h3><a id="reduced-infoset-element"></a>A.2 Element Information Item</h3><ul><li><p><code>[namespace URI]</code></p></li><li><p><code>[local name]</code></p></li><li><p><code>[children]</code></p></li><li><p><code>[attributes]</code></p></li></ul><p>Child information items <code>[children]</code> are reduced to only
-<a href="terms-element-information-item">element information items</a> and
-<a href="terms-character-information-item">character information items</a>.</p></div><div class="div2">
-<h3><a id="reduced-infoset-attribute"></a>A.3 Attribute Information Item</h3><ul><li><p><code>[namespace URI]</code></p></li><li><p><code>[local name]</code></p></li><li><p><code>[normalized value]</code></p></li></ul><div class="note"><p class="prefix"><b>Note:</b></p><p>See also <a href="terms-attribute-information-item">attribute information item</a>.</p></div></div><div class="div2">
+<a href="#terms-element-information-item">element information items</a> and
+<a href="#terms-character-information-item">character information items</a>.</p></div><div class="div2">
+<h3><a id="reduced-infoset-attribute"></a>A.3 Attribute Information Item</h3><ul><li><p><code>[namespace URI]</code></p></li><li><p><code>[local name]</code></p></li><li><p><code>[normalized value]</code></p></li></ul><div class="note"><p class="prefix"><b>Note:</b></p><p>See also <a href="#terms-attribute-information-item">attribute information item</a>.</p></div></div><div class="div2">
 <h3><a id="reduced-infoset-character"></a>A.4 Character Information Item</h3><ul><li><p><code>[character code]</code></p></li></ul><p>Contiguous character information items are not required to be represented distinctly,
-but may be aggregated (chunked) into a sequence of character codes (i.e., a character string).</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See also <a href="terms-character-information-item">character information item</a>.</p></div></div></div><div class="div1">
+but may be aggregated (chunked) into a sequence of character codes (i.e., a character string).</p><div class="note"><p class="prefix"><b>Note:</b></p><p>See also <a href="#terms-character-information-item">character information item</a>.</p></div></div></div><div class="div1">
 <h2><a id="schemas"></a>B Schemas</h2><p><em>This appendix is normative.</em></p><p>This appendix specifies the following schemas for use with
 <a href="#terms-document-instance">document instances</a>:</p><ul><li><p>Relax NG, Compact Syntax (RNC) Schema</p></li><li><p>XML Schema Definition (XSD) Schema</p></li></ul><p>In any case where a schema specified by this appendix differs from the
 normative definitions of document type, element type, or attribute type
@@ -7219,7 +7380,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e22452"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e24064"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7276,7 +7437,7 @@ but extended to support distinct specification of optionality.</p></li><li><p>De
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li><li><p>Conceptually derived from existing <code>tt:layout</code> element,
 which is a generic container for layout specifications, but for use
 in defining animation specifications that apply to targetted elements.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e22969"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+<h3><a id="d3e24581"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7368,9 +7529,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e23962"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e25574"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e24126"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e25738"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">
@@ -7555,7 +7716,7 @@ and <code>effectiveFrameRate</code> (in frames per second) is <code>frameRate * 
 <code>frameRateMultipler</code> is the computed value of the <code>ttp:frameRateMultiplier</code> parameter.
 <br><br>
 Notwithstanding the above, if a time expression contains a frame code that is designated as
-dropped according to <a href="#parameter-attribute-dropMode"><b>6.2.4 ttp:dropMode</b></a>, then that time expression
+dropped according to <a href="#parameter-attribute-dropMode"><b>6.2.5 ttp:dropMode</b></a>, then that time expression
 must be considered to be invalid for purposes of validation assessment.
 <br></p></blockquote>
 </td></tr></tbody></table><p>The SMPTE time base <span class="strong"><code>S</code></span> is related to the media time base <span class="strong"><code>M</code></span> as follows:</p><a id="smpte-time-and-media-time"></a><table class="semantics"><caption>TTML Semantics – SMPTE Time and Media Time Relationship</caption><tbody><tr><td>

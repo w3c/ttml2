@@ -194,8 +194,8 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
     <section>
       <h3>Related Video Object</h3>
 
-      <p>A subtitle document MAY be associated with a related video object, which SHALL consist of a sequence of frames, each a
-      rectangular array of pixels.</p>
+      <p>A subtitle document MAY be associated with a related video object, which SHALL consist of a sequence of image frames, each a
+      rectangular array of pixels, and SHALL be considered the <em>Related Media Object</em> defined in [[!TTML1]].</p>
     </section>
 
     <section>
@@ -207,13 +207,17 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       <p>A media time expression M SHALL correspond to the frame of the related video object with the presentation time that is the
       closest to, but not less, than M.</p>
 
-      <p>If <code>ttp:frameRate</code> is specified, then the product of <code>ttp:frameRate</code> and
-      <code>ttp:frameRateMultiplier</code> SHALL be the frame rate of the related video object.</p>
-
       <aside class="example">
         A media time expression of 00:00:05.1 corresponds to frame ceiling(5.1 × ( 1000 / 1001 × 30) = 153 of a related video
         object with a frame rate of 1000 / 1001 × 30 ≈ 29.97.
       </aside>
+	  
+	  <p>If <code>ttp:frameRate</code> is specified, then the product of <code>ttp:frameRate</code> and
+      <code>ttp:frameRateMultiplier</code> SHALL be the frame rate of the related video object.</p>
+	  
+	    <p class="note">
+        A document can be made independent of the frame rate of the related video object by never using the <em>frames</em> term in a time expression: as specified in <a href="#common-features"></a>, <code>ttp:frameRate</code> is required only if the document includes one or more time expressions that uses the <em>frames</em> term.
+      </p>
     </section>
 
     <section>
@@ -303,7 +307,7 @@ imsc:progressivelyDecodable
         <code>tt</code> element.</p>
 
         <p class='note'>The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
-        attributes, and (ii) the use of <code>set</code>.</p>
+        attributes, and the use of <code>set</code> are constrained when <code>ttp:progressivelyDecodable="true"</code> .</p>
       </section>
 
       <section id='tts-forcedDisplay'>
@@ -514,7 +518,7 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#frameRate</code></td>
 
-            <td>If the document includes any time expression that uses the frame field, the <code>ttp:frameRate</code> attribute
+            <td>If the document includes any time expression that uses the <em>frames</em> term, the <code>ttp:frameRate</code> attribute
             SHALL be present on the <code>tt</code> element.</td>
           </tr>
 

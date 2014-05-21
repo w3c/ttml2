@@ -13,9 +13,9 @@
   <xs:include schemaLocation="ttml2-parameter-attribs.xsd"/>
   <xs:attributeGroup name="profile.attlist">
     <xs:attributeGroup ref="tt:Core.ID.attrib.class"/>
-    <xs:attribute ref="ttp:profileCombination"/>
-    <xs:attribute name="combine" type="ttd:profileCombine"/>
+    <xs:attribute name="combine" type="ttd:profileCombination"/>
     <xs:attribute name="designator" type="ttd:profile"/>
+    <xs:attribute name="type" type="ttd:profileType"/>
     <xs:attribute name="use" type="ttd:profile"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:attributeGroup>
@@ -42,8 +42,15 @@
   <xs:complexType name="profile.eltype">
     <xs:sequence>
       <xs:group ref="tt:Metadata.class" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element ref="ttp:features" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element ref="ttp:extensions" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="ttp:features" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="ttp:extensions" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element ref="ttp:profile" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:choice>
     </xs:sequence>
     <xs:attributeGroup ref="ttp:profile.attlist"/>
   </xs:complexType>

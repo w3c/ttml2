@@ -57,6 +57,8 @@ table.example-images-bordered caption { font-weight: bold; text-align: center; p
 table.example-images-bordered td { border: 1px solid red; text-align: left }
 .tbd { background-color: #ffff33; border: 2px solid black; width: 85% }
 .strong { font-weight: bold }
+.deprecated { background-color: #fbaf5c }
+.obsoleted { background-color: #f26d7d }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
 </xsl:text>

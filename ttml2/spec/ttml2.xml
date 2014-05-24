@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 5abd8c68ee6e 2014/05/22 07:52:39 glenn $ -->
+<!-- $Id: ttml2.xml,v 9a3008473dc8 2014/05/24 03:38:53 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/05/22 07:52:39 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/05/24 03:38:53 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/05/22 07:52:39 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/05/24 03:38:53 $</p></revisiondesc>
 </header>
 
 <body>
@@ -2301,6 +2301,8 @@ Parameter Attributes
 <loc href="#parameter-attribute-inferProcessorProfileMethod">ttp:inferProcessorProfileMethod</loc>,
 <loc href="#parameter-attribute-inferProcessorProfileSource">ttp:inferProcessorProfileSource</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
+<loc href="#parameter-attribute-permitFeatureNarrowing">ttp:permitFeatureNarrowing</loc>,
+<loc href="#parameter-attribute-permitFeatureWidening">ttp:permitFeatureWidening</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-profile">ttp:profile</loc>,
 <loc href="#parameter-attribute-processorProfiles">ttp:processorProfiles</loc>,
@@ -2640,10 +2642,6 @@ by child <el>ttp:feature</el> elements.</p>
 <head>ttp:feature</head>
 <p>The <el>ttp:feature</el> element is used to specify
 infomation about support and usage requirements for a particular feature.</p>
-<p>The children of the <el>ttp:feature</el> element must express a non-empty
-sequence of <loc href="#terms-character-information-item">character information items</loc> that adheres to the
-<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17.</p>
 <table id="elt-syntax-parameter-feature" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: ttp:feature</caption>
 <tbody>
@@ -2651,7 +2649,9 @@ sequence of <loc href="#terms-character-information-item">character information 
 <td>
 <eg xml:space="preserve">
 &lt;ttp:feature
-  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
+  extends = string
+  restricts = string
+  value = (optional|required|<phrase role="obsoleted">use</phrase>|prohibited) : <emph>see prose below</emph>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -2661,8 +2661,25 @@ sequence of <loc href="#terms-character-information-item">character information 
 </tr>
 </tbody>
 </table>
-<p>If the URI expressed by the content of the <el>ttp:feature</el>
-element is a relative URI, then, when combined with the
+<p>The children of the <el>ttp:feature</el> element must express a non-empty
+sequence of <loc href="#terms-character-information-item">character information items</loc> the concatenation of which adheres to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17.</p>
+<p>If specified, the <att>extends</att> attribute and/or the <att>restricts</att>
+attribute must (1) adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17, and
+(2) express a feature designation as defined by
+<specref ref="feature-designations"/>.</p>
+<p>The <att>extends</att> attribute may be used to indicate that the feature being defined
+is, from either (or both) a syntactic or (and) semantic perspective, a proper superset of the
+feature referenced by the <att>extends</att> attribute.
+The <att>restricts</att> attribute may be used to indicate that the feature being defined
+is, from either (or both) a syntactic or (and) semantic perspective, a proper subset of the
+feature referenced by the <att>restricts</att> attribute.</p>
+<p>If the URI expressed by (1) the content of the <el>ttp:feature</el>
+element, (2) the <att>extends</att> attribute, or (3) the <att>restricts</att> attribute
+is a relative URI, then, when combined with the
 feature namespace value expressed by the
 <att>xml:base</att> attribute of the
 nearest ancestor <el>ttp:features</el> element, it must express an
@@ -2674,7 +2691,8 @@ the specific designation that appears in this URI, i.e., the portion of the feat
 that starts with the fragment identifier separator '#', must
 be defined by this specification or some published version thereof (that
 has achieved REC status).</p>
-<p>If the URI expressed by the content of the <el>ttp:feature</el> element
+<p>If the URI expressed by the content of the <el>ttp:feature</el> element,
+by the <att>extends</att> attribute, or by the <att>restricts</att> attribute
 is a relative URI, then an <att>xml:base</att> attribute should be
 specified on the nearest ancestor <el>ttp:features</el> element.</p>
 <p>The <att>value</att> attribute specifies constraints on support for or use of
@@ -2687,11 +2705,29 @@ if the value of the <att>value</att> attribute
 is <code>optional</code>, then a processor may but need
 not implement or otherwise support the feature in order to process the document;
 </p></item>
-<item><p>
-if the value is <code>required</code>, then a processor
-must implement or otherwise support the feature in order to process
-the document;
-</p></item>
+<item>
+<p>if the value is <code>required</code>, then perform the following steps:</p>
+<olist>
+<item><p>if the feature is implemented or otherwise supported by a processor, then continue processing
+the document;</p></item>
+<item><p>otherwise, if
+(1) the <att>extends</att> attribute is specified on the root <el>tt</el> element,
+(2) the computed value of the <att>extends</att> attribute designates a feature that is implemented or otherwise supported by
+a processor, and
+(3) the computed value of the <att>ttp:permitFeatureNarrowing</att> parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+then continue processing the document;</p>
+</item>
+<item><p>otherwise, if
+(1) the <att>restricts</att> attribute is specified on the root <el>tt</el> element,
+(2) the computed value of the <att>restricts</att> attribute designates a feature that is implemented or otherwise supported by
+a processor, and
+(3) the computed value of the <att>ttp:permitFeatureWidening</att> parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+then continue processing the document;</p>
+</item>
+<item><p>otherwise, abort processing the document unless overridden by the end-user or some implementation specific parameter
+traceable to an end-user or to a user or system configuration setting.</p></item>
+</olist>
+</item>
 <item><p>
 if the value attribute is not specified, then the feature specification
 must be interpreted as if the value <code>required</code> were specified;
@@ -2720,7 +2756,7 @@ if the value attribute is not specified, then the feature specification
 must be interpreted as if the value <code>optional</code> were specified;
 </p></item>
 </ulist>
-<p>The value <code>use</code> of the <att>value</att> attribute is <phrase role="deprecated">deprecated</phrase>. If it
+<p>The value <phrase role="obsoleted"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="obsoleted">obsoleted</phrase>. If it
 appears in a profile specification, then it must be interpreted as if <code>required</code>
 had been specified.</p>
 <p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
@@ -2812,10 +2848,6 @@ by child <el>ttp:extension</el> elements.</p>
 <head>ttp:extension</head>
 <p>The <el>ttp:extension</el> element is used to specify
 infomation about support and usage requirements for a particular extension.</p>
-<p>The children of the <el>ttp:extension</el> element must express a non-empty
-sequence of <loc href="#terms-character-information-item">character information items</loc> that adheres to the
-<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
-&sect;3.2.17.</p>
 <table id="elt-syntax-parameter-extension" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: ttp:extension</caption>
 <tbody>
@@ -2823,7 +2855,9 @@ sequence of <loc href="#terms-character-information-item">character information 
 <td>
 <eg xml:space="preserve">
 &lt;ttp:extension
-  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
+  extends = string
+  restricts = string
+  value = (optional|required|<phrase role="obsoleted">use</phrase>|prohibited) : <emph>see prose below</emph>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -2833,22 +2867,105 @@ sequence of <loc href="#terms-character-information-item">character information 
 </tr>
 </tbody>
 </table>
-<p>If the URI expressed by the content of the <el>ttp:extension</el>
-element is a relative URI, then, when combined with the
+<p>The children of the <el>ttp:extension</el> element must express a non-empty
+sequence of <loc href="#terms-character-information-item">character information items</loc> the concatenation of which adheres to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17.</p>
+<p>If specified, the <att>extends</att> attribute and/or the <att>restricts</att>
+attribute must (1) adhere to the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>,
+&sect;3.2.17, and
+(2) express a feature designation or extension designation as defined by
+<specref ref="feature-designations"/> or <specref ref="extension-designations"/>, respectively.</p>
+<p>The <att>extends</att> attribute may be used to indicate that the extension being defined
+is, from either (or both) a syntactic or (and) semantic perspective, a proper superset of the
+feature or extension referenced by the <att>extends</att> attribute.
+The <att>restricts</att> attribute may be used to indicate that the extension being defined
+is, from either (or both) a syntacitc or (and) semantic perspective, a proper subset of the
+feature or extension referenced by the <att>restricts</att> attribute.</p>
+<p>If the URI expressed by (1) the content of the <el>ttp:extension</el>
+element, (2) the <att>extends</att> attribute, or (3) the <att>restricts</att> attribute
+is a relative URI, then, when combined with the
 extension namespace value expressed by the
 <att>xml:base</att> attribute of the
 nearest ancestor <el>ttp:extensions</el> element, it must express an
 absolute URI.  In either case (original absolute URI or resulting
 absolutized URI), the URI expressed by the <el>ttp:extension</el>
-element must further adhere to the syntax of an extension designation
-as defined by <specref ref="extension-designations"/>.</p>
-<p>If the URI expressed by the content of the
-<el>ttp:feature</el> element is a relative URI, then an
-<att>xml:base</att> attribute should be specified on the nearest
-ancestor <el>ttp:extensions</el> element.</p>
-<p>The <att>value</att> attribute has the same syntactic usage and semantics as defined
-above in <specref ref="parameter-vocabulary-feature"/>, except that a reference there to a <emph>feature</emph>
-is to be understood in the present context as a reference to an <emph>extension</emph>.</p>
+element must further adhere to the syntax of an extension designation as
+defined by <specref ref="extension-designations"/>,
+while the URI expressed by the <att>extends</att> attribute and/or the
+<att>restricts</att> attribute must ahdere to the syntax of a feature designation
+or an extension designation as defined by <specref ref="feature-designations"/> or
+<specref ref="extension-designations"/>, respectively.</p>
+<p>If the URI expressed by the content of the <el>ttp:extension</el> element,
+by the <att>extends</att> attribute, or by the <att>restricts</att> attribute
+is a relative URI, then an <att>xml:base</att> attribute should be
+specified on the nearest ancestor <el>ttp:extensions</el> element.</p>
+<p>The <att>value</att> attribute specifies constraints on support for or use of
+the designated extension according to the profile type.</p>
+<p>If the profile is a <loc href="#terms-processor-profile">processor profile</loc>
+then the following semantics apply:</p>
+<ulist>
+<item><p>
+if the value of the <att>value</att> attribute
+is <code>optional</code>, then a processor may but need
+not implement or otherwise support the extension in order to process the document;
+</p></item>
+<item>
+<p>if the value is <code>required</code>, then perform the following steps:</p>
+<olist>
+<item><p>if the extension is implemented or otherwise supported by a processor, then continue processing
+the document;</p></item>
+<item><p>otherwise, if
+(1) the <att>extends</att> attribute is specified on the root <el>tt</el> element,
+(2) the computed value of the <att>extends</att> attribute designates an extension that is implemented or otherwise supported by
+a processor, and
+(3) the computed value of the <att>ttp:permitFeatureNarrowing</att> parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+then continue processing the document;</p>
+</item>
+<item><p>otherwise, if
+(1) the <att>restricts</att> attribute is specified on the root <el>tt</el> element,
+(2) the computed value of the <att>restricts</att> attribute designates an extension that is implemented or otherwise supported by
+a processor, and
+(3) the computed value of the <att>ttp:permitFeatureWidening</att> parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+then continue processing the document;</p>
+</item>
+<item><p>otherwise, abort processing the document unless overridden by the end-user or some implementation specific parameter
+traceable to an end-user or to a user or system configuration setting.</p></item>
+</olist>
+</item>
+<item><p>
+if the value attribute is not specified, then the extension specification
+must be interpreted as if the value <code>required</code> were specified;
+</p></item>
+</ulist>
+<p>If the profile is a <loc href="#terms-content-profile">content profile</loc>
+then the following semantics apply:</p>
+<ulist>
+<item><p>
+if the value of the <att>value</att> attribute
+is <code>optional</code>, then the extension may but need not appear in a document that
+claims conformance with that profile;
+</p></item>
+<item><p>
+if the value of the <att>value</att> attribute
+is <code>required</code>, then the extension must appear in a document that
+claims conformance with that profile;
+</p></item>
+<item><p>
+if the value of the <att>value</att> attribute
+is <code>prohibited</code>, then the extension must not appear in a document that
+claims conformance with that profile;
+</p></item>
+<item><p>
+if the value attribute is not specified, then the extension specification
+must be interpreted as if the value <code>optional</code> were specified;
+</p></item>
+</ulist>
+<p>The value <phrase role="obsoleted"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="obsoleted">obsoleted</phrase>. If it
+appears in a profile specification, then it must be interpreted as if <code>required</code>
+had been specified.</p>
+
 <p>If some well known extension is not specified by
 a <el>ttp:extension</el> element in a content profile, then it must be interpreted as if the extension were specified
 with the <att>value</att> attribute equal to <code>optional</code>. However, if not specified in a processor profile, no claim
@@ -2908,6 +3025,8 @@ must also support and enable an extension defined by a third party.</p>
 <item><p><specref ref="parameter-attribute-inferProcessorProfileMethod"/></p></item>
 <item><p><specref ref="parameter-attribute-inferProcessorProfileSource"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
+<item><p><specref ref="parameter-attribute-permitFeatureNarrowing"/></p></item>
+<item><p><specref ref="parameter-attribute-permitFeatureWidening"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-profile"/></p></item>
 <item><p><specref ref="parameter-attribute-processorProfiles"/></p></item>
@@ -3532,6 +3651,64 @@ example, two consecutive frames labeled as <code>10:00:00:00</code>
 and <code>10:00:01:00</code>.
 </p>
 </note>
+</div3>
+<div3 id="parameter-attribute-permitFeatureNarrowing">
+<head>ttp:permitFeatureNarrowing</head>
+<p>The <att>ttp:permitFeatureNarrowing</att> attribute is used to specify whether
+requirements related to a feature or extension may be satisfied by a (syntactically or semantically) narrower interpretation
+of the feature or extension.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-permitFeatureNarrowing-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:permitFeatureNarrowing</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:permitFeatureNarrowing
+  : xsd:boolean                             // see <bibref ref="xsd-2"/>, &sect;3.2.2
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If this parameter's value is <code>true</code>, then, a requirement for support of a feature or extension may be satisfied
+if the definition of the feature or extension specifies an <att>extends</att> attribute, and the feature or extension referenced
+by that attribute is supported by a processor.</p>
+<p>If this parameter's value is <code>false</code>, then, a requirement for support of a feature or extension can not be satisfied
+by a more narrowly defined feature or extension specified by an <att>extends</att> attribute.</p>
+<p>If not specified, the value of this parameter must be considered
+to be <code>false</code>.</p>
+<p>A <att>ttp:permitFeatureNarrowing</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-permitFeatureWidening">
+<head>ttp:permitFeatureWidening</head>
+<p>The <att>ttp:permitFeatureWidening</att> attribute is used to specify whether
+requirements related to a feature or extension may be satisfied by a (syntactically or semantically) wider interpretation
+of the feature or extension.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-permitFeatureWidening-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:permitFeatureWidening</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:permitFeatureWidening
+  : xsd:boolean                             // see <bibref ref="xsd-2"/>, &sect;3.2.2
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If this parameter's value is <code>true</code>, then, a requirement for support of a feature or extension may be satisfied
+if the definition of the feature or extension specifies an <att>restricts</att> attribute, and the feature or extension referenced
+by that attribute is supported by a processor.</p>
+<p>If this parameter's value is <code>false</code>, then, a requirement for support of a feature or extension can not be satisfied
+by a more widely defined feature or extension specified by an <att>restricts</att> attribute.</p>
+<p>If not specified, the value of this parameter must be considered
+to be <code>false</code>.</p>
+<p>A <att>ttp:permitFeatureWidening</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-pixelAspectRatio">
 <head>ttp:pixelAspectRatio</head>

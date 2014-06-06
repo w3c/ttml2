@@ -26,7 +26,8 @@ var respecConfig = {
                   "MHP" : "ETSI TS 101 812 V1.3.1, Digital Video Broadcasting (DVB); Multimedia Home",
                   "ST2052-1": "SMPTE ST 2052-1, Timed Text Format (SMPTE-TT)",
                                   "SDPUS": "World Wide Web Consortium (W3C). <a href='http://www.w3.org/TR/ttml10-sdp-us/'>TTML Simple Delivery Profile for Closed Captions (US)</a> (W3C Working Group Note, 05 February 2013)",
-                                  "CLDR": "Unicode Consortium. <a href='http://cldr.unicode.org'>The Common Locale Data Repository Project</a>"
+                                  "CLDR": "Unicode Consortium. <a href='http://cldr.unicode.org'>The Common Locale Data Repository Project</a>",
+                                                                                                                                        
               }
         };
   </script>
@@ -85,6 +86,10 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       <h3>General</h3>
 
       <p>A subtitle document SHALL NOT conform to the Text and Image Profiles simultaneously.</p>
+
+      <p class='NOTE'>Some applications require the same subtitle/caption content to be available in both text and image form
+      simultaneously (see [[WCAG20]] for instance). For these applications, two distinct subtitle documents, one conforming to the
+      Text Profile and the other conforming to the Image Profile, can be offered.</p>
     </section>
 
     <section>
@@ -304,7 +309,9 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
         <h4>ittp:progressivelyDecodable</h4>
 
         <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the
-        document is received in its entirety. It shall conform to the following:</p>
+        document is received in its entirety.</p>
+
+        <p>A progressively decodable subtitle document shall conform to the following:</p>
 
         <ol>
           <li>elements appear in the document in increasing order according to their resolved begin time;</li>
@@ -349,9 +356,17 @@ imsc:progressivelyDecodable
       <section id='tts-forcedDisplay'>
         <h4>itts:forcedDisplay</h4>
 
-        <p><code>itts:forcedDisplay</code> signals that a block of subtitle content is identified as <em>Forced</em> subtitle content.
-        <em>Forced</em> subtitle content is subtitle content that represents audio (e.g. foreign language) or text (e.g. a sign)
-        that is not translated in the audio/video presentation.</p>
+        <p><code>itts:forcedDisplay</code> identifies <em>Forced</em> subtitle content. <em>Forced</em> subtitle content is
+        subtitle content that represents audio (e.g. foreign language) or text (e.g. a sign) that is not translated in the
+        audio/video presentation, e.g. Na&#39;vi language in the movie Avatar. As such <em>Forced</em> subtitle content is useful
+        whether the user has explicitly requested subtitles to be displayed.</p>
+
+        <p>When presenting a subtitle document, a presentation processor SHOULD display content for which the computed value of
+        <code>itts:forcedDisplay</code> is <code>true</code>, regardless of whether the user has explicitly requested display of
+        subtitle content.</p>
+
+        <p class='note'>The algorithm for selecting subtitle and caption tracks based on user preference and content metadata is
+        not specified here.</p>
 
         <table class="simple">
           <colgroup>
@@ -399,9 +414,9 @@ imsc:progressivelyDecodable
         </table>
 
         <p class='note'>Although <code>itts:forcedDisplay</code>, like all the TTML style attributes, has no defined semantics on a
-        <code>br</code> content element, <code>itts:forcedDisplay</code> will apply to a <code>br</code> content element if it is either defined
-        on an ancestor content element of the <code>br</code> content element or it is applied to a region element corresponding to
-        a region that the <code>br</code> content element is being flowed into.</p>
+        <code>br</code> content element, <code>itts:forcedDisplay</code> will apply to a <code>br</code> content element if it is
+        either defined on an ancestor content element of the <code>br</code> content element or it is applied to a region element
+        corresponding to a region that the <code>br</code> content element is being flowed into.</p>
       </section>
     </section>
 

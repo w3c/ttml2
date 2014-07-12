@@ -86,10 +86,15 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       <h3>General</h3>
 
       <p>A subtitle document SHALL NOT conform to the Text and Image Profiles simultaneously.</p>
+			
+			<p>In applications that require subtitle/caption content in image form to be simultaneously available in text form, two distinct subtitle documents, one conforming to the Text Profile and the other conforming to the Image Profile, SHOULD be offered. In addition, the Text Profile subtitle document SHOULD be associated with the Image Profile subtitle document such that, when image content is encountered, assistive technologies have access to its corresponding text form.</p>
+			
+						
+			<p class='note'>The <code>ittm:altText</code> element specified <a href='#ttm-altText'></a> also allows text equivalent string to be associated with an image, e.g. to support indexation of the content and also facilitate quality checking of the document during authoring.</p>
+			
+			
+			<p>Annex <a href='#wcag-applications'></a> specifically discusses this specification in the context of the [[WCAG20]] guidelines.</a>
 
-      <p class='NOTE'>Some applications require the same subtitle/caption content to be available in both text and image form
-      simultaneously (see [[WCAG20]] for instance). For these applications, two distinct subtitle documents, one conforming to the
-      Text Profile and the other conforming to the Image Profile, can be offered.</p>
     </section>
 
     <section>
@@ -135,6 +140,16 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
         </thead>
 
         <tbody>
+          <tr>
+            <td>XML</td>
+
+            <td>xml</td>
+
+            <td>http://www.w3.org/XML/1998/namespace</td>
+
+            <td>[[!xml-names]]</td>
+          </tr>
+
           <tr>
             <td>TT Parameter</td>
 
@@ -191,6 +206,16 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
             <td>ittp</td>
 
             <td>http://www.w3.org/ns/ttml/profile/imsc1#parameter</td>
+
+            <td><em>This specification</em></td>
+          </tr>
+					
+					<tr>
+            <td>IMSC 1.0 Metadata</td>
+
+            <td>ittm</td>
+
+            <td>http://www.w3.org/ns/ttml/profile/imsc1#metadata</td>
 
             <td><em>This specification</em></td>
           </tr>
@@ -420,7 +445,41 @@ imsc:progressivelyDecodable
 				
 				<p class='note'>Future versions of [[!TTML1]] might introduce more generic mechanisms for conditional display of content elements.</p>
       </section>
-    </section>
+    
+		  <section id='ttm-altText'>
+        <h4>ittm:altText</h4>
+
+        <p><code>ittm:altText</code> allows an author to provide a text string equivalent for an element, typically an image. This text equivalent MAY be used to support indexation of the content and also facilitate quality checking of the document during authoring.</p>
+				
+			  <p>The <code>ittm:altText</code> element SHALL conform to the following syntax:</p>
+
+        <table class="syntax">
+          <tbody>
+            <tr>
+              <td>
+                <div class="exampleInner">
+                  <pre>
+&lt;ittm:altText
+  xml:id = ID
+  xml:lang = string
+  xml:space = (default|preserve)
+  {any attribute not in the IMSC 1.0 Metadata namespace}&gt;
+  Content: #PCDATA
+&lt;/ittm:altText&gt;
+</pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+				
+				<p><a href="#image-profile-constraints"></a> specifies the use of the <code>ittm:altText</code> element with images.</p>
+
+        <p class='note'>In contrast to the common use of <code>alt</code> attributes in [[HTML5]], the <code>ittm:altText</code> attribute content is not intended to be displayed in place of the element if the element is not loaded. The <code>ittm:altText</code> attribute content can however be read and used by assistive technologies.</code>
+        .</p>
+      </section>
+			
+		</section>
 
     <section>
       <h3>Region</h3>
@@ -1302,9 +1361,19 @@ imsc:progressivelyDecodable
     <section>
       <h3><code>div</code> element</h3>
 
-      <p>If a <code>smpte:backgroundImage</code> attribute is applied to a <code>div</code> element, the width and height of the
-      region extent associated with the <code>div</code> element SHALL be specified and SHALL be equal to the width and height of
-      the image source referenced by the <code>smpte:backgroundImage</code>.</p>
+      <p>If a <code>smpte:backgroundImage</code> attribute is applied to a <code>div</code> element:</p>
+			
+			<ul>
+			<li>
+			the width and height of the region extent associated with the <code>div</code> element SHALL be specified and SHALL be equal to the width and height of the image source referenced by the <code>smpte:backgroundImage</code>;
+			</li>
+			<li>
+			the <code>metadata</code> element of the <code>div</code> element SHOULD contain an instance of <code>ittm:altText</code> that is a verbatim text  equivalent of the image referenced by the <code>smpte:backgroundImage</code> attribute; and
+			</li>
+			<li>
+			The <code>smpte:backgroundImage</code> attribute SHALL reference a complete image that conforms to the PNG image coding as specified in Sections 7.1.1.3 and 15.1 of [[!MHP]]. If a pHYs chunk is present, it SHALL indicate square pixels. Note: If no pixel aspect ratio is carried, the default of square pixels is assumed.<br>
+			</li>
+			</ul>
     </section>
 
     <section>
@@ -1458,12 +1527,10 @@ imsc:progressivelyDecodable
           <tr>
             <td><code>#image</code></td>
 
-            <td><code>smpte:backgroundImage</code> MAY be used. The <code>smpte:backgroundImage</code> attribute SHALL reference a
-            complete image that conforms to the PNG image coding as specified in Sections 7.1.1.3 and 15.1 of [[!MHP]]. If a pHYs
-            chunk is present, it SHALL indicate square pixels. Note: If no pixel aspect ratio is carried, the default of square
-            pixels is assumed.<br>
+            <td><code>smpte:backgroundImage</code> MAY be used.<br>
             <code>smpte:backgroundImageHorizontal</code> and <code>smpte:backgroundImageVertical</code> SHALL NOT be used.<br>
             <code>smpte:image</code> SHALL NOT be used.</td>
+						
           </tr>
         </tbody>
       </table>
@@ -2299,6 +2366,23 @@ imsc:progressivelyDecodable
       </tbody>
     </table>
   </section>
+	
+	<section class='appendix' id='wcag-applications'>
+    <h2>WCAG Considerations</h2>
+		
+		<p>This Section SHALL apply to applications following the guidelines at [[!WCAG20]].</p>
+		
+	<p>
+Guideline 1.1 of [[!WCAG20]] recommends that an implementation provide text alternatives for all non-text content. In the context of this specification, this text alternative is intended primarily to support users of the subtitles who cannot see images. Since the images of an Image Profile subtitle document usually represent subtitle or caption text, the guidelines for authoring text equivalent strings given at <span class='sec-no'>Images of text</span> of [[HTML5]] are appropriate.</p>
+
+	<p>
+Thus, for each subtitle in an Image Profile subtitle document, a text equivalent content in a Text Profile subtitle document SHOULD be written so that it conveys all essential content and fulfills the same function as the corresponding subtitle image. In the context of subtitling and captioning, this content will be (as a minimum) the verbatim equivalent of the image without précis or summarization. However, the author MAY include extra information to the text equivalent string in cases where styling is applied to the text image with a deliberate connotation, as a <em>functional</em> replacement for the applied style.</p>
+
+<p>For instance, in subtitling and captioning, italics can be used to indicate an off screen speaker context (for example a voice from a radio). An author can choose to include this functional information in the text equivalent; for example, by including the word "Radio: " before the image equivalent text. It should also be noted that images in an Image Profile subtitle document that are intended for use as <em>captions</em>, i.e. intended for a hard of hearing audience, might already include this functional information in the rendered text.</p>
+
+<p>Guideline 1.1 of [[!WCAG20]] also recommends that accessible text alternatives must be "programmatically determinable." This means that the text must be able to be read and used by the assistive technologies (and the accessibility features in browsers) that people with disabilities use. It also means that the user must be able to use their assistive technology to find the alternative text (that they can use) when they land on the non-text content (that they can't use).</p>
+
+	</section>
 
   <section class='appendix' id='features-and-extensions'>
     <h2>Extensions</h2>
@@ -2339,6 +2423,17 @@ imsc:progressivelyDecodable
 
       <p>A TTML presentation processor supports the <code>#forcedDisplay</code> feature if it implements presentation semantic
       support for values of the <a href="#tts-forcedDisplay"><code>itts:forcedDisplay</code></a> attribute.</p>
+    </section>
+  </section>
+	
+	<section class='appendix'>
+      <h3>#altText</h3>
+
+      <p>A TTML transformation processor supports the <code>#altText</code> feature if it recognizes and is capable of
+      transforming values of the <a href="#ttm-altText"><code>ittm:altText</code></a> element.</p>
+
+      <p>A TTML presentation processor supports the <code>#forcedDisplay</code> feature if it implements presentation semantic
+      support for values of the <a href="#ttm-altText"><code>ittm:altText</code></a> element.</p>
     </section>
   </section>
 </body>

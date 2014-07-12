@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 86d68fe4a893 2014/05/26 01:06:55 glenn $ -->
+<!-- $Id: ttml2.xml,v a3565bc13dd1 2014/07/10 15:05:04 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/05/26 01:06:55 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/07/10 15:05:04 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/05/26 01:06:55 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/07/10 15:05:04 $</p></revisiondesc>
 </header>
 
 <body>
@@ -608,6 +608,15 @@ Timed Text Markup Language content.</p>
 performing presentation processing.</p>
 </def>
 </gitem>
+<gitem id="terms-default-region">
+<label>[default region]</label>
+<def>
+<p>A default <loc href="#terms-out-of-line-region">out-of-line region</loc> that is implied in the absence of
+an explicitly specified out-of-line <loc href="#layout-vocabulary-region"><el>region</el></loc> element, i.e.,
+when no <loc href="#layout-vocabulary-region"><el>region</el></loc> element is specified as a child of
+a <loc href="#layout-vocabulary-layout"><el>layout</el></loc> element.</p>
+</def>
+</gitem>
 <gitem id="terms-designated-profile">
 <label>[designated profile]</label>
 <def>
@@ -722,9 +731,10 @@ Section 4.1.</p>
 <gitem id="terms-implied-inline-region">
 <label>[implied inline region]</label>
 <def>
-<p>An anonymous (unidentified) <loc href="#terms-inline-region">inline region</loc> that is implied in the context of a block level content element
+<p>An anonymous (unidentified) <loc href="#terms-inline-region">inline region</loc> that is implied in the context of a block level
+<loc href="#terms-content-element">content element</loc>
 due the presence of a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> or <loc href="#style-attribute-origin"><att>tts:origin</att></loc>
-style attribute on the content element.</p>
+style attribute on the <loc href="#terms-content-element">content element</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-inline-animation">
@@ -741,8 +751,11 @@ An inline animation does not specify an <att>xlink:href</att> attribute.</p>
 <gitem id="terms-inline-region">
 <label>[inline region]</label>
 <def>
-<p>A <loc href="#layout-vocabulary-region"><el>region</el></loc> element that is defined inline as an immediate child of
-a <loc href="#terms-content-element">content element</loc> to be selected into (targetted to) the region.
+<p>A <loc href="#terms-region">region</loc> that is defined in an inline manner with respect to some
+<loc href="#terms-content-element">content element</loc>  to be selected into (targetted to) the region.
+An inline region is specified either explicitly by a <loc href="#layout-vocabulary-region"><el>region</el></loc> element child of
+a <loc href="#terms-content-element">content element</loc> or implicitly by specifying a <loc href="#style-attribute-extent">tts:extent</loc>
+or <loc href="#style-attribute-origin">tts:origin</loc> style attribute on a <loc href="#terms-content-element">content element</loc>.
 There is a one-to-one relation between an inline <loc href="#layout-vocabulary-region"><el>region</el></loc> element and its
 parent <loc href="#terms-content-element">content element</loc>. An inline region is assigned its parent element's time interval as its active
 time interval. No <att>region</att> attribute makes reference to an inline region.</p>
@@ -786,13 +799,16 @@ an out-of-line animation element and a <loc href="#terms-content-element">conten
 <gitem id="terms-out-of-line-region">
 <label>[out-of-line region]</label>
 <def>
-<p>A <loc href="#layout-vocabulary-region"><el>region</el></loc> element that is defined out-of-line from
-the <loc href="#terms-content-element">content element(s)</loc> to be selected into (targetted to) the region. An out-of-line region appears
-as a child of a <loc href="#layout-vocabulary-layout"><el>layout</el></loc> element in the header
+<p>A <loc href="#terms-region">region</loc> that is defined in an out-of-line manner from
+the <loc href="#terms-content-element">content element(s)</loc> to be selected into (targetted to) the region. An out-of-line region is
+specified using a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+child of a <loc href="#layout-vocabulary-layout"><el>layout</el></loc> element in the header
 (<loc href="#document-structure-vocabulary-head"><el>head</el></loc> element)
 of a <loc href="#terms-document-instance">document instance</loc>, and specifies an <att>xml:id</att> attribute
 in order to allow <loc href="#terms-content-element">content elements</loc> to be associated with the region by means of a
-<att>region</att> attribute. There is a one-to-many relationship between an out-of-line region
+<att>region</att> attribute. A <loc href="#terms-default-region">default out-of-line region</loc> is implied if no
+<loc href="#terms-out-of-line-region">out-of-line region</loc> is specified explicitly.
+There is a one-to-many relationship between an out-of-line region
 and the <loc href="#terms-content-element">content element(s)</loc> to be selected into (targetted to) the region.</p>
 </def>
 </gitem>
@@ -1053,8 +1069,13 @@ defined in <bibref ref="xsd-2"/>, a hyperlink to its definition
 therein is given.</p>
 <p>An information item depicted with a <phrase role="deprecated">light yellow orange</phrase> background color is deprecated (e.g.,
 the <phrase role="deprecated">tiny</phrase> value of the <code>size</code> attribute shown above).
+An information item that is <phrase role="deprecated">deprecated</phrase> may but should not appear in a TTML document instance,
+and a validating processor should report a warning if it does appear.
 An information item depicted with a <phrase role="obsoleted">light magenta red</phrase> background color is obsoleted (e.g.,
-the <phrase role="obsoleted">micro</phrase> value of the <code>size</code> attribute shown above). These designations of the item
+the <phrase role="obsoleted">micro</phrase> value of the <code>size</code> attribute shown above).
+An information item that is <phrase role="obsoleted">obsoleted</phrase> must not appear in a TTML document instance,
+and a validating processor should report an error if it does appear.
+These designations of an item
 are also explicitly called out in specification text.</p>
 <p>The allowed content of the information item is shown as a grammar
 fragment, using the Kleene operators <code>?</code>, <code>*</code>
@@ -1151,7 +1172,7 @@ should satisfy the web content accessibility guidelines specified by
 <ednote>
 <name>Validation Processing</name>
 <date>2014-05-21</date>
-<edtext>Add requirement to invoke validation processing procedure.</edtext>
+<edtext>Add requirement to invoke validation processing procedure. Add and use definition of 'validating processor'.</edtext>
 </ednote>
 
 <p>A TTML <loc href="#terms-content-processor">content processor</loc> conforms to this specification if the following
@@ -1959,13 +1980,13 @@ procedure;</p>
 <p>if <emph>ECP</emph> is not <code>null</code>, then perform the following steps:</p>
 <olist>
 <item>
-<p>if the computed value of the <att>ttp:inferProcessorProfileSource</att> attribute is <code>combine</code>, then
+<p>if the computed value of the <att>ttp:inferProcessorProfileSource</att> parameter is <code>combine</code>, then
 the <loc href="#terms-inferred-processor-profile">inferred processor profile</loc> is the result of applying the
 <loc href="#semantics-procedure-infer-processor-profile"><phrase role="strong">infer processor profile</phrase></loc> function
 to the combined profile specification set of <emph>ECP</emph>;</p>
 </item>
 <item>
-<p>otherwise, if the computed value of the <att>ttp:inferProcessorProfileSource</att> attribute is <code>first</code>, then
+<p>otherwise, if the computed value of the <att>ttp:inferProcessorProfileSource</att> parameter is <code>first</code>, then
 the <loc href="#terms-inferred-processor-profile">inferred processor profile</loc> is the first inferred processor profile, <emph>IPP</emph>, produced by applying the
 <loc href="#semantics-procedure-infer-processor-profile"><phrase role="strong">infer processor profile</phrase></loc> function
 to the combined profile specification set of each constituent of <emph>ECP</emph> such that
@@ -1993,7 +2014,7 @@ procedure;</p>
 <olist>
 <item>
 <p>map content profile specification <emph>S</emph> to processor profile specification <emph>S'&nbsp;</emph> according to the computed
-value of the <att>ttp:inferPresentationProfileMethod</att> attribute and <specref ref="infer-processor-profile-method-table"/>;</p>
+value of the <att>ttp:inferPresentationProfileMethod</att> parameter and <specref ref="infer-processor-profile-method-table"/>;</p>
 </item>
 <item>
 <p>add <emph>S'&nbsp;</emph> to the combined profile specification set of <emph>IPP</emph>;</p>
@@ -2024,7 +2045,7 @@ from which a <loc href="#terms-processor-profile">processor profile</loc> can be
 <olist>
 <item>
 <p>if the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> is not specified on the root <el>tt</el> element or
-if its computed value is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+if its computed value of this parameter is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
 the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning the DFXP Presentation profile
 (<code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code>);</p>
 </item>
@@ -2042,7 +2063,7 @@ the <loc href="#semantics-profile-state-profile">profile</loc> constructed by in
 <olist>
 <item>
 <p>if the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> is not specified on the root <el>tt</el> element or
-if its computed value is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+if its computed value of this parameter is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
 the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning the DFXP Transformation profile
 (<code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code>);</p>
 </item>
@@ -2724,18 +2745,18 @@ not implement or otherwise support the feature in order to process the document;
 the document;</p></item>
 <item><p>otherwise, if
 (1) the <att>extends</att> attribute is specified on the root <el>tt</el> element,
-(2) the computed value of the <att>extends</att> attribute designates a feature that is implemented or otherwise supported by
+(2) the value of the <att>extends</att> attribute designates a feature that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#parameter-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
-parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+parameter property of the root <el>tt</el> element is not <code>false</code>,
 then continue processing the document;</p>
 </item>
 <item><p>otherwise, if
 (1) the <att>restricts</att> attribute is specified on the root <el>tt</el> element,
-(2) the computed value of the <att>restricts</att> attribute designates a feature that is implemented or otherwise supported by
+(2) the value of the <att>restricts</att> attribute designates a feature that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#parameter-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
-parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+parameter property of the root <el>tt</el> element is not <code>false</code>,
 then continue processing the document;</p>
 </item>
 <item><p>otherwise, abort processing the document unless overridden by the end-user or some implementation specific parameter
@@ -2932,18 +2953,18 @@ not implement or otherwise support the extension in order to process the documen
 the document;</p></item>
 <item><p>otherwise, if
 (1) the <att>extends</att> attribute is specified on the root <el>tt</el> element,
-(2) the computed value of the <att>extends</att> attribute designates an extension that is implemented or otherwise supported by
+(2) the value of the <att>extends</att> attribute designates an extension that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#parameter-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
-parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+parameter property of the root <el>tt</el> element is not <code>false</code>,
 then continue processing the document;</p>
 </item>
 <item><p>otherwise, if
 (1) the <att>restricts</att> attribute is specified on the root <el>tt</el> element,
-(2) the computed value of the <att>restricts</att> attribute designates an extension that is implemented or otherwise supported by
+(2) the value of the <att>restricts</att> attribute designates an extension that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#parameter-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
-parameter attribute of the root <el>tt</el> element is not <code>false</code>,
+parameter property of the root <el>tt</el> element is not <code>false</code>,
 then continue processing the document;</p>
 </item>
 <item><p>otherwise, abort processing the document unless overridden by the end-user or some implementation specific parameter
@@ -4111,7 +4132,7 @@ other types of processing, e.g., presentation or transformation processing.</p>
 must perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing.</p>
 <p>If validation processing is performed on a TTML <loc href="#terms-document-instance">document instance</loc> and validation fails, then the computed value of
-the <att>ttp:validationAction</att> attribute is used to determine what action to take before performing further processing.</p>
+the <att>ttp:validationAction</att> parameter property is used to determine what action to take before performing further processing.</p>
 <p>If not specified, the value of this parameter must be considered
 to be <code>optional</code>.</p>
 <p>A <att>ttp:validation</att> attribute is considered to be significant only
@@ -4145,8 +4166,9 @@ must abort processing of a TTML <loc href="#terms-document-instance">document in
 should warn the end-user when validation processing fails, and, give the end-user the option to continue or abort processing.</p>
 <p>If this parameter's value is <code>ignore</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
 should not abort and should not warn the end-user when validation processing fails.</p>
-<p>If not specified, the value of this parameter must be considered
-to be <code>abort</code>.</p>
+<p>If not specified, the value of this parameter is determined as follows:
+if the computed value of the <loc href="#parameter-attribute-validation"><att>ttp:validation</att></loc> parameter property is <code>optional</code>,
+then the value must be considered to be <code>warn</code>; otherwise, it must be considered to be <code>abort</code>.</p>
 <p>A <att>ttp:validationAction</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
@@ -4422,8 +4444,8 @@ not contain any child areas, then it is not expected to be presented.</p>
 elements in the <code>Metadata.class</code> element group,
 followed by zero or more
 elements in the <code>Animation.class</code> element group,
-followed by zero or more
-elements in the <code>Layout.class</code> element group,
+followed by zero or one
+element in the <code>Layout.class</code> element group,
 followed by
 zero or more
 <el>div</el> or 
@@ -4454,7 +4476,7 @@ element group apply semantically to the <el>div</el> element.</p>
   <emph>Content:</emph> <loc
   href="#element-vocab-group-table">Metadata.class</loc>*, <loc
   href="#element-vocab-group-table">Animation.class</loc>*, <loc
-  href="#element-vocab-group-table">Layout.class</loc>*, <loc
+  href="#element-vocab-group-table">Layout.class</loc>?, <loc
   href="#element-vocab-group-table">Block.class</loc>*
 &lt;/div&gt;
 </eg>
@@ -4490,8 +4512,8 @@ a transition between block level and inline level formatting semantics.</p>
 elements in the <code>Metadata.class</code> element group,
 followed by zero or more
 elements in the <code>Animation.class</code> element group,
-followed by zero or more
-elements in the <code>Layout.class</code> element group,
+followed by zero or one
+element in the <code>Layout.class</code> element group,
 followed by
 zero or more intermixed
 <code>span</code> elements,
@@ -4523,7 +4545,7 @@ element group apply semantically to the <el>p</el> element.</p>
   <emph>Content:</emph> <loc
   href="#element-vocab-group-table">Metadata.class</loc>*, <loc
   href="#element-vocab-group-table">Animation.class</loc>*, <loc
-  href="#element-vocab-group-table">Layout.class</loc>*, <loc
+  href="#element-vocab-group-table">Layout.class</loc>?, <loc
   href="#element-vocab-group-table">Inline.class</loc>*
 &lt;/p&gt;
 </eg>
@@ -5123,10 +5145,10 @@ then the border style must be interpreted as if a style of
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>solid</code>.</p>
 <p>If no border color is specified in the value of the <att>tts:border</att> property,
 then the border color must be interpreted as if a color equal
-to the computed value of the element's <code>tts:color</code> property were specified.</p>
+to the computed value of the element's <code>tts:color</code> style property were specified.</p>
 <p>The <att>tts:border</att> style is illustrated by the following example.</p>
 <table id="style-attribute-border-example-1" role="example">
-<caption>Example Fragment &ndash; Background Color</caption>
+<caption>Example Fragment &ndash; Border</caption>
 <tbody>
 <tr>
 <td>
@@ -5663,6 +5685,10 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <p>In this context, the phrase <emph>closest supported value</emph> means the value for which the Euclidean distance between
 the computed extent and the supported extent is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value most distant from [0,0], i.e., of greatest extent, is used.</p>
+<p>Unlike other style attributes, the rule for resolving <emph>closest supported value</emph> for the <att>tts:extent</att> attribute
+makes use of the nearest larger rather than nearest smaller supported distance. The rationale for this difference in treatment is
+that use of a larger extent ensures that the affected content will be contained in the region area without causing region overflow,
+while use of a smaller extent makes region overflow more likely.</p>
 </note>
 <p>The <att>tts:extent</att> style is illustrated by the following example.</p>
 <table id="style-attribute-extent-example-1" role="example">
@@ -9132,12 +9158,12 @@ results are consistent with the results produced by this model.
 </p>
 <div3 id="semantics-default-region">
 <head>Default Region</head>
-<p>If a <loc href="#terms-document-instance">document instance</loc> does not specify a
-<loc href="#layout-vocabulary-region"><el>region</el></loc> element,
+<p>If a <loc href="#terms-document-instance">document instance</loc> does not specify an
+<loc href="#terms-out-of-line-region">out-of-line region</loc>,
 then a <emph>default region</emph> is implied with the following characteristics:</p>
 <ulist>
 <item>
-<p>the identity of the default region is considered to be anonymous;</p>
+<p>the identity of the default region is considered to be an anonymous <loc href="#terms-out-of-line-region">out-of-line region</loc>;</p>
 </item>
 <item>
 <p>the extent of the default region is the same as the extent of the <loc href="#terms-root-container-region">root container region</loc>;</p>
@@ -9146,10 +9172,9 @@ then a <emph>default region</emph> is implied with the following characteristics
 <p>the temporal interval of the default region is the same as the interval defined by the <loc href="#terms-root-temporal-extent">root temporal extent</loc>;</p>
 </item>
 </ulist>
-<p>Furthermore, if no <loc
-href="#layout-vocabulary-region"><el>region</el></loc> element is
-specified, then the <loc
-href="#layout-attribute-region"><att>region</att></loc> attribute must
+<p>Furthermore, if no
+<loc href="#terms-out-of-line-region">out-of-line region</loc> is specified, then the
+<loc href="#layout-attribute-region"><att>region</att></loc> attribute must
 not be specified on any <loc href="#terms-content-element">content element</loc> in the <loc href="#terms-document-instance">document instance</loc>.</p>
 <p>If a default region is implied for a given <loc href="#terms-document-instance">document instance</loc>, then
 the <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element
@@ -9192,14 +9217,281 @@ the implied <el>region</el> element.</p>
 </div3>
 <div3 id="semantics-inline-regions">
 <head>Inline Regions</head>
-<p>&tbd;</p>
+<p>An <loc href="#terms-inline-region">inline region</loc> is a syntactic mechanism for specifying a
+<loc href="#terms-region">region</loc> in a way that minimizes the syntactic distance between a region
+specification and the content that references that region. Semantically, each
+<loc href="#terms-inline-region">inline region</loc> is equivalent to specifying a unique
+<loc href="#terms-out-of-line-region">out-of-line region</loc> referenced implicitly only by the
+<loc href="#terms-content-element">content element</loc> in whose context the
+<loc href="#terms-inline-region">inline region</loc> is specified (or implied).</p>
+<p>An <loc href="#terms-inline-region">inline region</loc> is declared in one of two ways:
+(1) by specifying a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> or
+<loc href="#style-attribute-origin"><att>tts:origin</att></loc> style attribute on
+a <loc href="#terms-content-element">content element</loc>
+in the <loc href="#element-vocab-group-table">Block.class</loc> element group, or
+(2) by specifying an explicit  <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+child of a <loc href="#terms-content-element">content element</loc>
+in the <loc href="#element-vocab-group-table">Block.class</loc> element group. The
+former is referred to as an <emph>implied inline region specification</emph>,
+the latter as an <emph>explicit inline region specification</emph>; furthermore, the former is considered
+to be a syntactic shorthand for the latter, and is processed by converting it into the latter as
+described below.</p>
+
+<p>Inline regions are processed in accordance with the procedure
+<phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>, which
+entails first generating implied inline regions, and then generating out-of-line regions that correspond with implied
+or explicit inline regions. This latter procedure additionally binds content elements associated with inline regions
+to the corresponding generated out-of-line regions.</p>
+
+<note role="elaboration">
+<p>A <loc href="#terms-content-element">content element</loc> can only be associated with a single
+<loc href="#terms-region">region</loc>. Consequently, if a <loc href="#terms-content-element">content element</loc>
+specifies a <loc href="#layout-attribute-region"><att>region</att></loc> attribute, then any <emph>implied inline region specification</emph>
+or <emph>explicit inline region specification</emph> is ignored. If the <loc href="#terms-content-element">content element</loc> does not specify a
+<loc href="#layout-attribute-region"><att>region</att></loc> attribute, but it includes
+both an <emph>implied inline region specification</emph> and an <emph>explicit inline region specification</emph>,
+then the former is ignored in favor of the latter.</p>
+</note>
+
+<glist>
+<gitem id="procedure-process-inline-regions">
+<label>[process inline regions]</label>
+<def>
+<olist>
+<item>
+<p>perform procedure <phrase role="strong"><loc href="#procedure-generate-inline-regions">[generate inline regions]</loc></phrase>;</p>
+</item>
+<item>
+<p>perform procedure <phrase role="strong"><loc href="procedure-generate-out-of-line-regions">[generate out-of-line regions]</loc></phrase>;</p>
+</item>
+</olist>
+</def>
+</gitem>
+<gitem id="procedure-generate-inline-regions">
+<label>[generate inline regions]</label>
+<def>
+<p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
+in the <loc href="#element-vocab-group-table">Block.class</loc> element group,
+perform the following ordered steps:</p>
+<olist>
+<item>
+<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains
+neither <loc href="#style-attribute-extent"><att>tts:extent</att></loc> nor
+<loc href="#style-attribute-origin"><att>tts:origin</att></loc> style attribute, then exit this procedure;</p>
+</item>
+<item>
+<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
+<loc href="#layout-attribute-region"><att>region</att></loc> attribute, then exit this procedure</p>
+</item>
+<item>
+<p>if the <code>[children]</code> information item property of <emph>B</emph> contains a
+<loc href="#layout-vocabulary-region"><el>region</el></loc> element, then exit this procedure;</p>
+</item>
+<item>
+<p>create an empty <loc href="#layout-vocabulary-region"><el>region</el></loc> element <emph>R</emph>,
+initialized as follows:</p>
+<ulist>
+<item>
+<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
+<loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute,
+then copy that attribute to the <code>[attributes]</code> information item property of <emph>R</emph>;
+otherwise, add a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute with value <code>auto</code>
+to the <code>[attributes]</code> information item property of <emph>R</emph>;</p>
+</item>
+<item>
+<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
+<loc href="#style-attribute-origin"><att>tts:origin</att></loc> attribute,
+then copy that attribute to the <code>[attributes]</code> information item property of <emph>R</emph>;
+otherwise, add a <loc href="#style-attribute-origin"><att>tts:origin</att></loc> attribute with value <code>auto</code>
+to the <code>[attributes]</code> information item property of <emph>R</emph>;</p>
+</item>
+</ulist>
+</item>
+<item>
+<p>insert <emph>R</emph> into the <code>[children]</code> information item property of <emph>B</emph>
+such that <emph>R</emph> immediately precedes the first <loc href="#terms-content-element">content element</loc>
+child of <emph>B</emph>, or, if none is present, then <emph>R</emph> is the last child element of <emph>B</emph>;</p>
+</item>
+<item>
+<p>remove the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> and
+<loc href="#style-attribute-origin"><att>tts:origin</att></loc> style attributes, if present, from the
+<code>[attributes]</code> information item property of <emph>B</emph>;</p>
+</item>
+</olist>
+</def>
+</gitem>
+<gitem id="procedure-generate-out-of-line-regions">
+<label>[generate out-of-line regions]</label>
+<def>
+<p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
+in the <loc href="#element-vocab-group-table">Block.class</loc> element group,
+perform the following ordered steps:</p>
+<olist>
+<item>
+<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
+<loc href="#layout-attribute-region"><att>region</att></loc> attribute, then exit this procedure</p>
+</item>
+<item>
+<p>if the <code>[children]</code> information item property of <emph>B</emph> does not contain
+a <loc href="#layout-vocabulary-region"><el>region</el></loc> element <emph>R</emph>, then exit this procedure;</p>
+</item>
+<item><p>create an empty <loc href="#layout-vocabulary-region"><el>region</el></loc> element <emph>R'&nbsp;</emph>,
+initialized as follows:</p>
+<ulist>
+<item>
+<p>set the <code>[children]</code> information item property of <emph>R'&nbsp;</emph> to a deep copy of
+the <code>[children]</code> information item property of <emph>R</emph>;</p>
+</item>
+<item>
+<p>set the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> to a deep copy of
+the <code>[attributes]</code> information item property of <emph>R</emph>;</p>
+</item>
+<item>
+<p>if the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> does not include
+an <att>xml:id</att> attribute, then add an implied <att>xml:id</att> attribute with a generated value
+<emph>ID</emph> that is unique within the scope of the TTML <loc href="#terms-document-instance">document instance</loc>;
+otherwise, let <emph>ID</emph> be the value of the <att>xml:id</att> attribute of <emph>R'&nbsp;</emph>;</p>
+</item>
+<item>
+<p>if present, remove the following attributes from the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph>:
+<att>begin</att>,
+<att>dur</att>, and
+<att>end</att>;</p>
+</item>
+<item>
+<p>add a <att>begin</att> attribute to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> with
+a value equivalent to the computed begin time of <emph>B</emph> within the root temporal extent;</p>
+</item>
+<item>
+<p>add a <att>dur</att> attribute to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> with
+a value equivalent to the computed simple duration of <emph>B</emph>;</p>
+</item>
+</ulist>
+</item>
+<item>
+<p>if the TTML <loc href="#terms-document-instance">document instance</loc> does not have a
+<loc href="#document-structure-vocabulary-head"><el>head</el></loc> element, then insert an empty
+<loc href="#document-structure-vocabulary-head"><el>head</el></loc> element as the first child of
+the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element;</p>
+</item>
+<item>
+<p>if the <loc href="#document-structure-vocabulary-head"><el>head</el></loc> element does not have
+a <loc href="#layout-vocabulary-layout"><el>layout</el></loc> child element, then insert an empty
+<loc href="#layout-vocabulary-layout"><el>layout</el></loc> element immediately after a
+<loc href="#styling-vocabulary-styling"><el>styling</el></loc> element, if present, and immediately before an
+<loc href="#animation-vocabulary-styling"><el>animation</el></loc> element, if present, or as the last child of
+the <loc href="#document-structure-vocabulary-head"><el>head</el></loc> element if neither are present;</p>
+</item>
+<item>
+<p>append <emph>R'&nbsp;</emph> to the <code>[children]</code> information item property of the
+<loc href="#layout-vocabulary-layout"><el>layout</el></loc> element child of the 
+<loc href="#document-structure-vocabulary-head"><el>head</el></loc> element;</p>
+</item>
+<item>
+<p>add a <loc href="#layout-attribute-region"><att>region</att></loc> attribute with value <emph>ID</emph> to the <code>[attributes]</code> information
+item property of <emph>B</emph>;</p>
+</item>
+<item>
+<p>remove <emph>R</emph> from the <code>[children]</code> information item property of <emph>B</emph>;</p>
+</item>
+</olist>
+</def>
+</gitem>
+</glist>
+
+<p>The use of an <emph>implied inline region specification</emph> and the resulting generated inline region is shown by the following two example documents.</p>
+
+<table id="semantics-inline-region-input-example-1-implied" role="example">
+<caption>Example &ndash; Implied Inline Region Specification</caption>
+<tbody>
+<tr>
+<td>
+<eg>
+&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
+  &lt;head/&gt;
+  &lt;body&gt;
+    &lt;div <phrase role="strong">tts:extent="540px 100px" tts:origin="50px 339px"</phrase>&gt;
+      &lt;p&gt;Some Content&lt;/p&gt;
+    &lt;div/&gt;
+  &lt;body/&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+
 <p></p>
-<ednote>
-<name>Multiple Region Reference Semantics</name>
-<date>2014-03-27</date>
-<edtext>Define semantics related to use combination of inline regions and reference to out-of-line region by same content element.
-See also editorial note <phrase role="strong">Inline Region Association</phrase> below under <phrase role="strong">[associate region]</phrase>.</edtext>
-</ednote>
+<table id="semantics-generated-out-of-line-region-example-1-implied" role="example">
+<caption>Example &ndash; Generated Inline Region</caption>
+<tbody>
+<tr>
+<td>
+<eg>
+&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
+  &lt;head/&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      <phrase role="strong">&lt;region tts:extent="540px 100px" tts:origin="50px 339px"/&gt;</phrase>
+      &lt;p&gt;Some Content&lt;/p&gt;
+    &lt;div/&gt;
+  &lt;body/&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>The use of an <emph>explicit inline region specification</emph> or a generated inline region that derives from
+an <emph>implicit inline region specification</emph>
+and the resulting generated out-of-line region is shown by the following two example documents.</p>
+
+<table id="semantics-inline-region-input-example-2-explicit" role="example">
+<caption>Example &ndash; Explicit or Generated Inline Region Specification</caption>
+<tbody>
+<tr>
+<td>
+<eg>
+&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
+  &lt;head/&gt;
+  &lt;body&gt;
+    &lt;div begin="5s" dur="10s"&gt;
+      <phrase role="strong">&lt;region tts:extent="540px 100px" tts:origin="50px 339px"/&gt;</phrase>
+      &lt;p&gt;Some Content&lt;/p&gt;
+    &lt;div/&gt;
+  &lt;body/&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p></p>
+<table id="semantics-generated-out-of-line-region-example-2-explicit" role="example">
+<caption>Example &ndash; Generated Out-of-line Region</caption>
+<tbody>
+<tr>
+<td>
+<eg>
+&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
+  &lt;head&gt;
+    <phrase role="strong">&lt;layout&gt;
+      &lt;region xml:id="region3451" begin="5s" dur="10s" tts:extent="540px 100px" tts:origin="50px 339px"/&gt;
+    &lt;/layout&gt;</phrase>
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div begin="5s" dur="10s" <phrase role="strong">region="region3451"</phrase>&gt;
+      &lt;p&gt;Some Content&lt;/p&gt;
+    &lt;div/&gt;
+  &lt;body/&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 <div3 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
@@ -9211,12 +9503,15 @@ form, <emph>DOC<sub>source</sub></emph>&thinsp;,
 to an intermediate
 synchronic document form,
 <emph>DOC<sub>inter</sub></emph>&thinsp;, according to the
-<phrase role="strong">[construct intermediate document]</phrase> procedure:</p>
+<phrase role="strong"><loc href="#procedure-construct-intermediate-document">[construct intermediate document]</loc></phrase> procedure:</p>
 <glist>
-<gitem>
+<gitem id="procedure-construct-intermediate-document">
 <label>[construct intermediate document]</label>
 <def>
 <olist>
+<item>
+<p>perform procedure <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>;</p>
+</item>
 <item>
 <p>for each temporally active region <emph>R</emph>, replicate the
 sub-tree
@@ -9227,7 +9522,7 @@ headed by the <el>body</el> element;</p>
 <p>evaluating this sub-tree in a postorder traversal, prune elements if they
 are not a <loc href="#terms-content-element">content element</loc>, if they are temporally inactive, if they are empty,
 or if they aren't associated with region <emph>R</emph> according to the
-<phrase role="strong">[associate region]</phrase> procedure;</p>
+<phrase role="strong"><loc href="procedure-associate-region">[associate region]</loc></phrase> procedure;</p>
 </item>
 <item>
 <p>if the pruned sub-tree is non-empty, then reparent it to the <emph>R</emph>
@@ -9250,7 +9545,7 @@ associated (owning) element node.</p>
 </note>
 </def>
 </gitem>
-<gitem>
+<gitem id="procedure-associate-region">
 <label>[associate region]</label>
 <def>
 <p></p>
@@ -9651,7 +9946,7 @@ element.</p>
 <p>The semantics of the <att>dur</att> attribute are those defined
 by <bibref ref="smil3"/>, &sect; 5.4.3,
 while taking into account any overriding semantics defined by this specification.
-In a willful violation of <bibref ref="smil3"/>, &sect; 5.4.3, the value of
+In a deliberate divergence from <bibref ref="smil3"/>, &sect; 5.4.3, the value of
 the <att>dur</att> attribute is permitted to be zero (0).</p>
 <note role="elaboration">
 <p>In the context of the subset of <bibref ref="smil3"/> semantics supported by
@@ -9998,7 +10293,7 @@ enumerated above are defined to be those specified by <bibref ref="svg11"/>, &se
 <olist>
 <item><p>For the purpose of interpreting an <att>attributeName</att> attribute, an <att>attributeType</att>
 with a value of <code>XML</code> applies, about which see <bibref ref="svg11"/>, &sect;19.2.5.</p></item>
-<item><p>If no <att>accumulate</att> attribute is specified, then an <emph>accumlate</emph> value of <code>none</code> applies.</p></item>
+<item><p>If no <att>accumulate</att> attribute is specified, then an <emph>accumulate</emph> value of <code>none</code> applies.</p></item>
 <item><p>If no <att>additive</att> attribute is specified, then an <emph>additive</emph> value of <code>replace</code> applies.</p></item>
 <item><p>If no <att>calcMode</att> attribute is specified, then a <emph>calcMode</emph> value of <code>linear</code> applies.</p></item>
 <item><p>If no <att>fill</att> attribute is specified, then a <emph>fill</emph> value of <code>remove</code> applies.</p></item>

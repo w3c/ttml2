@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v a3565bc13dd1 2014/07/10 15:05:04 glenn $ -->
+<!-- $Id: ttml2.xml,v f3a26afa09c1 2014/07/17 02:02:18 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/07/10 15:05:04 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/07/17 02:02:18 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/07/10 15:05:04 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/07/17 02:02:18 $</p></revisiondesc>
 </header>
 
 <body>
@@ -606,6 +606,16 @@ Timed Text Markup Language content.</p>
 <def>
 <p>A logical region into which rendered content is placed when modeling or
 performing presentation processing.</p>
+</def>
+</gitem>
+<gitem id="terms-default-profile">
+<label>[default processor profile]</label>
+<def>
+<p>A default <loc href="#terms-processor-profile">processor profile</loc> used to compute an
+<loc href="#terms-effective-processor-profile">effective processor profile</loc> in the absence of a declared or inferred
+<loc href="#terms-processor-profile">processor profile</loc>, where this default processor profile is determined by
+the <loc href="#semantics-procedure-construct-default-processor-profile"><phrase role="strong">construct default processor profile</phrase></loc>
+procedure.</p>
 </def>
 </gitem>
 <gitem id="terms-default-region">
@@ -1493,7 +1503,8 @@ processors to avoid processing content that cannot be processed in a manner that
 <p>Processor profiles are declared by using (1) the <loc href="#parameter-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc>
 attribute on the root <el>tt</el> element, (2) one or more <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc>
 elements of type <code>processor</code>, or (3) a combination of these two mechanisms.
-If not declared, a processor profile is inferred from content profile or from a default processor profile.</p>
+If not declared, a processor profile is inferred from a declared content profile or from a
+<loc href="#terms-default-profile">default profile</loc>.</p>
 
 <note role="elaboration">
 <p>It is not a requirement on a conformant <loc href="#terms-document-instance">document instance</loc> that a processor profile be internally
@@ -2044,15 +2055,24 @@ from which a <loc href="#terms-processor-profile">processor profile</loc> can be
 <loc href="#terms-presentation-processor">presentation processor</loc>, then:</p>
 <olist>
 <item>
-<p>if the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> is not specified on the root <el>tt</el> element or
-if its computed value of this parameter is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+<p>if the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> attribute is not specified on the root <el>tt</el> element or
+if the computed value of its parameter property is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
 the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning the DFXP Presentation profile
 (<code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code>);</p>
 </item>
 <item>
-<p>otherwise, the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+<p>otherwise,
+if the computed value of the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> parameter property is <code>2</code> (two),
+the <loc href="#terms-default-processor-profile">default processor profile</loc> is
 the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning the TTML2 Presentation profile
 (<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>);</p>
+</item>
+<item>
+<p>otherwise,
+the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning a TTML presentation profile
+associated with the computed value of <loc href="#parameter-attribute-version"><att>ttp:version</att></loc>,
+if one is known, or, if not known, then the most recently defined presentation profile;</p>
 </item>
 </olist>
 </item>
@@ -2062,19 +2082,34 @@ the <loc href="#semantics-profile-state-profile">profile</loc> constructed by in
 <loc href="#terms-transformation-processor">transformation processor</loc>, then:</p>
 <olist>
 <item>
-<p>if the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> is not specified on the root <el>tt</el> element or
-if its computed value of this parameter is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+<p>if the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> attribute is not specified on the root <el>tt</el> element or
+if the computed value of its parameter property is <code>1</code> (one), then the <loc href="#terms-default-processor-profile">default processor profile</loc> is
 the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning the DFXP Transformation profile
 (<code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code>);</p>
 </item>
 <item>
-<p>otherwise, the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+<p>otherwise,
+if the computed value of the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> parameter property is <code>2</code> (two),
+the <loc href="#terms-default-processor-profile">default processor profile</loc> is
 the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning the TTML2 Transformation profile
 (<code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code>);</p>
 </item>
+<item>
+<p>otherwise,
+the <loc href="#terms-default-processor-profile">default processor profile</loc> is
+the <loc href="#semantics-profile-state-profile">profile</loc> constructed by interning a TTML transformation profile
+associated with the computed value of <loc href="#parameter-attribute-version"><att>ttp:version</att></loc>,
+if one is known, or, if not known, then the most recently defined TTML transformation profile;</p>
+</item>
 </olist>
 </item>
 </olist>
+<note role="explanation">
+<p>A <loc href="#terms-content-processor">content processor</loc> intended to be used with
+one or more distinct versions of TTML greater than version 2 (TTML2) may choose a
+<loc href="#terms-default-processor-profile">default processor profile</loc> based upon
+a future version of a TTML presentation or transformation profile.</p>
+</note>
 </def>
 </gitem>
 </glist>

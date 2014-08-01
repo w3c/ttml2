@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v d8d697d21579 2014/07/31 04:10:32 glenn $ -->
+<!-- $Id: ttml2.xml,v 1142499d1b93 2014/08/01 03:08:50 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/07/31 04:10:32 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/08/01 03:08:50 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/07/31 04:10:32 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/08/01 03:08:50 $</p></revisiondesc>
 </header>
 
 <body>
@@ -949,6 +949,20 @@ values embedded in or associated with the <loc href="#terms-related-media-object
 otherwise determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-temporally-active">
+<label>[temporally active]</label>
+<def>
+<p>A syntactic or semantic feature, e.g., an element or the presentation of an element, is
+<emph>temporally active</emph> when the current time of selected time base intersects with the
+active time interval of the feature.</p>
+</def>
+</gitem>
+<gitem id="terms-temporally-active-region">
+<label>[temporally active]</label>
+<def>
+<p>A <loc href="#terms-region">region</loc> that is <loc href="#terms-temporally-active">temporally active</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-timed-text">
 <label>[timed text]</label>
 <def>
@@ -1248,6 +1262,11 @@ the following criteria are satisfied:</p>
 by <specref ref="profile-ttml2-transformation"/>.</p>
 </item>
 </olist>
+<ednote>
+<name>Mandatory Support for DFXP Transformation Profile</name>
+<date>2014-07-31</date>
+<edtext>Should we also require support for DFXP Transformation Profile?</edtext>
+</ednote>
 </div3> <!-- conformance-transformation-processor -->
 
 <div3 id="conformance-presentation-processor">
@@ -1264,6 +1283,11 @@ the following criteria are satisfied:</p>
 by <specref ref="profile-ttml2-presentation"/>.</p>
 </item>
 </olist>
+<ednote>
+<name>Mandatory Support for DFXP Presentation Profile</name>
+<date>2014-07-31</date>
+<edtext>Should we also require support for DFXP Presentation Profile?</edtext>
+</ednote>
 </div3> <!-- conformance-presentation-processor -->
 
 </div2> <!-- conformance-processor -->
@@ -5079,7 +5103,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -5171,7 +5195,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous (color and width only)</td>
 </tr>
 </tbody>
 </table>
@@ -5282,7 +5306,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -5708,7 +5732,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -5925,7 +5949,7 @@ then relative to parent element's font size; otherwise, relative to the
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -6239,7 +6263,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -6385,7 +6409,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -6502,7 +6526,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -6729,7 +6753,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -6852,6 +6876,9 @@ background color of a region is always rendered when performing presentation
 processing on a visual medium; if the value is <code>whenActive</code>,
 then the background color of a region is rendered only when some
 content is flowed into the region.</p>
+<p>A region satisfies the <code>whenActive</code> case if (1) it is a
+<loc href="#terms-temporally-active-region">temporally active region</loc> and (2) content is selected into the region,
+where that content is also <loc href="#terms-temporally-active">temporally active</loc>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>always</code>.</p>
 <p>The <att>tts:showBackground</att> style is illustrated by the following example.</p>
@@ -7227,7 +7254,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous</td>
 </tr>
 </tbody>
 </table>
@@ -7751,7 +7778,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete, continuous (over integral values only)</td>
 </tr>
 </tbody>
 </table>
@@ -9823,7 +9850,7 @@ the background color associated with the <el>body</el> element, if not <code>tra
 </note>
 </div3>
 <div3 id="semantics-region-layout-example">
-<head>Elaborated Example (Informative)</head>
+<head>Elaborated Example (Non-Normative)</head>
 <p>An example of the processing steps described above is elaborated below, starting with <specref
 ref="region-mapping-example-1-s"/>.</p>
 <table id="region-mapping-example-1-s" role="example">
@@ -10206,6 +10233,16 @@ core vocabulary catalog, where
 animation is to be understood as a separable layer of information that combines
 timing and styling in order to denote authorial intention about (temporally) dynamic
 styling of content.</p>
+<ednote>
+<name>Out-of-Line Animation Time Containment</name>
+<date>2014-07-31</date>
+<edtext>Support ability for author to declare whether a referenced out-of-line animation's timing is relative
+to its <el>animation</el> container element's timing or relative to the referring element's timing.
+For example, add an <code>@animateTimeContainer</code> attribute optionally used with the newly defined
+<code>@animate</code> attribute, where value can be <code>normal</code> (the default value) or <code>self</code>, and where <code>normal</code>
+means timing is with respect to the out-of-line animation element's ancestor <el>animation</el> container and <code>self</code> means timing is
+with respect to the referring element.</edtext>
+</ednote>
 <div2 id="animation-element-vocabulary">
 <head>Animation Element Vocabulary</head>
 <p>The following elements specify the structure and principal animation aspects of a
@@ -10571,10 +10608,8 @@ attribute.</p>
 <item><p><specref ref="animation-value-animationValueList"/></p></item>
 <item><p><specref ref="animation-value-calcMode"/></p></item>
 <item><p><specref ref="animation-value-fill"/></p></item>
-<item><p><specref ref="animation-value-fragmentIdentifier"/></p></item>
 <item><p><specref ref="animation-value-keySplines"/></p></item>
 <item><p><specref ref="animation-value-keyTimes"/></p></item>
-<item><p><specref ref="animation-value-qualifiedName"/></p></item>
 <item><p><specref ref="animation-value-repeatCount"/></p></item>
 </ulist>
 <div3 id="animation-value-animationValue">
@@ -10596,6 +10631,12 @@ or ending (final) of the attribute targeted by the animation.</p>
 </table>
 <p>The syntax of an &lt;animationValue&gt; expression must satisfy all syntax
 requirements that apply to the attribute targeted by the animation.</p>
+<ednote>
+<name>Improve Syntax of AnimationValue</name>
+<date>2014-07-31</date>
+<edtext>Enhance detail of syntax of &lt;animationValue&gt; in order to prevent appearance of an unquoted or unescaped semicolon,
+which is used as a delimiter between animation values in &lt;animationValueList&gt;.</edtext>
+</ednote>
 <p>The semantics of an &lt;animationValue&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </div3>
@@ -10662,55 +10703,6 @@ requirements that apply to the attribute targeted by the animation.</p>
 </table>
 <p>The semantics of a &lt;fill&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.8.</p>
-</div3>
-<div3 id="animation-value-fragmentIdentifier">
-<head>&lt;fragmentIdentifier&gt;</head>
-<p>A &lt;fragmentIdentifier&gt; expression is used to target (refer to) an animation to a specific element in the same <loc href="#terms-document-instance">document instance</loc>.</p>
-<table id="fragmentIdentifier-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;fragmentIdentifier&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;fragmentIdentifier&gt;
-  : "#" fragment
-
-fragment
-  : uric+
-
-uric
-  : reserved
-  | unreserved
-  | escaped
-
-reserved
-  : [;/?:@&amp;=+$,]
-
-unreserved
-  : [a-zA-Z]
-  | [0-9]
-  | [-_.!~*'()]
-
-escaped
-  : "%" hex hex
-
-hex
-  : [0-9a-fA-F]
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Except for the constraints on syntax and semantics that follow below, the semantics of a &lt;fragmentIdentifier&gt;
-expression are those defined to apply to an "&lt;iri&gt;" expression in <bibref ref="svg11"/>, &sect;19.2.4.</p>
-<p>A &lt;fragmentIdentifer&gt; must adhere
-to the <code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>. Furthermore, it
-must adhere to the fragment identifer syntax defined by <bibref ref="uri"/>,
-Section 4.1, and is a strict subset thereof, since at least one character must appear in
-the fragment component.</p>
-<p>No linear white-space (LWSP) is permitted to appear within a fragment identifier.</p>
-<p>A &lt;fragmentIdentifer&gt; expression must refer to an element in the same <loc href="#terms-document-instance">document instance</loc>,
-i.e., the fragment component must be a valid IDREF.</p>
 </div3>
 <div3 id="animation-value-keySplines">
 <head>&lt;keySplines&gt;</head>
@@ -10784,36 +10776,6 @@ lwsp
 </table>
 <p>The semantics of a &lt;keyTimes&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>keyTimes</att> attribute.</p>
-</div3>
-<div3 id="animation-value-qualifiedName">
-<head>&lt;qualifiedName&gt;</head>
-<p>A &lt;qualifiedName&gt; expression is used to specify the attribute targeted by the animation.</p>
-<table id="qualifiedName-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;qualifiedName&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;qualifiedName&gt;
-  : prefix ":" local
-  | local
-
-prefix
-  : <emph>nmchar</emph>+
-
-local
-  : <emph>nmchar</emph>+
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The syntactic element <emph><code>nmchar</code></emph> is to be interpreted according
-to the <code>NameChar</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.3,
-except that the COLON (U+003A) character is excluded.</p>
-<p>The semantics of a &lt;qualifiedName&gt; expression are those defined by
-<bibref ref="svg11"/>, &sect;19.2.5, as applying to an <code>attributeName</code> attribute
-according to an implied <code>attributeType</code> of <code>XML</code>.</p>
 </div3>
 <div3 id="animation-value-repeatCount">
 <head>&lt;repeatCount&gt;</head>
@@ -11422,7 +11384,7 @@ specification takes precedence.</p>
 <head>Relax NG Compact (RNC) Schema</head>
 <p>A Relax NG Compact Syntax (RNC) <bibref ref="rng"/> based schema
 for TTML Content is available at <loc href="rnc/schema.zip">ZIP
-Archive</loc>. This schema does not normatively define the validity
+Archive</loc>. This schema is to be considered non-normative for the purpose of defining the validity
 of Timed Text Markup Language content as defined by this specification.
 In particular, the formal validity of TTML Content
 is defined by <specref ref="conformance-content"/>.</p>
@@ -11431,7 +11393,7 @@ is defined by <specref ref="conformance-content"/>.</p>
 <head>XML Schema Definition (XSD) Schema</head>
 <p>A W3C XML Schema Definition (XSD) <bibref ref="xsd-1"/> based schema
 for TTML Content is available at <loc href="xsd/schema.zip">ZIP
-Archive</loc>. This schema does not normatively define the validity
+Archive</loc>. This schema is to be considered non-normative for the purpose of defining the validity
 of Timed Text Markup Language content as defined by this specification.
 In particular, the formal validity of TTML Content
 is defined by <specref ref="conformance-content"/>.</p>

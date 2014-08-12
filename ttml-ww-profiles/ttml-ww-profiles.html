@@ -217,11 +217,11 @@ span.note, span.issue { padding: .1em .5em .15em; }
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">TTML Text and Image Profiles for Internet Media Subtitles and Captions 1.0</h1>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-08-04T13:25:16.000Z" id="w3c-first-public-working-draft-04-august-2014"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time class="dt-published" datetime="2014-08-04">04 August 2014</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-08-12T12:01:40.000Z" id="w3c-first-public-working-draft-12-august-2014"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time class="dt-published" datetime="2014-08-12">12 August 2014</time></h2>
   <dl>
     
       <dt>This version:</dt>
-      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-ttml-imsc1-20140804/">http://www.w3.org/TR/2014/WD-ttml-imsc1-20140804/</a></dd>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-ttml-imsc1-20140812/">http://www.w3.org/TR/2014/WD-ttml-imsc1-20140812/</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/ttml-imsc1/">http://www.w3.org/TR/ttml-imsc1/</a></dd>
     
@@ -339,6 +339,10 @@ span.note, span.issue { padding: .1em .5em .15em; }
           
         </p>
         
+          <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">1 August 2014 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+          </p>
+        
+        
       
     
   
@@ -401,10 +405,11 @@ span.note, span.issue { padding: .1em .5em .15em; }
       provisions of the profile.</li>
     </ul>
 
-    <div class="note"><div class="note-title" aria-level="2" role="heading" id="h_note_1"><span>Note</span></div><p class="">The use of the term <a href="#dfn-presentation-processor" class="internalDFN">presentation processor</a> (<a href="#dfn-transformation-processor" class="internalDFN">transformation processor</a>) within this specification does not imply conformance
-    to the DFXP Presentation Profile (DFXP Transformation Profile) specified in [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>]. In other words, it is not considered
-    an error for a <a href="#dfn-presentation-processor" class="internalDFN">presentation processor</a> (<a href="#dfn-transformation-processor" class="internalDFN">transformation processor</a>) to conform to a profile defined in this specification without
-    also conforming to the DFXP Presentation Profile (DFXP Transformation Profile).</p></div>
+    <div class="note"><div class="note-title" aria-level="2" role="heading" id="h_note_1"><span>Note</span></div><p class="">The use of the term <a href="#dfn-presentation-processor" class="internalDFN">presentation processor</a> (<a href="#dfn-transformation-processor" class="internalDFN">transformation processor</a>) within this specification
+    does not imply conformance to the DFXP Presentation Profile (DFXP Transformation Profile) specified in [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>]. In other
+    words, it is not considered an error for a <a href="#dfn-presentation-processor" class="internalDFN">presentation processor</a> (<a href="#dfn-transformation-processor" class="internalDFN">transformation processor</a>) to conform to a
+    profile defined in this specification without also conforming to the DFXP Presentation Profile (DFXP Transformation
+    Profile).</p></div>
   </section>
 
   <section id="profiles" typeof="bibo:Chapter" resource="#profiles" rel="bibo:Chapter">
@@ -670,44 +675,75 @@ span.note, span.issue { padding: .1em .5em .15em; }
       <section id="ttp-progressivelyDecodable" typeof="bibo:Chapter" resource="#ttp-progressivelyDecodable" rel="bibo:Chapter">
         <h4 aria-level="3" role="heading" id="h4_ttp-progressivelyDecodable"><span class="secno">5.5.2 </span>ittp:progressivelyDecodable</h4>
 
-        <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the
-        document is received in its entirety.</p>
+        <p>A progressively decodable subtitle document is structured to facilitate processing before the
+        document is received in its entirety, and can be identified using <code>ittp:progressivelyDecodable</code> attribute.</p>
 
-        <p>A progressively decodable subtitle document shall conform to the following:</p>
+        <p>A progressively decodable subtitle document is a subtitle document that conforms to the following:</p>
 
         <ol>
-          <li>elements appear in the document in increasing order according to their resolved begin time;</li>
+          <li>no attribute or element of the TTML timing vocabulary is present within the <code>head</code> element;</li>
 
-          <li>no element references another element (i) occurring later in the document or (ii) with a later begin time; and</li>
+          <li>given two Intermediate Synchronic Documents A and B with presentation times TA and TB, respectively, TA is not
+          greater than TB if A maps to a <code>p</code> element that occurs earlier in the document than any <code>p</code> element
+          to which B maps;</li>
 
-          <li>a <code>ittp:progressivelyDecodable</code> attribute with value "true" is present on the <code>tt</code>
-          element.</li>
+          <li>no attribute of the TTML timing vocabulary is present on a child element of <code>p</code>; and</li>
+
+          <li>no first element references a second element that occurs after the first element in the document.</li>
         </ol>
+		
+		<p>The <code>ittp:progressivelyDecodable</code> attribute shall conform to the following:</p>
 
-        <p>The <code>ittp:progressivelyDecodable</code> attribute shall conform to the following syntax:</p>
+        <table class="simple">
+          <colgroup>
+            <col style="width:25%" span="1">
+            <col span="1">
+          </colgroup>
 
-        <table class="syntax">
           <tbody>
             <tr>
-              <td>
-                <div class="exampleInner">
-                  <pre>imsc:progressivelyDecodable
-  : "true"
-  | "false"
-</pre>
-                </div>
-              </td>
+              <td><em>Values:</em></td>
+
+              <td><code>false | true</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Initial:</em></td>
+
+              <td><code>false</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Applies to:</em></td>
+
+              <td><code>head</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Inherited:</em></td>
+
+              <td>N/A</td>
+            </tr>
+
+            <tr>
+              <td><em>Percentages:</em></td>
+
+              <td>N/A</td>
+            </tr>
+
+            <tr>
+              <td><em>Animatable:</em></td>
+
+              <td>N/A</td>
             </tr>
           </tbody>
         </table>
 
-        <p>The initial value of <code>ittp:progressivelyDecodable</code> shall be "false".</p>
 
-        <p>A <code>ittp:progressivelyDecodable</code> attribute with value "false" may be present on the <code>tt</code> element if
-        the subtitle document is not a progressively decodable subtitle document.</p>
+        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "true" <em class="rfc2119" title="SHALL">SHALL</em> be a
+        progressively decodable subtitle document.</p>
 
-        <p>A <code>ittp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
-        <code>tt</code> element.</p>
+        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "false" is neither asserted to be a progressively decodable subtitle document nor asserted not to be a progressively decodable subtitle document.</p>
 
         <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_6"><span>Note</span></div><p class="">The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
         attributes, and the use of <code>set</code> are constrained when <code>ittp:progressivelyDecodable="true"</code> .</p></div>
@@ -722,6 +758,8 @@ span.note, span.issue { padding: .1em .5em .15em; }
         <p>If the value of <code>displayForcedOnlyMode</code> is "true", a content element with a <code>itts:forcedDisplay</code>
         computed value of "false" <em class="rfc2119" title="SHALL">SHALL</em> not produce any visible rendering, but still affect layout, regardless of the computed
         value of <code>tts:visibility</code>.</p>
+
+        <p>The <code>itts:forcedDisplay</code> attribute shall conform to the following:</p>
 
         <table class="simple">
           <colgroup>

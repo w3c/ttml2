@@ -105,10 +105,11 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       provisions of the profile.</li>
     </ul>
 
-    <p class='note'>The use of the term <a>presentation processor</a> (<a>transformation processor</a>) within this specification does not imply conformance
-    to the DFXP Presentation Profile (DFXP Transformation Profile) specified in [[!TTML1]]. In other words, it is not considered
-    an error for a <a>presentation processor</a> (<a>transformation processor</a>) to conform to a profile defined in this specification without
-    also conforming to the DFXP Presentation Profile (DFXP Transformation Profile).</p>
+    <p class='note'>The use of the term <a>presentation processor</a> (<a>transformation processor</a>) within this specification
+    does not imply conformance to the DFXP Presentation Profile (DFXP Transformation Profile) specified in [[!TTML1]]. In other
+    words, it is not considered an error for a <a>presentation processor</a> (<a>transformation processor</a>) to conform to a
+    profile defined in this specification without also conforming to the DFXP Presentation Profile (DFXP Transformation
+    Profile).</p>
   </section>
 
   <section id='profiles'>
@@ -375,45 +376,75 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
       <section id='ttp-progressivelyDecodable'>
         <h4>ittp:progressivelyDecodable</h4>
 
-        <p>A progressively decodable subtitle document is a subtitle document structured to facilitate processing before the
-        document is received in its entirety.</p>
+        <p>A progressively decodable subtitle document is structured to facilitate processing before the
+        document is received in its entirety, and can be identified using <code>ittp:progressivelyDecodable</code> attribute.</p>
 
-        <p>A progressively decodable subtitle document shall conform to the following:</p>
+        <p>A progressively decodable subtitle document is a subtitle document that conforms to the following:</p>
 
         <ol>
-          <li>elements appear in the document in increasing order according to their resolved begin time;</li>
+          <li>no attribute or element of the TTML timing vocabulary is present within the <code>head</code> element;</li>
 
-          <li>no element references another element (i) occurring later in the document or (ii) with a later begin time; and</li>
+          <li>given two Intermediate Synchronic Documents A and B with presentation times TA and TB, respectively, TA is not
+          greater than TB if A maps to a <code>p</code> element that occurs earlier in the document than any <code>p</code> element
+          to which B maps;</li>
 
-          <li>a <code>ittp:progressivelyDecodable</code> attribute with value "true" is present on the <code>tt</code>
-          element.</li>
+          <li>no attribute of the TTML timing vocabulary is present on a child element of <code>p</code>; and</li>
+
+          <li>no first element references a second element that occurs after the first element in the document.</li>
         </ol>
+		
+		<p>The <code>ittp:progressivelyDecodable</code> attribute shall conform to the following:</p>
 
-        <p>The <code>ittp:progressivelyDecodable</code> attribute shall conform to the following syntax:</p>
+        <table class="simple">
+          <colgroup>
+            <col style="width:25%" span="1">
+            <col span="1">
+          </colgroup>
 
-        <table class="syntax">
           <tbody>
             <tr>
-              <td>
-                <div class="exampleInner">
-                  <pre>
-imsc:progressivelyDecodable
-  : "true"
-  | "false"
-</pre>
-                </div>
-              </td>
+              <td><em>Values:</em></td>
+
+              <td><code>false | true</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Initial:</em></td>
+
+              <td><code>false</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Applies to:</em></td>
+
+              <td><code>head</code></td>
+            </tr>
+
+            <tr>
+              <td><em>Inherited:</em></td>
+
+              <td>N/A</td>
+            </tr>
+
+            <tr>
+              <td><em>Percentages:</em></td>
+
+              <td>N/A</td>
+            </tr>
+
+            <tr>
+              <td><em>Animatable:</em></td>
+
+              <td>N/A</td>
             </tr>
           </tbody>
         </table>
 
-        <p>The initial value of <code>ittp:progressivelyDecodable</code> shall be "false".</p>
 
-        <p>A <code>ittp:progressivelyDecodable</code> attribute with value "false" may be present on the <code>tt</code> element if
-        the subtitle document is not a progressively decodable subtitle document.</p>
+        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "true" SHALL be a
+        progressively decodable subtitle document.</p>
 
-        <p>A <code>ittp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
-        <code>tt</code> element.</p>
+        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "false" is neither asserted to be a progressively decodable subtitle document nor asserted not to be a progressively decodable subtitle document.</p>
 
         <p class='note'>The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
         attributes, and the use of <code>set</code> are constrained when <code>ittp:progressivelyDecodable="true"</code> .</p>
@@ -428,6 +459,8 @@ imsc:progressivelyDecodable
         <p>If the value of <code>displayForcedOnlyMode</code> is "true", a content element with a <code>itts:forcedDisplay</code>
         computed value of "false" SHALL not produce any visible rendering, but still affect layout, regardless of the computed
         value of <code>tts:visibility</code>.</p>
+
+        <p>The <code>itts:forcedDisplay</code> attribute shall conform to the following:</p>
 
         <table class="simple">
           <colgroup>

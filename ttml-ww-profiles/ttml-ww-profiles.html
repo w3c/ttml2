@@ -217,11 +217,11 @@ span.note, span.issue { padding: .1em .5em .15em; }
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">TTML Text and Image Profiles for Internet Media Subtitles and Captions 1.0</h1>
   
-  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-08-21T11:36:19.000Z" id="w3c-first-public-working-draft-21-august-2014"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time class="dt-published" datetime="2014-08-21">21 August 2014</time></h2>
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2014-09-04T13:22:04.000Z" id="w3c-first-public-working-draft-04-september-2014"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time class="dt-published" datetime="2014-09-04">04 September 2014</time></h2>
   <dl>
     
       <dt>This version:</dt>
-      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-ttml-imsc1-20140821/">http://www.w3.org/TR/2014/WD-ttml-imsc1-20140821/</a></dd>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-ttml-imsc1-20140904/">http://www.w3.org/TR/2014/WD-ttml-imsc1-20140904/</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/ttml-imsc1/">http://www.w3.org/TR/ttml-imsc1/</a></dd>
     
@@ -636,6 +636,25 @@ span.note, span.issue { padding: .1em .5em .15em; }
         <p>The <code>ittp:aspectRatio</code> attributes allows authorial control of the mapping of the root container of a subtitle
         document to the related video object frame.</p>
 
+        <p>If present, the <code>ittp:aspectRatio</code> attribute <em class="rfc2119" title="SHALL">SHALL</em> conform to the following syntax:</p>
+
+        <table class="syntax">
+          <tbody>
+            <tr>
+              <td>
+                <div class="exampleInner">
+                  <pre>ittp:aspectRatio
+  : numerator denominator                                               // numerator != 0; denominator != 0
+        
+numerator | denominator
+  : &lt;digit&gt;+
+</pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
         <p>The root container of a subtitle document <em class="rfc2119" title="SHALL">SHALL</em> be mapped to the related video object frame according to the
         following:</p>
 
@@ -645,7 +664,7 @@ span.note, span.issue { padding: .1em .5em .15em; }
             related video object such that:</p>
 
             <ol style="list-style-type: lower-roman;">
-              <li>the aspect ratio of the rectangular area is equal to <code>ittp:aspectRatio</code>,</li>
+              <li>the ratio of the width to the height of the rectangular area is equal to <code>ittp:aspectRatio</code>,</li>
 
               <li>the center of the rectangular area is colocated with the center of the related video object frame,</li>
 
@@ -665,6 +684,9 @@ span.note, span.issue { padding: .1em .5em .15em; }
 
         <p><code>ittp:aspectRatio</code> <em class="rfc2119" title="SHALL NOT">SHALL NOT</em> be present if <code>tts:extent</code> is present.<br></p>
 
+        <p>An <code>ittp:aspectRatio</code> attribute is considered to be significant only when specified on the <code>tt</code>
+        element.</p>
+
         <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_5"><span>Note</span></div><p class="">As specified in Section <a href="#common-features" class="sec-ref"><span class="secno">5.8</span> <span class="sec-title">Features</span></a>, <code>tts:extent</code> is present if the
         <code>px</code> length measure is used anywhere within the document.</p></div>
 
@@ -683,13 +705,14 @@ span.note, span.issue { padding: .1em .5em .15em; }
         <ol>
           <li>no attribute or element of the TTML timing vocabulary is present within the <code>head</code> element;</li>
 
-          <li>given two of its Intermediate Synchronic Documents <em>A</em> and <em>B</em> with start times <em>TA</em> and <em>TB</em>, respectively, <em>TA</em> is not
-          greater than <em>TB</em> if <em>A</em> includes a <code>p</code> element that occurs earlier in the document than any <code>p</code> element
-          that <em>B</em> includes;</li>
+          <li>given two Intermediate Synchronic Documents <em>A</em> and <em>B</em> of the subtitle document, with start times
+          <em>TA</em> and <em>TB</em>, respectively, <em>TA</em> is not greater than <em>TB</em> if <em>A</em> includes a
+          <code>p</code> element that occurs earlier in the document than any <code>p</code> element that <em>B</em> includes;</li>
 
           <li>no attribute of the TTML timing vocabulary is present on a descendant element of <code>p</code>; and</li>
 
-          <li>no element <em>E1</em> explicitly references, e.g. using <code>xml:id</code>, another element <em>E2</em> where the opening tag of <em>E2</em> occurs after the opening tag of <em>E1</em>.</li>
+          <li>no element <em>E1</em> explicitly references another element <em>E2</em> where the opening tag of <em>E2</em> occurs
+          after the opening tag of <em>E1</em>.</li>
         </ol>
 
         <p>If present, the <code>ittp:progressivelyDecodable</code> attribute <em class="rfc2119" title="SHALL">SHALL</em> conform to the following syntax:</p>
@@ -708,21 +731,19 @@ span.note, span.issue { padding: .1em .5em .15em; }
             </tr>
           </tbody>
         </table>
-		
-		<p>An <code>ittp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
+
+        <p>An <code>ittp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
         <code>tt</code> element.</p>
-		
-		<p>If not specified, the value of <code>ittp:progressivelyDecodable</code> <em class="rfc2119" title="SHALL">SHALL</em> be considered to be equal to "false".</p>
 
-        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "true" <em class="rfc2119" title="SHALL">SHALL</em> be a
-        progressively decodable subtitle document.</p>
+        <p>If not specified, the value of <code>ittp:progressivelyDecodable</code> <em class="rfc2119" title="SHALL">SHALL</em> be considered to be equal to
+        "false".</p>
 
-        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "false" is neither
-        asserted to be a progressively decodable subtitle document nor asserted not to be a progressively decodable subtitle
-        document.</p>
+        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "true" <em class="rfc2119" title="SHALL">SHALL</em>
+        be a progressively decodable subtitle document.</p>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_6"><span>Note</span></div><p class="">The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
-        attributes, and the use of <code>set</code> are constrained when <code>ittp:progressivelyDecodable="true"</code> .</p></div>
+        <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "false" is
+        neither asserted to be a progressively decodable subtitle document nor asserted not to be a progressively decodable
+        subtitle document.</p>
       </section>
 
       <section id="tts-forcedDisplay" typeof="bibo:Chapter" resource="#tts-forcedDisplay" rel="bibo:Chapter">
@@ -731,9 +752,9 @@ span.note, span.issue { padding: .1em .5em .15em; }
         <p><code>itts:forcedDisplay</code> allows the processor to override the computed value of <code>tts:visibility</code>
         attribute in conjunction with an application parameter <code>displayForcedOnlyMode</code>.</p>
 
-        <p>If the value of <code>displayForcedOnlyMode</code> is "true", a content element with a <code>itts:forcedDisplay</code>
-        computed value of "false" <em class="rfc2119" title="SHALL">SHALL</em> not produce any visible rendering, but still affect layout, regardless of the computed
-        value of <code>tts:visibility</code>.</p>
+        <p>If the value of <code>displayForcedOnlyMode</code> is "true", a content element with a
+        <code>itts:forcedDisplay</code> computed value of "false" <em class="rfc2119" title="SHALL">SHALL</em> not produce any visible rendering, but still
+        affect layout, regardless of the computed value of <code>tts:visibility</code>.</p>
 
         <p>The <code>itts:forcedDisplay</code> attribute shall conform to the following:</p>
 
@@ -794,18 +815,19 @@ span.note, span.issue { padding: .1em .5em .15em; }
         <p>The algorithm for setting the <code>displayForcedOnlyMode</code> parameter based on the circumstances under which the
         subtitle document is presented is left to the application.</p>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_7"><span>Note</span></div><p class="">The background of a region is drawn even if the computed value of <code>tts:visibility</code> equals
-        "hidden" for all active content within. This can occur if <code>itts:forcedDisplay</code> equals "false" for all active
-        content elements within a region for which <code>itts:forcedDisplay</code> equals "true", and
-        <code>displayForcedOnlyMode</code> equals "true". Authors can avoid this situation, for instance, by ensuring that content
-        elements and the regions that they are flowed into always have the same value of <code>itts:forcedDisplay</code>.</p></div>
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_6"><span>Note</span></div><p class="">The background of a region is drawn even if the computed value of <code>tts:visibility</code> equals
+        "hidden" for all active content within. This can occur if <code>itts:forcedDisplay</code> equals
+        "false" for all active content elements within a region for which <code>itts:forcedDisplay</code> equals
+        "true", and <code>displayForcedOnlyMode</code> equals "true". Authors can avoid this situation, for
+        instance, by ensuring that content elements and the regions that they are flowed into always have the same value of
+        <code>itts:forcedDisplay</code>.</p></div>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_8"><span>Note</span></div><p class="">Although <code>itts:forcedDisplay</code>, like all the TTML style attributes, has no defined semantics on a
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_7"><span>Note</span></div><p class="">Although <code>itts:forcedDisplay</code>, like all the TTML style attributes, has no defined semantics on a
         <code>br</code> content element, <code>itts:forcedDisplay</code> will apply to a <code>br</code> content element if it is
         either defined on an ancestor content element of the <code>br</code> content element or it is applied to a region element
         corresponding to a region that the <code>br</code> content element is being flowed into.</p></div>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_9"><span>Note</span></div><p class="">It is expected that the functionality of <code>itts:forcedDisplay</code> will be mapped to a conditional
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_8"><span>Note</span></div><p class="">It is expected that the functionality of <code>itts:forcedDisplay</code> will be mapped to a conditional
         style construct in a future revision of this specification.</p></div>
       </section>
 
@@ -839,7 +861,7 @@ span.note, span.issue { padding: .1em .5em .15em; }
 
         <p><a href="#image-profile-constraints" class="sec-ref"><span class="secno">7.</span> <span class="sec-title">Image Profile Constraints</span></a> specifies the use of the <code>ittm:altText</code> element with images.</p>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_10"><span>Note</span></div><p class="">In contrast to the common use of <code>alt</code> attributes in [<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>], the <code>ittm:altText</code>
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_9"><span>Note</span></div><p class="">In contrast to the common use of <code>alt</code> attributes in [<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>], the <code>ittm:altText</code>
         attribute content is not intended to be displayed in place of the element if the element is not loaded. The
         <code>ittm:altText</code> attribute content can however be read and used by assistive technologies. .</p></div>
       </section>
@@ -860,8 +882,8 @@ span.note, span.issue { padding: .1em .5em .15em; }
 
           <li>the computed value of <code>tts:visibility</code> is not "hidden"; and</li>
 
-          <li>either (a) content is selected into the region or (b) the computed value of <code>tts:showBackground</code> is equal to "always"
-          and the computed value of <code>tts:backgroundColor</code> has non-transparent alpha.</li>
+          <li>either (a) content is selected into the region or (b) the computed value of <code>tts:showBackground</code> is equal
+          to "always" and the computed value of <code>tts:backgroundColor</code> has non-transparent alpha.</li>
         </ol>
       </section>
 
@@ -1332,7 +1354,7 @@ span.note, span.issue { padding: .1em .5em .15em; }
         </tbody>
       </table>
 
-      <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_11"><span>Note</span></div><p class="">As specified in [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>], a <code>#time-offset-with-frames</code> expression is translated to a media time
+      <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_10"><span>Note</span></div><p class="">As specified in [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>], a <code>#time-offset-with-frames</code> expression is translated to a media time
       M according to M = 3600 · hours + 60 · minutes + seconds + (frames ÷ (<code>ttp:frameRateMultiplier</code> ·
       <code>ttp:frameRate</code>)).</p></div>
     </section>
@@ -1434,8 +1456,8 @@ span.note, span.issue { padding: .1em .5em .15em; }
           <tr>
             <td><code>#displayAlign</code></td>
 
-            <td><em class="rfc2119" title="MAY">MAY</em> be used. The initial value of <code>tts:displayAlign</code> <em class="rfc2119" title="SHALL">SHALL</em> be "after" for the default region. NOTE: This
-            is consistent with [<cite><a class="bibref" href="#bib-ST2052-1">ST2052-1</a></cite>].</td>
+            <td><em class="rfc2119" title="MAY">MAY</em> be used. The initial value of <code>tts:displayAlign</code> <em class="rfc2119" title="SHALL">SHALL</em> be "after" for the default region.
+            NOTE: This is consistent with [<cite><a class="bibref" href="#bib-ST2052-1">ST2052-1</a></cite>].</td>
           </tr>
 
           <tr>
@@ -1448,8 +1470,9 @@ span.note, span.issue { padding: .1em .5em .15em; }
           <tr>
             <td><code>#fontFamily-generic</code></td>
 
-            <td><em class="rfc2119" title="MAY">MAY</em> be used. A <code>tts:fontFamily</code> of either "monospaceSerif" or "proportionalSansSerif" <em class="rfc2119" title="SHOULD">SHOULD</em> be
-            specified for all presented text content. A tts:fontFamily of "default" <em class="rfc2119" title="SHALL">SHALL</em> be equivalent to "monospaceSerif".</td>
+            <td><em class="rfc2119" title="MAY">MAY</em> be used. A <code>tts:fontFamily</code> of either "monospaceSerif" or
+            "proportionalSansSerif" <em class="rfc2119" title="SHOULD">SHOULD</em> be specified for all presented text content. A tts:fontFamily of
+            "default" <em class="rfc2119" title="SHALL">SHALL</em> be equivalent to "monospaceSerif".</td>
           </tr>
 
           <tr>
@@ -1528,8 +1551,8 @@ span.note, span.issue { padding: .1em .5em .15em; }
             <td><code>#lineHeight</code></td>
 
             <td><em class="rfc2119" title="MAY">MAY</em> be used.<br>
-            An explicit <code>&lt;length&gt;</code> <em class="rfc2119" title="SHOULD">SHOULD</em> be specified as there is no uniform implementation of the "normal" value
-            at the time of this writing.</td>
+            An explicit <code>&lt;length&gt;</code> <em class="rfc2119" title="SHOULD">SHOULD</em> be specified as there is no uniform implementation of the
+            "normal" value at the time of this writing.</td>
           </tr>
 
           <tr>
@@ -1547,8 +1570,8 @@ span.note, span.issue { padding: .1em .5em .15em; }
           <tr>
             <td><code>#origin</code></td>
 
-            <td>The <code>tts:origin</code> attribute <em class="rfc2119" title="SHALL">SHALL</em> use <code>px</code> units or "percentage" representation, and <em class="rfc2119" title="SHALL NOT">SHALL NOT</em>
-            use <code>em</code> units.</td>
+            <td>The <code>tts:origin</code> attribute <em class="rfc2119" title="SHALL">SHALL</em> use <code>px</code> units or "percentage" representation, and
+            <em class="rfc2119" title="SHALL NOT">SHALL NOT</em> use <code>em</code> units.</td>
           </tr>
 
           <tr>
@@ -1596,8 +1619,8 @@ span.note, span.issue { padding: .1em .5em .15em; }
           <tr>
             <td><code>#textAlign</code></td>
 
-            <td><em class="rfc2119" title="MAY">MAY</em> be used. The initial value of <code>tts:textAlign</code> <em class="rfc2119" title="SHALL">SHALL</em> be "center" for the default region. NOTE: This
-            is consistent with [<cite><a class="bibref" href="#bib-ST2052-1">ST2052-1</a></cite>].</td>
+            <td><em class="rfc2119" title="MAY">MAY</em> be used. The initial value of <code>tts:textAlign</code> <em class="rfc2119" title="SHALL">SHALL</em> be "center" for the default region.
+            NOTE: This is consistent with [<cite><a class="bibref" href="#bib-ST2052-1">ST2052-1</a></cite>].</td>
           </tr>
 
           <tr>
@@ -1925,8 +1948,9 @@ span.note, span.issue { padding: .1em .5em .15em; }
 
         <p>The model operates on successive intermediate synchronic documents obtained from an input subtitle document, and uses a
         simple double buffering model: while an intermediate synchronic document E<sub>n</sub> is being painted into Presentation
-        Buffer P<sub>n</sub> (the "front buffer" of the model), the previous intermediate synchronic document E<sub>n-1</sub> is
-        available for display in Presentation Buffer P<sub>n-1</sub> (the "back buffer" of the model).</p>
+        Buffer P<sub>n</sub> (the "front buffer" of the model), the previous intermediate synchronic document
+        E<sub>n-1</sub> is available for display in Presentation Buffer P<sub>n-1</sub> (the "back buffer" of the
+        model).</p>
 
         <p>The model specifies an (hypothetical) time required for completely painting an intermediate synchronic document as a
         proxy for complexity. Painting includes drawing region backgrounds, rendering and copying glyphs, and decoding and copying
@@ -1997,7 +2021,7 @@ span.note, span.issue { padding: .1em .5em .15em; }
         P<sub>n-1</sub> at the presentation time of intermediate synchronic document E<sub>n</sub>, making the latter available for
         display.</p>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_12"><span>Note</span></div><p class="">It is possible for the contents of Presentation Buffer P<sub>n-1</sub> to never be displayed. This can
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_11"><span>Note</span></div><p class="">It is possible for the contents of Presentation Buffer P<sub>n-1</sub> to never be displayed. This can
         happen if Presentation Buffer P<sub>n</sub> is copied twice to Presentation Buffer P<sub>n-1</sub> between two consecutive
         video frame boundaries of the related video object.</p></div>
 
@@ -2030,11 +2054,11 @@ span.note, span.issue { padding: .1em .5em .15em; }
           </tbody>
         </table>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_13"><span>Note</span></div><p class="">BDraw effectively sets a limit on fillings regions - for example, assuming that the root container is
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_12"><span>Note</span></div><p class="">BDraw effectively sets a limit on fillings regions - for example, assuming that the root container is
         ultimately rendered at 1920×1080 resolution, a BDraw of 12 s<sup>-1</sup> would correspond to a fill rate of
         1920×1080×12/s=23.7×2<sup>20</sup>pixels s<sup>-1</sup>.</p></div>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_14"><span>Note</span></div><p class="">IPD effectively sets a limit on the complexity of any given intermediate synchronic document.</p></div>
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_13"><span>Note</span></div><p class="">IPD effectively sets a limit on the complexity of any given intermediate synchronic document.</p></div>
       </section>
 
       <section id="paint-regions" typeof="bibo:Chapter" resource="#paint-regions" rel="bibo:Chapter">
@@ -2046,7 +2070,7 @@ span.note, span.issue { padding: .1em .5em .15em; }
 
         <p>where CLEAR(E<sub>0</sub>) = 0 and CLEAR(E<sub>n | n &gt; 0</sub>) = 1, i.e. the root container in its entirety.</p>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_15"><span>Note</span></div><p class="">To ensure consistency of the Presentation Buffer, a new intermediate synchronic document requires clearing
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_14"><span>Note</span></div><p class="">To ensure consistency of the Presentation Buffer, a new intermediate synchronic document requires clearing
         of the root container.</p></div>
 
         <p>PAINT(E<sub>n</sub>) <em class="rfc2119" title="SHALL">SHALL</em> be the normalized area to be painted for all regions that are used in intermediate synchronic
@@ -2297,15 +2321,15 @@ span.note, span.issue { padding: .1em .5em .15em; }
           </tbody>
         </table>
 
-        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_16"><span>Note</span></div><p class="">NRGA(G<sub>i</sub>) does not take into account glyph decorations (e.g. underline), glyph effects (e.g.
+        <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_15"><span>Note</span></div><p class="">NRGA(G<sub>i</sub>) does not take into account glyph decorations (e.g. underline), glyph effects (e.g.
         outline) or actual glyph aspect ratio. An implementation can determine an actual buffer size needs based on worst-case
         glyph size complexity.</p></div>
 
         <aside class="example"><div class="example-title"><span>Example 3</span></div>
           Setting a Glyph Buffer Normalized Size effectively sets a limit on the total number of distinct glyphs present in any
           given intermediate synchronic document E<sub>n</sub>. For example, assuming a maximum Normalized Glyph Buffer Size of 1
-          and the default tts:fontSize of 1c are used, the glyph's height as percentage of root container height is 1/15 , and the
-          maximum number of distinct glyphs that can be buffered is 1÷(1÷15)^2=225 glyphs. In this example, an implementation
+          and the default tts:fontSize of 1c are used, the glyph's height as percentage of root container height is 1/15 , and
+          the maximum number of distinct glyphs that can be buffered is 1÷(1÷15)^2=225 glyphs. In this example, an implementation
           rendering at 1920x1080 would need to allocate a glyph buffer no smaller than (1920÷32)×(1080÷15)×225=~1 Mpixels.
         </aside>
 
@@ -2378,10 +2402,10 @@ span.note, span.issue { padding: .1em .5em .15em; }
         </tbody>
       </table>
 
-      <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_17"><span>Note</span></div><p class="">Implementations can use use fonts other than those specified above. Two fonts with equal metrics can have a
+      <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_16"><span>Note</span></div><p class="">Implementations can use use fonts other than those specified above. Two fonts with equal metrics can have a
       different appearance, but flow identically.</p></div>
 
-      <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_18"><span>Note</span></div><p class="">proportionalSansSerif is not used in practice for Hebrew and Arabic captions and subtitles.</p></div>
+      <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_17"><span>Note</span></div><p class="">proportionalSansSerif is not used in practice for Hebrew and Arabic captions and subtitles.</p></div>
     </section>
   </section>
 
@@ -2729,8 +2753,9 @@ span.note, span.issue { padding: .1em .5em .15em; }
     <p><a href="#fig-forced-content" class="fig-ref">Fig. <span class="figno">3</span> <span class="fig-title">
         Illustration of the use of itts:forcedDisplay
       </span></a> below illustrates the use of forced content, i.e. <code>itts:forcedDisplay</code> and
-    <code>displayForcedOnlyMode</code>. The content with <code>itts:forcedDisplay</code>="true" is the French translation of the
-    "High School" sign. The content with <code>itts:forcedDisplay</code>="false" are French subtitles capturing a voiceover.</p>
+    <code>displayForcedOnlyMode</code>. The content with <code>itts:forcedDisplay</code>="true" is the French translation
+    of the "High School" sign. The content with <code>itts:forcedDisplay</code>="false" are French subtitles
+    capturing a voiceover.</p>
 
     <figure id="fig-forced-content">
       <img src="forced-example-figure-1.png" alt="Illustration of the use of itts:forcedDisplay">
@@ -2741,12 +2766,12 @@ span.note, span.issue { padding: .1em .5em .15em; }
     </figure>
 
     <p>When the user selects French as the playback language but does not select French subtitles,
-    <code>displayForcedOnlyMode</code> is set to "true", causing the display of the sign translation, which is useful to any French
-    speaker, but hiding the voiceover subtitles as the voiceover is heard in French.</p>
+    <code>displayForcedOnlyMode</code> is set to "true", causing the display of the sign translation, which is useful to
+    any French speaker, but hiding the voiceover subtitles as the voiceover is heard in French.</p>
 
     <p>If the user selects French as the playback language and also selects French subtitles, e.g. if the user is hard-of-hearing,
-    <code>displayForcedOnlyMode</code> is set to "false", causing the display of both the sign translation and the voiceover
-    subtitles.</p>
+    <code>displayForcedOnlyMode</code> is set to "false", causing the display of both the sign translation and the
+    voiceover subtitles.</p>
 
     <p>The algorithm for setting the <code>displayForcedOnlyMode</code> parameter and selecting the appropriate combination of
     subtitle and audio tracks depends on the application.</p>
@@ -2771,14 +2796,15 @@ span.note, span.issue { padding: .1em .5em .15em; }
 
     <p>For instance, in subtitling and captioning, italics can be used to indicate an off screen speaker context (for example a
     voice from a radio). An author can choose to include this functional information in the text equivalent; for example, by
-    including the word "Radio: " before the image equivalent text. It should also be noted that images in an Image Profile subtitle
-    document that are intended for use as <em>captions</em>, i.e. intended for a hard of hearing audience, might already include
-    this functional information in the rendered text.</p>
+    including the word "Radio: " before the image equivalent text. It should also be noted that images in an Image
+    Profile subtitle document that are intended for use as <em>captions</em>, i.e. intended for a hard of hearing audience, might
+    already include this functional information in the rendered text.</p>
 
-    <p>Guideline 1.1 of [<cite><a class="bibref" href="#bib-WCAG20">WCAG20</a></cite>] also recommends that accessible text alternatives must be "programmatically determinable." This
-    means that the text must be able to be read and used by the assistive technologies (and the accessibility features in browsers)
-    that people with disabilities use. It also means that the user must be able to use their assistive technology to find the
-    alternative text (that they can use) when they land on the non-text content (that they can't use).</p>
+    <p>Guideline 1.1 of [<cite><a class="bibref" href="#bib-WCAG20">WCAG20</a></cite>] also recommends that accessible text alternatives must be "programmatically
+    determinable." This means that the text must be able to be read and used by the assistive technologies (and the
+    accessibility features in browsers) that people with disabilities use. It also means that the user must be able to use their
+    assistive technology to find the alternative text (that they can use) when they land on the non-text content (that they
+    can't use).</p>
   </section>
 
   <section class="appendix" id="features-and-extensions" typeof="bibo:Chapter" resource="#features-and-extensions" rel="bibo:Chapter">
@@ -2844,7 +2870,7 @@ span.note, span.issue { padding: .1em .5em .15em; }
 </dd><dt id="bib-xml-names">[xml-names]</dt><dd rel="dcterms:requires">Tim Bray; Dave Hollander; Andrew Layman; Richard Tobin; Henry Thompson et al. <a href="http://www.w3.org/TR/xml-names"><cite>Namespaces in XML 1.0 (Third Edition)</cite></a>. 8 December 2009. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml-names">http://www.w3.org/TR/xml-names</a>
 </dd></dl></section><section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" rel="bibo:Chapter"><h3 aria-level="2" role="heading" id="h3_informative-references"><span class="secno">E.2 </span>Informative references</h3><dl class="bibliography" about=""><dt id="bib-CEA-608">[CEA-608]</dt><dd rel="dcterms:references"><a href="http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/Line-21-Data-Service.aspx">Line-21 Data Services</a>, ANSI/CEA Standard.
 </dd><dt id="bib-CEA-708">[CEA-708]</dt><dd rel="dcterms:references"><a href="http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx">Digital Television (DTV) Closed Captioning</a>, ANSI/CEA Standard.
-</dd><dt id="bib-HTML5">[HTML5]</dt><dd rel="dcterms:references">Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. <a href="http://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 17 June 2014. W3C Last Call Working Draft. URL: <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</a>
+</dd><dt id="bib-HTML5">[HTML5]</dt><dd rel="dcterms:references">Ian Hickson; Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. <a href="http://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 31 July 2014. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</a>
 </dd><dt id="bib-SDPUS">[SDPUS]</dt><dd rel="dcterms:references">World Wide Web Consortium (W3C). <a href="http://www.w3.org/TR/ttml10-sdp-us/">TTML Simple Delivery Profile for Closed Captions (US)</a> (W3C Working Group Note, 05 February 2013)
 </dd><dt id="bib-SUBM">[SUBM]</dt><dd rel="dcterms:references">World Wide Web Consortium (W3C). <a href="http://www.w3.org/Submission/2013/SUBM-ttml-ww-profiles-20130607/">TTML Text and Image Profiles for Internet Media Subtitles and Captions</a> (Member Submission, 07 June 2013)
 </dd></dl></section></section></body></html>

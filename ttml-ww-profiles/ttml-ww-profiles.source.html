@@ -337,6 +337,26 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
         <p>The <code>ittp:aspectRatio</code> attributes allows authorial control of the mapping of the root container of a subtitle
         document to the related video object frame.</p>
 
+        <p>If present, the <code>ittp:aspectRatio</code> attribute SHALL conform to the following syntax:</p>
+
+        <table class="syntax">
+          <tbody>
+            <tr>
+              <td>
+                <div class="exampleInner">
+                  <pre>
+ittp:aspectRatio
+  : numerator denominator                                               // numerator != 0; denominator != 0
+        
+numerator | denominator
+  : &lt;digit&gt;+
+</pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
         <p>The root container of a subtitle document SHALL be mapped to the related video object frame according to the
         following:</p>
 
@@ -346,9 +366,9 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
             related video object such that:</p>
 
             <ol style="list-style-type: lower-roman;">
-              <li>the aspect ratio of the rectangular area is equal to <code>ittp:aspectRatio</code>,</li>
+              <li>the ratio of the width to the height of the rectangular area is equal to <code>ittp:aspectRatio</code>,</li>
 
-              <li>the center of the rectangular area is colocated with the center of the related video object frame,</li>
+              <li>the center of the rectangular area is collocated with the center of the related video object frame,</li>
 
               <li>the rectangular area (including its boundary) is entirely within the related video object frame (including its
               boundary), and</li>
@@ -365,6 +385,9 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
         </ol>
 
         <p><code>ittp:aspectRatio</code> SHALL NOT be present if <code>tts:extent</code> is present.<br></p>
+
+        <p>An <code>ittp:aspectRatio</code> attribute is considered to be significant only when specified on the <code>tt</code>
+        element.</p>
 
         <p class='note'>As specified in Section <a href="#common-features"></a>, <code>tts:extent</code> is present if the
         <code>px</code> length measure is used anywhere within the document.</p>
@@ -384,13 +407,14 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
         <ol>
           <li>no attribute or element of the TTML timing vocabulary is present within the <code>head</code> element;</li>
 
-          <li>given two of its Intermediate Synchronic Documents <em>A</em> and <em>B</em> with start times <em>TA</em> and <em>TB</em>, respectively, <em>TA</em> is not
-          greater than <em>TB</em> if <em>A</em> includes a <code>p</code> element that occurs earlier in the document than any <code>p</code> element
-          that <em>B</em> includes;</li>
+          <li>given two Intermediate Synchronic Documents <em>A</em> and <em>B</em> of the subtitle document, with start times
+          <em>TA</em> and <em>TB</em>, respectively, <em>TA</em> is not greater than <em>TB</em> if <em>A</em> includes a
+          <code>p</code> element that occurs earlier in the document than any <code>p</code> element that <em>B</em> includes;</li>
 
           <li>no attribute of the TTML timing vocabulary is present on a descendant element of <code>p</code>; and</li>
 
-          <li>no element <em>E1</em> explicitly references, e.g. using <code>xml:id</code>, another element <em>E2</em> where the opening tag of <em>E2</em> occurs after the opening tag of <em>E1</em>.</li>
+          <li>no element <em>E1</em> explicitly references another element <em>E2</em> where the opening tag of <em>E2</em> occurs
+          after the opening tag of <em>E1</em>.</li>
         </ol>
 
         <p>If present, the <code>ittp:progressivelyDecodable</code> attribute SHALL conform to the following syntax:</p>
@@ -410,11 +434,11 @@ ittp:progressivelyDecodable
             </tr>
           </tbody>
         </table>
-		
-		<p>An <code>ittp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
+
+        <p>An <code>ittp:progressivelyDecodable</code> attribute is considered to be significant only when specified on the
         <code>tt</code> element.</p>
-		
-		<p>If not specified, the value of <code>ittp:progressivelyDecodable</code> SHALL be considered to be equal to "false".</p>
+
+        <p>If not specified, the value of <code>ittp:progressivelyDecodable</code> SHALL be considered to be equal to "false".</p>
 
         <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "true" SHALL be a
         progressively decodable subtitle document.</p>
@@ -422,9 +446,6 @@ ittp:progressivelyDecodable
         <p>A subtitle document for which the computed value of <code>ittp:progressivelyDecodable</code> is "false" is neither
         asserted to be a progressively decodable subtitle document nor asserted not to be a progressively decodable subtitle
         document.</p>
-
-        <p class='note'>The placement and use of <code>div</code>, <code>region</code> and <code>span</code> that contain time
-        attributes, and the use of <code>set</code> are constrained when <code>ittp:progressivelyDecodable="true"</code> .</p>
       </section>
 
       <section id='tts-forcedDisplay'>
@@ -563,8 +584,8 @@ ittp:progressivelyDecodable
 
           <li>the computed value of <code>tts:visibility</code> is not "hidden"; and</li>
 
-          <li>either (a) content is selected into the region or (b) the computed value of <code>tts:showBackground</code> is equal to "always"
-          and the computed value of <code>tts:backgroundColor</code> has non-transparent alpha.</li>
+          <li>either (a) content is selected into the region or (b) the computed value of <code>tts:showBackground</code> is equal
+          to "always" and the computed value of <code>tts:backgroundColor</code> has non-transparent alpha.</li>
         </ol>
       </section>
 

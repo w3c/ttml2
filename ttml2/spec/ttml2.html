@@ -82,9 +82,9 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .obsoleted { background-color: #f26d7d }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/08/07 16:46:04 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date$<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/08/07 16:46:04 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date$ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest version:</dt><dd><a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -180,7 +180,8 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 8 <a href="#styling">Styling</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;8.1 <a href="#styling-element-vocabulary">Styling Element Vocabulary</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.1.1 <a href="#styling-vocabulary-styling">styling</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.1.2 <a href="#styling-vocabulary-style">style</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.1.2 <a href="#styling-vocabulary-initial">initial</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.1.3 <a href="#styling-vocabulary-style">style</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;8.2 <a href="#styling-attribute-vocabulary">Styling Attribute Vocabulary</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.2.1 <a href="#style-attribute-style">style</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.2.2 <a href="#style-attribute-backgroundColor">tts:backgroundColor</a><br>
@@ -234,6 +235,7 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.2 <a href="#semantics-style-inheritance">Style Inheritance</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.2.1 <a href="#semantics-style-inheritance-content">Content Style Inheritance</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.2.2 <a href="#semantics-style-inheritance-region">Region Style Inheritance</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.2.3 <a href="#semantics-style-inheritance-root">Root Style Inheritance</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.3 <a href="#semantics-style-resolution-value-categories">Style Resolution Value Categories</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.3.1 <a href="#semantics-style-resolved-value-category-specified">Specified Values</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.4.3.2 <a href="#semantics-style-resolved-value-category-computed">Computed Values</a><br>
@@ -433,11 +435,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e25233">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e25750">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e25497">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e26014">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e26743">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e26907">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e27007">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e27171">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a><br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a><br>
@@ -1231,6 +1233,7 @@ Metadata Items
 Styling
 </td><td>
 <a href="#styling-vocabulary-styling">styling</a>,
+<a href="#styling-vocabulary-initial">initial</a>,
 <a href="#styling-vocabulary-style">style</a>
 </td></tr></tbody></table><p></p><p>Element vocabulary groups that are used in defining content models
 for TTML element types are enumerated in <a href="#element-vocab-group-table"><b>Table 5-4 – Element Vocabulary Groups</b></a>.</p><a id="element-vocab-group-table"></a><table class="common"><caption>Table 5-4 – Element Vocabulary Groups</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Group</th><th>Elements</th></tr><tr><td>
@@ -2324,6 +2327,7 @@ zero or one <code>body</code> element.</p><a id="elt-syntax-tt"></a><table class
   <a href="#content-attribute-lang"><span class="reqattr">xml:lang</span></a> = string
   <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>) : default
   {<em>any attribute in TT Parameter namespace</em>}
+  {<em>any attribute in TT Style namespace</em>}
   {<em>any attribute not in default or any TT namespace</em>}&gt;
   <em>Content:</em> <a href="#document-structure-vocabulary-head">head</a>?, <a href="#document-structure-vocabulary-body">body</a>?
 &lt;/tt&gt;
@@ -2342,7 +2346,9 @@ established as equal to the extent of the <a href="#terms-related-media-object-r
 without specifying its resolution, then this may be accomplished by using metadata specified
 in an external namespace, such as <code>m708:aspectRatio</code> as defined in <a href="#smpte2052">[SMPTE 2052-11]</a>, §5.4.4.
 This would permit, for example, the interchange of information that reflects the
-the semantics of <a href="#cea708e">[CEA-708-E]</a> , §4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p></div><p>An <code>xml:lang</code> attribute must be specified on the <code>tt</code> element.
+the semantics of <a href="#cea708e">[CEA-708-E]</a> , §4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p></div><p>Except for the <code>tts:extent</code> attribute described above, an attribute in the TT Style Namespace should not be specified on the <code>tt</code> element
+unless it denotes an inheritable style property, and, if specified, must be ignored for the purpose of non-validation processing. In the case of validation
+processing, such usage should be reported as a warning, or, if strict validation is performed, as an error.</p><p>An <code>xml:lang</code> attribute must be specified on the <code>tt</code> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the <a href="#terms-document-instance">document instance</a>.</p><p>If no <code>xml:space</code> attribute is specified upon the <code>tt</code> element, then it must
 be considered as if the attribute had been specified with a value of <code>default</code>.</p></div><div class="div3">
@@ -2650,24 +2656,49 @@ for the features that the models have in common.</p><p>No normative use of an
 <code>&lt;?xml-stylesheet ... ?&gt;</code> processing instruction is defined
 by this specification.</p><div class="div2">
 <h3><a id="styling-element-vocabulary"></a>8.1 Styling Element Vocabulary</h3><p>The following elements specify the structure and principal styling aspects of a
-<a href="#terms-document-instance">document instance</a>:</p><ul><li><p><a href="#styling-vocabulary-styling"><b>8.1.1 styling</b></a></p></li><li><p><a href="#styling-vocabulary-style"><b>8.1.2 style</b></a></p></li></ul><div class="div3">
+<a href="#terms-document-instance">document instance</a>:</p><ul><li><p><a href="#styling-vocabulary-styling"><b>8.1.1 styling</b></a></p></li><li><p><a href="#styling-vocabulary-initial"><b>8.1.2 initial</b></a></p></li><li><p><a href="#styling-vocabulary-style"><b>8.1.3 style</b></a></p></li></ul><div class="div3">
 <h4><a id="styling-vocabulary-styling"></a>8.1.1 styling</h4><p>The <code>styling</code> element is a container element used to group
 styling matter, including metadata that applies to styling matter.</p><p>The <code>styling</code> element accepts as its children zero or more
-elements in the <code>Metadata.class</code> element group, followed by
-zero or more <code>style</code> elements.</p><a id="elt-syntax-styling"></a><table class="syntax"><caption>XML Representation – Element Information Item: styling</caption><tbody><tr><td>
+elements in the <code>Metadata.class</code> element group,
+followed by zero or more <code>initial</code> elements,
+followed by zero or more <code>style</code> elements.</p><a id="elt-syntax-styling"></a><table class="syntax"><caption>XML Representation – Element Information Item: styling</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;styling
   <a href="#content-attribute-id">xml:id</a> = ID
   <a href="#content-attribute-lang">xml:lang</a> = string
   <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
   {<em>any attribute not in default or any TT namespace</em>}&gt;
-  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, <a href="#styling-vocabulary-style">style</a>*
+  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*, <a href="#styling-vocabulary-initial">initial</a>*, <a href="#styling-vocabulary-style">style</a>*
 &lt;/styling&gt;
 </pre></div>
 </td></tr></tbody></table><p>To the extent that time semantics apply to the content of the
 <code>styling</code> element, the implied time interval of this element is
 defined to be coterminous with the <a href="#terms-root-temporal-extent">root temporal extent</a>.</p></div><div class="div3">
-<h4><a id="styling-vocabulary-style"></a>8.1.2 style</h4><p>The <code>style</code> element is used to define
+<h4><a id="styling-vocabulary-initial"></a>8.1.2 initial</h4><p>The <code>initial</code> element is used to modify the initial value of one or more style properties, i.e, to specify use of different value(s) than
+the specification defined initial value(s).</p><p>The <code>initial</code> element accepts as its children zero or more <code>metadata</code> elements.</p><a id="elt-syntax-initial"></a><table class="syntax"><caption>XML Representation – Element Information Item: initial</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;initial
+  <a href="#content-attribute-id">xml:id</a> = ID
+  <a href="#content-attribute-lang">xml:lang</a> = string
+  <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
+  {<em>any attribute in TT Style namespace</em>}
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-table">Metadata.class</a>*
+&lt;/initial&gt;
+</pre></div>
+</td></tr></tbody></table><p>The <code>initial</code> element is illustrated by the following example, wherein
+the initial value of the <code>tts:color</code> property is defined to be <code>yellow</code>.</p><a id="style-vocabulary-initial-example-1"></a><table class="example"><caption>Example Fragment – <code>initial</code></caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+...
+&lt;head&gt;
+  &lt;styling&gt;
+    <span class="strong">&lt;initial tts:color="yellow"/&gt;</span>
+  &lt;styling&gt;
+&lt;head&gt;
+...
+</pre></div>
+</td></tr></tbody></table></div><div class="div3">
+<h4><a id="styling-vocabulary-style"></a>8.1.3 style</h4><p>The <code>style</code> element is used to define
 a set of style specifications expressed as a
 specified style set in accordance with
 <a href="#semantics-style-resolution-processing-sss"><b>8.4.4.2 Specified Style Set Processing</b></a>.</p><p>The <code>style</code> element accepts as its children zero or more <code>metadata</code> elements.</p><a id="elt-syntax-style"></a><table class="syntax"><caption>XML Representation – Element Information Item: style</caption><tbody><tr><td>
@@ -2694,13 +2725,18 @@ with certain animation elements, <a href="#terms-content-element">content elemen
 for use with style definition elements, certain layout elements, and <a href="#terms-content-element">content elements</a>
 that support inline style specifications:</p><ul><li><p><a href="#style-attribute-backgroundColor"><b>8.2.2 tts:backgroundColor</b></a></p></li><li><p><a href="#style-attribute-border"><b>8.2.3 tts:border</b></a></p></li><li><p><a href="#style-attribute-color"><b>8.2.4 tts:color</b></a></p></li><li><p><a href="#style-attribute-direction"><b>8.2.5 tts:direction</b></a></p></li><li><p><a href="#style-attribute-display"><b>8.2.6 tts:display</b></a></p></li><li><p><a href="#style-attribute-displayAlign"><b>8.2.7 tts:displayAlign</b></a></p></li><li><p><a href="#style-attribute-extent"><b>8.2.8 tts:extent</b></a></p></li><li><p><a href="#style-attribute-fontFamily"><b>8.2.9 tts:fontFamily</b></a></p></li><li><p><a href="#style-attribute-fontSize"><b>8.2.10 tts:fontSize</b></a></p></li><li><p><a href="#style-attribute-fontStyle"><b>8.2.11 tts:fontStyle</b></a></p></li><li><p><a href="#style-attribute-fontWeight"><b>8.2.12 tts:fontWeight</b></a></p></li><li><p><a href="#style-attribute-lineHeight"><b>8.2.13 tts:lineHeight</b></a></p></li><li><p><a href="#style-attribute-opacity"><b>8.2.14 tts:opacity</b></a></p></li><li><p><a href="#style-attribute-origin"><b>8.2.15 tts:origin</b></a></p></li><li><p><a href="#style-attribute-overflow"><b>8.2.16 tts:overflow</b></a></p></li><li><p><a href="#style-attribute-padding"><b>8.2.17 tts:padding</b></a></p></li><li><p><a href="#style-attribute-showBackground"><b>8.2.18 tts:showBackground</b></a></p></li><li><p><a href="#style-attribute-textAlign"><b>8.2.19 tts:textAlign</b></a></p></li><li><p><a href="#style-attribute-textDecoration"><b>8.2.20 tts:textDecoration</b></a></p></li><li><p><a href="#style-attribute-textOrientation"><b>8.2.21 tts:textOrientation</b></a></p></li><li><p><a href="#style-attribute-textOutline"><b>8.2.22 tts:textOutline</b></a></p></li><li><p><a href="#style-attribute-unicodeBidi"><b>8.2.23 tts:unicodeBidi</b></a></p></li><li><p><a href="#style-attribute-visibility"><b>8.2.24 tts:visibility</b></a></p></li><li><p><a href="#style-attribute-wrapOption"><b>8.2.25 tts:wrapOption</b></a></p></li><li><p><a href="#style-attribute-writingMode"><b>8.2.26 tts:writingMode</b></a></p></li><li><p><a href="#style-attribute-zIndex"><b>8.2.27 tts:zIndex</b></a></p></li></ul><table border="1" class="ednote" summary="Editorial note: Additional Border Styling Attributes"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Additional Border Styling Attributes</b></td><td align="right" valign="top">2013-08-24</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Consider adding support for <code>tts:borderColor</code>, <code>tts:borderStyle</code>, and <code>tts:borderWidth</code>
 in order to provide a means to independently express styling of the four different borders (top, right, bottom, left). As currently specified, i.e., with only the
-<code>tts:border</code> attribute, one can only express the four borders using the same color, style, and width.</td></tr></table><p>Unless explicitly stated otherwise, linear white-space (LWSP) must
+<code>tts:border</code> attribute, one can only express the four borders using the same color, style, and width.</td></tr></table><p>Unless explicitly permitted by an element type definition, an attribute in the TT Style Namespace should not be specified on an element
+unless it either applies to that element or denotes an inheritable style property. If it does not apply to that element
+and does not denote an inheritable style property, then it must be ignored for the purpose of non-validation processing.
+In the case of validation processing, such usage should be reported as a warning, or, if strict validation is performed,
+as an error.</p><p>Unless explicitly stated otherwise, linear white-space (LWSP) must
 appear between adjacent non-terminal components of a value of a TT
 Style property value unless some other delimiter is permitted and used.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification makes use of <em>lowerCamelCased</em> local
 names for style attributes that
 are based upon like-named properties defined by <a href="#xsl11">[XSL 1.1]</a>.
 This convention is likewise extended to token values of such
-properties.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>A style property may be expressed as a specified attribute on any
+properties.</p></div><div class="note"><p class="prefix"><b>Note:</b></p><p>An inheritable style property may be expressed as a specified attribute on the
+root <a href="#document-structure-vocabulary-tt"><code>tt</code></a> element or on a
 <a href="#terms-content-element">content element</a> type
 independently of whether the property applies to that
 element type. This capability permits the expression of an inheritable
@@ -4323,9 +4359,7 @@ to the <code>region</code> element.</p></div></div></div><div class="div3">
 specified style set of each content and
 layout element.</p><p>Styles are further propagated to content matter
 using:
-</p><ul><li><p><a href="#semantics-style-inheritance-content">content style inheritance</a></p></li><li><p><a href="#semantics-style-inheritance-content">region style inheritance</a></p></li></ul><table border="1" class="ednote" summary="Editorial note: Layout Style Inheritance"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Layout Style Inheritance</b></td><td align="right" valign="top">2013-09-05</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Regions should be able to inherit styles from a common ancestor in order to prevent
-having to full populate region styles. <a href="https://www.w3.org/AudioVideo/TT/tracker/issues/277">Issue 277</a> proposes
-inheritance from the layout element.</td></tr></table><p>For the purpose of determining inherited styles, the element hierarchy of
+</p><ul><li><p><a href="#semantics-style-inheritance-content">content style inheritance</a></p></li><li><p><a href="#semantics-style-inheritance-content">region style inheritance</a></p></li><li><p><a href="#semantics-style-inheritance-content">root style inheritance</a></p></li></ul><p>For the purpose of determining inherited styles, the element hierarchy of
 an intermediate synchronic document form of a <a href="#terms-document-instance">document instance</a> must be used, where
 such intermediate forms are defined by <a href="#semantics-region-layout-step-1"><b>9.3.3 Intermediate Synchronic Document Construction</b></a>.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The intermediate synchronic document form is utilized rather than
 the original form in order to facilitate region inheritance
@@ -4334,11 +4368,10 @@ processing.</p></div><div class="div4">
 within an intermediate synchronic document
 if a style property is not associated with a <a href="#terms-content-element">content element</a> (or
 an anonymous span) and the style property is designated as
-inheritable.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The <code>tt</code> element is not a <a href="#terms-content-element">content element</a>;
-consequently, the <code>body</code> element is the outermost element from which content style inheritance occurs.</p></div><p>If a style property is determined to require inheritance, then the inherited value must
+inheritable.</p><p>If a style property is determined to require inheritance, then the inherited value must
 be the value of the same named style property in the computed
 style set of the
-element's immediate ancestor element
+element's nearest ancestor element that defines the property
 within the applicable intermediate synchronic document.</p><a id="style-inheritance-example-2"></a><table class="example"><caption>Example – Content Style Inheritance</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;p <span class="strong">tts:fontFamily="monospaceSansSerif"</span>&gt;
@@ -4355,14 +4388,10 @@ and is added to the
 specified
 style
 set of the <code>span</code> element.</p></div></div><div class="div4">
-<h5><a id="semantics-style-inheritance-region"></a>8.4.2.2 Region Style Inheritance</h5><p>Style properties are inherited from a <a href="#layout-vocabulary-region">region</a> element in the following case:</p><ol class="enumar"><li><p>if a style property <em>P</em> is not associated with
+<h5><a id="semantics-style-inheritance-region"></a>8.4.2.2 Region Style Inheritance</h5><p>Style properties are inherited from a <a href="#layout-vocabulary-region">region</a> element in the following case:</p><ol class="enumar"><li><p>if an inheritable style property <em>P</em> is not associated with
 a <a href="#terms-content-element">content element</a>
-or an anonymous span <em>E</em> and the style
-property is designated as inheritable, and</p></li><li><p>if that
-style property <em>P</em> is in the computed style
-set of region
-<em>R</em>,
-and</p></li><li><p>if that element <em>E</em> is flowed into (presented within) region
+or an anonymous span <em>E</em>, and</p></li><li><p>if that style property <em>P</em> is in the computed style
+set of region <em>R</em>, and</p></li><li><p>if that element <em>E</em> is flowed into (presented within) region
 <em>R</em>.</p></li></ol><a id="style-inheritance-example-3"></a><table class="example"><caption>Example – Region Style Inheritance</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;region <span class="strong">xml:id="r1"</span>&gt;
@@ -4375,7 +4404,26 @@ and</p></li><li><p>if that element <em>E</em> is flowed into (presented within) 
 </td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>In the above example, the anonymous span that encloses the character
 items <code>Yellow Monospace</code> effectively inherits the <code>tts:color</code>
 and <code>tts:fontFamily</code> styles specified on the <code>region</code>
-element into which the <code>p</code> element is flowed (presented).</p></div></div></div><div class="div3">
+element into which the <code>p</code> element is flowed (presented).</p></div></div><div class="div4">
+<h5><a id="semantics-style-inheritance-root"></a>8.4.2.3 Root Style Inheritance</h5><p>Style properties are inherited from the root <a href="#document-structure-vocabulary-tt">tt</a> element in the following case:</p><ol class="enumar"><li><p>if an inheritable style property <em>P</em> is not associated with
+a <a href="#layout-vocabular-region"><code>region</code></a> element, and</p></li><li><p>if that
+style property <em>P</em> is in the computed style
+set of the root <a href="#document-structure-vocabulary-tt">tt</a> element.</p></li></ol><div class="note"><p class="prefix"><b>Note:</b></p><p>Root style inheritance provides a mechanism by means of which <code>region</code> elements
+can inherit a common style rather than repeating the specification of the style on each
+<code>region</code> element.</p></div><a id="style-inheritance-example-4"></a><table class="example"><caption>Example – Root Style Inheritance</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;tt <span class="strong">tts:color="yellow"</span>&gt;
+...
+&lt;region xml:id="r1" <span class="strong">tts:fontFamily="monospaceSerif"</span>/&gt;
+...
+&lt;p region="r1"&gt;Yellow Monospace&lt;/p&gt;
+...
+&lt;/tt&gt;
+</pre></div>
+</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>In the above example, the <code>region</code> element inherits the
+<code>tts:color</code> style specified on the <code>tt</code> element, which,
+along with the <code>tts:fontFamily</code> style specified on the <code>region</code>
+element, are inherited by <code>p</code> element when selected into the region.</p></div></div></div><div class="div3">
 <h4><a id="semantics-style-resolution-value-categories"></a>8.4.3 Style Resolution Value Categories</h4><p>During style resolution, layout, and presentation processing,
 three categories of style property values are distinguished as
 follows:</p><ul><li><p><a href="#semantics-style-resolved-value-category-specified">specified values</a></p></li><li><p><a href="#semantics-style-resolved-value-category-computed">computed values</a></p></li><li><p><a href="#semantics-style-resolved-value-category-actual">actual values</a></p></li></ul><div class="div4">
@@ -4521,23 +4569,28 @@ element type of <em>E</em> is not the animation element type
 <code>set</code>, then for each
 immediate animation (<code>set</code>) element child <em>A</em> of element <em>E</em>,
 merge the specified style set of <em>A</em>,
-<em>SSS(A)</em>, into the specified style set of <em>E</em>, <em>SSS(E)</em>;</p></li><li><p><span class="strong">[implicit inheritance]</span> if the
-element type of <em>E</em> is not the animation element type <code>set</code>
-or the styling element type <code>style</code>,
-then for each inheritable style property
-<em>P<sub>INH</sub></em> in the set of style properties defined
+<em>SSS(A)</em>, into the specified style set of <em>E</em>, <em>SSS(E)</em>;</p></li><li><p><span class="strong">[implicit inheritance and initial value fallback]</span> if the
+element type of <em>E</em> is not animation element type <code>animate</code> or <code>set</code>
+and is not styling element type <code>style</code>,
+then for each style property
+<em>P</em> in the set of style properties defined
 above in <a href="#styling-attribute-vocabulary"><b>8.2 Styling Attribute Vocabulary</b></a>, perform the
-following ordered sub-steps:</p><ol class="enumla"><li><p>if <em>P<sub>INH</sub></em> is present in the specified
+following ordered sub-steps:</p><ol class="enumla"><li><p>if <em>P</em> is present in the specified
 style set of <em>E</em>, <em>SSS(E)</em>, then continue to the
-next inheritable style property;</p></li><li><p>if the element type of <em>E</em> is the layout element
-type <code>region</code>, then set <em>P′</em> to the initial value of
-property <em>P</em>, where the initial value of a property is
-determined according to the specific property definition found above
-in <a href="#styling-attribute-vocabulary"><b>8.2 Styling Attribute Vocabulary</b></a>;</p></li><li><p>if the element type of <em>E</em> is a <a href="#terms-content-element">content element</a>
-type or anonymous span, then set <em>P′</em> to the result of
+next style property;</p></li><li><p>if <em>P</em> is defined to be inheritable and <em>E</em> is
+not the <a href="#document-structure-vocabulary-tt"><code>tt</code></a> element, then perform the following:</p><ul><li><p>if <em>E</em> is not a
+<a href="#styling-vocabulary-style"><code>style</code></a>,
+<a href="#animation-vocabulary-animate"><code>animate</code></a>, or
+<a href="#animation-vocabulary-set"><code>set</code></a> element,
+then set <em>P′</em> to the result of
 looking up the value of <em>P</em> in the computed style set of
-the immediate ancestor element of <em>E</em>, i.e.,
-<em>CSS(PARENT(E))</em>;</p></li><li><p>if the value of <em>P′</em> is not undefined, then merge
+the nearest ancestor element of <em>E</em>, <em>NEAREST-ANCESTOR(E)</em>, such that
+<em>CSS(NEAREST-ANCESTOR(E))</em> contains a definition of <em>P</em>;</p></li></ul></li><li><p>otherwise (<em>P</em> is not inheritable or <em>E</em> is
+the <a href="#document-structure-vocabulary-tt"><code>tt</code></a> element), perform the following:</p><ul><li><p>set <em>P′</em> to the initial value of
+property <em>P</em>, where the initial value of a property is
+determined as follows:</p><ol class="enumlr"><li><p>if an <a href="#styling-vocabulary-initial"><code>initial</code></a>
+element defines the initial value for <em>P</em>, then use that value;</p></li><li><p>otherwise, use the initial value specified by the property definition of <em>P</em> found above
+in <a href="#styling-attribute-vocabulary"><b>8.2 Styling Attribute Vocabulary</b></a>;</p></li></ol></li></ul></li><li><p>if the value of <em>P′</em> is not undefined, then merge
 <em>P′</em> into the specified style set of <em>E</em>,
 <em>SSS(E)</em>.</p></li></ol></li></ol></div><div class="div4">
 <h5><a id="semantics-style-resolution-processing-css"></a>8.4.4.3 Computed Style Set Processing</h5><p>The computed style set <em>CSS</em> of an element or
@@ -4549,31 +4602,27 @@ determine (obtain) the specified style set <em>SSS</em> of
 <a href="#semantics-style-resolution-processing-sss"><b>8.4.4.2 Specified Style Set Processing</b></a>;</p></li><li><p><span class="strong">[initialization]</span>
 initialize <em>CSS(E)</em> to a (deep) copy of
 <em>SSS(E)</em>;</p></li><li><p><span class="strong">[filter]</span> if
-<em>E</em> is a <code>set</code> or <code>style</code> element, then return
+<em>E</em> is an <code>animate</code>, <code>set</code>, or <code>style</code> element, then return
 <em>CSS(E)</em> as the resulting computed style set without
 further resolution; otherwise, continue with the next rule;</p></li><li><p><span class="strong">[relative value resolution]</span> for each
 style property <em>P</em> in <em>CSS(E)</em>, where the value
 type of <em>P</em> is relative, perform the following ordered
 sub-steps:</p><ol class="enumla"><li><p>replace the relative value of <em>P</em> with an
 equivalent, non-relative (computed) value;</p></li><li><p>set the category of <em>P</em> to "computed";</p></li></ol></li></ol><div class="note"><p class="prefix"><b>Note:</b></p><p>As a result of the filtering rule above, the computed style set of
-a <code>set</code> or <code>style</code> element includes only specified values, in which case
+an <code>animate</code>, <code>set</code>, or <code>style</code> element includes only specified values, in which case
 relative value expressions remain relative; consequently, the
 resolution of relative value expressions (that may be assigned by
 means of referential style association) always takes place in the
 context of a layout or <a href="#terms-content-element">content element</a> which has a presentation
 context, and not in the non-presentation, declaration context
-of a <code>set</code> element or a referentiable <code>style</code> element.</p></div></div><div class="div4">
+of an <code>animate</code>, <code>set</code>, or referentiable <code>style</code> element.</p></div></div><div class="div4">
 <h5><a id="semantics-style-resolution-process-overall"></a>8.4.4.4 Style Resolution Process</h5><p>The top-level style resolution process is defined as follows: using
-a preorder traversal of each element and anonymous span,
+a preorder traversal of each element and <em>anonymous span</em>,
 <em>E</em>, of an intermediate synchronic document,
 <em>DOC<sub>inter</sub></em>, perform the following ordered
-sub-steps:</p><ol class="enumar"><li><p><span class="strong">[filter]</span> if the element type
-of <em>E</em> is not the styling element type <code>style</code>, is
-not the layout element type <code>region</code>, is not the animation
-element type <code>set</code>, and is not one of the
-<a href="#terms-content-element">content element</a> types <code>body</code>, <code>div</code>, <code>p</code>,
-<code>span</code>, <code>br</code>, or anonymous span, then continue to the
-next element in the preorder traversal;</p></li><li><p> <span class="strong">[resolve computed styles]</span>
+sub-steps:</p><ol class="enumar"><li><p><span class="strong">[filter]</span> if <em>E</em>
+is not one of the following, then continue to the next element in the preorder traversal, i.e.,
+do not perform the subsequent step below on <em>E</em>:</p><ul><li><p><a href="#document-structure-vocabulary-tt"><code>tt</code></a></p></li><li><p><a href="#styling-vocabulary-style"><code>style</code></a></p></li><li><p><a href="#layout-vocabulary-region"><code>region</code></a></p></li><li><p><a href="#document-structure-vocabulary-body"><code>body</code></a></p></li><li><p><a href="#content-vocabulary-body"><code>div</code></a></p></li><li><p><a href="#content-vocabulary-body"><code>p</code></a></p></li><li><p><a href="#content-vocabulary-body"><code>span</code></a></p></li><li><p><a href="#content-vocabulary-body"><code>br</code></a></p></li><li><p><a href="#animation-vocabulary-animate"><code>animate</code></a></p></li><li><p><a href="#animation-vocabulary-set"><code>set</code></a></p></li><li><p><em>anonymous span</em></p></li></ul></li><li><p> <span class="strong">[resolve computed styles]</span>
 determine (obtain) the computed style set <em>CSS</em> of
 <em>E</em>, namely, <em>CSS(E)</em>, in accordance with
 <a href="#semantics-style-resolution-processing-css"><b>8.4.4.3 Computed Style Set Processing</b></a>.</p></li></ol></div></div></div></div><div class="div1">
@@ -5721,7 +5770,7 @@ semantics depend entirely upon an application's use of TTML Content.</p><div cla
 <h3><a id="metadata-element-vocabulary"></a>12.1 Metadata Element Vocabulary</h3><p>The <a href="#metadata-vocabulary-metadata"><b>12.1.1 metadata</b></a> element serves as
 a generic container element for grouping metadata information.</p><p>In addition, the following elements, all defined in the TT Metadata Namespace,
 provide standard representations for metadata that is expected to be commonly
-used in a <a href="#terms-document-instance">document instancea</a>:
+used in a <a href="#terms-document-instance">document instance</a>:
 </p><ul><li><p><a href="#metadata-vocabulary-title"><b>12.1.2 ttm:title</b></a></p></li><li><p><a href="#metadata-vocabulary-desc"><b>12.1.3 ttm:desc</b></a></p></li><li><p><a href="#metadata-vocabulary-copyright"><b>12.1.4 ttm:copyright</b></a></p></li><li><p><a href="#metadata-vocabulary-agent"><b>12.1.5 ttm:agent</b></a></p></li><li><p><a href="#metadata-vocabulary-name"><b>12.1.6 ttm:name</b></a></p></li><li><p><a href="#metadata-vocabulary-actor"><b>12.1.7 ttm:actor</b></a></p></li></ul><div class="div3">
 <h4><a id="metadata-vocabulary-metadata"></a>12.1.1 metadata</h4><p>The <code>metadata</code> element functions as a generic container for metadata
 information.</p><p>Metadata information may be expressed with a <code>metadata</code> element by specifying
@@ -7604,7 +7653,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e25233"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e25497"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7661,7 +7710,7 @@ but extended to support distinct specification of optionality.</p></li><li><p>De
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li><li><p>Conceptually derived from existing <code>tt:layout</code> element,
 which is a generic container for layout specifications, but for use
 in defining animation specifications that apply to targeted elements.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e25750"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+<h3><a id="d3e26014"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7753,9 +7802,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e26743"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e27007"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e26907"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e27171"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

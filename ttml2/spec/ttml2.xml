@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 288e14ff2047 2014/08/07 16:46:04 glenn $ -->
+<!-- $Id: ttml2.xml,v cc79aa829687 2014/09/14 13:28:35 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/08/07 16:46:04 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/09/14 13:28:35 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/08/07 16:46:04 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/09/14 13:28:35 $</p></revisiondesc>
 </header>
 
 <body>
@@ -2267,6 +2267,7 @@ Styling
 </td>
 <td>
 <loc href="#styling-vocabulary-styling">styling</loc>,
+<loc href="#styling-vocabulary-initial">initial</loc>,
 <loc href="#styling-vocabulary-style">style</loc>
 </td>
 </tr>
@@ -4326,6 +4327,7 @@ zero or one <el>body</el> element.</p>
   <loc href="#content-attribute-lang"><phrase role="reqattr">xml:lang</phrase></loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
   {<emph>any attribute in TT Parameter namespace</emph>}
+  {<emph>any attribute in TT Style namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#document-structure-vocabulary-head">head</loc>?, <loc href="#document-structure-vocabulary-body">body</loc>?
 &lt;/tt&gt;
@@ -4360,6 +4362,9 @@ in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bib
 This would permit, for example, the interchange of information that reflects the
 the semantics of <bibref ref="cea708e"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
 </note>
+<p>Except for the <att>tts:extent</att> attribute described above, an attribute in the TT Style Namespace should not be specified on the <el>tt</el> element
+unless it denotes an inheritable style property, and, if specified, must be ignored for the purpose of non-validation processing. In the case of validation
+processing, such usage should be reported as a warning, or, if strict validation is performed, as an error.</p>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the <loc href="#terms-document-instance">document instance</loc>.</p>
@@ -4884,6 +4889,7 @@ by this specification.</p>
 <loc href="#terms-document-instance">document instance</loc>:</p>
 <ulist>
 <item><p><specref ref="styling-vocabulary-styling"/></p></item>
+<item><p><specref ref="styling-vocabulary-initial"/></p></item>
 <item><p><specref ref="styling-vocabulary-style"/></p></item>
 </ulist>
 <div3 id="styling-vocabulary-styling">
@@ -4891,8 +4897,9 @@ by this specification.</p>
 <p>The <el>styling</el> element is a container element used to group
 styling matter, including metadata that applies to styling matter.</p>
 <p>The <el>styling</el> element accepts as its children zero or more
-elements in the <code>Metadata.class</code> element group, followed by
-zero or more <el>style</el> elements.</p>
+elements in the <code>Metadata.class</code> element group,
+followed by zero or more <el>initial</el> elements,
+followed by zero or more <el>style</el> elements.</p>
 <table id="elt-syntax-styling" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: styling</caption>
 <tbody>
@@ -4904,7 +4911,7 @@ zero or more <el>style</el> elements.</p>
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#styling-vocabulary-style">style</loc>*
+  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*, <loc href="#styling-vocabulary-initial">initial</loc>*, <loc href="#styling-vocabulary-style">style</loc>*
 &lt;/styling&gt;
 </eg>
 </td>
@@ -4914,6 +4921,51 @@ zero or more <el>style</el> elements.</p>
 <p>To the extent that time semantics apply to the content of the
 <el>styling</el> element, the implied time interval of this element is
 defined to be coterminous with the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
+</div3>
+<div3 id="styling-vocabulary-initial">
+<head>initial</head>
+<p>The <el>initial</el> element is used to modify the initial value of one or more style properties, i.e, to specify use of different value(s) than
+the specification defined initial value(s).</p>
+<p>The <el>initial</el> element accepts as its children zero or more <el>metadata</el> elements.</p>
+<table id="elt-syntax-initial" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: initial</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;initial
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute in TT Style namespace</emph>}
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-table">Metadata.class</loc>*
+&lt;/initial&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <el>initial</el> element is illustrated by the following example, wherein
+the initial value of the <att>tts:color</att> property is defined to be <code>yellow</code>.</p>
+<table id="style-vocabulary-initial-example-1" role="example">
+<caption>Example Fragment &ndash; <el>initial</el></caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+...
+&lt;head&gt;
+  &lt;styling&gt;
+    <phrase role="strong">&lt;initial tts:color="yellow"/&gt;</phrase>
+  &lt;styling&gt;
+&lt;head&gt;
+...
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 <div3 id="styling-vocabulary-style">
 <head>style</head>
@@ -4998,6 +5050,11 @@ that support inline style specifications:</p>
 in order to provide a means to independently express styling of the four different borders (top, right, bottom, left). As currently specified, i.e., with only the
 <code>tts:border</code> attribute, one can only express the four borders using the same color, style, and width.</edtext>
 </ednote>
+<p>Unless explicitly permitted by an element type definition, an attribute in the TT Style Namespace should not be specified on an element
+unless it either applies to that element or denotes an inheritable style property. If it does not apply to that element
+and does not denote an inheritable style property, then it must be ignored for the purpose of non-validation processing.
+In the case of validation processing, such usage should be reported as a warning, or, if strict validation is performed,
+as an error.</p>
 <p>Unless explicitly stated otherwise, linear white-space (LWSP) must
 appear between adjacent non-terminal components of a value of a TT
 Style property value unless some other delimiter is permitted and used.</p>
@@ -5009,7 +5066,8 @@ This convention is likewise extended to token values of such
 properties.</p>
 </note>
 <note role="clarification">
-<p>A style property may be expressed as a specified attribute on any
+<p>An inheritable style property may be expressed as a specified attribute on the
+root <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element or on a
 <loc href="#terms-content-element">content element</loc> type
 independently of whether the property applies to that
 element type. This capability permits the expression of an inheritable
@@ -8590,14 +8648,8 @@ using:
 <ulist>
 <item><p><loc href="#semantics-style-inheritance-content">content style inheritance</loc></p></item>
 <item><p><loc href="#semantics-style-inheritance-content">region style inheritance</loc></p></item>
+<item><p><loc href="#semantics-style-inheritance-content">root style inheritance</loc></p></item>
 </ulist>
-<ednote>
-<name>Layout Style Inheritance</name>
-<date>2013-09-05</date>
-<edtext>Regions should be able to inherit styles from a common ancestor in order to prevent
-having to full populate region styles. <loc href="https://www.w3.org/AudioVideo/TT/tracker/issues/277">Issue 277</loc> proposes
-inheritance from the layout element.</edtext>
-</ednote>
 <p>For the purpose of determining inherited styles, the element hierarchy of
 an intermediate synchronic document form of a <loc href="#terms-document-instance">document instance</loc> must be used, where
 such intermediate forms are defined by <specref ref="semantics-region-layout-step-1"/>.</p>
@@ -8613,14 +8665,10 @@ within an intermediate synchronic document
 if a style property is not associated with a <loc href="#terms-content-element">content element</loc> (or
 an anonymous span) and the style property is designated as
 inheritable.</p>
-<note role="clarification">
-<p>The <el>tt</el> element is not a <loc href="#terms-content-element">content element</loc>;
-consequently, the <el>body</el> element is the outermost element from which content style inheritance occurs.</p>
-</note>
 <p>If a style property is determined to require inheritance, then the inherited value must
 be the value of the same named style property in the computed
 style set of the
-element's immediate ancestor element
+element's nearest ancestor element that defines the property
 within the applicable intermediate synchronic document.</p>
 <table id="style-inheritance-example-2" role="example">
 <caption>Example &ndash; Content Style Inheritance</caption>
@@ -8653,14 +8701,11 @@ set of the <el>span</el> element.</p>
 <head>Region Style Inheritance</head>
 <p>Style properties are inherited from a <loc href="#layout-vocabulary-region">region</loc> element in the following case:</p>
 <olist>
-<item><p>if a style property <emph>P</emph> is not associated with
+<item><p>if an inheritable style property <emph>P</emph> is not associated with
 a <loc href="#terms-content-element">content element</loc>
-or an anonymous span <emph>E</emph> and the style
-property is designated as inheritable, and</p></item> <item><p>if that
-style property <emph>P</emph> is in the computed style
-set of region
-<emph>R</emph>,
-and</p></item>
+or an anonymous span <emph>E</emph>, and</p></item>
+<item><p>if that style property <emph>P</emph> is in the computed style
+set of region <emph>R</emph>, and</p></item>
 <item><p>if that element <emph>E</emph> is flowed into (presented within) region
 <emph>R</emph>.</p></item>
 </olist>
@@ -8686,6 +8731,46 @@ and</p></item>
 items <code>Yellow Monospace</code> effectively inherits the <att>tts:color</att>
 and <att>tts:fontFamily</att> styles specified on the <el>region</el>
 element into which the <el>p</el> element is flowed (presented).</p>
+</note>
+</div4>
+<div4 id="semantics-style-inheritance-root">
+<head>Root Style Inheritance</head>
+<p>Style properties are inherited from the root <loc href="#document-structure-vocabulary-tt">tt</loc> element in the following case:</p>
+<olist>
+<item><p>if an inheritable style property <emph>P</emph> is not associated with
+a <loc href="#layout-vocabular-region"><el>region</el></loc> element, and</p></item>
+<item><p>if that
+style property <emph>P</emph> is in the computed style
+set of the root <loc href="#document-structure-vocabulary-tt">tt</loc> element.</p></item>
+</olist>
+<note role="motivation">
+<p>Root style inheritance provides a mechanism by means of which <el>region</el> elements
+can inherit a common style rather than repeating the specification of the style on each
+<el>region</el> element.</p>
+</note>
+<table id="style-inheritance-example-4" role="example">
+<caption>Example &ndash; Root Style Inheritance</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt <phrase role="strong">tts:color="yellow"</phrase>&gt;
+...
+&lt;region xml:id="r1" <phrase role="strong">tts:fontFamily="monospaceSerif"</phrase>/&gt;
+...
+&lt;p region="r1"&gt;Yellow Monospace&lt;/p&gt;
+...
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="explanation">
+<p>In the above example, the <el>region</el> element inherits the
+<att>tts:color</att> style specified on the <el>tt</el> element, which,
+along with the <att>tts:fontFamily</att> style specified on the <el>region</el>
+element, are inherited by <el>p</el> element when selected into the region.</p>
 </note>
 </div4>
 </div3>
@@ -8936,30 +9021,56 @@ immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph
 merge the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <item>
-<p><phrase role="strong">[implicit inheritance]</phrase> if the
-element type of <emph>E</emph> is not the animation element type <el>set</el>
-or the styling element type <el>style</el>,
-then for each inheritable style property
-<emph>P<sub>INH</sub></emph> in the set of style properties defined
+<p><phrase role="strong">[implicit inheritance and initial value fallback]</phrase> if the
+element type of <emph>E</emph> is not animation element type <el>animate</el> or <el>set</el>
+and is not styling element type <el>style</el>,
+then for each style property
+<emph>P</emph> in the set of style properties defined
 above in <specref ref="styling-attribute-vocabulary"/>, perform the
 following ordered sub-steps:</p>
 <olist>
-<item><p>if <emph>P<sub>INH</sub></emph> is present in the specified
+<item>
+<p>if <emph>P</emph> is present in the specified
 style set of <emph>E</emph>, <emph>SSS(E)</emph>, then continue to the
-next inheritable style property;</p></item>
-<item><p>if the element type of <emph>E</emph> is the layout element
-type <el>region</el>, then set <emph>P&prime;</emph> to the initial value of
-property <emph>P</emph>, where the initial value of a property is
-determined according to the specific property definition found above
-in <specref ref="styling-attribute-vocabulary"/>;</p></item>
-<item><p>if the element type of <emph>E</emph> is a <loc href="#terms-content-element">content element</loc>
-type or anonymous span, then set <emph>P&prime;</emph> to the result of
+next style property;</p>
+</item>
+<item>
+<p>if <emph>P</emph> is defined to be inheritable and <emph>E</emph> is
+not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
+<ulist>
+<item>
+<p>if <emph>E</emph> is not a
+<loc href="#styling-vocabulary-style"><el>style</el></loc>,
+<loc href="#animation-vocabulary-animate"><el>animate</el></loc>, or
+<loc href="#animation-vocabulary-set"><el>set</el></loc> element,
+then set <emph>P&prime;</emph> to the result of
 looking up the value of <emph>P</emph> in the computed style set of
-the immediate ancestor element of <emph>E</emph>, i.e.,
-<emph>CSS(PARENT(E))</emph>;</p></item>
-<item><p>if the value of <emph>P&prime;</emph> is not undefined, then merge
+the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>, such that
+<emph>CSS(NEAREST-ANCESTOR(E))</emph> contains a definition of <emph>P</emph>;</p>
+</item>
+</ulist>
+</item>
+<item>
+<p>otherwise (<emph>P</emph> is not inheritable or <emph>E</emph> is
+the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element), perform the following:</p>
+<ulist>
+<item><p>set <emph>P&prime;</emph> to the initial value of
+property <emph>P</emph>, where the initial value of a property is
+determined as follows:</p>
+<olist>
+<item><p>if an <loc href="#styling-vocabulary-initial"><el>initial</el></loc>
+element defines the initial value for <emph>P</emph>, then use that value;</p></item>
+<item><p>otherwise, use the initial value specified by the property definition of <emph>P</emph> found above
+in <specref ref="styling-attribute-vocabulary"/>;</p></item>
+</olist>
+</item>
+</ulist>
+</item>
+<item>
+<p>if the value of <emph>P&prime;</emph> is not undefined, then merge
 <emph>P&prime;</emph> into the specified style set of <emph>E</emph>,
-<emph>SSS(E)</emph>.</p></item>
+<emph>SSS(E)</emph>.</p>
+</item>
 </olist>
 </item>
 </olist>
@@ -8980,7 +9091,7 @@ determine (obtain) the specified style set <emph>SSS</emph> of
 initialize <emph>CSS(E)</emph> to a (deep) copy of
 <emph>SSS(E)</emph>;</p></item>
 <item><p><phrase role="strong">[filter]</phrase> if
-<emph>E</emph> is a <el>set</el> or <el>style</el> element, then return
+<emph>E</emph> is an <el>animate</el>, <el>set</el>, or <el>style</el> element, then return
 <emph>CSS(E)</emph> as the resulting computed style set without
 further resolution; otherwise, continue with the next rule;</p></item>
 <item>
@@ -8997,30 +9108,40 @@ equivalent, non-relative (computed) value;</p></item>
 </olist>
 <note role="explanation">
 <p>As a result of the filtering rule above, the computed style set of
-a <el>set</el> or <el>style</el> element includes only specified values, in which case
+an <el>animate</el>, <el>set</el>, or <el>style</el> element includes only specified values, in which case
 relative value expressions remain relative; consequently, the
 resolution of relative value expressions (that may be assigned by
 means of referential style association) always takes place in the
 context of a layout or <loc href="#terms-content-element">content element</loc> which has a presentation
 context, and not in the non-presentation, declaration context
-of a <el>set</el> element or a referentiable <el>style</el> element.</p>
+of an <el>animate</el>, <el>set</el>, or referentiable <el>style</el> element.</p>
 </note>
 </div4>
 <div4 id="semantics-style-resolution-process-overall">
 <head>Style Resolution Process</head>
 <p>The top-level style resolution process is defined as follows: using
-a preorder traversal of each element and anonymous span,
+a preorder traversal of each element and <emph>anonymous span</emph>,
 <emph>E</emph>, of an intermediate synchronic document,
 <emph>DOC<sub>inter</sub></emph>, perform the following ordered
 sub-steps:</p>
 <olist>
-<item><p><phrase role="strong">[filter]</phrase> if the element type
-of <emph>E</emph> is not the styling element type <el>style</el>, is
-not the layout element type <el>region</el>, is not the animation
-element type <el>set</el>, and is not one of the
-<loc href="#terms-content-element">content element</loc> types <el>body</el>, <el>div</el>, <el>p</el>,
-<el>span</el>, <el>br</el>, or anonymous span, then continue to the
-next element in the preorder traversal;</p></item>
+<item><p><phrase role="strong">[filter]</phrase> if <emph>E</emph>
+is not one of the following, then continue to the next element in the preorder traversal, i.e.,
+do not perform the subsequent step below on <emph>E</emph>:</p>
+<ulist>
+<item><p><loc href="#document-structure-vocabulary-tt"><el>tt</el></loc></p></item>
+<item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
+<item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
+<item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-body"><el>div</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-body"><el>p</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-body"><el>span</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-body"><el>br</el></loc></p></item>
+<item><p><loc href="#animation-vocabulary-animate"><el>animate</el></loc></p></item>
+<item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
+<item><p><emph>anonymous span</emph></p></item>
+</ulist>
+</item>
 <item><p> <phrase role="strong">[resolve computed styles]</phrase>
 determine (obtain) the computed style set <emph>CSS</emph> of
 <emph>E</emph>, namely, <emph>CSS(E)</emph>, in accordance with
@@ -10821,7 +10942,7 @@ semantics depend entirely upon an application's use of TTML Content.</p>
 a generic container element for grouping metadata information.</p>
 <p>In addition, the following elements, all defined in the TT Metadata Namespace,
 provide standard representations for metadata that is expected to be commonly
-used in a <loc href="#terms-document-instance">document instancea</loc>:
+used in a <loc href="#terms-document-instance">document instance</loc>:
 </p>
 <ulist>
 <item><p><specref ref="metadata-vocabulary-title"/></p></item>

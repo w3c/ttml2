@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 35a26d7b2d4c 2014/09/14 14:12:28 glenn $ -->
+<!-- $Id: ttml2.xml,v d9787c754880 2014/09/15 17:59:33 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/14 14:12:28 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/09/15 17:59:33 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/14 14:12:28 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/09/15 17:59:33 $</p></revisiondesc>
 </header>
 
 <body>
@@ -2988,7 +2988,7 @@ attribute must (1) adhere to the
 is, from either (or both) a syntactic or (and) semantic perspective, a proper superset of the
 feature or extension referenced by the <att>extends</att> attribute.
 The <att>restricts</att> attribute may be used to indicate that the extension being defined
-is, from either (or both) a syntacitc or (and) semantic perspective, a proper subset of the
+is, from either (or both) a syntactic or (and) semantic perspective, a proper subset of the
 feature or extension referenced by the <att>restricts</att> attribute.
 If an <att>extends</att> attribute is specified, then a <att>restricts</att> attribute must
 not be specified on a <el>ttp:extension</el> element; likewise, if a <att>restricts</att> attribute
@@ -3004,7 +3004,7 @@ absolutized URI), the URI expressed by the <el>ttp:extension</el>
 element must further adhere to the syntax of an extension designation as
 defined by <specref ref="extension-designations"/>,
 while the URI expressed by the <att>extends</att> attribute and/or the
-<att>restricts</att> attribute must ahdere to the syntax of a feature designation
+<att>restricts</att> attribute must adhere to the syntax of a feature designation
 or an extension designation as defined by <specref ref="feature-designations"/> or
 <specref ref="extension-designations"/>, respectively.</p>
 <p>If the URI expressed by the content of the <el>ttp:extension</el> element,
@@ -4193,19 +4193,23 @@ may or must be performed on a <loc href="#terms-document-instance">document inst
 <td>
 <eg xml:space="preserve">
 ttp:validation
-  : "optional"
-  | "required"
+  : "required"
+  | "optional"
+  | "prohibited"
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>If this parameter's value is <code>optional</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-may, but need not, perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
-other types of processing, e.g., presentation or transformation processing.</p>
 <p>If this parameter's value is <code>required</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
 must perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing.</p>
+<p>If this parameter's value is <code>optional</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
+may, but need not, perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+other types of processing, e.g., presentation or transformation processing.</p>
+<p>If this parameter's value is <code>prohibited</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
+must not perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+other types of processing, e.g., presentation or transformation processing, unless the end-user or application overrides this prohibition.</p>
 <p>If validation processing is performed on a TTML <loc href="#terms-document-instance">document instance</loc> and validation fails, then the computed value of
 the <att>ttp:validationAction</att> parameter property is used to determine what action to take before performing further processing.</p>
 <p>If not specified, the value of this parameter must be considered
@@ -4213,7 +4217,6 @@ to be <code>optional</code>.</p>
 <p>A <att>ttp:validation</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
-
 <div3 id="parameter-attribute-validationAction">
 <head>ttp:validationAction</head>
 <p>The <att>ttp:validationAction</att> attribute is used to specify what action is to be taken
@@ -4242,12 +4245,15 @@ should warn the end-user when validation processing fails, and, give the end-use
 <p>If this parameter's value is <code>ignore</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
 should not abort and should not warn the end-user when validation processing fails.</p>
 <p>If not specified, the value of this parameter is determined as follows:
-if the computed value of the <loc href="#parameter-attribute-validation"><att>ttp:validation</att></loc> parameter property is <code>optional</code>,
-then the value must be considered to be <code>warn</code>; otherwise, it must be considered to be <code>abort</code>.</p>
+if the computed value of the <loc href="#parameter-attribute-validation"><att>ttp:validation</att></loc> parameter property is <code>required</code>,
+then the value must be considered to be <code>abort</code>;
+if it is <code>optional</code>,
+then the value must be considered to be <code>warn</code>;
+otherwise, if it is <code>prohibited</code>,
+then the value must be considered to be <code>ignore</code>.</p>
 <p>A <att>ttp:validationAction</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
-
 <div3 id="parameter-attribute-version">
 <head>ttp:version</head>
 <p>The <att>ttp:version</att> attribute is used to specify which version of the

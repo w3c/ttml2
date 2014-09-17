@@ -54,7 +54,7 @@
     <h2>Conventions</h2>
     <p>Added text marked <span class="diff-add">thus</span>. Removed text
       marked <span class="diff-del">thus</span>. Changed text marked <span class="diff-chg">thus</span>.</p>
-    <h2 id="errors">Known errata as of 31 July 2014</h2>
+    <h2 id="errors">Known errata as of 17 September 2014</h2>
     <ul>
       <li><a href="#errata-2.2-1">Correction in TTML1 Section 2.2 Terminology</a>
           (published 2014-07-31)</li>
@@ -66,6 +66,8 @@
           (published 2014-09-14)</li>
       <li><a href="#errata-8.2.7-1">Correction in TTML1 Section 8.2.7 tts:extent attribute</a>
           (published 2014-07-17)</li>
+      <li><a href="#errata-8.2.15-1">Correction in TTML1 Section 8.2.16 tts:overflow attribute</a>
+          (published 2014-09-17)</li>
       <li><a href="#errata-8.2.16-1">Correction in TTML1 Section 8.2.16 tts:padding attribute</a>
           (published 2014-07-17)</li>
       <li><a href="#errata-8.2.17-1">Correction in TTML1 Section 8.2.17 tts:showBackground attribute</a>
@@ -127,6 +129,31 @@
     <p><span class="diff-add">This rule for resolving <em>closest supported value</em> for the <code>tts:extent</code> attribute makes use of the nearest larger rather than nearest smaller supported distance.
     The rationale for this difference in treatment is that use of a larger extent ensures that the affected content will be contained in the region area without
     causing region overflow, while use of a smaller extent makes region overflow more likely.</span></p>
+    <hr />
+    <p id="errata-8.2.15-1">Correction
+        in <a href="http://www.w3.org/TR/2013/REC-ttml1-20130924/#style-attribute-overflow">TTML1 Section 8.2.15 - tts:overflow attribute</a> (published 2014-09-17) </p>
+    <p class="description"><span class="title-description">Description</span>:</p>
+    Clarify context in which oveflow semantics apply and constraints on those semantics when they do apply.
+    <p class="description"><em><strong><span class="title-correction">Resolution</span></strong></em>:</p>
+    <p>Add the following <strong>Note</strong> immediately after the paragraph starting with "If the value of this attribute is <code>visible</code>...":</p>
+    <p><b class="diff-add">Note:</b></p>
+    <p><span class="diff-add">This attribute has no impact on presentation processing when no overflow condition applies. Furthermore, an overflow condition
+    only applies in either (or both) of two specific contexts: (1) when <code>tts:wrapOption</code> is <code>noWrap</code> and the bounding box of some descendant glyph area
+    overflows (extends outside of) the containing region's nominal content area extent in the inline progression dimension,
+    or (and) (2) when the bounding box of some descendant line area overflows
+    (extends outside of) the containing region's nominal content area extent in the block progression dimension,
+    where the nominal content area extent in the inline and block progression
+    dimensions is determined by the computed values of the <code>tts:extent</code> and <code>tts:padding</code> style properties of the containing region.
+    Furthermore, when an overflow condition applies, it is not intended that the effective extent of the region be modified for the purpose of presentation processing.
+    For example, the area painted with the region's background color is not extended in either dimension to enclose the overflowed content.</span></p>
+    <p><span class="diff-add">Note that,
+    in particular, the normative text in the previous paragraph "region composition and layout must be performed as if the region's width and height
+    were unconstrained" refers to the process of determining the effective extent and origin of
+    descendant line areas produced in either (or both) of the two overflow contexts described here, and
+    is not intended to imply that the region extent is altered for the purpose of determining the region's padding area insets or the extent of its background color.
+    More specifically, the normative language above is not intended to override or contradict the semantics of
+    <a href="http://www.w3.org/TR/2013/REC-ttml1-20130924/#xsl11">[XSL 1.1]</a>, &sect; 7.21.2, or of
+    <a href="http://www.w3.org/TR/2013/REC-ttml1-20130924/#css2">[CSS2]</a>, &sect; 11.1.1, on which the former is based.</span></p>
     <hr />
     <p id="errata-8.2.16-1">Correction
         in <a href="http://www.w3.org/TR/2013/REC-ttml1-20130924/#style-attribute-padding">TTML1 Section 8.2.16 - tts:padding attribute</a> (published 2014-07-17) </p>

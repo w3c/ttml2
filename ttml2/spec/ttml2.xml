@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v c0a8abc71bea 2014/09/21 10:40:49 glenn $ -->
+<!-- $Id: ttml2.xml,v 3cbc109b90bd 2014/09/21 12:37:21 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/21 10:40:49 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/09/21 12:37:21 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/21 10:40:49 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/09/21 12:37:21 $</p></revisiondesc>
 </header>
 
 <body>
@@ -2408,6 +2408,8 @@ Parameter Attributes
 <loc href="#parameter-attribute-inferProcessorProfileMethod">ttp:inferProcessorProfileMethod</loc>,
 <loc href="#parameter-attribute-inferProcessorProfileSource">ttp:inferProcessorProfileSource</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
+<loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
+<loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-permitFeatureNarrowing">ttp:permitFeatureNarrowing</loc>,
 <loc href="#parameter-attribute-permitFeatureWidening">ttp:permitFeatureWidening</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
@@ -3145,6 +3147,8 @@ must also support and enable an extension defined by a third party.</p>
 <item><p><specref ref="parameter-attribute-inferProcessorProfileMethod"/></p></item>
 <item><p><specref ref="parameter-attribute-inferProcessorProfileSource"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
+<item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
+<item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-permitFeatureNarrowing"/></p></item>
 <item><p><specref ref="parameter-attribute-permitFeatureWidening"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
@@ -3770,6 +3774,85 @@ were some other non-linearity or discontinuity in marker labeling, for
 example, two consecutive frames labeled as <code>10:00:00:00</code>
 and <code>10:00:01:00</code>.
 </p>
+</note>
+</div3>
+<div3 id="parameter-attribute-mediaDuration">
+<head>ttp:mediaDuration</head>
+<p>The <att>ttp:mediaDuration</att> attribute is used to specify the
+temporal extent (simple duration) of a <loc href="#terms-related-media-object">related media object</loc>.</p>
+<p>If the temporal extent (simple duration) of the <loc href="#terms-related-media-object">related media object</loc> is known at authoring time, then this
+attribute should be specified; otherwise, if no <loc href="#terms-related-media-object">related media object</loc> applies or its
+temporal extent is unknown, then this attribute should not be specified.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-mediaDuration-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:mediaDuration</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:mediaDuration
+  : <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>                        // restricted to <emph>offset-time</emph> form
+  | "indefinite"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If specified, the value of this parameter must either (1) adhere to the <emph>offset-time</emph> form of
+a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> or (2) take the value <code>indefinite</code>.</p>
+<p>If the value <code>indefinite</code> is specified, then there is no <loc href="#terms-related-media-object">related media object</loc>,
+the temporal extent (simple duration) of the
+<loc href="#terms-related-media-object">related media object</loc> is not known at the time this attribute is
+encoded, or the <loc href="#terms-related-media-object">related media object</loc> has no temporal end point.</p>
+<p>If not specified, the value of this parameter must be considered
+to be <code>indefinite</code>.</p>
+<p>A <att>ttp:mediaDuration</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+<note role="explanation">
+<p>See <specref ref="timing-time-value-expressions"/> for the
+specification of time expression syntax and semantics.</p>
+</note>
+</div3>
+<div3 id="parameter-attribute-mediaOffset">
+<head>ttp:mediaOffset</head>
+<p>The <att>ttp:mediaOffset</att> attribute is used to specify the
+temporal offset between the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+and the begin time of a <loc href="#terms-related-media-object">related media object</loc> when operating in a
+<loc href="#time-expression-semantics-media">Media Time Base</loc>
+or a <loc href="#time-expression-semantics-smpte">SMPTE Time Base</loc>. It does not apply and
+must not be specified when operating in a <loc href="#time-expression-semantics-clock">Clock Time Base</loc>.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-mediaOffset-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:mediaOffset</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:mediaOffset
+  : sign? <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>                  // restricted to <emph>offset-time</emph> form
+
+sign
+  : "+" | "-"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If specified, the value of this parameter must adhere to the <emph>offset-time</emph> form of
+a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> optionally expressed with a sign.
+If not specified, the value of this parameter must be considered
+to be <code>0s</code>.</p>
+<p>If no sign is specified or it is specified as <code>+</code>, then the begin time of the
+<loc href="#terms-root-temporal-extent">root temporal extent</loc> follows the begin time of the
+<loc href="#terms-related-media-object">related media object</loc>; otherwise (sign is present and
+specified as <code>-</code>), the begin time of the
+<loc href="#terms-root-temporal-extent">root temporal extent</loc> precedes the begin time of the
+<loc href="#terms-related-media-object">related media object</loc>.</p>
+<p>A <att>ttp:mediaOffset</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+<note role="explanation">
+<p>See <specref ref="timing-time-value-expressions"/> for the
+specification of time expression syntax and semantics.</p>
 </note>
 </div3>
 <div3 id="parameter-attribute-permitFeatureNarrowing">
@@ -16640,8 +16723,9 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <p>If the computed <code>frameRateMultipler</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
 </note>
 <note role="clarification">
-<p>The above formalisms assumes that the <loc href="#terms-root-temporal-extent">root temporal extent</loc> corresponds with the beginning of a related media object. If
-this assumption doesn't hold, then an additional offset that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
+<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
+<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
+<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> parameter property.</p>
 </note>
 </div2>
 <div2 id="time-expression-semantics-smpte">
@@ -16756,6 +16840,11 @@ immediate prior sibling timed element;
 <p>Given the derived media time base as described above, then 
 media time base <phrase role="strong"><code>M</code></phrase> is related to the local real time <phrase role="strong"><code>R</code></phrase>
 as described in <specref ref="time-expression-semantics-media"/> above.</p>
+<note role="clarification">
+<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
+<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
+<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> parameter property.</p>
+</note>
 </div2>
 </div1>
 <inform-div1 id="common-styling">

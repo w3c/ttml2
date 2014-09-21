@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 30f27a796148 2014/09/17 04:15:23 glenn $ -->
+<!-- $Id: ttml2.xml,v 6dcc85afb4f8 2014/09/21 01:54:14 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/17 04:15:23 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/09/21 01:54:14 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/17 04:15:23 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/09/21 01:54:14 $</p></revisiondesc>
 </header>
 
 <body>
@@ -2446,6 +2446,9 @@ Styling Attributes
 <loc href="#style-attribute-origin">tts:origin</loc>,
 <loc href="#style-attribute-overflow">tts:overflow</loc>,
 <loc href="#style-attribute-padding">tts:padding</loc>,
+<loc href="#style-attribute-ruby">tts:ruby</loc>,
+<loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
+<loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
 <loc href="#style-attribute-textAlign">tts:textAlign</loc>,
 <loc href="#style-attribute-textDecoration">tts:textDecoration</loc>,
@@ -5044,6 +5047,9 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-origin"/></p></item>
 <item><p><specref ref="style-attribute-overflow"/></p></item>
 <item><p><specref ref="style-attribute-padding"/></p></item>
+<item><p><specref ref="style-attribute-ruby"/></p></item>
+<item><p><specref ref="style-attribute-rubyAlign"/></p></item>
+<item><p><specref ref="style-attribute-rubyPosition"/></p></item>
 <item><p><specref ref="style-attribute-showBackground"/></p></item>
 <item><p><specref ref="style-attribute-textAlign"/></p></item>
 <item><p><specref ref="style-attribute-textDecoration"/></p></item>
@@ -6892,6 +6898,349 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.31.15, except that individual shorthand values map to writing
 mode relative padding values as defined by <bibref ref="xsl11"/>,
 &sect; 7.8.31, 7.8.32, 7.8.33, and 7.8.34.</p>
+</note>
+</div3>
+<div3 id="style-attribute-ruby">
+<head>tts:ruby</head>
+<p>The <att>tts:ruby</att> attribute is used to specify the application of ruby
+styling.</p>
+<p>This attribute applies only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements and is not inheritable, so it should
+not be specified on any other element type. If specified elsewhere, then it must be ignored for
+the purpose of presentation processing.</p>
+<table id="style-property-details-ruby" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>none</code> |
+<code>container</code> |
+<code>base</code> |
+<code>baseContainer</code> |
+<code>text</code> |
+<code>textContainer</code> |
+<code>delimiter</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>none</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
+<specref ref="ruby-semantics-mapping-table"/> apply, where the maximal content model defined by <bibref ref="ruby"/>, &sect;2.1, applies
+and must be treated as an error if violated.</p>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
+<table id="ruby-semantics-mapping-table" role="common">
+<caption>Table 8-1 &ndash; Ruby Semantics Mapping</caption>
+<col width="25%"/>
+<col width="25%"/>
+<col width="25%"/>
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<th>Category</th>
+<th>tts:ruby</th>
+<th>Annotation <bibref ref="ruby"/></th>
+<th>CSS display <bibref ref="cssruby"/></th>
+</tr>
+<tr>
+<td>Ruby Container</td>
+<td><code>container</code></td>
+<td><code>ruby</code></td>
+<td><code>ruby</code></td>
+</tr>
+<tr>
+<td>Ruby Base Content</td>
+<td><code>base</code></td>
+<td><code>rb</code></td>
+<td><code>ruby-base</code></td>
+</tr>
+<tr>
+<td>Ruby Text Content</td>
+<td><code>text</code></td>
+<td><code>rt</code></td>
+<td><code>ruby-text</code></td>
+</tr>
+<tr>
+<td>Ruby Base Container</td>
+<td><code>baseContainer</code></td>
+<td><code>rbc</code></td>
+<td><code>ruby-base-container</code></td>
+</tr>
+<tr>
+<td>Ruby Text Container</td>
+<td><code>textContainer</code></td>
+<td><code>rtc</code></td>
+<td><code>ruby-text-container</code></td>
+</tr>
+<tr>
+<td>Ruby Fallback Delimiter</td>
+<td><code>delimiter</code></td>
+<td><code>rp</code></td>
+<td><code>none</code></td>
+</tr>
+</tbody>
+</table>
+<p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
+<table id="style-attribute-ruby-example-1" role="example">
+<caption>Example Fragment &ndash; Simple Ruby</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+  &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x5229;&#x7528;&#x8A31;&#x8AFE;&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:ruby="text"</phrase>&gt;&#x30E9;&#x30A4;&#x30BB;&#x30F3;&#x30B9;&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-ruby-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Simple Ruby</caption>
+<tbody>
+<tr>
+<td><graphic source="images/ruby_1.png" alt="TTML ruby style property"/></td>
+</tr>
+</tbody>
+</table>
+<p>Use of <att>tts:ruby</att> to specify complex ruby annotation is illustrated by the following example.</p>
+<table id="style-attribute-ruby-example-2" role="example">
+<caption>Example Fragment &ndash; Complex Ruby</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;span&gt;
+  &lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+    &lt;span <phrase role="strong">tts:ruby="baseContainer"</phrase>&gt;
+      &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x6771;&#x5357;&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span <phrase role="strong">tts:ruby="textContainer"</phrase> tts:rubyPosition="before"&gt;
+      &lt;span <phrase role="strong">tts:ruby="text"</phrase>&gt;&#x3068;&#x3046;&#x306A;&#x3093;&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span <phrase role="strong">tts:ruby="textContainer"</phrase> tts:rubyPosition="after"&gt;
+      &lt;span <phrase role="strong">tts:ruby="text"</phrase>&gt;&#x305F;&#x3064;&#x307F;&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span&gt;&#x306E;&#x65B9;&#x89D2;&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-ruby-example-2-images" role="example-images">
+<caption>Example Rendition &ndash; Complex Ruby</caption>
+<tbody>
+<tr>
+<td><graphic source="images/ruby_2.png" alt="TTML ruby style property"/></td>
+</tr>
+</tbody>
+</table>
+<note role="derivation">
+<p>The semantics of the style property
+represented by this attribute are based upon that defined by <bibref ref="ruby"/> and <bibref ref="cssruby"/>. See also
+<bibref ref="jlreq"/>, &sect;3.3, for further information.</p>
+</note>
+</div3>
+<div3 id="style-attribute-rubyAlign">
+<head>tts:rubyAlign</head>
+<p>The <att>tts:rubyAlign</att> attribute is used to specify the position of ruby text within the inline area generated by the ruby text container annotation.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements on which the computed value of the
+<att>tts:ruby</att> style property is either <code>textContainer</code> or <code>text</code>.</p>
+<table id="style-property-details-rubyAlign" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>start</code> |
+<code>center</code> |
+<code>spaceBetween</code> |
+<code>spaceAround</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>spaceAround</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<emph>see prose (above)</emph>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If the value of this attribute is <code>start</code>, then the start edge of the first glyph area descendant of an inline area generated from a ruby text container
+or ruby text annotation is aligned to the start edge of that inline area.
+If the value is <code>center</code>, then excess whitespace
+is equally distributed before and after the first and last glyphs, respectively.
+If the value is <code>spaceBetween</code>, then excess whitespace
+is equally distributed between each glyph area descendant.
+If the value is <code>spaceAround</code>, then excess whitespace
+is equally distributed before and after each glyph area descendant.</p>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>spaceAround</code>.</p>
+<ednote>
+<name>Ruby Align Example</name>
+<date>2014-09-20</date>
+<edtext>Add example and example rendering of tts:rubyAlign.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property
+represented by this attribute are based upon that defined by <bibref ref="cssruby"/>, &sect;4.3, and the examples and example
+renderings shown there apply.</p>
+</note>
+</div3>
+<div3 id="style-attribute-rubyPosition">
+<head>tts:rubyPosition</head>
+<p>The <att>tts:rubyPosition</att> attribute is used to specify the position of ruby text in the block progression dimension
+with respect to its associated ruby base.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements on which the computed value of the
+<att>tts:ruby</att> style property is either <code>textContainer</code> or <code>text</code>.</p>
+<table id="style-property-details-rubyPosition" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>before</code> |
+<code>after</code> |
+<code>interCharacter</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>before</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<emph>see prose (above)</emph>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If the value of this attribute is <code>before</code>, then an inline area generated from a ruby text container or ruby text annotation
+is placed before (prior to) the first edge in the block progression dimension of the inline area generated from an associated ruby base container or ruby base annotation.
+If the value is <code>after</code>, then an inline area generated from a ruby text container or ruby text annotation
+is placed after (subsequent to) the second edge in the block progression dimension of the inline area generated from an associated ruby base container or ruby base
+annotation.</p>
+<p>If the value of this attribute is <code>interCharacter</code>, then an inline area generated from a ruby text container or ruby text annotation is placed
+after the end edge in the inline progression dimension of the inline area generated from an associated ruby base container or ruby base annotation.</p>
+<p>The absolute position of the ruby text container or ruby text annotation is determined
+in accordance to the computed value of the <code>tts:writingMode</code> style property of the region into which the affected content is placed; in particular, the
+mappings defined enumerated by <specref ref="rubyPosition-semantics-mapping-table"/> apply as further defined by <bibref ref="cssruby"/>, &sect;4.1.</p>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>before</code>.</p>
+<table id="rubyPosition-semantics-mapping-table" role="common">
+<caption>Table 8-2 &ndash; Ruby Position Semantics Mapping by Writing Mode</caption>
+<col width="20%"/>
+<col width="20%"/>
+<col width="20%"/>
+<col width="20%"/>
+<col width="20%"/>
+<col/>
+<tbody>
+<tr>
+<th>tts:rubyPosition</th>
+<th><code>lrtb</code></th>
+<th><code>rltb</code></th>
+<th><code>tbrl</code></th>
+<th><code>tblr</code></th>
+</tr>
+<tr>
+<td><code>before</code></td>
+<td><code>over</code></td>
+<td><code>over</code></td>
+<td><code>right</code></td>
+<td><code>left</code></td>
+</tr>
+<tr>
+<td><code>after</code></td>
+<td><code>under</code></td>
+<td><code>under</code></td>
+<td><code>left</code></td>
+<td><code>right</code></td>
+</tr>
+<tr>
+<td><code>interCharacter</code></td>
+<td><code>right</code></td>
+<td><code>left</code></td>
+<td><code>under</code></td>
+<td><code>under</code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<ednote>
+<name>Ruby Position Example</name>
+<date>2014-09-20</date>
+<edtext>Add example and example rendering of tts:rubyPosition.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property
+represented by this attribute are based upon that defined by <bibref ref="cssruby"/>, &sect;4.1, and the examples and example
+renderings shown there apply modulo the mappings defined above.</p>
 </note>
 </div3>
 <div3 id="style-attribute-showBackground">
@@ -9123,7 +9472,7 @@ resolution of relative value expressions (that may be assigned by
 means of referential style association) always takes place in the
 context of a layout or <loc href="#terms-content-element">content element</loc> which has a presentation
 context, and not in the non-presentation, declaration context
-of an <el>animate</el>, <el>set</el>, or referentiable <el>style</el> element.</p>
+of an <el>animate</el>, <el>set</el>, or referable <el>style</el> element.</p>
 </note>
 </div4>
 <div4 id="semantics-style-resolution-process-overall">
@@ -14156,6 +14505,11 @@ Style Sheets, Level 2 Revision 1</titleref>, W3C Recommendation, 07 June 2011.
 Module Level 3</titleref>, W3C Recommendation, 07 June 2011. (See
 <xspecref href="http://www.w3.org/TR/2011/REC-css3-color-20110607/">http://www.w3.org/TR/2011/REC-css3-color-20110607/</xspecref>.)
 </bibl>
+<bibl id="cssruby" key="CSS Ruby">Elika Etemad and Koji Ishii,
+<titleref href="http://dev.w3.org/csswg/css-ruby-1/">CSS Ruby Layout Module Level 1</titleref>
+W3C Editor's Draft.
+(See <xspecref href="http://dev.w3.org/csswg/css-ruby-1/">http://dev.w3.org/csswg/css-ruby-1//</xspecref>.)
+</bibl>
 <bibl id="gps" key="GPS">
 <titleref href="http://tycho.usno.navy.mil/gpsinfo.html">Global
 Positioning System</titleref>, US Naval Observatory.
@@ -14173,6 +14527,11 @@ RFC 2046, November 1996, IETF.(See
 <titleref href="http://www.iso.org/">Information technology &ndash; Document
 Schema Definition Language (DSDL) &ndash; Part 2: Regular-grammar-based validation &ndash; RELAX NG</titleref>,
 International Organization for Standardization (ISO).
+</bibl>
+<bibl id="ruby" key="Ruby">Masayasu Ishikawa et al.,
+<titleref href="http://www.w3.org/TR/2001/REC-ruby-20010531/">Ruby Annotation</titleref>
+W3C Recommendation, 31 May 2001.
+(See <xspecref href="http://www.w3.org/TR/2001/REC-ruby-20010531/">http://www.w3.org/TR/2001/REC-ruby-20010531/</xspecref>.)
 </bibl>
 <bibl id="smil3" key="SMIL 3.0">Dick Bultermann, et al.,
 <titleref href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">Synchronized
@@ -14311,6 +14670,11 @@ Consumer Electronics Association (CEA).
 <bibl id="dcmes" key="DCMES 1.1">Dublin Core Metadata Initiative,
 <titleref href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1: Reference Description</titleref>. (See
 <xspecref href="http://dublincore.org/documents/dces/">http://dublincore.org/documents/dces/</xspecref>.)
+</bibl>
+<bibl id="jlreq" key="JLREQ">Richard Ishida et al.,
+<titleref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">Requirements for Japanese Text Layout</titleref>
+W3C Working Group Note, 3 April 2012.
+(See <xspecref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">http://www.w3.org/TR/2012/NOTE-jlreq-20120403/</xspecref>.)
 </bibl>
 <bibl id="mpeg7-5" key="MPEG7-5">
 ISO/IEC 15938-5,

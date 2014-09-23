@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 3cbc109b90bd 2014/09/21 12:37:21 glenn $ -->
+<!-- $Id: ttml2.xml,v 86641164a28a 2014/09/23 04:19:44 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/21 12:37:21 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/09/23 04:19:44 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -78,28 +78,28 @@
 <affiliation>Invited Expert</affiliation>
 </author>
 <author>
-<name>Geoff Freed</name>
-<affiliation>WGBH National Center for Accessible Media</affiliation>
-</author>
-<author>
 <name>Sean Hayes</name>
 <affiliation>Microsoft</affiliation>
 </author>
 <author>
-<name>Erik Hodge</name>
-<affiliation>RealNetworks</affiliation>
+<name>Frans de Jong</name>
+<affiliation>European Broadcasting Union</affiliation>
 </author>
 <author>
-<name>David Kirby</name>
-<affiliation>British Broadcasting Corporation (BBC)</affiliation>
+<name>Pierre-Anthony Lemieux</name>
+<affiliation>MovieLabs</affiliation>
 </author>
 <author>
-<name>Thierry Michel</name>
-<affiliation>W3C</affiliation>
+<name>Nigel Megitt</name>
+<affiliation>British Broadcasting Corporation</affiliation>
 </author>
 <author>
 <name>Dave Singer</name>
 <affiliation>Apple Computer</affiliation>
+</author>
+<author>
+<name>Jerry Smith</name>
+<affiliation>Microsoft</affiliation>
 </author>
 </authlist>
 <errataloc href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml10/spec/ttml-issues.html"/>
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/21 12:37:21 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/09/23 04:19:44 $</p></revisiondesc>
 </header>
 
 <body>
@@ -502,6 +502,12 @@ and may specify inline overrides to styling.</p>
 </def>
 </gitem>
 <gitem>
+<label>ISD</label>
+<def>
+<p>Intermedia Synchronic Document</p>
+</def>
+</gitem>
+<gitem>
 <label>TT</label>
 <def>
 <p>Timed Text</p>
@@ -768,6 +774,26 @@ or <loc href="#style-attribute-origin">tts:origin</loc> style attribute on a <lo
 There is a one-to-one relation between an inline <loc href="#layout-vocabulary-region"><el>region</el></loc> element and its
 parent <loc href="#terms-content-element">content element</loc>. An inline region is assigned its parent element's time interval as its active
 time interval. No <att>region</att> attribute makes reference to an inline region.</p>
+</def>
+</gitem>
+<gitem id="terms-intermediate-synchronic-document">
+<label>[intermediate synchronic document]</label>
+<def>
+<p>An abstract or concrete representation of the static content, styling, and layout of a source TTML <loc href="#terms-document-instance">document instance</loc>
+during a non-overlapping temporal interval that intersects with the source document's <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-intermediate-synchronic-document-sequence">
+<label>[intermediate synchronic document sequence]</label>
+<def>
+<p>An abstract or concrete representation of a sequence of <loc href="#terms-intermediate-synchronic-document">intermediate synchronic document</loc> instances
+that effectively represent the content, styling, layout, and timing of a source TTML <loc href="#terms-document-instance">document instance</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-intermediate-synchronic-document-sequence-syntax">
+<label>[intermediate synchronic document sequence syntax]</label>
+<def>
+<p>A formalism for use in the concrete representation of an <loc href="#terms-intermediate-synchronic-document-sequence">intermediate synchronic document sequence</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-nested-profile">
@@ -1457,6 +1483,11 @@ of XML Namespaces <bibref ref="xmlns10"/>  may be used that is associated with t
 <td>TT Metadata</td>
 <td><code>ttm:</code></td>
 <td><code>http://www.w3.org/ns/ttml#metadata</code></td>
+</tr>
+<tr>
+<td>TT Intermediate Synchronic Document</td>
+<td><code>isd:</code></td>
+<td><code>http://www.w3.org/ns/ttml#isd</code></td>
 </tr>
 <tr>
 <td>TT Profile</td>
@@ -2290,7 +2321,7 @@ for TTML element types are enumerated in <specref ref="element-vocab-group-table
 <th>Group</th>
 <th>Elements</th>
 </tr>
-<tr>
+<tr id="element-vocab-group-animation">
 <td>
 Animation.class
 </td>
@@ -2299,7 +2330,7 @@ Animation.class
 <loc href="#animation-vocabulary-set">set</loc>
 </td>
 </tr>
-<tr>
+<tr id="element-vocab-group-block">
 <td>
 Block.class
 </td>
@@ -2308,7 +2339,7 @@ Block.class
 <loc href="#content-vocabulary-p">p</loc>
 </td>
 </tr>
-<tr>
+<tr id="element-vocab-group-inline">
 <td>
 Inline.class
 </td>
@@ -2322,11 +2353,11 @@ Inline.class
 <td>
 Layout.class
 </td>
-<td>
+<td id="element-vocab-group-layout">
 <loc href="#layout-vocabulary-region">region</loc>
 </td>
 </tr>
-<tr>
+<tr id="element-vocab-group-metadata">
 <td>
 Metadata.class
 </td>
@@ -2338,7 +2369,7 @@ Metadata.class
 <loc href="#metadata-vocabulary-title">ttm:title</loc>
 </td>
 </tr>
-<tr>
+<tr id="element-vocab-group-parameters">
 <td>Parameters.class</td>
 <td><loc
 href="#parameter-vocabulary-profile">ttp:profile</loc></td>
@@ -2358,7 +2389,7 @@ catalog is enumerated in
 <th>Module</th>
 <th>Attributes</th>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-animation-binding">
 <td>
 Animation Binding Attribute
 </td>
@@ -2366,7 +2397,7 @@ Animation Binding Attribute
 <loc href="#animation-attribute-animate">animate</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-core">
 <td>
 Core Attributes
 </td>
@@ -2376,7 +2407,7 @@ Core Attributes
 <loc href="#content-attribute-space">xml:space</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-layout-binding">
 <td>
 Layout Binding Attribute
 </td>
@@ -2384,7 +2415,7 @@ Layout Binding Attribute
 <loc href="#layout-attribute-region">region</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-metadata">
 <td>
 Metadata Attributes
 </td>
@@ -2393,7 +2424,7 @@ Metadata Attributes
 <loc href="#metadata-attribute-role">ttm:role</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-parameters">
 <td>
 Parameter Attributes
 </td>
@@ -2424,7 +2455,7 @@ Parameter Attributes
 <loc href="#parameter-attribute-version">ttp:version</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-style-binding">
 <td>
 Style Binding Attribute
 </td>
@@ -2432,7 +2463,7 @@ Style Binding Attribute
 <loc href="#style-attribute-style">style</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-style">
 <td>
 Styling Attributes
 </td>
@@ -2468,7 +2499,7 @@ Styling Attributes
 <loc href="#style-attribute-zIndex">tts:zIndex</loc>
 </td>
 </tr>
-<tr>
+<tr id="attribute-vocab-group-timing">
 <td>
 Timing Attributes
 </td>
@@ -10142,6 +10173,11 @@ and the resulting generated out-of-line region is shown by the following two exa
 </div3>
 <div3 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
+<ednote>
+<name>Use Formalized ISD</name>
+<date>2014-09-22</date>
+<edtext>Revise in order to take into account new formalization of ISD structure and semantics (Appendix C).</edtext>
+</ednote>
 <p>For the purposes of performing presentation processing, the active time
 duration of a <loc href="#terms-document-instance">document instance</loc> is divided into a sequence of time coordinates where at
 each time coordinate, some element becomes temporally active or inactive,
@@ -11966,14 +12002,297 @@ In particular, the formal validity of TTML Content
 is defined by <specref ref="conformance-content"/>.</p>
 </div2>
 </div1>
-<inform-div1 id="media-types-registration">
-<head>Media Type Registration</head>
-<note>
-<p>The information from this appendix has been removed since media type
-registration has already occurred. This section is retained in its empty form
-in order to prevent appendix renumbering.</p>
+<div1 id="isd">
+<head>Intermediate Synchronic Document Syntax</head>
+<p><emph>This appendix is normative.</emph></p>
+<p>This appendix specifies the syntactic elements and structure of a TTML Intermediate Synchronic Document (ISD) Sequence and its
+constituent TTML Intermediate Synchronic Document (ISD) instances. An ISD instance may be represented as a standalone document instance or
+in a collection represented as an ISD Sequence instance.</p>
+<p>All ISD related vocabulary is defined in the TTML ISD Namespace, defined here as <code>http://www.w3.org/ns/ttml#isd</code>,
+where the recommended prefix is <code>isd</code>.</p>
+<p>A TTML <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>, in short, an <emph>ISD</emph> or <emph>ISD instance</emph>,
+represents a discrete, temporally non-overlapping interval, an <emph>ISD interval</emph>,
+of a source TTML document where, except for non-discrete animation, all content, styling, and layout information remains static within that interval.
+In particular, the timing hierarchy of a TTML document is flattened and then sub-divided into temporally non-overlapping intervals, where each such
+interval defines a static view of the source TTML document within that interval, and where that static view is represented as an ISD instance.
+A concrete, standalone instance of a TTML
+<loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc> must specify an
+<loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element as its root document element. When an instance of a
+<loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc> is included in a
+<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> instance, then the ISD instance is represented
+by an <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> child element of the root 
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element.</p>
+<note role="elaboration">
+<p>An ISD instance may contain one or more animate elements that denote continuous animation within the associated interval. Continuously animated styles are sub-divided across
+ISD interval boundaries such that their step-wise concatenation expresses an equivalent continuous animation over any intersecting ISD interval(s).</p>
 </note>
-</inform-div1>
+<p>A TTML <loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> represents a collection
+of temporally non-overlapping <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc> instances ordered according
+to their begin times. A concrete instance of a TTML
+<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> must specify an
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element as its root document element.</p>
+<div2 id="isd-vocabulary">
+<head>ISD Vocabulary</head>
+<div3 id="isd-vocabulary-sequence">
+<head>isd:sequence</head>
+<p>The <el>isd:sequence</el> element serves as the root document element of an <loc href="#terms-intermediate-synchronic-document-sequence">Intermediate
+Synchronic Document Sequence</loc>  document.</p>
+<p>The <el>isd:sequence</el> element accepts as its children zero or more elements in the
+<loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group,
+followed by zero or one <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element,
+followed by zero or more <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> elements.</p>
+<p>Child <el>isd:isd</el> elements must be ordered in accordance to the media time equivalent of their
+begin time; furthermore, the temporal intervals of any two child <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> elements must not overlap (in time).</p>
+<table id="elt-syntax-isd-sequence" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: isd:sequence</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;isd:sequence
+  size = xsd:nonNegativeInteger
+  version = xsd:positiveInteger
+  <loc href="#content-attribute-lang"><phrase role="reqattr">xml:lang</phrase></loc> = string
+  {<emph>any attribute in the <loc href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</loc></emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#parameter-vocabulary-profile">ttp:profile</loc>?, <loc href="#isd-vocabulary-isd">isd:isd</loc>*
+&lt;/isd:sequence&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If the <att>size</att> attribute is specified, then it must be a non-negative integer corresponding to the number of
+<loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> child elements.
+If not specified, then the size must be considered to be <emph>indefinite</emph>, unless and until the
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element is terminated, in which case the size
+may be determined by inspection.</p>
+<note role="elaboration">
+<p>The <att>size</att> attribute would normally be omitted in the case of real time captioning.</p>
+</note>
+<p>If the <att>version</att> attribute is specified, then it must be a positive integer corresponding to the version of this
+<loc href="#terms-intermediate-synchronic-document-syntax">Intermediate Synchronic Document Syntax</loc> specification used in authoring
+the ISD sequence document. If specified, the numeric value must be greater than or equal to two (2). If not specified, then the version must be
+consider to be equal to two (2). The version associated with this
+<loc href="#terms-intermediate-synchronic-document-sequence-syntax">Intermediate Synchronic Document Sequence Syntax</loc> specification is two (2).</p>
+<note role="elaboration">
+<p>The ISD abstraction referred to or implied by <bibref ref="ttml1"/> &sect;9.3.2 was not concretely defined by that specification. Here we reserve version one (1)
+for informal discussion of that earlier abstraction and its various (non-standardized) realizations.</p>
+</note>
+<p>An <loc href="#content-attribute-lang"><att>xml:lang</att></loc> attribute must be specified on the
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element.
+If its value is empty, it signifies that there is no default language that applies
+to the content within the <loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc>. Otherwise,
+the specified value denotes the default language that applies to each constituent
+<loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>.</p>
+<p>One or more parameter properties may be specified from the restricted parameter attribute set enumerated in <specref ref="isd-parameter-attribute-set"/>.
+If specified, then they apply globally to each constituent <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>.</p>
+<p>If a child <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element is present,
+then that <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element must satisfy the following constraints:</p>
+<ulist>
+<item><p>no <att>combine</att> attribute is specified;</p></item>
+<item><p>no <att>designator</att> attribute is specified;</p></item>
+<item><p>no <att>type</att> attribute is specified;</p></item>
+<item><p>no <att>use</att> attribute is specified;</p></item>
+<item><p>no descendant element is a <el>ttp:profile</el> element;</p></item>
+<item><p>no descendant <el>ttp:feature</el> element specifies a <att>value</att> attribute with the value <code>prohibited</code>;</p></item>
+<item><p>no descendant <el>ttp:extension</el> element specifies a <att>value</att> attribute with the value <code>prohibited</code>.</p></item>
+</ulist>
+<p>Furthermore, such a child <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element must specify a profile that is equivalent to the combined
+<loc href="#terms-processor-profile">processor profile</loc> of the source TTML document having fetched all externally referenced profile documents.</p>
+<note role="elaboration">
+<p>The intent of permitting a single <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> to be specified in an
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> is to provide a simplified mechanism to declare
+processor profile requirements that must be met in order to process the document (in the absence of an end-user override).</p>
+</note>
+</div3>
+<div3 id="isd-vocabulary-isd">
+<head>isd:isd</head>
+<p>The <el>isd:isd</el> element serves either as (1) the root document element of a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate
+Synchronic Document</loc> or (2) as a child of an <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element of a
+<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> document.</p>
+<p>The <el>isd:isd</el> element accepts as its children zero or more elements in the
+<loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group,
+followed by zero or one <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element,
+followed by zero or more <loc href="#isd-vocabulary-css"><el>isd:css</el></loc> elements,
+followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el></loc> elements.</p>
+<table id="elt-syntax-isd" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: isd:isd</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;isd:isd
+  <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  version = xsd:positiveInteger
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  {<emph>any attribute in the <loc href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</loc></emph>}&gt;
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#parameter-vocabulary-profile">ttp:profile</loc>?, <loc href="#isd-vocabulary-css">isd:css</loc>*, <loc href="#isd-vocabulary-region">isd:region</loc>*
+&lt;/isd:isd&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A <att>begin</att> attribute must be specified, the value of which must take the <emph>offset-time</emph> form of
+a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and, further, is restricted to use a metric of
+<code>s</code> (seconds),
+<code>f</code> (frames),
+<code>t</code> (ticks), or, exceptionally, may elide the metric, in which case <code>s</code> seconds is implied. This
+begin time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived.</p>
+<p>An <att>end</att> attribute must be similarlly specified, where the same constraints (and exceptional use of no metric) apply.
+This end time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived.</p>
+<note role="elaboration">
+<p>Expressed in the terminology of <bibref ref="smil3"/>, the values of these <att>begin</att> and <att>end</att> attributes
+correspond to the resolved begin and end times of the <emph>active duration</emph> with respect to the <emph>document begin</emph>.</p>
+</note>
+<p>An <loc href="#content-attribute-lang"><att>xml:lang</att></loc> attribute must be specified on the
+<loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element if it is a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate
+Synchronic Document</loc> document; otherwise, it may be specified, and should be specified if the default language of the 
+<loc href="#isd-vocabulary-sequence"><el>isd:isd</el></loc> element differs from the default language of its
+parent <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element.
+If its value is empty, it signifies that there is no default language that applies
+to the content within the <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>. Otherwise,
+the specified value denotes the default language that applies.</p>
+<p>The <att>version</att> attribute follows the syntax and semantics of the same named attribute on the
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element type. The <att>version</att>
+attribute must not be specified on an <loc href="#isd-vocabulary-isd">isd:isd</loc> element that is not
+a root document element, i.e., is a child element of an <loc href="#isd-vocabulary-sequence">isd:sequence</loc> element.</p>
+<p>A child <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element may be present if the
+<loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element is a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate
+Synchronic Document</loc> document, in which case the same constraints and semantics apply as specified in <specref ref="isd-vocabulary-sequence"/>;
+otherwise, if not a standalone document, a child <loc href="#parameter-vocabulary-profile"><el>ttp:profile</el></loc> element must not be present.</p>
+</div3>
+<div3 id="isd-vocabulary-css">
+<head>isd:css</head>
+<p>The <el>isd:css</el> element is used to represent a unique computed style set of some collection of elements
+that share the same set of computed styles. In particular, for each
+element <emph>E</emph> in the source TTML document which is selected and copied into a
+<loc href="#isd-vocabulary-region"><el>isd:region</el></loc> element of a given
+<loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>, the computed style
+set of <emph>E</emph>, <emph>CSS(E)</emph>, is determined, and, if that <emph>CSS(E)</emph> is not already specified
+by an existing <el>isd:css</el> element, then it is assigned a unique identifier and instantiated as a new
+<el>isd:css</el> element.</p>
+<p>The <el>isd:css</el> element accepts as its children zero or more elements in the
+<loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group.</p>
+<table id="elt-syntax-isd-style" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: isd:css</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;isd:css
+  <loc href="#content-attribute-id"><phrase role="reqattr">xml:id</phrase></loc> = ID
+  {<emph>any attribute in TT Style namespace</emph>}
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*
+&lt;/isd:css&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For each arbitrary pair of <el>isd:css</el> child elements of an
+<loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element,
+<emph>S1</emph> and <emph>S2</emph>, the set of specified styles of <emph>S1</emph> must
+not be the same as the set of specified styles of <emph>S2</emph>. For the purpose of comparing two
+sets of specified styles, the styles must be placed into a canonical order and then compared item
+by item for value equality, where the canonical order is in accordance to the qualified attribute name
+order, where each qualified name consists of a tuple <code>&lt;namespace URL, local name&gt;</code>,
+and such tuples are compared component-wise by case-sensitive lexical string order.</p>
+</div3>
+<div3 id="isd-vocabulary-region">
+<head>isd:region</head>
+<p>The <el>isd:region</el> element is used to represent a layout and presentation region
+and the content selected into that region, where that content takes the form of a
+<loc href="#document-structure-vocabulary-body">body</loc> element and its descendant TTML content elements.</p>
+<p>The <el>isd:region</el> element accepts as its children zero or more elements in the
+<loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group,
+followed by zero or more <loc href="#animation-vocabulary-animate"><el>animate</el></loc> elements,
+followed by exactly one <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element.</p>
+<table id="elt-syntax-isd-region" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: isd:region</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;isd:region
+  <loc href="#style-attribute-style">style</loc> = IDREF
+  <loc href="#metadata-attribute-role">ttm:role</loc> = string
+  <loc href="#content-attribute-id"><phrase role="reqattr">xml:id</phrase></loc> = ID
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#animation-vocabulary-animate">animate</loc>*, <loc href="#document-structure-vocabulary-body">body</loc>
+&lt;/isd:region&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If the computed style set of the region represented by the <el>isd:region</el> element is not the
+set of initial style values that apply to <loc href="#layout-vocabulary-region"><el>region</el></loc>, then a
+<att>style</att> attribute must be specified which references an <loc href="#isd-vocabulary-css"><el>isd:css</el></loc> element that specifies the
+region's computed style set.</p>
+<p>The following constraints apply to the <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element
+and its descendant elements:</p>
+<ulist>
+<item><p>no <att>animate</att> attribute is specified;</p></item>
+<item><p>no <att>begin</att> attribute is specified;</p></item>
+<item><p>no <att>dur</att> attribute is specified;</p></item>
+<item><p>no <att>end</att> attribute is specified;</p></item>
+<item><p>no <att>region</att> attribute is specified;</p></item>
+<item><p>no <att>timeContainer</att> attribute is specified;</p></item>
+<item><p>no attribute in the TT Style namespace is specified;</p></item>
+<item><p>no <loc href="#animation-vocabulary-set">set</loc> element is present;</p></item>
+<item><p>no significant text node, i.e., text node in a #PCDATA context, is not contained in a 
+<loc href="#content-vocabulary-span"><el>span</el></loc> element that contains no other child.</p></item>
+</ulist>
+<p>In addition, for the <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element <emph>B</emph> and
+each of its descendant content elements <emph>C</emph>, if the computed style set of <emph>B</emph> or each <emph>C</emph> is
+not equal to the computed style set of its parent element, then that element, <emph>B</emph> or <emph>C</emph>, must specify a <att>style</att>
+attribute that references an <loc href="#isd-vocabulary-css"><el>isd:css</el></loc> element that specifies the
+element's computed style set.</p>
+</div3>
+</div2>
+<div2 id="isd-parameter-attribute-set">
+<head>ISD Parameter Attribute Set</head>
+<p>The following subset of the defined <loc href="#attribute-vocab-group-parameters">Parameter Attributes</loc>
+are available for use with an
+<loc href="#isd-vocabulary-structure"><el>isd:structure</el></loc> or
+<loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element as described above:</p>
+<ulist>
+<item><p><loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc></p></item>
+<item><p><loc href="#parameter-attribute-frameRate">ttp:frameRate</loc></p></item>
+<item><p><loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc></p></item>
+<item><p><loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc></p></item>
+<item><p><loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc></p></item>
+<item><p><loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc></p></item>
+<item><p><loc href="#parameter-attribute-tickRate">ttp:tickRate</loc></p></item>
+</ulist>
+</div2>
+<div2 id="isd-interchange">
+<head>ISD Interchange</head>
+<p>A concrete document instance that employs the <loc href="#isd">Intermediate Synchronic Document Syntax</loc> must be
+encoded as a well-formed <bibref ref="xml10"/> document using the UTF-8 character encoding. Furthermore, such a document must specify
+an <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element or
+an <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element as the root document element.</p>
+<p>When a resource consisting of a concrete ISD Sequence or ISD instance is interchanged and a media type is used to identify the content type
+of that resource, then the media type <code>application/ttml+xml</code> should be used, about which see <bibref ref="ttml1"/> Appendix C.
+If this media type is used, the optional <code>profile</code> parameter must not be specified, or, if specified, must be ignored by a processor.</p>
+</div2>
+<div2 id="isd-examples">
+<head>ISD Examples</head>
+<p><emph>This sub-section is non-normative.</emph></p>
+<ednote>
+<name>Add ISD Examples</name>
+<date>2014-09-22</date>
+<edtext>Add worked out examples of ISD Sequence and ISD document instances.</edtext>
+</ednote>
+</div2>
+</div1>
 <div1 id="features">
 <head>Features</head>
 <p><emph>This appendix is normative.</emph></p>

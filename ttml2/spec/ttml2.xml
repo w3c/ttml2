@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 926c39122963 2014/09/23 18:46:20 glenn $ -->
+<!-- $Id: ttml2.xml,v 33151db6397b 2014/09/23 18:57:41 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/23 18:46:20 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/09/23 18:57:41 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/23 18:46:20 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/09/23 18:57:41 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -10586,7 +10586,7 @@ explicit specification of frame rate, sub-frame rate, tick rate, and time base.<
 clock-time
   : hours ":" minutes ":" seconds ( fraction | ":" frames ( "." sub-frames )? )?
 offset-time
-  : time-count fraction? metric
+  : time-count fraction? metric?
 hours
   : <loc href="#style-value-digit">&lt;digit&gt;</loc> <loc href="#style-value-digit">&lt;digit&gt;</loc>
   | <loc href="#style-value-digit">&lt;digit&gt;</loc> <loc href="#style-value-digit">&lt;digit&gt;</loc> <loc href="#style-value-digit">&lt;digit&gt;</loc>+
@@ -10634,6 +10634,9 @@ sub-frame rate determined by the <att>ttp:subFrameRate</att> parameter as define
 ref="parameter-attribute-subFrameRate"/>.
 It is considered an error if a <emph>sub-frames</emph> term is specified
 when the <code>clock</code> time base applies.</p>
+<p>If a &lt;timeExpression&gt; is expressed in terms of a
+<emph>offset-time</emph> and no <emph>metric</emph> is specified, then it is to be treated as
+if a metric of <code>s</code> (seconds) were specified.</p>
 </div3>
 </div2> <!-- timing-time-value-expressions -->
 <div2 id="timing-time-intervals">
@@ -11974,10 +11977,10 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
 a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and, further, is restricted to use a metric of
 <code>s</code> (seconds),
 <code>f</code> (frames),
-<code>t</code> (ticks), or, exceptionally, may elide the metric, in which case <code>s</code> seconds is implied. This
+<code>t</code> (ticks), or may omit the metric, in which case <code>s</code> seconds is implied. This
 begin time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
 of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived.</p>
-<p>An <att>end</att> attribute must be similarlly specified, where the same constraints (and exceptional use of no metric) apply.
+<p>An <att>end</att> attribute must be similarlly specified, where the same constraints apply.
 This end time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
 of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived.</p>
 <note role="elaboration">

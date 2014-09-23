@@ -82,13 +82,13 @@ table.example-images-bordered td { border: 1px solid red; text-align: left }
 .obsoleted { background-color: #f26d7d }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/09/21 12:37:21 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/09/23 04:19:44 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/09/21 12:37:21 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/09/23 04:19:44 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest version:</dt><dd><a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
-</dd><dt>Editor:</dt><dd>Glenn Adams, Cox Communications, Inc.</dd><dt>Contributing Authors:</dt><dd>Mike Dolan, Invited Expert</dd><dd>Geoff Freed, WGBH National Center for Accessible Media</dd><dd>Sean Hayes, Microsoft</dd><dd>Erik Hodge, RealNetworks</dd><dd>David Kirby, British Broadcasting Corporation (BBC)</dd><dd>Thierry Michel, W3C</dd><dd>Dave Singer, Apple Computer</dd></dl><p>Please refer to the <a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml10/spec/ttml-issues.html">errata</a> for this document, which may
+</dd><dt>Editor:</dt><dd>Glenn Adams, Cox Communications, Inc.</dd><dt>Contributing Authors:</dt><dd>Mike Dolan, Invited Expert</dd><dd>Sean Hayes, Microsoft</dd><dd>Frans de Jong, European Broadcasting Union</dd><dd>Pierre-Anthony Lemieux, MovieLabs</dd><dd>Nigel Megitt, British Broadcasting Corporation</dd><dd>Dave Singer, Apple Computer</dd><dd>Jerry Smith, Microsoft</dd></dl><p>Please refer to the <a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml10/spec/ttml-issues.html">errata</a> for this document, which may
       include normative corrections.</p><p>See also <a href="http://www.w3.org/2003/03/Translations/byTechnology?technology=ttml2"><strong>translations</strong></a>.</p><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>&nbsp;©&nbsp;@@@@&nbsp;<a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p></div><hr><div>
 <h2><a id="abstract"></a>Abstract</h2><p>This document specifies the Timed Text Markup Language (TTML), Version 2, also known as TTML2,
 in terms of a vocabulary and semantics thereof.</p><p>The Timed Text Markup Language is a content type that represents
@@ -309,7 +309,15 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 B <a href="#schemas">Schemas</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;B.1 <a href="#ttml-schema-rnc">Relax NG Compact (RNC) Schema</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;B.2 <a href="#ttml-schema-xsd">XML Schema Definition (XSD) Schema</a><br>
-C <a href="#media-types-registration">Media Type Registration</a> (Non-Normative)<br>
+C <a href="#isd">Intermediate Synchronic Document Syntax</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;C.1 <a href="#isd-vocabulary">ISD Vocabulary</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C.1.1 <a href="#isd-vocabulary-sequence">isd:sequence</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C.1.2 <a href="#isd-vocabulary-isd">isd:isd</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C.1.3 <a href="#isd-vocabulary-css">isd:css</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C.1.4 <a href="#isd-vocabulary-region">isd:region</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;C.2 <a href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;C.3 <a href="#isd-interchange">ISD Interchange</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;C.4 <a href="#isd-examples">ISD Examples</a><br>
 D <a href="#features">Features</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;D.1 <a href="#feature-designations">Feature Designations</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D.1.1 <a href="#feature-animation">#animation</a><br>
@@ -440,11 +448,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e26375">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e26892">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e27280">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e27797">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e27885">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e28049">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e28790">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e28954">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a><br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a><br>
@@ -654,7 +662,7 @@ is expressed in a hierarchical fashion that embodies the organization of both sp
 timing information. Content makes direct or indirect references to styling and layout information
 and may specify inline overrides to styling.</p></div></div><div class="div1">
 <h2><a id="definitions"></a>2 Definitions</h2><div class="div2">
-<h3><a id="acronyms"></a>2.1 Acronyms</h3><table class="acronyms" summary="Glossary List"><tr><td class="label"><b>DFXP</b></td><td class="def"><p>Distribution Format Exchange Profile</p></td></tr><tr><td class="label"><b>TT</b></td><td class="def"><p>Timed Text</p></td></tr><tr><td class="label"><b>TTML</b></td><td class="def"><p>Timed Text Markup Language</p></td></tr><tr><td class="label"><b>TTAF</b></td><td class="def"><p>Timed Text Authoring Format</p></td></tr><tr><td class="label"><b>TTWG</b></td><td class="def"><p>Timed Text Working Group</p></td></tr></table></div><div class="div2">
+<h3><a id="acronyms"></a>2.1 Acronyms</h3><table class="acronyms" summary="Glossary List"><tr><td class="label"><b>DFXP</b></td><td class="def"><p>Distribution Format Exchange Profile</p></td></tr><tr><td class="label"><b>ISD</b></td><td class="def"><p>Intermedia Synchronic Document</p></td></tr><tr><td class="label"><b>TT</b></td><td class="def"><p>Timed Text</p></td></tr><tr><td class="label"><b>TTML</b></td><td class="def"><p>Timed Text Markup Language</p></td></tr><tr><td class="label"><b>TTAF</b></td><td class="def"><p>Timed Text Authoring Format</p></td></tr><tr><td class="label"><b>TTWG</b></td><td class="def"><p>Timed Text Working Group</p></td></tr></table></div><div class="div2">
 <h3><a id="terms"></a>2.2 Terminology</h3><dl><dt class="label"><a id="terms-abstract-document-instance"></a>[abstract document instance]</dt><dd><p>An instance of an abstract data set as represented by a
 <a href="#terms-reduced-xml-infoset">reduced xml infoset</a>.</p></dd><dt class="label"><a id="terms-abstract-document-type"></a>[abstract document type]</dt><dd><p>A set of constraints that defines a class of <em>XML Information
 Sets</em> <a href="#infoset">[XML InfoSet]</a>.</p></dd><dt class="label"><a id="terms-anonymous-profile"></a>[anonymous profile]</dt><dd><p>See <a href="#terms-undesignated-profile">undesignated profile</a>.</p></dd><dt class="label"><a id="terms-attribute-information-item"></a>[attribute information item]</dt><dd><p>Each specified or defaulted attribute  of an XML document corresponds with an attribute information
@@ -714,7 +722,9 @@ a <a href="#terms-content-element">content element</a> or implicitly by specifyi
 or <a href="#style-attribute-origin">tts:origin</a> style attribute on a <a href="#terms-content-element">content element</a>.
 There is a one-to-one relation between an inline <a href="#layout-vocabulary-region"><code>region</code></a> element and its
 parent <a href="#terms-content-element">content element</a>. An inline region is assigned its parent element's time interval as its active
-time interval. No <code>region</code> attribute makes reference to an inline region.</p></dd><dt class="label"><a id="terms-nested-profile"></a>[nested profile]</dt><dd><p>A constituent <a href="#terms-profile">profile</a> of a <a href="#terms-nesting-profile">nesting profile</a>, i.e., one of the
+time interval. No <code>region</code> attribute makes reference to an inline region.</p></dd><dt class="label"><a id="terms-intermediate-synchronic-document"></a>[intermediate synchronic document]</dt><dd><p>An abstract or concrete representation of the static content, styling, and layout of a source TTML <a href="#terms-document-instance">document instance</a>
+during a non-overlapping temporal interval that intersects with the source document's <a href="#terms-root-temporal-extent">root temporal extent</a>.</p></dd><dt class="label"><a id="terms-intermediate-synchronic-document-sequence"></a>[intermediate synchronic document sequence]</dt><dd><p>An abstract or concrete representation of a sequence of <a href="#terms-intermediate-synchronic-document">intermediate synchronic document</a> instances
+that effectively represent the content, styling, layout, and timing of a source TTML <a href="#terms-document-instance">document instance</a>.</p></dd><dt class="label"><a id="terms-intermediate-synchronic-document-sequence-syntax"></a>[intermediate synchronic document sequence syntax]</dt><dd><p>A formalism for use in the concrete representation of an <a href="#terms-intermediate-synchronic-document-sequence">intermediate synchronic document sequence</a>.</p></dd><dt class="label"><a id="terms-nested-profile"></a>[nested profile]</dt><dd><p>A constituent <a href="#terms-profile">profile</a> of a <a href="#terms-nesting-profile">nesting profile</a>, i.e., one of the
 descendant <code>ttp:profile</code> element(s) of a higher level (ancestor) <code>ttp:profile</code> element. A given <code>ttp:profile</code> may serve
 as both a <a href="#terms-nested-profile">nested profile</a> and a <a href="#terms-nesting-profile">nesting profile</a>.</p></dd><dt class="label"><a id="terms-nesting-profile"></a>[nesting profile]</dt><dd><p>A <a href="#terms-profile">profile</a> defined by making reference to one or more child <code>ttp:profile</code> element(s), wherein a
 profile combination method determines how profile specifications from the multiple child <code>ttp:profile</code> element(s) are combined.</p></dd><dt class="label"><a id="terms-non-nesting-profile"></a>[non-nesting profile]</dt><dd><p>A <a href="#terms-profile">profile</a> defined without making reference to one or more child <code>ttp:profile</code> element(s); that is,
@@ -964,7 +974,7 @@ global attributes. The following table specifies this set of namespaces
 and indicates the default prefix used within this specification and the
 normative URI that denotes each namespace.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>In a specific <a href="#terms-document-instance">document instance</a>, it is not required that the default
 prefixes shown below are used. Any prefix or namespace binding that satisfies the constraints
-of XML Namespaces <a href="#xmlns10">[XML Namespaces 1.0]</a>  may be used that is associated with the specified namespace URI.</p></div><a id="namespace-vocab-table"></a><table class="common"><caption>Table 5-1 – Namespaces</caption><col width="30%" span="1"><col span="1"><col span="1"><tbody><tr><th>Name</th><th>Prefix</th><th>Value</th></tr><tr><td>TT</td><td><code>tt:</code></td><td><code>http://www.w3.org/ns/ttml</code></td></tr><tr><td>TT Parameter</td><td><code>ttp:</code></td><td><code>http://www.w3.org/ns/ttml#parameter</code></td></tr><tr><td>TT Style</td><td><code>tts:</code></td><td><code>http://www.w3.org/ns/ttml#styling</code></td></tr><tr><td>TT Metadata</td><td><code>ttm:</code></td><td><code>http://www.w3.org/ns/ttml#metadata</code></td></tr><tr><td>TT Profile</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/profile/</code></td></tr><tr><td>TT Feature</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/feature/</code></td></tr><tr><td>TT Extension</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/extension/</code></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>If a reference to an element type is used in this specification and the name
+of XML Namespaces <a href="#xmlns10">[XML Namespaces 1.0]</a>  may be used that is associated with the specified namespace URI.</p></div><a id="namespace-vocab-table"></a><table class="common"><caption>Table 5-1 – Namespaces</caption><col width="30%" span="1"><col span="1"><col span="1"><tbody><tr><th>Name</th><th>Prefix</th><th>Value</th></tr><tr><td>TT</td><td><code>tt:</code></td><td><code>http://www.w3.org/ns/ttml</code></td></tr><tr><td>TT Parameter</td><td><code>ttp:</code></td><td><code>http://www.w3.org/ns/ttml#parameter</code></td></tr><tr><td>TT Style</td><td><code>tts:</code></td><td><code>http://www.w3.org/ns/ttml#styling</code></td></tr><tr><td>TT Metadata</td><td><code>ttm:</code></td><td><code>http://www.w3.org/ns/ttml#metadata</code></td></tr><tr><td>TT Intermediate Synchronic Document</td><td><code>isd:</code></td><td><code>http://www.w3.org/ns/ttml#isd</code></td></tr><tr><td>TT Profile</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/profile/</code></td></tr><tr><td>TT Feature</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/feature/</code></td></tr><tr><td>TT Extension</td><td><em>none</em></td><td><code>http://www.w3.org/ns/ttml/extension/</code></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>If a reference to an element type is used in this specification and the name
 of the element type is not namespace qualified, then the TT Namespace applies.</p><p>If a reference to an attribute is used in this specification and the name
 of the attribute is not namespace qualified, then the attribute is implicitly qualified by
 the element type with which it is used. That is, the attribute resides in the so-called
@@ -1245,17 +1255,17 @@ Styling
 <a href="#styling-vocabulary-initial">initial</a>,
 <a href="#styling-vocabulary-style">style</a>
 </td></tr></tbody></table><p></p><p>Element vocabulary groups that are used in defining content models
-for TTML element types are enumerated in <a href="#element-vocab-group-table"><b>Table 5-4 – Element Vocabulary Groups</b></a>.</p><a id="element-vocab-group-table"></a><table class="common"><caption>Table 5-4 – Element Vocabulary Groups</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Group</th><th>Elements</th></tr><tr><td>
+for TTML element types are enumerated in <a href="#element-vocab-group-table"><b>Table 5-4 – Element Vocabulary Groups</b></a>.</p><a id="element-vocab-group-table"></a><table class="common"><caption>Table 5-4 – Element Vocabulary Groups</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Group</th><th>Elements</th></tr><tr id="element-vocab-group-animation"><td>
 Animation.class
 </td><td>
 <a href="#animation-vocabulary-animate">animate</a> |
 <a href="#animation-vocabulary-set">set</a>
-</td></tr><tr><td>
+</td></tr><tr id="element-vocab-group-block"><td>
 Block.class
 </td><td>
 <a href="#content-vocabulary-div">div</a> |
 <a href="#content-vocabulary-p">p</a>
-</td></tr><tr><td>
+</td></tr><tr id="element-vocab-group-inline"><td>
 Inline.class
 </td><td>
 <a href="#content-vocabulary-span">span</a> |
@@ -1263,9 +1273,9 @@ Inline.class
 <code>#PCDATA</code>
 </td></tr><tr><td>
 Layout.class
-</td><td>
+</td><td id="element-vocab-group-layout">
 <a href="#layout-vocabulary-region">region</a>
-</td></tr><tr><td>
+</td></tr><tr id="element-vocab-group-metadata"><td>
 Metadata.class
 </td><td>
 <a href="#metadata-vocabulary-metadata">metadata</a> |
@@ -1273,28 +1283,28 @@ Metadata.class
 <a href="#metadata-vocabulary-copyright">ttm:copyright</a> |
 <a href="#metadata-vocabulary-desc">ttm:desc</a> |
 <a href="#metadata-vocabulary-title">ttm:title</a>
-</td></tr><tr><td>Parameters.class</td><td><a href="#parameter-vocabulary-profile">ttp:profile</a></td></tr></tbody></table><p></p><p>The attribute vocabulary specified for use with the core vocabulary
+</td></tr><tr id="element-vocab-group-parameters"><td>Parameters.class</td><td><a href="#parameter-vocabulary-profile">ttp:profile</a></td></tr></tbody></table><p></p><p>The attribute vocabulary specified for use with the core vocabulary
 catalog is enumerated in
-<a href="#attribute-vocab-table"><b>Table 5-5 – Attribute Vocabulary</b></a>.</p><a id="attribute-vocab-table"></a><table class="common"><caption>Table 5-5 – Attribute Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Attributes</th></tr><tr><td>
+<a href="#attribute-vocab-table"><b>Table 5-5 – Attribute Vocabulary</b></a>.</p><a id="attribute-vocab-table"></a><table class="common"><caption>Table 5-5 – Attribute Vocabulary</caption><col width="25%" span="1"><col span="1"><tbody><tr><th>Module</th><th>Attributes</th></tr><tr id="attribute-vocab-group-animation-binding"><td>
 Animation Binding Attribute
 </td><td>
 <a href="#animation-attribute-animate">animate</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-core"><td>
 Core Attributes
 </td><td>
 <a href="#content-attribute-id">xml:id</a>,
 <a href="#content-attribute-lang">xml:lang</a>,
 <a href="#content-attribute-space">xml:space</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-layout-binding"><td>
 Layout Binding Attribute
 </td><td>
 <a href="#layout-attribute-region">region</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-metadata"><td>
 Metadata Attributes
 </td><td>
 <a href="#metadata-attribute-agent">ttm:agent</a>,
 <a href="#metadata-attribute-role">ttm:role</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-parameters"><td>
 Parameter Attributes
 </td><td>
 <a href="#parameter-attribute-cellResolution">ttp:cellResolution</a>,
@@ -1321,11 +1331,11 @@ Parameter Attributes
 <a href="#parameter-attribute-validation">ttp:validation</a>,
 <a href="#parameter-attribute-validationAction">ttp:validationAction</a>,
 <a href="#parameter-attribute-version">ttp:version</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-style-binding"><td>
 Style Binding Attribute
 </td><td>
 <a href="#style-attribute-style">style</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-style"><td>
 Styling Attributes
 </td><td>
 <a href="#style-attribute-backgroundColor">tts:backgroundColor</a>,
@@ -1357,7 +1367,7 @@ Styling Attributes
 <a href="#style-attribute-wrapOption">tts:wrapOption</a>,
 <a href="#style-attribute-writingMode">tts:writingMode</a>,
 <a href="#style-attribute-zIndex">tts:zIndex</a>
-</td></tr><tr><td>
+</td></tr><tr id="attribute-vocab-group-timing"><td>
 Timing Attributes
 </td><td>
 <a href="#timing-attribute-begin">begin</a>,
@@ -5046,7 +5056,7 @@ and the resulting generated out-of-line region is shown by the following two exa
 &lt;/tt&gt;
 </pre></div>
 </td></tr></tbody></table></div><div class="div3">
-<h4><a id="semantics-region-layout-step-1"></a>9.3.3 Intermediate Synchronic Document Construction</h4><p>For the purposes of performing presentation processing, the active time
+<h4><a id="semantics-region-layout-step-1"></a>9.3.3 Intermediate Synchronic Document Construction</h4><table border="1" class="ednote" summary="Editorial note: Use Formalized ISD"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Use Formalized ISD</b></td><td align="right" valign="top">2014-09-22</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Revise in order to take into account new formalization of ISD structure and semantics (Appendix C).</td></tr></table><p>For the purposes of performing presentation processing, the active time
 duration of a <a href="#terms-document-instance">document instance</a> is divided into a sequence of time coordinates where at
 each time coordinate, some element becomes temporally active or inactive,
 then, at each such time coordinate, a <a href="#terms-document-instance">document instance</a> is mapped from its original, source
@@ -6206,9 +6216,165 @@ Archive</a>. This schema is to be considered non-normative for the purpose of de
 of Timed Text Markup Language content as defined by this specification.
 In particular, the formal validity of TTML Content
 is defined by <a href="#conformance-content"><b>3.1 Content Conformance</b></a>.</p></div></div><div class="div1">
-<h2><a id="media-types-registration"></a>C Media Type Registration (Non-Normative)</h2><div class="note"><p class="prefix"><b>Note:</b></p><p>The information from this appendix has been removed since media type
-registration has already occurred. This section is retained in its empty form
-in order to prevent appendix renumbering.</p></div></div><div class="div1">
+<h2><a id="isd"></a>C Intermediate Synchronic Document Syntax</h2><p><em>This appendix is normative.</em></p><p>This appendix specifies the syntactic elements and structure of a TTML Intermediate Synchronic Document (ISD) Sequence and its
+constituent TTML Intermediate Synchronic Document (ISD) instances. An ISD instance may be represented as a standalone document instance or
+in a collection represented as an ISD Sequence instance.</p><p>All ISD related vocabulary is defined in the TTML ISD Namespace, defined here as <code>http://www.w3.org/ns/ttml#isd</code>,
+where the recommended prefix is <code>isd</code>.</p><p>A TTML <a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a>, in short, an <em>ISD</em> or <em>ISD instance</em>,
+represents a discrete, temporally non-overlapping interval, an <em>ISD interval</em>,
+of a source TTML document where, except for non-discrete animation, all content, styling, and layout information remains static within that interval.
+In particular, the timing hierarchy of a TTML document is flattened and then sub-divided into temporally non-overlapping intervals, where each such
+interval defines a static view of the source TTML document within that interval, and where that static view is represented as an ISD instance.
+A concrete, standalone instance of a TTML
+<a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a> must specify an
+<a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element as its root document element. When an instance of a
+<a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a> is included in a
+<a href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</a> instance, then the ISD instance is represented
+by an <a href="#isd-vocabulary-isd"><code>isd:isd</code></a> child element of the root 
+<a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>An ISD instance may contain one or more animate elements that denote continuous animation within the associated interval. Continuously animated styles are sub-divided across
+ISD interval boundaries such that their step-wise concatenation expresses an equivalent continuous animation over any intersecting ISD interval(s).</p></div><p>A TTML <a href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</a> represents a collection
+of temporally non-overlapping <a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a> instances ordered according
+to their begin times. A concrete instance of a TTML
+<a href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</a> must specify an
+<a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element as its root document element.</p><div class="div2">
+<h3><a id="isd-vocabulary"></a>C.1 ISD Vocabulary</h3><div class="div3">
+<h4><a id="isd-vocabulary-sequence"></a>C.1.1 isd:sequence</h4><p>The <code>isd:sequence</code> element serves as the root document element of an <a href="#terms-intermediate-synchronic-document-sequence">Intermediate
+Synchronic Document Sequence</a>  document.</p><p>The <code>isd:sequence</code> element accepts as its children zero or more elements in the
+<a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group,
+followed by zero or one <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element,
+followed by zero or more <a href="#isd-vocabulary-isd"><code>isd:isd</code></a> elements.</p><p>Child <code>isd:isd</code> elements must be ordered in accordance to the media time equivalent of their
+begin time; furthermore, the temporal intervals of any two child <a href="#isd-vocabulary-isd"><code>isd:isd</code></a> elements must not overlap (in time).</p><a id="elt-syntax-isd-sequence"></a><table class="syntax"><caption>XML Representation – Element Information Item: isd:sequence</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;isd:sequence
+  size = xsd:nonNegativeInteger
+  version = xsd:positiveInteger
+  <a href="#content-attribute-lang"><span class="reqattr">xml:lang</span></a> = string
+  {<em>any attribute in the <a href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</a></em>}&gt;
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-metadata">Metadata.class</a>*, <a href="#parameter-vocabulary-profile">ttp:profile</a>?, <a href="#isd-vocabulary-isd">isd:isd</a>*
+&lt;/isd:sequence&gt;
+</pre></div>
+</td></tr></tbody></table><p>If the <code>size</code> attribute is specified, then it must be a non-negative integer corresponding to the number of
+<a href="#isd-vocabulary-isd"><code>isd:isd</code></a> child elements.
+If not specified, then the size must be considered to be <em>indefinite</em>, unless and until the
+<a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element is terminated, in which case the size
+may be determined by inspection.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The <code>size</code> attribute would normally be omitted in the case of real time captioning.</p></div><p>If the <code>version</code> attribute is specified, then it must be a positive integer corresponding to the version of this
+<a href="#terms-intermediate-synchronic-document-syntax">Intermediate Synchronic Document Syntax</a> specification used in authoring
+the ISD sequence document. If specified, the numeric value must be greater than or equal to two (2). If not specified, then the version must be
+consider to be equal to two (2). The version associated with this
+<a href="#terms-intermediate-synchronic-document-sequence-syntax">Intermediate Synchronic Document Sequence Syntax</a> specification is two (2).</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The ISD abstraction referred to or implied by <a href="#ttml1">[TTML1]</a> §9.3.2 was not concretely defined by that specification. Here we reserve version one (1)
+for informal discussion of that earlier abstraction and its various (non-standardized) realizations.</p></div><p>An <a href="#content-attribute-lang"><code>xml:lang</code></a> attribute must be specified on the
+<a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element.
+If its value is empty, it signifies that there is no default language that applies
+to the content within the <a href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</a>. Otherwise,
+the specified value denotes the default language that applies to each constituent
+<a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a>.</p><p>One or more parameter properties may be specified from the restricted parameter attribute set enumerated in <a href="#isd-parameter-attribute-set"><b>C.2 ISD Parameter Attribute Set</b></a>.
+If specified, then they apply globally to each constituent <a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a>.</p><p>If a child <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element is present,
+then that <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element must satisfy the following constraints:</p><ul><li><p>no <code>combine</code> attribute is specified;</p></li><li><p>no <code>designator</code> attribute is specified;</p></li><li><p>no <code>type</code> attribute is specified;</p></li><li><p>no <code>use</code> attribute is specified;</p></li><li><p>no descendant element is a <code>ttp:profile</code> element;</p></li><li><p>no descendant <code>ttp:feature</code> element specifies a <code>value</code> attribute with the value <code>prohibited</code>;</p></li><li><p>no descendant <code>ttp:extension</code> element specifies a <code>value</code> attribute with the value <code>prohibited</code>.</p></li></ul><p>Furthermore, such a child <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element must specify a profile that is equivalent to the combined
+<a href="#terms-processor-profile">processor profile</a> of the source TTML document having fetched all externally referenced profile documents.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The intent of permitting a single <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> to be specified in an
+<a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> is to provide a simplified mechanism to declare
+processor profile requirements that must be met in order to process the document (in the absence of an end-user override).</p></div></div><div class="div3">
+<h4><a id="isd-vocabulary-isd"></a>C.1.2 isd:isd</h4><p>The <code>isd:isd</code> element serves either as (1) the root document element of a standalone <a href="#terms-intermediate-synchronic-document">Intermediate
+Synchronic Document</a> or (2) as a child of an <a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element of a
+<a href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</a> document.</p><p>The <code>isd:isd</code> element accepts as its children zero or more elements in the
+<a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group,
+followed by zero or one <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element,
+followed by zero or more <a href="#isd-vocabulary-css"><code>isd:css</code></a> elements,
+followed by zero or more <a href="#isd-vocabulary-region"><code>isd:region</code></a> elements.</p><a id="elt-syntax-isd"></a><table class="syntax"><caption>XML Representation – Element Information Item: isd:isd</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;isd:isd
+  <a href="#timing-attribute-begin"><span class="reqattr">begin</span></a> = <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>
+  <a href="#timing-attribute-end"><span class="reqattr">end</span></a> = <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>
+  version = xsd:positiveInteger
+  <a href="#content-attribute-lang">xml:lang</a> = string
+  {<em>any attribute in the <a href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</a></em>}&gt;
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-metadata">Metadata.class</a>*, <a href="#parameter-vocabulary-profile">ttp:profile</a>?, <a href="#isd-vocabulary-css">isd:css</a>*, <a href="#isd-vocabulary-region">isd:region</a>*
+&lt;/isd:isd&gt;
+</pre></div>
+</td></tr></tbody></table><p>A <code>begin</code> attribute must be specified, the value of which must take the <em>offset-time</em> form of
+a <a href="#timing-value-timeExpression">&lt;timeExpression&gt;</a>, and, further, is restricted to use a metric of
+<code>s</code> (seconds),
+<code>f</code> (frames),
+<code>t</code> (ticks), or, exceptionally, may elide the metric, in which case <code>s</code> seconds is implied. This
+begin time is expressed as an offset from the begin time of the <a href="#terms-root-temporal-extent">root temporal extent</a>
+of the source TTML document from which this <a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element was derived.</p><p>An <code>end</code> attribute must be similarlly specified, where the same constraints (and exceptional use of no metric) apply.
+This end time is expressed as an offset from the begin time of the <a href="#terms-root-temporal-extent">root temporal extent</a>
+of the source TTML document from which this <a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element was derived.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>Expressed in the terminology of <a href="#smil3">[SMIL 3.0]</a>, the values of these <code>begin</code> and <code>end</code> attributes
+correspond to the resolved begin and end times of the <em>active duration</em> with respect to the <em>document begin</em>.</p></div><p>An <a href="#content-attribute-lang"><code>xml:lang</code></a> attribute must be specified on the
+<a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element if it is a standalone <a href="#terms-intermediate-synchronic-document">Intermediate
+Synchronic Document</a> document; otherwise, it may be specified, and should be specified if the default language of the 
+<a href="#isd-vocabulary-sequence"><code>isd:isd</code></a> element differs from the default language of its
+parent <a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element.
+If its value is empty, it signifies that there is no default language that applies
+to the content within the <a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a>. Otherwise,
+the specified value denotes the default language that applies.</p><p>The <code>version</code> attribute follows the syntax and semantics of the same named attribute on the
+<a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element type. The <code>version</code>
+attribute must not be specified on an <a href="#isd-vocabulary-isd">isd:isd</a> element that is not
+a root document element, i.e., is a child element of an <a href="#isd-vocabulary-sequence">isd:sequence</a> element.</p><p>A child <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element may be present if the
+<a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element is a standalone <a href="#terms-intermediate-synchronic-document">Intermediate
+Synchronic Document</a> document, in which case the same constraints and semantics apply as specified in <a href="#isd-vocabulary-sequence"><b>C.1.1 isd:sequence</b></a>;
+otherwise, if not a standalone document, a child <a href="#parameter-vocabulary-profile"><code>ttp:profile</code></a> element must not be present.</p></div><div class="div3">
+<h4><a id="isd-vocabulary-css"></a>C.1.3 isd:css</h4><p>The <code>isd:css</code> element is used to represent a unique computed style set of some collection of elements
+that share the same set of computed styles. In particular, for each
+element <em>E</em> in the source TTML document which is selected and copied into a
+<a href="#isd-vocabulary-region"><code>isd:region</code></a> element of a given
+<a href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</a>, the computed style
+set of <em>E</em>, <em>CSS(E)</em>, is determined, and, if that <em>CSS(E)</em> is not already specified
+by an existing <code>isd:css</code> element, then it is assigned a unique identifier and instantiated as a new
+<code>isd:css</code> element.</p><p>The <code>isd:css</code> element accepts as its children zero or more elements in the
+<a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group.</p><a id="elt-syntax-isd-style"></a><table class="syntax"><caption>XML Representation – Element Information Item: isd:css</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;isd:css
+  <a href="#content-attribute-id"><span class="reqattr">xml:id</span></a> = ID
+  {<em>any attribute in TT Style namespace</em>}
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-metadata">Metadata.class</a>*
+&lt;/isd:css&gt;
+</pre></div>
+</td></tr></tbody></table><p>For each arbitrary pair of <code>isd:css</code> child elements of an
+<a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element,
+<em>S1</em> and <em>S2</em>, the set of specified styles of <em>S1</em> must
+not be the same as the set of specified styles of <em>S2</em>. For the purpose of comparing two
+sets of specified styles, the styles must be placed into a canonical order and then compared item
+by item for value equality, where the canonical order is in accordance to the qualified attribute name
+order, where each qualified name consists of a tuple <code>&lt;namespace URL, local name&gt;</code>,
+and such tuples are compared component-wise by case-sensitive lexical string order.</p></div><div class="div3">
+<h4><a id="isd-vocabulary-region"></a>C.1.4 isd:region</h4><p>The <code>isd:region</code> element is used to represent a layout and presentation region
+and the content selected into that region, where that content takes the form of a
+<a href="#document-structure-vocabulary-body">body</a> element and its descendant TTML content elements.</p><p>The <code>isd:region</code> element accepts as its children zero or more elements in the
+<a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group,
+followed by zero or more <a href="#animation-vocabulary-animate"><code>animate</code></a> elements,
+followed by exactly one <a href="#document-structure-vocabulary-body"><code>body</code></a> element.</p><a id="elt-syntax-isd-region"></a><table class="syntax"><caption>XML Representation – Element Information Item: isd:region</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;isd:region
+  <a href="#style-attribute-style">style</a> = IDREF
+  <a href="#metadata-attribute-role">ttm:role</a> = string
+  <a href="#content-attribute-id"><span class="reqattr">xml:id</span></a> = ID
+  {<em>any attribute not in default or any TT namespace</em>}&gt;
+  <em>Content:</em> <a href="#element-vocab-group-metadata">Metadata.class</a>*, <a href="#animation-vocabulary-animate">animate</a>*, <a href="#document-structure-vocabulary-body">body</a>
+&lt;/isd:region&gt;
+</pre></div>
+</td></tr></tbody></table><p>If the computed style set of the region represented by the <code>isd:region</code> element is not the
+set of initial style values that apply to <a href="#layout-vocabulary-region"><code>region</code></a>, then a
+<code>style</code> attribute must be specified which references an <a href="#isd-vocabulary-css"><code>isd:css</code></a> element that specifies the
+region's computed style set.</p><p>The following constraints apply to the <a href="#document-structure-vocabulary-body"><code>body</code></a> element
+and its descendant elements:</p><ul><li><p>no <code>animate</code> attribute is specified;</p></li><li><p>no <code>begin</code> attribute is specified;</p></li><li><p>no <code>dur</code> attribute is specified;</p></li><li><p>no <code>end</code> attribute is specified;</p></li><li><p>no <code>region</code> attribute is specified;</p></li><li><p>no <code>timeContainer</code> attribute is specified;</p></li><li><p>no attribute in the TT Style namespace is specified;</p></li><li><p>no <a href="#animation-vocabulary-set">set</a> element is present;</p></li><li><p>no significant text node, i.e., text node in a #PCDATA context, is not contained in a 
+<a href="#content-vocabulary-span"><code>span</code></a> element that contains no other child.</p></li></ul><p>In addition, for the <a href="#document-structure-vocabulary-body"><code>body</code></a> element <em>B</em> and
+each of its descendant content elements <em>C</em>, if the computed style set of <em>B</em> or each <em>C</em> is
+not equal to the computed style set of its parent element, then that element, <em>B</em> or <em>C</em>, must specify a <code>style</code>
+attribute that references an <a href="#isd-vocabulary-css"><code>isd:css</code></a> element that specifies the
+element's computed style set.</p></div></div><div class="div2">
+<h3><a id="isd-parameter-attribute-set"></a>C.2 ISD Parameter Attribute Set</h3><p>The following subset of the defined <a href="#attribute-vocab-group-parameters">Parameter Attributes</a>
+are available for use with an
+<a href="#isd-vocabulary-structure"><code>isd:structure</code></a> or
+<a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element as described above:</p><ul><li><p><a href="#parameter-attribute-cellResolution">ttp:cellResolution</a></p></li><li><p><a href="#parameter-attribute-frameRate">ttp:frameRate</a></p></li><li><p><a href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</a></p></li><li><p><a href="#parameter-attribute-mediaOffset">ttp:mediaOffset</a></p></li><li><p><a href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</a></p></li><li><p><a href="#parameter-attribute-subFrameRate">ttp:subFrameRate</a></p></li><li><p><a href="#parameter-attribute-tickRate">ttp:tickRate</a></p></li></ul></div><div class="div2">
+<h3><a id="isd-interchange"></a>C.3 ISD Interchange</h3><p>A concrete document instance that employs the <a href="#isd">Intermediate Synchronic Document Syntax</a> must be
+encoded as a well-formed <a href="#xml10">[XML 1.0]</a> document using the UTF-8 character encoding. Furthermore, such a document must specify
+an <a href="#isd-vocabulary-sequence"><code>isd:sequence</code></a> element or
+an <a href="#isd-vocabulary-isd"><code>isd:isd</code></a> element as the root document element.</p><p>When a resource consisting of a concrete ISD Sequence or ISD instance is interchanged and a media type is used to identify the content type
+of that resource, then the media type <code>application/ttml+xml</code> should be used, about which see <a href="#ttml1">[TTML1]</a> Appendix C.
+If this media type is used, the optional <code>profile</code> parameter must not be specified, or, if specified, must be ignored by a processor.</p></div><div class="div2">
+<h3><a id="isd-examples"></a>C.4 ISD Examples</h3><p><em>This sub-section is non-normative.</em></p><table border="1" class="ednote" summary="Editorial note: Add ISD Examples"><tr class="ednote-r1"><td align="left" valign="top"><b>Editorial note: Add ISD Examples</b></td><td align="right" valign="top">2014-09-22</td></tr><tr class="ednote-r2"><td colspan="2" align="left" valign="top">Add worked out examples of ISD Sequence and ISD document instances.</td></tr></table></div></div><div class="div1">
 <h2><a id="features"></a>D Features</h2><p><em>This appendix is normative.</em></p><p>This appendix specifies (1) a set of feature designations, each of which
 labels one or more syntactic and/or semantic features defined by this
 specification, and (2) for each designated feature, whether the feature is mandatory
@@ -7817,7 +7983,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e26375"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e27280"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7874,7 +8040,7 @@ but extended to support distinct specification of optionality.</p></li><li><p>De
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li><li><p>Conceptually derived from existing <code>tt:layout</code> element,
 which is a generic container for layout specifications, but for use
 in defining animation specifications that apply to targeted elements.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e26892"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+<h3><a id="d3e27797"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -7966,9 +8132,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e27885"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e28790"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e28049"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e28954"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiles">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">
@@ -8327,5 +8493,5 @@ and Mohamed Zergaoui.
 by members: Micheal Dolan (SMPTE time codes, streaming; SMPTE liaison), David
 Kirby (introductory example document; SMPTE time codes, descriptive metadata; EBU/AAF liaison), Geoff Freed (styling
 and example images of style properties), Sean Hayes (advanced profile
-concepts, including applicative timing), Eric Hodge (timing),
+concepts, including applicative timing), Erik Hodge (timing),
 Thierry Michel (metadata), and Dave Singer (animation, scrolling).</p><p>The Working Group dedicates this specification to our colleague David Kirby.</p></div></div></body></html>

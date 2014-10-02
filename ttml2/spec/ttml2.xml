@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 61c62c65a7f3 2014/10/02 14:24:15 glenn $ -->
+<!-- $Id: ttml2.xml,v c62837d89619 2014/10/02 21:39:43 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/10/02 14:24:15 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/10/02 21:39:43 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/10/02 14:24:15 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/10/02 21:39:43 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -2421,6 +2421,7 @@ Styling Attributes
 <loc href="#style-attribute-padding">tts:padding</loc>,
 <loc href="#style-attribute-ruby">tts:ruby</loc>,
 <loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
+<loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc>,
 <loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
 <loc href="#style-attribute-textAlign">tts:textAlign</loc>,
@@ -5089,6 +5090,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-padding"/></p></item>
 <item><p><specref ref="style-attribute-ruby"/></p></item>
 <item><p><specref ref="style-attribute-rubyAlign"/></p></item>
+<item><p><specref ref="style-attribute-rubyOffset"/></p></item>
 <item><p><specref ref="style-attribute-rubyPosition"/></p></item>
 <item><p><specref ref="style-attribute-showBackground"/></p></item>
 <item><p><specref ref="style-attribute-textAlign"/></p></item>
@@ -7003,9 +7005,8 @@ mode relative padding values as defined by <bibref ref="xsl11"/>,
 <head>tts:ruby</head>
 <p>The <att>tts:ruby</att> attribute is used to specify the application of ruby
 styling.</p>
-<p>This attribute applies only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements and is not inheritable, so it should
-not be specified on any other element type. If specified elsewhere, then it must be ignored for
-the purpose of presentation processing.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-ruby" role="common">
 <col width="25%"/>
 <col/>
@@ -7104,6 +7105,85 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
+<ulist>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of all ancestor elements is <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
+or <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then its
+preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of its first child element is <code>text</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseContainer</code> or
+<code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of no more than one sibling is <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
+<code>baseContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then its
+preceding sibling is either <code>null</code> (i.e., no preceding sibling) or the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code> and the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
+then the computed value of <att>tts:ruby</att> of no sibling is <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
+computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
+<code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code>,
+<code>text</code>, or <code>delimiter</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code> and the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
+then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
+<code>text</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+</ulist>
+<note role="elaboration">
+<p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
+<eg xml:space="preserve">
+container
+  : baseContainer textContainer textContainer?
+  | base text
+  | base delimiter text delimiter
+
+baseContainer
+  : base+
+
+textContainer
+  : text+
+
+base | text | delimiter
+  : ( #PCDATA | { span - tts:ruby } )*
+</eg>
+<p>This model corresponds to the maximal content model for the <code>ruby</code> element defined by <bibref ref="ruby"/>, &sect;2.1:</p>
+<eg xml:space="preserve">
+((rb, (rt | (rp, rt, rp))) | (rbc, rtc, rtc?))
+</eg>
+</note>
+<p>A validating processor must treat a violation of any of the above constraints as an error.</p>
+<p>For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
+presentation of ruby text annotations, where fallback annotation presentation is considered to be implementation dependent.</p>
 <p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Ruby</caption>
@@ -7173,9 +7253,8 @@ represented by this attribute are based upon that defined by <bibref ref="ruby"/
 <div3 id="style-attribute-rubyAlign">
 <head>tts:rubyAlign</head>
 <p>The <att>tts:rubyAlign</att> attribute is used to specify the position of ruby text within the inline area generated by the ruby text container annotation.</p>
-<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however, this attribute applies
-as a style property only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements on which the computed value of the
-<att>tts:ruby</att> style property is either <code>textContainer</code> or <code>text</code>.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-rubyAlign" role="common">
 <col width="25%"/>
 <col/>
@@ -7196,7 +7275,7 @@ as a style property only to <loc href="#content-vocabulary-span"><el>span</el></
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<emph>see prose (above)</emph>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
 </td>
 </tr>
 <tr>
@@ -7235,13 +7314,64 @@ represented by this attribute are based upon that defined by <bibref ref="cssrub
 renderings shown there apply.</p>
 </note>
 </div3>
+<div3 id="style-attribute-rubyOffset">
+<head>tts:rubyOffset</head>
+<p>The <att>tts:rubyOffset</att> attribute is used to specify the offset (distance) of ruby text with respect to its associated ruby base
+in the block progression dimension.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-rubyOffset" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-length">&lt;length&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>0px</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>relative to this element's font size</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>continuous</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If specified, the value of <att>tts:rubyOffset</att> expresses the offset (distance) between padding edge <emph>E<sub>1</sub></emph> of the inline area
+generated by a ruby text container (explicit or implied) and padding edge <emph>E<sub>2</sub></emph>  of the inline area generated by a ruby base container (explicit or implied), where
+<emph>E<sub>1</sub></emph> and <emph>E<sub>2</sub></emph> are perpendicular to the block progression direction and are (or would be) adjacent in the absence of
+such an offset.</p>
+<p>Negative length expressions are permitted.</p>
+<ednote>
+<name>Ruby Offset Example</name>
+<date>2014-10-02</date>
+<edtext>Add example and example rendering of tts:rubyOffset.</edtext>
+</ednote>
+</div3>
 <div3 id="style-attribute-rubyPosition">
 <head>tts:rubyPosition</head>
 <p>The <att>tts:rubyPosition</att> attribute is used to specify the position of ruby text in the block progression dimension
 with respect to its associated ruby base.</p>
-<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however, this attribute applies
-as a style property only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements on which the computed value of the
-<att>tts:ruby</att> style property is either <code>textContainer</code> or <code>text</code>.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-rubyPosition" role="common">
 <col width="25%"/>
 <col/>
@@ -7260,7 +7390,7 @@ as a style property only to <loc href="#content-vocabulary-span"><el>span</el></
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<emph>see prose (above)</emph>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
 </td>
 </tr>
 <tr>

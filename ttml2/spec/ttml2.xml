@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 3927734a69f5 2014/09/24 22:56:57 glenn $ -->
+<!-- $Id: ttml2.xml,v 61c62c65a7f3 2014/10/02 14:24:15 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/24 22:56:57 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/10/02 14:24:15 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -69,7 +69,7 @@
 <authlist id="editors" role="editor">
 <author>
 <name>Glenn Adams</name>
-<affiliation>Cox Communications, Inc.</affiliation>
+<affiliation>Skynav, Inc.</affiliation>
 </author>
 </authlist>
 <authlist id="contributors" role="contributor">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/24 22:56:57 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/10/02 14:24:15 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -1677,32 +1677,32 @@ or in another TTWG specification.</p>
 <th>Designator</th>
 </tr>
 <tr>
-<td>DFXP Transformation</td>
-<td><code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code></td>
+<td>DFXP Full</td>
+<td><code>http://www.w3.org/ns/ttml/profile/dfxp-full</code></td>
 </tr>
 <tr>
 <td>DFXP Presentation</td>
 <td><code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code></td>
 </tr>
 <tr>
-<td>DFXP Full</td>
-<td><code>http://www.w3.org/ns/ttml/profile/dfxp-full</code></td>
+<td>DFXP Transformation</td>
+<td><code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code></td>
 </tr>
 <tr>
 <td>SDP US</td>
 <td><code>http://www.w3.org/ns/ttml/profile/sdp-us</code></td>
 </tr>
 <tr>
-<td>TTML2 Transformation</td>
-<td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td>
+<td>TTML2 Full</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td>
 </tr>
 <tr>
 <td>TTML2 Presentation</td>
 <td><code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code></td>
 </tr>
 <tr>
-<td>TTML2 Full</td>
-<td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td>
+<td>TTML2 Transformation</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td>
 </tr>
 </tbody>
 </table>
@@ -9480,11 +9480,7 @@ next style property;</p>
 not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
 <ulist>
 <item>
-<p>if <emph>E</emph> is not a
-<loc href="#styling-vocabulary-style"><el>style</el></loc>,
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc>, or
-<loc href="#animation-vocabulary-set"><el>set</el></loc> element,
-then set <emph>P&prime;</emph> to the result of
+<p>set <emph>P&prime;</emph> to the result of
 looking up the value of <emph>P</emph> in the computed style set of
 the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>, such that
 <emph>CSS(NEAREST-ANCESTOR(E))</emph> contains a definition of <emph>P</emph>;</p>
@@ -10516,8 +10512,8 @@ vocabulary catalog.</p>
 <p>This section defines the following basic timing attributes for use with timed elements:</p>
 <ulist>
 <item><p><specref ref="timing-attribute-begin"/></p></item>
-<item><p><specref ref="timing-attribute-end"/></p></item>
 <item><p><specref ref="timing-attribute-dur"/></p></item>
+<item><p><specref ref="timing-attribute-end"/></p></item>
 </ulist>
 <p>In addition, this section defines the <specref
 ref="timing-attribute-timeContainer"/> attribute for use with timed elements
@@ -10532,30 +10528,6 @@ ref="timing-value-timeExpression"/>.</p>
 <p>The begin point of a temporal interval is included in the
 interval; i.e., the interval is left-wise closed.</p>
 <p>The semantics of the <att>begin</att> attribute are those defined
-by <bibref ref="smil3"/>, &sect; 5.4.3,
-while taking into account any overriding semantics defined by this specification.</p>
-</div3>
-<div3 id="timing-attribute-end">
-<head>end</head>
-<p>The <att>end</att> attribute is used to specify the ending point
-of a temporal interval associated with a timed element. If
-specified, the value of an <att>end</att> attribute must adhere to a
-&lt;timeExpression&gt; specification as defined by <specref
-ref="timing-value-timeExpression"/>.</p>
-<p>The ending point of a temporal interval is not included in the
-interval; i.e., the interval is right-wise open.</p>
-<p>The presentation effects of a non-empty active
-temporal interval include the frame immediately prior to the frame
-(or tick) equal to or immediately following the time specified by the ending
-point, but do not extend into this latter frame (or tick).</p>
-<note role="example">
-<p>For example, if an active interval is [10s,10.33333s), and the
-frame rate is 30 frames per second, then the presentation effects of the interval
-are limited to frames 300 through 309 only (assuming that 0s corresponds
-with frame 0). The same holds if the active interval is specified
-as [300f,310f).</p>
-</note>
-<p>The semantics of the <att>end</att> attribute are those defined
 by <bibref ref="smil3"/>, &sect; 5.4.3,
 while taking into account any overriding semantics defined by this specification.</p>
 </div3>
@@ -10587,6 +10559,30 @@ this specification, the active duration of an element that specifies both
 the <att>dur</att> attribute and the difference between the value of the
 <att>end</att> attribute and the element's begin time.</p>
 </note>
+</div3>
+<div3 id="timing-attribute-end">
+<head>end</head>
+<p>The <att>end</att> attribute is used to specify the ending point
+of a temporal interval associated with a timed element. If
+specified, the value of an <att>end</att> attribute must adhere to a
+&lt;timeExpression&gt; specification as defined by <specref
+ref="timing-value-timeExpression"/>.</p>
+<p>The ending point of a temporal interval is not included in the
+interval; i.e., the interval is right-wise open.</p>
+<p>The presentation effects of a non-empty active
+temporal interval include the frame immediately prior to the frame
+(or tick) equal to or immediately following the time specified by the ending
+point, but do not extend into this latter frame (or tick).</p>
+<note role="example">
+<p>For example, if an active interval is [10s,10.33333s), and the
+frame rate is 30 frames per second, then the presentation effects of the interval
+are limited to frames 300 through 309 only (assuming that 0s corresponds
+with frame 0). The same holds if the active interval is specified
+as [300f,310f).</p>
+</note>
+<p>The semantics of the <att>end</att> attribute are those defined
+by <bibref ref="smil3"/>, &sect; 5.4.3,
+while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-timeContainer">
 <head>timeContainer</head>
@@ -11371,12 +11367,12 @@ provide standard representations for metadata that is expected to be commonly
 used in a <loc href="#terms-document-instance">document instance</loc>:
 </p>
 <ulist>
-<item><p><specref ref="metadata-vocabulary-title"/></p></item>
-<item><p><specref ref="metadata-vocabulary-desc"/></p></item>
-<item><p><specref ref="metadata-vocabulary-copyright"/></p></item>
-<item><p><specref ref="metadata-vocabulary-agent"/></p></item>
-<item><p><specref ref="metadata-vocabulary-name"/></p></item>
 <item><p><specref ref="metadata-vocabulary-actor"/></p></item>
+<item><p><specref ref="metadata-vocabulary-agent"/></p></item>
+<item><p><specref ref="metadata-vocabulary-copyright"/></p></item>
+<item><p><specref ref="metadata-vocabulary-desc"/></p></item>
+<item><p><specref ref="metadata-vocabulary-name"/></p></item>
+<item><p><specref ref="metadata-vocabulary-title"/></p></item>
 </ulist>
 <div3 id="metadata-vocabulary-metadata">
 <head>metadata</head>
@@ -11512,91 +11508,34 @@ Core metadata vocabulary are used to express document level metadata.</p>
 </note>
 <p></p>
 </div3>
-<div3 id="metadata-vocabulary-title">
-<head>ttm:title</head>
-<p>The <el>ttm:title</el> element is used to express a human-readable title of
-a specific element instance.</p>
-<table id="elt-syntax-metadata-title" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:title</caption>
+<div3 id="metadata-vocabulary-actor">
+<head>ttm:actor</head>
+<p>The <el>ttm:actor</el> element is used to link the definition of a (role-based) character
+agent with another agent that portrays the character.</p>
+<table id="elt-syntax-metadata-actor" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:actor</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttm:title
+&lt;ttm:actor
+  <phrase role="reqattr">agent</phrase> = IDREF
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttm:title&gt;
+  <emph>Content:</emph> EMPTY
+&lt;/ttm:actor&gt;
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:title</el> element is defined by this specification.</p>
-</note>
-<p>Examples of the <att>ttm:title</att> element are shown above in
-<specref ref="metadata-vocabulary-metadata-example-1"/> and
-<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
-</div3>
-<div3 id="metadata-vocabulary-desc">
-<head>ttm:desc</head>
-<p>The <el>ttm:desc</el> element is used to express a human-readable description of
-a specific element instance.</p>
-<table id="elt-syntax-metadata-desc" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:desc</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttm:desc
-  <loc href="#content-attribute-id">xml:id</loc> = ID
-  <loc href="#content-attribute-lang">xml:lang</loc> = string
-  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttm:desc&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:desc</el> element is defined by this specification.</p>
-</note>
-<p>Examples of the <att>ttm:desc</att> element are shown above in
-<specref ref="metadata-vocabulary-metadata-example-1"/> and
-<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
-</div3>
-<div3 id="metadata-vocabulary-copyright">
-<head>ttm:copyright</head>
-<p>The <el>ttm:copyright</el> element is used to express a human-readable copyright that
-applies to some scoping level.</p>
-<p>A copyright statement that applies to a document as a whole should appear as a
-child of the <el>head</el> element.</p>
-<table id="elt-syntax-metadata-copyright" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:copyright</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttm:copyright
-  <loc href="#content-attribute-id">xml:id</loc> = ID
-  <loc href="#content-attribute-lang">xml:lang</loc> = string
-  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttm:copyright&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:copyright</el> element is defined by this specification.</p>
-</note>
+<p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
+reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
+acting the part of a character.</p>
+<p>An example of the <el>ttm:actor</el> element is shown above in
+<specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
 <div3 id="metadata-vocabulary-agent">
 <head>ttm:agent</head>
@@ -11696,6 +11635,63 @@ children of the document's <el>head</el> element rather than being
 placed in a container <el>metadata</el> element.</p>
 </note>
 </div3>
+<div3 id="metadata-vocabulary-copyright">
+<head>ttm:copyright</head>
+<p>The <el>ttm:copyright</el> element is used to express a human-readable copyright that
+applies to some scoping level.</p>
+<p>A copyright statement that applies to a document as a whole should appear as a
+child of the <el>head</el> element.</p>
+<table id="elt-syntax-metadata-copyright" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:copyright</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;ttm:copyright
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:copyright&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:copyright</el> element is defined by this specification.</p>
+</note>
+</div3>
+<div3 id="metadata-vocabulary-desc">
+<head>ttm:desc</head>
+<p>The <el>ttm:desc</el> element is used to express a human-readable description of
+a specific element instance.</p>
+<table id="elt-syntax-metadata-desc" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:desc</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;ttm:desc
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:desc&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:desc</el> element is defined by this specification.</p>
+</note>
+<p>Examples of the <att>ttm:desc</att> element are shown above in
+<specref ref="metadata-vocabulary-metadata-example-1"/> and
+<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
+</div3>
 <div3 id="metadata-vocabulary-name">
 <head>ttm:name</head>
 <p>The <el>ttm:name</el> element is used to specify a name of a person, character,
@@ -11733,34 +11729,34 @@ is not defined by this specification.</p>
 <p>Two examples of the <el>ttm:name</el> element are shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
-<div3 id="metadata-vocabulary-actor">
-<head>ttm:actor</head>
-<p>The <el>ttm:actor</el> element is used to link the definition of a (role-based) character
-agent with another agent that portrays the character.</p>
-<table id="elt-syntax-metadata-actor" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:actor</caption>
+<div3 id="metadata-vocabulary-title">
+<head>ttm:title</head>
+<p>The <el>ttm:title</el> element is used to express a human-readable title of
+a specific element instance.</p>
+<table id="elt-syntax-metadata-title" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:title</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttm:actor
-  <phrase role="reqattr">agent</phrase> = IDREF
+&lt;ttm:title
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> EMPTY
-&lt;/ttm:actor&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:title&gt;
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
-reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
-acting the part of a character.</p>
-<p>An example of the <el>ttm:actor</el> element is shown above in
-<specref ref="metadata-vocabulary-agent-example-1"/>.</p>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:title</el> element is defined by this specification.</p>
+</note>
+<p>Examples of the <att>ttm:title</att> element are shown above in
+<specref ref="metadata-vocabulary-metadata-example-1"/> and
+<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
 </div3>
 </div2> <!-- metadata-element-vocabulary -->
 <div2 id="metadata-attribute-vocabulary">
@@ -12200,7 +12196,7 @@ element's computed style set.</p>
 <head>ISD Parameter Attribute Set</head>
 <p>The following subset of the defined <loc href="#attribute-vocab-group-parameters">Parameter Attributes</loc>
 are available for use with an
-<loc href="#isd-vocabulary-structure"><el>isd:structure</el></loc> or
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> or
 <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element as described above:</p>
 <ulist>
 <item><p><loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc></p></item>
@@ -14789,35 +14785,13 @@ identifier.</p>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies the following standard TTML profiles:</p>
 <ulist>
-<item><p><specref ref="profile-ttml2-transformation"/></p></item>
-<item><p><specref ref="profile-ttml2-presentation"/></p></item>
 <item><p><specref ref="profile-ttml2-full"/></p></item>
+<item><p><specref ref="profile-ttml2-presentation"/></p></item>
+<item><p><specref ref="profile-ttml2-transformation"/></p></item>
 </ulist>
 <p>Each TTML profile is defined in terms of a <loc href="#terms-profile-definition-document">profile definition document</loc>,
 which is expressed as an XML document wherein the root element adheres to
 <specref ref="parameter-vocabulary-profile"/>.</p>
-<div2 id="profile-ttml2-transformation">
-<head>TTML2 Transformation Profile</head>
-<p>The TTML2 Transformation Profile is intended to be used to
-express minimum compliance for transformation processing.</p>
-<note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
-it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
-</note>
-<eg xml:space="preserve">&profile-ttml2-transformation;</eg>
-</div2>
-<div2 id="profile-ttml2-presentation">
-<head>TTML2 Presentation Profile</head>
-<p>The TTML2 Presentation Profile is intended to be used to
-express minimum compliance for presentation processing.</p>
-<note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
-it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
-</note>
-<eg xml:space="preserve">&profile-ttml2-presentation;</eg>
-</div2>
 <div2 id="profile-ttml2-full">
 <head>TTML2 Full Profile</head>
 <p>The TTML2 Full Profile is intended to be used to
@@ -14832,6 +14806,28 @@ it requires support for the
 features.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-full;</eg>
+</div2>
+<div2 id="profile-ttml2-presentation">
+<head>TTML2 Presentation Profile</head>
+<p>The TTML2 Presentation Profile is intended to be used to
+express minimum compliance for presentation processing.</p>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
+it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-presentation;</eg>
+</div2>
+<div2 id="profile-ttml2-transformation">
+<head>TTML2 Transformation Profile</head>
+<p>The TTML2 Transformation Profile is intended to be used to
+express minimum compliance for transformation processing.</p>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
+it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-transformation;</eg>
 </div2>
 </div1>
 <div1 id="references">
@@ -14849,16 +14845,11 @@ Style Sheets, Level 2 Revision 1</titleref>, W3C Recommendation, 07 June 2011.
 Module Level 3</titleref>, W3C Recommendation, 07 June 2011. (See
 <xspecref href="http://www.w3.org/TR/2011/REC-css3-color-20110607/">http://www.w3.org/TR/2011/REC-css3-color-20110607/</xspecref>.)
 </bibl>
-<bibl id="cssruby" key="CSS Ruby">Elika Etemad and Koji Ishii,
-<titleref href="http://dev.w3.org/csswg/css-ruby-1/">CSS Ruby Layout Module Level 1</titleref>
-W3C Editor's Draft.
-(See <xspecref href="http://dev.w3.org/csswg/css-ruby-1/">http://dev.w3.org/csswg/css-ruby-1//</xspecref>.)
-</bibl>
 <bibl id="gps" key="GPS">
-<titleref href="http://tycho.usno.navy.mil/gpsinfo.html">Global
-Positioning System</titleref>, US Naval Observatory.
+<titleref href="http://www.gps.gov/technical/">Global
+Positioning System</titleref>, US Air Force.
 (See
-<xspecref href="http://tycho.usno.navy.mil/gpsinfo.html">http://tycho.usno.navy.mil/gpsinfo.html</xspecref>.)
+<xspecref href="http://www.gps.gov/technical/">http://www.gps.gov/technical/</xspecref>.)
 </bibl>
 <bibl id="media-types" key="Media Types">Ned Freed and Nathaniel Borenstein,  
 <titleref
@@ -15007,6 +14998,11 @@ CEA-708-D,
 <titleref href="http://www.ce.org/">Digital Television (DTV) Closed Captioning</titleref>, CEA Standard,
 Consumer Electronics Association (CEA).
 </bibl>
+<bibl id="cssruby" key="CSS Ruby">Elika Etemad and Koji Ishii,
+<titleref href="http://dev.w3.org/csswg/css-ruby-1/">CSS Ruby Layout Module Level 1</titleref>
+W3C Editor's Draft.
+(See <xspecref href="http://dev.w3.org/csswg/css-ruby-1/">http://dev.w3.org/csswg/css-ruby-1/</xspecref>.)
+</bibl>
 <bibl id="css3-fonts" key="CSS Fonts Module Level 3">John Daggett,
 <titleref href="http://dev.w3.org/csswg/css-fonts/">CSS Fonts Module Level 3</titleref>, W3C Editor's Draft. (See
 <xspecref href="http://dev.w3.org/csswg/css-fonts/">http://dev.w3.org/csswg/css-fonts/</xspecref>.)
@@ -15073,9 +15069,9 @@ W3C Working Group Note, 27 April 2006. (See
 href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</xspecref>.)
 </bibl>
 <bibl id="ttml1" key="TTML1">Glenn Adams, Ed.,
-<titleref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
-W3C Editor's Draft. (See
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html</xspecref>.)
+<titleref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
+W3C Recommendation, 24 September 2013. (See
+<xspecref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">http://www.w3.org/TR/2013/REC-ttml1-20130924/</xspecref>.)
 </bibl>
 <bibl id="xhtml10" key="XHTML 1.0">Steven Pemberton, et al.,
 <titleref

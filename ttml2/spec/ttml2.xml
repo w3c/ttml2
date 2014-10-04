@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v c62837d89619 2014/10/02 21:39:43 glenn $ -->
+<!-- $Id: ttml2.xml,v 9baedffc327e 2014/10/04 20:05:40 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/10/02 21:39:43 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/10/04 20:05:40 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/10/02 21:39:43 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/10/04 20:05:40 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -6299,7 +6299,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Font Position Variant Example</name>
 <date>2014-09-24</date>
-<edtext>Add example and example rendering of tts:fontVariantPosition.</edtext>
+<edtext>Add example source and rendering of tts:fontVariantPosition.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -7049,8 +7049,7 @@ this attribute applies as a style property only to those element types indicated
 </table>
 <p></p>
 <p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
-<specref ref="ruby-semantics-mapping-table"/> apply, where the maximal content model defined by <bibref ref="ruby"/>, &sect;2.1, applies
-and must be treated as an error if violated.</p>
+<specref ref="ruby-semantics-mapping-table"/> apply.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="ruby-semantics-mapping-table" role="common">
@@ -7121,7 +7120,7 @@ preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
-computed value of <att>tts:ruby</att> of its first child element is <code>text</code>;</p></item>
+computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseContainer</code> or
 <code>textContainer</code>;</p></item>
@@ -7150,7 +7149,7 @@ then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code
 <item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
-computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
 <code>text</code>;</p></item>
@@ -7159,31 +7158,97 @@ computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter<
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
 </ulist>
+<p>A validating processor must treat a violation of any of the above constraints as an error.
+For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
+presentation of ruby text annotations, where fallback annotation presentation is considered to be implementation dependent.</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">
 container
-  : baseContainer textContainer textContainer?
-  | base text
+  : base text
   | base delimiter text delimiter
+  | baseContainer textContainer textContainer?
 
 baseContainer
   : base+
 
 textContainer
   : text+
+  | delimiter text+ delimiter
 
 base | text | delimiter
   : ( #PCDATA | { span - tts:ruby } )*
 </eg>
-<p>This model corresponds to the maximal content model for the <code>ruby</code> element defined by <bibref ref="ruby"/>, &sect;2.1:</p>
+<p>This model corresponds to the maximal content model for the <code>ruby</code> element defined by <bibref ref="ruby"/>, &sect;2.1,
+with the exception that <code>rtc</code> is effectively extended to permit the optional use of delimiters (<code>rp</code>):</p>
 <eg xml:space="preserve">
-((rb, (rt | (rp, rt, rp))) | (rbc, rtc, rtc?))
+ruby
+  : rb rt
+  | rb rp rt rp
+  | rbc rtc rtc?
+
+rbc
+  : rb+
+
+rtc
+  : rt+
+  | rp rt+ rp                            // extension to <bibref ref="ruby"/>
 </eg>
 </note>
-<p>A validating processor must treat a violation of any of the above constraints as an error.</p>
-<p>For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
-presentation of ruby text annotations, where fallback annotation presentation is considered to be implementation dependent.</p>
+<note role="explanation">
+<p>While not supporting as many opportunities for markup minimization as allowed by <bibref ref="html5"/>,
+the formulation of ruby annotation defined here does allow the following shorthands:</p>
+<eg xml:space="preserve">
+base text =
+  baseContainer
+    base
+  textContainer
+    text
+
+base delimiter text delimiter =
+  baseContainer
+    base
+  textContainer
+    delimiter text delimiter
+</eg>
+<p>Given the content of <code>base</code> is <code>B</code> and the content of
+<code>text</code> is <code>T</code>, then the expression <code>base text</code> could be represented variously in <bibref ref="html5"/> as follows:</p>
+<eg xml:space="preserve">
+&lt;ruby&gt;B&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/rtc&gt;&lt;/ruby&gt;
+</eg>
+<p>Whereas, in TTML2, the following alternative expressions are possible:</p>
+<eg xml:space="preserve">
+&lt;span tts:ruby="container"&gt;
+  &lt;span tts:ruby="base"&gt;B&lt;/span&gt;
+  &lt;span tts:ruby="text"&gt;T&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+<p>or its equivalent</p>
+<eg xml:space="preserve">
+&lt;span tts:ruby="container"&gt;
+  &lt;span tts:ruby="baseContainer"&gt;
+    &lt;span tts:ruby="base"&gt;B&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="textContainer"&gt;
+    &lt;span tts:ruby="text"&gt;T&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</note>
 <p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Ruby</caption>
@@ -7306,7 +7371,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Ruby Align Example</name>
 <date>2014-09-20</date>
-<edtext>Add example and example rendering of tts:rubyAlign.</edtext>
+<edtext>Add example source and rendering of tts:rubyAlign.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -7363,7 +7428,7 @@ such an offset.</p>
 <ednote>
 <name>Ruby Offset Example</name>
 <date>2014-10-02</date>
-<edtext>Add example and example rendering of tts:rubyOffset.</edtext>
+<edtext>Add example source and rendering of tts:rubyOffset.</edtext>
 </ednote>
 </div3>
 <div3 id="style-attribute-rubyPosition">
@@ -7454,7 +7519,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Ruby Position Example</name>
 <date>2014-09-20</date>
-<edtext>Add example and example rendering of tts:rubyPosition.</edtext>
+<edtext>Add example source and rendering of tts:rubyPosition.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -12405,6 +12470,12 @@ TT Feature Namespace base URI.</p>
 <date>2014-03-27</date>
 <edtext>Add feature(s) associated with support for explicit and implied inline regions.</edtext>
 </ednote>
+<p></p>
+<ednote>
+<name>New style property features</name>
+<date>2014-10-02</date>
+<edtext>Add features to cover new style properties: border, fontVariantPosition, ruby, rubyAlign, rubyOffset, rubyPosition, textOrientation, etc.</edtext>
+</ednote>
 <div3 id="feature-animation">
 <head>#animation</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animation</code>
@@ -14980,6 +15051,11 @@ Module Level 3</titleref>, W3C Recommendation, 07 June 2011. (See
 Positioning System</titleref>, US Air Force.
 (See
 <xspecref href="http://www.gps.gov/technical/">http://www.gps.gov/technical/</xspecref>.)
+</bibl>
+<bibl id="html5" key="HTML5">Ian Hickson et al.,
+<titleref href="http://www.w3.org/TR/html5/">Extensible Stylesheet Language (XSL) Version 1.1</titleref>,
+W3C Proposed Recommendation, 16 September 2014. (See
+<xspecref href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</xspecref>.)
 </bibl>
 <bibl id="media-types" key="Media Types">Ned Freed and Nathaniel Borenstein,  
 <titleref

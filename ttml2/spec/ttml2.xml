@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 3927734a69f5 2014/09/24 22:56:57 glenn $ -->
+<!-- $Id: ttml2.xml,v 9baedffc327e 2014/10/04 20:05:40 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/09/24 22:56:57 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/10/04 20:05:40 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -69,7 +69,7 @@
 <authlist id="editors" role="editor">
 <author>
 <name>Glenn Adams</name>
-<affiliation>Cox Communications, Inc.</affiliation>
+<affiliation>Skynav, Inc.</affiliation>
 </author>
 </authlist>
 <authlist id="contributors" role="contributor">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/09/24 22:56:57 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/10/04 20:05:40 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -1677,32 +1677,32 @@ or in another TTWG specification.</p>
 <th>Designator</th>
 </tr>
 <tr>
-<td>DFXP Transformation</td>
-<td><code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code></td>
+<td>DFXP Full</td>
+<td><code>http://www.w3.org/ns/ttml/profile/dfxp-full</code></td>
 </tr>
 <tr>
 <td>DFXP Presentation</td>
 <td><code>http://www.w3.org/ns/ttml/profile/dfxp-presentation</code></td>
 </tr>
 <tr>
-<td>DFXP Full</td>
-<td><code>http://www.w3.org/ns/ttml/profile/dfxp-full</code></td>
+<td>DFXP Transformation</td>
+<td><code>http://www.w3.org/ns/ttml/profile/dfxp-transformation</code></td>
 </tr>
 <tr>
 <td>SDP US</td>
 <td><code>http://www.w3.org/ns/ttml/profile/sdp-us</code></td>
 </tr>
 <tr>
-<td>TTML2 Transformation</td>
-<td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td>
+<td>TTML2 Full</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td>
 </tr>
 <tr>
 <td>TTML2 Presentation</td>
 <td><code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code></td>
 </tr>
 <tr>
-<td>TTML2 Full</td>
-<td><code>http://www.w3.org/ns/ttml/profile/ttml2-full</code></td>
+<td>TTML2 Transformation</td>
+<td><code>http://www.w3.org/ns/ttml/profile/ttml2-transformation</code></td>
 </tr>
 </tbody>
 </table>
@@ -2421,6 +2421,7 @@ Styling Attributes
 <loc href="#style-attribute-padding">tts:padding</loc>,
 <loc href="#style-attribute-ruby">tts:ruby</loc>,
 <loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
+<loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc>,
 <loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
 <loc href="#style-attribute-textAlign">tts:textAlign</loc>,
@@ -5089,6 +5090,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-padding"/></p></item>
 <item><p><specref ref="style-attribute-ruby"/></p></item>
 <item><p><specref ref="style-attribute-rubyAlign"/></p></item>
+<item><p><specref ref="style-attribute-rubyOffset"/></p></item>
 <item><p><specref ref="style-attribute-rubyPosition"/></p></item>
 <item><p><specref ref="style-attribute-showBackground"/></p></item>
 <item><p><specref ref="style-attribute-textAlign"/></p></item>
@@ -6297,7 +6299,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Font Position Variant Example</name>
 <date>2014-09-24</date>
-<edtext>Add example and example rendering of tts:fontVariantPosition.</edtext>
+<edtext>Add example source and rendering of tts:fontVariantPosition.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -7003,9 +7005,8 @@ mode relative padding values as defined by <bibref ref="xsl11"/>,
 <head>tts:ruby</head>
 <p>The <att>tts:ruby</att> attribute is used to specify the application of ruby
 styling.</p>
-<p>This attribute applies only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements and is not inheritable, so it should
-not be specified on any other element type. If specified elsewhere, then it must be ignored for
-the purpose of presentation processing.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-ruby" role="common">
 <col width="25%"/>
 <col/>
@@ -7048,8 +7049,7 @@ the purpose of presentation processing.</p>
 </table>
 <p></p>
 <p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
-<specref ref="ruby-semantics-mapping-table"/> apply, where the maximal content model defined by <bibref ref="ruby"/>, &sect;2.1, applies
-and must be treated as an error if violated.</p>
+<specref ref="ruby-semantics-mapping-table"/> apply.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="ruby-semantics-mapping-table" role="common">
@@ -7104,6 +7104,151 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
+<ulist>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of all ancestor elements is <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
+or <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then its
+preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseContainer</code> or
+<code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of no more than one sibling is <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
+<code>baseContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then its
+preceding sibling is either <code>null</code> (i.e., no preceding sibling) or the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code> and the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
+then the computed value of <att>tts:ruby</att> of no sibling is <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
+computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
+<code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code>,
+<code>text</code>, or <code>delimiter</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code> and the
+computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
+then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
+<code>text</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+</ulist>
+<p>A validating processor must treat a violation of any of the above constraints as an error.
+For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
+presentation of ruby text annotations, where fallback annotation presentation is considered to be implementation dependent.</p>
+<note role="elaboration">
+<p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
+<eg xml:space="preserve">
+container
+  : base text
+  | base delimiter text delimiter
+  | baseContainer textContainer textContainer?
+
+baseContainer
+  : base+
+
+textContainer
+  : text+
+  | delimiter text+ delimiter
+
+base | text | delimiter
+  : ( #PCDATA | { span - tts:ruby } )*
+</eg>
+<p>This model corresponds to the maximal content model for the <code>ruby</code> element defined by <bibref ref="ruby"/>, &sect;2.1,
+with the exception that <code>rtc</code> is effectively extended to permit the optional use of delimiters (<code>rp</code>):</p>
+<eg xml:space="preserve">
+ruby
+  : rb rt
+  | rb rp rt rp
+  | rbc rtc rtc?
+
+rbc
+  : rb+
+
+rtc
+  : rt+
+  | rp rt+ rp                            // extension to <bibref ref="ruby"/>
+</eg>
+</note>
+<note role="explanation">
+<p>While not supporting as many opportunities for markup minimization as allowed by <bibref ref="html5"/>,
+the formulation of ruby annotation defined here does allow the following shorthands:</p>
+<eg xml:space="preserve">
+base text =
+  baseContainer
+    base
+  textContainer
+    text
+
+base delimiter text delimiter =
+  baseContainer
+    base
+  textContainer
+    delimiter text delimiter
+</eg>
+<p>Given the content of <code>base</code> is <code>B</code> and the content of
+<code>text</code> is <code>T</code>, then the expression <code>base text</code> could be represented variously in <bibref ref="html5"/> as follows:</p>
+<eg xml:space="preserve">
+&lt;ruby&gt;B&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;rtc&gt;&lt;rt&gt;T&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/rtc&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby&gt;&lt;rb&gt;B&lt;/rb&gt;&lt;rtc&gt;&lt;rt&gt;T&lt;/rt&gt;&lt;/rtc&gt;&lt;/ruby&gt;
+</eg>
+<p>Whereas, in TTML2, the following alternative expressions are possible:</p>
+<eg xml:space="preserve">
+&lt;span tts:ruby="container"&gt;
+  &lt;span tts:ruby="base"&gt;B&lt;/span&gt;
+  &lt;span tts:ruby="text"&gt;T&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+<p>or its equivalent</p>
+<eg xml:space="preserve">
+&lt;span tts:ruby="container"&gt;
+  &lt;span tts:ruby="baseContainer"&gt;
+    &lt;span tts:ruby="base"&gt;B&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="textContainer"&gt;
+    &lt;span tts:ruby="text"&gt;T&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</note>
 <p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Ruby</caption>
@@ -7173,9 +7318,8 @@ represented by this attribute are based upon that defined by <bibref ref="ruby"/
 <div3 id="style-attribute-rubyAlign">
 <head>tts:rubyAlign</head>
 <p>The <att>tts:rubyAlign</att> attribute is used to specify the position of ruby text within the inline area generated by the ruby text container annotation.</p>
-<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however, this attribute applies
-as a style property only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements on which the computed value of the
-<att>tts:ruby</att> style property is either <code>textContainer</code> or <code>text</code>.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-rubyAlign" role="common">
 <col width="25%"/>
 <col/>
@@ -7196,7 +7340,7 @@ as a style property only to <loc href="#content-vocabulary-span"><el>span</el></
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<emph>see prose (above)</emph>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
 </td>
 </tr>
 <tr>
@@ -7227,7 +7371,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Ruby Align Example</name>
 <date>2014-09-20</date>
-<edtext>Add example and example rendering of tts:rubyAlign.</edtext>
+<edtext>Add example source and rendering of tts:rubyAlign.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -7235,13 +7379,64 @@ represented by this attribute are based upon that defined by <bibref ref="cssrub
 renderings shown there apply.</p>
 </note>
 </div3>
+<div3 id="style-attribute-rubyOffset">
+<head>tts:rubyOffset</head>
+<p>The <att>tts:rubyOffset</att> attribute is used to specify the offset (distance) of ruby text with respect to its associated ruby base
+in the block progression dimension.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-rubyOffset" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-length">&lt;length&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>0px</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>relative to this element's font size</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>continuous</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If specified, the value of <att>tts:rubyOffset</att> expresses the offset (distance) between padding edge <emph>E<sub>1</sub></emph> of the inline area
+generated by a ruby text container (explicit or implied) and padding edge <emph>E<sub>2</sub></emph>  of the inline area generated by a ruby base container (explicit or implied), where
+<emph>E<sub>1</sub></emph> and <emph>E<sub>2</sub></emph> are perpendicular to the block progression direction and are (or would be) adjacent in the absence of
+such an offset.</p>
+<p>Negative length expressions are permitted.</p>
+<ednote>
+<name>Ruby Offset Example</name>
+<date>2014-10-02</date>
+<edtext>Add example source and rendering of tts:rubyOffset.</edtext>
+</ednote>
+</div3>
 <div3 id="style-attribute-rubyPosition">
 <head>tts:rubyPosition</head>
 <p>The <att>tts:rubyPosition</att> attribute is used to specify the position of ruby text in the block progression dimension
 with respect to its associated ruby base.</p>
-<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however, this attribute applies
-as a style property only to <loc href="#content-vocabulary-span"><el>span</el></loc> elements on which the computed value of the
-<att>tts:ruby</att> style property is either <code>textContainer</code> or <code>text</code>.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-rubyPosition" role="common">
 <col width="25%"/>
 <col/>
@@ -7260,7 +7455,7 @@ as a style property only to <loc href="#content-vocabulary-span"><el>span</el></
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<emph>see prose (above)</emph>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
 </td>
 </tr>
 <tr>
@@ -7324,7 +7519,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Ruby Position Example</name>
 <date>2014-09-20</date>
-<edtext>Add example and example rendering of tts:rubyPosition.</edtext>
+<edtext>Add example source and rendering of tts:rubyPosition.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -9480,11 +9675,7 @@ next style property;</p>
 not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
 <ulist>
 <item>
-<p>if <emph>E</emph> is not a
-<loc href="#styling-vocabulary-style"><el>style</el></loc>,
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc>, or
-<loc href="#animation-vocabulary-set"><el>set</el></loc> element,
-then set <emph>P&prime;</emph> to the result of
+<p>set <emph>P&prime;</emph> to the result of
 looking up the value of <emph>P</emph> in the computed style set of
 the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>, such that
 <emph>CSS(NEAREST-ANCESTOR(E))</emph> contains a definition of <emph>P</emph>;</p>
@@ -10516,8 +10707,8 @@ vocabulary catalog.</p>
 <p>This section defines the following basic timing attributes for use with timed elements:</p>
 <ulist>
 <item><p><specref ref="timing-attribute-begin"/></p></item>
-<item><p><specref ref="timing-attribute-end"/></p></item>
 <item><p><specref ref="timing-attribute-dur"/></p></item>
+<item><p><specref ref="timing-attribute-end"/></p></item>
 </ulist>
 <p>In addition, this section defines the <specref
 ref="timing-attribute-timeContainer"/> attribute for use with timed elements
@@ -10532,30 +10723,6 @@ ref="timing-value-timeExpression"/>.</p>
 <p>The begin point of a temporal interval is included in the
 interval; i.e., the interval is left-wise closed.</p>
 <p>The semantics of the <att>begin</att> attribute are those defined
-by <bibref ref="smil3"/>, &sect; 5.4.3,
-while taking into account any overriding semantics defined by this specification.</p>
-</div3>
-<div3 id="timing-attribute-end">
-<head>end</head>
-<p>The <att>end</att> attribute is used to specify the ending point
-of a temporal interval associated with a timed element. If
-specified, the value of an <att>end</att> attribute must adhere to a
-&lt;timeExpression&gt; specification as defined by <specref
-ref="timing-value-timeExpression"/>.</p>
-<p>The ending point of a temporal interval is not included in the
-interval; i.e., the interval is right-wise open.</p>
-<p>The presentation effects of a non-empty active
-temporal interval include the frame immediately prior to the frame
-(or tick) equal to or immediately following the time specified by the ending
-point, but do not extend into this latter frame (or tick).</p>
-<note role="example">
-<p>For example, if an active interval is [10s,10.33333s), and the
-frame rate is 30 frames per second, then the presentation effects of the interval
-are limited to frames 300 through 309 only (assuming that 0s corresponds
-with frame 0). The same holds if the active interval is specified
-as [300f,310f).</p>
-</note>
-<p>The semantics of the <att>end</att> attribute are those defined
 by <bibref ref="smil3"/>, &sect; 5.4.3,
 while taking into account any overriding semantics defined by this specification.</p>
 </div3>
@@ -10587,6 +10754,30 @@ this specification, the active duration of an element that specifies both
 the <att>dur</att> attribute and the difference between the value of the
 <att>end</att> attribute and the element's begin time.</p>
 </note>
+</div3>
+<div3 id="timing-attribute-end">
+<head>end</head>
+<p>The <att>end</att> attribute is used to specify the ending point
+of a temporal interval associated with a timed element. If
+specified, the value of an <att>end</att> attribute must adhere to a
+&lt;timeExpression&gt; specification as defined by <specref
+ref="timing-value-timeExpression"/>.</p>
+<p>The ending point of a temporal interval is not included in the
+interval; i.e., the interval is right-wise open.</p>
+<p>The presentation effects of a non-empty active
+temporal interval include the frame immediately prior to the frame
+(or tick) equal to or immediately following the time specified by the ending
+point, but do not extend into this latter frame (or tick).</p>
+<note role="example">
+<p>For example, if an active interval is [10s,10.33333s), and the
+frame rate is 30 frames per second, then the presentation effects of the interval
+are limited to frames 300 through 309 only (assuming that 0s corresponds
+with frame 0). The same holds if the active interval is specified
+as [300f,310f).</p>
+</note>
+<p>The semantics of the <att>end</att> attribute are those defined
+by <bibref ref="smil3"/>, &sect; 5.4.3,
+while taking into account any overriding semantics defined by this specification.</p>
 </div3>
 <div3 id="timing-attribute-timeContainer">
 <head>timeContainer</head>
@@ -11371,12 +11562,12 @@ provide standard representations for metadata that is expected to be commonly
 used in a <loc href="#terms-document-instance">document instance</loc>:
 </p>
 <ulist>
-<item><p><specref ref="metadata-vocabulary-title"/></p></item>
-<item><p><specref ref="metadata-vocabulary-desc"/></p></item>
-<item><p><specref ref="metadata-vocabulary-copyright"/></p></item>
-<item><p><specref ref="metadata-vocabulary-agent"/></p></item>
-<item><p><specref ref="metadata-vocabulary-name"/></p></item>
 <item><p><specref ref="metadata-vocabulary-actor"/></p></item>
+<item><p><specref ref="metadata-vocabulary-agent"/></p></item>
+<item><p><specref ref="metadata-vocabulary-copyright"/></p></item>
+<item><p><specref ref="metadata-vocabulary-desc"/></p></item>
+<item><p><specref ref="metadata-vocabulary-name"/></p></item>
+<item><p><specref ref="metadata-vocabulary-title"/></p></item>
 </ulist>
 <div3 id="metadata-vocabulary-metadata">
 <head>metadata</head>
@@ -11512,91 +11703,34 @@ Core metadata vocabulary are used to express document level metadata.</p>
 </note>
 <p></p>
 </div3>
-<div3 id="metadata-vocabulary-title">
-<head>ttm:title</head>
-<p>The <el>ttm:title</el> element is used to express a human-readable title of
-a specific element instance.</p>
-<table id="elt-syntax-metadata-title" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:title</caption>
+<div3 id="metadata-vocabulary-actor">
+<head>ttm:actor</head>
+<p>The <el>ttm:actor</el> element is used to link the definition of a (role-based) character
+agent with another agent that portrays the character.</p>
+<table id="elt-syntax-metadata-actor" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:actor</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttm:title
+&lt;ttm:actor
+  <phrase role="reqattr">agent</phrase> = IDREF
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttm:title&gt;
+  <emph>Content:</emph> EMPTY
+&lt;/ttm:actor&gt;
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:title</el> element is defined by this specification.</p>
-</note>
-<p>Examples of the <att>ttm:title</att> element are shown above in
-<specref ref="metadata-vocabulary-metadata-example-1"/> and
-<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
-</div3>
-<div3 id="metadata-vocabulary-desc">
-<head>ttm:desc</head>
-<p>The <el>ttm:desc</el> element is used to express a human-readable description of
-a specific element instance.</p>
-<table id="elt-syntax-metadata-desc" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:desc</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttm:desc
-  <loc href="#content-attribute-id">xml:id</loc> = ID
-  <loc href="#content-attribute-lang">xml:lang</loc> = string
-  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttm:desc&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:desc</el> element is defined by this specification.</p>
-</note>
-<p>Examples of the <att>ttm:desc</att> element are shown above in
-<specref ref="metadata-vocabulary-metadata-example-1"/> and
-<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
-</div3>
-<div3 id="metadata-vocabulary-copyright">
-<head>ttm:copyright</head>
-<p>The <el>ttm:copyright</el> element is used to express a human-readable copyright that
-applies to some scoping level.</p>
-<p>A copyright statement that applies to a document as a whole should appear as a
-child of the <el>head</el> element.</p>
-<table id="elt-syntax-metadata-copyright" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:copyright</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttm:copyright
-  <loc href="#content-attribute-id">xml:id</loc> = ID
-  <loc href="#content-attribute-lang">xml:lang</loc> = string
-  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttm:copyright&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:copyright</el> element is defined by this specification.</p>
-</note>
+<p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
+reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
+acting the part of a character.</p>
+<p>An example of the <el>ttm:actor</el> element is shown above in
+<specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
 <div3 id="metadata-vocabulary-agent">
 <head>ttm:agent</head>
@@ -11696,6 +11830,63 @@ children of the document's <el>head</el> element rather than being
 placed in a container <el>metadata</el> element.</p>
 </note>
 </div3>
+<div3 id="metadata-vocabulary-copyright">
+<head>ttm:copyright</head>
+<p>The <el>ttm:copyright</el> element is used to express a human-readable copyright that
+applies to some scoping level.</p>
+<p>A copyright statement that applies to a document as a whole should appear as a
+child of the <el>head</el> element.</p>
+<table id="elt-syntax-metadata-copyright" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:copyright</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;ttm:copyright
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:copyright&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:copyright</el> element is defined by this specification.</p>
+</note>
+</div3>
+<div3 id="metadata-vocabulary-desc">
+<head>ttm:desc</head>
+<p>The <el>ttm:desc</el> element is used to express a human-readable description of
+a specific element instance.</p>
+<table id="elt-syntax-metadata-desc" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:desc</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;ttm:desc
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = string
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:desc&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:desc</el> element is defined by this specification.</p>
+</note>
+<p>Examples of the <att>ttm:desc</att> element are shown above in
+<specref ref="metadata-vocabulary-metadata-example-1"/> and
+<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
+</div3>
 <div3 id="metadata-vocabulary-name">
 <head>ttm:name</head>
 <p>The <el>ttm:name</el> element is used to specify a name of a person, character,
@@ -11733,34 +11924,34 @@ is not defined by this specification.</p>
 <p>Two examples of the <el>ttm:name</el> element are shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
-<div3 id="metadata-vocabulary-actor">
-<head>ttm:actor</head>
-<p>The <el>ttm:actor</el> element is used to link the definition of a (role-based) character
-agent with another agent that portrays the character.</p>
-<table id="elt-syntax-metadata-actor" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttm:actor</caption>
+<div3 id="metadata-vocabulary-title">
+<head>ttm:title</head>
+<p>The <el>ttm:title</el> element is used to express a human-readable title of
+a specific element instance.</p>
+<table id="elt-syntax-metadata-title" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:title</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;ttm:actor
-  <phrase role="reqattr">agent</phrase> = IDREF
+&lt;ttm:title
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = string
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> EMPTY
-&lt;/ttm:actor&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:title&gt;
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
-reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
-acting the part of a character.</p>
-<p>An example of the <el>ttm:actor</el> element is shown above in
-<specref ref="metadata-vocabulary-agent-example-1"/>.</p>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:title</el> element is defined by this specification.</p>
+</note>
+<p>Examples of the <att>ttm:title</att> element are shown above in
+<specref ref="metadata-vocabulary-metadata-example-1"/> and
+<specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
 </div3>
 </div2> <!-- metadata-element-vocabulary -->
 <div2 id="metadata-attribute-vocabulary">
@@ -12200,7 +12391,7 @@ element's computed style set.</p>
 <head>ISD Parameter Attribute Set</head>
 <p>The following subset of the defined <loc href="#attribute-vocab-group-parameters">Parameter Attributes</loc>
 are available for use with an
-<loc href="#isd-vocabulary-structure"><el>isd:structure</el></loc> or
+<loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> or
 <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element as described above:</p>
 <ulist>
 <item><p><loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc></p></item>
@@ -12278,6 +12469,12 @@ TT Feature Namespace base URI.</p>
 <name>#inline-region features</name>
 <date>2014-03-27</date>
 <edtext>Add feature(s) associated with support for explicit and implied inline regions.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>New style property features</name>
+<date>2014-10-02</date>
+<edtext>Add features to cover new style properties: border, fontVariantPosition, ruby, rubyAlign, rubyOffset, rubyPosition, textOrientation, etc.</edtext>
 </ednote>
 <div3 id="feature-animation">
 <head>#animation</head>
@@ -14789,35 +14986,13 @@ identifier.</p>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies the following standard TTML profiles:</p>
 <ulist>
-<item><p><specref ref="profile-ttml2-transformation"/></p></item>
-<item><p><specref ref="profile-ttml2-presentation"/></p></item>
 <item><p><specref ref="profile-ttml2-full"/></p></item>
+<item><p><specref ref="profile-ttml2-presentation"/></p></item>
+<item><p><specref ref="profile-ttml2-transformation"/></p></item>
 </ulist>
 <p>Each TTML profile is defined in terms of a <loc href="#terms-profile-definition-document">profile definition document</loc>,
 which is expressed as an XML document wherein the root element adheres to
 <specref ref="parameter-vocabulary-profile"/>.</p>
-<div2 id="profile-ttml2-transformation">
-<head>TTML2 Transformation Profile</head>
-<p>The TTML2 Transformation Profile is intended to be used to
-express minimum compliance for transformation processing.</p>
-<note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
-it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
-</note>
-<eg xml:space="preserve">&profile-ttml2-transformation;</eg>
-</div2>
-<div2 id="profile-ttml2-presentation">
-<head>TTML2 Presentation Profile</head>
-<p>The TTML2 Presentation Profile is intended to be used to
-express minimum compliance for presentation processing.</p>
-<note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
-it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
-</note>
-<eg xml:space="preserve">&profile-ttml2-presentation;</eg>
-</div2>
 <div2 id="profile-ttml2-full">
 <head>TTML2 Full Profile</head>
 <p>The TTML2 Full Profile is intended to be used to
@@ -14832,6 +15007,28 @@ it requires support for the
 features.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-full;</eg>
+</div2>
+<div2 id="profile-ttml2-presentation">
+<head>TTML2 Presentation Profile</head>
+<p>The TTML2 Presentation Profile is intended to be used to
+express minimum compliance for presentation processing.</p>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
+it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-presentation;</eg>
+</div2>
+<div2 id="profile-ttml2-transformation">
+<head>TTML2 Transformation Profile</head>
+<p>The TTML2 Transformation Profile is intended to be used to
+express minimum compliance for transformation processing.</p>
+<note role="elaboration">
+<p>This profile is a superset of the
+<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
+it requires support for the <loc href="#feature-version"><code>#version</code></loc> feature.</p>
+</note>
+<eg xml:space="preserve">&profile-ttml2-transformation;</eg>
 </div2>
 </div1>
 <div1 id="references">
@@ -14849,16 +15046,16 @@ Style Sheets, Level 2 Revision 1</titleref>, W3C Recommendation, 07 June 2011.
 Module Level 3</titleref>, W3C Recommendation, 07 June 2011. (See
 <xspecref href="http://www.w3.org/TR/2011/REC-css3-color-20110607/">http://www.w3.org/TR/2011/REC-css3-color-20110607/</xspecref>.)
 </bibl>
-<bibl id="cssruby" key="CSS Ruby">Elika Etemad and Koji Ishii,
-<titleref href="http://dev.w3.org/csswg/css-ruby-1/">CSS Ruby Layout Module Level 1</titleref>
-W3C Editor's Draft.
-(See <xspecref href="http://dev.w3.org/csswg/css-ruby-1/">http://dev.w3.org/csswg/css-ruby-1//</xspecref>.)
-</bibl>
 <bibl id="gps" key="GPS">
-<titleref href="http://tycho.usno.navy.mil/gpsinfo.html">Global
-Positioning System</titleref>, US Naval Observatory.
+<titleref href="http://www.gps.gov/technical/">Global
+Positioning System</titleref>, US Air Force.
 (See
-<xspecref href="http://tycho.usno.navy.mil/gpsinfo.html">http://tycho.usno.navy.mil/gpsinfo.html</xspecref>.)
+<xspecref href="http://www.gps.gov/technical/">http://www.gps.gov/technical/</xspecref>.)
+</bibl>
+<bibl id="html5" key="HTML5">Ian Hickson et al.,
+<titleref href="http://www.w3.org/TR/html5/">Extensible Stylesheet Language (XSL) Version 1.1</titleref>,
+W3C Proposed Recommendation, 16 September 2014. (See
+<xspecref href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</xspecref>.)
 </bibl>
 <bibl id="media-types" key="Media Types">Ned Freed and Nathaniel Borenstein,  
 <titleref
@@ -15007,6 +15204,11 @@ CEA-708-D,
 <titleref href="http://www.ce.org/">Digital Television (DTV) Closed Captioning</titleref>, CEA Standard,
 Consumer Electronics Association (CEA).
 </bibl>
+<bibl id="cssruby" key="CSS Ruby">Elika Etemad and Koji Ishii,
+<titleref href="http://dev.w3.org/csswg/css-ruby-1/">CSS Ruby Layout Module Level 1</titleref>
+W3C Editor's Draft.
+(See <xspecref href="http://dev.w3.org/csswg/css-ruby-1/">http://dev.w3.org/csswg/css-ruby-1/</xspecref>.)
+</bibl>
 <bibl id="css3-fonts" key="CSS Fonts Module Level 3">John Daggett,
 <titleref href="http://dev.w3.org/csswg/css-fonts/">CSS Fonts Module Level 3</titleref>, W3C Editor's Draft. (See
 <xspecref href="http://dev.w3.org/csswg/css-fonts/">http://dev.w3.org/csswg/css-fonts/</xspecref>.)
@@ -15073,9 +15275,9 @@ W3C Working Group Note, 27 April 2006. (See
 href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</xspecref>.)
 </bibl>
 <bibl id="ttml1" key="TTML1">Glenn Adams, Ed.,
-<titleref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
-W3C Editor's Draft. (See
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html</xspecref>.)
+<titleref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
+W3C Recommendation, 24 September 2013. (See
+<xspecref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">http://www.w3.org/TR/2013/REC-ttml1-20130924/</xspecref>.)
 </bibl>
 <bibl id="xhtml10" key="XHTML 1.0">Steven Pemberton, et al.,
 <titleref

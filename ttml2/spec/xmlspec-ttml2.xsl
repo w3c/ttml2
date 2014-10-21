@@ -55,6 +55,7 @@ table.example-images td { border: 0px solid black; text-align: center }
 table.example-images-bordered { text-align: center; border: 0px solid black; width: 85%; border-collapse: collapse }
 table.example-images-bordered caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
 table.example-images-bordered td { border: 1px solid red; text-align: left }
+div.exampleInner { width: 85%; }
 .tbd { background-color: #ffff33; border: 2px solid black; width: 85% }
 .strong { font-weight: bold }
 .deprecated { background-color: #fbaf5c }

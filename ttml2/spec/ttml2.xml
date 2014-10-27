@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 9baedffc327e 2014/10/04 20:05:40 glenn $ -->
+<!-- $Id: ttml2.xml,v 9e26bdc4ee6c 2014/10/27 18:32:40 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/10/04 20:05:40 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/10/27 18:32:40 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/10/04 20:05:40 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/10/27 18:32:40 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -7100,7 +7100,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <td>Ruby Fallback Delimiter</td>
 <td><code>delimiter</code></td>
 <td><code>rp</code></td>
-<td><code>none</code></td>
+<td><code>none</code> | <code>inline</code></td>
 </tr>
 </tbody>
 </table>
@@ -7160,7 +7160,11 @@ computed value of <att>tts:ruby</att> of no descendant element is not <code>none
 </ulist>
 <p>A validating processor must treat a violation of any of the above constraints as an error.
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
-presentation of ruby text annotations, where fallback annotation presentation is considered to be implementation dependent.</p>
+presentation of ruby text annotations.</p>
+<p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
+inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
+must generate normal inline areas.</p>
+<p>If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentaton.</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">

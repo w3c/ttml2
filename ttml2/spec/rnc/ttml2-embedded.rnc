@@ -14,20 +14,12 @@ TTAF.src.attrib
   = attribute src { TTAF.DataSource.datatype }?
 TTAF.type.attrib
   = attribute type { TTAF.DataType.datatype }?
-TTAF.type.required.attrib
-  = attribute type { TTAF.DataType.datatype }
 
 # Data Attribute Class
 TTAF.Data.attrib.class &=
   TTAF.format.attrib,
   TTAF.src.attrib,
   TTAF.type.attrib
-
-# Data Attribute Required Class
-TTAF.Data.attrib.required.class &=
-  TTAF.format.attrib,
-  TTAF.src.attrib,
-  TTAF.type.required.attrib
 
 # Embedded Content Elements
 
@@ -73,7 +65,7 @@ TTAF.data =
 
 TTAF.data.attlist &=
   TTAF.Core.attrib.class,
-  TTAF.Data.attrib.required.class,
+  TTAF.Data.attrib.class,
   TTAF.encoding.attrib,
   TTAF.length.attrib
 
@@ -81,7 +73,7 @@ TTAF.data.content.extra = empty
 TTAF.data.content =
   (text |
     (TTAF.Metadata.class*,
-     TTAF.chunk+,
+     (TTAF.chunk+ | TTAF.source+),
      TTAF.data.content.extra*))
 
 # font

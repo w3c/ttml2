@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 25035c814da5 2014/11/22 17:10:45 glenn $ -->
+<!-- $Id: ttml2.xml,v e3fdbceb09cb 2014/11/23 22:28:41 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/22 17:10:45 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/23 22:28:41 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/22 17:10:45 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/23 22:28:41 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -558,6 +558,25 @@ Sets</emph> <bibref ref="infoset"/>.</p>
 item as defined by <bibref ref="infoset"/>, &sect;2.3.</p>
 </def>
 </gitem>
+<gitem id="terms-audio-defining-context">
+<label>[audio defining context]</label>
+<def>
+<p>The context in which an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element is specified to serve as
+a sharable definition to be referenced by another <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element
+in an <loc href="#terms-audio-presentation-context">audio presentation context</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-audio-presentation-context">
+<label>[audio presentation context]</label>
+<def>
+<p>The context in which an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element is specified for the
+purpose of being presented (rendered), i.e., it is intended to be played. Such an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element
+may specify the audio data inline by using a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element within
+a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element child, or it may reference another
+<loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element specified in a 
+<loc href="#terms-audio-definition-context">audio definition context</loc>, or it may do both.</p>
+</def>
+</gitem>
 <gitem id="terms-baseline-profile">
 <label>[baseline profile]</label>
 <def>
@@ -607,6 +626,26 @@ Timed Text Markup Language content.</p>
 <def>
 <p>A logical region into which rendered content is placed when modeling or
 performing presentation processing.</p>
+</def>
+</gitem>
+<gitem id="terms-data-binding-context">
+<label>[data binding context]</label>
+<def>
+<p>The context in which an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element is specified for the
+purpose of semantic binding (association). Such an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element
+may specify the data data inline by using a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element within
+a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element child, or it may reference another
+<loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element specified in a 
+<loc href="#terms-data-definition-context">data definition context</loc>, or it may do both. No presentation (rendering)
+semantics are implied by mere presence of a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element in this (or any) context.</p>
+</def>
+</gitem>
+<gitem id="terms-data-defining-context">
+<label>[data defining context]</label>
+<def>
+<p>The context in which an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element is specified to serve as
+a sharable definition to be referenced by another <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element
+in an <loc href="#terms-data-binding-context">data binding context</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-data-element">
@@ -773,6 +812,25 @@ an <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> element.</
 <def>
 <p>A syntactic expression that adheres to the fragment identifer syntax defined by <bibref ref="uri"/>,
 Section 4.1.</p>
+</def>
+</gitem>
+<gitem id="terms-image-defining-context">
+<label>[image defining context]</label>
+<def>
+<p>The context in which an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element is specified to serve as
+a sharable definition to be referenced by another <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element
+in an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-image-presentation-context">
+<label>[image presentation context]</label>
+<def>
+<p>The context in which an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element is specified for the
+purpose of being presented (rendered). Such an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element
+may specify the image data inline by using a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element within
+a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element child, or it may reference another
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element specified in a 
+<loc href="#terms-image-definition-context">image definition context</loc>, or it may do both.</p>
 </def>
 </gitem>
 <gitem id="terms-implied-inline-region">
@@ -5177,8 +5235,9 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
 <head>Embedded Content</head>
 <p>This section specifies the <emph>embedded content</emph> matter of the core
 vocabulary catalog, where, in this context,
-<emph>content</emph> is to be understood as a <loc href="#terms-data-resource">data resource</loc>
-of an arbitrary content type (format), and <emph>embedded</emph> may refer to embedded data or an embedded reference to external data.</p>
+<emph>content</emph> is to be understood as data of an arbitrary content type (format)
+and <emph>embedded</emph> refers to the embedding (inlining) of this data or the embedding
+of a reference to external data.</p>
 <div2 id="embedded-content-element-vocabulary">
 <head>Embedded Content Element Vocabulary</head>
 <p>The following elements may be used to specify embedded content:</p>
@@ -5205,8 +5264,28 @@ express the source of embedded content.</p>
 <div3 id="embedded-content-vocabulary-audio">
 <head>audio</head>
 <p>The <el>audio</el> element is used to define an author supplied audio resource.</p>
-<p>The active time interval of an <el>audio</el> element is co-terminous with the active time interval of its
-most immediate content ancestor element.</p>
+<p>An <el>audio</el> element may appear in two contexts: (1) as a child of a <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element and
+(2) as a child of an element in the <loc href="#element-vocab-group-block">Block.class</loc> element group, namely, as a child of a
+<loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, or
+as a child of a <loc href="#content-vocabulary-span"><el>span</el></loc> element. The former is referred to as an
+<loc href="#terms-audio-defining-context">audio defining context</loc>, the latter as an <loc href="#terms-audio-presentation-context">audio presentation context</loc>.</p>
+<p>When an <el>audio</el> element appears in an <loc href="#terms-audio-defining-context">audio defining context</loc>, it
+serves as a sharable definition of an audio resource that may be referenced by other <el>audio</el> elements in the
+<loc href="#terms-enclosing-document-instance">enclosing document instance</loc>. In this case, the active time interval of the <el>audio</el> element
+is the same as the active time interval of its parent <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element.</p>
+<note role="elaboration">
+<p>A sharable definition of an audio resource specifies an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute in order to be referenced
+by <el>audio</el> elements in an <loc href="#terms-audio-presentation-context">audio presentation context</loc>.</p>
+</note>
+<p>When an <el>audio</el> element appears in an <loc href="#terms-audio-presentation-context">audio presentation context</loc>, it
+serves as a non-sharable definition of an audio resource that implies presentation (rendering) semantics, i.e., that it is intended to be played.
+In this case, the active time interval of the <el>audio</el> element is the same as the active time interval of its parent
+<loc href="#terms-content-element">content element</loc>.
+</p>
+<note role="elaboration">
+<p>A non-sharable definition of an audio resource may or may not specify an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute, but this
+identifier is not referenced by other <el>audio</el> elements, or, if it is, the reference is ignored.</p>
+</note>
 <p>The <el>audio</el> element accepts as its children
 zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by zero or more
 <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
@@ -5322,15 +5401,53 @@ If no <att>length</att> attribute is specified, then the chunk is considered to 
 
 <div3 id="embedded-content-vocabulary-data">
 <head>data</head>
-<p>The <el>data</el> element functions as a generic container for data.</p>
-<p>The <el>data</el> element accepts as its children either
-(1) one or more text nodes (i.e., <code>#PCDATA</code>) or
+<p>The <el>data</el> element functions as a generic container for or reference to arbitrary data.</p>
+<p>A <el>data</el> element may appear in three contexts:
+(1) as a child of a <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element,
+referred to as a <loc href="#terms-data-defining-context">data defining context</loc>,
+(2) as a child of a <loc href="#metadata-vocabulary-metadata"><el>metadata</el></loc> element,
+referred to as a <loc href="#terms-data-binding-context-for-metadata">data binding context for metadata</loc>, or
+(3) as a child of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element,
+referred to as a <loc href="#terms-data-binding-context-for-source">data binding context for source</loc>,
+and where these latter two contexts are referred to collectively as <loc href="#terms-data-binding-context">data binding contexts</loc>.</p>
+
+<p>When a <el>data</el> element appears in a <loc href="#terms-data-defining-context">data defining context</loc>, it
+serves as a sharable definition of a data resource that may be referenced by the <att>src</att> attribute of
+(1) another <el>data</el> element,
+(2) an <loc href="#terms-embedded-content-element">embedded content element</loc>, or
+(3) a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element.
+In this case, the contextualized active time interval of the <el>data</el> element is the intersection of
+the active time interval of its parent <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element and
+the active time interval of its referring element.</p>
+<note role="elaboration">
+<p>A sharable definition of a data resource specifies an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute in order to be referenced
+by a fragment identifier used in a <loc href="#terms-data-binding-context">data binding context</loc>.</p>
+</note>
+<p>When a <el>data</el> element appears in a <loc href="#terms-data-binding-context">data binding context</loc>, it
+serves as a non-sharable definition of a data resource that implies binding semantics, i.e., that it is intended to bound to (associated with) its immediate context
+of reference. In this case, the active time interval of the <el>data</el> element is the same as the active time interval of its closest ancestor timed element.
+</p>
+<note role="elaboration">
+<p>A non-sharable definition of a data resource may or may not specify an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute, but this
+identifier is not referenced in other <loc href="#terms-data-binding-context">data binding contexts</loc>, or, if it is, has not binding semantics.</p>
+</note>
+<p>The <el>data</el> element accepts one of the following three content models:
+(1) one or more text nodes (i.e., <code>#PCDATA</code>),
 (2) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by one or more
-<loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elements, where the former content model is referred to as <emph>simple data embedding</emph>
-and the latter is referred to as <emph>chunked data embedding</emph>.</p>
-<p>When simple data embedding is used, the data resource is obtained by decoding the <code>#PCDATA</code> content. When
-chunked data embedding is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
-child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.</p>
+<loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elements, or
+(3) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by one or more
+<loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements, where
+the first is referred to as <emph>simple data embedding</emph>,
+the second as <emph>chunked data embedding</emph>, and
+the third as <emph>sourced data embedding</emph>.</p>
+<p>When simple data embedding is used, the data resource is obtained by decoding the <code>#PCDATA</code> content.
+When chunked data embedding is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
+child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.
+When sourced data embedding is used, the data resource is obtained from the the first resolvable
+child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Furthermore,
+a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element must not
+contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, but may refer to a
+<loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element in a <loc href="#terms-data-defining-context">data defining context</loc>.</p>
 <table id="elt-syntax-data" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: data</caption>
 <tbody>
@@ -5339,14 +5456,15 @@ child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elemen
 <eg xml:space="preserve">
 &lt;data
   <loc href="#data-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : <emph>see prose below</emph>
-  format = <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  format = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
-  <phrase role="reqattr"><loc href="#data-attribute-type">type</loc></phrase> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  src = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
+  <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>see prose below</emph>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-chunk">chunk</loc>+)
+  <emph>Content:</emph> #PCDATA | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-chunk">chunk</loc>+) | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>+)
 &lt;/data&gt;
 </eg>
 </td>
@@ -5356,37 +5474,95 @@ child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elemen
 <p>If simple data embedding is used, i.e., the content of the <el>data</el> element is one or more text nodes, then an
 <loc href="#data-attribute-encoding"><att>encoding</att></loc> attribute
 may be specified, and, if not specified, must be considered to be <code>base64</code>.
-If chunked data embedding is used, i.e., the content of the <el>data</el> element contains any child element, then
+If chunked or sourced data embedding is used, i.e., the content of the <el>data</el> element contains any child
+<loc href="#embedded-content-vocabulary-chunk">chunk</loc> or <loc href="#embedded-content-vocabulary-source">source</loc> element, then
 an <loc href="#data-attribute-encoding"><att>encoding</att></loc> attribute must not be specified, and, if specified, must be ignored
 for the purpose of content processing.</p>
 <p>If a <att>length</att> attribute is specified, then it must denote the number of decoded bytes in the byte sequence represented by the
 <el>data</el> element. When decoding, if a specified length value does not match the number of decoded bytes, then a zero length byte sequence must be returned.
-If no <att>length</att> attribute is specified, then the data resource is considered to have a length equal to the actual number of decoded bytes.</p>
+If no <att>length</att> attribute is specified, then the data resource is considered to have a length equal to the actual number of decoded bytes.
+A <att>length</att> attribute must not be specified when using sourced data embedding.</p>
 <note role="elaboration">
 <p>The intention of the <att>length</att> attribute is to provide a means to perform a simple integrity check on decoded data. Note that this check does not guarantee
 data integrity during transport, i.e., the data could be modified without modifying the length.</p>
 </note>
-<p>A <loc href="#data-attribute-type"><att>type</att></loc> attribute must be specified, and must correspond with the media (content) type of the data resource.
-In the absence of a defined type, the type <code>application/octet-stream</code> should be used.</p>
-<p>If a <loc href="#data-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced data resource, then a <att>format</att> attribute should be specified as a hint to the
-content processor.</p>
-<p>The use of simple data is illustrated by the following example.</p>
+<p>If simple or chunked data embedding is used, a <loc href="#data-attribute-type"><att>type</att></loc> attribute must be specified,
+and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code>
+should be used. In the case of sourced data embedding, the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
+is used as the type.</p>
+<p>If a <loc href="#data-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
+such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource,
+then a <att>format</att> attribute should be specified as a hint to the content processor.</p>
+<p>The use of simple data embedding is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-data-example-1" role="example">
-<caption>Example Fragment &ndash; Simple Data</caption>
+<caption>Example Fragment &ndash; Simple Data Embedding in Data Defining Context</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData" type="image/png" length="119"&gt;
+      iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+      YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+    &lt;/data&gt;
+    &lt;image xml:id="sharedImage"&gt;
+      &lt;source src="#sharedImageData"/&gt;
+    &lt;/image&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
 ...
-&lt;data type="text/plain; charset=us-ascii" length="269"&gt;
-  TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz
-  IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg
-  dGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGlu
-  dWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRo
-  ZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
-&lt;/data&gt;
-...
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="embedded-content-vocabulary-data-example-2" role="example">
+<caption>Example Fragment &ndash; Simple Data Embedding in Data Binding Context for Metadata</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;div&gt;
+  &lt;metadata xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;
+    &lt;ttm:desc&gt;caption with metadata containing tunneled CEA-608 data&lt;/ttm:desc&gt;
+    &lt;data format="http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea608"&gt;
+      gIAVLJQsnSAcIJ0sHCyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA
+      gICAgICAgICAgICAgICAgIAVIJQgE/QT9Jehl6FU5VTlc/Rz9CBDIENhcGFw9On06e9u725zgHOA
+      lNCU0Jehl6HEVMRU1iDWIMHjwePj5ePlc3NzcyDQINDy7/Lv6uXq5eP04/QsICwgV8dXx8LIwsit
+      zq3OQ8FDwc2AzYCUcJRwlyOXI6jyqPJ1bnVubulu6W5nbmcg9CD06W3pbeW65bogNCA0IG0gbelu
+      6W6uIK4gMbUxtSBzIHPl4+XjrimuKRUslCwVL5QvgIA=
+    &lt;/data&gt;
+  &lt;/metadata&gt;
+  &lt;p&gt;Test Captions&lt;br/&gt;DTV Access Project, WGHB-NCAM&lt;br/&gt;(running time: 4min. 15sec.)&lt;/p&gt;
+&lt;/div&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="embedded-content-vocabulary-data-example-3" role="example">
+<caption>Example Fragment &ndash; Simple Data Embedding in Data Binding Context for Source</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;div&gt;
+  &lt;image&gt;
+    &lt;source&gt;
+      &lt;data type="image/png" length="119"&gt;
+        iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+      &lt;/data&gt;
+    &lt;/source&gt;
+  &lt;/image&gt;
+&lt;/div&gt;
 </eg>
 </td>
 </tr>
@@ -5490,9 +5666,29 @@ must be considered to be equal to the value(s) of the same named font characteri
 <div3 id="embedded-content-vocabulary-image">
 <head>image</head>
 <p>The <el>image</el> element is used to define an author supplied image resource.</p>
-<p>The active time interval of an <el>image</el> element is co-terminous with the active time interval of its
-most immediate content ancestor element.</p>
-<p>The <el>data</el> element accepts as its children
+<p>An <el>image</el> element may appear in two contexts: (1) as a child of a <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element and
+(2) as a child of an element in the <loc href="#element-vocab-group-block">Block.class</loc> element group, namely, as a child of a
+<loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, or
+as a child of a <loc href="#content-vocabulary-span"><el>span</el></loc> element. The former is referred to as an
+<loc href="#terms-image-defining-context">image defining context</loc>, the latter as an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
+<p>When an <el>image</el> element appears in an <loc href="#terms-image-defining-context">image defining context</loc>, it
+serves as a sharable definition of an image resource that may be referenced by other <el>image</el> elements in the
+<loc href="#terms-enclosing-document-instance">enclosing document instance</loc>. In this case, the active time interval of the <el>image</el> element
+is the same as the active time interval of its parent <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element.</p>
+<note role="elaboration">
+<p>A sharable definition of an image resource specifies an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute in order to be referenced
+by <el>image</el> elements in an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
+</note>
+<p>When an <el>image</el> element appears in an <loc href="#terms-image-presentation-context">image presentation context</loc>, it
+serves as a non-sharable definition of an image resource that implies presentation (rendering) semantics, i.e., that it is intended to be played.
+In this case, the active time interval of the <el>image</el> element is the same as the active time interval of its parent
+<loc href="#terms-content-element">content element</loc>.
+</p>
+<note role="elaboration">
+<p>A non-sharable definition of an image resource may or may not specify an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute, but this
+identifier is not referenced by other <el>image</el> elements, or, if it is, the reference is ignored.</p>
+</note>
+<p>The <el>image</el> element accepts as its children
 zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by zero or more
 <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
 <table id="elt-syntax-image" role="syntax">
@@ -5639,6 +5835,7 @@ in the <loc href="#terms-enclosing-document-instance">enclosing document instanc
 <p>If a <el>source</el> element does not specify a <att>src</att> attribute, then it must specify a
 child <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, in which case it is referred to as
 an <emph>nested embedded source</emph>.</p>
+<p>A <el>source</el> element must not have an ancestor <el>source</el> element.</p>
 <table id="elt-syntax-source" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: source</caption>
 <tbody>
@@ -5646,8 +5843,8 @@ an <emph>nested embedded source</emph>.</p>
 <td>
 <eg xml:space="preserve">
 &lt;source
-  format = <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
-  src = <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+  format = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
+  src = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
   <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -5662,9 +5859,9 @@ an <emph>nested embedded source</emph>.</p>
 </table>
 <p>If a <att>format</att> attribute is specified, then it provides additional hint information about the format (i.e., formal syntax) of the
 embedded content. Such information may be useful in cases where no standard media (content) type label has been defined. Depending on the
-context of use of a <el>source</el> element, the values of this attribute may be constrained to a particular collection of identifiers.</p>
+context of use of a <el>source</el> element, the values of this attribute may be further constrained.</p>
 <p>If a <att>src</att> attribute is specified and its value refers to a fragment of the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>,
-then there must be a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element child of the <loc href="#document-structure-vocabulary-head"><el>head</el></loc>
+then there must be a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element child of a <loc href="#document-structure-vocabulary-resources"><el>resources</el></loc>
 element which is identified by that fragment, i.e., has an <att>xml:id</att> attribute the value of which matches the fragment identifier.</p>
 <p>If a <att>src</att> attribute is specified and its value does not refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then
@@ -5793,6 +5990,8 @@ sniffing.</p>
 <ulist>
 <item><p><specref ref="embedded-content-value-audio"/></p></item>
 <item><p><specref ref="embedded-content-value-audio-format"/></p></item>
+<item><p><specref ref="embedded-content-value-data"/></p></item>
+<item><p><specref ref="embedded-content-value-data-format"/></p></item>
 <item><p><specref ref="embedded-content-value-font"/></p></item>
 <item><p><specref ref="embedded-content-value-font-format"/></p></item>
 <item><p><specref ref="embedded-content-value-image"/></p></item>
@@ -5825,7 +6024,7 @@ then that fragment identifier must reference an <loc href="#embedded-content-voc
 <div3 id="embedded-content-value-audio-format">
 <head>&lt;audio-format&gt;</head>
 <p>An &lt;audio-format&gt; expression is used to specify the format of a audio resource. Additional format information is useful in the case
-of audio resources that lack of standardization of media (content) type.</p>
+of audio resources that lack a registered media (content) type.</p>
 <table id="audio-format-value-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;audio-format&gt;</caption>
 <tbody>
@@ -5834,13 +6033,61 @@ of audio resources that lack of standardization of media (content) type.</p>
 <eg xml:space="preserve">
 &lt;audio-format&gt;
   : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
+<p>If a format expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
 <note role="elaboration">
 <p>This specification does not standardize the set of format tokens for use with audio content. Authors are encouraged to
+use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p>
+</note>
+</div3>
+<div3 id="embedded-content-value-data">
+<head>&lt;data&gt;</head>
+<p>A &lt;data&gt; value expression is used to specify a data resource by reference.</p>
+<table id="data-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;data&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;data&gt;
+  : <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If a &lt;data&gt; value expression takes the form of a <loc href="#terms-fragment-identifier">fragment identifier</loc>,
+then that fragment identifier must reference an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element that is a child of a
+<loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element in the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>.</p>
+</div3>
+<div3 id="embedded-content-value-data-format">
+<head>&lt;data-format&gt;</head>
+<p>A &lt;data-format&gt; expression is used to specify the format of a data resource. Additional format information is useful in the case
+of data resources that lack a registered media (content) type.</p>
+<table id="data-format-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;data-format&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;data-format&gt;
+  : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If a format expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
+<note role="elaboration">
+<p>This specification does not standardize the set of format tokens for use with data content. Authors are encouraged to
 use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p>
 </note>
 </div3>
@@ -5867,7 +6114,7 @@ then that fragment identifier must reference an <loc href="#embedded-content-voc
 <div3 id="embedded-content-value-font-format">
 <head>&lt;font-format&gt;</head>
 <p>A &lt;font-format&gt; expression is used to specify the format of a font resource. Additional format information is useful in the case
-of font resources due to the lack of standardization of media (content) type.</p>
+of font resources due that lack a registered media (content) type.</p>
 <table id="font-format-value-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;font-format&gt;</caption>
 <tbody>
@@ -5880,11 +6127,14 @@ of font resources due to the lack of standardization of media (content) type.</p
   | ttf                                     // truetype
   | woff                                    // web open font format
   | <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
+<p>If a format expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
 <note role="elaboration">
 <p>This specification standardizes a limited set of format tokens for use with font content. In case none of
 these tokens are appropriate, authors are encouraged to use tokens in common use, or absent that, to add a
@@ -5914,7 +6164,7 @@ then that fragment identifier must reference an <loc href="#embedded-content-voc
 <div3 id="embedded-content-value-image-format">
 <head>&lt;image-format&gt;</head>
 <p>An &lt;image-format&gt; expression is used to specify the format of a image resource. Additional format information is useful in the case
-of image resources that lack of standardization of media (content) type.</p>
+of image resources that lack a registered media (content) type.</p>
 <table id="image-format-value-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;image-format&gt;</caption>
 <tbody>
@@ -5923,11 +6173,14 @@ of image resources that lack of standardization of media (content) type.</p>
 <eg xml:space="preserve">
 &lt;image-format&gt;
   : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
+<p>If a format expression takes the form of a <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
 <note role="elaboration">
 <p>This specification does not standardize the set of format tokens for use with image content. Authors are encouraged to
 use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p>
@@ -12918,11 +13171,10 @@ used in a <loc href="#terms-document-instance">document instance</loc>:
 <p>The <el>metadata</el> element functions as a generic container for metadata
 information.</p>
 <p>Metadata information may be expressed with a <el>metadata</el> element by specifying
-(1) one or more metadata attributes on the <el>metadata</el> element,
-(2) one or more metadata child elements in the <el>metadata</el> element, or
-(3) a combination of metadata attributes and metadata child elements.  Both types
-of metadata information are referred to in this document as <emph>metadata
-items</emph>.</p>
+(1) one or more metadata attributes or foreign namespace attributes on the <el>metadata</el> element,
+(2) one or more metadata item or foreign namespace child elements,
+(3) one or more <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> child elements, or
+(4) a combination of the preceding.</p>
 <table id="elt-syntax-metadata" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: metadata</caption>
 <tbody>
@@ -12935,7 +13187,7 @@ items</emph>.</p>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
   {<emph>any attribute in TT Metadata namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> ({<emph>any element in TT Metadata namespace</emph>}|{<emph>any element not in any TT namespace</emph>})*
+  <emph>Content:</emph> (<loc href="#element-vocab-group-data"><code>Data.class</code></loc>|{<emph>any element in TT Metadata namespace</emph>}|{<emph>any element not in any TT namespace</emph>})*
 &lt;/metadata&gt;
 </eg>
 </td>

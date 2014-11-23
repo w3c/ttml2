@@ -83,9 +83,9 @@ div.exampleInner { width: 85%; }
 .obsoleted { background-color: #f26d7d }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
-</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/11/22 17:10:45 $<div id="revisions"></div><div class="head">
+</style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/W3C-ED.css"></head><body>Last Modified: $Date: 2014/11/23 22:28:41 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/11/22 17:10:45 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: 2014/11/23 22:28:41 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest version:</dt><dd><a href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8">https://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html?content-type=text/html;charset=utf-8</a></dd><dt>Previous version:</dt><dd>
 <a href="http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/</a>
@@ -200,11 +200,13 @@ element in an HTML5 document, or a <code>&lt;text&gt;</code> or
 &nbsp;&nbsp;&nbsp;&nbsp;9.3 <a href="#embedded-content-value-expressions">Embedded Content Value Expressions</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.1 <a href="#embedded-content-value-audio">&lt;audio&gt;</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.2 <a href="#embedded-content-value-audio-format">&lt;audio-format&gt;</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.3 <a href="#embedded-content-value-font">&lt;font&gt;</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.4 <a href="#embedded-content-value-font-format">&lt;font-format&gt;</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.5 <a href="#embedded-content-value-image">&lt;image&gt;</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.6 <a href="#embedded-content-value-image-format">&lt;image-format&gt;</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.7 <a href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.3 <a href="#embedded-content-value-data">&lt;data&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.4 <a href="#embedded-content-value-data-format">&lt;data-format&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.5 <a href="#embedded-content-value-font">&lt;font&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.6 <a href="#embedded-content-value-font-format">&lt;font-format&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.7 <a href="#embedded-content-value-image">&lt;image&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.8 <a href="#embedded-content-value-image-format">&lt;image-format&gt;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3.9 <a href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</a><br>
 10 <a href="#styling">Styling</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;10.1 <a href="#styling-element-vocabulary">Styling Element Vocabulary</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10.1.1 <a href="#styling-vocabulary-initial">initial</a><br>
@@ -480,11 +482,11 @@ G <a href="#references">References</a><br>
 H <a href="#other-references">Other References</a> (Non-Normative)<br>
 I <a href="#requirements">Requirements</a> (Non-Normative)<br>
 J <a href="#derivation">Vocabulary Derivation</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e30568">Element Derivation</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e31085">Attribute Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.1 <a href="#d3e31157">Element Derivation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;J.2 <a href="#d3e31674">Attribute Derivation</a><br>
 K <a href="#qa">QA Framework Compliance</a> (Non-Normative)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e32078">Requirements</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e32242">Guidelines</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.1 <a href="#d3e32667">Requirements</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;K.2 <a href="#d3e32831">Guidelines</a><br>
 L <a href="#streaming">Streaming TTML Content</a> (Non-Normative)<br>
 M <a href="#concrete-encoding">Concrete Encoding</a><br>
 N <a href="#time-expression-semantics">Time Expression Semantics</a><br>
@@ -698,7 +700,14 @@ and may specify inline overrides to styling.</p></div></div><div class="div1">
 <h3><a id="terms"></a>2.2 Terminology</h3><dl><dt class="label"><a id="terms-abstract-document-instance"></a>[abstract document instance]</dt><dd><p>An instance of an abstract data set as represented by a
 <a href="#terms-reduced-xml-infoset">reduced xml infoset</a>.</p></dd><dt class="label"><a id="terms-abstract-document-type"></a>[abstract document type]</dt><dd><p>A set of constraints that defines a class of <em>XML Information
 Sets</em> <a href="#infoset">[XML InfoSet]</a>.</p></dd><dt class="label"><a id="terms-anonymous-profile"></a>[anonymous profile]</dt><dd><p>See <a href="#terms-undesignated-profile">undesignated profile</a>.</p></dd><dt class="label"><a id="terms-attribute-information-item"></a>[attribute information item]</dt><dd><p>Each specified or defaulted attribute  of an XML document corresponds with an attribute information
-item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.3.</p></dd><dt class="label"><a id="terms-baseline-profile"></a>[baseline profile]</dt><dd><p>A <a href="#terms-profile">profile</a> referenced by the <code>use</code> attribute of a <code>ttp:profile</code> element,
+item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.3.</p></dd><dt class="label"><a id="terms-audio-defining-context"></a>[audio defining context]</dt><dd><p>The context in which an <a href="#embedded-content-vocabulary-audio"><code>audio</code></a> element is specified to serve as
+a sharable definition to be referenced by another <a href="#embedded-content-vocabulary-audio"><code>audio</code></a> element
+in an <a href="#terms-audio-presentation-context">audio presentation context</a>.</p></dd><dt class="label"><a id="terms-audio-presentation-context"></a>[audio presentation context]</dt><dd><p>The context in which an <a href="#embedded-content-vocabulary-audio"><code>audio</code></a> element is specified for the
+purpose of being presented (rendered), i.e., it is intended to be played. Such an <a href="#embedded-content-vocabulary-audio"><code>audio</code></a> element
+may specify the audio data inline by using a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element within
+a <a href="#embedded-content-vocabulary-source"><code>source</code></a> element child, or it may reference another
+<a href="#embedded-content-vocabulary-audio"><code>audio</code></a> element specified in a 
+<a href="#terms-audio-definition-context">audio definition context</a>, or it may do both.</p></dd><dt class="label"><a id="terms-baseline-profile"></a>[baseline profile]</dt><dd><p>A <a href="#terms-profile">profile</a> referenced by the <code>use</code> attribute of a <code>ttp:profile</code> element,
 which serves as a baseline (initial) set of specifications with which to populate the referencing profile.</p></dd><dt class="label"><a id="terms-character-information-item"></a>[character information item]</dt><dd><p>Each data character appearing in an XML document corresponds with a character information
 item as defined by <a href="#infoset">[XML InfoSet]</a>, §2.6.</p></dd><dt class="label"><a id="terms-computed-cell-size"></a>[computed cell size]</dt><dd><p>The size (extent) of a cell computed by dividing the width of the <a href="#terms-root-container-region">root container region</a>
 by the column count, i.e., the number of cells in the horizontal axis, and by dividing
@@ -706,7 +715,15 @@ the height of the <a href="#terms-root-container-region">root container region</
 axis, where the column and row counts are determined by the <code>ttp:cellResolution</code> parameter attribute.</p></dd><dt class="label"><a id="terms-content-element"></a>[content element]</dt><dd><p>Any of the element types defined by the <a href="#element-vocab-type-content">Content Module</a>.</p></dd><dt class="label"><a id="terms-content-processor"></a>[content processor]</dt><dd><p>A processing system capable of importing (receiving) Timed Text Markup Language
 content for the purpose of transforming, presenting, or otherwise processing the content.</p></dd><dt class="label"><a id="terms-content-profile"></a>[content profile]</dt><dd><p>A collection of <a href="#terms-feature">features</a> and <a href="#terms-extension">extensions</a> that must not, must, or may be employed by
 Timed Text Markup Language content.</p><p></p></dd><dt class="label"><a id="terms-content-region"></a>[content region]</dt><dd><p>A logical region into which rendered content is placed when modeling or
-performing presentation processing.</p></dd><dt class="label"><a id="terms-data-element"></a>[data element]</dt><dd><p>Any of the element types defined by the <a href="#element-vocab-type-data">Data Module</a>.</p></dd><dt class="label"><a id="terms-data-resource"></a>[data resource]</dt><dd><p>An arbitrary data resource represented using <a href="#terms-data-element">data elements</a>. For example,
+performing presentation processing.</p></dd><dt class="label"><a id="terms-data-binding-context"></a>[data binding context]</dt><dd><p>The context in which an <a href="#embedded-content-vocabulary-data"><code>data</code></a> element is specified for the
+purpose of semantic binding (association). Such an <a href="#embedded-content-vocabulary-data"><code>data</code></a> element
+may specify the data data inline by using a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element within
+a <a href="#embedded-content-vocabulary-source"><code>source</code></a> element child, or it may reference another
+<a href="#embedded-content-vocabulary-data"><code>data</code></a> element specified in a 
+<a href="#terms-data-definition-context">data definition context</a>, or it may do both. No presentation (rendering)
+semantics are implied by mere presence of a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element in this (or any) context.</p></dd><dt class="label"><a id="terms-data-defining-context"></a>[data defining context]</dt><dd><p>The context in which an <a href="#embedded-content-vocabulary-data"><code>data</code></a> element is specified to serve as
+a sharable definition to be referenced by another <a href="#embedded-content-vocabulary-data"><code>data</code></a> element
+in an <a href="#terms-data-binding-context">data binding context</a>.</p></dd><dt class="label"><a id="terms-data-element"></a>[data element]</dt><dd><p>Any of the element types defined by the <a href="#element-vocab-type-data">Data Module</a>.</p></dd><dt class="label"><a id="terms-data-resource"></a>[data resource]</dt><dd><p>An arbitrary data resource represented using <a href="#terms-data-element">data elements</a>. For example,
 a data resource may be used to embed or refer to an audio clip, a font, an image, or arbitrary application data in a
 <a href="#terms-timed-text-content-document-instance">timed text content document instance</a>.</p></dd><dt class="label"><a id="terms-default-profile"></a>[default processor profile]</dt><dd><p>A default <a href="#terms-processor-profile">processor profile</a> used to compute an
 <a href="#terms-effective-processor-profile">effective processor profile</a> in the absence of a declared or inferred
@@ -746,7 +763,14 @@ labeled (using a feature designation) in this specification (or a past or
 future revision of this specification).</p></dd><dt class="label"><a id="terms-feature-specification"></a>[feature specification]</dt><dd><p>A specification of a constraint or requirement that relates to an
 <a href="#terms-feature">feature</a>, typically expressed by
 an <a href="#profile-vocabulary-feature"><code>ttp:feature</code></a> element.</p></dd><dt class="label"><a id="terms-fragment-identifier"></a>[fragment identifier]</dt><dd><p>A syntactic expression that adheres to the fragment identifer syntax defined by <a href="#uri">[URI]</a>,
-Section 4.1.</p></dd><dt class="label"><a id="terms-implied-inline-region"></a>[implied inline region]</dt><dd><p>An anonymous (unidentified) <a href="#terms-inline-region">inline region</a> that is implied in the context of a block level
+Section 4.1.</p></dd><dt class="label"><a id="terms-image-defining-context"></a>[image defining context]</dt><dd><p>The context in which an <a href="#embedded-content-vocabulary-image"><code>image</code></a> element is specified to serve as
+a sharable definition to be referenced by another <a href="#embedded-content-vocabulary-image"><code>image</code></a> element
+in an <a href="#terms-image-presentation-context">image presentation context</a>.</p></dd><dt class="label"><a id="terms-image-presentation-context"></a>[image presentation context]</dt><dd><p>The context in which an <a href="#embedded-content-vocabulary-image"><code>image</code></a> element is specified for the
+purpose of being presented (rendered). Such an <a href="#embedded-content-vocabulary-image"><code>image</code></a> element
+may specify the image data inline by using a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element within
+a <a href="#embedded-content-vocabulary-source"><code>source</code></a> element child, or it may reference another
+<a href="#embedded-content-vocabulary-image"><code>image</code></a> element specified in a 
+<a href="#terms-image-definition-context">image definition context</a>, or it may do both.</p></dd><dt class="label"><a id="terms-implied-inline-region"></a>[implied inline region]</dt><dd><p>An anonymous (unidentified) <a href="#terms-inline-region">inline region</a> that is implied in the context of a block level
 <a href="#terms-content-element">content element</a>
 due the presence of a <a href="#style-attribute-extent"><code>tts:extent</code></a> or <a href="#style-attribute-origin"><code>tts:origin</code></a>
 style attribute on the <a href="#terms-content-element">content element</a>.</p></dd><dt class="label"><a id="terms-inline-animation"></a>[inline animation]</dt><dd><p>An <a href="#animation-vocabulary-animate"><code>animate</code></a> or <a href="#animation-vocabulary-set"><code>set</code></a> element
@@ -2837,8 +2861,9 @@ above if possible.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The
 by <a href="#xsl11">[XSL 1.1]</a>, § 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respectively.</p></div></div></div></div><div class="div1">
 <h2><a id="embedded-content"></a>9 Embedded Content</h2><p>This section specifies the <em>embedded content</em> matter of the core
 vocabulary catalog, where, in this context,
-<em>content</em> is to be understood as a <a href="#terms-data-resource">data resource</a>
-of an arbitrary content type (format), and <em>embedded</em> may refer to embedded data or an embedded reference to external data.</p><div class="div2">
+<em>content</em> is to be understood as data of an arbitrary content type (format)
+and <em>embedded</em> refers to the embedding (inlining) of this data or the embedding
+of a reference to external data.</p><div class="div2">
 <h3><a id="embedded-content-element-vocabulary"></a>9.1 Embedded Content Element Vocabulary</h3><p>The following elements may be used to specify embedded content:</p><ul><li><p><a href="#embedded-content-vocabulary-audio"><b>9.1.1 audio</b></a></p></li><li><p><a href="#embedded-content-vocabulary-chunk"><b>9.1.2 chunk</b></a></p></li><li><p><a href="#embedded-content-vocabulary-data"><b>9.1.3 data</b></a></p></li><li><p><a href="#embedded-content-vocabulary-font"><b>9.1.4 font</b></a></p></li><li><p><a href="#embedded-content-vocabulary-image"><b>9.1.5 image</b></a></p></li><li><p><a href="#embedded-content-vocabulary-resources"><b>9.1.6 resources</b></a></p></li><li><p><a href="#embedded-content-vocabulary-source"><b>9.1.7 source</b></a></p></li></ul><p>The <a href="#embedded-content-vocabulary-data"><b>9.1.3 data</b></a> element serves as
 a generic container element for an <a href="#terms-embedded-data-resource">embedded data resource</a>, which may or may not be fragmented into chunks,
 in which case a data fragment is represented using the <a href="#embedded-content-vocabulary-chunk"><b>9.1.2 chunk</b></a> element.
@@ -2850,8 +2875,20 @@ The <a href="#embedded-content-vocabulary-resources"><b>9.1.6 resources</b></a> 
 group definitions of embedded content for reference by subsequent elements.
 The <a href="#embedded-content-vocabulary-source"><b>9.1.7 source</b></a> element may be used to
 express the source of embedded content.</p><div class="div3">
-<h4><a id="embedded-content-vocabulary-audio"></a>9.1.1 audio</h4><p>The <code>audio</code> element is used to define an author supplied audio resource.</p><p>The active time interval of an <code>audio</code> element is co-terminous with the active time interval of its
-most immediate content ancestor element.</p><p>The <code>audio</code> element accepts as its children
+<h4><a id="embedded-content-vocabulary-audio"></a>9.1.1 audio</h4><p>The <code>audio</code> element is used to define an author supplied audio resource.</p><p>An <code>audio</code> element may appear in two contexts: (1) as a child of a <a href="#embedded-content-vocabulary-resource"><code>resource</code></a> element and
+(2) as a child of an element in the <a href="#element-vocab-group-block">Block.class</a> element group, namely, as a child of a
+<a href="#content-vocabulary-div"><code>div</code></a> or <a href="#content-vocabulary-p"><code>p</code></a> element, or
+as a child of a <a href="#content-vocabulary-span"><code>span</code></a> element. The former is referred to as an
+<a href="#terms-audio-defining-context">audio defining context</a>, the latter as an <a href="#terms-audio-presentation-context">audio presentation context</a>.</p><p>When an <code>audio</code> element appears in an <a href="#terms-audio-defining-context">audio defining context</a>, it
+serves as a sharable definition of an audio resource that may be referenced by other <code>audio</code> elements in the
+<a href="#terms-enclosing-document-instance">enclosing document instance</a>. In this case, the active time interval of the <code>audio</code> element
+is the same as the active time interval of its parent <a href="#embedded-content-vocabulary-resource"><code>resource</code></a> element.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A sharable definition of an audio resource specifies an <a href="#content-attribute-id"><code>xml:id</code></a> attribute in order to be referenced
+by <code>audio</code> elements in an <a href="#terms-audio-presentation-context">audio presentation context</a>.</p></div><p>When an <code>audio</code> element appears in an <a href="#terms-audio-presentation-context">audio presentation context</a>, it
+serves as a non-sharable definition of an audio resource that implies presentation (rendering) semantics, i.e., that it is intended to be played.
+In this case, the active time interval of the <code>audio</code> element is the same as the active time interval of its parent
+<a href="#terms-content-element">content element</a>.
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A non-sharable definition of an audio resource may or may not specify an <a href="#content-attribute-id"><code>xml:id</code></a> attribute, but this
+identifier is not referenced by other <code>audio</code> elements, or, if it is, the reference is ignored.</p></div><p>The <code>audio</code> element accepts as its children
 zero or more elements in the <a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group followed by zero or more
 <a href="#embedded-content-vocabulary-source"><code>source</code></a> elements.</p><a id="elt-syntax-audio"></a><table class="syntax"><caption>XML Representation – Element Information Item: audio</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -2915,48 +2952,117 @@ If no <code>length</code> attribute is specified, then the chunk is considered t
 ...
 </pre></div>
 </td></tr></tbody></table><p></p></div><div class="div3">
-<h4><a id="embedded-content-vocabulary-data"></a>9.1.3 data</h4><p>The <code>data</code> element functions as a generic container for data.</p><p>The <code>data</code> element accepts as its children either
-(1) one or more text nodes (i.e., <code>#PCDATA</code>) or
+<h4><a id="embedded-content-vocabulary-data"></a>9.1.3 data</h4><p>The <code>data</code> element functions as a generic container for or reference to arbitrary data.</p><p>A <code>data</code> element may appear in three contexts:
+(1) as a child of a <a href="#embedded-content-vocabulary-resource"><code>resource</code></a> element,
+referred to as a <a href="#terms-data-defining-context">data defining context</a>,
+(2) as a child of a <a href="#metadata-vocabulary-metadata"><code>metadata</code></a> element,
+referred to as a <a href="#terms-data-binding-context-for-metadata">data binding context for metadata</a>, or
+(3) as a child of a <a href="#embedded-content-vocabulary-source"><code>source</code></a> element,
+referred to as a <a href="#terms-data-binding-context-for-source">data binding context for source</a>,
+and where these latter two contexts are referred to collectively as <a href="#terms-data-binding-context">data binding contexts</a>.</p><p>When a <code>data</code> element appears in a <a href="#terms-data-defining-context">data defining context</a>, it
+serves as a sharable definition of a data resource that may be referenced by the <code>src</code> attribute of
+(1) another <code>data</code> element,
+(2) an <a href="#terms-embedded-content-element">embedded content element</a>, or
+(3) a <a href="#embedded-content-vocabulary-source"><code>source</code></a> element.
+In this case, the contextualized active time interval of the <code>data</code> element is the intersection of
+the active time interval of its parent <a href="#embedded-content-vocabulary-resource"><code>resource</code></a> element and
+the active time interval of its referring element.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A sharable definition of a data resource specifies an <a href="#content-attribute-id"><code>xml:id</code></a> attribute in order to be referenced
+by a fragment identifier used in a <a href="#terms-data-binding-context">data binding context</a>.</p></div><p>When a <code>data</code> element appears in a <a href="#terms-data-binding-context">data binding context</a>, it
+serves as a non-sharable definition of a data resource that implies binding semantics, i.e., that it is intended to bound to (associated with) its immediate context
+of reference. In this case, the active time interval of the <code>data</code> element is the same as the active time interval of its closest ancestor timed element.
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A non-sharable definition of a data resource may or may not specify an <a href="#content-attribute-id"><code>xml:id</code></a> attribute, but this
+identifier is not referenced in other <a href="#terms-data-binding-context">data binding contexts</a>, or, if it is, has not binding semantics.</p></div><p>The <code>data</code> element accepts one of the following three content models:
+(1) one or more text nodes (i.e., <code>#PCDATA</code>),
 (2) zero or more elements in the <a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group followed by one or more
-<a href="#embedded-content-vocabulary-chunk"><code>chunk</code></a> elements, where the former content model is referred to as <em>simple data embedding</em>
-and the latter is referred to as <em>chunked data embedding</em>.</p><p>When simple data embedding is used, the data resource is obtained by decoding the <code>#PCDATA</code> content. When
-chunked data embedding is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
-child <a href="#embedded-content-vocabulary-chunk"><code>chunk</code></a> element.</p><a id="elt-syntax-data"></a><table class="syntax"><caption>XML Representation – Element Information Item: data</caption><tbody><tr><td>
+<a href="#embedded-content-vocabulary-chunk"><code>chunk</code></a> elements, or
+(3) zero or more elements in the <a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group followed by one or more
+<a href="#embedded-content-vocabulary-source"><code>source</code></a> elements, where
+the first is referred to as <em>simple data embedding</em>,
+the second as <em>chunked data embedding</em>, and
+the third as <em>sourced data embedding</em>.</p><p>When simple data embedding is used, the data resource is obtained by decoding the <code>#PCDATA</code> content.
+When chunked data embedding is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
+child <a href="#embedded-content-vocabulary-chunk"><code>chunk</code></a> element.
+When sourced data embedding is used, the data resource is obtained from the the first resolvable
+child <a href="#embedded-content-vocabulary-source"><code>source</code></a> element. Furthermore,
+a child <a href="#embedded-content-vocabulary-source"><code>source</code></a> element must not
+contain a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element, but may refer to a
+<a href="#embedded-content-vocabulary-data"><code>data</code></a> element in a <a href="#terms-data-defining-context">data defining context</a>.</p><a id="elt-syntax-data"></a><table class="syntax"><caption>XML Representation – Element Information Item: data</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;data
   <a href="#data-attribute-encoding">encoding</a> = (base16|base32|base32hex|base64|base64url) : <em>see prose below</em>
-  format = <a href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</a>
+  format = <a href="#embedded-content-value-data-format">&lt;data-format&gt;</a>
   length = <a href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</a>
-  <span class="reqattr"><a href="#data-attribute-type">type</a></span> = <a href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</a>
+  src = <a href="#embedded-content-value-data">&lt;data&gt;</a>
+  <a href="#data-attribute-type">type</a> = <a href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</a> : <em>see prose below</em>
   <a href="#content-attribute-id">xml:id</a> = ID
   <a href="#content-attribute-lang">xml:lang</a> = <a href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</a>
   <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
   {<em>any attribute not in default or any TT namespace</em>}&gt;
-  <em>Content:</em> #PCDATA | (<a href="#element-vocab-group-metadata">Metadata.class</a>*, <a href="#embedded-content-vocabulary-chunk">chunk</a>+)
+  <em>Content:</em> #PCDATA | (<a href="#element-vocab-group-metadata">Metadata.class</a>*, <a href="#embedded-content-vocabulary-chunk">chunk</a>+) | (<a href="#element-vocab-group-metadata">Metadata.class</a>*, <a href="#embedded-content-vocabulary-source">source</a>+)
 &lt;/data&gt;
 </pre></div>
 </td></tr></tbody></table><p>If simple data embedding is used, i.e., the content of the <code>data</code> element is one or more text nodes, then an
 <a href="#data-attribute-encoding"><code>encoding</code></a> attribute
 may be specified, and, if not specified, must be considered to be <code>base64</code>.
-If chunked data embedding is used, i.e., the content of the <code>data</code> element contains any child element, then
+If chunked or sourced data embedding is used, i.e., the content of the <code>data</code> element contains any child
+<a href="#embedded-content-vocabulary-chunk">chunk</a> or <a href="#embedded-content-vocabulary-source">source</a> element, then
 an <a href="#data-attribute-encoding"><code>encoding</code></a> attribute must not be specified, and, if specified, must be ignored
 for the purpose of content processing.</p><p>If a <code>length</code> attribute is specified, then it must denote the number of decoded bytes in the byte sequence represented by the
 <code>data</code> element. When decoding, if a specified length value does not match the number of decoded bytes, then a zero length byte sequence must be returned.
-If no <code>length</code> attribute is specified, then the data resource is considered to have a length equal to the actual number of decoded bytes.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The intention of the <code>length</code> attribute is to provide a means to perform a simple integrity check on decoded data. Note that this check does not guarantee
-data integrity during transport, i.e., the data could be modified without modifying the length.</p></div><p>A <a href="#data-attribute-type"><code>type</code></a> attribute must be specified, and must correspond with the media (content) type of the data resource.
-In the absence of a defined type, the type <code>application/octet-stream</code> should be used.</p><p>If a <a href="#data-attribute-type"><code>type</code></a> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced data resource, then a <code>format</code> attribute should be specified as a hint to the
-content processor.</p><p>The use of simple data is illustrated by the following example.</p><a id="embedded-content-vocabulary-data-example-1"></a><table class="example"><caption>Example Fragment – Simple Data</caption><tbody><tr><td>
+If no <code>length</code> attribute is specified, then the data resource is considered to have a length equal to the actual number of decoded bytes.
+A <code>length</code> attribute must not be specified when using sourced data embedding.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The intention of the <code>length</code> attribute is to provide a means to perform a simple integrity check on decoded data. Note that this check does not guarantee
+data integrity during transport, i.e., the data could be modified without modifying the length.</p></div><p>If simple or chunked data embedding is used, a <a href="#data-attribute-type"><code>type</code></a> attribute must be specified,
+and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code>
+should be used. In the case of sourced data embedding, the media (content) type of the resolved <a href="#embedded-content-vocabulary-source">source</a> element
+is used as the type.</p><p>If a <a href="#data-attribute-type"><code>type</code></a> attribute is not specified or resolved or is specified as a generic type,
+such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource,
+then a <code>format</code> attribute should be specified as a hint to the content processor.</p><p>The use of simple data embedding is illustrated by the following examples.</p><a id="embedded-content-vocabulary-data-example-1"></a><table class="example"><caption>Example Fragment – Simple Data Embedding in Data Defining Context</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData" type="image/png" length="119"&gt;
+      iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+      YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+    &lt;/data&gt;
+    &lt;image xml:id="sharedImage"&gt;
+      &lt;source src="#sharedImageData"/&gt;
+    &lt;/image&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
 ...
-&lt;data type="text/plain; charset=us-ascii" length="269"&gt;
-  TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz
-  IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg
-  dGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGlu
-  dWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRo
-  ZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
-&lt;/data&gt;
-...
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage"/&gt;
+&lt;/body&gt;
+</pre></div>
+</td></tr></tbody></table><p></p><a id="embedded-content-vocabulary-data-example-2"></a><table class="example"><caption>Example Fragment – Simple Data Embedding in Data Binding Context for Metadata</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;div&gt;
+  &lt;metadata xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;
+    &lt;ttm:desc&gt;caption with metadata containing tunneled CEA-608 data&lt;/ttm:desc&gt;
+    &lt;data format="http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea608"&gt;
+      gIAVLJQsnSAcIJ0sHCyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA
+      gICAgICAgICAgICAgICAgIAVIJQgE/QT9Jehl6FU5VTlc/Rz9CBDIENhcGFw9On06e9u725zgHOA
+      lNCU0Jehl6HEVMRU1iDWIMHjwePj5ePlc3NzcyDQINDy7/Lv6uXq5eP04/QsICwgV8dXx8LIwsit
+      zq3OQ8FDwc2AzYCUcJRwlyOXI6jyqPJ1bnVubulu6W5nbmcg9CD06W3pbeW65bogNCA0IG0gbelu
+      6W6uIK4gMbUxtSBzIHPl4+XjrimuKRUslCwVL5QvgIA=
+    &lt;/data&gt;
+  &lt;/metadata&gt;
+  &lt;p&gt;Test Captions&lt;br/&gt;DTV Access Project, WGHB-NCAM&lt;br/&gt;(running time: 4min. 15sec.)&lt;/p&gt;
+&lt;/div&gt;
+</pre></div>
+</td></tr></tbody></table><p></p><a id="embedded-content-vocabulary-data-example-3"></a><table class="example"><caption>Example Fragment – Simple Data Embedding in Data Binding Context for Source</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;div&gt;
+  &lt;image&gt;
+    &lt;source&gt;
+      &lt;data type="image/png" length="119"&gt;
+        iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+      &lt;/data&gt;
+    &lt;/source&gt;
+  &lt;/image&gt;
+&lt;/div&gt;
 </pre></div>
 </td></tr></tbody></table><p></p></div><div class="div3">
 <h4><a id="embedded-content-vocabulary-font"></a>9.1.4 font</h4><p>The <code>font</code> element is used to define an author supplied font resource.</p><p>The <code>data</code> element accepts as its children
@@ -3013,8 +3119,20 @@ must be considered to be equal to the value(s) of the same named font characteri
 ...
 </pre></div>
 </td></tr></tbody></table><p></p></div><div class="div3">
-<h4><a id="embedded-content-vocabulary-image"></a>9.1.5 image</h4><p>The <code>image</code> element is used to define an author supplied image resource.</p><p>The active time interval of an <code>image</code> element is co-terminous with the active time interval of its
-most immediate content ancestor element.</p><p>The <code>data</code> element accepts as its children
+<h4><a id="embedded-content-vocabulary-image"></a>9.1.5 image</h4><p>The <code>image</code> element is used to define an author supplied image resource.</p><p>An <code>image</code> element may appear in two contexts: (1) as a child of a <a href="#embedded-content-vocabulary-resource"><code>resource</code></a> element and
+(2) as a child of an element in the <a href="#element-vocab-group-block">Block.class</a> element group, namely, as a child of a
+<a href="#content-vocabulary-div"><code>div</code></a> or <a href="#content-vocabulary-p"><code>p</code></a> element, or
+as a child of a <a href="#content-vocabulary-span"><code>span</code></a> element. The former is referred to as an
+<a href="#terms-image-defining-context">image defining context</a>, the latter as an <a href="#terms-image-presentation-context">image presentation context</a>.</p><p>When an <code>image</code> element appears in an <a href="#terms-image-defining-context">image defining context</a>, it
+serves as a sharable definition of an image resource that may be referenced by other <code>image</code> elements in the
+<a href="#terms-enclosing-document-instance">enclosing document instance</a>. In this case, the active time interval of the <code>image</code> element
+is the same as the active time interval of its parent <a href="#embedded-content-vocabulary-resource"><code>resource</code></a> element.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A sharable definition of an image resource specifies an <a href="#content-attribute-id"><code>xml:id</code></a> attribute in order to be referenced
+by <code>image</code> elements in an <a href="#terms-image-presentation-context">image presentation context</a>.</p></div><p>When an <code>image</code> element appears in an <a href="#terms-image-presentation-context">image presentation context</a>, it
+serves as a non-sharable definition of an image resource that implies presentation (rendering) semantics, i.e., that it is intended to be played.
+In this case, the active time interval of the <code>image</code> element is the same as the active time interval of its parent
+<a href="#terms-content-element">content element</a>.
+</p><div class="note"><p class="prefix"><b>Note:</b></p><p>A non-sharable definition of an image resource may or may not specify an <a href="#content-attribute-id"><code>xml:id</code></a> attribute, but this
+identifier is not referenced by other <code>image</code> elements, or, if it is, the reference is ignored.</p></div><p>The <code>image</code> element accepts as its children
 zero or more elements in the <a href="#element-vocab-group-metadata"><code>Metadata.class</code></a> element group followed by zero or more
 <a href="#embedded-content-vocabulary-source"><code>source</code></a> elements.</p><a id="elt-syntax-image"></a><table class="syntax"><caption>XML Representation – Element Information Item: image</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
@@ -3098,11 +3216,11 @@ an <em>external source</em> if the <code>src</code> attribute refers to an exter
 a <em>non-nested embedded source</em> if the <code>src</code> attribute refers to an embedded resource
 in the <a href="#terms-enclosing-document-instance">enclosing document instance</a>.</p><p>If a <code>source</code> element does not specify a <code>src</code> attribute, then it must specify a
 child <a href="#embedded-content-vocabulary-data"><code>data</code></a> element, in which case it is referred to as
-an <em>nested embedded source</em>.</p><a id="elt-syntax-source"></a><table class="syntax"><caption>XML Representation – Element Information Item: source</caption><tbody><tr><td>
+an <em>nested embedded source</em>.</p><p>A <code>source</code> element must not have an ancestor <code>source</code> element.</p><a id="elt-syntax-source"></a><table class="syntax"><caption>XML Representation – Element Information Item: source</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;source
-  format = <a href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</a>
-  src = <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
+  format = <a href="#embedded-content-value-data-format">&lt;data-format&gt;</a>
+  src = <a href="#embedded-content-value-data">&lt;data&gt;</a>
   <a href="#data-attribute-type">type</a> = <a href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</a>
   <a href="#content-attribute-id">xml:id</a> = ID
   <a href="#content-attribute-lang">xml:lang</a> = <a href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</a>
@@ -3113,8 +3231,8 @@ an <em>nested embedded source</em>.</p><a id="elt-syntax-source"></a><table clas
 </pre></div>
 </td></tr></tbody></table><p>If a <code>format</code> attribute is specified, then it provides additional hint information about the format (i.e., formal syntax) of the
 embedded content. Such information may be useful in cases where no standard media (content) type label has been defined. Depending on the
-context of use of a <code>source</code> element, the values of this attribute may be constrained to a particular collection of identifiers.</p><p>If a <code>src</code> attribute is specified and its value refers to a fragment of the <a href="#terms-enclosing-document-instance">enclosing document instance</a>,
-then there must be a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element child of the <a href="#document-structure-vocabulary-head"><code>head</code></a>
+context of use of a <code>source</code> element, the values of this attribute may be further constrained.</p><p>If a <code>src</code> attribute is specified and its value refers to a fragment of the <a href="#terms-enclosing-document-instance">enclosing document instance</a>,
+then there must be a <a href="#embedded-content-vocabulary-data"><code>data</code></a> element child of a <a href="#document-structure-vocabulary-resources"><code>resources</code></a>
 element which is identified by that fragment, i.e., has an <code>xml:id</code> attribute the value of which matches the fragment identifier.</p><p>If a <code>src</code> attribute is specified and its value does not refer to a fragment of the
 <a href="#terms-enclosing-document-instance">enclosing document instance</a>, then
 a <a href="#data-attribute-type"><code>type</code></a> attribute should be specified, in which case it must correspond with the media (content) type
@@ -3168,7 +3286,7 @@ MIME header defined by <a href="#mime">[MIME]</a>, §5.1.</p><p>If not specified
 must respect the specified type whether it is correct or not. That is, if a <code>type</code> attribute mis-specifies the
 type of a data resource, then content processing must not attempt to override that type by performing content
 sniffing.</p></div></div><div class="div2">
-<h3><a id="embedded-content-value-expressions"></a>9.3 Embedded Content Value Expressions</h3><p>Embedded content elements as well as certain style property values include the use of the following expressions:</p><ul><li><p><a href="#embedded-content-value-audio"><b>9.3.1 &lt;audio&gt;</b></a></p></li><li><p><a href="#embedded-content-value-audio-format"><b>9.3.2 &lt;audio-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-font"><b>9.3.3 &lt;font&gt;</b></a></p></li><li><p><a href="#embedded-content-value-font-format"><b>9.3.4 &lt;font-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-image"><b>9.3.5 &lt;image&gt;</b></a></p></li><li><p><a href="#embedded-content-value-image-format"><b>9.3.6 &lt;image-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-unicode-range"><b>9.3.7 &lt;unicode-range&gt;</b></a></p></li></ul><p>In the syntax representations defined in this section, no
+<h3><a id="embedded-content-value-expressions"></a>9.3 Embedded Content Value Expressions</h3><p>Embedded content elements as well as certain style property values include the use of the following expressions:</p><ul><li><p><a href="#embedded-content-value-audio"><b>9.3.1 &lt;audio&gt;</b></a></p></li><li><p><a href="#embedded-content-value-audio-format"><b>9.3.2 &lt;audio-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-data"><b>9.3.3 &lt;data&gt;</b></a></p></li><li><p><a href="#embedded-content-value-data-format"><b>9.3.4 &lt;data-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-font"><b>9.3.5 &lt;font&gt;</b></a></p></li><li><p><a href="#embedded-content-value-font-format"><b>9.3.6 &lt;font-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-image"><b>9.3.7 &lt;image&gt;</b></a></p></li><li><p><a href="#embedded-content-value-image-format"><b>9.3.8 &lt;image-format&gt;</b></a></p></li><li><p><a href="#embedded-content-value-unicode-range"><b>9.3.9 &lt;unicode-range&gt;</b></a></p></li></ul><p>In the syntax representations defined in this section, no
 linear whitespace (LWSP) is implied or permitted between tokens
 unless explicitly specified.</p><div class="div3">
 <h4><a id="embedded-content-value-audio"></a>9.3.1 &lt;audio&gt;</h4><p>An &lt;audio&gt; value expression is used to specify an audio resource by reference.</p><a id="audio-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;audio&gt;</caption><tbody><tr><td>
@@ -3180,14 +3298,34 @@ unless explicitly specified.</p><div class="div3">
 then that fragment identifier must reference an <a href="#embedded-content-vocabulary-audio"><code>audio</code></a> element that is a child of a
 <a href="#embedded-content-vocabulary-resources"><code>resources</code></a> element in the <a href="#terms-enclosing-document-instance">enclosing document instance</a>.</p></div><div class="div3">
 <h4><a id="embedded-content-value-audio-format"></a>9.3.2 &lt;audio-format&gt;</h4><p>An &lt;audio-format&gt; expression is used to specify the format of a audio resource. Additional format information is useful in the case
-of audio resources that lack of standardization of media (content) type.</p><a id="audio-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;audio-format&gt;</caption><tbody><tr><td>
+of audio resources that lack a registered media (content) type.</p><a id="audio-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;audio-format&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;audio-format&gt;
   : <a href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</a>
+  | <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
 </pre></div>
-</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification does not standardize the set of format tokens for use with audio content. Authors are encouraged to
+</td></tr></tbody></table><p>If a format expression takes the form of an <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>,
+then it must express an absolute URI.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification does not standardize the set of format tokens for use with audio content. Authors are encouraged to
 use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p></div></div><div class="div3">
-<h4><a id="embedded-content-value-font"></a>9.3.3 &lt;font&gt;</h4><p>An &lt;font&gt; expression is used to specify an font resource by reference.</p><a id="font-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;font&gt;</caption><tbody><tr><td>
+<h4><a id="embedded-content-value-data"></a>9.3.3 &lt;data&gt;</h4><p>A &lt;data&gt; value expression is used to specify a data resource by reference.</p><a id="data-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;data&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;data&gt;
+  : <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
+</pre></div>
+</td></tr></tbody></table><p>If a &lt;data&gt; value expression takes the form of a <a href="#terms-fragment-identifier">fragment identifier</a>,
+then that fragment identifier must reference an <a href="#embedded-content-vocabulary-data"><code>data</code></a> element that is a child of a
+<a href="#embedded-content-vocabulary-resources"><code>resources</code></a> element in the <a href="#terms-enclosing-document-instance">enclosing document instance</a>.</p></div><div class="div3">
+<h4><a id="embedded-content-value-data-format"></a>9.3.4 &lt;data-format&gt;</h4><p>A &lt;data-format&gt; expression is used to specify the format of a data resource. Additional format information is useful in the case
+of data resources that lack a registered media (content) type.</p><a id="data-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;data-format&gt;</caption><tbody><tr><td>
+<div class="exampleInner"><pre>
+&lt;data-format&gt;
+  : <a href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</a>
+  | <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
+</pre></div>
+</td></tr></tbody></table><p>If a format expression takes the form of an <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>,
+then it must express an absolute URI.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification does not standardize the set of format tokens for use with data content. Authors are encouraged to
+use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p></div></div><div class="div3">
+<h4><a id="embedded-content-value-font"></a>9.3.5 &lt;font&gt;</h4><p>An &lt;font&gt; expression is used to specify an font resource by reference.</p><a id="font-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;font&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;font&gt;
   : <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
@@ -3195,8 +3333,8 @@ use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to f
 </td></tr></tbody></table><p>If an &lt;font&gt; expression takes the form of a <a href="#terms-fragment-identifier">fragment identifier</a>,
 then that fragment identifier must reference an <a href="#embedded-content-vocabulary-font"><code>font</code></a> element that is a child of a
 <a href="#embedded-content-vocabulary-resources"><code>resources</code></a> element in the <a href="#terms-enclosing-document-instance">enclosing document instance</a>.</p></div><div class="div3">
-<h4><a id="embedded-content-value-font-format"></a>9.3.4 &lt;font-format&gt;</h4><p>A &lt;font-format&gt; expression is used to specify the format of a font resource. Additional format information is useful in the case
-of font resources due to the lack of standardization of media (content) type.</p><a id="font-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;font-format&gt;</caption><tbody><tr><td>
+<h4><a id="embedded-content-value-font-format"></a>9.3.6 &lt;font-format&gt;</h4><p>A &lt;font-format&gt; expression is used to specify the format of a font resource. Additional format information is useful in the case
+of font resources due that lack a registered media (content) type.</p><a id="font-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;font-format&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;font-format&gt;
   : eot                                     // embedded opentype
@@ -3204,11 +3342,13 @@ of font resources due to the lack of standardization of media (content) type.</p
   | ttf                                     // truetype
   | woff                                    // web open font format
   | <a href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</a>
+  | <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
 </pre></div>
-</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification standardizes a limited set of format tokens for use with font content. In case none of
+</td></tr></tbody></table><p>If a format expression takes the form of an <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>,
+then it must express an absolute URI.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification standardizes a limited set of format tokens for use with font content. In case none of
 these tokens are appropriate, authors are encouraged to use tokens in common use, or absent that, to add a
 prefix <code>"x-"</code> to form a private use token.</p></div></div><div class="div3">
-<h4><a id="embedded-content-value-image"></a>9.3.5 &lt;image&gt;</h4><p>An &lt;image&gt; expression is used to specify an image resource by reference.</p><a id="image-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;image&gt;</caption><tbody><tr><td>
+<h4><a id="embedded-content-value-image"></a>9.3.7 &lt;image&gt;</h4><p>An &lt;image&gt; expression is used to specify an image resource by reference.</p><a id="image-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;image&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;image&gt;
   : <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
@@ -3216,15 +3356,17 @@ prefix <code>"x-"</code> to form a private use token.</p></div></div><div class=
 </td></tr></tbody></table><p>If an &lt;image&gt; expression takes the form of a <a href="#terms-fragment-identifier">fragment identifier</a>,
 then that fragment identifier must reference an <a href="#embedded-content-vocabulary-image"><code>image</code></a> element that is a child of a
 <a href="#embedded-content-vocabulary-resources"><code>resources</code></a> element in the <a href="#terms-enclosing-document-instance">enclosing document instance</a>.</p></div><div class="div3">
-<h4><a id="embedded-content-value-image-format"></a>9.3.6 &lt;image-format&gt;</h4><p>An &lt;image-format&gt; expression is used to specify the format of a image resource. Additional format information is useful in the case
-of image resources that lack of standardization of media (content) type.</p><a id="image-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;image-format&gt;</caption><tbody><tr><td>
+<h4><a id="embedded-content-value-image-format"></a>9.3.8 &lt;image-format&gt;</h4><p>An &lt;image-format&gt; expression is used to specify the format of a image resource. Additional format information is useful in the case
+of image resources that lack a registered media (content) type.</p><a id="image-format-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;image-format&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;image-format&gt;
   : <a href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</a>
+  | <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>
 </pre></div>
-</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification does not standardize the set of format tokens for use with image content. Authors are encouraged to
+</td></tr></tbody></table><p>If a format expression takes the form of a <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</a>,
+then it must express an absolute URI.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>This specification does not standardize the set of format tokens for use with image content. Authors are encouraged to
 use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p></div></div><div class="div3">
-<h4><a id="embedded-content-value-unicode-range"></a>9.3.7 &lt;unicode-range&gt;</h4><p>A &lt;unicode-range&gt; expression is used to specify a collection of Unicode codepoints by enumerating singleton codepoints or ranges of codepoints.</p><a id="unicode-range-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;unicode-range&gt;</caption><tbody><tr><td>
+<h4><a id="embedded-content-value-unicode-range"></a>9.3.9 &lt;unicode-range&gt;</h4><p>A &lt;unicode-range&gt; expression is used to specify a collection of Unicode codepoints by enumerating singleton codepoints or ranges of codepoints.</p><a id="unicode-range-value-expression-syntax"></a><table class="syntax"><caption>Syntax Representation – &lt;unicode-range&gt;</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;unicode-range&gt;
   : range ("," range)*
@@ -6690,11 +6832,10 @@ used in a <a href="#terms-document-instance">document instance</a>:
 </p><ul><li><p><a href="#metadata-vocabulary-actor"><b>14.1.2 ttm:actor</b></a></p></li><li><p><a href="#metadata-vocabulary-agent"><b>14.1.3 ttm:agent</b></a></p></li><li><p><a href="#metadata-vocabulary-copyright"><b>14.1.4 ttm:copyright</b></a></p></li><li><p><a href="#metadata-vocabulary-desc"><b>14.1.5 ttm:desc</b></a></p></li><li><p><a href="#metadata-vocabulary-name"><b>14.1.6 ttm:name</b></a></p></li><li><p><a href="#metadata-vocabulary-title"><b>14.1.7 ttm:title</b></a></p></li></ul><div class="div3">
 <h4><a id="metadata-vocabulary-metadata"></a>14.1.1 metadata</h4><p>The <code>metadata</code> element functions as a generic container for metadata
 information.</p><p>Metadata information may be expressed with a <code>metadata</code> element by specifying
-(1) one or more metadata attributes on the <code>metadata</code> element,
-(2) one or more metadata child elements in the <code>metadata</code> element, or
-(3) a combination of metadata attributes and metadata child elements.  Both types
-of metadata information are referred to in this document as <em>metadata
-items</em>.</p><a id="elt-syntax-metadata"></a><table class="syntax"><caption>XML Representation – Element Information Item: metadata</caption><tbody><tr><td>
+(1) one or more metadata attributes or foreign namespace attributes on the <code>metadata</code> element,
+(2) one or more metadata item or foreign namespace child elements,
+(3) one or more <a href="#embedded-content-vocabulary-data"><code>data</code></a> child elements, or
+(4) a combination of the preceding.</p><a id="elt-syntax-metadata"></a><table class="syntax"><caption>XML Representation – Element Information Item: metadata</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;metadata
   <a href="#content-attribute-id">xml:id</a> = ID
@@ -6702,7 +6843,7 @@ items</em>.</p><a id="elt-syntax-metadata"></a><table class="syntax"><caption>XM
   <a href="#content-attribute-space">xml:space</a> = (<em>default</em>|<em>preserve</em>)
   {<em>any attribute in TT Metadata namespace</em>}
   {<em>any attribute not in default or any TT namespace</em>}&gt;
-  <em>Content:</em> ({<em>any element in TT Metadata namespace</em>}|{<em>any element not in any TT namespace</em>})*
+  <em>Content:</em> (<a href="#element-vocab-group-data"><code>Data.class</code></a>|{<em>any element in TT Metadata namespace</em>}|{<em>any element not in any TT namespace</em>})*
 &lt;/metadata&gt;
 </pre></div>
 </td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><p>The meaning of a specific metadata item must be evaluated in the
@@ -8757,7 +8898,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td></tr><tr>
 <h2><a id="derivation"></a>J Vocabulary Derivation (Non-Normative)</h2><p>This appendix provides information about the derivation of TTML
 vocabulary, separately describing derivation of elements and
 attributes.</p><div class="div2">
-<h3><a id="d3e30568"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
+<h3><a id="d3e31157"></a>J.1 Element Derivation</h3><p>The first column of <a href="#element-vocab-derivation-table"><b>Table J-1 – Elements</b></a>
 specifies a TTML element vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8814,7 +8955,7 @@ but extended to support distinct specification of optionality.</p></li><li><p>De
 and <code>@version</code> on the <code>svg:svg</code> element.</p></li><li><p>Conceptually derived from existing <code>tt:layout</code> element,
 which is a generic container for layout specifications, but for use
 in defining animation specifications that apply to targeted elements.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e31085"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
+<h3><a id="d3e31674"></a>J.2 Attribute Derivation</h3><p>The first column of <a href="#attribute-vocab-derivation-table"><b>Table J-2 – Attributes</b></a>
 specifies a TTML attribute vocabulary item; the second column specifies the
 syntactic and/or semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
@@ -8906,9 +9047,9 @@ defined in terms of presentation semantics by <a href="#content-attribute-space"
 <h2><a id="qa"></a>K QA Framework Compliance (Non-Normative)</h2><p>This appendix specifies the compliance of this specification with the
 requirements and guidelines defined by <a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
 Framework Specifications Guidelines</a>&nbsp;<a href="#qaf-sg">[QAF SG]</a>.</p><div class="div2">
-<h3><a id="d3e32078"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
+<h3><a id="d3e32667"></a>K.1 Requirements</h3><a id="qa-framework-requirements-table"></a><table class="common"><caption>Table K-1 – QA Framework Requirements Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Requirement</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#include-conformance-clause-principle">Requirement 01: Include a conformance
 clause</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-scope-principle">Requirement 02: Define the scope.</a></td><td><a href="#intro">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#implement-principle">Requirement 03: Identify who or what will implement the specification.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-norm-principle">Requirement 04: Make a list of normative references.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-principle">Requirement 05: Define the terms used in the normative parts of the specification.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conf-label-principle">Requirement 06: Create conformance labels for each part of the conformance model.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#consistent-style-principle">Requirement 07: Use a consistent style for conformance requirements and explain how to distinguish them.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#req-opt-conf-principle">Requirement 08: Indicate which conformance requirements are mandatory, which are recommended, and which are optional.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-mandatory-principle">Requirement 09: If the technology is subdivided, then indicate which subdivisions are mandatory for conformance.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdiv-constraints-principle">Requirement 10: If the technology is subdivided, then address subdivision constraints.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#likehood-extension-principle">Requirement 11: Address Extensibility.</a></td><td><a href="#doctypes">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#deprecated-feature-principle">Requirement 12: Identify deprecated features.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#degree-support-principle">Requirement 13: Define how each class of product handles each deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>1</td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>No feature is deprecated by this version of this specification.</p></li></ol></div></div><div class="div2">
-<h3><a id="d3e32242"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiling">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
+<h3><a id="d3e32831"></a>K.2 Guidelines</h3><a id="qa-framework-guidelines-table"></a><table class="common"><caption>Table K-2 – QA Framework Guidelines Checklist</caption><col width="76%" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><col width="6%" align="center" span="1"><tbody><tr><td><span class="strong">Guideline</span></td><td><span class="strong">YES</span></td><td><span class="strong">NO</span></td><td><span class="strong">N/A</span></td><td><span class="strong">Notes</span></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-model-gp">Good Practice 01: Define the specification's conformance model in the conformance clause.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#norm-informative-gp">Good Practice 02: Specify in the conformance clause how to distinguish normative from informative content.</a></td><td><a href="#conventions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#conformance-claim-gp">Good Practice 03: Provide the wording for conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-gp">Good Practice 04: Provide an Implementation Conformance Statement Pro Forma.</a></td><td></td><td>NO</td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ics-claim-gp">Good Practice 05: Require an Implementation Conformance Statement as part of valid conformance claims.</a></td><td><a href="#claims">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#use-example-gp">Good Practice 06: Provide examples, use cases, and graphics.</a></td><td><a href="#example">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-sample-gp">Good Practice 07: Write sample code or tests.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#ref-define-practice">Good Practice 08: When imposing requirements by normative references, address conformance dependencies.</a></td><td><a href="#references">YES</a></td><td></td><td></td><td>1</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-terms-inline-gp">Good Practice 09: Define unfamiliar terms in-line and consolidate the definitions in a glossary section.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#reuse-terms-gp">Good Practice 10: Use terms already defined without changing their definition.</a></td><td><a href="#definitions">YES</a></td><td></td><td></td><td>2</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#formal-language-gp">Good Practice 11: Use formal languages when possible.</a></td><td><a href="#schemas">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#write-assertion-gp">Good Practice 12: Write Test Assertions.</a></td><td></td><td>NO</td><td></td><td>3</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#subdivide-foster-gp">Good Practice 13: Create subdivisions of the technology when warranted.</a></td><td><a href="#conformance">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#rules-profiles-gp">Good Practice 14: If the technology is profiled, define rules for creating new profiles.</a></td><td><a href="#vocabulary-profiling">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#need-option-gp">Good Practice 15:Use optional features as warranted.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#label-options-gp">Good Practice 16: Clearly identify optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#constraints-gp">Good Practice 17: Indicate any limitations or constraints on optional features.</a></td><td>YES</td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#extensions-prohibited-gp">Good Practice 18: If extensibility is allowed, define an extension mechanism.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#breaking-conformance-gp">Good Practice 19: Warn extension creators to create extensions that do not interfere with conformance.</a></td><td><a href="#extension-vocabulary-overview">YES</a></td><td></td><td></td><td></td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#define-error-gp">Good Practice 20: Define error-handling for unknown extensions.</a></td><td><a href="#conformance-processor">YES</a></td><td></td><td></td><td>4</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#workaround-gp">Good Practice 21: Explain how to avoid using a deprecated feature.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#obsolete-gp">Good Practice 22: Identify obsolete features.</a></td><td></td><td></td><td>N/A</td><td>5</td></tr><tr><td><a href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/#error-handling-gp">Good Practice 23: Define an error handling mechanism.</a></td><td><a href="#reduced-infoset">YES</a></td><td></td><td></td><td></td></tr></tbody></table><div class="note"><p class="prefix"><b>Note:</b></p><ol class="enumar"><li><p>When making normative references to external specifications,
 specific clauses or sections are cited.</p></li><li><p>See also <a href="#derivation"><b>J Vocabulary Derivation</b></a>.</p></li><li><p>Test assertions and test suites will be provided prior to entering
 Proposed Recommendation (PR) phase.</p></li><li><p>See criterion #3 in <a href="#conformance-processor"><b>3.2 Processor Conformance</b></a> and definition of
 TTML <a href="#doctypes">Abstract Document Instance</a>.</p></li><li><p>No feature is deprecated or obsoleted by this version of this specification.</p></li></ol></div></div></div><div class="div1">

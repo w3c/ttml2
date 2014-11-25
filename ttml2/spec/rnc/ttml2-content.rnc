@@ -1,5 +1,5 @@
 # .......................................................................
-# TT-AF 1.0 DFXP Content Module .........................................
+# TTML2 Content Module ..................................................
 # .......................................................................
 
 # body - content body
@@ -43,7 +43,7 @@ TTAF.div.content =
   (TTAF.Metadata.class*,
    TTAF.Animation.class*,
    TTAF.Layout.class?,
-   (TTAF.Block.class | TTAF.div.content.extra)*)
+   (TTAF.BlockOrEmbedded.class | TTAF.div.content.extra)*)
 
 # p - paragraph
 TTAF.p =
@@ -65,7 +65,7 @@ TTAF.p.content =
   (TTAF.Metadata.class*,
    TTAF.Animation.class*,
    TTAF.Layout.class?,
-   (TTAF.Inline.class |
+   (TTAF.InlineOrEmbedded.class |
     TTAF.p.content.extra)*)
 
 # span - intra-paragraph inline span
@@ -87,7 +87,7 @@ TTAF.span.content.extra = empty
 TTAF.span.content =
   (TTAF.Metadata.class*,
    TTAF.Animation.class*,
-   (TTAF.Inline.class |
+   (TTAF.InlineOrEmbedded.class |
     TTAF.span.content.extra)*)
 
 # br - manual line break
@@ -117,6 +117,8 @@ TTAF.BlockNoDiv.class |=
   TTAF.p | TTAF.Block.extra
 TTAF.Block.class |=
   TTAF.div | TTAF.BlockNoDiv.class
+TTAF.BlockOrEmbedded.class |=
+  TTAF.Block.class | TTAF.Embedded.class
 
 # Inline.class
 TTAF.Inline.extra = empty
@@ -124,6 +126,8 @@ TTAF.InlineNoSpan.class |=
   text | TTAF.br | TTAF.Inline.extra
 TTAF.Inline.class |=
   TTAF.span | TTAF.InlineNoSpan.class
+TTAF.InlineOrEmbedded.class |=
+  TTAF.Inline.class | TTAF.Embedded.class
 
 # .......................................................................
 # .......................................................................

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v c1329ab28572 2014/11/25 01:15:28 glenn $ -->
+<!-- $Id: ttml2.xml,v c3e97837e7d1 2014/11/25 20:24:44 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/25 01:15:28 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/25 20:24:44 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/25 01:15:28 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/25 20:24:44 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -2546,6 +2546,7 @@ Metadata Items
 <loc href="#metadata-vocabulary-agent">ttm:agent</loc>,
 <loc href="#metadata-vocabulary-copyright">ttm:copyright</loc>,
 <loc href="#metadata-vocabulary-desc">ttm:desc</loc>,
+<loc href="#metadata-vocabulary-item">ttm:item</loc>,
 <loc href="#metadata-vocabulary-name">ttm:name</loc>,
 <loc href="#metadata-vocabulary-title">ttm:title</loc>
 </td>
@@ -2654,6 +2655,7 @@ Metadata.class
 <loc href="#metadata-vocabulary-copyright">ttm:agent</loc> |
 <loc href="#metadata-vocabulary-copyright">ttm:copyright</loc> |
 <loc href="#metadata-vocabulary-desc">ttm:desc</loc> |
+<loc href="#metadata-vocabulary-desc">ttm:item</loc> |
 <loc href="#metadata-vocabulary-title">ttm:title</loc>
 </td>
 </tr>
@@ -2701,6 +2703,8 @@ Data Attributes
 </td>
 <td>
 <loc href="#embedded-content-attribute-encoding">encoding</loc>,
+<loc href="#embedded-content-attribute-format">format</loc>,
+<loc href="#embedded-content-attribute-src">src</loc>,
 <loc href="#embedded-content-attribute-type">type</loc>
 </td>
 </tr>
@@ -13313,6 +13317,7 @@ used in a <loc href="#terms-document-instance">document instance</loc>:
 <item><p><specref ref="metadata-vocabulary-agent"/></p></item>
 <item><p><specref ref="metadata-vocabulary-copyright"/></p></item>
 <item><p><specref ref="metadata-vocabulary-desc"/></p></item>
+<item><p><specref ref="metadata-vocabulary-item"/></p></item>
 <item><p><specref ref="metadata-vocabulary-name"/></p></item>
 <item><p><specref ref="metadata-vocabulary-title"/></p></item>
 </ulist>
@@ -13632,6 +13637,73 @@ a specific element instance.</p>
 <p>Examples of the <att>ttm:desc</att> element are shown above in
 <specref ref="metadata-vocabulary-metadata-example-1"/> and
 <specref ref="metadata-vocabulary-metadata-example-2"/>.</p>
+</div3>
+<div3 id="metadata-vocabulary-item">
+<head>ttm:item</head>
+<p>The <el>ttm:item</el> element is used to express arbitrary named metadata items.</p>
+<table id="elt-syntax-metadata-item" role="syntax">
+<caption>XML Representation &ndash; Element Information Item: ttm:item</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;ttm:item
+  <phrase role="reqattr">name</phrase> = <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  <loc href="#content-attribute-id">xml:id</loc> = ID
+  <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute not in default or any TT namespace</emph>}&gt;
+  <emph>Content:</emph> #PCDATA
+&lt;/ttm:item&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A <att>name</att> attribute must be specified to identify the name of the item. No standard name
+tokens are defined by this version of this specification.</p>
+<note role="elaboration">
+<p>This specification places no constraint on the appearance of multiple named metadata items that specify the same name.</p>
+<p>An external specification or a future version of this specification that defines a particular named item may
+constrain the context of usage of a named item, including placing constraints on whether multiple items with the same name can appear in a given context.</p>
+</note>
+<p>The value of a named item is the character content of a <el>ttm:item</el> element, which may be empty.</p>
+<note role="elaboration">
+<p>A particular named item may be defined (by an external or future version of this specification) so as to
+imply a particular value in the absence of a specified value.</p>
+</note>
+<note role="elaboration">
+<p>No specific use of the <el>ttm:item</el> element is defined by this version of specification.</p>
+</note>
+<p>The use of a named metadata item is illustrated by the following example, which shows the use of a named metadata item
+in order to associate a <loc href="#terms-simple-data-embedding">simple data embedding</loc> with an original file name.</p>
+<table id="metadata-vocabulary-item-example-1" role="example">
+<caption>Example Fragment &ndash; Named Metadata Item</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+...
+&lt;image&gt;
+  &lt;source&gt;
+    &lt;data type="image/png"&gt;
+      &lt;metadata xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;
+        <phrase role="strong">&lt;ttm:item name="originalFileName"&gt;image.png&lt;/ttm:item&gt;</phrase>
+      &lt;/metadata&gt;
+      &lt;chunk length="119"&gt;
+          iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+          YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+      &lt;/chunk&gt;
+    &lt;/data&gt;
+  &lt;source&gt;
+&lt;image&gt;
+...
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
 </div3>
 <div3 id="metadata-vocabulary-name">
 <head>ttm:name</head>

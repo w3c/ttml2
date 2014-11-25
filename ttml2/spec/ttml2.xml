@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v e3fdbceb09cb 2014/11/23 22:28:41 glenn $ -->
+<!-- $Id: ttml2.xml,v c1329ab28572 2014/11/25 01:15:28 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/23 22:28:41 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/25 01:15:28 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/23 22:28:41 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/25 01:15:28 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -570,7 +570,7 @@ in an <loc href="#terms-audio-presentation-context">audio presentation context</
 <label>[audio presentation context]</label>
 <def>
 <p>The context in which an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element is specified for the
-purpose of being presented (rendered), i.e., it is intended to be played. Such an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element
+purpose of being presented (rendered). Such an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element
 may specify the audio data inline by using a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element within
 a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element child, or it may reference another
 <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element specified in a 
@@ -589,6 +589,14 @@ which serves as a baseline (initial) set of specifications with which to populat
 <def>
 <p>Each data character appearing in an XML document corresponds with a character information
 item as defined by <bibref ref="infoset"/>, &sect;2.6.</p>
+</def>
+</gitem>
+<gitem id="terms-chunked-data-embedding">
+<label>[chunked data embedding]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element that directly embeds a representation of the actual bytes
+of an <loc href="#terms-embedded-data-resource">embedded data resource</loc> by making use of a
+child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.</p>
 </def>
 </gitem>
 <gitem id="terms-computed-cell-size">
@@ -632,12 +640,26 @@ performing presentation processing.</p>
 <label>[data binding context]</label>
 <def>
 <p>The context in which an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element is specified for the
-purpose of semantic binding (association). Such an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element
-may specify the data data inline by using a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element within
+purpose of semantic binding (association). Such a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element
+may specify the data inline by using a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element within
 a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element child, or it may reference another
 <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element specified in a 
 <loc href="#terms-data-definition-context">data definition context</loc>, or it may do both. No presentation (rendering)
-semantics are implied by mere presence of a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element in this (or any) context.</p>
+semantics are implied by the mere presence of a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element in this (or any) context.</p>
+</def>
+</gitem>
+<gitem id="terms-data-binding-context-for-metadata">
+<label>[data binding context for metadata]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element the parent of which is a
+<loc href="#metadata-vocabulary-metadata"><el>metadata</el></loc> element.</p>
+</def>
+</gitem>
+<gitem id="terms-data-binding-context-for-source">
+<label>[data binding context for source]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element the parent of which is a
+<loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element.</p>
 </def>
 </gitem>
 <gitem id="terms-data-defining-context">
@@ -645,7 +667,9 @@ semantics are implied by mere presence of a <loc href="#embedded-content-vocabul
 <def>
 <p>The context in which an <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element is specified to serve as
 a sharable definition to be referenced by another <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element
-in an <loc href="#terms-data-binding-context">data binding context</loc>.</p>
+in an <loc href="#terms-data-binding-context">data binding context</loc>, namely, a
+<loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element the parent of which is a
+<loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element.</p>
 </def>
 </gitem>
 <gitem id="terms-data-element">
@@ -657,7 +681,7 @@ in an <loc href="#terms-data-binding-context">data binding context</loc>.</p>
 <gitem id="terms-data-resource">
 <label>[data resource]</label>
 <def>
-<p>An arbitrary data resource represented using <loc href="#terms-data-element">data elements</loc>. For example,
+<p>An arbitrary data resource represented or referenced using a <loc href="#terms-data-element">data element</loc>. For example,
 a data resource may be used to embed or refer to an audio clip, a font, an image, or arbitrary application data in a
 <loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc>.</p>
 </def>
@@ -751,7 +775,10 @@ item as defined by <bibref ref="infoset"/>, &sect;2.2.</p>
 <def>
 <p>A <loc href="#terms-data-resource">data resource</loc> embedded in a
 <loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc>, represented by means of
-a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element.</p>
+a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, whether or not that
+<loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element represents the actual bytes of the <loc href="#terms-data-resource">data resource</loc>
+or refers to an <loc href="#terms-external-data-resource">external data resource</loc>
+</p>
 </def>
 </gitem>
 <gitem id="terms-enclosing-document-instance">
@@ -788,7 +815,16 @@ an <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc> elemen
 <def>
 <p>A <loc href="#terms-data-resource">data resource</loc> external to a
 <loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc>, referenced by means
-of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or a <att>src</att> attribute.</p>
+of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute
+of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or <loc href="#terms-embedded-content-element">embedded content element</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-external-source">
+<label>[external source]</label>
+<def>
+<p>Either (1) a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute
+that refers to an <loc href="#terms-external-data-resource">external data resource</loc> or (2) the referenced
+<loc href="#terms-external-data-resource">external data resource</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-feature">
@@ -812,6 +848,21 @@ an <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> element.</
 <def>
 <p>A syntactic expression that adheres to the fragment identifer syntax defined by <bibref ref="uri"/>,
 Section 4.1.</p>
+</def>
+</gitem>
+<gitem id="terms-font-defining-context">
+<label>[font defining context]</label>
+<def>
+<p>The context in which a <loc href="#embedded-content-vocabulary-font"><el>font</el></loc> element is specified to serve as
+a sharable definition to be referenced indirectly by a <loc href="#terms-font-selection-process">font selection process</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-font-selection-process">
+<label>[font selection process]</label>
+<def>
+<p>An internal process used by a <loc href="#terms-presentation-processor">presentation processor</loc> which purpose is to select
+a set of author defined fonts and platform fonts for use during layout and presentation processing, where input parameters to this
+process include the computed values of font related properties, the capabilities of individual fonts, and the text content being presented.</p>
 </def>
 </gitem>
 <gitem id="terms-image-defining-context">
@@ -905,6 +956,23 @@ as both a <loc href="#terms-nested-profile">nested profile</loc> and a <loc href
 <def>
 <p>A <loc href="#terms-profile">profile</loc> defined by making reference to one or more child <el>ttp:profile</el> element(s), wherein a
 profile combination method determines how profile specifications from the multiple child <el>ttp:profile</el> element(s) are combined.</p>
+</def>
+</gitem>
+<gitem id="terms-nested-embedded-source">
+<label>[nested embedded source]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element that specifies a child 
+<loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element which embeds the actual bytes of the
+<loc href="#terms-embedded-data-resource">embedded data resource</loc>, whether by 
+<loc href="#terms-simple-data-embedding">simple data embedding</loc> or <loc href="#terms-chunked-data-embedding">chunked data embedding</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-non-nested-embedded-source">
+<label>[non-nested embedded source]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element that specifies a child 
+<loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element which does not embed a representation of the actual bytes of the
+<loc href="#terms-embedded-data-resource">embedded data resource</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-non-nesting-profile">
@@ -1041,9 +1109,16 @@ related media object.</p>
 <gitem id="terms-root-temporal-extent">
 <label>[root temporal extent]</label>
 <def>
-<p>
-The temporal extent (interval) defined by the temporal beginning and ending of a <loc href="#terms-document-instance">document instance</loc> in relationship with some external application or presentation context.
-</p>
+<p>The temporal extent (interval) defined by the temporal beginning and ending of a <loc href="#terms-document-instance">document instance</loc>
+in relationship with some external application or presentation context.</p>
+</def>
+</gitem>
+<gitem id="terms-simple-data-embedding">
+<label>[simple data embedding]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element the directly embeds a representation of the actual bytes
+of an <loc href="#terms-embedded-data-resource">embedded data resource</loc> without making use of a
+child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.</p>
 </def>
 </gitem>
 <gitem id="terms-smpte-time-code">
@@ -1052,6 +1127,14 @@ The temporal extent (interval) defined by the temporal beginning and ending of a
 <p>A time code whose format and semantics are established by <bibref ref="smpte12m"/>,
 which may be embedded into or otherwise associated with media content, such
 as a broadcast audio/video stream.</p>
+</def>
+</gitem>
+<gitem id="terms-sourced-data-embedding">
+<label>[chunked data embedding]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element the indirectly references the content
+of an <loc href="#terms-embedded-data-resource">embedded data resource</loc> by making use of a
+child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element.</p>
 </def>
 </gitem>
 <gitem id="terms-synthetic-document-syncbase">
@@ -2617,8 +2700,8 @@ Core Attributes
 Data Attributes
 </td>
 <td>
-<loc href="#data-attribute-encoding">encoding</loc>,
-<loc href="#data-attribute-type">type</loc>
+<loc href="#embedded-content-attribute-encoding">encoding</loc>,
+<loc href="#embedded-content-attribute-type">type</loc>
 </td>
 </tr>
 <tr id="attribute-vocab-group-layout-binding">
@@ -5256,7 +5339,7 @@ in which case a data fragment is represented using the <specref ref="embedded-co
 The <specref ref="embedded-content-vocabulary-audio"/>,
 <specref ref="embedded-content-vocabulary-font"/>, and
 <specref ref="embedded-content-vocabulary-image"/> elements are specialized elements used to
-to reference specific classes of embedded content.
+to reference specific types of embedded content.
 The <specref ref="embedded-content-vocabulary-resources"/> element is used to
 group definitions of embedded content for reference by subsequent elements.
 The <specref ref="embedded-content-vocabulary-source"/> element may be used to
@@ -5296,9 +5379,9 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;audio
-  format = <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
-  src = <loc href="#embedded-content-value-audio">&lt;audio&gt;</loc>
-  <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
+  <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-audio">&lt;audio&gt;</loc>
+  <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -5314,20 +5397,20 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <p>An <el>audio</el> element defines an audio resource either (1) by referring to an <loc href="#terms-external-data-resource">external data resource</loc>
 or (2) defining or referring to an <loc href="#terms-embedded-data-resource">embedded data resource</loc>, where the <loc href="#terms-data-resource">data resource</loc>
 contains audio content.</p>
-<p>If an <el>audio</el> element specifies a <att>src</att> attribute, then it must not specify a
+<p>If an <el>audio</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must not specify a
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Conversely,
-if an <el>audio</el> element does not specify a <att>src</att> attribute, then it must specify one or more
+if an <el>audio</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify one or more
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
-<p>If an <el>audio</el> element specifies a <att>src</att> attribute and its value does not refer to a fragment of the
+<p>If an <el>audio</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then it should specify a
-a <loc href="#data-attribute-type"><att>type</att></loc> attribute, in which case the value of the
-<loc href="#data-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
-of the referenced resource. Otherwise, a <loc href="#data-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
-<p>If a <loc href="#data-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced audio resource, then a <att>format</att> attribute should be specified as a hint to the
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
+<loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
+of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
+<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
+and additional format information is known about a referenced audio resource, then a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute should be specified as a hint to the
 content processor.</p>
 <p>If an <el>audio</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
-the <att>format</att> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
+the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
 value expression.</p>
 <p>The use of the <el>audio</el> element is illustrated by the following example.</p>
 <table id="embedded-content-vocabulary-audio-example-1" role="example">
@@ -5350,6 +5433,7 @@ value expression.</p>
 <div3 id="embedded-content-vocabulary-chunk">
 <head>chunk</head>
 <p>The <el>chunk</el> element is used to represent a distinct chunk (fragment) of data.</p>
+<p>A <el>chunk</el> element may appear as a child of a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element.</p>
 <table id="elt-syntax-chunk" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: chunk</caption>
 <tbody>
@@ -5357,7 +5441,7 @@ value expression.</p>
 <td>
 <eg xml:space="preserve">
 &lt;chunk
-  <loc href="#data-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : base64
+  <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : base64
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
@@ -5368,8 +5452,8 @@ value expression.</p>
 </tr>
 </tbody>
 </table>
-<p>If an <att>encoding</att> attribute is specified, then it must denote the actual encoding of the byte sequence represented by the
-<el>chunk</el> element. If no <att>encoding</att> attribute is specified, then the encoding must be considered to be <code>base64</code>.</p>
+<p>If an <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute is specified, then it must denote the actual encoding of the byte sequence represented by the
+<el>chunk</el> element. If no <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute is specified, then the encoding must be considered to be <code>base64</code>.</p>
 <p>If a <att>length</att> attribute is specified, then it must denote the number of decoded bytes in the byte sequence represented by the
 <el>chunk</el> element. When decoding, if a specified length value does not match the number of decoded bytes, then the chunk and its container <el>data</el>
 element must return a zero length byte sequence.
@@ -5412,7 +5496,7 @@ referred to as a <loc href="#terms-data-binding-context-for-source">data binding
 and where these latter two contexts are referred to collectively as <loc href="#terms-data-binding-context">data binding contexts</loc>.</p>
 
 <p>When a <el>data</el> element appears in a <loc href="#terms-data-defining-context">data defining context</loc>, it
-serves as a sharable definition of a data resource that may be referenced by the <att>src</att> attribute of
+serves as a sharable definition of a data resource that may be referenced by the <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute of
 (1) another <el>data</el> element,
 (2) an <loc href="#terms-embedded-content-element">embedded content element</loc>, or
 (3) a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element.
@@ -5429,7 +5513,7 @@ of reference. In this case, the active time interval of the <el>data</el> elemen
 </p>
 <note role="elaboration">
 <p>A non-sharable definition of a data resource may or may not specify an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute, but this
-identifier is not referenced in other <loc href="#terms-data-binding-context">data binding contexts</loc>, or, if it is, has not binding semantics.</p>
+identifier is not referenced in other <loc href="#terms-data-binding-context">data binding contexts</loc>, or, if it is, has no binding semantics.</p>
 </note>
 <p>The <el>data</el> element accepts one of the following three content models:
 (1) one or more text nodes (i.e., <code>#PCDATA</code>),
@@ -5437,13 +5521,13 @@ identifier is not referenced in other <loc href="#terms-data-binding-context">da
 <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elements, or
 (3) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by one or more
 <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements, where
-the first is referred to as <emph>simple data embedding</emph>,
-the second as <emph>chunked data embedding</emph>, and
-the third as <emph>sourced data embedding</emph>.</p>
-<p>When simple data embedding is used, the data resource is obtained by decoding the <code>#PCDATA</code> content.
-When chunked data embedding is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
+the first is referred to as <loc href="#terms-simple-data-embedding">simple data embedding</loc>,
+the second as <loc href="#terms-chunked-data-embedding">chunked data embedding</loc>, and
+the third as <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>.</p>
+<p>When <loc href="#terms-simple-data-embedding">simple data embedding</loc> is used, the data resource is obtained by decoding the <code>#PCDATA</code> content.
+When <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
 child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.
-When sourced data embedding is used, the data resource is obtained from the the first resolvable
+When <loc href="#terms-simple-data-embedding">sourced data embedding</loc> is used, the data resource is obtained from the the first resolvable
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Furthermore,
 a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element must not
 contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, but may refer to a
@@ -5455,11 +5539,11 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
 <td>
 <eg xml:space="preserve">
 &lt;data
-  <loc href="#data-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : <emph>see prose below</emph>
-  format = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
+  <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : <emph>see prose below</emph>
+  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
-  src = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
-  <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>see prose below</emph>
+  <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
+  <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>see prose below</emph>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -5472,11 +5556,11 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
 </tbody>
 </table>
 <p>If simple data embedding is used, i.e., the content of the <el>data</el> element is one or more text nodes, then an
-<loc href="#data-attribute-encoding"><att>encoding</att></loc> attribute
+<loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute
 may be specified, and, if not specified, must be considered to be <code>base64</code>.
 If chunked or sourced data embedding is used, i.e., the content of the <el>data</el> element contains any child
 <loc href="#embedded-content-vocabulary-chunk">chunk</loc> or <loc href="#embedded-content-vocabulary-source">source</loc> element, then
-an <loc href="#data-attribute-encoding"><att>encoding</att></loc> attribute must not be specified, and, if specified, must be ignored
+an <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute must not be specified, and, if specified, must be ignored
 for the purpose of content processing.</p>
 <p>If a <att>length</att> attribute is specified, then it must denote the number of decoded bytes in the byte sequence represented by the
 <el>data</el> element. When decoding, if a specified length value does not match the number of decoded bytes, then a zero length byte sequence must be returned.
@@ -5486,13 +5570,13 @@ A <att>length</att> attribute must not be specified when using sourced data embe
 <p>The intention of the <att>length</att> attribute is to provide a means to perform a simple integrity check on decoded data. Note that this check does not guarantee
 data integrity during transport, i.e., the data could be modified without modifying the length.</p>
 </note>
-<p>If simple or chunked data embedding is used, a <loc href="#data-attribute-type"><att>type</att></loc> attribute must be specified,
+<p>If simple or chunked data embedding is used, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must be specified,
 and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code>
 should be used. In the case of sourced data embedding, the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
 is used as the type.</p>
-<p>If a <loc href="#data-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
+<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
 such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource,
-then a <att>format</att> attribute should be specified as a hint to the content processor.</p>
+then a <loc href="#embedded-content-attribute-format">format</loc> attribute should be specified as a hint to the content processor.</p>
 <p>The use of simple data embedding is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-data-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Data Embedding in Data Defining Context</caption>
@@ -5574,7 +5658,9 @@ then a <att>format</att> attribute should be specified as a hint to the content 
 <div3 id="embedded-content-vocabulary-font">
 <head>font</head>
 <p>The <el>font</el> element is used to define an author supplied font resource.</p>
-<p>The <el>data</el> element accepts as its children
+<p>A <el>font</el> element may appear as a child of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element, referred to as a
+<loc href="#terms-font-defining-context">font defining context</loc>.</p>
+<p>The <el>font</el> element accepts as its children
 zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by zero or more
 <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
 <table id="elt-syntax-font" role="syntax">
@@ -5585,11 +5671,11 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <eg xml:space="preserve">
 &lt;font
   family = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  format = <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
+  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
   range = <loc href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</loc>
   style = (normal|italic|oblique)
-  src = <loc href="#embedded-content-value-font">&lt;font&gt;</loc>
-  <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-font">&lt;font&gt;</loc>
+  <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   weight = (normal|bold)
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -5605,23 +5691,23 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <p>A <el>font</el> element defines a font resource either (1) by referring to an <loc href="#terms-external-data-resource">external data resource</loc>
 or (2) defining or referring to an <loc href="#terms-embedded-data-resource">embedded data resource</loc>, where the <loc href="#terms-data-resource">data resource</loc>
 contains font content.</p>
-<p>If a <el>font</el> element specifies a <att>src</att> attribute, then it must not specify a
+<p>If a <el>font</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must not specify a
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Conversely,
-if a <el>font</el> element does not specify a <att>src</att> attribute, then it must specify one or more
+if a <el>font</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify one or more
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
-<p>If a <el>font</el> element specifies a <att>src</att> attribute and its value does not refer to a fragment of the
+<p>If a <el>font</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then it should specify a
-a <loc href="#data-attribute-type"><att>type</att></loc> attribute, in which case the value of the
-<loc href="#data-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
-of the referenced resource. Otherwise, a <loc href="#data-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
-<p>If a <loc href="#data-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced font resource, then a <att>format</att> attribute should be specified as a hint to the
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
+<loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
+of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
+<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
+and additional format information is known about a referenced font resource, then a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute should be specified as a hint to the
 content processor.</p>
 <note role="elaboration">
 <p>A font format hint might be useful to a content processor to avoid accessing a font resource it knows it cannot decode.</p>
 </note>
 <p>If a <el>font</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
-the <att>format</att> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
+the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
 value expression.</p>
 <p>If any of the <att>family</att>, <att>range</att>, <att>style</att>, or <att>weight</att> attributes are specified, then
 they override the family name, supported character ranges, style, and weight of the actual font resource. In particular,
@@ -5655,6 +5741,8 @@ must be considered to be equal to the value(s) of the same named font characteri
   &lt;/resources&gt;
 &lt;/head&gt;
 ...
+&lt;p tts:fontFamily="MyFont"&gt;use my font or last resort font&lt;/p&gt;
+...
 </eg>
 </td>
 </tr>
@@ -5672,15 +5760,17 @@ must be considered to be equal to the value(s) of the same named font characteri
 as a child of a <loc href="#content-vocabulary-span"><el>span</el></loc> element. The former is referred to as an
 <loc href="#terms-image-defining-context">image defining context</loc>, the latter as an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
 <p>When an <el>image</el> element appears in an <loc href="#terms-image-defining-context">image defining context</loc>, it
-serves as a sharable definition of an image resource that may be referenced by other <el>image</el> elements in the
-<loc href="#terms-enclosing-document-instance">enclosing document instance</loc>. In this case, the active time interval of the <el>image</el> element
+serves as a sharable definition of an image resource that may be referenced by another <el>image</el> element or by
+a <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc> style attribute
+in the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>. In this case, the active time interval of the <el>image</el> element
 is the same as the active time interval of its parent <loc href="#embedded-content-vocabulary-resource"><el>resource</el></loc> element.</p>
 <note role="elaboration">
 <p>A sharable definition of an image resource specifies an <loc href="#content-attribute-id"><att>xml:id</att></loc> attribute in order to be referenced
-by <el>image</el> elements in an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
+by an <el>image</el> element or by a <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc> style attribute
+in an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
 </note>
 <p>When an <el>image</el> element appears in an <loc href="#terms-image-presentation-context">image presentation context</loc>, it
-serves as a non-sharable definition of an image resource that implies presentation (rendering) semantics, i.e., that it is intended to be played.
+serves as a non-sharable definition of an image resource that implies presentation (rendering) semantics.
 In this case, the active time interval of the <el>image</el> element is the same as the active time interval of its parent
 <loc href="#terms-content-element">content element</loc>.
 </p>
@@ -5698,9 +5788,9 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;image
-  format = <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
-  src = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
-  <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
+  <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
+  <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -5716,20 +5806,20 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <p>An <el>image</el> element defines an image resource either (1) by referring to an <loc href="#terms-external-data-resource">external data resource</loc>
 or (2) defining or referring to an <loc href="#terms-embedded-data-resource">embedded data resource</loc>, where the <loc href="#terms-data-resource">data resource</loc>
 contains image content.</p>
-<p>If an <el>image</el> element specifies a <att>src</att> attribute, then it must not specify a
+<p>If an <el>image</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must not specify a
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Conversely,
-if an <el>image</el> element does not specify a <att>src</att> attribute, then it must specify one or more
+if an <el>image</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify one or more
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
-<p>If an <el>image</el> element specifies a <att>src</att> attribute and its value does not refer to a fragment of the
+<p>If an <el>image</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then it should specify a
-a <loc href="#data-attribute-type"><att>type</att></loc> attribute, in which case the value of the
-<loc href="#data-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
-of the referenced resource. Otherwise, a <loc href="#data-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
-<p>If a <loc href="#data-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced image resource, then a <att>format</att> attribute should be specified as a hint to the
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
+<loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
+of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
+<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
+and additional format information is known about a referenced image resource, then a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute should be specified as a hint to the
 content processor.</p>
 <p>If an <el>image</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
-the <att>format</att> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
+the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
 value expression.</p>
 <p>The use of the <el>image</el> element is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-image-example-1" role="example">
@@ -5791,7 +5881,7 @@ value expression.</p>
 <div3 id="embedded-content-vocabulary-resources">
 <head>resources</head>
 <p>The <el>resources</el> element is a container element used to group
-out-of-line embedded content, including metadata that applies to this embedded content.</p>
+definitions of embedded content, including metadata that applies to this embedded content.</p>
 <p>The <el>resources</el> element accepts as its children zero or more
 elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group,
 followed by zero or more elements in the
@@ -5827,14 +5917,15 @@ defined to be coterminous with the <loc href="#terms-root-temporal-extent">root 
 <p>The <el>source</el> element accepts as its children
 zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by zero or one
 <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element.</p>
-<p>If a <el>source</el> element specifies a <att>src</att> attribute, then it must not specify a
+<p>If a <el>source</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must not specify a
 child <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, in which case it is referred to as
-an <emph>external source</emph> if the <att>src</att> attribute refers to an external resource, or
-a <emph>non-nested embedded source</emph> if the <att>src</att> attribute refers to an embedded resource
+an <loc href="#terms-external-source">external source</loc> if the <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute refers to an external resource, or
+a <loc href="#terms-non-nested-embedded-source">non-nested embedded source</loc>
+if the <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute refers to an embedded resource
 in the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>.</p>
-<p>If a <el>source</el> element does not specify a <att>src</att> attribute, then it must specify a
+<p>If a <el>source</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify a
 child <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, in which case it is referred to as
-an <emph>nested embedded source</emph>.</p>
+an <loc href="#terms-nested-embedded-source">nested embedded source</loc>.</p>
 <p>A <el>source</el> element must not have an ancestor <el>source</el> element.</p>
 <table id="elt-syntax-source" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: source</caption>
@@ -5843,9 +5934,9 @@ an <emph>nested embedded source</emph>.</p>
 <td>
 <eg xml:space="preserve">
 &lt;source
-  format = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
-  src = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
-  <loc href="#data-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
+  <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
+  <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -5857,20 +5948,20 @@ an <emph>nested embedded source</emph>.</p>
 </tr>
 </tbody>
 </table>
-<p>If a <att>format</att> attribute is specified, then it provides additional hint information about the format (i.e., formal syntax) of the
+<p>If a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute is specified, then it provides additional hint information about the format (i.e., formal syntax) of the
 embedded content. Such information may be useful in cases where no standard media (content) type label has been defined. Depending on the
 context of use of a <el>source</el> element, the values of this attribute may be further constrained.</p>
-<p>If a <att>src</att> attribute is specified and its value refers to a fragment of the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>,
+<p>If a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute is specified and its value refers to a fragment of the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>,
 then there must be a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element child of a <loc href="#document-structure-vocabulary-resources"><el>resources</el></loc>
 element which is identified by that fragment, i.e., has an <att>xml:id</att> attribute the value of which matches the fragment identifier.</p>
-<p>If a <att>src</att> attribute is specified and its value does not refer to a fragment of the
+<p>If a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute is specified and its value does not refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then
-a <loc href="#data-attribute-type"><att>type</att></loc> attribute should be specified, in which case it must correspond with the media (content) type
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute should be specified, in which case it must correspond with the media (content) type
 of the referenced resource.</p>
-<p>If a <att>src</att> attribute is specified and its value does refer to a fragment of the
+<p>If a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute is specified and its value does refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then
-a <loc href="#data-attribute-type"><att>type</att></loc> attribute must not be specified; rather, the content type of the embedded resource is determined by
-the value of the <loc href="#data-attribute-type"><att>type</att></loc> attribute on the referenced or embedded
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified; rather, the content type of the embedded resource is determined by
+the value of the <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute on the referenced or embedded
 <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element.</p>
 <p>The use of the <el>source</el> element is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-source-example-1" role="example">
@@ -5938,9 +6029,12 @@ the value of the <loc href="#data-attribute-type"><att>type</att></loc> attribut
 </div2> <!-- embedded-content-element-vocabulary -->
 <div2 id="embedded-content-attribute-vocabulary">
 <head>Embedded Content Attribute Vocabulary</head>
-<p>This section defines the following attributes for use with <loc href="#terms-data-element">data elements</loc>:</p>
+<p>This section defines the following attributes for use with certain <loc href="#terms-embedded-content-element">embedded content elements</loc>
+and <loc href="#terms-embedded-data-element">data elements</loc>:</p>
 <ulist>
 <item><p><specref ref="embedded-content-attribute-encoding"/></p></item>
+<item><p><specref ref="embedded-content-attribute-format"/></p></item>
+<item><p><specref ref="embedded-content-attribute-src"/></p></item>
 <item><p><specref ref="embedded-content-attribute-type"/></p></item>
 </ulist>
 <div3 id="embedded-content-attribute-encoding">
@@ -5962,6 +6056,62 @@ element types:</p>
 <item><p><code>base64url</code></p></item>
 </ulist>
 <p>If not specified, then <code>base64</code> semantics apply.</p>
+</div3>
+<div3 id="embedded-content-attribute-format">
+<head>format</head>
+<p>The <att>format</att> attribute is used to specify hints about the media (content) format of
+an embedded content resource beyond media (content) type information
+provided by a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute.</p>
+<note role="clarification">
+<p>A <att>format</att> attribute is useful in the absence of a registered media (content) type,
+e.g., when no media (content) type is available or a generic type is used, such as
+<code>application/octet-stream</code>.</p>
+</note>
+<p>The <att>format</att> attribute may be specified by an instance of the following
+element types:</p>
+<ulist>
+<item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-data"><el>data</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-font"><el>font</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-source"><el>source</el></loc></p></item>
+</ulist>
+<p>If specified, the value of a <att>format</att> attribute must adhere to the following generic
+syntax:</p>
+<table id="embedded-content-attribute-syntax-format" role="syntax">
+<caption>Syntax Representation &ndash; format</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;format&gt;
+  : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If a format expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
+<p>Depending on the context of use, additional constraints may apply.</p>
+</div3>
+<div3 id="embedded-content-attribute-src">
+<head>src</head>
+<p>The <att>src</att> attribute is used to specify the media (content) type of data resource, and may express additional
+parameters that characterize the data.</p>
+<p>The <att>src</att> attribute may be specified by an instance of the following
+element types:</p>
+<ulist>
+<item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-data"><el>data</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-font"><el>font</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-source"><el>source</el></loc></p></item>
+</ulist>
+<p>If specified, the value of a <att>src</att> attribute must adhere to the value syntax of the
+<code>xsd:anyURI</code> data type defined by <bibref ref="xsd-2"/>, &sect;3.2.17.</p>
+<p>Depending on the context of use, additional constraints may apply.</p>
 </div3>
 <div3 id="embedded-content-attribute-type">
 <head>type</head>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v c1e1a6507c70 2014/11/25 21:05:38 glenn $ -->
+<!-- $Id: ttml2.xml,v 0933a6108611 2014/11/26 01:56:47 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/25 21:05:38 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/26 01:56:47 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/25 21:05:38 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/26 01:56:47 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -843,11 +843,12 @@ future revision of this specification).</p>
 an <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> element.</p>
 </def>
 </gitem>
-<gitem id="terms-fragment-identifier">
-<label>[fragment identifier]</label>
+<gitem id="terms-forced-subtitle">
+<label>[forced subtitle]</label>
 <def>
-<p>A syntactic expression that adheres to the fragment identifer syntax defined by <bibref ref="uri"/>,
-Section 4.1.</p>
+<p>A subtitle (or caption) that is intended to always be displayed even if subtitles (captions) are not enabled. Forced subtitles (captions)
+are used to prevent open captioning of, i.e., burning in, subtitles (captions) related to foreign or alien language or translation of text
+that appears in media, such as in a sign.</p>
 </def>
 </gitem>
 <gitem id="terms-font-defining-context">
@@ -863,6 +864,13 @@ a sharable definition to be referenced indirectly by a <loc href="#terms-font-se
 <p>An internal process used by a <loc href="#terms-presentation-processor">presentation processor</loc> which purpose is to select
 a set of author defined fonts and platform fonts for use during layout and presentation processing, where input parameters to this
 process include the computed values of font related properties, the capabilities of individual fonts, and the text content being presented.</p>
+</def>
+</gitem>
+<gitem id="terms-fragment-identifier">
+<label>[fragment identifier]</label>
+<def>
+<p>A syntactic expression that adheres to the fragment identifer syntax defined by <bibref ref="uri"/>,
+Section 4.1.</p>
 </def>
 </gitem>
 <gitem id="terms-image-defining-context">
@@ -1647,7 +1655,7 @@ TTML Content. In particular, performing validation with one of the above
 referenced schemas may result in a <emph>false positive</emph> indication of validity.
 For example, both the RNC and XSD schemas specify
 that a <att>tts:fontFamily</att> attribute must
-satisfy the <code>xs:string</code> XSD data type; however, this data type is a superset
+satisfy the <code>xsd:string</code> XSD data type; however, this data type is a superset
 of the values permitted to be used with the <att>tts:fontFamily</att> attribute.</p>
 <p>In addition, the RNC schema may produce a <emph>false negative</emph>
 indication of validity when using the <att>xml:id</att> attribute with an element in
@@ -4783,6 +4791,7 @@ zero or one <el>body</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;tt
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -4868,6 +4877,7 @@ or <loc href="#element-vocab-type-layout">Layout</loc> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;head
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -4907,6 +4917,7 @@ element group apply semantically to the <el>body</el> element.</p>
 &lt;body
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -4999,6 +5010,7 @@ element group apply semantically to the <el>div</el> element.</p>
 &lt;div
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5067,6 +5079,7 @@ element group apply semantically to the <el>p</el> element.</p>
 &lt;p
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5143,6 +5156,7 @@ element group apply semantically to the <el>span</el> element.</p>
 &lt;span
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5194,6 +5208,7 @@ element group apply semantically to the <el>br</el> element.</p>
 &lt;br
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5232,23 +5247,31 @@ a <el>br</el> element, then it must be interpreted as having
 <p>This section defines the following common attributes used with many or all element types
 in the core vocabulary catalog:</p>
 <ulist>
+<item><p><specref ref="content-attribute-condition"/></p></item>
 <item><p><specref ref="content-attribute-id"/></p></item>
 <item><p><specref ref="content-attribute-lang"/></p></item>
 <item><p><specref ref="content-attribute-space"/></p></item>
 </ulist>
+<div3 id="content-attribute-condition">
+<head>condition</head>
+<p>The <att>condition</att> attribute is used to conditionally exclude an element from semantic processing.</p>
+<p>The <att>condition</att> attribute may be used with any element in the core vocabulary catalog
+except profile matter, i.e., elements of the <loc href="#element-vocab-type-profile">Profile Module</loc>.</p>
+<p>The value of a <att>condition</att> attribute must adhere to a
+<loc href="#content-value-condition">&lt;condition&gt;</loc> expression.</p>
+<p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and the
+its <loc href="#content-value-condition">&lt;condition&gt;</loc> expression value evaluates to <code>false</code>,
+then the semantics of the element must be ignored.</p>
+<note role="elaboration">
+<p>For example, if a <loc href="#content-vocabulary-p"><el>p</el></loc> element specifies a <att>condition</att>
+attribute that evaluates to <code>false</code>, then the content of that element is ignored for presentation purposes.</p>
+</note>
+</div3>
 <div3 id="content-attribute-id">
 <head>xml:id</head>
 <p>The <att>xml:id</att> attribute is used as defined by
 <bibref ref="xmlid"/>.</p>
-<p>The <att>xml:id</att> attribute may be used with any element in the
-core vocabulary catalog.</p>
-<ednote>
-<name>Deprecating xml:id in favor of unqualified id</name>
-<date>2013-09-05</date>
-<edtext>Consider deprecating <att>xml:id</att>, using unqualified <att>id</att> instead. If deprecated, then require
-a document to only use <att>xml:id</att> or <att>id</att>, i.e., mixed use to be prohibited. See
-<loc href="https://www.w3.org/AudioVideo/TT/tracker/issues/205">Issue 205</loc>.</edtext>
-</ednote>
+<p>The <att>xml:id</att> attribute may be used with any element in the core vocabulary catalog.</p>
 </div3>
 <div3 id="content-attribute-lang">
 <head>xml:lang</head>
@@ -5316,6 +5339,367 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
 </note>
 </div3>
 </div2> <!-- content-attribute-vocabulary -->
+<div2 id="content-value-expressions">
+<head>Content Value Expressions</head>
+<p>Core vocabulary may make use of the following expressions:</p>
+<ulist>
+<item><p><specref ref="content-value-arguments"/></p></item>
+<item><p><specref ref="content-value-bound-parameter"/></p></item>
+<item><p><specref ref="content-value-condition"/></p></item>
+<item><p><specref ref="content-value-condition-function"/></p></item>
+<item><p><specref ref="content-value-expression"/></p></item>
+<item><p><specref ref="content-value-media-function"/></p></item>
+<item><p><specref ref="content-value-parameter-function"/></p></item>
+<item><p><specref ref="content-value-quoted-string"/></p></item>
+<item><p><specref ref="content-value-supports-function"/></p></item>
+</ulist>
+
+<div3 id="content-value-arguments">
+<head>&lt;arguments&gt;</head>
+<p>A &lt;arguments&gt; value is a sub-expression used with a <code>function-expression</code> non-terminal of an
+<loc href="#content-value-expression">&lt;expression&gt;</loc> value.</p>
+<table id="arguments-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;arguments&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;arguments&gt;
+  : "(" ")"
+  | "(" argument-list ")"
+
+argument-list
+  : <loc href="#content-value-expression">&lt;expression&gt;</loc>
+  | argument-list "," <loc href="#content-value-expression">&lt;expression&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+
+<div3 id="content-value-bound-parameter">
+<head>&lt;bound-parameter&gt;</head>
+<p>A &lt;bound-parameter&gt; value is one of an enumerated collection of named parameters bound to a value by the
+<loc href="#terms-content-processor">content processor</loc>.</p>
+<table id="bound-parameter-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;bound-parameter&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;bound-parameter&gt;
+  : forced
+  | mediaAspectRatio
+  | mediaLanguage
+  | userLanguage
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<glist>
+<gitem id="bound-parameter-forced">
+<label><code>forced</code></label>
+<def>
+<p>Evaluates to a boolean value that denotes if the <loc href="#terms-content-processor">content processor</loc> is operating with
+<loc href="#terms-forced-subtitle">forced subtitles</loc> enabled.</p>
+</def>
+</gitem>
+<gitem id="bound-parameter-mediaAspectRatio">
+<label><code>mediaAspectRatio</code></label>
+<def>
+<p>Evaluates to a numeric value equal to the aspect ratio of the <loc href="#terms-related-media-object">related media object</loc>.</p>
+</def>
+</gitem>
+<gitem id="bound-parameter-mediaLanguage">
+<label><code>mediaLanguage</code></label>
+<def>
+<p>Evaluates to a string value equal to the (primary) language of the <loc href="#terms-related-media-object">related media object</loc>.</p>
+</def>
+</gitem>
+<gitem id="bound-parameter-userLanguage">
+<label><code>userLanguage</code></label>
+<def>
+<p>Evaluates to a string value equal to the (primary) language of the user as determined by the
+<loc href="#terms-document-processing-context">document processing context</loc>.</p>
+</def>
+</gitem>
+</glist>
+</div3>
+
+<div3 id="content-value-condition">
+<head>&lt;condition&gt;</head>
+<p>A &lt;condition&gt; value is used to specify an expression that evaluates to a binary value
+which is used to determine if the semantics of a
+<loc href="#terms-conditionalized-element">conditionalized element</loc> is respected or ignored during content processing.</p>
+<table id="condition-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;condition&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;condition&gt;
+  : <loc href="#content-value-expression">&lt;expression&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If a &lt;condition&gt; value contains a <code>function-expression</code> non-terminal, then it must take the form
+of a <loc href="#content-value-condition-function">&lt;condition-function&gt;</loc> expression.</p>
+</div3>
+
+<div3 id="content-value-condition-function">
+<head>&lt;condition-function&gt;</head>
+<p>A &lt;condition-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression.</p>
+<table id="condition-function-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;condition-function&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;condition-function&gt;
+  | <loc href="#content-value-media-function">&lt;media-function&gt;</loc>
+  | <loc href="#content-value-parameter-function">&lt;parameter-function&gt;</loc>
+  | <loc href="#content-value-supports-function">&lt;supports-function&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+
+<div3 id="content-value-expression">
+<head>&lt;expression&gt;</head>
+<p>An &lt;expression&gt; value is a sub-expression of a <loc href="#content-value-condition">&lt;condition&gt;</loc> value.</p>
+<table id="expression-value-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;expression&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;expression&gt;
+  : logical-or-expression
+
+logical-or-expression
+  : logical-and-expression
+  | logical-or-expression "||" logical-and-expression
+
+logical-and-expression
+  : equality-expression
+  | logical-and-expression "&amp;&amp;" equality-expression
+
+equality-expression
+  : relational-expression
+  | equality-expression "==" relational-expression
+  | equality-expression "!=" relational-expression
+
+relational-expression
+  : additive-expression
+  | relational-expression "&lt;" additive-expression
+  | relational-expression "&gt;" additive-expression
+  | relational-expression "&lt;=" additive-expression
+  | relational-expression "&gt;=" additive-expression
+
+additive-expression
+  : multiplicitive-expression
+  | additive-expression "+" multiplicitive-expression
+  | additive-expression "-" multiplicitive-expression
+
+multiplicitive-expression
+  : unary-expression
+  | multiplicitive-expression "*" unary-expression
+  | multiplicitive-expression "/" unary-expression
+  | multiplicitive-expression "%" unary-expression
+
+unary-expression
+  : primary-or-function-expression
+  | "+" unary-expression
+  | "-" unary-expression
+  | "!" unary-expression
+
+primary-or-function-expression
+  : primary-expression
+  | function-expression
+
+primary-expression
+  : identifier
+  | literal
+  | "(" expression ")"
+
+function-expression
+  : identifier <loc href="#content-value-arguments">&lt;arguments&gt;</loc>
+
+identifier
+  : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+
+literal
+  : boolean-literal
+  | numeric-literal
+  | string-literal
+
+boolean-literal
+  : "true"
+  | "false"
+
+numeric-literal
+  : decimal-literal
+
+decimal-literal
+  : decimal-integer-literal "." decimal-digits? exponent-part?
+  | "." decimal-digits exponent-part?
+  | decimal-integer-literal exponent-part?
+
+decimal-integer-literal
+  : "0"
+  | non-zero-digit decimal-digits?
+
+decimal-digits
+  : decimal-digit
+  | decimal-digits decimal-digit
+
+decimal-digit
+  : "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8"
+
+non-zero-digit
+  : "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8"
+
+exponent-part
+  : exponent-indicator signed-integer
+
+exponent-indicator
+  : "e" | "E"
+
+signed-integer
+  : decimal-digits
+  | "+" decimal-digits
+  | "-" decimal-digits
+
+string-literal
+  : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+
+<div3 id="content-value-media-function">
+<head>&lt;media-function&gt;</head>
+<p>A &lt;media-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression
+in order to perform a media query on the <loc href="#terms-related-media-object">related media object</loc> or the
+<loc href="#terms-document-processing-context">document processing context</loc>.</p>
+<table id="media-function-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;media-function&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;media-function&gt;
+  : "media" "(" media-query ")"
+
+media-query
+  : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>media-query</code> argument of a &lt;media-function&gt; value expression must adhere to
+the syntax of the <code>media_query_list</code> defined by <bibref ref="media-queries"/>, &sect; 3.</p>
+<p>A &lt;media-function&gt; value expression evaluates to <code>true</code> if the specified media query
+evaluates to <code>true</code>, otherwise, the value expression evaluates to <code>false</code>.</p>
+</div3>
+
+<div3 id="content-value-quoted-string">
+<head>&lt;quoted-string&gt;</head>
+<p>A &lt;quoted-string&gt; value expression is used to specify a double or single quoted string.</p>
+<table id="quoted-string-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;quoted-string&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;quoted-string&gt;
+  : double-quoted-string
+  | single-quoted-string
+
+double-quoted-string
+  : '"' ( [^"\\] | escape )+ '"'
+
+single-quoted-string
+  : "'" ( [^'\\] | escape )+ "'"
+
+escape
+  : '\\' <emph>char</emph>
+</eg>
+<!-- " -->
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+
+<div3 id="content-value-parameter-function">
+<head>&lt;parameter-function&gt;</head>
+<p>A &lt;parameter-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression
+in order to obtain a named parameter of the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+<table id="parameter-function-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;parameter-function&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;parameter-function&gt;
+  : "parameter" "(" parameter-name ")"
+
+parameter-name
+  : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>When de-quoted, the <code>parameter-name</code> argument of a &lt;parameter-function&gt; value expression must adhere to an
+<loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>, which must, in turn, be one of the values enumerated
+by <loc href="#content-value-bound-parameter">&lt;bound-parameter&gt;</loc>.</p>
+<p>A &lt;parameter-function&gt; value expression evaluates to the value associated with (bound to) the
+specified paramater name.</p>
+</div3>
+
+<div3 id="content-value-supports-function">
+<head>&lt;supports-function&gt;</head>
+<p>A &lt;supports-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression
+in order to obtain a boolean value that denotes whether a specified <loc href="#terms-feature">feature</loc> or <loc href="#terms-extension">extension</loc>
+is supported or not.</p>
+<table id="supports-function-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;supports-function&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;supports-function&gt;
+  : "supports" "(" feature-or-extension-designator ")"
+
+feature-or-extension-designator
+  : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>feature-or-extension-designator</code> argument of a &lt;supports-function&gt; value expression must express
+a feature designation or an extension designation as defined by
+<specref ref="feature-designations"/> and <specref ref="extension-designations"/>, respectively, and where the
+<code>feature-namespace</code> or <code>extension-namespace</code> component of the designation is optional, and, if
+not specified, is considered to be equal to the <emph>TT Feature Namespace</emph> or <emph>TT Extension Namespace</emph>,
+respectively.</p>
+<p>A &lt;supports-function&gt; value expression evaluates to <code>true</code> if the specified feature or extension
+designator is (semantically) supported by the <loc href="#terms-content-processor">content processor</loc>.</p>
+</div3>
+
+</div2> <!-- content-value-expressions -->
 </div1> <!-- content -->
 
 <div1 id="embedded-content">
@@ -5383,6 +5767,7 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;audio
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-audio">&lt;audio&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -5445,6 +5830,7 @@ value expression.</p>
 <td>
 <eg xml:space="preserve">
 &lt;chunk
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : base64
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
@@ -5543,6 +5929,7 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
 <td>
 <eg xml:space="preserve">
 &lt;data
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : <emph>see prose below</emph>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
@@ -5674,6 +6061,7 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;font
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   family = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
   range = <loc href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</loc>
@@ -5792,6 +6180,7 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;image
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -5899,6 +6288,7 @@ followed by zero or more elements in the
 <td>
 <eg xml:space="preserve">
 &lt;resources
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -5938,6 +6328,7 @@ an <loc href="#terms-nested-embedded-source">nested embedded source</loc>.</p>
 <td>
 <eg xml:space="preserve">
 &lt;source
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -6080,24 +6471,8 @@ element types:</p>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-source"><el>source</el></loc></p></item>
 </ulist>
-<p>If specified, the value of a <att>format</att> attribute must adhere to the following generic
-syntax:</p>
-<table id="embedded-content-attribute-syntax-format" role="syntax">
-<caption>Syntax Representation &ndash; format</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;format&gt;
-  : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
-  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If a format expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
-then it must express an absolute URI.</p>
+<p>The value of a <att>format</att> attribute must adhere to a
+<loc href="#embedded-content-value-format">&lt;format&gt;</loc> expression.</p>
 <p>Depending on the context of use, additional constraints may apply.</p>
 </div3>
 <div3 id="embedded-content-attribute-src">
@@ -6148,6 +6523,7 @@ sniffing.</p>
 <item><p><specref ref="embedded-content-value-data-format"/></p></item>
 <item><p><specref ref="embedded-content-value-font"/></p></item>
 <item><p><specref ref="embedded-content-value-font-format"/></p></item>
+<item><p><specref ref="embedded-content-value-format"/></p></item>
 <item><p><specref ref="embedded-content-value-image"/></p></item>
 <item><p><specref ref="embedded-content-value-image-format"/></p></item>
 <item><p><specref ref="embedded-content-value-unicode-range"/></p></item>
@@ -6295,6 +6671,32 @@ these tokens are appropriate, authors are encouraged to use tokens in common use
 prefix <code>"x-"</code> to form a private use token.</p>
 </note>
 </div3>
+<div3 id="embedded-content-value-format">
+<head>&lt;format&gt;</head>
+<p>A &lt;format&gt; expression is used to specify the format of a data resource. Additional format information is useful in the case
+of data resources that lack a registered media (content) type.</p>
+<table id="format-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;format&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;format&gt;
+  : <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If a format expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
+<note role="elaboration">
+<p>This specification does not standardize the set of format tokens. Authors are encouraged to
+use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.
+Alternatively, an author may use an arbitrary absolute URI as a format specification.</p>
+</note>
+</div3>
 <div3 id="embedded-content-value-image">
 <head>&lt;image&gt;</head>
 <p>An &lt;image&gt; expression is used to specify an image resource by reference.</p>
@@ -6416,6 +6818,7 @@ the specification defined initial value(s).</p>
 <td>
 <eg xml:space="preserve">
 &lt;initial
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -6463,6 +6866,7 @@ specified style set in accordance with
 <td>
 <eg xml:space="preserve">
 &lt;style
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -6503,6 +6907,7 @@ followed by zero or more <el>style</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;styling
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -10553,7 +10958,7 @@ in order to prevent section renumbering.</p>
 <eg xml:space="preserve">
 &lt;familyName&gt;
   : unquoted-string
-  | quoted-string
+  | <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
 
 unquoted-string
   : identifier ( lwsp identifier )*
@@ -10579,16 +10984,6 @@ non-ascii-or-c1
 
 escape
   : '\\' <emph>char</emph>
-
-quoted-string
-  : double-quoted-string
-  | single-quoted-string
-
-double-quoted-string
-  : '"' ( [^"\\] | escape )+ '"'
-
-single-quoted-string
-  : "'" ( [^'\\] | escape )+ "'"
 </eg>
 <!-- " -->
 </td>
@@ -11574,6 +11969,7 @@ zero or more <el>region</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;layout
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -11626,6 +12022,7 @@ style inheritance).</p>
 &lt;region
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
@@ -12767,6 +13164,7 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 &lt;animate
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   calcMode = <loc href="#animation-value-calcMode">&lt;calcMode&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
@@ -12900,6 +13298,7 @@ zero or more elements in the <loc href="#element-vocab-group-animation"><code>An
 <td>
 <eg xml:space="preserve">
 &lt;animation
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -12937,6 +13336,7 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 <eg xml:space="preserve">
 &lt;set
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
@@ -13337,6 +13737,7 @@ information.</p>
 <td>
 <eg xml:space="preserve">
 &lt;metadata
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -13466,6 +13867,7 @@ agent with another agent that portrays the character.</p>
 <eg xml:space="preserve">
 &lt;ttm:actor
   <phrase role="reqattr">agent</phrase> = IDREF
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -13498,6 +13900,7 @@ agent, whether it be the name of a person, character, group, or organization.</p
 <td>
 <eg xml:space="preserve">
 &lt;ttm:agent
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <phrase role="reqattr">type</phrase> = (<emph>person</emph>|<emph>character</emph>|<emph>group</emph>|<emph>organization</emph>|<emph>other</emph>)
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -13594,6 +13997,7 @@ child of the <el>head</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:copyright
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -13620,6 +14024,7 @@ a specific element instance.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:desc
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -13648,6 +14053,7 @@ a specific element instance.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:item
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <phrase role="reqattr">name</phrase> = (<loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>|<loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>)
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -13718,6 +14124,7 @@ group, or organization.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:name
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <phrase role="reqattr">type</phrase> = (<emph>full</emph>|<emph>family</emph>|<emph>given</emph>|<emph>alias</emph>|<emph>other</emph>)
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -13755,6 +14162,7 @@ a specific element instance.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:title
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -16883,6 +17291,10 @@ Positioning System</titleref>, US Air Force.
 <titleref href="http://www.w3.org/TR/2014/REC-html5-20141028/">HTML5 A vocabulary and associated APIs for HTML and XHTML</titleref>,
 W3C Recommendation, 28 October 2014. (See
 <xspecref href="http://www.w3.org/TR/2014/REC-html5-20141028/">http://www.w3.org/TR/2014/REC-html5-20141028/</xspecref>.)
+</bibl>
+<bibl id="media-queries" key="Media Queries">Florian Rivoal,,
+<titleref href="http://www.w3.org/TR/2012/REC-css3-mediaqueries-20120619/">Media Queries</titleref>, W3C Recommendation, 19 June 2012. (See
+<xspecref href="http://www.w3.org/TR/2012/REC-css3-mediaqueries-20120619/">http://www.w3.org/TR/2012/REC-css3-mediaqueries-20120619/</xspecref>.)
 </bibl>
 <bibl id="mime" key="MIME">Ned Freed and Nathaniel Borenstein,  
 <titleref

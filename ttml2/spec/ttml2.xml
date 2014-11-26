@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 0933a6108611 2014/11/26 01:56:47 glenn $ -->
+<!-- $Id: ttml2.xml,v f59fffa8b65a 2014/11/26 21:54:39 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/26 01:56:47 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/26 21:54:39 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -124,7 +124,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/26 01:56:47 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/26 21:54:39 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -5261,7 +5261,7 @@ except profile matter, i.e., elements of the <loc href="#element-vocab-type-prof
 <loc href="#content-value-condition">&lt;condition&gt;</loc> expression.</p>
 <p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and the
 its <loc href="#content-value-condition">&lt;condition&gt;</loc> expression value evaluates to <code>false</code>,
-then the semantics of the element must be ignored.</p>
+then the semantics of the element and its descendant elements must be ignored.</p>
 <note role="elaboration">
 <p>For example, if a <loc href="#content-vocabulary-p"><el>p</el></loc> element specifies a <att>condition</att>
 attribute that evaluates to <code>false</code>, then the content of that element is ignored for presentation purposes.</p>
@@ -6107,6 +6107,11 @@ if the specified attribute value(s) differ from the value(s) of these font chara
 the specified attribute value(s) are to be used instead of the font characteristics encoded in the font resource.</p>
 <p>If any of the <att>family</att>, <att>range</att>, <att>style</att>, or <att>weight</att> attributes are not specified, then their values
 must be considered to be equal to the value(s) of the same named font characteristics encoded in the font resource.</p>
+<note role="guideline">
+<p>Authors are advised to use subset fonts wherever possible. A subset font is a syntactically valid font resource that
+removes unreferenced glyphs and unreferenced glyph metrics. In general, a subset font is tied to a specific document, since it may have been generated
+based on the actual character content of that document.</p>
+</note>
 <ednote>
 <name>Font Loading Semantics</name>
 <date>2014-11-21</date>
@@ -14054,7 +14059,7 @@ a specific element instance.</p>
 <eg xml:space="preserve">
 &lt;ttm:item
   <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <phrase role="reqattr">name</phrase> = (<loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>|<loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>)
+  <phrase role="reqattr">name</phrase> = <loc href="#metadata-value-item-name">&lt;item-name&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -14066,22 +14071,15 @@ a specific element instance.</p>
 </tr>
 </tbody>
 </table>
-<p>A <att>name</att> attribute must be specified to identify the name of the item. If a
-name takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
-then it must express an absolute URI. No standard name
-values of this attribute are defined by this version of this specification.</p>
+<p>A <att>name</att> attribute must be specified to identify the name of the item, the value of which must adhere to
+an <loc href="#metadata-value-item-name">&lt;item-name&gt;</loc> value expression.</p>
 <note role="elaboration">
-<p>This specification places no constraint on the appearance of multiple named metadata items that specify the same name.</p>
-<p>An external specification or a future version of this specification that defines a particular named item may
-constrain the context of usage of a named item, including placing constraints on whether multiple items with the same name can appear in a given context.</p>
+<p>No general constraint is placed on the appearance of multiple named metadata items that specify the same name; however,
+the definition of a specific named item may further constrain the context of use as well as the potential appearance of multiple items that share the same name.</p>
 </note>
-<p>The value of a named item is the character content of a <el>ttm:item</el> element, which may be empty.</p>
+<p>The value of a named metadata item is the character content of the <el>ttm:item</el> element, which may be empty.</p>
 <note role="elaboration">
-<p>A particular named item may be defined (by an external or future version of this specification) so as to
-imply a particular value in the absence of a specified value.</p>
-</note>
-<note role="elaboration">
-<p>No specific use of the <el>ttm:item</el> element is defined by this version of specification.</p>
+<p>A particular named item may be defined so as to imply a particular value in the absence of a specified value.</p>
 </note>
 <p>The use of a named metadata item is illustrated by the following example, which shows the use of a named metadata item
 in order to associate a <loc href="#terms-simple-data-embedding">simple data embedding</loc> with an original file name.</p>
@@ -14278,6 +14276,330 @@ in order to promote interoperability and collision avoidance.</p>
 </note>
 </div3>
 </div2> <!-- metadata-attribute-vocabulary -->
+<div2 id="metadata-value-expressions">
+<head>Metadata Value Expressions</head>
+<p>Metadata vocabulary may make use of the following expressions:</p>
+<ulist>
+<item><p><specref ref="metadata-value-item-name"/></p></item>
+</ulist>
+<div3 id="metadata-value-item-name">
+<head>&lt;item-name&gt;</head>
+<p>A &lt;item-name&gt; expression is used to specify the name of a metadata item expressed with a
+<loc href="#metadata-vocabulary-item">ttm:item</loc> element.</p>
+<table id="item-name-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;item-name&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;item-name&gt;
+  : <loc href="#metadata-value-named-item">&lt;named-item&gt;</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If an item name expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
+then it must express an absolute URI.</p>
+<p>All values of &lt;item-name&gt; that do not take the form of (1) an absolute URI or (2) a token that has the prefix <code>x-</code>
+are reserved for future standardization by the W3C.</p>
+</div3>
+<div3 id="metadata-value-named-item">
+<head>&lt;named-item&gt;</head>
+<p>A &lt;named-item&gt; value is one of an enumerated collection of named metadata items associated with a value by
+a <loc href="#metadata-vocabulary-item"><el>ttm:item</el></loc> element.</p>
+<table id="named-item-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;named-item&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;named-item&gt;
+  : cea608CaptionService
+  | cea608Channel
+  | cea608ContentAdvisory
+  | cea608CopyAndRedistributionControl
+  | cea608FieldStart
+  | cea608ProgramName
+  | cea608ProgramType
+  | cea708EasyReader
+  | cea708FCCMinimum
+  | cea708ServiceNumber
+  | creationDate
+  | creationCountryOfOrigin
+  | editor
+  | editorContact
+  | maximumCharactersPerRow
+  | originatingSystem
+  | originalEpisodeTitle
+  | originalFileName
+  | originalProgramTitle
+  | publisher
+  | readingSpeed
+  | revisionDate
+  | revisionNumber
+  | subtitleCount
+  | subtitleReferenceCode
+  | targetAspectRatio
+  | targetActiveFormatDescriptor
+  | targetBarData
+  | targetFormat
+  | translatedEpisodeTitle
+  | translatedProgramTitle
+  | translator
+  | translatorContact
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<ednote>
+<name>Elaborate Named Items</name>
+<date>2014-11-26</date>
+<edtext>Further specify the value syntax of certain named items, e.g., by adding external document references (CEA608) or by defining specific value syntax.</edtext>
+</ednote>
+<glist>
+<gitem id="named-item-cea608CaptionService">
+<label><code>cea608CaptionService</code></label>
+<def>
+<p>A string that expresses the field and channel mapping of a CEA-608 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea608Channel">
+<label><code>cea608Channel</code></label>
+<def>
+<p>A string that expresses the channel code of a CEA-608 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea608ContentAdvisory">
+<label><code>cea608ContentAdvisory</code></label>
+<def>
+<p>A string that expresses the content advisory packet information of a CEA-608 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea608CopyAndRedistributionControl">
+<label><code>cea608CopyAndRedistributionControl</code></label>
+<def>
+<p>A string that expresses the copy and redistribution control packet information of a CEA-608 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea608FieldStart">
+<label><code>cea608FieldStart</code></label>
+<def>
+<p>An integer that expresses the field start of a CEA-608 caption service, where the value
+is either 1 or 2.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea608ProgramName">
+<label><code>cea608ProgramName</code></label>
+<def>
+<p>A string that expresses the program name of a CEA-608 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea608ProgramType">
+<label><code>cea608ProgramType</code></label>
+<def>
+<p>A string that expresses the program type code of a CEA-608 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea708EasyReader">
+<label><code>cea708EasyReader</code></label>
+<def>
+<p>A boolean that expresses whether a CEA-708 caption service is characterized for use with an easy reader, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#boolean">xsd:boolean</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea708FCCMinimum">
+<label><code>cea708FCCMinimum</code></label>
+<def>
+<p>A boolean that expresses whether a CEA-708 caption service is characterized as conforming to minimum FCC decoder requirements, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#boolean">xsd:boolean</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-cea708ServiceNumber">
+<label><code>cea708ServiceNumber</code></label>
+<def>
+<p>An integer that expresses the service number of a CEA-708 caption service, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc> and is less than 32.</p>
+</def>
+</gitem>
+<gitem id="named-item-creationDate">
+<label><code>creationDate</code></label>
+<def>
+<p>A date that expresses the creation date of this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#date">xsd:date</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-creationCountryOfOrigin">
+<label><code>creationCountryOfOrigin</code></label>
+<def>
+<p>A string that expresses a the country or origin code associated with this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-editor">
+<label><code>editor</code></label>
+<def>
+<p>A string that expresses the name of one or more editors, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-editorContact">
+<label><code>editorContact</code></label>
+<def>
+<p>A string that expresses the contact details of one or more editors, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-maximumCharactersPerRow">
+<label><code>maximumCharactersPerRow</code></label>
+<def>
+<p>A non-negative integer that expresses the maximum number of characters per row (line) used in this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-originatingSystem">
+<label><code>originatingSystem</code></label>
+<def>
+<p>A free form string expressing the software and version used to create the document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-originalEpisodeTitle">
+<label><code>originalEpisodeTitle</code></label>
+<def>
+<p>A string that expresses the episode title in the original language, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-originalFileName">
+<label><code>originalFileName</code></label>
+<def>
+<p>A string that expresses the original file name of a <loc href="#terms-data-resource">data resource</loc>, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+<p>A <code>originalFileName</code> item may specified as a descendant element of a <loc href="#embedded-content-vocabulary-data">data</loc> element
+in order to associate the <loc href="#terms-data-resource">data resource</loc> represented by that <loc href="#embedded-content-vocabulary-data">data</loc> element
+with an original file name.</p>
+</def>
+</gitem>
+<gitem id="named-item-originalProgramTitle">
+<label><code>originalProgramTitle</code></label>
+<def>
+<p>A string that expresses the program title in the original language, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-publisher">
+<label><code>publisher</code></label>
+<def>
+<p>A string that expresses the name of one or more publishers, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-readingSpeed">
+<label><code>readingSpeed</code></label>
+<def>
+<p>An integer that expresses the reading speed in words per minute, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-revisionDate">
+<label><code>revisionDate</code></label>
+<def>
+<p>A date that expresses the last revision date of this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#date">xsd:date</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-revisionNumber">
+<label><code>revisionNumber</code></label>
+<def>
+<p>A non-negative integer that expresses the revision number of this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-subtitleCount">
+<label><code>subtitleCount</code></label>
+<def>
+<p>A non-negative integer that expresses the number of subtitles (captions) in this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-subtitleReferenceCode">
+<label><code>subtitleReferenceCode</code></label>
+<def>
+<p>A string that expresses a subtitle reference code, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-targetAspectRatio">
+<label><code>targetAspectRatio</code></label>
+<def>
+<p>A string that expresses the target video's aspect ratio, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-targetActiveFormatDescriptor">
+<label><code>targetActiveFormatDescriptor</code></label>
+<def>
+<p>A string that expresses the target video's active format descriptor, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-targetBarData">
+<label><code>targetBarData</code></label>
+<def>
+<p>A string that expresses the target video's bar data, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-targetFormat">
+<label><code>targetFormat</code></label>
+<def>
+<p>A string that expresses the target subtitle or caption format, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-translatedEpisodeTitle">
+<label><code>translatedEpisodeTitle</code></label>
+<def>
+<p>A string that expresses the episode title in the translated (local) language, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-translatedProgramTitle">
+<label><code>translatedProgramTitle</code></label>
+<def>
+<p>A string that expresses the program title in the translated (local) language, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-translator">
+<label><code>translator</code></label>
+<def>
+<p>A string that expresses the name of one or more translators, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+<gitem id="named-item-translatorContact">
+<label><code>translatorContact</code></label>
+<def>
+<p>A string that expresses the contact details of one or more translators, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
+</glist>
+</div3>
+
+</div2> <!-- metadata-value-expressions -->
 </div1> <!-- metadata -->
 </body>
 <back>

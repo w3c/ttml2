@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 277f01f27bf7 2014/11/28 00:15:57 glenn $ -->
+<!-- $Id: ttml2.xml,v 272442265008 2014/11/29 00:12:47 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/28 00:15:57 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/29 00:12:47 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/28 00:15:57 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/29 00:12:47 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -185,6 +185,12 @@ particular distribution format is TTML (labeled as "DFXP" in the figure).</p>
 </tr>
 </tbody>
 </table>
+<p></p>
+<ednote>
+<name>Revise System Model</name>
+<date>2014-11-27</date>
+<edtext>Update system model diagram to reflect current and expected usage. Eliminate reference to DFXP.</edtext>
+</ednote>
 </div2> <!-- model -->
 <div2 id="example">
 <head>Document Example</head>
@@ -2842,6 +2848,7 @@ Styling Attributes
 <loc href="#style-attribute-origin">tts:origin</loc>,
 <loc href="#style-attribute-overflow">tts:overflow</loc>,
 <loc href="#style-attribute-padding">tts:padding</loc>,
+<loc href="#style-attribute-position">tts:position</loc>,
 <loc href="#style-attribute-ruby">tts:ruby</loc>,
 <loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
 <loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc>,
@@ -4830,6 +4837,7 @@ zero or one <el>body</el> element.</p>
 &lt;tt
   <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#style-attribute-position">tts:position</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
@@ -4845,7 +4853,7 @@ zero or one <el>body</el> element.</p>
 </table>
 <p>The <loc href="#terms-root-temporal-extent">root temporal extent</loc>, i.e., the time interval over which a <loc href="#terms-document-instance">document instance</loc> is active, has an implicit duration that is equal to the
 implicit duration of the <el>body</el> element of the document, if the <el>body</el> element is present, or zero, if the <el>body</el> element is absent.</p>
-<p>If the <att>tts:extent</att> attribute is specified on the <el>tt</el>
+<p>If the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute is specified on the <el>tt</el>
 element, then it must adhere to <specref ref="style-attribute-extent"/>, in which case it
 specifies the spatial extent of the <loc href="#terms-root-container-region">root container region</loc> in
 which <loc href="#terms-content-region">content regions</loc> are located and presented. If no <att>tts:extent</att>
@@ -4869,8 +4877,15 @@ in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bib
 This would permit, for example, the interchange of information that reflects the
 the semantics of <bibref ref="cea708e"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
 </note>
-<p>Except for the <att>tts:extent</att> attribute described above, an attribute in the TT Style Namespace should not be specified on the <el>tt</el> element
-unless it denotes an inheritable style property, and, if specified, must be ignored for the purpose of non-validation processing. In the case of validation
+
+<p>If the <loc href="#style-attribute-position"><att>tts:position</att></loc> attribute is specified on the <el>tt</el>
+element, then it must adhere to <specref ref="style-attribute-position"/>, in which case it
+specifies the position of the <loc href="#terms-root-container-region">root container region</loc> relative to a reference positioning area.</p>
+
+<p>Except for the <att>tts:extent</att> and <att>tts:position</att> attributes described above, an attribute in the TT Style Namespace should not
+be specified on the <el>tt</el> element unless it denotes an inheritable style property, in which case such inheritable style property is available
+for <loc href="#semantics-style-inheritance-root">root style inheritance</loc>. If a non-inheritable style property is specified, then
+it must be ignored for the purpose of non-validation processing. In the case of validation
 processing, such usage should be reported as a warning, or, if strict validation is performed, as an error.</p>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
@@ -5083,10 +5098,15 @@ are available for style inheritance by descendant <loc href="#terms-content-elem
 <el>span</el>, and
 <el>br</el>.</p>
 </note>
-<p>If a <att>tts:extent</att> or <att>tts:origin</att> style attribute is specified on a <el>div</el> element, then that specification must be considered to be
+<p>If a
+<loc href="#style-attribute-position"><att>tts:extent</att></loc>,
+<loc href="#style-attribute-position"><att>tts:origin</att></loc>, or
+<loc href="#style-attribute-position"><att>tts:position</att></loc>
+style attribute is specified on a <el>div</el> element, then that specification must be considered to be
 equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> element, where the
-extent or origin of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of the respective attribute. If both style attributes are specified, then both apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
+extent, origin, or position of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of the respective attribute. If any of these style attributes are specified,
+then they apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>div</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
@@ -5149,10 +5169,15 @@ in a <loc href="#terms-document-instance">document instance</loc> are available 
 descendant <loc href="#terms-content-element">content elements</loc> such as <el>span</el> and
 <el>br</el>.</p>
 </note>
-<p>If a <att>tts:extent</att> or <att>tts:origin</att> style attribute is specified on a <el>p</el> element, then that specification must be considered to be
+<p>If a
+<loc href="#style-attribute-position"><att>tts:extent</att></loc>,
+<loc href="#style-attribute-position"><att>tts:origin</att></loc>, or
+<loc href="#style-attribute-position"><att>tts:position</att></loc>
+style attribute is specified on a <el>p</el> element, then that specification must be considered to be
 equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>p</el> element, where the
-extent or origin of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of the respective attribute. If both style attributes are specified, then both apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
+extent, origin, or position of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of the respective attribute. If any of these style attributes are specified,
+then they apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>p</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
@@ -7029,6 +7054,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-origin"/></p></item>
 <item><p><specref ref="style-attribute-overflow"/></p></item>
 <item><p><specref ref="style-attribute-padding"/></p></item>
+<item><p><specref ref="style-attribute-position"/></p></item>
 <item><p><specref ref="style-attribute-ruby"/></p></item>
 <item><p><specref ref="style-attribute-rubyAlign"/></p></item>
 <item><p><specref ref="style-attribute-rubyOffset"/></p></item>
@@ -7050,6 +7076,14 @@ that support inline style specifications:</p>
 <edtext>Consider adding support for <code>tts:borderColor</code>, <code>tts:borderStyle</code>, and <code>tts:borderWidth</code>
 in order to provide a means to independently express styling of the four different borders (top, right, bottom, left). As currently specified, i.e., with only the
 <code>tts:border</code> attribute, one can only express the four borders using the same color, style, and width.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Background Clip, Origin, Size</name>
+<date>2014-11-27</date>
+<edtext>Consider adding support for <att>tts:backgroundClip</att>,
+<att>tts:backgroundOrigin</att>, and
+<att>tts:backgroundSize</att>.</edtext>
 </ednote>
 <p>Unless explicitly permitted by an element type definition, an attribute in the TT Style Namespace should not be specified on an element
 unless it either applies to that element or denotes an inheritable style property. If it does not apply to that element
@@ -7211,13 +7245,13 @@ that defined by <bibref ref="xsl11"/>, &sect; 7.8.2.</p>
 <div3 id="style-attribute-backgroundImage">
 <head>tts:backgroundImage</head>
 <p>The <att>tts:backgroundImage</att> attribute is used to specify a style property that
-defines the background image of a region or an area generated by content flowed into a region.</p>
-<p>A background image should not be used to represent actual content, such as a raster image
-rendering of a caption. Rather, the use of a background image should be limited to styling
-the background of an element where the content is represented by other means. If it is necessary
-to represent content using a raster image, then it should be expressed by means of an
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element in a block or inline
-context.</p>
+designates a background <loc href="#non-content-image">non-content image</loc> to be rendered as
+the background image of a region or an area generated by content flowed into a region.</p>
+<p>A <att>tts:backgroundImage</att> attribute should not make reference to a <loc href="#content-image">content image</loc>
+used to represent actual content, such as a raster image rendering of a caption. Rather, the use of <att>tts:backgroundImage</att>
+should be limited to styling the background of an element where the content is represented by other means. If it is necessary
+to represent content using a raster image, then it should be expressed by means of an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
+element in a block or inline context.</p>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
@@ -7322,7 +7356,7 @@ that defined by <bibref ref="xsl11"/>, &sect; 7.8.3.</p>
 <div3 id="style-attribute-backgroundPosition">
 <head>tts:backgroundPosition</head>
 <p>The <att>tts:backgroundPosition</att> attribute is used to specify a style property that
-defines whether and how a background image is positioned (tiled) into a region or an area generated by content flowed into a region.</p>
+defines whether and how a background image is positioned in a region or an area generated by content flowed into a region.</p>
 <p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
@@ -7333,7 +7367,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<loc href="#style-value-position">&lt;position&gt;</loc> <loc href="#style-value-position">&lt;position&gt;</loc>?
+<loc href="#style-value-position">&lt;position&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -7367,6 +7401,12 @@ as a style property only to those element types indicated in the following table
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
+<p>A percentage value component for a horizontal position offset is relative to the width of the
+positioning area minus the width of the background image.
+A percentage value component for a vertical position offset is relative to the height of the
+positioning area minus the height of the background image.
+The positioning area corresponds with the padding rectangle (padding box) of each area generated
+by applicable element.</p>
 <p>The <att>tts:backgroundPosition</att> style is illustrated by the following example.</p>
 <table id="style-attribute-backgroundPosition-example-1" role="example">
 <caption>Example Fragment &ndash; Background Position</caption>
@@ -7377,7 +7417,7 @@ span.</p>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="306px 114px"/&gt;
   &lt;style tts:backgroundImage="#embeddedImage"/&gt;
-  &lt;style <phrase role="strong">tts:backgroundPosition="center center"</phrase>/&gt;
+  &lt;style <phrase role="strong">tts:backgroundPosition="center"</phrase>/&gt;
 &lt;/region&gt;
 </eg>
 </td>
@@ -7492,9 +7532,9 @@ as a style property only to those element types indicated in the following table
 <td><emph>Values:</emph></td>
 <td>
 [
-<loc href="#style-value-border-width">&lt;border-width&gt;</loc> ||
-<loc href="#style-value-border-style">&lt;border-style&gt;</loc> ||
-<loc href="#style-value-border-color">&lt;border-color&gt;</loc>
+<loc href="#style-value-borderWidth">&lt;borderWidth&gt;</loc> ||
+<loc href="#style-value-borderStyle">&lt;borderStyle&gt;</loc> ||
+<loc href="#style-value-borderColor">&lt;borderColor&gt;</loc>
 ]
 </td>
 </tr>
@@ -9229,6 +9269,125 @@ mode relative padding values as defined by <bibref ref="xsl11"/>,
 &sect; 7.8.31, 7.8.32, 7.8.33, and 7.8.34.</p>
 </note>
 </div3>
+<div3 id="style-attribute-position">
+<head>tts:position</head>
+<p>The <att>tts:position</att> attribute is used as an alternative way to specify the position
+of a region area with respect the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<p>This attribute may be specified by any element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-position" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-position">&lt;position&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>center</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#layout-vocabulary-region"><el>region</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td><emph>see prose</emph></td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete, continuous</td>
+</tr>
+</tbody>
+</table>
+<p>A percentage value component for a horizontal position offset is relative to the width of the
+positioning area minus the width of the associated region.
+A percentage value component for a vertical position offset is relative to the height of the
+positioning area minus the height of the associated region.</p>
+<p>If specified on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then, if a
+<loc href="#terms-related-media-object">related media object</loc> exists, the positioning area corresponds with
+the <loc href="#terms-related-media-object-region">related media object region</loc>, or, if no
+<loc href="#terms-related-media-object">related media object</loc> exists, the positioning area corresponds with
+an unspecified presentation region determined by the <loc href="#terms-document-processing-context">document processing context</loc>.
+For other applicable element types, the positioning area corresponds with the content rectangle (content box)
+of the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<note role="elaboration">
+<p>The <loc href="#terms-root-container-region">root container region</loc> has no border or padding; consequently, its border, padding, and
+content rectangles (boxes) are coterminous.</p>
+</note>
+<p>If a <att>tts:position</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
+position of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of this attribute.</p>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
+<note role="elaboration">
+<p>In this context, the phrase <emph>closest supported value</emph> means the value for which the Euclidean distance between
+the computed position and the supported position is minimized. If there are multiple closest supported values equally distant from
+the computed value, then the value least distant from [0,0], i.e., closest to the coordinate space position, is used.</p>
+</note>
+<p>The <att>tts:position</att> style is illustrated by the following example, which positions a region so that it is
+centered in the horizontal dimension and has a bottom edge 10% above the bottom of the positioning area in the vertical dimension.</p>
+<table id="style-attribute-position-example-1" role="example">
+<caption>Example Fragment &ndash; Position</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;region xml:id="r1"&gt;
+  &lt;style <phrase role="strong">tts:position="center bottom 10%"</phrase>/&gt;
+  &lt;style tts:extent="308px 92px"/&gt;
+  &lt;style tts:backgroundColor="black"/&gt;
+  &lt;style tts:color="white"/&gt;
+  &lt;style tts:displayAlign="center"/&gt;
+  &lt;style tts:textAlign="center"/&gt;
+&lt;/region&gt;
+...
+&lt;p region="r1"&gt;
+  "To dine!" she shrieked in dragon-wrath.&lt;br/&gt;
+  "To swallow wines all foam and froth!&lt;br/&gt;
+   To simper at a table-cloth!"
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<ednote>
+<name>Border Example Image</name>
+<date>2011-11-28</date>
+<edtext>Insert image of position example.</edtext>
+</ednote>
+<!--
+<table id="style-attribute-position-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Position</caption>
+<tbody>
+<tr>
+<td><graphic source="images/position.png" alt="TTML position style property"/></td>
+</tr>
+</tbody>
+</table>
+-->
+<note role="derivation">
+<p>The semantics of the style property represented by this attribute are based upon 
+the <code>background-position</code> property defined by <bibref ref="css3-bb"/>, &sect; 3.6.</p>
+</note>
+</div3>
+
 <div3 id="style-attribute-ruby">
 <head>tts:ruby</head>
 <p>The <att>tts:ruby</att> attribute is used to specify the application of ruby
@@ -10814,9 +10973,9 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <p>Style property values include the use of the following expressions:</p>
 <ulist>
 <item><p><specref ref="style-value-alpha"/></p></item>
-<item><p><specref ref="style-value-border-color"/></p></item>
-<item><p><specref ref="style-value-border-style"/></p></item>
-<item><p><specref ref="style-value-border-width"/></p></item>
+<item><p><specref ref="style-value-borderColor"/></p></item>
+<item><p><specref ref="style-value-borderStyle"/></p></item>
+<item><p><specref ref="style-value-borderWidth"/></p></item>
 <item><p><specref ref="style-value-color"/></p></item>
 <item><p><specref ref="style-value-digit"/></p></item>
 <item><p><specref ref="style-value-familyName"/></p></item>
@@ -10825,6 +10984,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
 <item><p><specref ref="style-value-namedColor"/></p></item>
+<item><p><specref ref="style-value-position"/></p></item>
 </ulist>
 <p>In the syntax representations defined in this section, no
 linear whitespace (LWSP) is implied or permitted between tokens
@@ -10864,17 +11024,17 @@ the computed opacity and the supported opacity is minimized. If there are multip
 the computed value, then the value most distant from 0, i.e., the greatest opacity, is used.</p>
 </note>
 </div3>
-<div3 id="style-value-border-color">
-<head>&lt;border-color&gt;</head>
-<p>A &lt;border-color&gt; expression is used to express the color of one
+<div3 id="style-value-borderColor">
+<head>&lt;borderColor&gt;</head>
+<p>A &lt;borderColor&gt; expression is used to express the color of one
 or more borders.</p>
-<table id="border-color-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;border-color&gt;</caption>
+<table id="borderColor-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;borderColor&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;border-color&gt;
+&lt;borderColor&gt;
   : <loc href="#style-value-color">&lt;color&gt;</loc>
 </eg>
 </td>
@@ -10882,17 +11042,17 @@ or more borders.</p>
 </tbody>
 </table>
 </div3>
-<div3 id="style-value-border-style">
-<head>&lt;border-style&gt;</head>
-<p>A &lt;border-style&gt; expression is used to express the style of one
+<div3 id="style-value-borderStyle">
+<head>&lt;borderStyle&gt;</head>
+<p>A &lt;borderStyle&gt; expression is used to express the style of one
 or more borders.</p>
-<table id="border-style-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;border-style&gt;</caption>
+<table id="borderStyle-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;borderStyle&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;border-style&gt;
+&lt;borderStyle&gt;
   : none
   | dotted
   | dashed
@@ -10909,17 +11069,17 @@ to be implementation dependent.</p>
 it must be interpreted as if a style of <code>solid</code> were specified; however, an implementation that
 supports borders must minimally support the <code>none</code> and <code>solid</code> values.</p>
 </div3>
-<div3 id="style-value-border-width">
-<head>&lt;border-width&gt;</head>
-<p>A &lt;border-width&gt; expression is used to express the width of one
+<div3 id="style-value-borderWidth">
+<head>&lt;borderWidth&gt;</head>
+<p>A &lt;borderWidth&gt; expression is used to express the width of one
 or more borders.</p>
-<table id="border-width-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;border-width&gt;</caption>
+<table id="borderWidth-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;borderWidth&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;border-width&gt;
+&lt;borderWidth&gt;
   : thin
   | medium
   | thick
@@ -11013,15 +11173,6 @@ the computed value, then the value least distant from opaque black <code>rgb(0,0
 </tr>
 </tbody>
 </table>
-</div3>
-<div3 id="style-value-duration">
-<head>&lt;duration&gt;</head>
-<p><emph>This section is non-normative.</emph></p>
-<note>
-<p>The information from this section has been removed due to lack of any normative
-use within this specification. This section is retained in its empty form
-in order to prevent section renumbering.</p>
-</note>
 </div3>
 <div3 id="style-value-familyName">
 <head>&lt;familyName&gt;</head>
@@ -11299,23 +11450,361 @@ defined by <bibref ref="srgb"/>.</p>
 subset of the set of named colors specified by <bibref ref="svg11"/>, &sect; 4.2.</p>
 </note>
 </div3>
-<div3 id="style-value-quotedString">
-<head>&lt;quotedString&gt;</head>
-<p><emph>This section is non-normative.</emph></p>
-<note>
-<p>The information from this section has been incorporated into
-<specref ref="style-value-familyName"/>. This section is retained in its empty form
-in order to prevent section renumbering.</p>
-</note>
-</div3>
-<div3 id="style-value-string">
-<head>&lt;string&gt;</head>
-<p><emph>This section is non-normative.</emph></p>
-<note>
-<p>The information from this section has been incorporated into
-<specref ref="style-value-familyName"/>. This section is retained in its empty form
-in order to prevent section renumbering.</p>
-</note>
+<div3 id="style-value-position">
+<head>&lt;position&gt;</head>
+<p>A &lt;position&gt; expression is used to indirectly determine the origin of an area or an image with respect to a reference area.</p>
+<table id="position-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;position&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;position&gt;
+  : offset-position-h                       // single component value
+  | offset-position-v                       // single component value
+  | offset-position-h offset-position-v     // two component values
+  | position-keyword-h edge-offset-v        // three component values
+  | position-keyword-v edge-offset-h        // three component values
+  | edge-offset-h position-keyword-v        // three component values
+  | edge-offset-v position-keyword-h        // three component values
+  | edge-offset-h edge-offset-v             // four component values
+  | edge-offset-v edge-offset-h             // four component values
+
+offset-position-h
+  : position-keyword-h
+  | <loc href="#style-value-length">&lt;length&gt;</loc>
+
+offset-position-v
+  : position-keyword-v
+  | <loc href="#style-value-length">&lt;length&gt;</loc>
+
+edge-offset-h
+  : edge-keyword-h <loc href="#style-value-length">&lt;length&gt;</loc>
+
+edge-offset-v
+  : edge-keyword-v <loc href="#style-value-length">&lt;length&gt;</loc>
+
+position-keyword-h
+  : center
+  | edge-keyword-h
+
+position-keyword-v
+  : center
+  | edge-keyword-v
+
+edge-keyword-h
+  : left
+  | right
+
+edge-keyword-v
+  : top
+  | bottom
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A &lt;position&gt; expression may consist of one to four component values as follows:</p>
+<glist>
+<gitem>
+<label>one component</label>
+<def>
+<p>either a horizontal offset (<code>offset-position-h</code>) or a vertical offset (<code>offset-position-v</code>)</p>
+</def>
+</gitem>
+<gitem>
+<label>two components</label>
+<def>
+<p>a horizontal offset (<code>offset-position-h</code>) followed by a vertical offset (<code>offset-position-v</code>)</p>
+</def>
+</gitem>
+<gitem>
+<label>three components</label>
+<def>
+<p>a horizontal edge offset (<code>edge-offset-position-h</code>) and a vertical edge offset (<code>edge-offset-position-v</code>), in any order, where one offset is a keyword and the other offset is a keyword <loc href="#style-value-length">&lt;length&gt;</loc> pair</p>
+</def>
+</gitem>
+<gitem>
+<label>four components</label>
+<def>
+<p>a horizontal edge offset (<code>edge-offset-position-h</code>) and a vertical edge offset (<code>edge-offset-position-v</code>), in any order, where both offsets are keyword <loc href="#style-value-length">&lt;length&gt;</loc> pairs</p>
+</def>
+</gitem>
+</glist>
+<p>Every &lt;position&gt; expression can be translated to a four component equivalent of the form
+<code>left <loc href="#style-value-length">&lt;length&gt;</loc> top <loc href="#style-value-length">&lt;length&gt;</loc></code> by means of the following
+equivalence tables:</p>
+<table id="position-expression-one-component-equivalents" role="common">
+<caption>One Component Equivalents</caption>
+<col width="25%"/>
+<col width="25%"/>
+<tbody>
+<tr>
+<th>Value</th>
+<th>Equivalent</th>
+</tr>
+<tr>
+<td><code>center</code></td>
+<td><code>center center</code></td>
+</tr>
+<tr>
+<td><code>left</code></td>
+<td><code>left center</code></td>
+</tr>
+<tr>
+<td><code>right</code></td>
+<td><code>right center</code></td>
+</tr>
+<tr>
+<td><code>top</code></td>
+<td><code>center top</code></td>
+</tr>
+<tr>
+<td><code>bottom</code></td>
+<td><code>center bottom</code></td>
+</tr>
+<tr>
+<td><code><loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code><loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="position-expression-two-component-equivalents" role="common">
+<caption>Two Component Equivalents</caption>
+<col width="25%"/>
+<col width="25%"/>
+<tbody>
+<tr>
+<th>Value</th>
+<th>Equivalent</th>
+</tr>
+<tr>
+<td><code>center center</code></td>
+<td><code>left 50% top 50%</code></td>
+</tr>
+<tr>
+<td><code>center top</code></td>
+<td><code>left 50% top 0%</code></td>
+</tr>
+<tr>
+<td><code>center bottom</code></td>
+<td><code>left 50% top 100%</code></td>
+</tr>
+<tr>
+<td><code>center <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 50% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>left center</code></td>
+<td><code>left 0% top 50%</code></td>
+</tr>
+<tr>
+<td><code>left top</code></td>
+<td><code>left 0% top 0%</code></td>
+</tr>
+<tr>
+<td><code>left bottom</code></td>
+<td><code>left 0% top 100%</code></td>
+</tr>
+<tr>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 0% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>right center</code></td>
+<td><code>left 100% top 50%</code></td>
+</tr>
+<tr>
+<td><code>right top</code></td>
+<td><code>left 100% top 0%</code></td>
+</tr>
+<tr>
+<td><code>right bottom</code></td>
+<td><code>left 100% top 100%</code></td>
+</tr>
+<tr>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 100% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code><loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 50%</code></td>
+</tr>
+<tr>
+<td><code><loc href="#style-value-length">&lt;length&gt;</loc> top</code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 0%</code></td>
+</tr>
+<tr>
+<td><code><loc href="#style-value-length">&lt;length&gt;</loc> bottom</code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 100%</code></td>
+</tr>
+<tr>
+<td><code><loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="position-expression-three-component-equivalents" role="common">
+<caption>Three Component Equivalents</caption>
+<col width="25%"/>
+<col width="25%"/>
+<tbody>
+<tr>
+<th>Value</th>
+<th>Equivalent</th>
+</tr>
+<tr>
+<td><code>bottom left <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 100%</code></td>
+</tr>
+<tr>
+<td><code>bottom right <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top 100%</code></td>
+</tr>
+<tr>
+<td><code>bottom <loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
+<td><code>left 50% bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>bottom <loc href="#style-value-length">&lt;length&gt;</loc> left</code></td>
+<td><code>left 0% bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>bottom <loc href="#style-value-length">&lt;length&gt;</loc> right</code></td>
+<td><code>left 100% bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>center bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 50% bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>center left <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 50%</code></td>
+</tr>
+<tr>
+<td><code>center right <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top 50%</code></td>
+</tr>
+<tr>
+<td><code>center top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 50% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>left bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 0% bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>left top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 0% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> bottom</code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 100%</code></td>
+</tr>
+<tr>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 50%</code></td>
+</tr>
+<tr>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top</code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 0%</code></td>
+</tr>
+<tr>
+<td><code>right bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 100% bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>right top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left 100% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> bottom</code></td>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top 100%</code></td>
+</tr>
+<tr>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top 50%</code></td>
+</tr>
+<tr>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top</code></td>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top 0%</code></td>
+</tr>
+<tr>
+<td><code>top left <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 0%</code></td>
+</tr>
+<tr>
+<td><code>top right <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+<td><code>right <loc href="#style-value-length">&lt;length&gt;</loc> top 0%</code></td>
+</tr>
+<tr>
+<td><code>top <loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
+<td><code>left 50% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>top <loc href="#style-value-length">&lt;length&gt;</loc> left</code></td>
+<td><code>left 100% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>top <loc href="#style-value-length">&lt;length&gt;</loc> right</code></td>
+<td><code>left 100% top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="position-expression-four-component-equivalents" role="common">
+<caption>Four Component Equivalents</caption>
+<col width="25%"/>
+<col width="25%"/>
+<tbody>
+<tr>
+<th>Value</th>
+<th>Equivalent</th>
+</tr>
+<tr>
+<td><code>bottom <loc href="#style-value-length">&lt;length-v&gt;</loc> left <loc href="#style-value-length">&lt;length-h&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length-h&gt;</loc> top (100% - <loc href="#style-value-length">&lt;length-v&gt;</loc>)</code></td>
+</tr>
+<tr>
+<td><code>bottom <loc href="#style-value-length">&lt;length-v&gt;</loc> right <loc href="#style-value-length">&lt;length-h&gt;</loc></code></td>
+<td><code>left (100% - <loc href="#style-value-length">&lt;length-h&gt;</loc>) top (100% - <loc href="#style-value-length">&lt;length-v&gt;</loc>)</code></td>
+</tr>
+<tr>
+<td><code>left <loc href="#style-value-length">&lt;length-h&gt;</loc> bottom <loc href="#style-value-length">&lt;length-v&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length-h&gt;</loc> top (100% - <loc href="#style-value-length">&lt;length-v&gt;</loc>)</code></td>
+</tr>
+<tr>
+<td><code>right <loc href="#style-value-length">&lt;length-h&gt;</loc> bottom <loc href="#style-value-length">&lt;length-v&gt;</loc></code></td>
+<td><code>left (100% - <loc href="#style-value-length">&lt;length-h&gt;</loc>) top (100% - <loc href="#style-value-length">&lt;length-v&gt;</loc>)</code></td>
+</tr>
+<tr>
+<td><code>right <loc href="#style-value-length">&lt;length-h&gt;</loc> top <loc href="#style-value-length">&lt;length-v&gt;</loc></code></td>
+<td><code>left (100% - <loc href="#style-value-length">&lt;length-h&gt;</loc>) top <loc href="#style-value-length">&lt;length-v&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>top <loc href="#style-value-length">&lt;length-v&gt;</loc> left <loc href="#style-value-length">&lt;length-h&gt;</loc></code></td>
+<td><code>left <loc href="#style-value-length">&lt;length-h&gt;</loc> top <loc href="#style-value-length">&lt;length-v&gt;</loc></code></td>
+</tr>
+<tr>
+<td><code>top <loc href="#style-value-length">&lt;length-v&gt;</loc> right <loc href="#style-value-length">&lt;length-h&gt;</loc></code></td>
+<td><code>left (100% - <loc href="#style-value-length">&lt;length-h&gt;</loc>) top <loc href="#style-value-length">&lt;length-v&gt;</loc></code></td>
+</tr>
+</tbody>
+</table>
+<p>If a <loc href="#style-value-length">&lt;length&gt;</loc> component is expressed as a percentage, then that percentage is interpreted in relation to
+some reference dimension, where the reference dimension is defined by the context of use.</p>
+<p>A <loc href="#style-value-length">&lt;length&gt;</loc> component of a &lt;position&gt; expression may be positive or negative. Positive lengths are interpreted as
+insets from the referenced edge, while negative lengths are interpreted as outsets from the referenced edge. For example, an inset from the <code>left</code>
+edge is located to the right of that edge (if non-zero), while an outset from the <code>left</code> edge is located to the left of that edge (if non-zero). In
+contrast, an inset from the <code>right</code> edge is located to the left of that edge (if non-zero), while an outset from the <code>right</code> edge
+is located to the right of that edge (if non-zero). A similar arrangement holds for <code>top</code> and <code>bottom</code> edges.</p>
+<p>When performing four component equivalent conversion, the expression <code>(100% - <loc href="#style-value-length">&lt;length-h&gt;</loc>)</code>
+is to be interpreted as the difference between 100% and the percentage equivalent of the <loc href="#style-value-length">&lt;length-h&gt;</loc>
+expression. Similarly, the expression <code>(100% - <loc href="#style-value-length">&lt;length-v&gt;</loc>)</code>
+is to be interpreted as the difference between 100% and the percentage equivalent of the <loc href="#style-value-length">&lt;length-v&gt;</loc> expression.
+In both cases, the resulting difference may be a negative percentage.</p>
 </div3>
 </div2> <!-- styling-style-value-expressions -->
 <div2 id="semantics-style-resolution">
@@ -11505,8 +11994,8 @@ using:
 </p>
 <ulist>
 <item><p><loc href="#semantics-style-inheritance-content">content style inheritance</loc></p></item>
-<item><p><loc href="#semantics-style-inheritance-content">region style inheritance</loc></p></item>
-<item><p><loc href="#semantics-style-inheritance-content">root style inheritance</loc></p></item>
+<item><p><loc href="#semantics-style-inheritance-region">region style inheritance</loc></p></item>
+<item><p><loc href="#semantics-style-inheritance-root">root style inheritance</loc></p></item>
 </ulist>
 <p>For the purpose of determining inherited styles, the element hierarchy of
 an intermediate synchronic document form of a <loc href="#terms-document-instance">document instance</loc> must be used, where
@@ -12158,6 +12647,11 @@ and, as such, do not require (or admit) the specification of independent timing.
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>region</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
+<p>If both <loc href="#style-attribute-origin"><att>tts:origin</att></loc> and <loc href="#style-attribute-position"><att>tts:position</att></loc> attributes are present
+on a <el>region</el> element, then the <loc href="#style-attribute-origin"><att>tts:origin</att></loc> must be ignored for the purpose of presentation processing.
+If neither <loc href="#style-attribute-origin"><att>tts:origin</att></loc> nor <loc href="#style-attribute-position"><att>tts:position</att></loc> attribute is present and
+if the computed value of the the <loc href="#parameter-attribute-version"><att>ttp:version</att></loc> attribute on the root <el>tt</el> element is two (2) or greater, then
+the semantics of the initial value of the <loc href="#style-attribute-position"><att>tts:position</att></loc> attribute apply for the purpose of presentation processing; otherwise, the semantics of the initial value of the <loc href="#style-attribute-origin"><att>tts:origin</att></loc> attribute apply.</p>
 <p>If a <loc
 href="#metadata-attribute-role"><att>ttm:role</att></loc> attribute is
 specified on a <el>region</el> element, then it must adhere to the
@@ -15144,6 +15638,12 @@ TT Feature Namespace base URI.</p>
 <date>2014-10-02</date>
 <edtext>Add features to cover new style properties: border, fontVariantPosition, ruby, rubyAlign, rubyOffset, rubyPosition, textOrientation, etc.</edtext>
 </ednote>
+<p></p>
+<ednote>
+<name>New embedded content features</name>
+<date>2014-11-27</date>
+<edtext>Add features to cover new embedded content features: audio, data, font, image, etc.</edtext>
+</ednote>
 <div3 id="feature-animation">
 <head>#animation</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animation</code>
@@ -17889,16 +18389,20 @@ CEA-708-D,
 <titleref href="http://www.ce.org/">Digital Television (DTV) Closed Captioning</titleref>, CEA Standard,
 Consumer Electronics Association (CEA).
 </bibl>
+<bibl id="css3-bb" key="CSS Backgrounds and Borders">Bert Bos, Elika Etamad and Brad Kemper,
+<titleref href="http://dev.w3.org/csswg/css3-background/">CSS Backgrounds and Borders Module Level 3</titleref>, W3C Editor's Draft. (See
+<xspecref href="http://dev.w3.org/csswg/css3-background/">http://dev.w3.org/csswg/css-backgrounds/</xspecref>.)
+</bibl>
+<bibl id="css3-fonts" key="CSS Fonts">John Daggett,
+<titleref href="http://dev.w3.org/csswg/css-fonts/">CSS Fonts Module Level 3</titleref>, W3C Editor's Draft. (See
+<xspecref href="http://dev.w3.org/csswg/css-fonts/">http://dev.w3.org/csswg/css-fonts/</xspecref>.)
+</bibl>
 <bibl id="cssruby" key="CSS Ruby">Elika Etemad and Koji Ishii,
 <titleref href="http://dev.w3.org/csswg/css-ruby-1/">CSS Ruby Layout Module Level 1</titleref>
 W3C Editor's Draft.
 (See <xspecref href="http://dev.w3.org/csswg/css-ruby-1/">http://dev.w3.org/csswg/css-ruby-1/</xspecref>.)
 </bibl>
-<bibl id="css3-fonts" key="CSS Fonts Module Level 3">John Daggett,
-<titleref href="http://dev.w3.org/csswg/css-fonts/">CSS Fonts Module Level 3</titleref>, W3C Editor's Draft. (See
-<xspecref href="http://dev.w3.org/csswg/css-fonts/">http://dev.w3.org/csswg/css-fonts/</xspecref>.)
-</bibl>
-<bibl id="css3-wm" key="CSS Writing Modes Level 3">Elika Etamad and Koji Ishii,
+<bibl id="css3-wm" key="CSS Writing Modes">Elika Etamad and Koji Ishii,
 <titleref href="http://dev.w3.org/csswg/css-writing-modes-3/">CSS Writing Modes Level 3</titleref>, W3C Editor's Draft. (See
 <xspecref href="http://dev.w3.org/csswg/css-writing-modes-3/">http://dev.w3.org/csswg/css-writing-modes-3/</xspecref>.)
 </bibl>

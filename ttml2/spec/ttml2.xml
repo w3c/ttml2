@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v ea90546bc247 2014/11/29 03:34:35 glenn $ -->
+<!-- $Id: ttml2.xml,v b75ecb1e8036 2014/11/30 19:46:39 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2014/11/29 03:34:35 $">
+<!ENTITY document.status "Editors' copy $Date: 2014/11/30 19:46:39 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2014/11/29 03:34:35 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2014/11/30 19:46:39 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -600,6 +600,16 @@ a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element 
 which serves as a baseline (initial) set of specifications with which to populate the referencing profile.</p>
 </def>
 </gitem>
+<gitem id="terms-block-display">
+<label>[block display]</label>
+<def>
+<p>Block display is a set of layout semantics that may be applied to a <loc href="#terms-content-element">content element</loc> in
+certain contexts, wherein child areas are composed sequentially in the block progression direction. In <bibref ref="css2"/>,
+block display is indicated when a CSS <code>display</code> property with the value <code>block</code> is applied to a
+<loc href="#terms-content-element">content element</loc> during presentation processing. In <bibref ref="xsl11"/>, a block display
+occurs when composing a <code>fo:block</code> element.</p>
+</def>
+</gitem>
 <gitem id="terms-character-information-item">
 <label>[character information item]</label>
 <def>
@@ -945,6 +955,27 @@ that is defined inline as an immediate child of
 a <loc href="#terms-content-element">content element</loc> or <loc href="#layout-vocabulary-region"><el>region</el></loc> element associated with the animation.
 There is a one-to-one relation between
 an inline animation element and its parent <loc href="#terms-content-element">content element</loc> or <loc href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+</def>
+</gitem>
+<gitem id="terms-inline-block-display">
+<label>[inline block display]</label>
+<def>
+<p>Inline block display is a set of layout semantics that may be applied to a <loc href="#terms-content-element">content element</loc> in
+certain contexts, wherein a generated block area is treated as an an atomic area to be composed in an inline layout context, i.e., the block
+area is treated as if it were itself an inline area when considered externally, but as a block area which considered internally. In <bibref ref="css2"/>,
+inline block display is indicated when a CSS <code>display</code> property with the value <code>inline-block</code> is applied to a
+<loc href="#terms-content-element">content element</loc> during presentation processing. In <bibref ref="xsl11"/>, an inline block display
+occurs when block content appears in an inline content context, e.g., when a <code>fo:block</code> appears as a child of <code>fo:inline</code>.</p>
+</def>
+</gitem>
+<gitem id="terms-inline-display">
+<label>[inline display]</label>
+<def>
+<p>Inline display is a set of layout semantics that may be applied to a <loc href="#terms-content-element">content element</loc> in
+certain contexts, wherein child areas are composed sequentially in the inline progression direction. In <bibref ref="css2"/>,
+inline display is indicated when a CSS <code>display</code> property with the value <code>inline</code> is applied to a
+<loc href="#terms-content-element">content element</loc> during presentation processing. In <bibref ref="xsl11"/>, an inline display
+occurs when composing a <code>fo:inline</code> element.</p>
 </def>
 </gitem>
 <gitem id="terms-inline-region">
@@ -2843,6 +2874,7 @@ Styling Attributes
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
 <loc href="#style-attribute-fontVariantPosition">tts:fontVariantPosition</loc>,
 <loc href="#style-attribute-fontWeight">tts:fontWeight</loc>,
+<loc href="#style-attribute-height">tts:height</loc>,
 <loc href="#style-attribute-lineHeight">tts:lineHeight</loc>,
 <loc href="#style-attribute-opacity">tts:opacity</loc>,
 <loc href="#style-attribute-origin">tts:origin</loc>,
@@ -2860,6 +2892,7 @@ Styling Attributes
 <loc href="#style-attribute-textOutline">tts:textOutline</loc>,
 <loc href="#style-attribute-unicodeBidi">tts:unicodeBidi</loc>,
 <loc href="#style-attribute-visibility">tts:visibility</loc>,
+<loc href="#style-attribute-width">tts:width</loc>,
 <loc href="#style-attribute-wrapOption">tts:wrapOption</loc>,
 <loc href="#style-attribute-writingMode">tts:writingMode</loc>,
 <loc href="#style-attribute-zIndex">tts:zIndex</loc>
@@ -4467,7 +4500,7 @@ and drop mode as expressed by the <att>ttp:dropMode</att> parameter.
 In this case, the <loc href="#terms-content-processor">content processor</loc> must create and maintain a
 <loc href="#terms-synthetic-smpte-document-syncbase">synthetic smpte document syncbase</loc> within which these time
 expressions are interpreted as further described in
-<specref ref="timing-time-intervals"/>.</p>
+<specref ref="semantics-timing"/>.</p>
 <note role="explanation">
 <p>When operating with <code>smpte</code> time base and
 <code>continuous</code> marker mode, there is an implied time coordinate
@@ -4835,7 +4868,7 @@ zero or one <el>body</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;tt
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#style-attribute-position">tts:position</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
@@ -4929,7 +4962,7 @@ or <loc href="#element-vocab-type-layout">Layout</loc> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;head
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -4969,7 +5002,7 @@ element group apply semantically to the <el>body</el> element.</p>
 &lt;body
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5062,7 +5095,7 @@ element group apply semantically to the <el>div</el> element.</p>
 &lt;div
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5139,7 +5172,7 @@ element group apply semantically to the <el>p</el> element.</p>
 &lt;p
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5224,7 +5257,7 @@ element group apply semantically to the <el>span</el> element.</p>
 &lt;span
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5276,7 +5309,7 @@ element group apply semantically to the <el>br</el> element.</p>
 &lt;br
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
@@ -5835,13 +5868,14 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;audio
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-audio">&lt;audio&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute in TT Style namespace</emph>}
   {<emph>any attribute in TT Metadata namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
@@ -5898,7 +5932,7 @@ value expression.</p>
 <td>
 <eg xml:space="preserve">
 &lt;chunk
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : base64
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
@@ -5996,7 +6030,7 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
 <td>
 <eg xml:space="preserve">
 &lt;data
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : <emph>see prose below</emph>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
@@ -6128,7 +6162,7 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;font
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   family = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
   range = <loc href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</loc>
@@ -6262,13 +6296,14 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;image
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  {<emph>any attribute in TT Style namespace</emph>}
   {<emph>any attribute in TT Metadata namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
@@ -6296,6 +6331,13 @@ content processor.</p>
 <p>If an <el>image</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
 the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
 value expression.</p>
+<p>An <el>image</el> element may specify either (both)
+<loc href="#style-attribute-width"><att>tts:width</att></loc> or (and) 
+<loc href="#style-attribute-height"><att>tts:height</att></loc> style attributes in order to specify the presentation width or height of the image when
+intrinsic width or height information is not available or is intended to be overridden. If (either or both of) these attributes are specified on both an
+<el>image</el> element in an <loc href="#terms-image-presentation-context">image presentation context</loc> and on the
+<el>image</el> element in an <loc href="#terms-image-defining-context">image defining context</loc> to which the former refers, then
+these attributes specified on the former take precedence over those specified on the latter.</p>
 <p>The use of the <el>image</el> element is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-image-example-1" role="example">
 <caption>Example Fragment &ndash; External Image Resources</caption>
@@ -6395,7 +6437,7 @@ followed by zero or more elements in the
 <td>
 <eg xml:space="preserve">
 &lt;resources
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -6435,7 +6477,7 @@ an <loc href="#terms-nested-embedded-source">nested embedded source</loc>.</p>
 <td>
 <eg xml:space="preserve">
 &lt;source
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -6925,7 +6967,7 @@ the specification defined initial value(s).</p>
 <td>
 <eg xml:space="preserve">
 &lt;initial
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -6973,7 +7015,7 @@ specified style set in accordance with
 <td>
 <eg xml:space="preserve">
 &lt;style
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -7014,7 +7056,7 @@ followed by zero or more <el>style</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;styling
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -7055,6 +7097,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
 <item><p><specref ref="style-attribute-fontVariantPosition"/></p></item>
 <item><p><specref ref="style-attribute-fontWeight"/></p></item>
+<item><p><specref ref="style-attribute-height"/></p></item>
 <item><p><specref ref="style-attribute-lineHeight"/></p></item>
 <item><p><specref ref="style-attribute-opacity"/></p></item>
 <item><p><specref ref="style-attribute-origin"/></p></item>
@@ -7072,6 +7115,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-textOutline"/></p></item>
 <item><p><specref ref="style-attribute-unicodeBidi"/></p></item>
 <item><p><specref ref="style-attribute-visibility"/></p></item>
+<item><p><specref ref="style-attribute-width"/></p></item>
 <item><p><specref ref="style-attribute-wrapOption"/></p></item>
 <item><p><specref ref="style-attribute-writingMode"/></p></item>
 <item><p><specref ref="style-attribute-zIndex"/></p></item>
@@ -7090,6 +7134,13 @@ in order to provide a means to independently express styling of the four differe
 <edtext>Consider adding support for <att>tts:backgroundClip</att>,
 <att>tts:backgroundOrigin</att>, and
 <att>tts:backgroundSize</att>.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Additional Width/Height Related Attributes</name>
+<date>2014-11-30</date>
+<edtext>Given the addition of <code>tts:width</code> and <code>tts:height</code>, consider also adding
+<code>tts:minWidth</code>, <code>tts:maxWidth</code>, <code>tts:minHeight</code>, and <code>tts:minHeight</code>.</edtext>
 </ednote>
 <p>Unless explicitly permitted by an element type definition, an attribute in the TT Style Namespace should not be specified on an element
 unless it either applies to that element or denotes an inheritable style property. If it does not apply to that element
@@ -7396,7 +7447,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td><emph>see prose</emph></td>
+<td>see prose</td>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
@@ -8078,7 +8129,7 @@ as a style property only to those element types indicated in the following table
 <td><emph>Values:</emph></td>
 <td>
 <code>auto</code> |
-<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
+<loc href="#style-value-measure">&lt;measure&gt;</loc> <loc href="#style-value-measure">&lt;measure&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -8108,11 +8159,11 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<p>If the value of this attribute consists of two <loc href="#style-value-length">&lt;length&gt;</loc>
+<p>If the value of this attribute consists of two <loc href="#style-value-measure">&lt;measure&gt;</loc>
 specifications, then they must be interpreted as <emph>width</emph>
 and <emph>height</emph>, where the first specification is the
 <emph>width</emph>, and the second specification is the <emph>height</emph>.</p>
-<p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express extent must be non-negative.</p>
+<p>The <loc href="#style-value-measure">&lt;measure&gt;</loc> value(s) used to express extent must be non-negative.</p>
 <p>If the value of this attribute is <code>auto</code>, then the computed value
 of the style property must be considered to be the same as the extent of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <p>The extent of the <loc href="#terms-root-container-region">root container region</loc> is determined either by a
@@ -8673,6 +8724,80 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.9.9.</p>
+</note>
+</div3>
+<div3 id="style-attribute-height">
+<head>tts:height</head>
+<p>The <att>tts:height</att> attribute is used to specify the
+<emph>height</emph> of an area generated by content flowed into a region.</p>
+<note role="clarification">
+<p>The term <emph>height</emph> is interpreted in a writing mode relative manner
+such that <emph>height</emph> always corresponds to a measure in the block
+progression direction. Therefore, in horizontal writing modes, <emph>height</emph> expresses a vertical measure,
+while, in vertical writing mode, <emph>height</emph> expresses a horizontal measure,
+where horizontal and vertical are always interpreted in an absolute sense.</p>
+</note>
+<p>If a <att>tts:height</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
+then that <loc href="#content-vocabulary-span"><el>span</el></loc> element must be processed using
+<loc href="#terms-inline-block-display">inline block display</loc> semantics for the purpose of presentation processing.</p>
+<p>This attribute may be specified by any
+element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-height" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-measure">&lt;measure&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>auto</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#content-vocabulary-span"><el>span</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>see prose</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete, continuous</td>
+</tr>
+</tbody>
+</table>
+<p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
+<p>The <att>tts:height</att> style is illustrated by the following example.</p>
+<ednote>
+<name>Height Percentage</name>
+<date>2014-11-29</date>
+<edtext>Specify resolution of percentage value.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Height Example</name>
+<date>2014-11-29</date>
+<edtext>Insert example fragment and image of tts:height.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property
+represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
+&sect; 7.15.14, and <bibref ref="css3-box"/>, &sect; 9</p>
 </note>
 </div3>
 <div3 id="style-attribute-lineHeight">
@@ -9315,7 +9440,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td><emph>see prose</emph></td>
+<td>see prose</td>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
@@ -10048,12 +10173,13 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-p"><el>p</el></loc>
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>see prose</td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -10065,6 +10191,18 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
+<p>The <att>tts:textAlign</att> attribute is inheritable only on a <loc href="#content-vocabulary-p"><el>p</el></loc> element. If not
+specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element, then the <att>tts:textAlign</att> style property  does not apply to that
+element, rather, normal inline composition and alignment apply.</p>
+<p>If a <att>tts:textAlign</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
+then that <loc href="#content-vocabulary-span"><el>span</el></loc> element must be processed using
+<loc href="#terms-inline-block-display">inline block display</loc> semantics for the purpose of presentation processing.</p>
+<note role="example">
+<p>A <att>tts:textAlign</att> attribute may be used on a <loc href="#content-vocabulary-span"><el>span</el></loc> element in order
+to force composition using <loc href="#terms-inline-block-display">inline block display</loc> semantics and to apply a different alignment
+to the resulting nested block area. For example, a paragraph may be composed using center text alignment, while the text content within the paragraph, if
+wrapped in a span, may be composed using left text alignment.</p>
+</note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>start</code>.</p>
 <p>The <att>tts:textAlign</att> style is illustrated by the following example.</p>
@@ -10111,6 +10249,12 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p></p>
+<ednote>
+<name>Text Align on Span Example</name>
+<date>2014-11-29</date>
+<edtext>Insert example fragment and image of use of tts:textAlign on a span element.</edtext>
+</ednote>
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
@@ -10305,7 +10449,7 @@ example.</p>
 <ednote>
 <name>Text Orientation Example</name>
 <date>2013-08-24</date>
-<edtext>Insert example fragment and image of text orientation.</edtext>
+<edtext>Insert example fragment and image of tts:textOrientation.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
@@ -10637,6 +10781,80 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.30.17.</p>
+</note>
+</div3>
+<div3 id="style-attribute-width">
+<head>tts:width</head>
+<p>The <att>tts:width</att> attribute is used to specify the
+<emph>width</emph> of an area generated by content flowed into a region.</p>
+<note role="clarification">
+<p>The term <emph>width</emph> is interpreted in a writing mode relative manner
+such that <emph>width</emph> always corresponds to a measure in the inline
+progression direction. Therefore, in horizontal writing modes, <emph>width</emph> expresses a horizontal measure,
+while, in vertical writing mode, <emph>width</emph> expresses a vertical measure,
+where horizontal and vertical are always interpreted in an absolute sense.</p>
+</note>
+<p>If a <att>tts:width</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
+then that <loc href="#content-vocabulary-span"><el>span</el></loc> element must be processed using
+<loc href="#terms-inline-block-display">inline block display</loc> semantics for the purpose of presentation processing.</p>
+<p>This attribute may be specified by any
+element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-width" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-measure">&lt;measure&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>auto</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#content-vocabulary-span"><el>span</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>see prose</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete, continuous</td>
+</tr>
+</tbody>
+</table>
+<p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
+<p>The <att>tts:width</att> style is illustrated by the following example.</p>
+<ednote>
+<name>Width Percentage</name>
+<date>2014-11-29</date>
+<edtext>Specify resolution of percentage value.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Width Example</name>
+<date>2014-11-29</date>
+<edtext>Insert example fragment and image of tts:width.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property
+represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
+&sect; 7.15.14, and <bibref ref="css3-box"/>, &sect; 9</p>
 </note>
 </div3>
 <div3 id="style-attribute-wrapOption">
@@ -10979,7 +11197,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 </div3>
 </div2> <!-- styling-attribute-vocabulary -->
 <div2 id="styling-style-value-expressions">
-<head>Style Value Expressions</head>
+<head>Styling Value Expressions</head>
 <p>Style property values include the use of the following expressions:</p>
 <ulist>
 <item><p><specref ref="style-value-alpha"/></p></item>
@@ -10993,6 +11211,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-hexDigit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
+<item><p><specref ref="style-value-measure"/></p></item>
 <item><p><specref ref="style-value-namedColor"/></p></item>
 <item><p><specref ref="style-value-position"/></p></item>
 </ulist>
@@ -11419,6 +11638,90 @@ the minimum and maxium of <code>vw</code> and <code>vh</code>, respectively. For
 the length <code>25vmin</code> is interpreted as the minimum of 25% of the width and
 25% of the height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 </div3>
+
+<div3 id="style-value-measure">
+<head>&lt;measure&gt;</head>
+<p>A &lt;measure&gt; value expression is used to express a distance used to measure an allocation
+dimension in either the inline progression direction or the block progression direction, where
+the direction that applies is determined by the context of use.</p>
+<note role="clarification">
+<p>The terms <emph>width</emph> and <emph>height</emph> are interpreted in a writing mode relative manner
+such that <emph>width</emph> always corresponds to a measure in the inline
+progression direction and <emph>height</emph> always corresponds to a measure in the block progression direction.
+Therefore, in horizontal writing modes, <emph>width</emph> expresses a horizontal measure
+and <emph>height</emph> expresses a vertical measure, while, in vertical writing mode, <emph>width</emph> expresses a vertical measure
+and <emph>height</emph> expresses a horizontal measure, where horizontal and vertical are always interpreted in an absolute sense.</p>
+</note>
+<table id="measure-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;measure&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;measure&gt;
+  : auto
+  | available
+  | fitContent
+  | maxContent
+  | minContent
+  | <loc href="#style-value-length">&lt;length&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics of measure values are defined as follows:</p>
+<glist>
+<gitem>
+<label><code>auto</code></label>
+<def>
+<p>As determined by <specref ref="semantics-style-automatic-measure-calculation"/>.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>available</code></label>
+<def>
+<p>For width in a horizontal writing mode, the numeric value equal to the width of the parent containing block's height less
+the current element's combined border and padding width.</p>
+<p>For height in a horizontal writing mode, the numeric value equal to the height of the parent containing block's height less
+the current element's combined border and padding height.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>fitContent</code></label>
+<def>
+<p>A numeric value equal to the maximum of the values of (1) <code>minContent</code> and (2) the minimum of values of <code>maxContent</code> and <code>available</code>.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>maxContent</code></label>
+<def>
+<p>For width in a horizontal writing mode, the maximum numeric value that encloses all of the element's content such that lines are broken only at
+hard, i.e., mandatory, break points, even if that means overflowing the parent's width.</p>
+<p>For height in a horizontal writing mode, the maximum numeric value that encloses all of the element's content such that lines are broken at
+all possible line break positions, i.e., both hard (mandatory) and soft (optional) break points.</p>
+<p>For vertical writing mode, the sense of width and height is reversed.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>minContent</code></label>
+<def>
+<p>For width in a horizontal writing mode, the minimum numeric value that encloses all of the element's content such that lines are broken at
+all possible line break positions, i.e., both hard (mandatory) and soft (optional) break points.</p>
+<p>For height in a horizontal writing mode, the minimum numeric value that encloses all of the element's content such that lines are broken only at
+hard, i.e., mandatory, break points, even if that means overflowing the parent's width.</p>
+<p>For vertical writing mode, the sense of width and height is reversed.</p>
+</def>
+</gitem>
+<gitem>
+<label><code><loc href="#style-value-length">&lt;length&gt;</loc></code></label>
+<def>
+<p>A non-negative numeric value expressed as a scalar or percentage.</p>
+</def>
+</gitem>
+</glist>
+</div3>
+
 <div3 id="style-value-namedColor">
 <head>&lt;namedColor&gt;</head>
 <p>A &lt;namedColor&gt; is used to express an RGBA color with a convenient name, and where the applicable color space is
@@ -11817,8 +12120,8 @@ is to be interpreted as the difference between 100% and the percentage equivalen
 In both cases, the resulting difference may be a negative percentage.</p>
 </div3>
 </div2> <!-- styling-style-value-expressions -->
-<div2 id="semantics-style-resolution">
-<head>Style Resolution</head>
+<div2 id="semantics-styling">
+<head>Styling Semantics</head>
 <p>This section defines the semantics of style resolution in terms of
 a standard processing model as follows:</p>
 <ulist>
@@ -12502,7 +12805,16 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 </olist>
 </div4>
 </div3>
-</div2> <!-- semantics-style-resolution -->
+<div3 id="semantics-style-automatic-measure-calculation">
+<head>Automatic Measure Calculation</head>
+<ednote>
+<name>Automatic Measures</name>
+<date>2014-11-30</date>
+<edtext>Define semantics for resolving the <code>auto</code> value as used with a  <loc href="#style-value-measure">&lt;measure&gt;</loc> expression,
+the definition of which should be consistent with <bibref ref="css3-box"/>, &sect; 15.</edtext>
+</ednote>
+</div3> <!-- semantics-style-automatic-measure-calculation -->
+</div2> <!-- semantics-styling -->
 </div1> <!-- styling -->
 <div1 id="layout">
 <head>Layout</head>
@@ -12544,7 +12856,7 @@ zero or more <el>region</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;layout
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -12597,7 +12909,7 @@ style inheritance).</p>
 &lt;region
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
@@ -12698,7 +13010,9 @@ flow in a region.</p>
 </note>
 </div3>
 </div2> <!-- layout-attribute-vocabulary -->
-<div2 id="semantics-region-layout">
+<div2 id="semantics-layout">
+<head>Layout Semantics</head>
+<div3 id="semantics-region-layout">
 <head>Region Layout and Presentation</head>
 <p>This section defines the semantics of region layout and
 presentation in terms of a standard processing model as
@@ -12714,7 +13028,7 @@ follows:</p>
 implementation is permitted provided that the externally observable
 results are consistent with the results produced by this model.
 </p>
-<div3 id="semantics-default-region">
+<div4 id="semantics-default-region">
 <head>Default Region</head>
 <p>If a <loc href="#terms-document-instance">document instance</loc> does not specify an
 <loc href="#terms-out-of-line-region">out-of-line region</loc>,
@@ -12772,8 +13086,8 @@ as shown in the following example:</p>
 attribute are implied. In addition, a <el>layout</el> container element is implied for
 the implied <el>region</el> element.</p>
 </note>
-</div3>
-<div3 id="semantics-inline-regions">
+</div4>
+<div4 id="semantics-inline-regions">
 <head>Inline Regions</head>
 <p>An <loc href="#terms-inline-region">inline region</loc> is a syntactic mechanism for specifying a
 <loc href="#terms-region">region</loc> in a way that minimizes the syntactic distance between a region
@@ -13041,8 +13355,8 @@ and the resulting generated out-of-line region is shown by the following two exa
 </tr>
 </tbody>
 </table>
-</div3>
-<div3 id="semantics-region-layout-step-1">
+</div4>
+<div4 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
 <ednote>
 <name>Use Formalized ISD</name>
@@ -13147,8 +13461,8 @@ then it is preferred that the implementation make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cea608e"/>, &sect; C.3, and <bibref ref="ccreq"/>.</p>
 </note>
-</div3>
-<div3 id="semantics-region-layout-step-2">
+</div4>
+<div4 id="semantics-region-layout-step-2">
 <head>Synchronic Flow Processing</head>
 <p>Subsequent to performing a temporal (synchronic) slice and subsequent
 remapping of regionally selected content hierarchy, the resulting intermediate
@@ -13322,8 +13636,8 @@ to satisfy alignment in the block progression dimension. For example, this assur
 the background color associated with the <el>body</el> element, if not <code>transparent</code>,
  will fill the containing region wholly.</p>
 </note>
-</div3>
-<div3 id="semantics-region-layout-example">
+</div4>
+<div4 id="semantics-region-layout-example">
 <head>Elaborated Example (Non-Normative)</head>
 <p>An example of the processing steps described above is elaborated below, starting with <specref
 ref="region-mapping-example-1-s"/>.</p>
@@ -13404,9 +13718,9 @@ are associated with regions <code>r1</code> and <code>r2</code>, respectively.</
 </tr>
 </tbody>
 </table>
-</div3>
-</div2> <!-- semantics-region-layout -->
-<div2 id="semantics-line-layout">
+</div4>
+</div3> <!-- semantics-region-layout -->
+<div3 id="semantics-line-layout">
 <head>Line Layout</head>
 <p>If a profile that applies to a <loc href="#terms-document-instance">document instance</loc>
 requires use of the <loc
@@ -13416,7 +13730,8 @@ the recommendations defined by <loc
 href="http://www.unicode.org/reports/tr14/#Algorithm">Line
 Breaking Algorithm</loc> <bibref ref="uax14"/> apply when performing
 line layout on the content of the <loc href="#terms-document-instance">document instance</loc>.</p>
-</div2> <!-- semantics-line-layout -->
+</div3> <!-- semantics-line-layout -->
+</div2> <!-- layout-semantics -->
 </div1> <!-- layout -->
 <div1 id="timing">
 <head>Timing</head>
@@ -13647,8 +13962,8 @@ when the <code>clock</code> time base applies.</p>
 if a metric of <code>s</code> (seconds) were specified.</p>
 </div3>
 </div2> <!-- timing-time-value-expressions -->
-<div2 id="timing-time-intervals">
-<head>Time Intervals</head>
+<div2 id="semantics-timing">
+<head>Timing Semantics</head>
 <p>The semantics of time containment, durations, and intervals defined by
 <bibref ref="smil3"/> apply to the interpretation of like-named timed elements and timing
 vocabulary defined by this specification, given the following
@@ -13694,7 +14009,7 @@ based timing or event based timing in <bibref ref="smil3"/>, where the specific 
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
 </ulist>
-</div2> <!-- timing-time-intervals -->
+</div2> <!-- semantics-timing -->
 </div1> <!-- timing -->
 <div1 id="animation">
 <head>Animation</head>
@@ -13744,7 +14059,7 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 &lt;animate
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   calcMode = <loc href="#animation-value-calcMode">&lt;calcMode&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
@@ -13878,7 +14193,7 @@ zero or more elements in the <loc href="#element-vocab-group-animation"><code>An
 <td>
 <eg xml:space="preserve">
 &lt;animation
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -13916,7 +14231,7 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 <eg xml:space="preserve">
 &lt;set
   <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
   fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
@@ -14317,7 +14632,7 @@ information.</p>
 <td>
 <eg xml:space="preserve">
 &lt;metadata
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -14447,7 +14762,7 @@ agent with another agent that portrays the character.</p>
 <eg xml:space="preserve">
 &lt;ttm:actor
   <phrase role="reqattr">agent</phrase> = IDREF
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -14480,7 +14795,7 @@ agent, whether it be the name of a person, character, group, or organization.</p
 <td>
 <eg xml:space="preserve">
 &lt;ttm:agent
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <phrase role="reqattr">type</phrase> = (<emph>person</emph>|<emph>character</emph>|<emph>group</emph>|<emph>organization</emph>|<emph>other</emph>)
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -14577,7 +14892,7 @@ child of the <el>head</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:copyright
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -14604,7 +14919,7 @@ a specific element instance.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:desc
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -14636,7 +14951,7 @@ a specific element instance.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:item
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <phrase role="reqattr">name</phrase> = <loc href="#metadata-value-item-name">&lt;item-name&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -14709,7 +15024,7 @@ group, or organization.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:name
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <phrase role="reqattr">type</phrase> = (<emph>full</emph>|<emph>family</emph>|<emph>given</emph>|<emph>alias</emph>|<emph>other</emph>)
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -14747,7 +15062,7 @@ a specific element instance.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ttm:title
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-id">xml:id</loc> = ID
   <loc href="#content-attribute-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -18402,6 +18717,10 @@ Consumer Electronics Association (CEA).
 <bibl id="css3-bb" key="CSS Backgrounds and Borders">Bert Bos, Elika Etamad and Brad Kemper,
 <titleref href="http://dev.w3.org/csswg/css3-background/">CSS Backgrounds and Borders Module Level 3</titleref>, W3C Editor's Draft. (See
 <xspecref href="http://dev.w3.org/csswg/css3-background/">http://dev.w3.org/csswg/css-backgrounds/</xspecref>.)
+</bibl>
+<bibl id="css3-box" key="CSS Box Model">Bert Bos, Anton Prowse,
+<titleref href="http://dev.w3.org/csswg/css-box-3/">CSS Basic Box Model</titleref>, W3C Editor's Draft. (See
+<xspecref href="http://dev.w3.org/csswg/css-box-3/">http://dev.w3.org/csswg/css-box-3/</xspecref>.)
 </bibl>
 <bibl id="css3-fonts" key="CSS Fonts">John Daggett,
 <titleref href="http://dev.w3.org/csswg/css-fonts/">CSS Fonts Module Level 3</titleref>, W3C Editor's Draft. (See

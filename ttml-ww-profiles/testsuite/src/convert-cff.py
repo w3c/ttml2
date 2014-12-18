@@ -24,7 +24,7 @@ for dir, dirs, files in os.walk(indir):
 			os.makedirs(destdir)
 	
 		if fnmatch.fnmatch(file, '*.ttml'):
-			imsc1ttml = transform(etree.parse(srcfile))
+			imsc1ttml = transform(etree.parse(srcfile), pngbasename="'" + file[:-6] + "'")
 			print(file)
 			f = open(destfile, 'wb');
 			imsc1ttml.write(f, encoding='UTF-8', xml_declaration=True, pretty_print=True)

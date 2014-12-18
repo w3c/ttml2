@@ -12,8 +12,9 @@
     xmlns:tt="http://www.w3.org/ns/ttml"
     exclude-result-prefixes="cff">
     
-    
     <xsl:output method="xml" indent="yes"/>
+    
+    <xsl:param name="pngbasename" />
     
     <xsl:template match="comment()"/>
     
@@ -26,7 +27,7 @@
     </xsl:template>
     
     <xsl:template match="@smpte:backgroundImage">
-        <xsl:attribute name="smpte:backgroundImage"><xsl:value-of select="substring-after(.,'urn:dece:container:subtitleimageindex:')"/></xsl:attribute>
+        <xsl:attribute name="smpte:backgroundImage"><xsl:value-of select="concat($pngbasename, substring-after(.,'urn:dece:container:subtitleimageindex:'))"/></xsl:attribute>
     </xsl:template>
     
     <xsl:template match="@xsi:schemaLocation"/>

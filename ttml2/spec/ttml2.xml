@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 96361dd890d5 2015/01/05 19:14:49 glenn $ -->
+<!-- $Id: ttml2.xml,v af88135be883 2015/01/05 20:11:56 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/05 19:14:49 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/05 20:11:56 $">
 <!ENTITY title "&title;">
-<!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
+<!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
 <!ENTITY tbd "<phrase role='tbd'>To Be Defined</phrase>">
 <!ENTITY sp "&#x0020;">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/05 19:14:49 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/05 20:11:56 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -5282,7 +5282,8 @@ extent, origin, or position of the corresponding region, also referred to as an 
 value of the respective attribute. If any of these style attributes are specified,
 then they apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.
 If both <loc href="#style-attribute-position"><att>tts:origin</att></loc> and <loc href="#style-attribute-position"><att>tts:position</att></loc> attributes
-are specified, then the <loc href="#style-attribute-position"><att>tts:origin</att></loc> attribute must be ignored when constructing the associated
+are specified and <loc href="#style-attribute-position"><att>tts:position</att></loc> is a supported property,
+then the <loc href="#style-attribute-position"><att>tts:origin</att></loc> attribute must be ignored when constructing the associated
 <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>div</el> element, then it must be interpreted as having
@@ -5356,7 +5357,8 @@ extent, origin, or position of the corresponding region, also referred to as an 
 value of the respective attribute. If any of these style attributes are specified,
 then they apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.
 If both <loc href="#style-attribute-position"><att>tts:origin</att></loc> and <loc href="#style-attribute-position"><att>tts:position</att></loc> attributes
-are specified, then the <loc href="#style-attribute-position"><att>tts:origin</att></loc> attribute must be ignored when constructing the associated
+are specified and <loc href="#style-attribute-position"><att>tts:position</att></loc> is a supported property,
+then the <loc href="#style-attribute-position"><att>tts:origin</att></loc> attribute must be ignored when constructing the associated
 <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>p</el> element, then it must be interpreted as having
@@ -9267,9 +9269,9 @@ represented by this attribute are based upon that defined by <bibref ref="css3-c
 <emph>x</emph> and <emph>y</emph> coordinates of the origin of a
 region area with respect to the origin of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <p>If both <att>tts:origin</att> and <loc href="#style-attribute-position"><att>tts:position</att></loc> attributes are
-specified on an element, then the <att>tts:origin</att> attribute must be ignored for the purpose of presentation processing.</p>
-<p>This attribute may be specified by any
-element type
+specified on an element and <loc href="#style-attribute-position"><att>tts:position</att></loc> is a supported property,
+then the <att>tts:origin</att> attribute must be ignored for the purpose of presentation processing.</p>
+<p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-origin" role="common">
@@ -9617,7 +9619,8 @@ mode relative padding values as defined by <bibref ref="xsl11"/>,
 <p>The <att>tts:position</att> attribute is used as an alternative way to specify the position
 of a region area with respect the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <p>If both <att>tts:position</att> and <loc href="#style-attribute-origin"><att>tts:origin</att></loc> attributes are
-specified on an element, then the <att>tts:origin</att> attribute must be ignored for the purpose of presentation processing.</p>
+specified on an element and <att>tts:position</att> is a supported property,
+then the <att>tts:origin</att> attribute must be ignored for the purpose of presentation processing.</p>
 <p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
@@ -9662,6 +9665,18 @@ as a style property only to those element types indicated in the following table
 positioning area minus the width of the associated region.
 A percentage value component for a vertical position offset is relative to the height of the
 positioning area minus the height of the associated region.</p>
+<p>The following image depicts a position value <attval>75% 50%</attval>, where the rectangle with dashed line denotes the positioning area and the rectangle
+with solid line denotes the region being positioned.</p>
+<table id="style-attribute-position-percentage-based-positioning" role="example-images">
+<caption>Percentage Based Positioning</caption>
+<tbody>
+<tr>
+<td>
+<graphic source="images/position_0.png" alt="TTML position style property using percentages"/>
+</td>
+</tr>
+</tbody>
+</table>
 <p>If specified on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then, if a
 <loc href="#terms-related-media-object">related media object</loc> exists, the positioning area corresponds with
 the <loc href="#terms-related-media-object-region">related media object region</loc>, or, if no

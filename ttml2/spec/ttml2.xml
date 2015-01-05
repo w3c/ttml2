@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v bd172bc178ae 2015/01/05 09:36:30 glenn $ -->
+<!-- $Id: ttml2.xml,v 36262001dea5 2015/01/05 18:38:22 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/05 09:36:30 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/05 18:38:22 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2010/REC-ttaf1-dfxp-20101118/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/05 09:36:30 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/05 18:38:22 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -15409,7 +15409,7 @@ in order to promote interoperability and collision avoidance.</p>
 </ulist>
 <div3 id="metadata-value-item-name">
 <head>&lt;item-name&gt;</head>
-<p>A &lt;item-name&gt; expression is used to specify the name of a metadata item expressed with a
+<p>An &lt;item-name&gt; expression is used to specify the name of a metadata item expressed with a
 <loc href="#metadata-vocabulary-item">ttm:item</loc> element.</p>
 <table id="item-name-value-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;item-name&gt;</caption>
@@ -15419,17 +15419,20 @@ in order to promote interoperability and collision avoidance.</p>
 <eg xml:space="preserve">
 &lt;item-name&gt;
   : <loc href="#metadata-value-named-item">&lt;named-item&gt;</loc>
-  | <loc href="http://www.w3.org/TR/xmlschema-2/#token">xsd:token</loc>
-  | <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
+  | <loc href="http://www.w3.org/TR/xmlschema-2/#QName">xsd:QName</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>If an item name expression takes the form of an <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>,
-then it must express an absolute URI.</p>
-<p>All values of &lt;item-name&gt; that do not take the form of (1) an absolute URI or (2) a token that has the prefix <code>x-</code>
+<p>If an item name expression takes the form of a qualified name (<loc href="http://www.w3.org/TR/xmlschema-2/#QName">xsd:QName</loc>), 
+then the prefix of that qualified name must have been declared in a namespace declaration as specified by <bibref ref="xmlns10"/>.</p>
+<p>All values of &lt;item-name&gt; that do not take the form of qualified name (<loc href="http://www.w3.org/TR/xmlschema-2/#QName">xsd:QName</loc>)
 are reserved for future standardization by the W3C.</p>
+<note role="elaboration">
+<p>It is intended that all item names defined by this specification are unqualified (without a prefix), whereas those defined by
+external specifications are qualified (with a prefix).</p>
+</note>
 </div3>
 <div3 id="metadata-value-named-item">
 <head>&lt;named-item&gt;</head>
@@ -15455,12 +15458,12 @@ a <loc href="#metadata-vocabulary-item"><el>ttm:item</el></loc> element.</p>
   | cea708TransformMode
   | cea708TransformOrigin
   | cea708TransformTimingThreshold
-  | creationDate
   | creationCountryOfOrigin
+  | creationDate
+  | creationSystem
   | editor
   | editorContact
   | maximumCharactersPerRow
-  | originatingSystem
   | originalEpisodeTitle
   | originalFileName
   | originalProgramTitle
@@ -15582,6 +15585,13 @@ transforming amongst a CEA-708 caption service and a <loc href="#terms-timed-tex
 where the value adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#boolean">xsd:float</loc>.</p>
 </def>
 </gitem>
+<gitem id="named-item-creationCountryOfOrigin">
+<label><code>creationCountryOfOrigin</code></label>
+<def>
+<p>A string that expresses a the country or origin code associated with this document, where the value
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
+</def>
+</gitem>
 <gitem id="named-item-creationDate">
 <label><code>creationDate</code></label>
 <def>
@@ -15589,10 +15599,10 @@ where the value adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#boolean"
 adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#date">xsd:date</loc>.</p>
 </def>
 </gitem>
-<gitem id="named-item-creationCountryOfOrigin">
-<label><code>creationCountryOfOrigin</code></label>
+<gitem id="named-item-creationSystem">
+<label><code>creationSystem</code></label>
 <def>
-<p>A string that expresses a the country or origin code associated with this document, where the value
+<p>A free form string expressing the software and version used to create the document, where the value
 adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
 </def>
 </gitem>
@@ -15615,13 +15625,6 @@ adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
 <def>
 <p>A non-negative integer that expresses the maximum number of characters per row (line) used in this document, where the value
 adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>.</p>
-</def>
-</gitem>
-<gitem id="named-item-originatingSystem">
-<label><code>originatingSystem</code></label>
-<def>
-<p>A free form string expressing the software and version used to create the document, where the value
-adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>.</p>
 </def>
 </gitem>
 <gitem id="named-item-originalEpisodeTitle">

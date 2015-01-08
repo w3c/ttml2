@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v d452132b39c5 2015/01/08 01:49:13 glenn $ -->
+<!-- $Id: ttml2.xml,v 722bda663839 2015/01/08 06:59:50 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/08 01:49:13 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/08 06:59:50 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/08 01:49:13 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/08 06:59:50 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -3008,6 +3008,7 @@ Styling Attributes
 <loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
 <loc href="#style-attribute-textAlign">tts:textAlign</loc>,
+<loc href="#style-attribute-textCombine">tts:textCombine</loc>,
 <loc href="#style-attribute-textDecoration">tts:textDecoration</loc>,
 <loc href="#style-attribute-textEmphasis">tts:textEmphasis</loc>,
 <loc href="#style-attribute-textOrientation">tts:textOrientation</loc>,
@@ -7209,6 +7210,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-rubyPosition"/></p></item>
 <item><p><specref ref="style-attribute-showBackground"/></p></item>
 <item><p><specref ref="style-attribute-textAlign"/></p></item>
+<item><p><specref ref="style-attribute-textCombine"/></p></item>
 <item><p><specref ref="style-attribute-textDecoration"/></p></item>
 <item><p><specref ref="style-attribute-textEmphasis"/></p></item>
 <item><p><specref ref="style-attribute-textOrientation"/></p></item>
@@ -10603,6 +10605,76 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.16.9.</p>
 </note>
 </div3>
+
+<div3 id="style-attribute-textCombine">
+<head>tts:textCombine</head>
+<p>When a vertical writing mode applies, the <att>tts:textCombine</att> attribute is used to specify a style property that
+determines whether and how multiple nominally non-combining characters are combined so that their glyph areas
+consume the nominal bounding box of a single em square. If a horizontal writing mode applies, then this property is ignored
+for the purpose of presentation processing.</p>
+<p>Combination processing may make use of one or more techniques to obtain the goal of visual combination into an em square. For
+example, half-width variant forms may be selected, a ligature may be selected, a smaller font size may be applied, etc. At a minimum, an
+implementation that supports this style property must be able to select half-width variant forms if available.</p>
+<p>This attribute may be specified by any
+element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-textCombine" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>none</code> |
+<code>all</code> |
+[ <code>digits</code> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>? ]
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>none</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
+<p>If the specified value of this attribute is <code>none</code>, then no combination processing applies.
+If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
+If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
+equal to or less than a specified count, or two (2) if no count is specified.</p>
+<p>Combination must not cross an element boundary, a bidirectional boundary, or a non-glyph area boundary.</p>
+<p>This attribute has no impact on or interaction with the nominal layout of glyph areas that constitute a Unicode combining character sequence.</p>
+<ednote>
+<name>Text Combine Example</name>
+<date>2015-01-05</date>
+<edtext>Insert example fragment and image of tts:textCombine.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property represented by this attribute are based upon 
+that defined by <bibref ref="css3-wm"/>, &sect; 9.1.</p>
+</note>
+</div3>
+
 <div3 id="style-attribute-textDecoration">
 <head>tts:textDecoration</head>
 <p>The <att>tts:textDecoration</att> attribute is used to specify a style property that
@@ -11625,6 +11697,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-length"/></p></item>
 <item><p><specref ref="style-value-measure"/></p></item>
 <item><p><specref ref="style-value-namedColor"/></p></item>
+<item><p><specref ref="style-value-non-negative-integer"/></p></item>
 <item><p><specref ref="style-value-number"/></p></item>
 <item><p><specref ref="style-value-percentage"/></p></item>
 <item><p><specref ref="style-value-position"/></p></item>
@@ -12143,7 +12216,7 @@ that employ base 16 arithmetic.</p>
 <td>
 <eg xml:space="preserve">
 &lt;integer&gt;
-  : ( "+" | "-" )? <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+  : ( "+" | "-" )? <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
 </eg>
 </td>
 </tr>
@@ -12330,6 +12403,23 @@ defined by <bibref ref="srgb"/>.</p>
 subset of the set of named colors specified by <bibref ref="svg11"/>, &sect; 4.2.</p>
 </note>
 </div3>
+<div3 id="style-value-non-negative-integer">
+<head>&lt;non-negative-integer&gt;</head>
+<p>A &lt;non-negative-integer&gt; expression is used to express an arbitrary, non-negative integral value.</p>
+<table id="non-negative-integer-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;non-negative-integer&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;non-negative-integer&gt;
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
 <div3 id="style-value-number">
 <head>&lt;number&gt;</head>
 <p>An &lt;number&gt; expression is used to express an arbitrary, signed integer or real valued number.</p>
@@ -12348,11 +12438,8 @@ sign
 number
 
 non-negative-number
-  : non-negative-integer
+  : <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
   | non-negative-real
-
-non-negative-integer
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
 
 non-negative-real
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>* "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+

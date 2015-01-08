@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 06a4b95e14c2 2015/01/06 04:21:37 glenn $ -->
+<!-- $Id: ttml2.xml,v 1e2f0dc58b8d 2015/01/08 01:44:07 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/06 04:21:37 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/08 01:44:07 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/06 04:21:37 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/08 01:44:07 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -2990,6 +2990,7 @@ Styling Attributes
 <loc href="#style-attribute-fontFamily">tts:fontFamily</loc>,
 <loc href="#style-attribute-fontKerning">tts:fontKerning</loc>,
 <loc href="#style-attribute-fontSelectionStrategy">tts:fontSelectionStrategy</loc>,
+<loc href="#style-attribute-fontShear">tts:fontShear</loc>,
 <loc href="#style-attribute-fontSize">tts:fontSize</loc>,
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
 <loc href="#style-attribute-fontVariantPosition">tts:fontVariantPosition</loc>,
@@ -7210,6 +7211,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-extent"/></p></item>
 <item><p><specref ref="style-attribute-fontFamily"/></p></item>
 <item><p><specref ref="style-attribute-fontKerning"/></p></item>
+<item><p><specref ref="style-attribute-fontShear"/></p></item>
 <item><p><specref ref="style-attribute-fontSelectionStrategy"/></p></item>
 <item><p><specref ref="style-attribute-fontSize"/></p></item>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
@@ -8458,7 +8460,6 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.2.</p>
 </note>
 </div3>
-
 <div3 id="style-attribute-fontKerning">
 <head>tts:fontKerning</head>
 <p>The <att>tts:fontKerning</att> attribute is used to specify a style property that
@@ -8539,6 +8540,77 @@ with (local) platform defined <loc href="#terms-font-resource">font resources</l
 character to glyph mapping.</edtext>
 </ednote>
 </div3>
+
+<div3 id="style-attribute-fontShear">
+<head>tts:fontShear</head>
+<p>The <att>tts:fontShear</att> attribute is used to specify a style property that
+determines whether and how a shear transformation is applied to glyph areas.</p>
+<p>This attribute may be specified by any element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-fontShear" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-length">&lt;percentage&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>0%</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>see prose</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete, continuous</td>
+</tr>
+</tbody>
+</table>
+<p>If the value of this attribute is <code>0%</code>, then no shear transformation is applied; if the value is <code>100%</code>, then a 2D shear transformation
+of 90 degrees is applied in the axis associated with the inline progression direction; if the value is <code>-100%</code>, then a shear transformation
+of -90 degrees is applied. If the absolute value of the specified percentage is greater than 100%, then it must be interpreted as if 100% were specified with
+the appropriate sign.</p>
+<p>If the inline progression direction corresponds to the X axis, then the 2D shear transformation is described by the following matrix:</p>
+<eg xml:space="preserve">
+| 1 <emph>a</emph> 0 |
+| 0 1 0 |
+| 0 0 1 |
+</eg>
+<p>where <emph>a</emph> is equal to the tangent of the shear angle.</p>
+<p>If the inline progression direction corresponds to the Y axis, then the 2D shear transformation is described by the following matrix:</p>
+<eg xml:space="preserve">
+| 1 0 0 |
+| <emph>a</emph> 1 0 |
+| 0 0 1 |
+</eg>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
+<p>The <att>tts:fontShear</att> style is illustrated by the following
+example.</p>
+<ednote>
+<name>Font Shear Example</name>
+<date>2015-01-07</date>
+<edtext>Insert example fragment and image of tts:fontShear.</edtext>
+</ednote>
+</div3>
+
 <div3 id="style-attribute-fontSize">
 <head>tts:fontSize</head>
 <p>The <att>tts:fontSize</att> attribute is used to specify a style property
@@ -11581,6 +11653,8 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-length"/></p></item>
 <item><p><specref ref="style-value-measure"/></p></item>
 <item><p><specref ref="style-value-namedColor"/></p></item>
+<item><p><specref ref="style-value-number"/></p></item>
+<item><p><specref ref="style-value-percentage"/></p></item>
 <item><p><specref ref="style-value-position"/></p></item>
 </ulist>
 <p>In the syntax representations defined in this section, no
@@ -12117,29 +12191,10 @@ in a cartesian space or a distance between two points in a cartesian space.</p>
 <eg xml:space="preserve">
 &lt;length&gt;
   : scalar
-  | percentage
+  | <loc href="#style-value-percentage">&lt;percentage&gt;</loc>
 
 scalar
-  : number units
-
-percentage
-  : number "%"
-
-sign
-  : "+" | "-"
-
-number
-  : sign? non-negative-number
-
-non-negative-number
-  : non-negative-integer
-  | non-negative-real
-
-non-negative-integer
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-
-non-negative-real
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>* "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+  : <loc href="#style-value-percentage">&lt;number&gt;</loc> units
 
 units
   : "px"
@@ -12180,7 +12235,6 @@ the minimum and maxium of <code>vw</code> and <code>vh</code>, respectively. For
 the length <code>25vmin</code> is interpreted as the minimum of 25% of the width and
 25% of the height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 </div3>
-
 <div3 id="style-value-measure">
 <head>&lt;measure&gt;</head>
 <p>A &lt;measure&gt; value expresses a distance used to measure an allocation
@@ -12264,7 +12318,6 @@ hard, i.e., mandatory, break points, even if that means overflowing the parent's
 </gitem>
 </glist>
 </div3>
-
 <div3 id="style-value-namedColor">
 <head>&lt;namedColor&gt;</head>
 <p>A &lt;namedColor&gt; is used to express an RGBA color with a convenient name, and where the applicable color space is
@@ -12305,6 +12358,55 @@ defined by <bibref ref="srgb"/>.</p>
 <p>Except for <code>transparent</code>, the set of named colors specified above constitutes a proper
 subset of the set of named colors specified by <bibref ref="svg11"/>, &sect; 4.2.</p>
 </note>
+</div3>
+<div3 id="style-value-number">
+<head>&lt;number&gt;</head>
+<p>An &lt;number&gt; expression is used to express an arbitrary, signed integer or real valued number.</p>
+<table id="number-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;number&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;number&gt;
+  : sign? non-negative-number
+
+sign
+  : "+" | "-"
+
+number
+
+non-negative-number
+  : non-negative-integer
+  | non-negative-real
+
+non-negative-integer
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+
+non-negative-real
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>* "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-percentage">
+<head>&lt;percentage&gt;</head>
+<p>An &lt;percentage&gt; expression is used to express an arbitrary, signed integral or real valued percentage.</p>
+<table id="percentage-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;percentage&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;percentage&gt;
+  : <loc href="#style-value-number">&lt;number&gt;</loc> "%"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 <div3 id="style-value-position">
 <head>&lt;position&gt;</head>

@@ -18,6 +18,7 @@
     <property name="rnc.schema" value="${rnc.dir}/ttml2.rnc"/>
     <property name="xsd.dir" value="${basedir}/xsd"/>
     <property name="xsd.schema" value="${xsd.dir}/ttml2.xsd"/>
+    <property name="xsd.isd.schema" value="${xsd.dir}/ttml2-isd.xsd"/>
     <property name="profiles.dir" value="${basedir}/profiles"/>
     <property name="examples.dir" value="${basedir}/examples"/>
 
@@ -64,6 +65,7 @@
           <arg value="-b"/>
           <arg value="ttml2-bindings.xjb"/>
           <arg value="ttml2.xsd"/>
+          <arg value="ttml2-isd.xsd"/>
         </exec>
     </target>
 
@@ -125,7 +127,7 @@
         <schemavalidate fullchecking="true" warn="true">
           <schema namespace="http://www.w3.org/ns/ttml" file="${xsd.schema}"/>
           <fileset dir="${examples.dir}">
-            <include name="ex3.xml"/>
+            <include name="ex1.xml"/>
           </fileset>
         </schemavalidate>
     </target>
@@ -152,8 +154,26 @@
         </schemavalidate>
     </target>
 
+    <target name="validate-example-4" description="Validates Example 4.">
+        <!-- validate using RNC schema -->
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${examples.dir}/ex4.xml"/>
+        </java>
+        <!-- validate using XSD schema -->
+        <schemavalidate fullchecking="true" warn="true">
+          <schema namespace="http://www.w3.org/ns/ttml#isd" file="${xsd.isd.schema}"/>
+          <schema namespace="http://www.w3.org/ns/ttml#parameter" file="${xsd.dir}/ttml2-parameter-items.xsd"/>
+          <schema namespace="http://www.w3.org/ns/ttml" file="${xsd.dir}/ttml2-content.xsd"/>
+          <fileset dir="${examples.dir}">
+            <include name="ex4.xml"/>
+          </fileset>
+        </schemavalidate>
+    </target>
+
     <target name="validate-examples"
-	    depends="validate-example-1, validate-example-3"/>
+	    depends="validate-example-1, validate-example-3, validate-example-4"/>
 
     <target name="validate-xsl" description="Validates all XML files.">
         <xmlvalidate lenient="true">

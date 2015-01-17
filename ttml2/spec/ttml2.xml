@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v b47a32faeaa7 2015/01/15 02:16:11 glenn $ -->
+<!-- $Id: ttml2.xml,v abebbd0a303b 2015/01/17 16:09:39 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/15 02:16:11 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/17 16:09:39 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/15 02:16:11 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/17 16:09:39 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -3024,6 +3024,7 @@ Styling Attributes
 <loc href="#style-attribute-textOrientation">tts:textOrientation</loc>,
 <loc href="#style-attribute-textOutline">tts:textOutline</loc>,
 <loc href="#style-attribute-textShadow">tts:textShadow</loc>,
+<loc href="#style-attribute-translate">tts:translate</loc>,
 <loc href="#style-attribute-unicodeBidi">tts:unicodeBidi</loc>,
 <loc href="#style-attribute-visibility">tts:visibility</loc>,
 <loc href="#style-attribute-width">tts:width</loc>,
@@ -5718,6 +5719,8 @@ argument-list
   : forced
   | mediaAspectRatio
   | mediaLanguage
+  | stereoLeft
+  | stereoRight
   | userLanguage
 </eg>
 </td>
@@ -5742,6 +5745,20 @@ argument-list
 <label><code>mediaLanguage</code></label>
 <def>
 <p>Evaluates to a string value equal to the (primary) language of the <loc href="#terms-related-media-object">related media object</loc>.</p>
+</def>
+</gitem>
+<gitem id="bound-parameter-stereoLeft">
+<label><code>stereoLeft</code></label>
+<def>
+<p>Evaluates to a boolean value that denotes if the <loc href="#terms-content-processor">content processor</loc> is processing the
+left image of a stereo presentation.</p>
+</def>
+</gitem>
+<gitem id="bound-parameter-stereoRight">
+<label><code>stereoRight</code></label>
+<def>
+<p>Evaluates to a boolean value that denotes if the <loc href="#terms-content-processor">content processor</loc> is processing the
+right image of a stereo presentation.</p>
 </def>
 </gitem>
 <gitem id="bound-parameter-userLanguage">
@@ -7308,6 +7325,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-textOrientation"/></p></item>
 <item><p><specref ref="style-attribute-textOutline"/></p></item>
 <item><p><specref ref="style-attribute-textShadow"/></p></item>
+<item><p><specref ref="style-attribute-translate"/></p></item>
 <item><p><specref ref="style-attribute-unicodeBidi"/></p></item>
 <item><p><specref ref="style-attribute-visibility"/></p></item>
 <item><p><specref ref="style-attribute-width"/></p></item>
@@ -11223,6 +11241,70 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <p>The semantics of the style property represented by this attribute are based upon 
 that defined by <bibref ref="css3-decoration"/>, &sect; 4.</p>
 </note>
+</div3>
+<div3 id="style-attribute-translate">
+<head>tts:translate</head>
+<p>The <att>tts:translate</att> attribute is used to specify <emph>x</emph> and <emph>y</emph> translations (offsets) of a
+region area with respect to the nominal (untranslated) origin of the region.</p>
+<p>This attribute may be specified by any element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-translate" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>0px 0px</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#layout-vocabulary-region"><el>region</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>relative to width and height of <loc href="#terms-root-container-region">root container region</loc></td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete, continuous</td>
+</tr>
+</tbody>
+</table>
+<p>If the value of this attribute consists of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
+then they must be interpreted as <emph>x</emph> and <emph>y</emph> offsets, where the first specification
+is the <emph>x</emph> offset, and the second specification is the <emph>y</emph> offset, and where negative values mean to the right or bottom of the affected
+region, respectively</p>
+<p>If a <att>tts:translate</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
+translation of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of this attribute.</p>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
+<note role="elaboration">
+<p>In this context, the phrase <emph>closest supported value</emph> means the value for which the Euclidean distance between
+the computed translate and the supported translate is minimized. If there are multiple closest supported values equally distant from
+the computed value, then the value least distant from [0,0], i.e., closest to the coordinate space origin, is used.</p>
+</note>
+<ednote>
+<name>Translate Example</name>
+<date>2015-01-17</date>
+<edtext>Insert example fragment and image of tts:translate.</edtext>
+</ednote>
 </div3>
 <div3 id="style-attribute-unicodeBidi">
 <head>tts:unicodeBidi</head>

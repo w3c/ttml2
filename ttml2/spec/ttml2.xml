@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v abebbd0a303b 2015/01/17 16:09:39 glenn $ -->
+<!-- $Id: ttml2.xml,v d28f393b51b9 2015/01/18 03:59:43 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/17 16:09:39 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/18 03:59:43 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/17 16:09:39 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/18 03:59:43 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -11287,7 +11287,7 @@ as a style property only to those element types indicated in the following table
 </table>
 <p>If the value of this attribute consists of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
 then they must be interpreted as <emph>x</emph> and <emph>y</emph> offsets, where the first specification
-is the <emph>x</emph> offset, and the second specification is the <emph>y</emph> offset, and where negative values mean to the right or bottom of the affected
+is the <emph>x</emph> offset, and the second specification is the <emph>y</emph> offset, and where positive values mean to the right or bottom of the affected
 region, respectively</p>
 <p>If a <att>tts:translate</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
 equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
@@ -11300,10 +11300,34 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 the computed translate and the supported translate is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value least distant from [0,0], i.e., closest to the coordinate space origin, is used.</p>
 </note>
+<p>The <att>tts:translate</att> style is illustrated by the following example, which conditionally applies a negative (leftward) or
+positive (rightward) translation in the X axis, depending upon whether a left or right image of a steroscopic presentation is being rendered.</p>
+<table id="style-attribute-translate-example-1" role="example">
+<caption>Example Fragment &ndash; Translate</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;region xml:id="r1"&gt;
+  &lt;style tts:extent="30% 10%"/&gt;
+  &lt;style tts:position="center bottom 10%"/&gt;
+  &lt;style condition="parameter('stereoLeft')" <phrase role="strong">tts:translate="-10px 0%"</phrase>/&gt;
+  &lt;style condition="parameter('stereoRight)" <phrase role="strong">tts:translate="+10px 0%"</phrase>/&gt;
+&lt;/region&gt;
+...
+&lt;p region="r1"&gt;
+  3D Text Sample
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
 <ednote>
 <name>Translate Example</name>
 <date>2015-01-17</date>
-<edtext>Insert example fragment and image of tts:translate.</edtext>
+<edtext>Insert example image of tts:translate.</edtext>
 </ednote>
 </div3>
 <div3 id="style-attribute-unicodeBidi">

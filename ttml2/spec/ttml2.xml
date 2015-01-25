@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 9b8dc79e4004 2015/01/25 21:46:52 glenn $ -->
+<!-- $Id: ttml2.xml,v 69877acd9380 2015/01/25 23:55:58 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/01/25 21:46:52 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/01/25 23:55:58 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -128,7 +128,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/01/25 21:46:52 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/01/25 23:55:58 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -1574,6 +1574,9 @@ own illustration.</p>
 <p>The term linear white-space (LWSP) is to be interpreted as a non-empty sequence of
 SPACE (U+0020), TAB (U+0009), CARRIAGE RETURN (U+000D), or LINE FEED (U+000A),
 which corresponds to production [3] <code>S</code> as defined by <bibref ref="xml10"/>.</p>
+<p>Unless stated to the contrary, the terms <emph>horizontal</emph> and <emph>vertical</emph> are interpreted in an absolute sense, not relative to writing mode, while
+<emph>width</emph> refers to a dimension along the <emph>horizontal</emph> axis and
+<emph>height</emph> refers to a dimension along the <emph>vertical</emph> axis. All exceptions are explicitly noted in the text.</p>
 <p>All content of this specification that is not explicitly marked as
 non-normative is considered to be normative. If a section or appendix
 header contains the expression "Non-Normative", then the entirety
@@ -2991,6 +2994,7 @@ Styling Attributes
 <loc href="#style-attribute-backgroundPosition">tts:backgroundPosition</loc>,
 <loc href="#style-attribute-backgroundRepeat">tts:backgroundRepeat</loc>,
 <loc href="#style-attribute-border">tts:border</loc>,
+<loc href="#style-attribute-bpd">tts:bpd</loc>,
 <loc href="#style-attribute-color">tts:color</loc>,
 <loc href="#style-attribute-direction">tts:direction</loc>,
 <loc href="#style-attribute-disparity">tts:disparity</loc>,
@@ -3005,7 +3009,7 @@ Styling Attributes
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
 <loc href="#style-attribute-fontVariantPosition">tts:fontVariantPosition</loc>,
 <loc href="#style-attribute-fontWeight">tts:fontWeight</loc>,
-<loc href="#style-attribute-height">tts:height</loc>,
+<loc href="#style-attribute-ipd">tts:ipd</loc>,
 <loc href="#style-attribute-letterSpacing">tts:letterSpacing</loc>,
 <loc href="#style-attribute-lineHeight">tts:lineHeight</loc>,
 <loc href="#style-attribute-opacity">tts:opacity</loc>,
@@ -3027,7 +3031,6 @@ Styling Attributes
 <loc href="#style-attribute-textShadow">tts:textShadow</loc>,
 <loc href="#style-attribute-unicodeBidi">tts:unicodeBidi</loc>,
 <loc href="#style-attribute-visibility">tts:visibility</loc>,
-<loc href="#style-attribute-width">tts:width</loc>,
 <loc href="#style-attribute-wrapOption">tts:wrapOption</loc>,
 <loc href="#style-attribute-writingMode">tts:writingMode</loc>,
 <loc href="#style-attribute-zIndex">tts:zIndex</loc>
@@ -4532,7 +4535,7 @@ ttp:frameRate
 </table>
 <p>The frame rate that applies to a <loc href="#terms-document-instance">document instance</loc> is used to
 interpret time expressions that are expressed in <emph>frames</emph>
-as defined by <specref ref="timing-value-timeExpression"/>.</p>
+as defined by <specref ref="timing-value-time-expression"/>.</p>
 <p>If the <code>media</code> time base applies and the effective frame rate is
 integral, then a frame is interpreted as a division of a second of media
 time, such that if the frame rate is specified as <emph>F</emph>, then
@@ -4711,7 +4714,7 @@ temporal extent is unknown, then this attribute should not be specified.</p>
 <td>
 <eg xml:space="preserve">
 ttp:mediaDuration
-  : <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>                        // restricted to <emph>offset-time</emph> form
+  : <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                        // restricted to <emph>offset-time</emph> form
   | "indefinite"
 </eg>
 </td>
@@ -4719,7 +4722,7 @@ ttp:mediaDuration
 </tbody>
 </table>
 <p>If specified, the value of this parameter must either (1) adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> or (2) take the value <code>indefinite</code>.</p>
+a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> or (2) take the value <code>indefinite</code>.</p>
 <p>If the value <code>indefinite</code> is specified, then there is no <loc href="#terms-related-media-object">related media object</loc>,
 the temporal extent (simple duration) of the
 <loc href="#terms-related-media-object">related media object</loc> is not known at the time this attribute is
@@ -4762,7 +4765,7 @@ the document temporal extent.</p>
 <td>
 <eg xml:space="preserve">
 ttp:mediaOffset
-  : sign? <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>                  // restricted to <emph>offset-time</emph> form
+  : sign? <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                  // restricted to <emph>offset-time</emph> form
 
 sign
   : "+" | "-"
@@ -4772,7 +4775,7 @@ sign
 </tbody>
 </table>
 <p>If specified, the value of this parameter must adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> optionally expressed with a sign.
+a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> optionally expressed with a sign.
 If not specified, the value of this parameter must be considered
 to be <code>0s</code>.</p>
 <p>If no sign is specified or it is specified as <code>+</code>, then the begin time of the
@@ -4867,7 +4870,7 @@ ttp:subFrameRate
 </table>
 <p>The sub-frame rate that applies to a <loc href="#terms-document-instance">document instance</loc> is used to
 interpret time expressions that are expressed in <emph>sub-frames</emph>
-as defined by <specref ref="timing-value-timeExpression"/>.</p>
+as defined by <specref ref="timing-value-time-expression"/>.</p>
 <p>If the <code>media</code> time base applies and the effective frame rate is
 integral, a sub-frame is interpreted as a division of a frame of media
 time, such that if the sub-frame rate is specified as <emph>S</emph>, then
@@ -4909,7 +4912,7 @@ ttp:tickRate
 <p>The tick rate that applies to a <loc href="#terms-document-instance">document instance</loc> is used to
 interpret time expressions that are expressed in <emph>ticks</emph> by
 using the <code>t</code> metric as defined by <specref
-ref="timing-value-timeExpression"/>.</p>
+ref="timing-value-time-expression"/>.</p>
 <p>If the <code>media</code> time base applies,
 a tick is interpreted as an integral division of a second of media
 time, such that if the tick rate is specified as <emph>T</emph>, then
@@ -5178,10 +5181,10 @@ element group apply semantically to the <el>body</el> element.</p>
 <eg xml:space="preserve">
 &lt;body
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
@@ -5271,10 +5274,10 @@ element group apply semantically to the <el>div</el> element.</p>
 <eg xml:space="preserve">
 &lt;div
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
@@ -5349,10 +5352,10 @@ element group apply semantically to the <el>p</el> element.</p>
 <eg xml:space="preserve">
 &lt;p
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
@@ -5435,10 +5438,10 @@ element group apply semantically to the <el>span</el> element.</p>
 <eg xml:space="preserve">
 &lt;span
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
@@ -5497,10 +5500,10 @@ element group apply semantically to the <el>br</el> element.</p>
 <eg xml:space="preserve">
 &lt;br
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
@@ -6571,13 +6574,12 @@ content processor.</p>
 <p>If an <el>image</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
 the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
 value expression.</p>
-<p>An <el>image</el> element may specify either (both)
-<loc href="#style-attribute-width"><att>tts:width</att></loc> or (and) 
-<loc href="#style-attribute-height"><att>tts:height</att></loc> style attributes in order to specify the presentation width or height of the image when
-intrinsic width or height information is not available or is intended to be overridden. If (either or both of) these attributes are specified on both an
+<p>An <el>image</el> element may specify an <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
+style attribute in order to specify the presentation width or height of the image
+when intrinsic width or height information is not available or is intended to be overridden. If this attribute is specified on both an
 <el>image</el> element in an <loc href="#terms-image-presentation-context">image presentation context</loc> and on the
 <el>image</el> element in an <loc href="#terms-image-defining-context">image defining context</loc> to which the former refers, then
-these attributes specified on the former take precedence over those specified on the latter.</p>
+the attribute specified on the former takes precedence over the one specified on the latter.</p>
 <p>The linking attributes <att>xlink:*</att> may be used to link an <el>image</el> element with related content, using the
 specified location (<code>href</code>), roles, and title. The behavior of link activation is affected by the <att>xlink:show</att> attribute,
 the precise meaning of which is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
@@ -7123,7 +7125,7 @@ codepoint
   : ("U"|"u") "+" hexdigit-or-wildcard{1,6}
 
 hexdigit-or-wildcard
-  : <loc href="#style-value-hexDigit">&lt;hexDigit&gt;</loc>
+  : <loc href="#style-value-hex-digit">&lt;hex-digit&gt;</loc>
   | "?"
 </eg>
 </td>
@@ -7298,6 +7300,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-backgroundPosition"/></p></item>
 <item><p><specref ref="style-attribute-backgroundRepeat"/></p></item>
 <item><p><specref ref="style-attribute-border"/></p></item>
+<item><p><specref ref="style-attribute-bpd"/></p></item>
 <item><p><specref ref="style-attribute-color"/></p></item>
 <item><p><specref ref="style-attribute-direction"/></p></item>
 <item><p><specref ref="style-attribute-disparity"/></p></item>
@@ -7312,7 +7315,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
 <item><p><specref ref="style-attribute-fontVariantPosition"/></p></item>
 <item><p><specref ref="style-attribute-fontWeight"/></p></item>
-<item><p><specref ref="style-attribute-height"/></p></item>
+<item><p><specref ref="style-attribute-ipd"/></p></item>
 <item><p><specref ref="style-attribute-letterSpacing"/></p></item>
 <item><p><specref ref="style-attribute-lineHeight"/></p></item>
 <item><p><specref ref="style-attribute-opacity"/></p></item>
@@ -7334,32 +7337,16 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-textShadow"/></p></item>
 <item><p><specref ref="style-attribute-unicodeBidi"/></p></item>
 <item><p><specref ref="style-attribute-visibility"/></p></item>
-<item><p><specref ref="style-attribute-width"/></p></item>
 <item><p><specref ref="style-attribute-wrapOption"/></p></item>
 <item><p><specref ref="style-attribute-writingMode"/></p></item>
 <item><p><specref ref="style-attribute-zIndex"/></p></item>
 </ulist>
-<ednote>
-<name>Additional Border Styling Attributes</name>
-<date>2013-08-24</date>
-<edtext>Consider adding support for <code>tts:borderColor</code>, <code>tts:borderStyle</code>, and <code>tts:borderWidth</code>
-in order to provide a means to independently express styling of the four different borders (top, right, bottom, left). As currently specified, i.e., with only the
-<code>tts:border</code> attribute, one can only express the four borders using the same color, style, and width.</edtext>
-</ednote>
-<p></p>
 <ednote>
 <name>Background Clip, Origin, Size</name>
 <date>2014-11-27</date>
 <edtext>Consider adding support for <att>tts:backgroundClip</att>,
 <att>tts:backgroundOrigin</att>, and
 <att>tts:backgroundSize</att>.</edtext>
-</ednote>
-<p></p>
-<ednote>
-<name>Additional Width/Height Related Attributes</name>
-<date>2014-11-30</date>
-<edtext>Given the addition of <code>tts:width</code> and <code>tts:height</code>, consider also adding
-<code>tts:minWidth</code>, <code>tts:maxWidth</code>, <code>tts:minHeight</code>, and <code>tts:minHeight</code>.</edtext>
 </ednote>
 <p>Unless explicitly permitted by an element type definition, an attribute in the TT Style Namespace should not be specified on an element
 unless it either applies to that element or denotes an inheritable style property. If it does not apply to that element
@@ -7809,9 +7796,9 @@ as a style property only to those element types indicated in the following table
 <td><emph>Values:</emph></td>
 <td>
 [
-<loc href="#style-value-borderWidth">&lt;borderWidth&gt;</loc> ||
-<loc href="#style-value-borderStyle">&lt;borderStyle&gt;</loc> ||
-<loc href="#style-value-borderColor">&lt;borderColor&gt;</loc>
+<loc href="#style-value-border-thickness">&lt;border-thickness&gt;</loc> ||
+<loc href="#style-value-border-style">&lt;border-style&gt;</loc> ||
+<loc href="#style-value-border-color">&lt;border-color&gt;</loc>
 ]
 </td>
 </tr>
@@ -7839,22 +7826,22 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete, continuous (color and width only)</td>
+<td>discrete, continuous (color and thickness only)</td>
 </tr>
 </tbody>
 </table>
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
-<p>If no border width is specified in the value of the <att>tts:border</att> property,
-then the border width must be interpreted as if a width of
+<p>If no border thickness is specified in the value of the <att>tts:border</att> property,
+then the border thickness must be interpreted as if a thickness of
 <code>medium</code> were specified.</p>
-<p>If a computed value of the border width associated with this attribute is not supported,
+<p>If a computed value of the border thickness associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
 <p>In this context, the phrase <emph>closest supported value</emph> means the value for which the one-dimensional Euclidean distance between
-the computed border width and the supported border width is minimized on a per-edge basis. If there are multiple closest supported values equally distant from
-the computed value for a given edge, then the value least distant from 0, i.e., the least border width, is used.</p>
+the computed border thickness and the supported border thickness is minimized on a per-edge basis. If there are multiple closest supported values equally distant from
+the computed value for a given edge, then the value least distant from 0, i.e., the least border thickness, is used.</p>
 </note>
 <p>If no border style is specified in the value of the <att>tts:border</att> property,
 then the border style must be interpreted as if a style of
@@ -7909,6 +7896,79 @@ to the computed value of the element's <code>tts:color</code> style property wer
 <note role="derivation">
 <p>The semantics of the style property represented by this attribute are based upon 
 that defined by <bibref ref="xsl11"/>, &sect; 7.31.3.</p>
+</note>
+</div3>
+<div3 id="style-attribute-bpd">
+<head>tts:bpd</head>
+<p>The <att>tts:bpd</att> attribute is used to specify the
+<emph>block progression dimension</emph>, or, more succinctly, the <emph>bpd</emph> of an area generated by content flowed into a region.</p>
+<note role="clarification">
+<p>The term <emph>block progression dimension</emph> is interpreted in a writing mode relative manner
+such that <emph>bpd</emph> always corresponds to a measure in the block
+progression direction. Therefore, in horizontal writing modes, <emph>bpd</emph> expresses a vertical measure,
+while, in vertical writing mode, <emph>bpd</emph> expresses a horizontal measure,
+where horizontal and vertical are always interpreted in an absolute sense.</p>
+</note>
+<p>If a <att>tts:bpd</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
+then that <loc href="#content-vocabulary-span"><el>span</el></loc> element must be processed using
+<loc href="#terms-inline-block-display">inline block display</loc> semantics for the purpose of presentation processing.</p>
+<p>This attribute may be specified by any
+element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-bpd" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<loc href="#style-value-measure">&lt;measure&gt;</loc>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>auto</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>see prose</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete, continuous</td>
+</tr>
+</tbody>
+</table>
+<p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
+<p>The <att>tts:bpd</att> style is illustrated by the following example.</p>
+<ednote>
+<name>Block Progression Dimension Percentage</name>
+<date>2014-11-29</date>
+<edtext>Specify resolution of percentage value.</edtext>
+</ednote>
+<p></p>
+<ednote>
+<name>Block Progression Dimension Example</name>
+<date>2014-11-29</date>
+<edtext>Insert example fragment and image of tts:bpd.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property
+represented by this attribute are based upon the <att>height</att> property defined by <bibref ref="xsl11"/>,
+&sect; 7.15.6 and <bibref ref="css3-box"/>, &sect; 9</p>
 </note>
 </div3>
 <div3 id="style-attribute-color">
@@ -8427,10 +8487,13 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 </div3>
 <div3 id="style-attribute-extent">
 <head>tts:extent</head>
-<p>The <att>tts:extent</att> attribute is used to specify the
-<emph>width</emph> and <emph>height</emph> of a region area. It may also be used to specify the extent of
-the <loc href="#terms-root-container-region">root container region</loc>, which has the effect of defining
-the <loc href="#terms-document-coordinate-space">document coordinate space</loc>.</p>
+<p>The <att>tts:extent</att> attribute may be used for the following purposes:</p>
+<olist>
+<item><p>to specify the <emph>width</emph> and <emph>height</emph> of a region area;</p></item>
+<item><p>to specify the <emph>width</emph> and <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>, which has the effect of defining
+the <loc href="#terms-document-coordinate-space">document coordinate space</loc>;</p></item>
+<item><p>to specify or override the <emph>width</emph> and (or) <emph>height</emph> of an image's intrinsic extent.</p></item>
+</olist>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
@@ -8458,7 +8521,8 @@ as a style property only to those element types indicated in the following table
 <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#layout-vocabulary-region"><el>region</el></loc>
+<loc href="#layout-vocabulary-region"><el>region</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
 </td>
 </tr>
 <tr>
@@ -8480,12 +8544,13 @@ specifications, then they must be interpreted as <emph>width</emph>
 and <emph>height</emph>, where the first specification is the
 <emph>width</emph>, and the second specification is the <emph>height</emph>.</p>
 <p>The <loc href="#style-value-measure">&lt;measure&gt;</loc> value(s) used to express extent must be non-negative.</p>
-<p>If the value of this attribute is <code>auto</code>, then the computed value
+<p>If applied to a <loc href="#terms-region">region</loc> other than the <loc href="#terms-root-container-region">root container region</loc> and 
+the value of this attribute is <code>auto</code>, then the computed value
 of the style property must be considered to be the same as the extent of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <ednote>
 <name>Semantics of contain and cover</name>
 <date>2015-01-05</date>
-<edtext>Define semantics of new <code>contain</code> and <code>cover</code> values.</edtext>
+<edtext>Define semantics of new <code>contain</code> and <code>cover</code> values. Exclude these values from use with an <el>image</el> element.</edtext>
 </ednote>
 <p>The extent of the <loc href="#terms-root-container-region">root container region</loc> is determined either by a
 <att>tts:extent</att> specified on the <el>tt</el> element, if
@@ -8497,6 +8562,8 @@ and these specifications must be expressed as non-percentage, definite lengths u
 equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
 extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
 value of this attribute.</p>
+<p>If a <att>tts:extent</att> attribute is specified on an <el>image</el> element, then its computed value determines or overrides the image's intrinsic
+width and (or) height.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -8560,9 +8627,9 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-(<loc href="#style-value-familyName">&lt;familyName&gt;</loc> | <loc href="#style-value-genericFamilyName">&lt;genericFamilyName&gt;</loc>)
+(<loc href="#style-value-family-name">&lt;family-name&gt;</loc> | <loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>)
 (<code>","</code>
-&nbsp;(<loc href="#style-value-familyName">&lt;familyName&gt;</loc> | <loc href="#style-value-genericFamilyName">&lt;genericFamilyName&gt;</loc>))*
+&nbsp;(<loc href="#style-value-family-name">&lt;family-name&gt;</loc> | <loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>))*
 </td>
 </tr>
 <tr>
@@ -8592,7 +8659,7 @@ as a style property only to those element types indicated in the following table
 </table>
 <note role="clarification">
 <p>The initial value, <code>default</code>, is a generic font family name, and is
-further described in <specref ref="style-value-genericFamilyName"/> below.</p>
+further described in <specref ref="style-value-generic-family-name"/> below.</p>
 </note>
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
@@ -9180,25 +9247,25 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.9.</p>
 </note>
 </div3>
-<div3 id="style-attribute-height">
-<head>tts:height</head>
-<p>The <att>tts:height</att> attribute is used to specify the
-<emph>height</emph> of an area generated by content flowed into a region.</p>
+<div3 id="style-attribute-ipd">
+<head>tts:ipd</head>
+<p>The <att>tts:ipd</att> attribute is used to specify the
+<emph>inline progression dimension</emph>, or, more succinctly, the <emph>ipd</emph> of an area generated by content flowed into a region.</p>
 <note role="clarification">
-<p>The term <emph>height</emph> is interpreted in a writing mode relative manner
-such that <emph>height</emph> always corresponds to a measure in the block
-progression direction. Therefore, in horizontal writing modes, <emph>height</emph> expresses a vertical measure,
-while, in vertical writing mode, <emph>height</emph> expresses a horizontal measure,
+<p>The term <emph>inline progression dimension</emph> is interpreted in a writing mode relative manner
+such that <emph>ipd</emph> always corresponds to a measure in the inline
+progression direction. Therefore, in horizontal writing modes, <emph>ipd</emph> expresses a horizontal measure,
+while, in vertical writing mode, <emph>ipd</emph> expresses a vertical measure,
 where horizontal and vertical are always interpreted in an absolute sense.</p>
 </note>
-<p>If a <att>tts:height</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
+<p>If a <att>tts:ipd</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
 then that <loc href="#content-vocabulary-span"><el>span</el></loc> element must be processed using
 <loc href="#terms-inline-block-display">inline block display</loc> semantics for the purpose of presentation processing.</p>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
-<table id="style-property-details-height" role="common">
+<table id="style-property-details-ipd" role="common">
 <col width="25%"/>
 <col/>
 <tbody>
@@ -9217,8 +9284,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#content-vocabulary-span"><el>span</el></loc>,
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
 <tr>
@@ -9236,22 +9302,22 @@ as a style property only to those element types indicated in the following table
 </tbody>
 </table>
 <p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
-<p>The <att>tts:height</att> style is illustrated by the following example.</p>
+<p>The <att>tts:ipd</att> style is illustrated by the following example.</p>
 <ednote>
-<name>Height Percentage</name>
+<name>Inline Progression Dimension Percentage</name>
 <date>2014-11-29</date>
 <edtext>Specify resolution of percentage value.</edtext>
 </ednote>
 <p></p>
 <ednote>
-<name>Height Example</name>
+<name>Inline Progression Dimension Example</name>
 <date>2014-11-29</date>
-<edtext>Insert example fragment and image of tts:height.</edtext>
+<edtext>Insert example fragment and image of tts:ipd.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
-represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.15.6, and <bibref ref="css3-box"/>, &sect; 9</p>
+represented by this attribute are based upon the <att>width</att> property defined by <bibref ref="xsl11"/>,
+&sect; 7.15.14 and <bibref ref="css3-box"/>, &sect; 9</p>
 </note>
 </div3>
 <div3 id="style-attribute-letterSpacing">
@@ -9259,7 +9325,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <p>The <att>tts:letterSpacing</att> attribute is used to specify a style property that
 increases or decreases the nominal distance between glyph areas.</p>
 <p>Letter spacing has no affect at the beginning or ending of a line area, and must not
-be applied to zero-width glyphs. Furthermore, letter spacing must not cause normally connected glyphs,
+be applied to zero-advance glyphs. Furthermore, letter spacing must not cause normally connected glyphs,
 e.g., as used in cursive scripts or with cursive fonts, to become disconnected.</p>
 <p>Letter spacing is applied independently from kerning and justification. Depending upon the font(s) in use,
 the script(s) being presented, and the capabilities of a presentation processor, either or both kerning and
@@ -9337,6 +9403,11 @@ represented by this attribute are based upon that defined by <bibref ref="css3-t
 <head>tts:lineHeight</head>
 <p>The <att>tts:lineHeight</att> attribute is used to specify a style property that
 defines the inter-baseline separation between line areas generated by content flowed into a region.</p>
+<note role="exception">
+<p>Exceptionally, the term <emph>height</emph> in the token <code>lineHeight</code> or the phrase <emph>line height</emph> refers to
+the axis that corresponds with the <emph>block progression dimension</emph> of an associated line area, which is the vertical axis in
+horizontal writing modes, but is the horizontal axis in vertical writing modes.</p>
+</note>
 <issue id="issue-284">
 <head>Normal Line Height Multiplier</head>
 <source><loc href="https://www.w3.org/AudioVideo/TT/tracker/issues/284">https://www.w3.org/AudioVideo/TT/tracker/issues/284</loc></source>
@@ -10530,7 +10601,7 @@ with respect to its associated ruby base.</p>
 <ednote>
 <name>Outside Annotations</name>
 <date>2015-01-14</date>
-<edtext>Add <code>auto</code> and <code>outside</code> values as defined by &lt;emphasisPosition&gt; expressions.</edtext>
+<edtext>Add <code>auto</code> and <code>outside</code> values as defined by &lt;emphasis-position&gt; expressions.</edtext>
 </ednote>
 <p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
 this attribute applies as a style property only to those element types indicated in the following table.</p>
@@ -11029,9 +11100,9 @@ as a style property only to those element types indicated in the following table
 <td><emph>Values:</emph></td>
 <td>
 [
-<loc href="#style-value-emphasisStyle">&lt;emphasisStyle&gt;</loc> ||
-<loc href="#style-value-emphasisColor">&lt;emphasisColor&gt;</loc> ||
-<loc href="#style-value-emphasisPosition">&lt;emphasisPosition&gt;</loc>
+<loc href="#style-value-emphasis-style">&lt;emphasis-style&gt;</loc> ||
+<loc href="#style-value-emphasis-color">&lt;emphasis-color&gt;</loc> ||
+<loc href="#style-value-emphasis-position">&lt;emphasis-position&gt;</loc>
 ]
 </td>
 </tr>
@@ -11555,80 +11626,6 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.30.17.</p>
 </note>
 </div3>
-<div3 id="style-attribute-width">
-<head>tts:width</head>
-<p>The <att>tts:width</att> attribute is used to specify the
-<emph>width</emph> of an area generated by content flowed into a region.</p>
-<note role="clarification">
-<p>The term <emph>width</emph> is interpreted in a writing mode relative manner
-such that <emph>width</emph> always corresponds to a measure in the inline
-progression direction. Therefore, in horizontal writing modes, <emph>width</emph> expresses a horizontal measure,
-while, in vertical writing mode, <emph>width</emph> expresses a vertical measure,
-where horizontal and vertical are always interpreted in an absolute sense.</p>
-</note>
-<p>If a <att>tts:width</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
-then that <loc href="#content-vocabulary-span"><el>span</el></loc> element must be processed using
-<loc href="#terms-inline-block-display">inline block display</loc> semantics for the purpose of presentation processing.</p>
-<p>This attribute may be specified by any
-element type
-that permits use of attributes in the TT Style Namespace; however, this attribute applies
-as a style property only to those element types indicated in the following table.</p>
-<table id="style-property-details-width" role="common">
-<col width="25%"/>
-<col/>
-<tbody>
-<tr>
-<td><emph>Values:</emph></td>
-<td>
-<loc href="#style-value-measure">&lt;measure&gt;</loc>
-</td>
-</tr>
-<tr>
-<td><emph>Initial:</emph></td>
-<td><code>auto</code></td>
-</tr>
-<tr>
-<td><emph>Applies to:</emph></td>
-<td>
-<loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#content-vocabulary-span"><el>span</el></loc>,
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
-</td>
-</tr>
-<tr>
-<td><emph>Inherited:</emph></td>
-<td>no</td>
-</tr>
-<tr>
-<td><emph>Percentages:</emph></td>
-<td>see prose</td>
-</tr>
-<tr>
-<td><emph>Animatable:</emph></td>
-<td>discrete, continuous</td>
-</tr>
-</tbody>
-</table>
-<p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
-<p>The <att>tts:width</att> style is illustrated by the following example.</p>
-<ednote>
-<name>Width Percentage</name>
-<date>2014-11-29</date>
-<edtext>Specify resolution of percentage value.</edtext>
-</ednote>
-<p></p>
-<ednote>
-<name>Width Example</name>
-<date>2014-11-29</date>
-<edtext>Insert example fragment and image of tts:width.</edtext>
-</ednote>
-<note role="derivation">
-<p>The semantics of the style property
-represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
-&sect; 7.15.14, and <bibref ref="css3-box"/>, &sect; 9</p>
-</note>
-</div3>
 <div3 id="style-attribute-wrapOption">
 <head>tts:wrapOption</head>
 <p>The <att>tts:wrapOption</att> attribute is used to specify a style property that
@@ -11973,21 +11970,21 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <p>Style property values include the use of the following expressions:</p>
 <ulist>
 <item><p><specref ref="style-value-alpha"/></p></item>
-<item><p><specref ref="style-value-borderColor"/></p></item>
-<item><p><specref ref="style-value-borderStyle"/></p></item>
-<item><p><specref ref="style-value-borderWidth"/></p></item>
+<item><p><specref ref="style-value-border-color"/></p></item>
+<item><p><specref ref="style-value-border-style"/></p></item>
+<item><p><specref ref="style-value-border-thickness"/></p></item>
 <item><p><specref ref="style-value-color"/></p></item>
 <item><p><specref ref="style-value-digit"/></p></item>
-<item><p><specref ref="style-value-emphasisColor"/></p></item>
-<item><p><specref ref="style-value-emphasisStyle"/></p></item>
-<item><p><specref ref="style-value-emphasisPosition"/></p></item>
-<item><p><specref ref="style-value-familyName"/></p></item>
-<item><p><specref ref="style-value-genericFamilyName"/></p></item>
-<item><p><specref ref="style-value-hexDigit"/></p></item>
+<item><p><specref ref="style-value-emphasis-color"/></p></item>
+<item><p><specref ref="style-value-emphasis-style"/></p></item>
+<item><p><specref ref="style-value-emphasis-position"/></p></item>
+<item><p><specref ref="style-value-family-name"/></p></item>
+<item><p><specref ref="style-value-generic-family-name"/></p></item>
+<item><p><specref ref="style-value-hex-digit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
 <item><p><specref ref="style-value-measure"/></p></item>
-<item><p><specref ref="style-value-namedColor"/></p></item>
+<item><p><specref ref="style-value-named-color"/></p></item>
 <item><p><specref ref="style-value-non-negative-integer"/></p></item>
 <item><p><specref ref="style-value-number"/></p></item>
 <item><p><specref ref="style-value-percentage"/></p></item>
@@ -12032,17 +12029,17 @@ the computed opacity and the supported opacity is minimized. If there are multip
 the computed value, then the value most distant from 0, i.e., the greatest opacity, is used.</p>
 </note>
 </div3>
-<div3 id="style-value-borderColor">
-<head>&lt;borderColor&gt;</head>
-<p>A &lt;borderColor&gt; expression is used to express the color of one
+<div3 id="style-value-border-color">
+<head>&lt;border-color&gt;</head>
+<p>A &lt;border-color&gt; expression is used to express the color of one
 or more borders.</p>
-<table id="borderColor-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;borderColor&gt;</caption>
+<table id="border-color-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;border-color&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;borderColor&gt;
+&lt;border-color&gt;
   : <loc href="#style-value-color">&lt;color&gt;</loc>
 </eg>
 </td>
@@ -12050,17 +12047,17 @@ or more borders.</p>
 </tbody>
 </table>
 </div3>
-<div3 id="style-value-borderStyle">
-<head>&lt;borderStyle&gt;</head>
-<p>A &lt;borderStyle&gt; expression is used to express the style of one
+<div3 id="style-value-border-style">
+<head>&lt;border-style&gt;</head>
+<p>A &lt;border-style&gt; expression is used to express the style of one
 or more borders.</p>
-<table id="borderStyle-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;borderStyle&gt;</caption>
+<table id="border-style-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;border-style&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;borderStyle&gt;
+&lt;border-style&gt;
   : none
   | dotted
   | dashed
@@ -12077,17 +12074,17 @@ to be implementation dependent.</p>
 it must be interpreted as if a style of <code>solid</code> were specified; as such, an implementation that
 supports borders must minimally support the <code>solid</code> value.</p>
 </div3>
-<div3 id="style-value-borderWidth">
-<head>&lt;borderWidth&gt;</head>
-<p>A &lt;borderWidth&gt; expression is used to express the width of one
+<div3 id="style-value-border-thickness">
+<head>&lt;border-thickness&gt;</head>
+<p>A &lt;border-thickness&gt; expression is used to express the thickness of one
 or more borders.</p>
-<table id="borderWidth-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;borderWidth&gt;</caption>
+<table id="border-thickness-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;border-thickness&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;borderWidth&gt;
+&lt;border-thickness&gt;
   : thin
   | medium
   | thick
@@ -12098,9 +12095,9 @@ or more borders.</p>
 </tbody>
 </table>
 <p>The interpretation of <code>thin</code>, <code>medium</code>, and <code>thick</code> are considered
-to be implementation dependent; however, the resolved lengths of these widths must adhere to the following
-constraints: width(thin) &lt; width(medium); width(medium) &lt; width(thick).</p>
-<p>If a border width is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc>,
+to be implementation dependent; however, the resolved lengths must adhere to the following
+constraints: thickness(thin) &lt; thickness(medium); thickness(medium) &lt; thickness(thick).</p>
+<p>If a border thickness is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc>,
 then it must not take the form of a percentage value; i.e., it must take the form of a scalar value.</p>
 </div3>
 <div3 id="style-value-color">
@@ -12121,22 +12118,19 @@ defined by <bibref ref="srgb"/>.</p>
   | "#" rrggbbaa
   | "rgb" "(" r-value "," g-value "," b-value ")"
   | "rgba" "(" r-value "," g-value "," b-value "," a-value ")"
-  | <loc href="#style-value-namedColor">&lt;namedColor&gt;</loc>
+  | <loc href="#style-value-named-color">&lt;named-color&gt;</loc>
 
 rrggbb
-  :  <loc href="#style-value-hexDigit">&lt;hexDigit&gt;</loc>{6}
+  :  <loc href="#style-value-hex-digit">&lt;hex-digit&gt;</loc>{6}
 
 rrggbbaa
-  :  <loc href="#style-value-hexDigit">&lt;hexDigit&gt;</loc>{8}
+  :  <loc href="#style-value-hex-digit">&lt;hex-digit&gt;</loc>{8}
 
 r-value | g-value | b-value | a-value
   : component-value
 
 component-value
-  : non-negative-integer                    // valid range: [0,255]
-
-non-negative-integer
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+  : <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>                    // valid range: [0,255]
 </eg>
 </td>
 </tr>
@@ -12182,17 +12176,17 @@ the computed value, then the value least distant from opaque black <code>rgb(0,0
 </tbody>
 </table>
 </div3>
-<div3 id="style-value-emphasisColor">
-<head>&lt;emphasisColor&gt;</head>
-<p>An &lt;emphasisColor&gt; expression is used to express the color of text
+<div3 id="style-value-emphasis-color">
+<head>&lt;emphasis-color&gt;</head>
+<p>An &lt;emphasis-color&gt; expression is used to express the color of text
 emphasis marks.</p>
-<table id="emphasisColor-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;emphasisColor&gt;</caption>
+<table id="emphasis-color-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;emphasis-color&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;emphasisColor&gt;
+&lt;emphasis-color&gt;
   : current
   | <loc href="#style-value-color">&lt;color&gt;</loc>
 </eg>
@@ -12218,17 +12212,17 @@ emphasis marks.</p>
 it must be interpreted as if a style of <code>current</code> were specified; as such, an implementation that
 supports text emphasis marks must minimally support the <code>current</code> value.</p>
 </div3>
-<div3 id="style-value-emphasisStyle">
-<head>&lt;emphasisStyle&gt;</head>
-<p>An &lt;emphasisStyle&gt; expression is used to express the style of text
+<div3 id="style-value-emphasis-style">
+<head>&lt;emphasis-style&gt;</head>
+<p>An &lt;emphasis-style&gt; expression is used to express the style of text
 emphasis marks.</p>
-<table id="emphasisStyle-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;emphasisStyle&gt;</caption>
+<table id="emphasis-style-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;emphasis-style&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;emphasisStyle&gt;
+&lt;emphasis-style&gt;
   : none
   | auto 
   | [ filled | open ] || [ circle | dot | sesame ]
@@ -12297,17 +12291,17 @@ equivalent to <code>filled circle</code>.</p>
 it must be interpreted as if a style of <code>auto</code> were specified; as such, an implementation that
 supports text emphasis marks must minimally support the <code>auto</code> value.</p>
 </div3>
-<div3 id="style-value-emphasisPosition">
-<head>&lt;emphasisPosition&gt;</head>
-<p>An &lt;emphasisPosition&gt; expression is used to express the position of text
+<div3 id="style-value-emphasis-position">
+<head>&lt;emphasis-position&gt;</head>
+<p>An &lt;emphasis-position&gt; expression is used to express the position of text
 emphasis marks.</p>
-<table id="emphasisPosition-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;emphasisPosition&gt;</caption>
+<table id="emphasis-position-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;emphasis-position&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;emphasisPosition&gt;
+&lt;emphasis-position&gt;
   : auto
   | before
   | after
@@ -12355,16 +12349,16 @@ for the last affected line area.</p>
 it must be interpreted as if a position of <code>auto</code> were specified; as such, an implementation that
 supports text emphasis marks must minimally support the <code>auto</code> value.</p>
 </div3>
-<div3 id="style-value-familyName">
-<head>&lt;familyName&gt;</head>
-<p>A &lt;familyName&gt; expression specifies a font family name.</p>
-<table id="familyName-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;familyName&gt;</caption>
+<div3 id="style-value-family-name">
+<head>&lt;family-name&gt;</head>
+<p>A &lt;family-name&gt; expression specifies a font family name.</p>
+<table id="family-name-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;family-name&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;familyName&gt;
+&lt;family-name&gt;
   : unquoted-string
   | <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
 
@@ -12400,7 +12394,7 @@ escape
 </table>
 <p>In addition to adhering to the syntax rules specified above, the following semantic rules apply:</p>
 <ulist>
-<item><p>the semantic value of a &lt;familyName&gt; expression is the semantic value of its <code>unquoted-string</code> or <code>quoted-string</code>
+<item><p>the semantic value of a &lt;family-name&gt; expression is the semantic value of its <code>unquoted-string</code> or <code>quoted-string</code>
 non-terminal, according to whichever applies;</p></item>
 <item><p>the semantic value of an <code>unquoted-string</code> non-terminal is a pair <code>&lt;</code><emph>quoted</emph>, <emph>content</emph><code>&gt;</code>,
 where <emph>quoted</emph> is a boolean <code>false</code>, and
@@ -12411,12 +12405,12 @@ identifier;</p></item>
 where <emph>quoted</emph> is a boolean <code>true</code>, and
 where <emph>content</emph> is the unquoted content of the quoted string, i.e., the sequence of characters between the delimiting quotes.</p></item>
 <item><p>the semantic value of an <code>escape</code> non-terminal is the value of the escaped <code>char</code>;</p></item>
-<item><p>a &lt;familyName&gt; that takes the form of an <code>unquoted-string</code> that contains an <code>identifier</code> that
+<item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains an <code>identifier</code> that
 starts with two <code>-</code> HYPHEN-MINUS (U+002D) characters must be considered to be invalid;</p></item>
-<item><p>a &lt;familyName&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
-matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must be interpreted as that &lt;genericFamilyName&gt;;</p></item>
-<item><p>a &lt;familyName&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
-matches (by case sensitive comparison) a &lt;genericFamilyName&gt; must not be interpreted as that &lt;genericFamilyName&gt;, but as
+<item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
+matches (by case sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
+<item><p>a &lt;family-name&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
+matches (by case sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
 the actual name of a non-generic font family.</p></item>
 <item><p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
 to the <code>Char</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.2.</p></item>
@@ -12430,26 +12424,26 @@ without its normal syntactic interpretation, it may be be escaped using the back
 (reverse solidus) <code>escape</code> non-terminal specified above.</p>
 <p>When using the backslash (reverse solidus) <code>escape</code> non-terminal, the above syntax does
 not place any restriction on what character may be escaped, e.g., <code>\\[\n\r\f0-9a-f]</code> are
-permitted. If one of these latter escapes appears in a &lt;familyName&gt; expression, then it will
+permitted. If one of these latter escapes appears in a &lt;family-name&gt; expression, then it will
 need to be converted to a <code>{unicode}</code> escape if it is to be used with a standard XSL-FO
 or CSS parser. In particular, a backslash followed by a newline is ignored by CSS, while it is not
 ignored by the above syntax. Such an unignored escaped newline would need to be represented using
 an equivalent <code>{unicode}</code> escape, such as <code>\a</code>, to order to express in CSS.</p>
 </note>
 </div3>
-<div3 id="style-value-genericFamilyName">
-<head>&lt;genericFamilyName&gt;</head>
-<p>A &lt;genericFamilyName&gt; expression specifies a font family using a general
+<div3 id="style-value-generic-family-name">
+<head>&lt;generic-family-name&gt;</head>
+<p>A &lt;generic-family-name&gt; expression specifies a font family using a general
 token that indicates a class of font families.</p>
 <p>The resolution of a generic family name to a concrete font instance is considered to
 be implementation dependent, both in the case of content authoring and content interpretation.</p>
-<table id="genericFamilyName-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;genericFamilyName&gt;</caption>
+<table id="generic-family-name-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;generic-family-name&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;genericFamilyName&gt;
+&lt;generic-family-name&gt;
   : "default"
   | "monospace"
   | "sansSerif"
@@ -12477,18 +12471,18 @@ an initial value), then its typographic characteristics are considered to be imp
 dependent; however, it is recommended that this default font family be mapped to
 an monospaced, sans-serif font.</p>
 </div3>
-<div3 id="style-value-hexDigit">
-<head>&lt;hexDigit&gt;</head>
-<p>A &lt;hexDigit&gt; is used to express integers and other types of numbers or tokens
+<div3 id="style-value-hex-digit">
+<head>&lt;hex-digit&gt;</head>
+<p>A &lt;hex-digit&gt; is used to express integers and other types of numbers or tokens
 that employ base 16 arithmetic.</p>
 <p>For the purpose of parsing, a distinction must not be made between lower and upper case.</p>
-<table id="hexDigit-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;hexDigit&gt;</caption>
+<table id="hex-digit-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;hex-digit&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;hexDigit&gt;
+&lt;hex-digit&gt;
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>
   | "a" | "b" | "c" | "d" | "e" | "f"
   | "A" | "B" | "C" | "D" | "E" | "F"
@@ -12573,15 +12567,15 @@ the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <div3 id="style-value-measure">
 <head>&lt;measure&gt;</head>
 <p>A &lt;measure&gt; value expresses a distance used to measure an allocation
-dimension in either the inline progression direction or the block progression direction, where
+dimension in either the inline progression direction, the <emph>ipd</emph>, or the block progression direction, the <emph>bpd</emph>, where
 the direction that applies is determined by the context of use.</p>
 <note role="clarification">
-<p>The terms <emph>width</emph> and <emph>height</emph> are interpreted in a writing mode relative manner
-such that <emph>width</emph> always corresponds to a measure in the inline
-progression direction and <emph>height</emph> always corresponds to a measure in the block progression direction.
-Therefore, in horizontal writing modes, <emph>width</emph> expresses a horizontal measure
-and <emph>height</emph> expresses a vertical measure, while, in vertical writing mode, <emph>width</emph> expresses a vertical measure
-and <emph>height</emph> expresses a horizontal measure, where horizontal and vertical are always interpreted in an absolute sense.</p>
+<p>The terms <emph>ipd</emph> and <emph>bpd</emph> are interpreted in a writing mode relative manner
+such that <emph>ipd</emph> always corresponds to a measure in the inline
+progression direction and <emph>bpd</emph> always corresponds to a measure in the block progression direction.
+Therefore, in horizontal writing modes, <emph>ipd</emph> expresses a horizontal measure
+and <emph>bpd</emph> expresses a vertical measure, while, in vertical writing mode, <emph>ipd</emph> expresses a vertical measure
+and <emph>bpd</emph> expresses a horizontal measure, where horizontal and vertical are always interpreted in an absolute sense.</p>
 </note>
 <table id="measure-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;measure&gt;</caption>
@@ -12612,11 +12606,10 @@ and <emph>height</emph> expresses a horizontal measure, where horizontal and ver
 <gitem>
 <label><code>available</code></label>
 <def>
-<p>For width in a horizontal writing mode, the numeric value equal to the width of the parent containing block's width less
-the current element's combined border and padding width.
-For height in a horizontal writing mode, the numeric value equal to the height of the parent containing block's height less
-the current element's combined border and padding height.</p>
-<p>For vertical writing mode, the sense of width and height is reversed.</p>
+<p>For <emph>ipd</emph>, the numeric value equal to the <emph>ipd</emph> of the parent containing block's <emph>ipd</emph> less
+the current element's combined border and padding <emph>ipd</emph>.
+For <emph>bpd</emph>, the numeric value equal to the <emph>bpd</emph> of the parent containing block's <emph>bpd</emph> less
+the current element's combined border and padding <emph>bpd</emph>.</p>
 </def>
 </gitem>
 <gitem>
@@ -12628,21 +12621,19 @@ the current element's combined border and padding height.</p>
 <gitem>
 <label><code>maxContent</code></label>
 <def>
-<p>For width in a horizontal writing mode, the maximum numeric value that encloses all of the element's content such that lines are broken only at
-hard, i.e., mandatory, break points, even if that means overflowing the parent's width.</p>
-<p>For height in a horizontal writing mode, the maximum numeric value that encloses all of the element's content such that lines are broken at
+<p>For <emph>ipd</emph>, the maximum numeric value that encloses all of the element's content such that lines are broken only at
+hard, i.e., mandatory, break points, even if that means overflowing the parent's <emph>ipd</emph>.</p>
+<p>For <emph>bpd</emph>, the maximum numeric value that encloses all of the element's content such that lines are broken at
 all possible line break positions, i.e., both hard (mandatory) and soft (optional) break points.</p>
-<p>For vertical writing mode, the sense of width and height is reversed.</p>
 </def>
 </gitem>
 <gitem>
 <label><code>minContent</code></label>
 <def>
-<p>For width in a horizontal writing mode, the minimum numeric value that encloses all of the element's content such that lines are broken at
+<p>For <emph>ipd</emph>, the minimum numeric value that encloses all of the element's content such that lines are broken at
 all possible line break positions, i.e., both hard (mandatory) and soft (optional) break points.</p>
-<p>For height in a horizontal writing mode, the minimum numeric value that encloses all of the element's content such that lines are broken only at
-hard, i.e., mandatory, break points, even if that means overflowing the parent's width.</p>
-<p>For vertical writing mode, the sense of width and height is reversed.</p>
+<p>For <emph>bpd</emph>, the minimum numeric value that encloses all of the element's content such that lines are broken only at
+hard, i.e., mandatory, break points, even if that means overflowing the parent's <emph>ipd</emph>.</p>
 </def>
 </gitem>
 <gitem>
@@ -12653,18 +12644,18 @@ hard, i.e., mandatory, break points, even if that means overflowing the parent's
 </gitem>
 </glist>
 </div3>
-<div3 id="style-value-namedColor">
-<head>&lt;namedColor&gt;</head>
-<p>A &lt;namedColor&gt; is used to express an RGBA color with a convenient name, and where the applicable color space is
+<div3 id="style-value-named-color">
+<head>&lt;named-color&gt;</head>
+<p>A &lt;named-color&gt; is used to express an RGBA color with a convenient name, and where the applicable color space is
 defined by <bibref ref="srgb"/>.</p>
 <p>For the purpose of parsing, a distinction must not be made between lower and upper case.</p>
-<table id="namedColor-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;namedColor&gt;</caption>
+<table id="named-color-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;named-color&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;namedColor&gt;
+&lt;named-color&gt;
   : "transparent"                           // #00000000
   | "black"                                 // #000000ff
   | "silver"                                // #c0c0c0ff
@@ -13852,6 +13843,13 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <edtext>Define semantics for resolving the <code>auto</code> value as used with a  <loc href="#style-value-measure">&lt;measure&gt;</loc> expression,
 the definition of which should be consistent with <bibref ref="css3-box"/>, &sect; 15.</edtext>
 </ednote>
+<p></p>
+<ednote>
+<name>Automatic Measure Applied to Image</name>
+<date>2015-01-25</date>
+<edtext>Define semantics for resolving the <code>auto</code> value as used with a  <loc href="#style-value-measure">&lt;measure&gt;</loc> expression when
+applied to the width or height of an <el>image</el> element.</edtext>
+</ednote>
 </div3> <!-- semantics-style-automatic-measure-calculation -->
 </div2> <!-- semantics-styling -->
 </div1> <!-- styling -->
@@ -13947,10 +13945,10 @@ style inheritance).</p>
 <eg xml:space="preserve">
 &lt;region
   <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
   <loc href="#metadata-attribute-role">ttm:role</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -14816,8 +14814,8 @@ that serve simultaneously as timing containers.</p>
 <p>The <att>begin</att> attribute is used to specify the begin
 point of a temporal interval associated with a timed element. If
 specified, the value of a <att>begin</att> attribute must adhere to
-a &lt;timeExpression&gt; specification as defined by <specref
-ref="timing-value-timeExpression"/>.</p>
+a &lt;time-expression&gt; specification as defined by <specref
+ref="timing-value-time-expression"/>.</p>
 <p>The begin point of a temporal interval is included in the
 interval; i.e., the interval is left-wise closed.</p>
 <p>The semantics of the <att>begin</att> attribute are those defined
@@ -14829,10 +14827,10 @@ while taking into account any overriding semantics defined by this specification
 <p>The <att>dur</att> attribute is used to specify the duration of a
 temporal interval associated with a timed element. If specified,
 the value of a <att>dur</att> attribute must adhere to a
-&lt;timeExpression&gt; specification as defined by <specref
-ref="timing-value-timeExpression"/>.</p>
+&lt;time-expression&gt; specification as defined by <specref
+ref="timing-value-time-expression"/>.</p>
 <note role="clarification">
-<p>When the <code>clock-time</code> form of a &lt;timeExpression&gt; specification
+<p>When the <code>clock-time</code> form of a &lt;time-expression&gt; specification
 is used with a <att>dur</att> attribute, it is intended to be interpreted as
 a difference between two implied clock time expressions.</p>
 </note>
@@ -14858,8 +14856,8 @@ the <att>dur</att> attribute and the difference between the value of the
 <p>The <att>end</att> attribute is used to specify the ending point
 of a temporal interval associated with a timed element. If
 specified, the value of an <att>end</att> attribute must adhere to a
-&lt;timeExpression&gt; specification as defined by <specref
-ref="timing-value-timeExpression"/>.</p>
+&lt;time-expression&gt; specification as defined by <specref
+ref="timing-value-time-expression"/>.</p>
 <p>The ending point of a temporal interval is not included in the
 interval; i.e., the interval is right-wise open.</p>
 <p>The presentation effects of a non-empty active
@@ -14933,11 +14931,11 @@ while taking into account any overriding semantics defined by this specification
 <head>Time Value Expressions</head>
 <p>Timing attribute values include the use of the following expressions:</p>
 <ulist>
-<item><p><specref ref="timing-value-timeExpression"/></p></item>
+<item><p><specref ref="timing-value-time-expression"/></p></item>
 </ulist>
-<div3 id="timing-value-timeExpression">
-<head>&lt;timeExpression&gt;</head>
-<p>A &lt;timeExpression&gt; is used to specify a coordinate within
+<div3 id="timing-value-time-expression">
+<head>&lt;time-expression&gt;</head>
+<p>A &lt;time-expression&gt; is used to specify a coordinate within
 some time base, where the applicable time base is determined by the
 <att>ttp:timeBase</att> parameter, and where the semantics defined
 by <specref ref="time-expression-semantics"/> apply.</p>
@@ -14955,13 +14953,13 @@ explicit specification of frame rate, sub-frame rate, tick rate, and time base.<
 <p>Consider adding dates to time expressions to handle issues around midnight crossings and related use cases.</p>
 </issue>
 <p></p>
-<table id="timeExpression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;timeExpression&gt;</caption>
+<table id="time-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;time-expression&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;timeExpression&gt;
+&lt;time-expression&gt;
   : clock-time
   | offset-time
 
@@ -15003,12 +15001,12 @@ metric
 </tr>
 </tbody>
 </table>
-<p>If a &lt;timeExpression&gt; is expressed in terms of a
+<p>If a &lt;time-expression&gt; is expressed in terms of a
 <emph>clock-time</emph>, then leading zeroes are used when expressing hours,
 minutes, seconds, and frames less than 10. Minutes are constrained to
 [0&hellip;59], while seconds (including any fractional part) are constrained to the closed
 interval [0,60], where the value 60 applies only to leap seconds.</p>
-<p>If a &lt;timeExpression&gt; is expressed in terms of a
+<p>If a &lt;time-expression&gt; is expressed in terms of a
 <emph>clock-time</emph> and a <emph>frames</emph> term is specified,
 then the value of this term must be constrained to the interval
 [0&hellip;<emph>F-1</emph>], where <emph>F</emph> is the frame rate
@@ -15016,7 +15014,7 @@ determined by the <att>ttp:frameRate</att> parameter as defined
 by <specref ref="parameter-attribute-frameRate"/>.
 It is considered an error if a <emph>frames</emph> term or
 <code>f</code> (frames) metric is specified when the <code>clock</code> time base applies.</p>
-<p>If a &lt;timeExpression&gt; is expressed in terms of a
+<p>If a &lt;time-expression&gt; is expressed in terms of a
 <emph>clock-time</emph> and a <emph>sub-frames</emph> term is
 specified, then the value of this term must be constrained to the
 interval [0&hellip;<emph>S-1</emph>], where <emph>S</emph> is the
@@ -15024,7 +15022,7 @@ sub-frame rate determined by the <att>ttp:subFrameRate</att> parameter as define
 ref="parameter-attribute-subFrameRate"/>.
 It is considered an error if a <emph>sub-frames</emph> term is specified
 when the <code>clock</code> time base applies.</p>
-<p>If a &lt;timeExpression&gt; is expressed in terms of an
+<p>If a &lt;time-expression&gt; is expressed in terms of an
 <emph>offset-time</emph> and no <emph>metric</emph> is specified, then it is to be treated as
 if a metric of <code>s</code> (seconds) were specified.</p>
 </div3>
@@ -15140,15 +15138,15 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 <td>
 <eg xml:space="preserve">
 &lt;animate
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  calcMode = <loc href="#animation-value-calcMode">&lt;calcMode&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  calcMode = <loc href="#animation-value-calculation-mode">&lt;calculation-mode&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
-  keySplines = <loc href="#animation-value-keySplines">&lt;keySplines&gt;</loc>
-  keyTimes = <loc href="#animation-value-keyTimes">&lt;keyTimes&gt;</loc>
-  repeatCount = <loc href="#animation-value-repeatCount">&lt;repeatCount&gt;</loc>
+  keySplines = <loc href="#animation-value-key-splines">&lt;key-splines&gt;</loc>
+  keyTimes = <loc href="#animation-value-key-times">&lt;key-times&gt;</loc>
+  repeatCount = <loc href="#animation-value-repeat-count">&lt;repeat-count&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -15166,8 +15164,8 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 must specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute.</p>
 <p>Style property attributes targeted by an <el>animate</el> element are specified directly using
 attributes in the TT Style namespace or in a namespace that is not a TT namespace, where the list (sequence) of animation (key) values
-adhere to the <loc href="#animation-value-animationValueList">&lt;animationValueList&gt;</loc> syntax, and where each
-constituent <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> adheres to the syntax of the specified
+adhere to the <loc href="#animation-value-animation-value-list">&lt;animation-value-list&gt;</loc> syntax, and where each
+constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> adheres to the syntax of the specified
 attribute.</p>
 <note role="elaboration">
 <p>In contrast with <bibref ref="svg11"/>, &sect;19.2.12, a single <el>animate</el> element, as defined here, may be used to
@@ -15313,12 +15311,12 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 <td>
 <eg xml:space="preserve">
 &lt;set
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   fill = <loc href="#animation-value-fill">&lt;fill&gt;</loc>
-  repeatCount = <loc href="#animation-value-repeatCount">&lt;repeatCount&gt;</loc>
+  repeatCount = <loc href="#animation-value-repeat-count">&lt;repeat-count&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -15334,10 +15332,10 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 </table>
 <p>Style property attributes targeted by an <el>set</el> element are specified directly using
 attributes in the TT Style namespace or in a namespace that is not some TT namespace, where the single target animation (key) value
-adheres to the <loc href="#animation-value-animationValueList">&lt;animationValueList&gt;</loc> syntax, where each
-constituent <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> adheres to the syntax of the specified
-attribute, and where exactly one constituent <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> is specified.</p>
-<p>If more than one constituent <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> is specified, then all
+adheres to the <loc href="#animation-value-animation-value-list">&lt;animation-value-list&gt;</loc> syntax, where each
+constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> adheres to the syntax of the specified
+attribute, and where exactly one constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> is specified.</p>
+<p>If more than one constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> is specified, then all
 constituents other than the first must be ignored for the purpose of presentation processing, and must be considered an error for the
 purpose of validation processing.</p>
 <note role="elaboration">
@@ -15473,75 +15471,75 @@ attribute.</p>
 <head>Animation Value Expressions</head>
 <p>Animation attribute values include the use of the following expressions:</p>
 <ulist>
-<item><p><specref ref="animation-value-animationValue"/></p></item>
-<item><p><specref ref="animation-value-animationValueList"/></p></item>
-<item><p><specref ref="animation-value-calcMode"/></p></item>
+<item><p><specref ref="animation-value-animation-value"/></p></item>
+<item><p><specref ref="animation-value-animation-value-list"/></p></item>
+<item><p><specref ref="animation-value-calculation-mode"/></p></item>
 <item><p><specref ref="animation-value-fill"/></p></item>
-<item><p><specref ref="animation-value-keySplines"/></p></item>
-<item><p><specref ref="animation-value-keyTimes"/></p></item>
-<item><p><specref ref="animation-value-repeatCount"/></p></item>
+<item><p><specref ref="animation-value-key-splines"/></p></item>
+<item><p><specref ref="animation-value-key-times"/></p></item>
+<item><p><specref ref="animation-value-repeat-count"/></p></item>
 </ulist>
-<div3 id="animation-value-animationValue">
-<head>&lt;animationValue&gt;</head>
-<p>An &lt;animationValue&gt; expression is used to specify the starting (initial), intermediate,
+<div3 id="animation-value-animation-value">
+<head>&lt;animation-value&gt;</head>
+<p>An &lt;animation-value&gt; expression is used to specify the starting (initial), intermediate,
 or ending (final) of the attribute targeted by the animation.</p>
-<table id="animationValue-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;animationValue&gt;</caption>
+<table id="animation-value-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;animation-value&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;animationValue&gt;
+&lt;animation-value&gt;
   : string
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>The syntax of an &lt;animationValue&gt; expression must satisfy all syntax
+<p>The syntax of an &lt;animation-value&gt; expression must satisfy all syntax
 requirements that apply to the attribute targeted by the animation.</p>
 <ednote>
 <name>Improve Syntax of AnimationValue</name>
 <date>2014-07-31</date>
-<edtext>Enhance detail of syntax of &lt;animationValue&gt; in order to prevent appearance of an unquoted or unescaped semicolon,
-which is used as a delimiter between animation values in &lt;animationValueList&gt;.</edtext>
+<edtext>Enhance detail of syntax of &lt;animation-value&gt; in order to prevent appearance of an unquoted or unescaped semicolon,
+which is used as a delimiter between animation values in &lt;animation-value-list&gt;.</edtext>
 </ednote>
-<p>The semantics of an &lt;animationValue&gt; expression are those defined by
+<p>The semantics of an &lt;animation-value&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </div3>
-<div3 id="animation-value-animationValueList">
-<head>&lt;animationValueList&gt;</head>
-<p>An &lt;animationValueList&gt; expression is used to specify a list of animation values that sequentially
+<div3 id="animation-value-animation-value-list">
+<head>&lt;animation-value-list&gt;</head>
+<p>An &lt;animation-value-list&gt; expression is used to specify a list of animation values that sequentially
 apply to the attribute targeted by the animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
 optionally surrounded by linear white-space (LWSP) characters.</p>
-<table id="animationValueList-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;animationValueList&gt;</caption>
+<table id="animation-value-list-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;animation-value-list&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;animationValueList&gt;
-  : <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> [ ";" <loc href="#animation-value-animationValue">&lt;animationValue&gt;</loc> ]*
+&lt;animation-value-list&gt;
+  : <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> [ ";" <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> ]*
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>The syntax of an &lt;animationValue&gt; in an &lt;animationValueList&gt; expression must satisfy all syntax
+<p>The syntax of an &lt;animation-value&gt; in an &lt;animation-value-list&gt; expression must satisfy all syntax
 requirements that apply to the attribute targeted by the animation.</p>
-<p>The semantics of an &lt;animationValueList&gt; expression are those defined by
+<p>The semantics of an &lt;animation-value-list&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </div3>
-<div3 id="animation-value-calcMode">
-<head>&lt;calcMode&gt;</head>
-<p>A &lt;calcMode&gt; expression is used to control the interpolation mode of the animation.</p>
-<table id="calcMode-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;calcMode&gt;</caption>
+<div3 id="animation-value-calculation-mode">
+<head>&lt;calculation-mode&gt;</head>
+<p>A &lt;calculation-mode&gt; expression is used to control the interpolation mode of the animation.</p>
+<table id="calculation-mode-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;calculation-mode&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;calcMode&gt;
+&lt;calculation-mode&gt;
   : "discrete"
   | "linear"
   | "spline"
@@ -15550,7 +15548,7 @@ requirements that apply to the attribute targeted by the animation.</p>
 </tr>
 </tbody>
 </table>
-<p>The semantics of a &lt;calcMode&gt; expression are those defined by
+<p>The semantics of a &lt;calculation-mode&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </div3>
 <div3 id="animation-value-fill">
@@ -15573,18 +15571,18 @@ requirements that apply to the attribute targeted by the animation.</p>
 <p>The semantics of a &lt;fill&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.8.</p>
 </div3>
-<div3 id="animation-value-keySplines">
-<head>&lt;keySplines&gt;</head>
-<p>An &lt;keySplines&gt; expression is used to specify a list of Bezier control points that control the pacing of an
+<div3 id="animation-value-key-splines">
+<head>&lt;key-splines&gt;</head>
+<p>An &lt;key-splines&gt; expression is used to specify a list of Bezier control points that control the pacing of an
 animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
 optionally surrounded by linear white-space (LWSP) characters.</p>
-<table id="keySplines-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;keySplines&gt;</caption>
+<table id="key-splines-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;key-splines&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;keySplines&gt;
+&lt;key-splines&gt;
   : control [ lwsp? ";" lwsp? control ]*
 
 control
@@ -15611,21 +15609,21 @@ lwsp
 </tr>
 </tbody>
 </table>
-<p>The semantics of a &lt;keySplines&gt; expression are those defined by
-<bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>keySplines</att> attribute.</p>
+<p>The semantics of a &lt;key-splines&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>key-splines</att> attribute.</p>
 </div3>
-<div3 id="animation-value-keyTimes">
-<head>&lt;keyTimes&gt;</head>
-<p>An &lt;keyTimes&gt; expression is used to specify a list of relative time values that control the pacing of an
+<div3 id="animation-value-key-times">
+<head>&lt;key-times&gt;</head>
+<p>An &lt;key-times&gt; expression is used to specify a list of relative time values that control the pacing of an
 animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
 optionally surrounded by linear white-space (LWSP) characters.</p>
-<table id="keyTimes-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;keyTimes&gt;</caption>
+<table id="key-times-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;key-times&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;keyTimes&gt;
+&lt;key-times&gt;
   : time [ lwsp? ";" lwsp? time ]*
 
 time                                // 0 &ge; <emph>value</emph> &ge; 1
@@ -15643,19 +15641,19 @@ lwsp
 </tr>
 </tbody>
 </table>
-<p>The semantics of a &lt;keyTimes&gt; expression are those defined by
-<bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>keyTimes</att> attribute.</p>
+<p>The semantics of a &lt;key-times&gt; expression are those defined by
+<bibref ref="svg11"/>, &sect;19.2.9, as apply to the <att>key-times</att> attribute.</p>
 </div3>
-<div3 id="animation-value-repeatCount">
-<head>&lt;repeatCount&gt;</head>
-<p>A &lt;repeatCount&gt; expression is used to determine the number of iterations of a repeated animation.</p>
-<table id="repeatCount-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;repeatCount&gt;</caption>
+<div3 id="animation-value-repeat-count">
+<head>&lt;repeat-count&gt;</head>
+<p>A &lt;repeat-count&gt; expression is used to determine the number of iterations of a repeated animation.</p>
+<table id="repeat-count-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;repeat-count&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;repeatCount&gt;
+&lt;repeat-count&gt;
   : count
   | "indefinite"
 
@@ -15666,7 +15664,7 @@ count:
 </tr>
 </tbody>
 </table>
-<p>The semantics of a &lt;repeatCount&gt; expression are those defined by
+<p>The semantics of a &lt;repeat-count&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.8.</p>
 </div3>
 </div2> <!-- animation-value-expressions -->
@@ -17264,14 +17262,14 @@ attribute.</p>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#fontFamily-generic</code> feature if it recognizes and is
 capable of transforming <loc
-href="#style-value-genericFamilyName">&lt;genericFamilyName&gt;</loc>
+href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>
 values when used with the <loc
 href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#fontFamily-generic</code> feature if it implements presentation semantic
 support for <loc
-href="#style-value-genericFamilyName">&lt;genericFamilyName&gt;</loc>
+href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>
 values when used with the <loc
 href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
 attribute.</p>
@@ -17281,14 +17279,14 @@ attribute.</p>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#fontFamily-non-generic</code> feature if it recognizes and is
 capable of transforming <loc
-href="#style-value-familyName">&lt;familyName&gt;</loc>
+href="#style-value-family-name">&lt;family-name&gt;</loc>
 values when used with the <loc
 href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#fontFamily-non-generic</code> feature if it implements presentation semantic
 support for <loc
-href="#style-value-familyName">&lt;familyName&gt;</loc>
+href="#style-value-family-name">&lt;family-name&gt;</loc>
 values when used with the <loc
 href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
 attribute.</p>
@@ -18275,10 +18273,10 @@ attribute.</p>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#time-clock</code> feature if it recognizes and is capable of
 transforming all values of the <loc
-href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+href="#timing-value-time-expression">&lt;time-expression&gt;</loc> that
 satisfy the following subset of time expression syntax:</p>
 <eg xml:space="preserve">
-&lt;timeExpression&gt;
+&lt;time-expression&gt;
   : hours ":" minutes ":" seconds ( fraction )?
 </eg>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -18294,10 +18292,10 @@ semantic support for the same syntax specified above.</p>
 <loc href="#feature-subFrameRate"><code>#subFrameRate</code></loc> features
 and if it recognizes and is capable of
 transforming all values of the <loc
-href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+href="#timing-value-time-expression">&lt;time-expression&gt;</loc> that
 satisfy the following subset of time expression syntax:</p>
 <eg xml:space="preserve">
-&lt;timeExpression&gt;
+&lt;time-expression&gt;
   : hours ":" minutes ":" seconds ( fraction | ":" frames ( "." sub-frames )? )?
 </eg>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -18310,10 +18308,10 @@ specified above.</p>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#time-offset</code> feature if it recognizes and is capable of
 transforming all values of the <loc
-href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+href="#timing-value-time-expression">&lt;time-expression&gt;</loc> that
 satisfy the following subset of time expression syntax:</p>
 <eg xml:space="preserve">
-&lt;timeExpression&gt;
+&lt;time-expression&gt;
   : time-count fraction? ( "h" | "m" | "s" | "ms" )
 </eg>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -18329,10 +18327,10 @@ semantic support for the same syntax specified above.</p>
 <loc href="#feature-subFrameRate"><code>#subFrameRate</code></loc> features
 and if it recognizes and is capable of
 transforming all values of the <loc
-href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+href="#timing-value-time-expression">&lt;time-expression&gt;</loc> that
 satisfy the following subset of time expression syntax:</p>
 <eg xml:space="preserve">
-&lt;timeExpression&gt;
+&lt;time-expression&gt;
   : time-count fraction? "f"
 </eg>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -18347,10 +18345,10 @@ specified above.</p>
 <loc href="#feature-tickRate"><code>#tickRate</code></loc> feature
 and if it recognizes and is capable of
 transforming all values of the <loc
-href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc> that
+href="#timing-value-time-expression">&lt;time-expression&gt;</loc> that
 satisfy the following subset of time expression syntax:</p>
 <eg xml:space="preserve">
-&lt;timeExpression&gt;
+&lt;time-expression&gt;
   : time-count fraction? "t"
 </eg>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -19410,7 +19408,7 @@ variable play rates, appropriate adjustments may need to be made to the resultin
 <div2 id="time-expression-semantics-clock">
 <head>Clock Time Base</head>
 <p>When operating with the <code>clock</code> time base, the following semantics apply for interpreting time expressions,
-as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
+as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
 <p>The clock time base <phrase role="strong"><code>C</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
 expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase>
 as follows:</p>
@@ -19466,7 +19464,7 @@ during the period between value determination and the beginning of the <loc href
 </tr>
 </tbody>
 </table>
-<p>Time value expressions, as denoted by a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, are related to
+<p>Time value expressions, as denoted by a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, are related to
 clock time <phrase role="strong"><code>C</code></phrase> as follows:</p>
 <table id="time-expressions-and-clock-time" role="semantics">
 <caption>TTML Semantics &ndash; Time Expressions and Clock Time Relationship</caption>
@@ -19535,7 +19533,7 @@ during playback, presentation timing is not affected.
 <div2 id="time-expression-semantics-media">
 <head>Media Time Base</head>
 <p>When operating with the <code>media</code> time base, the following semantics apply for interpreting time expressions,
-as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
+as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
 <issue id="issue-306">
 <head>Fractional Time Expressions</head>
 <source><loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/306">http://www.w3.org/AudioVideo/TT/tracker/issues/306</loc></source>
@@ -19573,7 +19571,7 @@ an epoch <code>E</code>, and where the value of <code>epochOffset</code> is the 
 </tr>
 </tbody>
 </table>
-<p>Time value expressions, as denoted by a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, are related to
+<p>Time value expressions, as denoted by a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, are related to
 media time <phrase role="strong"><code>M</code></phrase> in accordance to the
 <code>ttp:frameRate</code>, <code>ttp:subFrameRate</code>, and <code>ttp:frameRateMultipler</code> parameters as follows:</p>
 <table id="time-expressions-and-media-time" role="semantics">
@@ -19657,7 +19655,7 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <div2 id="time-expression-semantics-smpte">
 <head>SMPTE Time Base</head>
 <p>When operating with the <code>smpte</code> time base, the following semantics apply for interpreting time expressions,
-as defined by <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and their relationship to media time and local real time.</p>
+as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
 <issue id="issue-322">
 <head>Incorrect Expression for NTSC Drop Mode</head>
 <source><loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/322">http://www.w3.org/AudioVideo/TT/tracker/issues/322</loc></source>
@@ -19898,8 +19896,8 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
 <td>
 <eg xml:space="preserve">
 &lt;isd:isd
-  <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
-  <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>
+  <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   {<emph>any attribute in the <loc href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</loc></emph>}&gt;
@@ -19912,7 +19910,7 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
 </tbody>
 </table>
 <p>A <att>begin</att> attribute must be specified, the value of which must take the <emph>offset-time</emph> form of
-a <loc href="#timing-value-timeExpression">&lt;timeExpression&gt;</loc>, and, further, is restricted to use a metric of
+a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and, further, is restricted to use a metric of
 <code>s</code> (seconds),
 <code>f</code> (frames),
 <code>t</code> (ticks), or may omit the metric, in which case <code>s</code> seconds is implied. This

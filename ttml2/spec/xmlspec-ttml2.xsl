@@ -431,6 +431,11 @@ div.exampleInner { width: 85%; }
 <!-- loc: a Web location -->
 <xsl:template match="loc">
   <a href="{@href}">
+    <xsl:if test="@id">
+      <xsl:attribute name="id">
+	<xsl:value-of select="@id"/>
+      </xsl:attribute>
+    </xsl:if>
     <xsl:if test="@role">
       <xsl:attribute name="rel">
 	<xsl:value-of select="@role"/>

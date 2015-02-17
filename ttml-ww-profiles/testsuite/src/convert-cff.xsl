@@ -10,7 +10,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:smpte="http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt"
     xmlns:tt="http://www.w3.org/ns/ttml"
-    exclude-result-prefixes="cff">
+    exclude-result-prefixes="cff xsi">
     
     <xsl:output method="xml" indent="yes"/>
     
@@ -32,12 +32,13 @@
     
     <xsl:template match="@xsi:schemaLocation"/>
     
-    
     <xsl:template match="processing-instruction('xml-stylesheet')"/>
     
     <xsl:template match="processing-instruction('access-control')"/>
     
     <xsl:template match="ttp:profile"/>
+    
+    <xsl:template match="@ttp:profile"/>
     
     <xsl:template match="/tt:tt">
         <tt
@@ -49,6 +50,8 @@
             xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
             xmlns:smpte="http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt"
             xmlns="http://www.w3.org/ns/ttml">
+            
+            <xsl:apply-templates select="@*"/>
             
             <xsl:apply-templates/>
             

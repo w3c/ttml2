@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v aaa50d312bef 2015/05/29 10:49:48 nigel $ -->
+<!-- $Id: ttml2.xml,v efcd796e1126 2015/06/04 05:24:29 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/05/29 10:49:48 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/06/04 05:24:29 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -133,7 +133,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/05/29 10:49:48 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/06/04 05:24:29 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -6761,7 +6761,7 @@ embedded content. Such information may be useful in cases where no standard medi
 context of use of a <el>source</el> element, the values of this attribute may be further constrained.</p>
 <p>If a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute is specified and its value refers to a fragment of the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>,
 then there must be a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element child of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc>
-element which is identified by that fragment, i.e., has an <att>xml:id</att> attribute the value of which matches the fragment identifier.</p>
+element which is identified by that fragment, i.e., has an <att>xml:id</att> attribute, the value of which matches the fragment identifier.</p>
 <p>If a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute is specified and its value does not refer to a fragment of the
 <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then
 a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute should be specified, in which case it must correspond with the media (content) type
@@ -18011,6 +18011,37 @@ href="#profile-vocabulary-extension"><el>ttp:extension</el></loc></p></item>
 <code>#profile</code> feature if it implements presentation semantic support
 for the same vocabulary specified above.</p>
 </div3>
+<div3 id="feature-ruby">
+<head>#ruby</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#ruby</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-ruby"><att>tts:ruby</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#ruby</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-ruby"><att>tts:ruby</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-ruby-non-nested">
+<head>#ruby-non-nested</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#ruby-non-nested</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-ruby"><att>tts:ruby</att></loc>
+attribute, except in the case that the application of <loc
+href="#style-attribute-ruby"><att>tts:ruby</att></loc> is nested, in which case
+the semantics of nested application may be ignored.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#ruby-non-nested</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-ruby"><att>tts:ruby</att></loc>
+attribute, except in the case that the application of <loc
+href="#style-attribute-ruby"><att>tts:ruby</att></loc> is nested, in which case
+the semantics of nested application may be ignored.</p>
+<p>The <code>#ruby-non-nested</code> feature is a semantic restriction of the <code>#ruby</code> feature.</p>
+</div3>
 <div3 id="feature-showBackground">
 <head>#showBackground</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -18231,6 +18262,67 @@ presentation semantic support for the <code>underline</code> and
 href="#style-attribute-textDecoration"><att>tts:textDecoration</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-textEmphasis">
+<head>#textEmphasis</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#textEmphasis</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#textEmphasis</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-textEmphasis-minimal">
+<head>#textEmphasis-minimal</head>
+<p>A TTML processor supports the <code>#textEmphasis-minimal</code> feature if it
+supports the intersection of the following features:</p>
+<ulist>
+<item><p><loc
+href="#feature-textEmphasis-no-color"><code>#textEmphasis-no-color</code></loc></p></item>
+<item><p><loc
+href="#feature-textEmphasis-no-quoted-string"><code>#textEmphasis-no-quoted-string</code></loc></p></item>
+</ulist>
+</div3>
+<div3 id="feature-textEmphasis-no-color">
+<head>#textEmphasis-no-color</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#textEmphasis-no-color</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc>
+attribute, the value of which contains no <loc href="#style-value-emphasis-color">&lt;emphasis-color&gt;</loc> component, or, if
+it contains said component, then that component may be ignored.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#textEmphasis-no-color</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc>
+attribute, the value of which contains no <loc href="#style-value-emphasis-color">&lt;emphasis-color&gt;</loc> component, or,
+if it contains said component, then that component may be ignored.</p>
+<p>The <code>#textEmphasis-no-color</code> feature is a syntactic and semantic restriction of the <code>#textEmphasis</code> feature.</p>
+</div3>
+<div3 id="feature-textEmphasis-no-quoted-string">
+<head>#textEmphasis-no-quoted-string</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#textEmphasis-no-quoted-string</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc>
+attribute, the value of which does not contain a <loc href="#style-value-emphasis-style">&lt;emphasis-style&gt;</loc> component that
+takes the form of a <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>, or, if
+it contains said component value, then that component value may be treated as if <code>auto</code> were specified.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#textEmphasis-no-color</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc>
+attribute, the value of which does not contain a <loc href="#style-value-emphasis-style">&lt;emphasis-style&gt;</loc> component that
+takes the form of a <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>, or, if
+it contains said component value, then that component value may be treated as if <code>auto</code> were specified.</p>
+<p>The <code>#textEmphasis-no-quoted-string</code> feature is a syntactic and semantic restriction of the <code>#textEmphasis</code> feature.</p>
+</div3>
+
+
+
 <div3 id="feature-textOrientation">
 <head>#textOrientation</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 516f8173bd14 2015/06/05 13:54:37 nigel $ -->
+<!-- $Id: ttml2.xml,v 4b478e140beb 2015/06/05 15:24:00 nigel $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/06/05 13:54:37 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/06/05 15:24:00 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -133,7 +133,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/06/05 13:54:37 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/06/05 15:24:00 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -7082,6 +7082,9 @@ prefix <code>"x-"</code> to form a private use token.</p>
 </div3>
 <div3 id="embedded-content-value-image">
 <head>&lt;image&gt;</head>
+<issue id="issue-389"><head>Embedded graphics don't fully meet requirement</head><source><loc href="https://www.w3.org/AudioVideo/TT/tracker/issues/389"></loc></source>
+<p>The sub-part of requirement R217 and R218 "If block or inline graphics are used for the purpose of expressing pre-rasterized text in a bitmap format, then the original text that produced such a pre-rasterized form shall also be required to be present in TT AF content." is not met.</p>
+</issue>
 <p>An &lt;image&gt; expression is used to specify an <loc href="#terms-image-resource">image resource</loc> by reference.</p>
 <table id="image-value-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;image&gt;</caption>
@@ -20542,17 +20545,6 @@ August 2002. (See
 </inform-div1>
 <inform-div1 id="requirements">
 <head>Requirements</head>
-<issue id="issue-369">
-<head>Requirement Numbers</head>
-<source><loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/369">http://www.w3.org/AudioVideo/TT/tracker/issues/369</loc></source>
-<p>Some R### numbers are incorrect.</p>
-</issue>
-<p></p>
-<issue id="issue-370">
-<head>Review Requirements</head>
-<source><loc href="http://www.w3.org/AudioVideo/TT/tracker/issues/370">http://www.w3.org/AudioVideo/TT/tracker/issues/370</loc></source>
-<p>Update requirements satisfaction to reflect functional enhancements that address prior unsatisfied requirements.</p>
-</issue>
 <p>The Timed Text Markup Language (TTML), also known as the Distribution Format Exchange Profile (DFXP) of the Timed Text Authoring
 Format (TTAF), satisfies a subset of the requirements established by
 <bibref ref="ttaf1-req"/>. The following table enumerates these requirements and
@@ -20696,8 +20688,8 @@ requirement is not satisfied.</p>
 <tr>
 <td>R207</td>
 <td>Conditional Content</td>
-<td>N</td>
-<td/>
+<td>S</td>
+<td>See <code>condition</code></td>
 </tr>
 <tr>
 <td>R208</td>
@@ -20750,26 +20742,26 @@ requirement is not satisfied.</p>
 <tr>
 <td>R216</td>
 <td>Hyperlinking</td>
-<td>N</td>
-<td>Can support via XLink</td>
+<td>S</td>
+<td>See <code>xlink</code></td>
 </tr>
 <tr>
 <td>R217</td>
 <td>Embedded Graphics</td>
-<td>N</td>
-<td/>
+<td>S</td>
+<td>See <code>image</code></td>
 </tr>
 <tr>
 <td>R218</td>
 <td>Non-Embedded Graphics</td>
-<td>N</td>
-<td/>
+<td>S</td>
+<td>See <code>image</code></td>
 </tr>
 <tr>
 <td>R219</td>
 <td>Embedded Fonts</td>
-<td>N</td>
-<td/>
+<td>S</td>
+<td>See <code>font</code></td>
 </tr>
 <tr>
 <td>R220</td>
@@ -20786,14 +20778,14 @@ requirement is not satisfied.</p>
 <tr>
 <td>R222</td>
 <td>Embedded Audio</td>
-<td>N</td>
-<td/>
+<td>S</td>
+<td>See <code>audio</code></td>
 </tr>
 <tr>
 <td>R223</td>
 <td>Non-Embedded Audio</td>
-<td>N</td>
-<td/>
+<td>S</td>
+<td>See <code>audio</code></td>
 </tr>
 <tr>
 <td>R290</td>
@@ -20810,8 +20802,8 @@ requirement is not satisfied.</p>
 <tr>
 <td>R292</td>
 <td>Extrinsic Resource References</td>
-<td>N</td>
-<td>No extrinsic references</td>
+<td>S</td>
+<td>See <code>xlink</code></td>
 </tr>
 <tr>
 <td>R293</td>
@@ -20859,10 +20851,13 @@ requirement is not satisfied.</p>
 <td>R306</td>
 <td>Style Parameters &ndash; Visual</td>
 <td>P</td>
-<td>Supports absolute position, background color, color, display none, display alignment,
-font family, font size, font style, font weight, height, line height, origin,
-opacity, overflow, padding (before, after, start, end), text alignment,
-text shadow (as outline), visibility, width, writing mode, z-index</td>
+<td>Supports absolute position, background color, bidirectional treatment, 
+block progression dimension, border (before,  after,  start, end),
+color, display none, display alignment,
+font family, font size, font style, font weight, height, inline progression dimension, 
+line height, line wrapping option, opacity, origin,
+overflow, padding (before, after, start, end), relative position, text alignment,
+text decoration, text shadow, visibility, width, writing mode, z-index</td>
 </tr>
 <tr>
 <td>R390</td>
@@ -20915,20 +20910,26 @@ text shadow (as outline), visibility, width, writing mode, z-index</td>
 <tr>
 <td>R500</td>
 <td>Animation Modes</td>
-<td>P</td>
-<td>Supports discrete</td>
+<td>S</td>
+<td>See <code>animate</code>, <code>animation</code> and <code>set</code></td>
+</tr>
+<tr>
+<td>R501</td>
+<td>Scroll Animation</td>
+<td>N</td>
+<td/>
 </tr>
 <tr>
 <td>R502</td>
 <td>Highlight Animation</td>
 <td>S</td>
-<td><code>&lt;set tts:backgroundColor="..."/&gt;</code></td>
+<td><code>&lt;animate tts:backgroundColor="..."/&gt;</code></td>
 </tr>
 <tr>
 <td>R503</td>
 <td>Fade Transition Animation</td>
 <td>S</td>
-<td><code>&lt;set tts:opacity="..."/&gt;</code></td>
+<td><code>&lt;animate tts:opacity="..."/&gt;</code></td>
 </tr>
 <tr>
 <td>R504</td>
@@ -20970,7 +20971,7 @@ text shadow (as outline), visibility, width, writing mode, z-index</td>
 <td>R603</td>
 <td>Metadata Item Extensibility</td>
 <td>S</td>
-<td>See <code>metadata</code></td>
+<td>See <code>metadata</code> and <code>ttm:item</code></td>
 </tr>
 <tr>
 <td>R604</td>
@@ -20982,7 +20983,8 @@ text shadow (as outline), visibility, width, writing mode, z-index</td>
 <td>R690</td>
 <td>Dublin Core Preference</td>
 <td>N</td>
-<td>Uses <code>ttm:copyright</code>, <code>ttm:desc</code>, <code>ttm:title</code></td>
+<td>Uses <code>ttm:copyright</code>, <code>ttm:desc</code>, <code>ttm:title</code> and 
+generic <code>ttm:item</code></td>
 </tr>
 </tbody>
 </table>

@@ -22,7 +22,7 @@ table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
                    padding: 4px; margin: 0em }
 									 
 	.note {font-size:small}
-	
+	.equation {text-indent: 10%;}
 	.example {font-size: small}
   </style>
 <style>/*****************************************************************
@@ -146,7 +146,7 @@ div.example-title {
     color: #b9ab2d;
 }
 div.example-title span {
-    text-transform: uppercase;   
+    text-transform: uppercase;
 }
 aside.example, div.example, div.illegal-example {
     padding: 0.5em;
@@ -161,7 +161,7 @@ aside.example, div.example {
     border-left-width: .5em;
     border-left-style: solid;
     border-color: #e0cb52;
-    background: #fcfaee;    
+    background: #fcfaee;
 }
 
 aside.example div.example {
@@ -173,40 +173,40 @@ aside.example div.example div.example-title {
     color: #999;
 }
 </style><style>/* --- ISSUES/NOTES --- */
-div.issue-title, div.note-title , div.warning-title {
+div.issue-title, div.note-title , div.ednote-title, div.warning-title {
     padding-right:  1em;
     min-width: 7.5em;
     color: #b9ab2d;
 }
 div.issue-title { color: #e05252; }
-div.note-title { color: #2b2; }
+div.note-title, div.ednote-title { color: #2b2; }
 div.warning-title { color: #f22; }
-div.issue-title span, div.note-title span, div.warning-title span {
+div.issue-title span, div.note-title span, div.ednote-title span, div.warning-title span {
     text-transform: uppercase;
 }
-div.note, div.issue, div.warning {
+div.note, div.issue, div.ednote, div.warning {
     margin-top: 1em;
     margin-bottom: 1em;
 }
-.note > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
-.issue, .note, .warning {
+.note > p:first-child, .ednote > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .ednote, .warning {
     padding: .5em;
     border-left-width: .5em;
     border-left-style: solid;
 }
-div.issue, div.note , div.warning {
+div.issue, div.note , div.ednote,  div.warning {
     padding: 1em 1.2em 0.5em;
     margin: 1em 0;
     position: relative;
     clear: both;
 }
-span.note, span.issue, span.warning { padding: .1em .5em .15em; }
+span.note, span.ednote, span.issue, span.warning { padding: .1em .5em .15em; }
 
 .issue {
     border-color: #e05252;
     background: #fbe9e9;
 }
-.note {
+.note, .ednote {
     border-color: #52e052;
     background: #e9fbe9;
 }
@@ -229,6 +229,15 @@ span.note, span.issue, span.warning { padding: .1em .5em .15em; }
     vertical-align: top;
     margin-top: -0.5em;
 }
+
+li.task-list-item {
+    list-style: none;
+}
+
+input.task-list-item-checkbox {
+    margin: 0 0.35em 0.25em -1.6em;
+    vertical-align: middle;
+}
 </style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-ED"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
 
 <body class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
@@ -241,7 +250,7 @@ span.note, span.issue, span.warning { padding: .1em .5em .15em; }
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">TTML Text and Image Profiles for Internet Media Subtitles and Captions 1.0</h1>
   
-  <h2 id="w3c-editor-s-draft-02-may-2015"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time property="dcterms:issued" class="dt-published" datetime="2015-05-02">02 May 2015</time></h2>
+  <h2 id="w3c-editor-s-draft-10-june-2015"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time property="dcterms:issued" class="dt-published" datetime="2015-06-10">10 June 2015</time></h2>
   <dl>
     
       <dt>This version:</dt>
@@ -312,10 +321,7 @@ span.note, span.issue, span.warning { padding: .1em .5em .15em; }
     
       
         <p>
-          <em>This section describes the status of this document at the time of its publication.
-          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
-          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
-          http://www.w3.org/TR/.</em>
+          <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/.</em>
         </p>
         
         <p>
@@ -1072,7 +1078,7 @@ numerator | denominator
     <section id="common-features" typeof="bibo:Chapter" resource="#common-features" property="bibo:hasPart">
       <h3 id="h-common-features" resource="#h-common-features"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.10 </span>Features</span></h3>
 
-      <p>Unless specified otherwise,a <a href="#dfn-document-instance" class="internalDFN">Document Instance</a> <em class="rfc2119" title="SHALL">SHALL</em> conform to the following:</p>
+      <p>Unless specified otherwise, a <a href="#dfn-document-instance" class="internalDFN">Document Instance</a> <em class="rfc2119" title="SHALL">SHALL</em> conform to the following:</p>
 
       <table class="simple">
         <tbody>
@@ -1887,7 +1893,7 @@ be present on the <code>tt</code> element.</li></ul></td>
         </tbody>
       </table>
 			
-			<div class="note"><div class="note-title" aria-level="4" role="heading" id="h-note13"><span>Note</span></div><p class="">In constrast to this specification, [<cite><a class="bibref" href="#bib-EBU-TT-D">EBU-TT-D</a></cite>] specifies that the attributes <code>ebutts:linePadding</code> and <code>ebutts:multiRowAlign</code> are allowed only on the <code>style</code> element.</p></div>
+			<div class="note"><div class="note-title" aria-level="4" role="heading" id="h-note13"><span>Note</span></div><p class="">In contrast to this specification, [<cite><a class="bibref" href="#bib-EBU-TT-D">EBU-TT-D</a></cite>] specifies that the attributes <code>ebutts:linePadding</code> and <code>ebutts:multiRowAlign</code> are allowed only on the <code>style</code> element.</p></div>
 			
     </section>
   </section>
@@ -2190,7 +2196,7 @@ be present on the <code>tt</code> element.</li></ul></td>
         <p>The Presentation Compositor <em class="rfc2119" title="SHALL">SHALL</em> start rendering E<sub>n</sub>:</p>
 
         <ul>
-          <li>at the presentation time of E<sub>0</sub> minus Initial Painting Delay (IPD), if n = 0</li>
+          <li>at the presentation time of E<sub>0</sub> minus Initial Painting Delay (IPD), if n = 0; or</li>
 
           <li>at the presentation time of E<sub>n-1</sub>, if n &gt; 0</li>
         </ul>
@@ -2198,19 +2204,19 @@ be present on the <code>tt</code> element.</li></ul></td>
         <p>The duration DUR(E<sub>n</sub>) for painting an <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub> in the
         Presentation Buffer P<sub>n</sub> <em class="rfc2119" title="SHALL">SHALL</em> be:</p>
 
-        <p>DUR(E<sub>n</sub>) = S(E<sub>n</sub>) / BDraw + DUR<sub>T</sub>(E<sub>n</sub>) + DUR<sub>I</sub>(E<sub>n</sub>)</p>
+        <p class="equation">DUR(E<sub>n</sub>) = S(E<sub>n</sub>) / BDraw + DUR<sub>T</sub>(E<sub>n</sub>) + DUR<sub>I</sub>(E<sub>n</sub>)</p>
 
-        <p>Where:</p>
+        <p>where</p>
 
         <ul>
           <li>S(E<sub>n</sub>) is the total normalized drawing area for <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>, as
-          specified in <a href="#paint-regions" class="sec-ref"><span class="secno">9.3</span> <span class="sec-title">Paint Regions</span></a>
+          specified in <a href="#paint-regions" class="sec-ref"><span class="secno">9.3</span> <span class="sec-title">Paint Regions</span></a>;
           </li>
 
-          <li>BDraw is the normalized background drawing performance factor.</li>
+          <li>BDraw is the normalized background drawing performance factor;</li>
 
           <li>DUR<sub>T</sub>(E<sub>n</sub>) is the duration, in seconds, for painting the text subtitle content for intermediate
-          synchronic document E<sub>n</sub>, as specified in Section <a href="#paint-text" class="sec-ref"><span class="secno">9.5</span> <span class="sec-title">Paint Text</span></a>
+          synchronic document E<sub>n</sub>, as specified in Section <a href="#paint-text" class="sec-ref"><span class="secno">9.5</span> <span class="sec-title">Paint Text</span></a>; and
           </li>
 
           <li>DUR<sub>I</sub>(E<sub>n</sub>) is the duration, in seconds, for painting the image subtitle content for intermediate
@@ -2268,7 +2274,7 @@ be present on the <code>tt</code> element.</li></ul></td>
         <p>The total normalized drawing area S(E<sub>n</sub>) for <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub> <em class="rfc2119" title="SHALL">SHALL</em>
         be</p>
 
-        <p>S(E<sub>n</sub>) = CLEAR(E<sub>n</sub>) + PAINT(E<sub>n</sub> )</p>
+        <p class="equation">S(E<sub>n</sub>) = CLEAR(E<sub>n</sub>) + PAINT(E<sub>n</sub> )</p>
 
         <p>where CLEAR(E<sub>0</sub>) = 0 and CLEAR(E<sub>n | n &gt; 0</sub>) = 1, i.e. the root container in its entirety.</p>
 
@@ -2276,16 +2282,16 @@ be present on the <code>tt</code> element.</li></ul></td>
         clearing of the root container.</p></div>
 
         <p>PAINT(E<sub>n</sub>) <em class="rfc2119" title="SHALL">SHALL</em> be the normalized area to be painted for all regions that are used in intermediate synchronic
-        document E<sub>n</sub> according to</p>
+        document E<sub>n</sub> according to:</p>
 
-        <p>PAINT(E<sub>n</sub>) = ∑<sub>R<sub>i</sub>∈R<sub>p</sub></sub> SIZE(R<sub>i</sub>) ∙ NBG(R<sub>i</sub>)</p>
+        <p class="equation">PAINT(E<sub>n</sub>) = ∑<sub>R<sub>i</sub>∈R<sub>p</sub></sub> SIZE(R<sub>i</sub>) ∙ NBG(R<sub>i</sub>)</p>
 
         <p>where R_p <em class="rfc2119" title="SHALL">SHALL</em> be the set of <a title="presented region" href="#dfn-presented-region" class="internalDFN">presented regions</a> in the <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic
         document</a> E<sub>n</sub>.</p>
 
         <p>NSIZE(R<sub>i</sub>) <em class="rfc2119" title="SHALL">SHALL</em> be given by:</p>
 
-        <p>NSIZE(R<sub>i</sub>) = (width of R<sub>i</sub> ∙ height of R<sub>i</sub> ) ÷ (root container height ∙ root
+        <p class="equation">NSIZE(R<sub>i</sub>) = (width of R<sub>i</sub> ∙ height of R<sub>i</sub> ) ÷ (root container height ∙ root
         container width)</p>
 
         <aside class="example"><div class="example-title"><span>Example 6</span></div>
@@ -2299,14 +2305,14 @@ be present on the <code>tt</code> element.</li></ul></td>
         declared style) in the following circumstances:</p>
 
         <ul>
-          <li>It is specified on the <code>region</code> layout element that defines the region.</li>
+          <li>it is specified on the <code>region</code> layout element that defines the region; or</li>
 
-          <li>It is specified on a <code>div</code>, <code>p</code>, <code>span</code> or <code>br</code> content element that is
+          <li>it is specified on a <code>div</code>, <code>p</code>, <code>span</code> or <code>br</code> content element that is
           to be flowed into the region for presentation in the <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> (see [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>] for more
-          details on when a content element is followed into a region).
+          details on when a content element is followed into a region); or
           </li>
 
-          <li>It is specified on a <code>set</code> animation element that is to be applied to content elements that are to be
+          <li>it is specified on a <code>set</code> animation element that is to be applied to content elements that are to be
           flowed into the region for presentation in the <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> (see [<cite><a class="bibref" href="#bib-TTML1">TTML1</a></cite>] for more details
           on when a <code>set</code> animation element is applied to content elements).
           </li>
@@ -2334,7 +2340,7 @@ be present on the <code>tt</code> element.</li></ul></td>
             D<sub>n-1</sub> to both the Decoded Image Buffer D<sub>n</sub> and the Presentation Buffer P<sub>n</sub>; or
           </li>
 
-          <li>Otherwise, decode the image using the Image Decoder the image into the Presentation Buffer P<sub>n</sub> and Decoded
+          <li>otherwise, decode the image using the Image Decoder the image into the Presentation Buffer P<sub>n</sub> and Decoded
           Image Buffer D<sub>n</sub>.</li>
         </ul>
 
@@ -2343,26 +2349,26 @@ be present on the <code>tt</code> element.</li></ul></td>
         <p>The duration DUR<sub>I</sub>(E<sub>n</sub>) for painting images of an <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a>
         E<sub>n</sub> in the Presentation Buffer <em class="rfc2119" title="SHALL">SHALL</em> be as follows:</p>
 
-        <p>DUR<sub>I</sub>(E<sub>n</sub>) = ∑<sub>I<sub>i</sub> ∈ I<sub>c</sub></sub> NRGA(I<sub>i</sub>) / ICpy +
+        <p class="equation">DUR<sub>I</sub>(E<sub>n</sub>) = ∑<sub>I<sub>i</sub> ∈ I<sub>c</sub></sub> NRGA(I<sub>i</sub>) / ICpy +
         ∑<sub>I<sub>j</sub> ∈ I<sub>d</sub></sub> NSIZ(I<sub>j</sub>) / IDec</p>
 
         <p>where</p>
 
         <ul>
-          <li>I<sub>c</sub> is the set of images copied when painting <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>
+          <li>I<sub>c</sub> is the set of images copied when painting <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>;
           </li>
 
-          <li>I<sub>d</sub> is the set of images decoded when painting <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>
+          <li>I<sub>d</sub> is the set of images decoded when painting <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>;
           </li>
 
-          <li>IDec is the image decoding rate</li>
+          <li>IDec is the image decoding rate; and</li>
 
           <li>ICpy is the normalized image copy performance factor.</li>
         </ul>
 
         <p>NRGA(I<sub>i</sub>) is the Normalized Image Area of <a href="#dfn-presented-image" class="internalDFN">presented image</a> I<sub>i</sub> and <em class="rfc2119" title="SHALL">SHALL</em> be equal to:</p>
 
-        <p>NRGA(I<sub>i</sub>)= (width of I<sub>i</sub> ∙ height of I<sub>i</sub> ) ÷ ( root container height ∙ root
+        <p class="equation">NRGA(I<sub>i</sub>)= (width of I<sub>i</sub> ∙ height of I<sub>i</sub> ) ÷ ( root container height ∙ root
         container width )</p>
 
         <p>NSIZ(I<sub>i</sub>) <em class="rfc2119" title="SHALL">SHALL</em> be the number of pixels of <a href="#dfn-presented-image" class="internalDFN">presented image</a> I<sub>i</sub>.</p>
@@ -2423,7 +2429,7 @@ be present on the <code>tt</code> element.</li></ul></td>
           synchronic document E<sub>n-1</sub>, copy using the Glyph Copier the glyph from Glyph Buffer G<sub>n-1</sub> to both the
           Glyph Buffer G<sub>n</sub> and the Presentation Buffer P<sub>n</sub>; or</li>
 
-          <li>Otherwise render using the Glyph Renderer the glyph into the Presentation Buffer P<sub>n</sub> and Glyph Buffer
+          <li>otherwise render using the Glyph Renderer the glyph into the Presentation Buffer P<sub>n</sub> and Glyph Buffer
           G<sub>n</sub> using the corresponding style information.</li>
         </ul>
 
@@ -2456,21 +2462,21 @@ be present on the <code>tt</code> element.</li></ul></td>
         <p>The duration DUR<sub>T</sub>(E<sub>n</sub>) for painting the text of an <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a>
         E<sub>n</sub> in the Presentation Buffer is as follows:</p>
 
-        <p>DUR<sub>T</sub>(E<sub>n</sub>) = ∑<sub>G<sub>i</sub> ∈ G<sub>r</sub></sub> NRGA(G<sub>i</sub>) / Ren(G<sub>i</sub>)
+        <p class="equation">DUR<sub>T</sub>(E<sub>n</sub>) = ∑<sub>G<sub>i</sub> ∈ G<sub>r</sub></sub> NRGA(G<sub>i</sub>) / Ren(G<sub>i</sub>)
         + ∑<sub>G<sub>j</sub> ∈ G<sub>c</sub></sub> NRGA(G<sub>j</sub>) / GCpy</p>
 
-        <p>Where:</p>
+        <p>where</p>
 
         <ul>
           <li>G<sub>r</sub> is the set of glyphs rendered into the Presentation Buffer P<sub>n</sub> using the Glyph Renderer in
-          <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>.
+          <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>;
           </li>
 
           <li>G<sub>c</sub> is the set of glyphs copied to the Presentation Buffer P<sub>n</sub> using the Glyph Copier in
-          <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>.
+          <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>;
           </li>
 
-          <li>Ren(G<sub>i</sub>) is the text rendering performance factor glyph G<sub>i</sub></li>
+          <li>Ren(G<sub>i</sub>) is the text rendering performance factor glyph G<sub>i</sub>; and</li>
 
           <li>GCpy is the normalized glyph copy performance factor</li>
         </ul>
@@ -2480,7 +2486,7 @@ be present on the <code>tt</code> element.</li></ul></td>
 
         <p>The Normalized Rendered Glyph Area NRGA(G<sub>i</sub>) of a glyph G<sub>i</sub> <em class="rfc2119" title="SHALL">SHALL</em> be equal to:</p>
 
-        <p>NRGA(G<sub>i</sub>)= (fontSize of G<sub>i</sub> as percentage of root container height)<sup>2</sup></p>
+        <p class="equation">NRGA(G<sub>i</sub>)= (fontSize of G<sub>i</sub> as percentage of root container height)<sup>2</sup></p>
 
         <p>The contents of the Glyph Buffer G<sub>n</sub> <em class="rfc2119" title="SHALL">SHALL</em> be copied instantaneously to Glyph Buffer G<sub>n-1</sub> at the
         presentation time of <a href="#dfn-intermediate-synchronic-document" class="internalDFN">intermediate synchronic document</a> E<sub>n</sub>.</p>
@@ -2678,7 +2684,7 @@ be present on the <code>tt</code> element.</li></ul></td>
       </tr>
 
       <tr>
-        <td>U+2153 – U+215F : Fractions</td>
+        <td>U+2153 - U+215F : Fractions</td>
       </tr>
 
       <tr>
@@ -2835,7 +2841,7 @@ be present on the <code>tt</code> element.</li></ul></td>
           <td>lv, lt, et, tr, hr, cs, pl, sl, sk</td>
 
           <td>(Latin Extended-A)<br>
-          U+0100 – U+017F</td>
+          U+0100 - U+017F</td>
         </tr>
 
         <tr>
@@ -2849,10 +2855,10 @@ be present on the <code>tt</code> element.</li></ul></td>
           <td>ro</td>
 
           <td>(Latin Extended-A)<br>
-          U+0100 – U+017F<br>
+          U+0100 - U+017F<br>
           (Latin Extended-B)<br>
-          U+0218 – U+0219<br>
-          U+021A – U+021B</td>
+          U+0218 - U+0219<br>
+          U+021A - U+021B</td>
         </tr>
 
         <tr>
@@ -2862,15 +2868,15 @@ be present on the <code>tt</code> element.</li></ul></td>
           U+0301<br>
           U+0308<br>
           (Greek and Coptic)<br>
-          U+0386 – U+0387<br>
-          U+0388 – U+03CE</td>
+          U+0386 - U+0387<br>
+          U+0388 - U+03CE</td>
         </tr>
 
         <tr>
           <td>pt, es</td>
 
           <td>(Currency symbols)<br>
-          U+20A1 – U+20A2<br>
+          U+20A1 - U+20A2<br>
           U+20B3</td>
         </tr>
 
@@ -2878,12 +2884,12 @@ be present on the <code>tt</code> element.</li></ul></td>
           <td>ar</td>
 
           <td>(Arabic)<br>
-          U+060C – U+060D<br>
+          U+060C - U+060D<br>
           U+061B<br>
-          U+061E – U+061F<br>
-          U+0621 – U+063A<br>
-          U+0640 – U+0652<br>
-          U+0660 – U+066D<br>
+          U+061E - U+061F<br>
+          U+0621 - U+063A<br>
+          U+0640 - U+0652<br>
+          U+0660 - U+066D<br>
           U+0670<br></td>
         </tr>
 
@@ -2891,28 +2897,28 @@ be present on the <code>tt</code> element.</li></ul></td>
           <td>he</td>
 
           <td>(Hebrew)<br>
-          U+05B0 – U+05C3<br>
-          U+05D0 – U+05EA<br>
-          U+05F3 – U+05F4</td>
+          U+05B0 - U+05C3<br>
+          U+05D0 - U+05EA<br>
+          U+05F3 - U+05F4</td>
         </tr>
 
         <tr>
           <td>bs, bg, mk, ru, sr</td>
 
           <td>(Latin Extended-A)<br>
-          U+0100 – U+017F<br>
+          U+0100 - U+017F<br>
           (Cyrillic)<br>
-          U+0400 – U+045F</td>
+          U+0400 - U+045F</td>
         </tr>
 
         <tr>
           <td>uk</td>
 
           <td>(Latin Extended-A)<br>
-          U+0100 – U+017F<br>
+          U+0100 - U+017F<br>
           (Cyrillic)<br>
-          U+0400 – U+045F<br>
-          U+0490 – U+0491<br>
+          U+0400 - U+045F<br>
+          U+0490 - U+0491<br>
           (Spacing Modifier Letters)<br>
           U+02BC<br>
           (Letterlike Symbols)<br>
@@ -2923,23 +2929,23 @@ be present on the <code>tt</code> element.</li></ul></td>
           <td>kk</td>
 
           <td>(Latin Extended-A)<br>
-          U+0100 – U+017F<br>
+          U+0100 - U+017F<br>
           (Cyrillic)<br>
-          U+0400 – U+045F<br>
-          U+0492 – U+0493<br>
-          U+049A – U+049B<br>
-          U+04A2 – U+04A3<br>
-          U+04AE – U+04B1<br>
-          U+04BA – U+04BB<br>
-          U+04D8 – U+04D9<br>
-          U+04E8 – U+04E9<br></td>
+          U+0400 - U+045F<br>
+          U+0492 - U+0493<br>
+          U+049A - U+049B<br>
+          U+04A2 - U+04A3<br>
+          U+04AE - U+04B1<br>
+          U+04BA - U+04BB<br>
+          U+04D8 - U+04D9<br>
+          U+04E8 - U+04E9<br></td>
         </tr>
 
         <tr>
           <td>hu</td>
 
           <td>(Latin Extended-A)<br>
-          U+0100 – U+017F<br>
+          U+0100 - U+017F<br>
           (General Punctuation)<br>
           U+2052<br>
           (Miscellaneous Mathematical Symbols-A)<br>

@@ -1,0 +1,4431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mapping Between TTML and WebVTT</title>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, WG-NOTE, etc.). If in doubt use ED.
+          specStatus:           "WG-NOTE",
+          
+          // the specification's short name, as in http://www.w3.org/TR/short-name/
+          shortName:            "TTML2WebVTT",
+
+          // if your specification has a subtitle that goes below the main
+          // formal title, define it here
+          // subtitle   :  "an excellent document",
+
+          // if you wish the publication date to be other than the last modification, set this
+          // publishDate:  "2015-09-02",
+
+          // if the specification's copyright date is a range of years, specify
+          // the start date here:
+          // copyrightStart: "2015"
+
+          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+          // and its maturity status
+          // previousPublishDate:  "1977-03-15",
+          // previousMaturity:  "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          // edDraftURI:           "http://berjon.com/",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // editors, add as many as you like
+          // only "name" is required
+          editors:  [
+              {
+                  name:       "Courtney Kennedy"
+              ,   company:    "Apple, Inc."
+              },
+              {
+                  name:       "Andreas Tai"
+              ,   company:    "Institut fuer Rundfunktechnik GmbH"
+              },
+          ],
+          
+          authors:  [
+              {
+                  name:       "Andreas Tai"
+              ,   company:    "Institut fuer Rundfunktechnik GmbH"
+              },
+              {
+                  name:       "Courtney Kennedy"
+              ,   company:    "Apple, Inc."
+              },
+              {
+              	  name: 	  "Loretta Guarino Reid"
+              ,   company:	  "Google, Inc."
+             },
+          ],
+          
+          // name of the WG
+          wg:           "Timed Text Working Group",
+          
+          // URI of the public WG page
+          wgURI:        "http://www.w3.org/AudioVideo/TT/",
+          
+          // name (without the @w3c.org) of the public mailing to which comments are due
+          wgPublicList: "public-tt",
+          
+          // URI of the patent status for this WG, for Rec-track documents
+          // !!!! IMPORTANT !!!!
+          // This is important for Rec-track documents, do not copy a patent URI from a random
+          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+          // Team Contact.
+          wgPatentURI:  "",
+          // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
+      };
+    </script>
+  </head>
+  <body>
+    
+    <section id='abstract'>
+      <p>
+        This document compares two timed text formats, TTML and WebVTT, and describes how to map content between them.
+      </p>
+    </section>
+    
+    <section id='sotd'>
+      <p>
+        This is a working draft.
+      </p>
+    </section>
+    
+    <section class='introductory'>
+      <h2>Introduction</h2>
+		<p> In today's media landscape, content is available to viewers in a variety different ways, such as traditional avenues including cinema and television, and modern internet-enabled alternatives.  Content often needs to be transformed into different formats in order to be available across this breadth of delivery options.</p>
+
+		<p>When authoring media with captions, content creators can choose a timed text format from the set of available formats.  While there are many different formats  available to carry captions in media, support for different formats is fragmented, with different content delivery channels supporting different formats.</p> 
+
+		<p>TTML and WebVTT are two popular formats for captions.  The two formats have different histories, and as a result they differ in both supported features and approach.</p>  
+
+		<p>This document focuses on how to translate captions data between the TTML and WebVTT formats.  It is divided into three main sections.  The first section provides an overview of TTML and WebVTT formats, and describes a high level strategy for performing a mapping between them.  The second section provides a detailed discussion of how to map content from TTML to WebVTT.  Finally, the third section provides a similar discussion of how to map content from WebVTT to TTML.</p>
+    </section>
+
+    <section>
+	<h2>Overview</h2>
+		<p>Before beginning any mapping between TTML and WebVTT, it is necessary to understand the basic constructs used in these formats for the conveyance of timed text information.  This section provides an overview of the fundamentals of text carriage in both TTML and WebVTT, and highlights those features most relevant to a mapping discussion.  For the complete and definitive definitions of these formats, please refer to their respective specifications.</p>
+
+   		<section>
+		<h2>TTML</h2>
+		
+			This section briefly describes some of the fundamental constructs in the TTML format.
+			
+			<section>
+			<h2>General</h2>
+				Here are some of the foundational constructs in TTML:
+				<ul>
+				<li>Syntactic Structures</li>
+				<li>Language identification</li>
+				<li>Line Breaks</li>
+				<li>Character Encoding</li>
+				</ul>
+							
+				<h4>Syntactic Structures</h4>
+
+					<p>TTML defines the following XML elements as syntactic structure that are used to group text content:</p>
+
+					<ul>
+					<li><p><code>&lt;tt&gt;</code></p></li>
+					<li><p><code>&lt;body&gt;</code></p></li>
+					<li><p><code>&lt;div&gt;</code></p></li>
+					<li><p><code>&lt;p&gt;</code></p></li>
+					<li><p><code>&lt;span&gt;</code></p></li>
+					</ul>
+
+					<p>An XML document forms a tree through the nesting of elements. An element may have a subtree &quot;beneath&quot; itself. Any of the above listed elements may have text content in their subtree as direct children or descendants. Because of this relationship they may carry information that can be applied to all text content in their subtree. This information could be used for example for:</p>
+
+					<ul>
+					<li><p>Positioning of text content in a rectangular area, such as the specification of left or right horizontal alignment for Latin text.</p></li>
+					<li><p>Styling of text content, such as the specification of text color, with all descendants in the sub-tree inheriting this information.</p></li>
+					<li><p>Timing of text content, such as the specification of the begin and end time attributes.</p></li>
+					</ul>
+
+					<p>Because the <code>&lt;tt&gt;</code> element is the root of a TTML document the information specified on the <code>&lt;tt&gt;</code> element is significant to all text content in a TTML document.  For example, the specification of the language using the xml:lang attribute of the <code>&lt;tt&gt;</code> element applies to all elements within it. This is also true for the body element because all text content has the body element as ancestor. </p>
+
+					<p>Ignoring recursive structures for a moment the nesting hierarchy of content elements is:</p>
+
+					<p><img src="https://gitlab-ext.irt.de/uploads/w3c/ttml2webvtt/0ef0467e22/simpleStru.jpg" alt="Example of the content structure in TTML"/></p>
+
+					<p>Amongst these elements only the <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code> element may have text content as direct children. In XML text content is represented by text nodes. Three variations are possible:</p>
+
+					<ul>
+					<li>text content nodes are children of a p element</li>
+					</ul>
+
+					<p><img src="https://gitlab-ext.irt.de/uploads/w3c/ttml2webvtt/5f9684589f/content_in_p.jpg" alt="Example for content in a p element"/></p>
+
+					<ul>
+					<li>text content nodes are children of a <code>&lt;span&gt;</code> element</li>
+					</ul>
+
+					<p><img src="https://gitlab-ext.irt.de/uploads/w3c/ttml2webvtt/48e95483cb/content_in_span.jpg" alt="Structure for content in span"/></p>
+
+					<ul>
+					<li>a mix of the above, where <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code> elements have text content and <code>&lt;span&gt;</code> elements as children</li>
+					</ul>
+
+					<p><img src="https://gitlab-ext.irt.de/uploads/w3c/ttml2webvtt/8cd82d5281/mixed_content.jpg" alt="Structure for mixed content"/></p>
+
+					<p>There are two content structures that can be nested to build up recursive structures: <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code>. A <code>&lt;div&gt;</code> can have other <code>&lt;div&gt;</code> as children.  <code>&lt;span&gt;</code> can also have other <code>&lt;span&gt;</code> as children.</p>
+
+				<h4>Language identification</h4>
+
+					<p>The TTML specification mandates that TTML docs will contain language information.  <code>@xml:lang</code> is used to provide this information on the <code>&lt;tt&gt;</code> element.  If the language is not known, the empty string can be set.</p>
+
+					<p><strong>Example: TTML English Language Identification:</strong></p>
+
+					<pre class='example' class='highlight' class='prettyprint' >
+					&lt;tt xml:lang=&quot;en&quot; ...&gt; ...&lt;/tt&gt;
+
+					</pre>
+
+					<p><strong>Example: TTML Unknown Language:</strong></p>
+
+					<pre class='example' class='highlight' class='prettyprint' >
+					&lt;tt xml:lang=&quot;&quot; ...&gt; ...&lt;/tt&gt;
+
+					</pre>
+
+					<p>The <code>@xml:lang</code> can also be specified on <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code> and  <code>&lt;span&gt;</code>.</p>
+							
+
+				<h4>Line Breaks</h4>
+
+					<p>An explicit line break is introduced in TTML through the <code>&lt;br&gt;</code> element. By default the character codes in the TTML document that represent a line break, such as line feed, carriage return or a pair of both, are not interpreted as a line break for the presentation of the content. This changes only when the <code>@xml:space</code> attribute with the value &quot;preserve&quot; is applied to some content.</p>
+
+					<p>Automatic line breaking can occur during presentation due to limited space of the area where the content is rendered. This behavior could be switched on and off through the style attribute word-wrap. Its default value is &quot;on&quot;.</p>
+
+
+				<h4>Character Encoding</h4>
+
+					<p>Although UTF-8 is recommended by the TTML spec, a TTML document may use any other character encoding permitted by XML. </p>
+
+    		</section>
+
+			<section>
+			<h2>Positioning</h2>
+
+				<h2>TTML Regions</h2>
+
+					<p>In TTML, a region is defined simply as a rectangular area that text can be flowed into.  In TTML documents, regions are defined in a <code>&lt;layout&gt;</code> element.  TTML regions can have a variety of properties defined, including the following:</p>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>Property</th>
+					<th>Definition</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>id, as an xml:id value</td>
+					<td>An identifier that can be used by other TTML elements to reference the region.</td>
+					</tr>
+					<tr>
+					<td>origin, as a tts:origin value</td>
+					<td>The x and y coordinates denoting the ( top, left ) corner of the region, with respect to the Root Container.</td>
+					</tr>
+					<tr>
+					<td>extent, as a tts:extent value</td>
+					<td>The width and height of a region area.</td>
+					</tr>
+					<tr>
+					<td>writing mode, as a tts:writingMode value</td>
+					<td>Defines the block and inline progression directions.</td>
+					</tr>
+					<tr>
+					<td>padding, as a tts:padding value</td>
+					<td>Padding or inset space on all sides of the region area.</td>
+					</tr>
+					<tr>
+					<td>inline alignment, as a tts:textAlign value</td>
+					<td>How inline areas are aligned in the line progression direction within a block.</td>
+					</tr>
+					<tr>
+					<td>block alignment, as a tts:displayAlign value</td>
+					<td>How block areas are aligned in the block progression direction.</td>
+					</tr>
+					</tbody></table>
+
+					<p>Notes:</p>
+
+					<ul>
+					<li>TTML regions are not limited to the viewport dimensions.  TTML regions can be larger than the viewport, or entirely outside of the viewport.</li>
+					<li>If no region is defined in a TTML document, a default region is implied.  This default region has the dimensions of the Root Container Region.<br/></li>
+					</ul>
+    		</section>
+
+			<section>
+			<h2>Styling</h2>
+
+				<h2>Syntactic Specification of Styling Information</h2>
+
+					<p>TTML defines for all types of styling information a style attribute. Different style attributes (e.g. <code>@tts:color</code>) can be specified on <code>&lt;style&gt;</code>. The <code>&lt;region&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code> elements can reference these style sets by using the id that is defined for a <code>&lt;style&gt;</code>. A <code>&lt;style&gt;</code> element  can reference other <code>&lt;style&gt;</code> elements to combine two or more style sets.</p>
+
+					<p>Style attributes can also be specified directly on <code>&lt;region&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code> elements. This is called inline styling. </p>
+
+				<h4>Application of Style Attributes</h4>
+
+					<p>To calculate the style information for content and boxes, use the style resolution process defined by TTML. This merges a chain of referenced <code>&lt;style&gt;</code> elements with  inline defined style attributes to produce a single style set. It also takes into account initial values and inheritance of values.</p>
+
+					<p>Although all style attributes can be specified on <code>&lt;region&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code> elements, only a subset of these attributes can be applied to the presentational unit that each of these elements represent. </p>
+
+					<p>The table below shows which style attributes apply to which element:</p>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>Style Attribute</th>
+					<th>&lt;region&gt;</th>
+					<th>&lt;body&gt;</th>
+					<th>&lt;div&gt;</th>
+					<th>&lt;p&gt;</th>
+					<th>&lt;span&gt;</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>backgroundColor</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>color (i*)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>direction (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>display</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>displayAlign</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>extent</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>fontFamily (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>fontSize (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>fontStyle (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>fontWeight (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>lineHeight (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>opacity</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>origin</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>overflow</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>padding</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>showBackground</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>textAlign (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>textDecoration (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>textOutline (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>unicodeBidi</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>visibility (i)</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>wrapOption (i)</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>x</td>
+					</tr>
+					<tr>
+					<td>writingMode (i)</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td>zIndex (i)</td>
+					<td>x</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					</tbody></table>
+
+					<p><code>*</code> If a style attribute is marked with &quot;(i)&quot; it is inheritable.</p>
+
+					<p>At first glance, specifying a style attribute on an element where it does not apply doesn&#39;t make much sense. But through the concept of inheritance, the values of style attributes could be inherited down the syntax tree to the element where they do apply. It is not a syntax error to specify a style attribute when it has no effect. The style attribute is simply ignored in such cases.</p>
+    		</section>
+
+			<section>
+			<h2>Timing</h2>
+			
+				TTML provides support for a broad set of timing expressions.  For some content, the process of mapping to WebVTT will require conversion of timing information. To perform these types of conversions, it is necessary to understand the different ways of expressing time in TTML, and the additional data required to convert between timing expressions will help inform any mapping strategy. 
+
+				<h2>Timing Parameters</h2>
+
+					<p>TTML defines several types in the ttp parameter namespace that carry timing information.  Some of the TTML timing parameters may be required to accurately convert TTML time expressions as part of a mapping process.  The necessary parameters can be provided in the TTML file using the defined types.</p>
+
+					<p>This section describes the relevant TTML timing parameters and provides a brief discussion of each type.</p>
+
+				<h4>Parameter:  Time Base</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:timeBase</td>
+					<td>media, smpte, clock</td>
+					</tr>
+					</tbody></table>
+
+					<p>Time Base parameter defines the temporal coordinate system to use in interpreting time expressions.  </p>
+
+					<p>Notes:</p>
+
+					<ul>
+					<li>When the Time Base value is “smpte”, the Drop Mode parameter may be required to interpret time expressions.  In the case of a non-integer frame rate, the Drop Mode parameter must be specified.  Otherwise, the default value of nonDrop can be used.</li>
+					<li>When the Time Base value is “clock”, Clock Mode parameter is required to interpret time expressions.</li>
+					</ul>
+
+				<h4>Parameter:  Drop Mode</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:dropMode</td>
+					<td>dropNTSC, dropPAL, nonDrop</td>
+					</tr>
+					</tbody></table>
+
+					<p>When the Time Base is “smpte”, Drop Mode parameter defines the drop mode to use in interpreting time expressions.  </p>
+
+					<p>Note:</p>
+
+					<ul>
+					<li>The TTML specification provides detailed instructions for interpreting time expressions when Drop Mode is set to “dropNTSC” or “dropPAL”.  These must be applied when converting time expressions to other formats.</li>
+					</ul>
+
+				<h4>Parameter:  Clock Mode</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:clockMode</td>
+					<td>local, gps, utc</td>
+					</tr>
+					</tbody></table>
+
+					<p>When the Time Base is “clock”, Clock Mode parameter defines the clock mode to use in interpreting time expressions.  </p>
+
+					<p>Notes:</p>
+
+					<ul>
+					<li>The TTML specification provides detailed instructions for converting between “gps” and “utc” values.  When the Clock Mode is equal to “gps”, these conversions should be applied to time expressions.</li>
+					</ul>
+
+				<h4>Parameter:  Frame Rate</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:frameRate</td>
+					<td>non-zero, positive integer</td>
+					</tr>
+					</tbody></table>
+
+					<p>When the frame rate associated with a TTML document is integral, Frame Rate represents the frame rate to use in interpreting time expressions.  </p>
+
+				<h4>Parameter:  Frame Rate Multiplier</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:frameRateMultiplier</td>
+					<td>two non-zero, positive integers: numerator and denominator</td>
+					</tr>
+					</tbody></table>
+
+					<p>When the frame rate associated with a TTML document is not integral, Frame Rate Multiplier provides a numerator and denominator to multiply the frame rate value by in order to calculate the effective frame rate for use in interpreting time expressions.  </p>
+
+				<h4>Parameter:  Sub Frame Rate</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:subFrameRate</td>
+					<td>non-zero, positive integer</td>
+					</tr>
+					</tbody></table>
+
+					<p>When the frame rate associated with a TTML document is integral, Sub Frame Rate provides a sub frame rate for dividing frames..  </p>
+
+					<p>Note:</p>
+
+					<ul>
+					<li>Defaults to a value of 1 when not specified.</li>
+					</ul>
+
+				<h4>Parameter:  Tick Rate</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>TTML Parameter</th>
+					<th>Possible Values</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>ttp:tickRate</td>
+					<td>non-zero, positive integer</td>
+					</tr>
+					</tbody></table>
+
+					<p>Tick Rate provides a tick rate to use in interpreting time expression in a TTML document.  </p>
+			</section>
+		</section>
+		
+		<section>
+		<h2>WebVTT</h2>
+
+			<section>
+			<h2>General</h2>
+				
+				Here are some of the foundational constructs in WebVTT:
+				<ul>
+				<li>Syntactic Structures</li>
+				<li>Language identification</li>
+				<li>Line Breaks</li>
+				<li>Character Encoding</li>
+				</ul>
+
+				<h4>Syntactic Structures</h4>
+
+					<p>The main syntactic structure of WebVTT is the WebVTT cue. All content that is defined for presentation belongs to exactly one WebVTT cue. Content inside a WebVTT cue can be further grouped by using specific spans to apply information that is significant for the rendering of the enclosed content. As with TTML, a WebVTT cue can be translated into a tree structure. Ignoring the specific names of the spans the tree structure could look like the following:</p>
+
+					<ul>
+					<li><p>cue-&gt;span-&gt;&quot;text content&quot;</p></li>
+					<li><p>cue-&gt; &quot;text content&quot;</p></li>
+					<li><p>cue-&gt; mix of span and &quot;text content&quot;</p></li>
+					</ul>
+
+					<p>Like TTML, WebVTT has a concept of regions. WebVTT regions are optional, and when no region is specified, the entire video frame is used as a defacto region.  WebVTT cues can be affiliated to a region. Cues, with their text content, can signal this affiliation by specifying the identifier of the WebVTT region. As in TTML, this is a one-to-many relationship: a region may have zero to many cue affiliations, but a cue can only have one region affiliation. </p>
+
+					<p>If we assume a region with the id &quot;foo&quot;, the hierarchical structure would look like the following:</p>
+
+					<p>cue(region-id =&quot;foo&quot;)-&gt;content</p>
+
+					<p>When processing WebVTT, the region can be de-referenced and the intermediate tree could look like:</p>
+
+					<p>region(id=&quot;foo&quot;)-&gt;cue-&gt;content</p>
+
+				<h4>Language Identification</h4>
+
+					<p>WebVTT allows the specification of the text through the use of a language span.</p>
+
+					<p><strong>Example: WebVTT English Language Specification:</strong></p>
+
+					<pre class='example' class='highlight' class='prettyprint' >
+					&lt;lang en&gt;...&lt;/lang&gt;
+					</pre>
+
+				<h4>Line Breaks</h4>
+
+					<p>In WebVTT an explicit line break is introduced through the Unicode code values for carriage return, line feed or a pair of both. Automatic line breaks can occur during presentation due to limited space in the area where the content is rendered. There is no syntactic construct to influence this behavior.</p>
+
+				<h4>Character Encoding</h4>
+
+					<p>Text content in a WebVTT file is always encoded in UTF-8. </p>
+
+			</section>
+			
+
+			<section>
+			<h2>Positioning</h2>
+
+				<h4>WebVTT Regions</h4>
+
+					<p>In WebVTT, a region is also defined as an area that text can be flowed into.  However, WebVTT uses different properties to specify a region than TTML.  Specifically, WebVTT defines the following properties for a region:</p>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>Property</th>
+					<th>Definition</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>identifier</td>
+					<td>An arbitrary string that can be used in cues to reference the region.</td>
+					</tr>
+					<tr>
+					<td>width</td>
+					<td>The width of the region carried as a percentage of the video width.  Defaults to 100.</td>
+					</tr>
+					<tr>
+					<td>lines value</td>
+					<td>The number of lines of text within the region.  Defaults to 3.</td>
+					</tr>
+					<tr>
+					<td>region anchor point</td>
+					<td>The x and y coordinates, as percentages of the region area, for the point within the region that is anchored to the viewport.  Defaults to ( 0,100 ), or the ( bottom, left ) corner of the region.</td>
+					</tr>
+					<tr>
+					<td>region viewport anchor point</td>
+					<td>The x and y coordinates, as percentages of the viewport, for the point within the viewport to which the region anchor point is affixed.</td>
+					</tr>
+					<tr>
+					<td>scroll value</td>
+					<td>The scroll value can have one of two values:  None or Up.  If it is set to None, then text remains on the line it was originally drawn upon.  If it is set to Up, then new cues are added to the bottom of the region, and push up any text that is already drawn in the region until the new cue is fully displayed.</td>
+					</tr>
+					</tbody></table>
+
+					<p>Notes:</p>
+
+					<ul>
+					<li>WebVTT regions only support horizontal writing modes.  Text using vertical writing modes cannot be flowed into a WebVTT region.</li>
+					<li>WebVTT region areas are limited to the viewport area.</li>
+					</ul>
+
+				<h4>Sizing and Collision Control</h4>
+
+					<p>In WebVTT, cues can be drawn directly into the video viewport, without the use of regions.  When this mode is employed, WebVTT defines automatic behavior for renderers to adjust cue positions in order to avoid any overlap.  When WebVTT does use regions, overlap can occur if regions are defined to overlap and contain text at the same time.</p>
+
+					<p>When WebVTT cues are drawn directly into the video viewport, and no regions are used, properties on cues are used for specifying position and size.  </p>
+
+				<h4>Positioning WebVTT Cues</h4>
+
+					<p>WebVTT cues can be positioned in one of two ways:  </p>
+
+					<ul>
+					<li>by using positioning syntax on the cue itself</li>
+					<li>by placing the cue in a region</li>
+					</ul>
+
+					<p>When authoring WebVTT without regions, the position of a cue is determined by its &quot;line&quot; and &quot;position&quot; cue settings. The interpretation of these cue settings will be affected by the value of the &quot;vertical&quot; cue setting, the writing direction, and possibly the &quot;size&quot; cue setting.</p>
+
+					<ul>
+					<li>The &quot;line&quot; cue setting may either be a percentage or a line number, counting from either the bottom or the top.  When calculating the location as a line number, it is necessary to determine the line height.  Line height can be determined from font metrics for some content.  In the absence of other ways of determining line height, a default value of 5.33vh, where <a href="https://drafts/csswg/org/css-values/#viewport-relative-lengths">vh</a> is a CSS unit equal to 1% of the viewport height, can be used.</li>
+					<li>The &quot;position&quot; is configured in the direction orthogonal to the &quot;line&quot; direction. For example, for horizontal cues, position is configured in the horizontal direction.</li>
+					<li>The optional alignment value determines whether the position is calculated relative to the start, middle, or end of the cue box.  If the alignment value is not &quot;start&quot;, it will depend upon the size of the cue box, i.e., an &quot;end&quot; value will be equivalent to a &quot;start&quot; value plus the size of the cue box in the appropriate direction.  When not specified, alignment defaults to &quot;middle&quot;. </li>
+					</ul>
+
+				<h4>Sizing WebVTT Cues</h4>
+
+					<p>The &quot;size&quot; cue setting controls one dimension of the block and is a percentage of the video viewport. For horizontal cues, the size cue setting will be the width of the cue box. For vertical cues, the size cue setting will be the height. The other dimension of the block is determined by the content. The cue box will expand as needed to accommodate the cue text. For horizontal cues, the cue expands down. For vertical cues, the cue expands either left or right, depending on the value of the &quot;vertical&quot; cue setting.  </p>
+
+			</section>
+			
+			<section>
+			<h2>Styling</h2>
+
+				<p>Style information can be applied through span tags (e.g. the tag &quot;b&quot; for bold) or through reference to CSS style information. CSS style information that is defined outside of the WebVTT document can be matched by id-strings defined for cue boxes, regions or span tags.</p>
+
+				<p>Defined span tags for styling are:</p>
+
+				<ul>
+				<li>&quot;b&quot; for bold</li>
+				<li>&quot;i&quot; for italic</li>
+				<li>&quot;u&quot; for underline</li>
+				</ul>
+
+				<p>CSS properties that apply:</p>
+
+				<ul>
+				<li>color</li>
+				<li>opacity</li>
+				<li>visibility</li>
+				<li>text-decoration</li>
+				<li>text-shadow</li>
+				<li>background-color</li>
+				<li>background-image</li>
+				<li>background-repeat</li>
+				<li>background-attachment</li>
+				<li>background-position</li>
+				<li>outline-color</li>
+				<li>outline-style</li>
+				<li>outline-width</li>
+				<li>font-style</li>
+				<li>font-variant</li>
+				<li>font-weight</li>
+				<li>font-size</li>
+				<li>line-height</li>
+				<li>font-family</li>
+				</ul>
+
+			</section>
+			
+			<section>
+			<h2>Timing</h2>
+				
+				<h4>Syntactic Structures</h4>
+
+					<p>In WebVTT, timing information is applied to cues and spans.</p>
+
+				<h4>Timing Expressions</h4>
+					<p>In contrast to TTML's support for a large set of timing expressions, WebVTT supports only a single timing expression:  hours: minutes: seconds.fractional-seconds. In WebVTT, the hours portion of the timing expression is optional.</p>
+
+			</section>
+
+		</section>
+		
+		<section>
+		<h2>Notable Differences between TTML and WebVTT</h2>
+
+			<p>While the two formats are both used to carry captions information, there are some important differences between them that should be noted when mapping from one to the other.</p>
+
+			<section>
+			<h2>General Differences</h2>
+				
+				<h4>Syntactic Structures</h4>
+
+					<h5><code>&lt;div&gt;</code> Structures</h5>
+
+						<p>WebVTT does not have a component that corresponds to <code>&lt;div&gt;</code>. </p>
+
+				<h4>Language Identification</h4>
+
+					<p>TTML allows language identification in different positions in the content hierarchy (e.g. on <code>&lt;tt&gt;</code>, <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code>). WebVTT only permits the specification of a language on the &quot;inline&quot; level.      </p>
+
+			</section>
+			
+			<section>
+			<h2>Positioning Differences</h2>
+
+				<p>Mapping positioning information between the TTML and WebVTT formats may be the most difficult part of any conversion process, due to some fundamental differences in the ways the two formats express spatial information.  This section discusses of the differences in the spatial controls offered in TTML and WebVTT.</p>
+
+				<p>When mapping spatial information between the two formats, it is important to be aware of these differences in their spatial models, and then apply this awareness when making mapping decisions.  The two formats differ in positioning support in four main ways:</p>
+
+				<ul>
+				<li>Syntactic Structures</li>
+				<li>Supported Spatial Units</li>
+				<li>Region Definition </li>
+				<li>Supported Writing Modes</li>
+				<li>Sizing and Collision Control</li>
+				</ul>
+
+				<p>This section will examine these differences in detail.</p>
+
+				<h4>Syntactic Structures</h4>
+
+					<p>TTML provides support for hierarchical elements, and spatial information, including associations with region, can be applied to elements at different levels of the hierarchy.  In WebVTT, spatial information and region associations are provided at the cue level.</p>
+
+					<p>In TTML, the following elements may be reference regions:</p>
+
+					<ul>
+					<li><code>&lt;body&gt;</code></li>
+					<li><code>&lt;div&gt;</code> </li>
+					<li><code>&lt;p&gt;</code></li>
+					<li><code>&lt;span&gt;</code></li>
+					</ul>
+
+					<p>When converting from TTML to WebVTT, all of the spatial information and region references in the hierarchy must be preserved by applying them to elements within, as each hierarchical item is flattened.  </p>
+
+				<h4>Supported Spatial Units</h4>
+
+					<p>The TTML and WebVTT specifications use different units to express spatial coordinates or distances.  The following table compares support for several units between the two formats:</p>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>Spatial Units</th>
+					<th>TTML Supports?</th>
+					<th>WebVTT Supports?</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>pixel</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>em</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>cell</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>percent</td>
+					<td>Yes</td>
+					<td>Yes</td>
+					</tr>
+					<tr>
+					<td>line number</td>
+					<td>No</td>
+					<td>Yes</td>
+					</tr>
+					</tbody></table>
+
+				<h4>Region Definitions</h4>
+
+					<p>While both TTML and WebVTT define a construct known as a region, the definition of a region differs significantly from one format to another.  </p>
+
+					<p>In addition, in WebVTT only a cue can reference a region. In TTML several structures can be associated with a region (e.g. <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code> and <code>&lt;p&gt;</code>).</p>
+
+				<h4>Supported Writing Modes</h4>
+
+					<p>Both TTML and WebVTT define properties that denote the block and inline progression directions.  TTML uses the tts:writingMode attribute to convey this information.  WebVTT uses a vertical text cue setting to define the writing direction.  In the case where the WebVTT writing direction is defined as vertical, an additional cue setting denotes whether the block progresses from left to right or right to left.  Below is a table showing how to express various inline and block progression directions in both TTML and WebVTT.</p>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>Inline Progression Direction</th>
+					<th>Block Progression Direction</th>
+					<th>TTML</th>
+					<th>WebVTT</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>Left-&gt;Right</td>
+					<td>Top-&gt;Bottom</td>
+					<td>lrtb</td>
+					<td>auto or horizontal</td>
+					</tr>
+					<tr>
+					<td>Right-&gt;Left</td>
+					<td>Top-&gt;Bottom</td>
+					<td>rltb</td>
+					<td>auto or horizontal</td>
+					</tr>
+					<tr>
+					<td>Top-&gt;Bottom</td>
+					<td>Right-&gt;Left</td>
+					<td>tbrl</td>
+					<td>vertical:rl</td>
+					</tr>
+					<tr>
+					<td>Top-&gt;Bottom</td>
+					<td>Left-&gt;Right</td>
+					<td>tblr</td>
+					<td>vertical:lr</td>
+					</tr>
+					<tr>
+					<td>Left-&gt;Right</td>
+					<td></td>
+					<td>lr</td>
+					<td>auto or horizontal</td>
+					</tr>
+					<tr>
+					<td>Right-&gt;Left</td>
+					<td></td>
+					<td>rl</td>
+					<td>auto or horizontal</td>
+					</tr>
+					<tr>
+					<td>Top-&gt;Bottom</td>
+					<td></td>
+					<td>tb</td>
+					<td>vertical:lr</td>
+					</tr>
+					</tbody></table>
+
+				<h4>Sizing and Collision Control</h4>
+
+					<p>The two formats differ in the amount of control available over spatial placement of timed text.  In general, the TTML format provides a greater degree of control of spatial positioning, while the WebVTT format provides some control, and combines it with some automatic behaviors.  The implementation of specified automatic behaviors may vary from one renderer to the next. </p>
+
+					<p>In TTML, <code>&lt;p&gt;</code> elements are flowed into regions.  If two regions are defined to overlap spatially, and both display text at the same time, the text may overlap.  </p>
+
+					<p>In WebVTT, cues can be drawn directly into the video viewport, without the use of regions.  When this mode is employed, WebVTT defines automatic behavior for renderers to adjust cue positions in order to avoid any overlap.  When WebVTT does use regions, overlap can occur if regions are defined to overlap and contain text at the same time.</p>
+
+					<p>When WebVTT cues are drawn directly into the video viewport, and no regions are used, properties on cues are used for specifying position and size.  </p>
+
+			</section>
+			<section>
+			<h2>Styling Differences</h2>
+
+				<h4>Unsupported Style Features</h4>
+
+					<p>Some of the  style features in TTML and WebVTT are not supported by the other format. The following TTML style attributes have no corresponding CSS property:</p>
+
+					<ul>
+					<li>opacity</li>
+					<li>overflow</li>
+					<li>padding</li>
+					<li>showBackground</li>
+					<li>wrapOption</li>
+					<li>zIndex</li>
+					</ul>
+
+					<p>The following CSS properties allowed by WebVTT have no corresponding TTML <code>@style</code> attributes:</p>
+
+					<ul>
+					<li>background-attachment<br/></li>
+					<li>background-image<br/></li>
+					<li>background-position<br/></li>
+					<li>background-repeat<br/></li>
+					<li>font-variant</li>
+					<li>text-shadow</li>
+					</ul>
+
+					<p>Although there may be strategies for mapping these unsupported style features, an evaluation of these strategies is out of scope of this document.</p>
+
+				<h4>Style Information External to the Document</h4>
+
+					<p>With TTML, all style information is present in the document itself. In contrast, for WebVTT, all CSS selectors and properties are defined in a context external to the WebVTT document. One common case is the specification of the CSS styles in an HTML context where the WebVTT documents are embedded. </p>
+
+				<h4>Inline Styling</h4>
+
+					<p>In contrast to TTML, WebVTT does not allow inline styling. Inline styling is the direct specification of a style attribute on a syntax structure that &quot;wraps&quot; the text content (e.g. a <code>&lt;p&gt;</code> and <code>&lt;span&gt;</code> in TTML or a class span tag in WebVTT).</p>
+
+				<h4>Styling of Multiple <code>&lt;div&gt;</code> Elements</h4>
+
+					<p>Since WebVTT defines no structure that corresponds to the TTML <code>&lt;div&gt;</code> element, any style information on <code>&lt;div&gt;</code> cannot be cannot be mapped directly to a WebVTT document.</p>
+
+				<h4>Styling of <code>&lt;region&gt;</code> Elements</h4>
+
+					<p>In TTML each defined <code>&lt;region&gt;</code> can hold style information. Although regions exist in WebVTT, CSS properties can only be defined for all WebVTT regions in a file, and cannot be tied to a specific region individually.  </p>
+
+				<h4>Style Inheritance Between Style Definitions</h4>
+
+					<p>In TTML, <code>&lt;style&gt;</code> elements can reference other <code>&lt;style&gt;</code> elements to merge the style sets. In WebVTT and CSS, it is not possible to establish a similiar relationship between ::cue pseudo elements.</p>
+
+				<h4>Multiple Styles on <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code> and <code>&lt;p&gt;</code></h4>
+
+					<p>In TTML, multiple <code>&lt;style&gt;</code> elements can be referenced by &lt;<code>&lt;body&gt;</code>&gt;, <code>&lt;div&gt;</code> and <code>&lt;p&gt;</code> elements. In WebVTT, only one style set can be applied to the complete document or to a cue.</p>
+
+				<h4>Value Scope of Some Style Features</h4>
+
+					<p>Some of the style features have a slightly different value scope. These differences are described in greater detail in the following sections of this document.</p>
+
+			</section>
+			<section>
+			<h2>Timing Differences</h2>
+
+				<p>The two formats provide different models for expressing timing information, and support different timing capabilities.  For the most part, the timing support in TTML is a superset of the timing support in WebVTT, with the exception of some inter-cue timing constructs in WebVTT that do not exist in the same form in TTML.  This section discusses the differences between timing support in the two formats.</p>
+				<p>TTML and WebVTT differ in timing support in three ways: </p>
+
+				<ul>
+				<li>Syntactic Structure</li>
+				<li>Ordering</li>
+				<li>Timing Expressions </li>
+				</ul>
+
+				<p>This section will examine the different functionality offered by the two formats in detail.</p>
+
+				<h2>Syntactic Structure</h2>
+
+					<p>TTML provides support for hierarchical elements, and timing information can be applied at most levels of the hierarchy.  In contrast, WebVTT has a flat structure, with no ability to nest captions cues within other elements.  In addition, WebVTT defines some intra-cue timing concepts which are not present in TTML.</p>
+
+					<p>In TTML, the following elements may contain timing information:</p>
+
+					<ul>
+					<li><code>&lt;body&gt;</code></li>
+					<li><code>&lt;region&gt;</code></li>
+					<li><code>&lt;div&gt;</code> </li>
+					<li><code>&lt;p&gt;</code></li>
+					<li><code>&lt;span&gt;</code></li>
+					</ul>
+
+					<p>When converting from TTML to WebVTT, all of the timing information in this hierarchy must be preserved by applying it to elements within, as each hierarchical item is flattened.  In addition, whether a parent element is parallel or sequential must be taken into account when adjusting the timing for child elements during the flattening process.</p>
+
+					<p>While WebVTT does not include the support for hierarchical elements found in TTML, it instead introduces some additional timing concepts for intra-cue timing.  These can be employed when expressing display modes for text such as roll-up and the past and future pseudo-classes.</p>
+
+				<h4>Ordering</h4>
+
+					<p>WebVTT requires that cues be represented in sequential order, with the earliest cue preceding later cues.  TTML does not have this requirement.  When converting from TTML to WebVTT, TTML <code>&lt;p&gt;</code> elements must be sorted into sequential order.</p>
+
+				<h4>Timing Expressions</h4>
+
+					<p>Simply put, timing expressions are the ways in which timing information may be specified in a timed text document.  TTML supports a greater set of timing expressions than WebVTT.  The following table shows the set of timing expressions available and the support for each expression in TTML and WebVTT.</p>
+
+				<h4>Support for Timing Expressions in TTML and WebVTT</h4>
+
+					<table class='simple'><thead>
+					<tr>
+					<th>Timing Expression</th>
+					<th>TTML Supports?</th>
+					<th>WebVTT Supports?</th>
+					</tr>
+					</thead><tbody>
+					<tr>
+					<td>hours: minutes: seconds</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>hours: minutes: seconds.fractional-seconds</td>
+					<td>Yes</td>
+					<td>Yes</td>
+					</tr>
+					<tr>
+					<td>hours: minutes: seconds: frames</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>hours: minutes: seconds: frames.sub-frames</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>hours.fractional-hours</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>minutes.fractions-minutes</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>seconds.fractional-seconds</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>milliseconds.fractional-milliseconds</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>frames.fractional-frames</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					<tr>
+					<td>ticks.fractional-ticks</td>
+					<td>Yes</td>
+					<td>No</td>
+					</tr>
+					</tbody></table>
+
+			</section>
+		</section>
+	</section>
+
+
+
+	<section>
+	<h2>TTML to WebVTT</h2>
+
+		<p>When transforming captions from TTML to WebVTT, it is necessary to take into account the differences in the feature sets of the two formats, and to develop some strategies for handling them.  The TTML format provides a broader set of options than WebVTT for authoring captions.  In addition, the TTML format allows for more complex hierarchical relationships between elements than can be achieved in WebVTT.  </p>
+
+		<p>Based on these differences, the following strategy for mapping emerges:
+		
+		<ul>
+		<li>Define a TTML Profile that constrains the set of authoring options to align with the options available in WebVTT.</li>
+		<li>For general TTML documents that do not conform to this new profile, use a pre-processing step to limit the document to this profile.</li>
+		<li>Map from the profile-conforming document to WebVTT.</li>
+		</ul>
+
+		Alternatively, the pre-processing step can be omitted, and the new profile can be used as a guideline when mapping directly from a general TTML document to a WebVTT document.
+		</p>
+
+		<section>
+		<h2>The TTML To WebVTT Profile</h2>
+
+			<p>The TTML To WebVTT ( T2VP ) mapping profile constrains a TTML document structure to make the mapping between TTML and WebVTT simple and transparent. Many TTML documents will not conform to this profile.</p>
+
+   <table class="simple" border="2px">
+      <tbody>
+         <tr>
+            <th>Feature</th>
+            <th>Provisions</th>
+         </tr>
+         <tr>
+            <td colspan="2">
+               <em>Relative to the TT Feature namespace</em>
+            </td>
+            <tr>
+               <td>
+                  <p>
+                     <code>#animation</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#backgroundColor-block</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The hex notation of a color with alpha channel
+                           								("#"rrggbbaa) SHALL not be used.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#backgroundColor-inline</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The hex notation of a color with alpha channel
+                           								("#"rrggbbaa) SHALL not be used.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#backgroundColor-region</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#backgroundColor</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The hex notation of a color with alpha channel
+                           								("#"rrggbbaa) SHALL not be used.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#bidi</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#cellResolution</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The value of the attribute ttp:cellResolution
+                           								SHALL be set to "1 1".
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#clockMode-gps</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#clockMode-local</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#clockMode-utc</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#clockMode</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#color</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The hex notation of a color with alpha channel
+                           								("#"rrggbbaa) SHALL not be used.
+                        </li>
+                        <li>The value "transparent" SHALL NOT be
+                           								used.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#content</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>A document SHALL NOT have more than one tt:div element.</li>
+                        <li>Every tt:p element SHALL have one region attribute.</li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#core</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The xml:lang SHALL NOT appear on any other element than tt:tt and tt:span.</li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#direction</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#display-block</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#display-inline</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#display-region</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#display</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#displayAlign</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#dropMode-dropNTSC</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#dropMode-dropPAL</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#dropMode-nonDrop</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#dropMode</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#extent-region</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>tts:extent attribute when applied to a region
+                           								element SHALL use "percentage" representation, and SHALL NOT use em
+                           								or px units.
+                        </li>
+                        <li>tts:extent attribute SHALL be present on all
+                           								region elements.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#extent-root</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#extent</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontFamily-generic</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li> The following generic font family names SHALL
+                           								NOT be used: "default", "sanSerif", "serif", "monospaceSanSerif",
+                           								"monoSpaceSerif", "proportionalSanSerif",
+                           								"proportionalSerif".
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontFamily-non-generic</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontFamily</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontSize-anamorphic</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontSize-isomorphic</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontSize</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontStyle-italic</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontStyle-oblique</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontStyle</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontWeight-bold</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#fontWeight</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#frameRate</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#frameRateMultiplier</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#layout</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>No two presented regions in a given intermediate
+                           								synchronic document SHALL overlap, i.e. the intersection of the sets
+                           								of coordinates within each region (including its boundary) is
+                           								empty.
+                        </li>
+                        <li>All regions SHALL NOT extend beyond the root
+                           								container, i.e. the intersection of the sets of coordinates
+                           								belonging to a region (including its boundary) and the sets of
+                           								coordinates belonging to the root container (including its boundary)
+                           								is the set of coordinates belonging to the region (including its
+                           								boundary).
+                        </li>
+                        <li>The number of presented regions in a given
+                           								intermediate synchronic document SHALL be smaller than or equal to
+                           								4.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-cell</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-em</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-integer</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-negative</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-percentage</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-pixel</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-positive</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length-real</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#length</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#lineBreak-uax14</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#lineHeight</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#markerMode-continuous</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#markerMode-discontinuous</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#markerMode</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#metadata</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#nested-div</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#nested-span</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#opacity</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#origin</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The tts:origin attribute SHALL use "percentage"
+                           								representation, and SHALL NOT use em or px
+                           								units.
+                        </li>
+                        <li>The tts:origin attribute SHALL be specified
+                           								on the region element.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#overflow-visible</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#overflow</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#padding-1</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#padding-2</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#padding-3</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#padding-4</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#padding</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#pixelAspectRatio</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#presentation</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#profile</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#showBackground</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#structure</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling-chained</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling-inheritance-content</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling-inheritance-region</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling-inline</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>Inline Styling SHALL NOT be used unless explicitly required or allowed.</li>
+                        <li>The following style attributes SHALL be specified inline as follows: on tt:p element
+                           and on tt:region the attributes tts:extent, tts:origin, tts:displayAlign and tts:writingMode.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling-nested</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling-referential</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>A tt:body element SHALL NOT reference more than one style.</li>
+                        <li>A tt:div element SHALL NOT reference any style.</li>
+                        <li>A tt:region element SHALL NOT reference any style.</li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#styling</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#subFrameRate</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textAlign-absolute</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textAlign-relative</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textAlign</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The tts:textAlign attribute SHALL be present on every tt:p element.</li>
+                        <li>The tts:textAlign attribute SHALL NOT be present on any other element than the tt:p
+                           element.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textDecoration-over</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textDecoration-through</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textDecoration-under</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textDecoration</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textOutline-blurred</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textOutline-unblurred</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#textOutline</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#tickRate</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#time-clock-with-frames</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#time-clock</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#time-offset-with-frames</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#time-offset-with-ticks</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#time-offset</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#timeBase-clock</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#timeBase-media</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#timeBase-smpte</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#timeContainer</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#timing</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                     	<li>begin and end attribute <em title="SHALL NOT">SHALL NOT</em> be specified on tt:div and tt:body.</li> 
+                     	<li>Sequential timing <em title="SHALL NOT">SHALL NOT</em> be used.</li>
+                     	<li>If a begin attribute is specified an end attribute <em title="SHALL">SHALL</em> be specified on the same element</li>
+                     	<li>If an end attribute is specified a begin attribute <em title="SHALL">SHALL</em> be specified on the same element</li>
+                     	<li>The dur attribute <em title="SHALL NOT">SHALL NOT</em> be used.</li>
+                     	<li>The time expression on the begin and end attribute of tt:p <em title="SHALL">SHALL</em> have the format HH:MM:SS.MS
+                           where MS SHALL have exact three digits.
+                        </li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#transformation</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#unicodeBidi</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#visibility-block</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#visibility-inline</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#visibility-region</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#visibility</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#wrapOption</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#writingMode-horizontal-lr</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#writingMode-horizontal-rl</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#writingMode-horizontal</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#writingMode-vertical</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#writingMode</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="MAY" class="rfc2119">MAY </em>be used.
+                  <p>
+                     <ul>
+                        <li>The attribute tts:writingMode SHALL only be specified inline on a tt:region element.</li>
+                     </ul>
+                  </p>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <p>
+                     <code>#zIndex</code>
+                  </p>
+               </td>
+               <td>
+                  <em title="SHALL NOT" class="rfc2119">SHALL NOT </em> be used.
+               </td>
+            </tr>
+         </tr>
+      </tbody>
+   </table>
+
+
+
+		</section>
+
+		<section>
+		<h2>Pre-processing: Converting TTML to T2VP</h2>
+
+			<p>To ease conversion, a source TTML document can be transformed to a TTML document that conforms to the T2VP (TTML 2 WebVTT Document Profile). Below are some steps for how to pre-process a source TTML document so that it is valid against the T2VP.</p>
+
+			<section>
+			<h2>General Pre-processing</h2>
+				
+				<p>WebVTT does not define hierarchical elements such as the <code>&lt;body&gt;</code> or <code>&lt;div&gt;</code> elements found in TTML.  Similarly, the T2VP profile constrains the use of hierarchical elements in documents that conform to it.  As a result, when converting TTML documents to T2VP documents, all the information provided in the hierarchical elements must be applied to either the captions within those elements.  Through this process, individual captions may have their timing, styling, layout and other information adjusted to take into account values inherited from sections that contain them.  Within this document, the term “flattening” is used to designate this process.</p>
+
+				<h2>Flattening</h2>
+
+					<p>In order to flatten a TTML document, work through any hierarchy of <code>&lt;body&gt;</code> and <code>&lt;div&gt;</code> elements in a TTML document starting from the <code>&lt;body&gt;</code> element and apply values from that section to each of the child elements within it.  This process can be applied iteratively to create a set of timed text elements with adjusted values that reflect the values inherited from <code>&lt;body&gt;</code> or <code>&lt;div&gt;</code> elements. For simple TTML documents without much hierarchy, this step may not be necessary.</p>
+
+					<p>Note that once this process has been completed, some information from the original TTML file has been lost, such as the grouping of timed text elements.  In addition, some information that was expressed succinctly in TTML is now repeated.  </p>
+
+				<h4>Merge Multiple <code>&lt;div&gt;</code></h4>
+
+					<p>TTML documents that contain more than one <code>&lt;div&gt;</code> should be mapped to a document with just one <code>&lt;div&gt;</code>. All <code>&lt;p&gt;</code> have to be copied to the outermost <code>&lt;div&gt;</code> element, in document order. All other <code>&lt;div&gt;</code> should be pruned.</p>
+
+					<p><strong>Example: Merging Multiple <code>&lt;div&gt;</code> elements</strong></p>
+
+					<p>Before:</p>
+
+					<p><img src="https://gitlab-ext.irt.de/w3c/ttml2webvtt/uploads/2f484698f521df8c795299ff0be201fa/multipleDivElements.svg"/></p>
+
+					<p>After:</p>
+
+					<p><img src="https://gitlab-ext.irt.de/w3c/ttml2webvtt/uploads/f2731af57f1bd35c31db26a4c598e00c/divMerge.svg"/></p>
+
+					<p><strong>Add <code>@xml:id</code> to <code>&lt;p&gt;</code></strong></p>
+
+					<p>If a <code>&lt;p&gt;</code> element does not yet have an <code>@xml:id</code>, one should be added with a value as identifier. </p>
+
+					<p><strong>Example: Add <code>@xml:id</code> to <code>&lt;p&gt;</code></strong></p>
+
+					<p>Before:</p>
+
+			<pre class="example prettyprint highlight"><code class="xml">&lt;p ...&gt;...&lt;/p&gt;
+&lt;p ...&gt;...&lt;/p&gt;
+&lt;p ...&gt;...&lt;/p&gt;
+			</code></pre>
+
+			<p>After:</p>
+
+			<pre class="example prettyprint highlight"><code class="xml">&lt;p xml:id=&quot;p1&quot;&gt;...&lt;/p&gt;
+&lt;p xml:id=&quot;p2&quot;&gt;...&lt;/p&gt;
+&lt;p xml:id=&quot;p3&quot;&gt;...&lt;/p&gt;
+			</code></pre>
+
+				<h4>Push Down xml:lang to <code>&lt;p&gt;</code></h4>
+
+					<p>For every <code>&lt;p&gt;</code> the value of <code>@xml:lang</code> needs to be resolved, taking into account the value of the <code>@xml:lang</code> of its ancestors. If the value is not the empty string, then a <code>&lt;span&gt;</code> child should be added to <code>&lt;p&gt;</code>. This <code>&lt;span&gt;</code> should enclose the complete content of the <code>&lt;p&gt;</code>. <code>@xml:lang</code> of that <code>&lt;span&gt;</code> shall be set to the resolved language. </p>
+
+					<p><strong>Example: Push Down xml:lang to <code>&lt;p&gt;</code></strong></p>
+
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;tt xml:lang=&quot;en&quot;&gt;
+&lt;div&gt;
+	&lt;p&gt;
+		&lt;span&gt;...&lt;/span&gt;
+	&lt;/p&gt;
+	&lt;p xml:lang=&quot;de&quot;&gt;
+		&lt;span&gt;....&lt;/span&gt;&lt;span xml:lang=&quot;fr&quot;&gt;....&lt;/span&gt;
+	&lt;/p&gt;        
+&lt;/div&gt;
+&lt;/tt&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;tt xml:lang=&quot;&quot;&gt;
+&lt;div&gt;
+	&lt;p&gt;
+		&lt;span xml:lang=&quot;en&quot;&gt;&lt;span&gt;...&lt;/span&gt;&lt;/span&gt;
+	&lt;/p&gt;
+	&lt;p&gt;
+		&lt;span xml:lang=&quot;de&quot;&gt;....&lt;span xml:lang=&quot;fr&quot;&gt;....&lt;/span&gt;&lt;span&gt;
+	&lt;/p&gt;        
+&lt;/div&gt;
+&lt;/tt&gt;
+					</code></pre>
+
+
+
+				<h4>Add <code>&lt;region&gt;</code> for Default Region</h4>
+
+					<p>TTML defines a &quot;default region&quot; that applies if no <code>&lt;region&gt;</code> could be resolved. This default region should be explicitly defined in an T2PV document as follows:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;region xml:id=&quot;defaultRegion&quot; tts:extent=&quot;100% 100%&quot; tts:origin=&quot;0% 0%&quot; /&gt;  
+					</code></pre>
+
+				<h4>Region Resolution for  <code>&lt;p&gt;</code></h4>
+
+					<p>For every  <code>&lt;p&gt;</code>, a <code>@region</code> should be specified. If no <code>@region</code> is specified on <code>&lt;p&gt;</code>, than <code>@region</code> should be set to the id of the <code>&lt;region&gt;</code> that is referenced on the nearest ancestor of the  <code>&lt;p&gt;</code>. If <code>@region</code> is not specified on  <code>&lt;p&gt;</code> or on its ancestors, the <code>@region</code> of   <code>&lt;p&gt;</code> should be set to the id of the default region.</p>
+
+					<p><strong>Example: Region Resolution for<code>&lt;p&gt;</code></strong></p>
+
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;div region=&quot;r1&quot;&gt;
+	&lt;p  ...&gt;...&lt;/p&gt;
+	&lt;p region=&quot;2&quot; ...&gt;...&lt;/p&gt;
+	&lt;p ...&gt;...&lt;/p&gt;
+&lt;/div&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;div&gt;
+	&lt;p region=&quot;1&quot; ...&gt; ...&lt;/p&gt;
+	&lt;p region=&quot;2&quot; ...&gt;...&lt;/p&gt;
+	&lt;p region=&quot;1&quot; ...&gt; ...&lt;/p&gt;
+&lt;/div&gt;
+					</code></pre>
+
+					<p>Note: TTML allows the @region attribute to be set on <span> elements. The discussion of how to map a TTML document containing such <span> elements is out of the scope of this document. </p>
+
+				<h4>Translate <code>@xml:space</code> Preserve</h4>
+
+					<p>If the resolved <code>@xml:space</code> value of <code>&lt;p&gt;</code> or  <code>&lt;span&gt;</code> is set to <code>preserve</code>, then all characters for linefeed in a  <code>&lt;p&gt;</code> and  <code>&lt;span&gt;</code> should be replaced by a  <code>&lt;br&gt;</code> and all spaces should be replaced by the entity for non-breaking-space (<code>&amp;nbsp;</code>).</p>
+
+					<p><strong>Example: Translate <code>@xml:space</code> Preserve</strong></p>
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;p xml:space=&quot;preserve&quot; ...&gt;
+   Good morning!
+   - Good morning!
+&lt;/p&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;p ...&gt;&lt;br/&gt;Good&amp;nbsp;morning!&lt;br/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;-&amp;nbsp;&amp;nbsp;morning!&lt;br/&gt;&lt;/p&gt;
+					</code></pre>
+
+					<h4>Whitespace Normalization</h4>
+
+					<p>All text content of <code>&lt;p&gt;</code> and  <code>&lt;span&gt;</code> elements should be whitespace normalized, with leading and trailing whitespace characters deleted, and any whitespace character replaced by a space character.</p>
+
+					<p><strong>Example: Whitespace Normalization</strong></p>
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;p xml:space=&quot;default&quot; ...&gt;
+   Good evening!&lt;br/&gt;
+   - Good evening!
+&lt;/p&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;p xml:space=&quot;default&quot; ...&gt;Good evening!&lt;br/&gt;- Good evening!&lt;/p&gt;
+					</code></pre>
+
+			</section>
+			
+			<section>
+			<h2>Pre-processing: Positioning</h2>
+
+				<h2>Apply Hierarchical Spatial Information to <code>&lt;p&gt;</code> Elements</h2>
+
+					<p>In order to conform to the T2VP profile, all references to regions must be applied to <code>&lt;p&gt;</code>.  If a <code>&lt;p&gt;</code> element is nested in other elements, any region references that exist on its parent elements should be moved to the <code>&lt;p&gt;</code> element.</p>
+
+				<h4>Remove Nested <code>&lt;style&gt;</code> Elements from <code>&lt;region&gt;</code> Elements</h4>
+
+					<p>In order to conform to the T2VP profile, all nested <code>&lt;style&gt;</code> elements in <code>&lt;region&gt;</code> element definitions must be removed, with the attributes applied directly to the <code>&lt;region&gt;</code> itself.  The sections below describe the details of this process.</p>
+			</section>
+
+			<section>
+			<h2>Pre-processing: Styling</h2>
+			
+				<h2>Convert Inline Styling</h2>
+
+
+					<p>Inline styles shall not be used in the T2VP apart from <code>@tts:textAlign</code> specified on <code>&lt;p&gt;</code> elements and <code>@tts:extent</code>, <code>@tts:origin</code>, <code>@tts:displayAlign</code> and <code>@tts:writingMode</code>  on <code>&lt;region&gt;</code> elements. All other style attributes specified inline on <code>&lt;body&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code> or <code>&lt;span&gt;</code> must be mapped to a <code>&lt;style&gt;</code> element that is then referenced by this content element. </p>
+
+					<p><strong>Example:  Conversion of Inline Styling</strong> </p>
+
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;tt ...&gt;
+	...
+	&lt;body&gt;
+		&lt;div&gt;
+			&lt;p xml:id=&quot;p1&quot; tts:fontFamily=&quot;monospace&quot; tts:color=&quot;white&quot; &gt;
+				&lt;span tts:backgroundColor=&quot;black&quot;&gt;Whose house?&lt;/span&gt;&lt;br/&gt;
+				&lt;span tts:color=&quot;lime&quot; tts:backgroundColor=&quot;black&quot;&gt;- My master´s&lt;/span&gt;
+			&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/tt&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;tt ...&gt;
+&lt;head&gt;
+  &lt;styling&gt;
+	  &lt;style xml:id=&quot;p1_style&quot; tts:color=&quot;white&quot; tts:fontFamily=&quot;monospace&quot; /&gt;    
+	  &lt;style xml:id=&quot;background_black&quot; tts:backgroundColor=&quot;black&quot;/&gt;
+	  &lt;style xml:id=&quot;color_lime&quot; tts:color=&quot;lime&quot;/&gt;
+  &lt;/styling&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div&gt;
+		&lt;p xml:id=&quot;p1&quot; style=&quot;p1_style&quot;&gt;
+			&lt;span style=&quot;background_black&quot;&gt;Whose house?&lt;/span&gt;&lt;br/&gt;
+			&lt;span style=&quot;color_lime background_black&quot;&gt;- My master´s&lt;/span&gt;
+		&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+					</code></pre>
+
+				<h4><code>&lt;style&gt;</code> Elements that Reference Other <code>&lt;style&gt;</code> Elements</h4>
+
+					<p>If a <code>&lt;style&gt;</code> element references another <code>&lt;style&gt;</code> element, the style values that result from this reference, or from a continuing chain of style references, have to be resolved and merged into the set of style attributes of the referencing <code>&lt;style&gt;</code> element.  If the same style attribute is defined in both a referenced <code>&lt;style&gt;</code> element and the referencing <code>&lt;style&gt;</code> element, the value of the attribute in the referencing <code>&lt;style&gt;</code> element is used.  </p>
+
+					<p><strong>Example:  Conversion of Referenced Style Elements</strong></p>
+
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">      &lt;styling&gt;
+	  &lt;style xml:id=&quot;s3&quot; tts:color=&quot;blue&quot; tts:backgroundColor=&quot;white&quot; tts:fontFamily=&quot;monospace&quot; /&gt;    
+	  &lt;style xml:id=&quot;s2&quot; tts:color=&quot;white&quot; tts:backgroundColor=&quot;black&quot; style=&quot;s3&quot;/&gt;
+	  &lt;style xml:id=&quot;s1&quot; tts:color=&quot;lime&quot; style=&quot;s2&quot;/&gt;
+      &lt;/styling&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">      &lt;styling&gt;
+	 &lt;style xml:id=&quot;s3&quot; tts:color=&quot;blue&quot; tts:backgroundColor=&quot;white&quot; tts:fontFamily=&quot;monospace&quot; /&gt;    
+	 &lt;style xml:id=&quot;s2&quot; tts:color=&quot;white&quot; tts:backgroundColor=&quot;black&quot; tts:fontFamily=&quot;monospace&quot; /&gt;
+	 &lt;style xml:id=&quot;s1&quot; tts:color=&quot;lime&quot; tts:backgroundColor=&quot;black&quot;  tts:fontFamily=&quot;monospace&quot;/&gt;
+      &lt;/styling&gt;
+					</code></pre>
+
+				<h4>Multiple Styles that Apply to <code>&lt;body&gt;</code></h4>
+
+					<p>If more than one <code>&lt;style&gt;</code> is referenced by <code>&lt;body&gt;</code>, a new <code>&lt;style&gt;</code> needs to be created where all style attributes of the referenced styles are merged. </p>
+
+					<p>If no style is referenced by <code>&lt;body&gt;</code>, an empty <code>&lt;style&gt;</code> is created and referenced by the <code>&lt;body&gt;</code>. </p>
+
+					<p><strong>Example:  Conversion of Multiple Styles</strong></p>
+
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">
+  &lt;head&gt;
+	  &lt;styling&gt;
+		  &lt;style xml:id=&quot;fontStyles&quot; tts:fontFamily=&quot;monospace&quot; tts:fontSize=&quot;200%&quot; tts:lineHeight=&quot;normal&quot;/&gt;    
+		  &lt;style xml:id=&quot;colorStyles&quot; tts:color=&quot;white&quot; tts:backgroundColor=&quot;black&quot;/&gt;
+	  &lt;/styling&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;colorStyles fontStyles&quot;&gt;
+		
+  &lt;/body&gt;
+
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">
+  &lt;head&gt;
+	  &lt;styling&gt;
+		  &lt;style xml:id=&quot;defaultStyle&quot; tts:color=&quot;white&quot; tts:fontFamily=&quot;monospace&quot; tts:fontSize=&quot;200%&quot;/&gt;
+		  &lt;style xml:id=&quot;fontStyles&quot; tts:fontFamily=&quot;monospace&quot; tts:fontSize=&quot;200%&quot; /&gt;    
+		  &lt;style xml:id=&quot;colorStyles&quot; tts:color=&quot;white&quot; /&gt;
+	  &lt;/styling&gt;
+	  
+  &lt;/head&gt;
+  &lt;body style=&quot;defaultStyle&quot;&gt;
+		
+  &lt;/body&gt;
+ 
+					</code></pre>
+
+				<h4>Styles Applied to <code>&lt;div&gt;</code> Elements</h4>
+
+					<p>The resolved style set of the first <code>&lt;div&gt;</code> in the document is merged into the <code>&lt;style&gt;</code> element referenced by the <code>&lt;body&gt;</code>. If a style attribute is already set in the <code>&lt;style&gt;</code> referenced by <code>&lt;body&gt;</code>, the value is overwritten by the value of the style value applied to the <code>&lt;div&gt;</code>. </p>
+
+					<p><strong>Example:  Conversion of Styles Applied to<code>&lt;div&gt;</code> Elements</strong></p>
+
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">   &lt;head&gt;
+	&lt;styling&gt;
+		&lt;style xml:id=&quot;defaultStyle&quot; tts:color=&quot;white&quot; tts:fontFamily=&quot;monospace&quot; tts:fontSize=&quot;200%&quot;/&gt;
+		&lt;style xml:id=&quot;newFont&quot; tts:fontFamily=&quot;Verdana&quot; tts:fontSize=&quot;160%&quot;/&gt;
+	&lt;/styling&gt;
+   &lt;/head&gt;
+   &lt;body style=&quot;defaultStyle&quot;&gt;
+		&lt;div style=&quot;newFont&quot;&gt; .... &lt;/div&gt;
+   &lt;/body&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">    &lt;head&gt;
+	&lt;styling&gt;
+		&lt;style xml:id=&quot;defaultStyle&quot; tts:color=&quot;white&quot; tts:fontFamily=&quot;Verdana&quot; tts:fontSize=&quot;160%&quot;/&gt;
+		&lt;style xml:id=&quot;newFont&quot; tts:fontFamily=&quot;Verdana&quot; tts:fontSize=&quot;160%&quot;/&gt;
+	&lt;/styling&gt;
+    &lt;/head&gt;
+   &lt;body style=&quot;defaultStyle&quot;&gt;
+		&lt;div&gt; .... &lt;/div&gt;
+   &lt;/body&gt;
+					</code></pre>
+
+				<h4>Styles that are Specified for <code>&lt;region&gt;</code> Elements</h4>
+
+					<p>In a T2VP document, only the style attributes <code>@tts:extent</code>, <code>@tts:origin</code>, <code>@tts:displayAlign</code> and <code>@tts:writingMode</code> shall be specified on a <code>&lt;region&gt;</code>. The <code>&lt;region&gt;</code> shall not contain any style references nor <code>&lt;style&gt;</code> elements as children. If a source TTML document does not comply with this constraint, then all style references have to be resolved and merged, taking into account the style values of the <code>&lt;style&gt;</code> children of the <code>&lt;region&gt;</code>. A new <code>&lt;style&gt;</code> for the resolved set of style values is created. Every <code>&lt;p&gt;</code> that references that <code>&lt;region&gt;</code> should reference this <code>&lt;style&gt;</code>.</p>
+
+				<h4>Pruning of Unreferenced Styles</h4>
+
+					<p>All <code>&lt;style&gt;</code> elements that are not referenced should be pruned from the document.</p>
+
+				<h4>Translation of Incompatible Values</h4>
+
+					<p>As mentioned above, there are a few incompatibilities between the set of styling attributes available in TTML and in WebVTT.  These are expressed in the T2VP profile.  Below are some recommendations how to handle these when translating a general TTML document into the T2VP profile.</p>
+
+					<ul>
+					<li><p>tts:color</p>
+
+					<ul>
+					<li>the color name &quot;magenta&quot; shall be mapped to &quot;fuchsia&quot;</li>
+					<li>the color name &quot;cyan&quot; shall be mapped to &quot;aqua&quot;</li>
+					<li>the color name &quot;transparent&quot; shall be mapped to the value &quot;rgba(255, 255, 255, 0.0)&quot;</li>
+					<li>a hex notated color value with alpha channel shall be mapped to an rgba notated value</li>
+					</ul></li>
+					<li><p>tts:background-color</p>
+
+					<ul>
+					<li>the color name &quot;magenta&quot; shall be mapped to &quot;fuchsia&quot;</li>
+					<li>the color name &quot;cyan&quot; shall be mapped to &quot;aqua&quot;</li>
+					<li>a hex notated color value with alpha channel shall be mapped to an rgba notated value.</li>
+					</ul></li>
+					<li><p>font-family names</p>
+
+					<ul>
+					<li>the generic font family names monospaceSanSerif,  monospaceSerif shall be mapped to monospace</li>
+					<li>the generic font family names sanSerif and serif shall be mapped to san-serif</li>
+					</ul></li>
+					<li><p>length metric &quot;c&quot;:</p>
+
+					<ul>
+					<li>the length metric &quot;c&quot; shall be converted to percentage</li>
+					</ul></li>
+					<li><p>font-size:</p>
+
+					<ul>
+					<li>font-size with two values shall be converted to one value that corresponds to the height of the font. </li>
+					</ul></li>
+					</ul>
+
+				<h4>Cell Resolution</h4>
+
+					<p>The cell resolution should be set to &quot;1 1&quot;. If the tts:fontSize is not specified on the region element and no fontSize was specified on the parent element then the percentage value of the attribute tts:fontSize is relative to the computed size of 1c. By extending 1c over the height of the video viewport the percentage values in fontSize are relative to the height of the video viewport and therefore map directly to CSS he font-size attribute in WebVTT that uses the &#39;vh&#39; metric.</p>
+
+				<h4>Initial Values</h4>
+
+					<p>As default values for corresponding style structures (e.g. font-size) may differ between TTML and WebVTT, the document structure should be pre-processed to apply explicitly defined values, rather than relying on default values.</p>
+
+			</section>
+			
+			<section>
+			<h2>Pre-processing: Timing</h2>
+			
+				<h2>Converting Timing Expressions</h2>
+
+					<p>Because TTML supports many more timing expressions than those included in the T2VP profile, it may be necessary to perform a pre-processing step to convert a TTML document into a document that conforms to the T2VP profile.  In many cases, this type of processing will require timing parameters to convert timing expressions into the format supported by T2VP.</p>
+
+					<p>As a first step in mapping timing information from TTML to T2VP, convert all times in the TTML document into the time format supported by T2VP:   hours: minutes: seconds.fractional-seconds, and limit the fractional-seconds to three decimal places.  This conversion simplifies the mapping to WebVTT, as it results in all timing information expressed in the units supported by WebVTT.  This section steps through the supported TTML timing expressions and describes how to convert from each of them into to the format that is included in the T2VP profile.</p>
+
+					<h4>Time Expression:  hours:minutes:seconds</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>hours: minutes: seconds</td>
+						<td>hours: minutes: seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode</td>
+						</tr>
+						</tbody></table>
+
+						<p>For example:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>00:00:40</td>
+						<td>00:00:40.000  or 00:40.000</td>
+						</tr>
+						</tbody></table>
+
+						<p>Notes: </p>
+
+						<ul>
+						<li>If the TTML document contains a Time Base parameter equal to “clock”, and Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						<li>If the TTML document contains a Time base parameter equal to &quot;local&quot;, external information may be required to convert wall clock time into playback time.</li>
+						<li>In WebVTT, the hours unit is optional in a timing expression, in the case where its value is equal to zero.<br/></li>
+						</ul>
+
+					<h4>Time Expression:  hours:minutes:seconds.fractional-seconds</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>hours: minutes: seconds.fractional-seconds</td>
+						<td>hours: minutes: seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode</td>
+						</tr>
+						</tbody></table>
+
+						<p>This second case requires no transformation, except to limit the fraction-seconds portion of the timing expression to three decimal places. </p>
+
+						<p>For example:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>01:02:43.0345555</td>
+						<td>01:02:43.035</td>
+						</tr>
+						</tbody></table>
+
+						<p>Note: </p>
+
+						<ul>
+						<li>If the TTML document contains a Time Base parameter equal to “clock”, and Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						<li>If the TTML document contains a Time base parameter equal to &quot;local&quot;, external information may be required to convert wall clock time into playback time.</li>
+						</ul>
+
+					<h4>Time Expression:  hours:minutes:seconds:frames</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>hours: minutes: seconds:frames</td>
+						<td>hours: minutes: seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode, Drop Mode, Marker Mode, Frame Rate, Frame Rate Multiplier</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting from time expressions that contain frames, it is necessary to know the frame rate that the TTML document uses.  This information may be provided as parameters within the TTML document.  TTML specifies two parameter types for carrying frame rate:  ttp:frameRate and ttp:frameRateMultiplier.</p>
+
+						<p>In addition, in the case where the ttp:timeBase is equal to smpte and the ttp:markerMode is either not set or set to discontinuous, it will be necessary to account for any discontinuities in timing expressions when converting.  </p>
+
+						<p>For example, in a TTML file with a frame rate of 30:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>01:02:43:07</td>
+						<td>01:02:43.233</td>
+						</tr>
+						</tbody></table>
+
+						<p>As another example, in a TTML file with a frame rate of 30 and a frame rate multiplier of 1000:1001:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>01:02:43:07</td>
+						<td>01:02:43.234</td>
+						</tr>
+						</tbody></table>
+
+						<p>Notes:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “smpte”, then Drop Mode parameters must be applied, per the instructions in the TTML specification.<br/></li>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.
+						-It is possible that captions timing expressions will contain an offset.  External information will be required to identify when an offset is being used and to account for it when translating timing expressions.</li>
+						</ul>
+
+					<h4>Time Expression:  hours:minutes:seconds:frames.sub-frames</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>hours: minutes: seconds: frames.sub-frames</td>
+						<td>hours: minutes: seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode, Drop Mode, Frame Rate, Sub Frame Rate</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting from time expressions that contain frames and sub-frames, it is necessary to know the frame rate and the sub-frame rate that the TTML document uses.  This information may be provided as parameters within the TTML document, or as external data that is input to the mapping process.  TTML specifies two parameter types for carrying frame rate:  ttp:frameRate and ttp:subFrameRate.  </p>
+
+						<p>For example, in a TTML file with a frame rate of 30 and a sub-frame rate of 2:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>01:02:43:07.1</td>
+						<td>01:02:43.25</td>
+						</tr>
+						</tbody></table>
+
+						<p>Notes:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “smpte”, then Drop Mode parameter must be applied, per the instructions in the TTML specification.<br/></li>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						</ul>
+
+					<h4>Time Expression:  hours.fractional-hours</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>hours.fractional-hours</td>
+						<td>seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting between durations in hours to durations in seconds, simply multiply by the number of seconds in an hour:  3600.</p>
+
+						<p>For example, for a duration of 3 hours:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3h</td>
+						<td>03:00:00.000</td>
+						</tr>
+						</tbody></table>
+
+						<p>Similarly, for a duration of 3.45 hours:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3.45h</td>
+						<td>03:27:00.000</td>
+						</tr>
+						</tbody></table>
+
+						<p>Note:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						</ul>
+
+					<h4>Time Expression:  minutes.fractional-minutes</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>minutes.fractional-minutes</td>
+						<td>seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting between durations in hours to durations in seconds, simply multiply by the number of seconds in a minute:  60.</p>
+
+						<p>For example, for a duration of 3 minutes:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3m</td>
+						<td>00:03:00.000</td>
+						</tr>
+						</tbody></table>
+
+						<p>Similarly, for a duration of 3.45 minutes:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3.45m</td>
+						<td>00:03:27.000</td>
+						</tr>
+						</tbody></table>
+
+						<p>Note:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						</ul>
+
+					<h4>Time Expression:  seconds.fractional-seconds</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>seconds.fractional-seconds</td>
+						<td>seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode</td>
+						</tr>
+						</tbody></table>
+
+						<p>This case requires very little transformation, as WebVTT supports this format.   In some cases, it may be necessary to append the fractional seconds equal to zero to the timestamp.  </p>
+
+						<p>For example, for a duration of 3 seconds:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3s</td>
+						<td>00:00:03.000</td>
+						</tr>
+						</tbody></table>
+
+						<p>Similarly, for a duration of 3.45 seconds:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3.45s</td>
+						<td>00:00:03.450</td>
+						</tr>
+						</tbody></table>
+
+						<p>Notes:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameters equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						</ul>
+
+					<h4>Time Expression:  milliseconds.fractional-milliseconds</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>milliseconds.fractional-seconds</td>
+						<td>seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting between durations in hours to durations in seconds, simply divide by the number of seconds in a minute:  1000.</p>
+
+						<p>For example, for a duration of 3 milliseconds:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3ms</td>
+						<td>00:00:00.003</td>
+						</tr>
+						</tbody></table>
+
+						<p>Similarly, for a duration of 3.45 milliseconds:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>3ms</td>
+						<td>00:00:00.004</td>
+						</tr>
+						</tbody></table>
+
+						<p>Note:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						<li>Some rounding of timing expression values may be necessary if the value expressed in the TTML document has greater precision than is supported in the timing expression format supported by T2VP. </li>
+						</ul>
+
+					<h4>Time Expression:  frames.fractional-frames</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>frames.fractional-frames</td>
+						<td>seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode, Drop Mode, Frame Rate, Frame Rate Multiplier</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting from time expressions that contain frames, it is necessary to know the frame rate that the TTML document uses.  This information may be provided as parameters within the TTML document, or as external data that is input to the mapping process.  TTML specifies two parameter types for carrying frame rate:  ttp:frameRate and ttp:frameRateMultiplier.  </p>
+
+						<p>For example, in a TTML file with a frame rate of 30:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>75f</td>
+						<td>00:00:02.500</td>
+						</tr>
+						</tbody></table>
+
+						<p>As another example, in a TTML file with a frame rate of 30 and a frame rate multiplier of 1000:1001:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>75f</td>
+						<td>00:00:02.502</td>
+						</tr>
+						</tbody></table>
+
+						<p>Notes:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “smpte”, then the Drop Mode parameter must be applied, per the instructions in the TTML specification.<br/></li>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						</ul>
+
+					<h4>Time Expression:  ticks.fractional-ticks</h4>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						<th>Relevant Parameters</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>ticks.fractional-ticks</td>
+						<td>seconds.fractional-seconds</td>
+						<td>Time Base, Clock Mode, Tick Rate</td>
+						</tr>
+						</tbody></table>
+
+						<p>When converting from time expressions that contain ticks, it is necessary to know the tick rate that the TTML document uses.  This information may be provided as parameters within the TTML document, or as external data that is input to the mapping process.  TTML specifies the following parameter type for carrying tick rate:  ttp:tickRate.</p>
+
+						<p>For example, given a Tick Rate of 15:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>50t</td>
+						<td>00:00:03.333</td>
+						</tr>
+						</tbody></table>
+
+						<p>Similarly, for a duration of 50.45 ticks:</p>
+
+						<table class='simple'><thead>
+						<tr>
+						<th>TTML Time Expression</th>
+						<th>T2VP Time Expression</th>
+						</tr>
+						</thead><tbody>
+						<tr>
+						<td>50.45t</td>
+						<td>00:00:03.363</td>
+						</tr>
+						</tbody></table>
+
+						<p>Note:</p>
+
+						<ul>
+						<li>If the TTML document contains Time Base parameter equal to “clock”, and the Clock Mode parameter is present and has a value of “gps”, the TTML time must be converted to “utc” time, per the instructions in the TTML specification.</li>
+						</ul>
+						
+				<h4>Converting Durations to End Times</h4>
+
+					<p>The T2VP profile does not support durations, but rather requires that cue timings be expressed as begin and end times. Therefore, as part of transforming general TTML documents to conform with the T2VP profile, any timing expressed as duration must be transformed into an end time.</p>
+
+					<p><strong>Example: Duration to End Time Conversion</strong></p>
+					<p>This example starts with an excerpt from a TTML file that uses &quot;dur&quot; to express the amount of time that <code>&lt;p&gt;</code> elements should be displayed.</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;body begin=&quot;00:00:20.000&quot; end=&quot;00:00:50.000&gt;
+   &lt;div begin=&quot;00:00:01.000&quot; dur=&quot;10.000s&quot;&gt;
+	 &lt;p begin=&quot;00:00:00.000&quot; dur=&quot;5s&quot;&gt;Appears at 21 secs&lt;br&gt;
+	 and remains visible to 26 secs&lt;/p&gt;
+	 &lt;p begin=&quot;00:00:05.000&quot; dur=&quot;5s&quot;&gt;Appears at 26 secs&lt;br&gt;
+	 and remains visible to 31 secs&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+					</code></pre>
+
+					<p><strong>Transform timing information from &quot;dur&quot; to &quot;end&quot;.</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;body begin=&quot;00:00:20.000&quot; end=&quot;00:00:50.000&gt;
+   &lt;div begin=&quot;00:00:01.000&quot; end=&quot;00:00:31.000&quot;&gt;
+	 &lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:05.000&quot;&gt;Appears at 21 secs&lt;br&gt;
+	 and remains visible to 26 secs&lt;/p&gt;
+	 &lt;p begin=&quot;00:00:05.000&quot; end=&quot;00:00:10.000&quot;&quot;&gt;Appears at 26 secs&lt;br&gt;
+	 and remains visible to 31 secs&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+					</code></pre>	
+
+			<h4>Calculate Cue Timing With Respect to the TTML Hierarchy</h4>
+
+				<p>Once all timing expressions have been converted to be valid against the T2VP profile, the next step is to preserve and apply timing information from parent elements in order to calculate the correct timing to use for the WebVTT cue.  </p>
+
+				<p>Below are several examples of TTML excerpts containing body, <code>&lt;div&gt;</code> and <code>&lt;p&gt;</code> elements, with timing information included in each element.</p>
+
+				<p><strong>Example: Parallel Timing</strong></p>
+
+				<p>This example starts with an excerpt from a TTML file that does not specify a timeContainer attribute on any element.  When not specified, the timeContainer defaults to parallel timing of child elements.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;body begin=&quot;00:00:20.000&quot; end=&quot;00:00:50.000&gt;
+   &lt;div begin=&quot;00:00:01.000&quot; end=&quot;00:00:11.000&quot;&gt;
+	 &lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:05.000&quot;&gt;Appears at 21 secs&lt;br&gt;
+	 and remains visible to 26 secs&lt;/p&gt;
+	 &lt;p begin=&quot;00:00:05.000&quot; end=&quot;00:00:10.000&quot;&gt;Appears at 26 secs&lt;br&gt;
+	 and remains visible to 31 secs&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+				</code></pre>
+
+				<p><strong>Step 1:  Apply the timing information from the <code>&lt;body&gt;</code> to the <code>&lt;div&gt;</code>.</strong></p>
+
+				<p>The <code>&lt;div&gt;</code> begin and duration times must be adjusted to account for the <code>&lt;body&gt;</code> element&#39;s begin and end times, so that:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;div begin=&quot;00:00:21.000&quot; end=&quot;00:00:31.000&quot;&gt;
+	 &lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:05.000&quot;&gt;Appears at 21 secs&lt;br&gt; 
+	 and remains visible to 26 seconds&lt;/p&gt;
+	 &lt;p begin=&quot;00:00:05.000&quot; end=&quot;00:00:10.000&quot;&gt;Appears at 26 secs&lt;br&gt;
+	 and remains visible to 31 secs&lt;/p&gt;
+&lt;/div&gt;
+				</code></pre>
+
+				<p><strong>Step 2:  Apply the timing information from the <code>&lt;div&gt;</code> to the <code>&lt;p&gt;</code>.</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;p begin=&quot;00:00:21.000&quot; end=&quot;00:00:26.000&quot;&gt;Appears at 21 secs&lt;br&gt;
+	and remains visible to 26 seconds&lt;/p&gt;
+&lt;p begin=&quot;00:00:26.000&quot; end=&quot;00:00:31.000&quot;&gt;Appears at 26 secs&lt;br&gt; 
+	and remains visible to 31 secs&lt;/p&gt;
+				</code></pre>
+
+
+				<p>Note:</p>
+
+				<ul>
+				<li>In this example, the duration of the <code>&lt;body&gt;</code> and <code>&lt;div&gt;</code> elements did not impact the timestamps of the <code>&lt;p&gt;</code> elements during the flattening process.  If one of the <code>&lt;p&gt;</code> elements had had an end time beyond either the <code>&lt;body&gt;</code> or <code>&lt;div&gt;</code> durations, it would have been truncated to the enclosing elements’ durations.</li>
+				</ul>
+
+				<p><strong>Example: Sequential Timing</strong>
+				
+				<p>This example starts with an excerpt from a TTML file that specifies a timeContainer attribute on the div element with a sequential value.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;body begin=&quot;00:00:20.000&quot; end=&quot;00:00:50.000&quot;&gt;
+   &lt;div timeContainer=&quot;seq&quot; begin=&quot;00:00:01.000&quot; end=&quot;00:00:21.000&quot;&gt;
+	 &lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:05.000&quot;&gt;Appears at 21 secs&lt;br&gt; 
+	 and remains visible to 26 secs&lt;/p&gt;
+	 &lt;p begin=&quot;00:00:05.000&quot; end=&quot;00:00:05.000&quot;&gt;Appears at 31 secs&lt;br&gt; 
+	 and remains visible to 36 secs&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+				</code></pre>
+
+				<p><strong>Step 1:  Apply the timing information from the body to the div element.</strong></p>
+
+				<p>The div begin and duration times must be adjusted to account for the body’s begin and end times, so that:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;div begin=&quot;00:00:21.000&quot; end=&quot;00:00:31.000&quot;&gt;
+	&lt;p begin=&quot;00:00:00.000&quot; end=&quot;00.00.05.000&quot;&gt;Appears at 21 secs&lt;br&gt; 
+	and remains visible to 26 seconds&lt;/p&gt;
+	&lt;p begin=&quot;00:00:05.000&quot; end=&quot;00:00:10.000&quot;&gt;Appears at 26 secs&lt;br&gt; 
+	and remains visible to 31 secs&lt;/p&gt;
+&lt;/div&gt;
+				</code></pre>
+
+				<p><strong>Step 2:  Apply the timing information from the <code>&lt;div&gt;</code> to the <code>&lt;p&gt;</code>.</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;p begin=&quot;00:00:21.000&quot; end=&quot;00:00:26.000&quot;&gt;Appears at 21 secs&lt;br&gt; 
+	and remains visible to 26 seconds&lt;/p&gt;
+&lt;p begin=&quot;00:00:31.000&quot; end=&quot;00:00:36.000&quot;&gt;Appears at 31 secs&lt;br&gt; 
+    and remains visible to 36 secs&lt;/p&gt;
+				</code></pre>
+
+
+			</section>
+		</section>
+		
+		<section>
+		<h2>Converting from T2VP to WebVTT</h2>
+		
+			<section>
+			<h2>General</h2>
+						
+				<h4>Mapping TTML <code>&lt;head&gt;</code> Elements to WebVTT</h4>
+
+					<p>The TTML <code>&lt;head&gt;</code> element contains metadata as well as Styling and Layout elements.   Other sections of this document provide detailed descriptions for mapping information from the <code>&lt;head&gt;</code> element to WebVTT.  </p>
+
+				<h4>Mapping TTML <code>&lt;body&gt;</code> Elements to WebVTT</h4>
+
+					<p>TTML documents contain a <code>&lt;body&gt;</code> element.  This element holds the captions, and makes reference to the styling, timing, layout and other information defined in the TTML <code>&lt;head&gt;</code> element.  The <code>&lt;body&gt;</code> element can also use <code>&lt;div&gt;</code> elements to organize captions into groups.  Captions inherit timing, layout or styling information from the elements that contain them.</p>
+
+					<p>In order to map the contents of a TTML <code>&lt;body&gt;</code> to WebVTT, several processes must be applied.  These processes attempt to preserve information while transforming the captions data into a form that can be represented in WebVTT.</p>
+
+
+				<h4>Ordering</h4>
+
+					<p>TTML documents can have captions listed in arbitrary order with respect to time, while WebVTT documents must have captions listed according to their display time, ordered from earliest time to latest time.  Therefore, captions from a TTML document must be put into display time order prior to mapping them into WebVTT.  Once the flattening step is finished, the next step is to re-order the captions based on the timing of each <code>&lt;p&gt;</code>.</p>
+
+				<h4>Converting</h4>
+
+					<p>For many attributes, including spatial and timing values, TTML supports a larger set of representations and units than WebVTT does.  As a result, many TTML documents will require unit conversions to be transformed into valid WebVTT documents.  </p>
+
+					<p>Later sections of this document describe in detail how to map positioning, styling and timing information between the two formats.</p>
+
+				<h4>Mapping of <code>&lt;p&gt;</code></h4>
+
+					<p>Every <code>&lt;p&gt;</code> is mapped to a WebVTT cue. The value of <code>@xml:id</code> of <code>&lt;p&gt;</code> is mapped to the id of the corresponding cue. The text content of the <code>&lt;p&gt;</code> is mapped to cue text. See the styling section for how to map the <code>@style</code> of a <code>&lt;p&gt;</code>.</p>
+
+					<p><strong>Example:  Mapping the <code>&lt;p&gt;</code> Element</strong></p>
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:02.000&quot; xml:id=&quot;p1&quot; ...&gt;
+Good morning!
+&lt;/p&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="vtt">p1
+00:00:00.000 --&gt; 00:00:02.000
+Good morning!
+					</code></pre>
+
+				<h4>Mapping of <code>&lt;span&gt;</code></h4>
+
+					<p>Every <code>&lt;span&gt;</code> that has a style attribute is mapped to a <code>class span tag</code> in WebVTT where the values of the <code>@style</code> are mapped to applicable classes of the class span tag. Every <code>&lt;span&gt;</code> with <code>@xml:lang</code> is mapped to a language span tag with a the corresponding value. </p>
+
+					<p><strong>Example:  Mapping the <code>&lt;span&gt;</code> Element</strong></p>
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;span xml:lang=&quot;en&quot;&gt;&lt;span style=&quot;s1 s2&quot;&gt;Good morning&lt;/span&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="vtt">&lt;lang en&gt;&lt;c.s1.s2&gt;Good morning&lt;/c&gt;
+					</code></pre>
+
+				<h4>Mapping of <code>&lt;br&gt;</code></h4>
+
+					<p>A <code>&lt;br&gt;</code> is mapped to a WebVTT line terminator.</p>
+
+					<p><strong>Example:  Mapping the <code>&lt;br&gt;</code> Element</strong></p>
+					<p>Before:</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;p ...&gt;What a day!&lt;br/&gt;- Yes!&lt;/p&gt;
+					</code></pre>
+
+					<p>After:</p>
+
+					<pre class="example prettyprint highlight"><code class="vtt">What a day!
+- Yes!
+					</code></pre>
+		</section>
+
+		<section>
+		
+		<h2>Mapping Positioning Information</h2>
+
+			<p>The position and dimension of the TTML Root Container region may differ from the dimensions of the video.  In other words, there may be some padding around the Root Container region.  In this case, the padding must be taken into account when computing WebVTT percentages.  Ultimately, the WebVTT values must be expressed relative to the video viewport dimensions.</p>
+
+			<h4>Block Size</h4>
+
+				<p>To convert tts:extent, when applied to a TTML region, to WebVTT cue settings:</p>
+
+					<ul>
+					<li>Determine whether the width or height of the TTML extent attribute corresponds to the WebVTT size setting. If the TTML block progression direction is top-to-bottom, the width corresponds to the &quot;size&quot; setting; otherwise the height corresponds to the &quot;size&quot; setting. Based on this determination, calculate the size cue setting as a percentage of the corresponding video dimension.<br/></li>
+					<li>WebVTT does not provide a way to define the extent in the block progression dimension.  Instead, WebVTT relies on automatic behavior to handle resizing in this dimension based on the text content.<br/></li>
+					</ul>
+
+					<p>To convert tts:extent, when applied to a TTML region, to a WebVTT region:</p>
+
+					<ul>
+					<li>Convert the TTML extent width to a percentage of the video width. This percentage will be the value of the &quot;width&quot; setting in the region setting list.</li>
+					<li>Convert the TTML extent height to a line value. (This will require converting to a percentage of the video height, then dividing by the font size, rounded to the next integer). This will be the value of the &quot;lines&quot; setting in the region setting list. </li>
+					</ul>
+
+			<h4>Block Position</h4>
+
+				<p>To convert tts:origin to WebVTT cue settings:</p>
+
+				<ul>
+				<li>Convert the tts:origin x and y values to percentages of the video dimensions.</li>
+				<li>Determine the block progression direction of the TTML region from the tts:writingMode attribute. This will determine the appropriate value for the &quot;vertical&quot; cue setting.</li>
+				<li>Determine the writing direction of the text from the tts:writingMode attribute.</li>
+				<li>If the block progression direction is top to bottom:
+
+				<ul>
+				<li>The value of the &quot;line&quot; cue setting is the percentage value for the second coordinate of the origin attribute.<br/></li>
+				<li>The value of the &quot;position&quot; cue setting is the percentage value for the first coordinate of the origin attribute.</li>
+				</ul></li>
+				<li>If the block progression direction is left to right:
+
+				<ul>
+				<li>The value of the &quot;line&quot; cue setting is the percentage value for the first coordinate of the origin attribute.</li>
+				<li>The value of the &quot;position&quot; cue setting is the percentage value for the second coordinate of the origin attribute.</li>
+				</ul></li>
+				<li>Always provide the optional position alignment value &quot;start&quot;.<br/></li>
+				</ul>
+
+				<p>To convert tts:origin to WebVTT region settings:</p>
+
+				<ul>
+				<li>WebVTT region positioning is controlled by the <a href="http://dev.w3.org/html5/webvtt/#h_note_6">region anchor setting and the viewport anchor setting</a>.</li>
+				<li>WebVTT regions only support horizontal cues, which corresponding to a vertical TTML block progression direction.</li>
+				<li>Set the &quot;regionanchor&quot; setting value to 0%,0%, which is the upper left corner of the region.</li>
+				<li>Set the &quot;viewportanchor&quot; setting value to the percentage values for the two origin attribute coordinates. </li>
+				</ul>
+
+				<p><strong>Example:  Converting from a TTML Region to a WebVTT Cue</strong></p>
+
+				<p>In this example, the TTML is converted to WebVTT without using WebVTT regions.  It begins with a few fragments of TTML, the first containing a region definition, and the second containing a <code>&lt;p&gt;</code> element:</p>
+				<p><strong>Before:</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;layout&gt;
+  &lt;region xml:id=&quot;reg3&quot; tts:origin=&quot;25% 80%&quot; tts:extent=&quot;50% 16%&quot; &gt;
+  &lt;/region&gt;
+&lt;/layout&gt;
+				</code></pre>
+
+
+				<pre class="example prettyprint highlight"><code class="xml">  &lt;p region=&quot;reg3&quot; begin=&quot;00:00:00.000&quot; end=&quot;00:00:10.000&quot;&gt;A simple caption example.&lt;/p&gt;
+				</code></pre>
+
+				<p><strong>After: Converted to WebVTT syntax</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">00:00:00.000 --&gt; 00:00:10.000 position:25% line:80% size:50% align:start
+A simple caption example.
+				</code></pre>
+
+				<p>Notes:</p>
+
+				<ul>
+				<li><p>In WebVTT, text alignment defaults to the middle of the cue box.  In order to have cue text aligned to the left, it is necessary to add the align:start, or align:left value to the cue.</p></li>
+				<li><p>In WebVTT, there is no way to directly specify the size of the dimension in the block progression direction, in this case, the vertical direction.  This dimension is determined by the amount of text in the cue box.</p></li>
+				</ul>
+
+				<p><strong>Example:  Convert a Region from TTML to WebVTT, Positioned at the (top, left) Corner of the Viewport</strong></p>
+
+				<p>This example begins with a TTML region definition:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;layout&gt;
+  &lt;region xml:id=&quot;regionExample1&quot; tts:origin=&quot;0% 0%&quot; tts:extent=&quot;50% 16%&quot; &gt;
+  &lt;/region&gt;
+&lt;/layout&gt;
+				</code></pre>
+
+				<p><strong>Step 1:  Convert from the vertical extent value from percent to line number</strong></p>
+
+				<p>WebVTT specifies the vertical size of a region in terms of integer lines of text.  Assuming a default line height of 5.33, </p>
+
+				<pre class="example prettyprint highlight"><code>number of lines = 16% / 5.33vh = 3 
+				</code></pre>
+
+				<p><strong>Step 2:  Convert from TTML  to WebVTT syntax</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">Region: id=regionExample1 width=50% lines=3 regionanchor=0%,0% viewportanchor=0%,0% scroll=up
+				</code></pre>
+
+				<p>Notes:</p>
+
+				<ul>
+				<li>By setting both the regionanchor and the viewportanchor to ( 0%, 0% ), the ( top, left ) corner of the region is anchored to the ( top, left ) corner of the video viewport, matching the origin specified in the TTML region definition above.</li>
+				</ul>
+
+				<p><strong>Example:  Converting a Region from TTML to WebVTT, Positioned in the Middle of the Viewport</strong></p>
+
+				<p>This example begins with a TTML region definition:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;layout&gt;
+  &lt;region xml:id=&quot;regionExample2&quot; tts:origin=&quot;25% 80%&quot; tts:extent=&quot;50% 32%&quot;&gt;
+  &lt;/region&gt;
+&lt;/layout&gt;
+				</code></pre>
+
+				<p><strong>Step 1:  Convert from the vertical extent value from percent to line number</strong></p>
+
+				<p>WebVTT specifies the vertical size of a region in terms of integer lines of text.  Assuming a default line height of 5.33, </p>
+
+				<pre class="example prettyprint highlight"><code>number of lines = 32% / 5.33vh = 6 
+				</code></pre>
+
+				<p><strong>Step 2:  Convert from TTML  to WebVTT syntax</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">Region: id=regionExample2 width=50% lines=6 regionanchor=0%,0% viewportanchor=25%,80% scroll=up
+				</code></pre>
+
+		</section>
+		
+		<section>
+		<h2>Mapping Styling Information</h2>
+
+			<h4>Creation of a CSS file</h4>
+
+				<p>When starting from a TTML document that conforms to the T2VP profile, the first step is to create a CSS file where all of the <code>&lt;style&gt;</code> elements are mapped to ::cue pseudo elements with the value of <code>@xml:id</code> of the <code>&lt;style&gt;</code> element as a class name.</p>
+
+				<p><strong>Example:  Creating CSS Style Class from TTML Style Element</strong></p>
+
+				<p>Starting with the following TTML snippet:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;style xml:id=&quot;fontStyles&quot; tts:fontFamily=&quot;monospace&quot; tts:fontSize=&quot;200%&quot;/&gt;    
+&lt;style xml:id=&quot;colorStyles&quot; tts:color=&quot;white&quot; tts:backgroundColor=&quot;black&quot;/&gt;
+				</code></pre>
+
+				<p>The corresponding CSS classes looks like this:</p>
+
+				<pre class="example prettyprint highlight"><code class="css">::cue(.fontStyles) {
+  font-family=monospace;
+  font-size=200%;
+}
+
+::cue(.colorStyles){
+  color= white;
+  background-color: black;
+}
+				</code></pre>
+
+			<h4>Mapping of Style Attributes to CSS Properties</h4>
+
+				<p>The table below shows how to map TTML style attributes  to CSS properties.</p>
+
+				<table class='simple'><thead>
+				<tr>
+				<th>TTML Style attribute</th>
+				<th>CSS property</th>
+				</tr>
+				</thead><tbody>
+				<tr>
+				<td><code>&lt;tts:backgroundColor&gt;</code></td>
+				<td>background-color</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:color&gt;</code></td>
+				<td>color</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:fontFamily&gt;</code></td>
+				<td>font-family</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:fontSize&gt;</code></td>
+				<td>font-size</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:fontStyle&gt;</code></td>
+				<td>font-style</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:fontWeight&gt;</code></td>
+				<td>font-weight</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:lineHeight&gt;</code></td>
+				<td>line-height</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:textDecoration&gt;</code></td>
+				<td>text-decoration</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:textOutline&gt;</code></td>
+				<td>outline-color</td>
+				</tr>
+				<tr>
+				<td><code>&lt;tts:visibility&gt;</code></td>
+				<td>visibility</td>
+				</tr>
+				</tbody></table>
+
+			<h4>Mapping of an RGBA Color Value</h4>
+
+				<p>As part of the mapping process, it is necessary to convert rgba notated colors from the notation used in TTML to the notation used in CSS. This conversion is accomplished by dividing the last value by 255 and rounding to a decimal with a fraction expressed as one digit.</p>
+
+				<p><strong>Example:  Translating TTML Background Color to CSS</strong>
+				
+				<pre class="example prettyprint highlight"><code>TTML: tts:backgroundColor=&quot;rgba(0,0,0,178)&quot;
+CSS: background-color: rgba(0,0,0,0.7);</p>
+				</code></pre>
+
+			<h4>Mapping of the <code>@style</code> on <code>&lt;body&gt;</code></h4>
+
+				<p>Any <code>&lt;style&gt;</code> elements referenced by  the <code>&lt;body&gt;</code> of a TTML document should be mapped to a ::cue pseudo element containing the corresponding CSS properties and values.</p>
+
+				<p><strong>Example:  Mapping Style Elements Applied to <code>&lt;body&gt;</code></strong><br/>
+				TTML:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">  &lt;style xml:id=&quot;defaultStyle&quot; fontWeight=&quot;normal&quot; fontSize=&quot;100%&quot; .../&gt;
+				</code></pre>
+
+				<p>CSS:</p>
+
+				<pre class="example prettyprint highlight"><code class="css">  ::cue {
+  font-weight=normal;
+  font-size=100%;
+}
+				</code></pre>
+
+			<h4>Mapping of <code>@style</code> on <code>&lt;p&gt;</code></h4>
+
+				<p>If a <code>&lt;p&gt;</code> contains references to one or more <code>&lt;style&gt;</code> elements, the corresponding cue should start with a c class span tag, where the style references are mapped to applied classes.</p>
+
+				<p><strong>Example:  Mapping Style Elements Applied to <code>&lt;p&gt;</code></strong> 
+				TTML:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;p style=&quot;s1 s2 s3&quot; ...&gt;Good morning!&lt;/p&gt;
+				</code></pre>
+
+				<p>WebVTT:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;c.s1.s2.s3&gt;Good morning!
+				</code></pre>
+
+			<h4>Mapping of <code>@style</code> on <code>&lt;span&gt;</code></h4>
+
+				<p>A <code>&lt;span&gt;</code> that references a <code>&lt;style&gt;</code> can be mapped to a &quot;c span tag&quot; where the references to styles are mapped to applicable CSS class names. </p>
+
+				<p><strong>Example:  Mapping Style Elements Applied to <code>&lt;span&gt;</code></strong></p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;span style=&quot;speaker1&quot;&gt;What a day!&lt;/span&gt;&lt;br/&gt;
+&lt;span style=&quot;speaker2&quot;&gt;Yes!&lt;/span&gt;
+				</code></pre>
+
+				<p>Example WebVTT:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;c.speaker1&gt;What a day!&lt;/c&gt;
+&lt;c.speaker2&gt;Yes!&lt;/c&gt;
+				</code></pre>
+
+		</section>
+			
+		<section>
+		<h2>Mapping Timing Information</h2>
+			<p>Most of the transformation of timing information occurs during pre-processing.  Once a document conforms to the T2VP format, only a few remaining transformations must be handled during the mapping to WebVTT:
+
+				<ul>
+				<li>Convert span elements that contain timing information</li>
+				<li>Convert from TTML syntax to WebVTT syntax</li>
+				<li>Order the cues</li>
+				</ul>
+
+			<h4>Calculate Timing for <code>&lt;span&gt;</code> Elements</h4>
+			
+				<p>Documents that employ <code>&lt;span&gt;</code> elements with timing information will require additional processing when mapping from T2VP to WebVTT.</p>
+
+				<p><strong>Example: <code>&lt;span&gt;</code> Elements</strong></p>
+				<p>This example starts with an excerpt from a TTML file that includes some <code>&lt;span&gt;</code> elements within <code>&lt;p&gt;</code> elements.   </p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;body timeContainer=&quot;par&quot;&gt;
+   &lt;div timeContainer=&quot;par&quot;&gt;
+	   &lt;p begin=&quot;00:00:10.000&quot; end=&quot;00:00:40.000&quot;&gt;
+		  &lt;span end=&quot;00:00:24.400&quot;&gt;Appears at 10 seconds and 
+		  disappears at 24.4 seconds&lt;/span&gt;
+		  &lt;br/&gt;
+		  &lt;span begin=&quot;00:00:25.000&quot; end=&quot;00:00:35.000&quot;&gt;Appears at 25 seconds and 
+		  disappears at 35 seconds&lt;/span&gt;
+	   &lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+				</code></pre>
+
+				<p><strong>Step 1:  Define a CSS class for hidden text</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="css">::cue(.invisible_text) { color: rgba(0, 0, 0, 0);} 
+				</code></pre>
+
+				<p><strong>Step 2:  Transform the spans into separate <code>&lt;p&gt;</code> elements</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;p begin=&quot;10.000s&quot; end=&quot;24.400s&quot;&gt;Appears at 10 seconds and 
+disappears at 24.4 seconds&lt;/p&gt;
+&lt;p begin=&quot;00:00:25.000&quot; end=&quot;35.000s&quot;&gt;Appears at 25 seconds and 
+disappears at 35 seconds&lt;/p&gt;
+				</code></pre>
+
+				<p><strong>Step 3:  Convert from TTML to WebVTT syntax</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">00:00:10.000 --&gt; 00:00:24.400
+This text must appear at 10 seconds and disappear at 24.4 seconds
+&lt;c.invisible_text&gt;This text must appear at 25 seconds and disappear at 35 seconds&lt;/c&gt;
+
+00:00:25.000 --&gt; 00:00:35.000
+&lt;c.invisible_text&gt;This text must appear at 10 seconds and disappear at 24.4 seconds&lt;/c&gt;
+This text must appear at 25 seconds and disappear at 35 seconds 
+				</code></pre>
+
+				<p>An alternative approach is to use intra-cue timings.  </p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">0:00:10.000 --&gt; 0:00:40.000
+This text must appear at 10 seconds and disappear at 24.4 seconds\r
+&lt;0:00:24.400&gt;&lt;0:00:25.000&gt;This text must appear at 25 seconds and disappear at 35 seconds&lt;0:00:35.000&gt;
+				</code></pre>
+
+
+			<h4>Converting from TTML to WebVTT Syntax</h4>
+				<p>TTML:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;p begin=&quot;00:00:21.000&quot; end=&quot;00:00:26.000&quot;&gt;Appears at 21 secs&lt;br&gt; 
+	and remains visible to 26 seconds&lt;/p&gt;
+&lt;p begin=&quot;00:00:31.000&quot; end=&quot;00:00:36.000&quot;&gt;Appears at 31 secs&lt;br&gt; 
+    and remains visible to 36 secs&lt;/p&gt;
+				</code></pre>
+
+				<p>WebVTT:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">00:00:21.000 --&gt; 00:00:26.000
+Appears at 21 secs
+and remains visible to 26 seconds
+
+00:00:31.000 --&gt; 00:00:36.000
+Appears at 31 secs 
+and remains visible to 36 secs
+				</code></pre>
+
+			<h4>Ordering</h4>
+				<p>Completing these steps results in a document with a list of WebVTT cues.  The last step is to sort these cues from earliest to latest time, based on each cue's beginning timestamp. </p>
+
+			</section>
+		</section>
+	</section>
+
+
+    <section>
+	<h2>WebVTT to TTML</h2>
+
+    	<section>
+    	<h2>General</h2>
+			<section>
+			<h2>Mapping WebVTT Cues to TTML <code>&lt;p&gt;</code> Elements</h2>
+
+				<p>Before mapping the syntax of WebVTT cues to the syntax of TTML <code>&lt;p&gt;</code> elements, it can be useful to assemble WebVTT cues into groups that can be transformed into TTML <code>&lt;div&gt;</code> elements.  The hierarchical elements of TTML's syntactic structure can provide opportunities for consolidating expressions of style and layout.</p>
+    		</section>
+    	</section>
+    	
+    	<section>
+		<h2>Converting Positioning</h2>
+
+			<section>
+			<h2>TTML Position from a WebVTT Cue Box</h2>
+				<p>When mapping positioning information from WebVTT to TTML, start by generating a TTML region definition for each WebVTT region or cue that has a different block size or location.  After developing these independent regions, it may be possible to optimize the TTML by sharing or merging region definitions.</p>
+
+				<p>WebVTT has the automatic behavior that cue positions are subject to adjustment if cues overlap as positioned by the cue settings. TTML does not have analogous automatic behavior. To avoid overlap in the TTML version of a document, adjust the positioning of WebVTT cues and regions as part of the mapping process.</p>
+
+				<p>In WebVTT, the position of a cue is determined by its &quot;position&quot; and &quot;line&quot; cue settings. When interpreting these cue settings, it is necessary to apply the values of other WebVTT cues settings including:</p>
+				<ul>
+				<li><p>The vertical cue setting</p></li>
+				<li><p>The writing direction cue setting</p></li>
+				<li><p>The size cue setting</p></li>
+				</ul>
+				
+				
+				Here are additional guidelines for interpreting WebVTT cue setting:</p>
+
+				<ul>
+				<li><p>The line cue setting may either be a percentage or a line number.  Positive line numbers are counted from the top, negative line numbers are counted from the bottom. </p></li>
+				<li><p>The position is configured in the direction opposite to the writing direction. For example, with horizontal cues, the writing direction is the vertical direction.   </p></li>
+				<li><p>The optional alignment value determines whether the position is calculated relative to the start, middle, or end of the cue box.  If the alignment value is not &quot;start&quot;, then alignment  depends upon the size of the cue box.  For example, an alignment value of &quot;end&quot; will be equivalent to an alignment value of &quot;start&quot;  plus the size of the cue box in the appropriate direction.</p></li>
+				</ul>
+
+			<h4>Calculate Cue Box Coordinates</h4>
+
+				<p>In order to calculate the coordinates of the upper left vertex of a WebVTT cue box as percentage, use the following steps.</p>
+
+				<p>The &quot;position&quot; cue setting will determine one coordinate, referred to as the position_coordinate.</p>
+
+				<ul>
+				<li>Calculate the <a href="http://dev.w3.org/html5/webvtt/#dfn-cue-computed-text-position-alignment">computed text position alignment</a>.</li>
+				<li>If the computed text position alignment is &quot;start&quot;, the position_coordinate is the value of the &quot;position&quot; cue setting.</li>
+				<li>If the computed text position alignment is &quot;end&quot;, the position_coordinate is the value of the &quot;position&quot; cue setting minus the value of the &quot;size&quot; cue setting.</li>
+				<li>If the computed text position alignment is &quot;middle&quot;, the position_ coordinate is the value of the &quot;position&quot; cue setting minus half the value of the &quot;size&quot; cue setting. </li>
+				</ul>
+
+				<p>The &quot;line&quot; cue setting will determine the other coordinate, referred to as the line_coordinate.</p>
+
+				<ul>
+				<li>The cue height as a percentage of the viewport is the number of lines in the cue multiplied by the computed line height. Because WebVTT auto-wraps text, the number of lines of text must be computed by laying out the text and determining where line breaks will occur.</li>
+				<li>If the &quot;line&quot; value is a line number, convert it to a percentage value. 
+
+				<ul>
+				<li>If the line number is positive, and thus counted from the top, the corresponding percentage value is (line number * computed line height)</li>
+				<li>If the line number is negative, and thus counted from the bottom, the corresponding percentage value is 100 + (line number * computed line height)</li>
+				</ul></li>
+				<li>The cue line alignment, with a value of &quot;start&quot;, &quot;middle&quot; or &quot;end&quot;, determines the interpretation of the line percentage value.  The direction of block growth controls whether the &quot;start&quot; or &quot;end&quot; corresponds to the upper left coordinate.
+
+				<ul>
+				<li>For horizontal cues, a line alignment of &quot;start&quot; corresponds to the top of the cue box. For a line alignment of &quot;middle&quot; subtract half of the cue height from the line percentage value.  For a line alignment of &quot;end&quot;, subtract all of the cue height from the line percentage value.</li>
+				<li>For vertical cues, if the cue grows left to right, a line alignment of &quot;start&quot; corresponds to the left edge of the cue box. For a line alignment of &quot;middle&quot;, subtract half of the cue height from the line percentage value.  For a line alignment value of &quot;end&quot;, subtract all of the cue height from the line percentage value.<br/></li>
+				</ul></li>
+				</ul>
+
+			<h4>Block Size</h4>
+
+				<p>When converting from WebVTT cue settings to a tts:extent value, the goal is to arrive at extent values expressed as percentages of the viewport&#39;s width and height.  In cases where WebVTT cues express spatial dimensions solely using percentages of the viewport, there will be no need to convert into different units, as TTML supports percentages.  In cases where WebVTT uses line numbers for vertical dimensions, it will be necessary to convert the line numbers into percentages of the viewport&#39;s height.  As discussed above, this conversion depends upon determining the correct line height to use.  Assuming WebVTT dimensions have been converted into percentages, the TTML extent can be calculated in the following way</p>
+
+				<p>When the cue&#39;s vertical setting is &#39;auto&#39; or &#39;horizontal&#39; the first value of the tts:extent pair will be equal to the cue&#39;s size property.  The second value of the tts:extent pair must be synthesized, as WebVTT does not specify the size of the cue in the block progression direction.  This second value can be computed by looking at the number of lines of text in the cue, and multiplying it by the computed line height, to achieve a value as a percentage of the viewport height.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">tts:extent = ( size, computed line height * number of lines )
+				</code></pre>
+
+				<p>When the cue&#39;s vertical setting is &#39;vertical&#39;, the first value in the tts:extent pair that must be synthesized, while the second value in the pair will be equal to the cue&#39;s size property.  The first value should be computed based on the number of lines in the cue and some font metrics.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">tts:extent = ( computed line width * number of lines, size ) 
+				</code></pre>
+
+			<h4>Block Position</h4>
+
+
+				<p>To convert from WebVTT cue position settings to TTML, it is necessary to set both the tts:origin and tts:writingMode attributes on a TTML region. </p>
+
+				<p>As a first step, determine the TTML writing mode, based on the WebVTT vertical text cue setting and writing direction.  If the setting is not present, the default value is horizontal.  If the setting is vertical, it will have a writing direction of either left to right or right to left associated with it.  Refer to the table above to map WebVTT values to TTML values.</p>
+
+				<p>Next, calculate the tts:origin value.  The tts:origin will correspond to the value of the top, left corner of the WebVTT cue box.  </p>
+
+				<p>In the case of a horizontal or auto writing mode:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">tts:writing = &quot;lrtb&quot;
+tts:origin = ( position, line )
+				</code></pre>
+
+				<p>Note:</p>
+
+				<ul>
+				<li>WebVTT does not distinguish between left to right and right to left for its horizontal writing mode.  The writing direction is determined based on the font and language.  If the WebVTT content is using a right to left writing direction, this can be explicitly expressed in TTML by setting  tts:writing to &quot;rltb&quot;.</li>
+				</ul>
+
+				<p>In the case of a vertical writing mode, with a left to right writing direction:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">tts:writing = &quot;tblr&quot;
+tts:origin = ( line, position )
+				</code></pre>
+
+				<p><strong>Example:  Converting from a WebVTT Cue to TTML</strong></p>
+
+				<p>This example begins with a WebVTT fragment containing a cue that does not use a region:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">00:00:00.000 --&gt; 00:00:10.000 position:50% line:0% size:50%
+A cue with no region.
+				</code></pre>
+
+				<p><strong>Step 1: Define a TTML Region</strong></p>
+
+				<p>Start by defining a TTML Region for this caption.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;layout&gt;
+&lt;region xml:id=&quot;reg4&quot; tts:origin=&quot;50% 0%&quot; tts:extent=&quot;50% 16%&quot; tts:writingMode=&quot;lrtb&quot; &gt;
+&lt;/region&gt;
+&lt;/layout&gt;
+				</code></pre>
+
+				<p><strong>Step 2:  Convert from WebVTT to TTML Syntax</strong></p>
+
+				<p>Reference the region created above using its id.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">  &lt;p region=&quot;reg4&quot; begin=&quot;00:00:00.000&quot; end=&quot;00:00:10.000&quot; tts:textAlign=&quot;center&quot;&gt;A cue with no region.&lt;/p&gt;
+				</code></pre>
+
+				<p>Notes:</p>
+
+				<ul>
+				<li><p>WebVTT does not specify a vertical dimension, so in the process of mapping from WebVTT to TTML, it is necessary to synthesize a value for this dimension.  Choosing 16%, assuming a default line height of 5.33 vh, gives us a vertical dimension roughly equal to three lines of text.  This choice may be appropriate for some WebVTT content where there are no cues with more than three lines.</p></li>
+				<li><p>In WebVTT, text alignment defaults to the middle of the cue box.  In order to replicate this behavior in TTML, it is necessary to set the tts:textAlign attribute to &quot;center&quot; on the region.</p></li>
+				</ul>
+
+				<p>In the case of a vertical writing mode, with a left to right writing direction:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">tts:writingMode = &quot;tbrl&quot;
+tts:origin = ( line, position )
+				</code></pre>
+		</section>
+		
+		<section>
+
+			<h2>TTML Position from WebVTT Region</h2>
+
+				<p>When determining the TTML origin based on a WebVTT region, it is necessary to take into account the two different types of anchors defined for WebVTT regions.  The TTML origin will always correspond to the top, left corner of the region, while the WebVTT anchor point may correspond to some other point within the region.  </p>
+
+				<p>To convert from WebVTT region settings to a tts:origin value:</p>
+
+				<ul>
+				<li>With the <a href="http://dev.w3.org/html5/webvtt/#h_note_6">region anchor mapped to the region viewport anchor</a>, determine the  viewport values that correspond to the region location 0, 0. If we let the region anchor values be a,b and let the region viewport anchor values be c,d</li>
+				<li>tts:origin=&quot;(c-a)% (d-b)%&quot;</li>
+				</ul>
+
+				<p><strong>Example:  Converting from a WebVTT Cue with Region to TTML</strong></p>
+
+				<p>This example begins with a WebVTT fragment containing a cue that does use a region:</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">Region: id=reg5 width=30% lines=3 regionanchor=50%,50% viewportanchor=25%,40% scroll=up
+
+00:00:00.000 --&gt; 00:00:10.000 region:reg5
+A cue that uses a region.
+				</code></pre>
+
+				<p><strong>Step 1: Convert Height from Number of Lines to Percent</strong>
+				Once again, the default line height of 5.33 vh will be used for this conversion.</p>
+
+				<pre class="example prettyprint highlight"><code>line height = 3 lines * 5.33vh = 16%
+				</code></pre>
+
+				<p><strong>Step 2: Calculate Coordinates of Top, Left Corner from Anchors</strong>
+				Given that the region anchor is in the middle of the region, the viewport anchor provides the coordinates for the center of the region.  From that information, and the calculated line height, the coordinates for the top, left corner can be calculated.  </p>
+
+				<p>The first coordinate of the tss:extent pair will measure the horizontal position of the origin.  To calculate it, the horizontal values of both the viewport anchor and the region anchor are needed, along with the width of the region.</p>
+
+				<pre class="example prettyprint highlight"><code>extent horizontal =  horizontal-viewport anchor - horizontal-region anchor * region width 
+extent horizontal =  25 - .50*30
+extent horizontal =  10
+				</code></pre>
+
+				<p>The second coordinate of the tss:extent pair will measure the vertial position of the origin.  To calculate it, the vertical values of both the viewport anchor and the region anchor are needed, along width the height of the region, converted into a percentage of the viewport.</p>
+
+				<pre class="example prettyprint highlight"><code>extent vertical =  vertical-viewport anchor - vertical-region anchor * region height 
+extent vertical =  40 - .50*16
+extent vertical =  32
+				</code></pre>
+
+				<p><strong>Step 3:  Convert Region Definition to TTML</strong>
+				Start by defining a TTML Region for this caption.</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;layout&gt;
+&lt;region xml:id=&quot;reg5&quot; tts:origin=&quot;10% 32%&quot; tts:extent=&quot;30% 16%&quot; tts:textAlign=&quot;center&quot;&gt;
+&lt;/region&gt;
+&lt;/layout&gt;
+				</code></pre>
+
+				<p><strong>Step 4:  Convert WebVTT Cue to TTML <code>&lt;p&gt;</code></strong></p>
+
+				<p>Reference the region created above using its id.</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">  &lt;p region=&quot;reg5&quot; begin=&quot;00:00:00.000&quot; end=&quot;00:00:10.000&quot;&gt;A cue that uses a region.&lt;/p&gt;
+				</code></pre>
+			</section>
+		</section>
+
+		<section>
+		<h2>Converting Styling</h2>
+
+			<section>
+			<h2>Mapping WebVTT CSS Styles to TTML</h2>
+
+				<p>WebVTT uses CSS to carry styling information.  Information held in CSS can be translated into TTML Style elements, contained in the Styling section of the TTML Head section.  </p>
+
+				<p>Translation of style information from WebVTT to TTML has to be done in two steps:</p>
+
+				<ul>
+				<li><p>Translation of the CSS properties associated with the ::cue pseudo selector to <code>&lt;style&gt;</code> elements with corresponding TTML style attributes and values.</p></li>
+				<li><p>References to these <code>&lt;style&gt;</code> elements by one of the TTML content elements <code>&lt;body&gt;</code>, <code>&lt;p&gt;</code> or <code>&lt;span&gt;</code>. </p></li>
+				</ul>
+
+				<p>The following table contains the mapping of CSS properties to TTML style elements. </p>
+
+				<table class='simple'><thead>
+				<tr>
+				<th>VTT CSS Property or Span Tag</th>
+				<th>TTML style attribute mapping</th>
+				</tr>
+				</thead><tbody>
+				<tr>
+				<td>CSS property:  background-attachment</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  background-color</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  background-image</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  background-position</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  background-repeat</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  color</td>
+				<td>color</td>
+				</tr>
+				<tr>
+				<td>CSS property:  font-family</td>
+				<td>fontFamily</td>
+				</tr>
+				<tr>
+				<td>CSS property:  font-size</td>
+				<td>fontSize</td>
+				</tr>
+				<tr>
+				<td>CSS property:  font-style</td>
+				<td>fontStyle</td>
+				</tr>
+				<tr>
+				<td>CSS property:  font-variant</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  font-weight</td>
+				<td>fontWeight</td>
+				</tr>
+				<tr>
+				<td>CSS property:  line-height</td>
+				<td>lineHeight</td>
+				</tr>
+				<tr>
+				<td>CSS property:  opacity</td>
+				<td>opacity</td>
+				</tr>
+				<tr>
+				<td>CSS property:  outline-color</td>
+				<td>textOutline</td>
+				</tr>
+				<tr>
+				<td>CSS property:  outline-color</td>
+				<td>textOutline</td>
+				</tr>
+				<tr>
+				<td>CSS property:  outline-style</td>
+				<td>textOutline</td>
+				</tr>
+				<tr>
+				<td>CSS property:  outline-width</td>
+				<td>textOutline</td>
+				</tr>
+				<tr>
+				<td>CSS property:  text-decoration</td>
+				<td>textDecoration</td>
+				</tr>
+				<tr>
+				<td>CSS property:  text-shadow</td>
+				<td>-</td>
+				</tr>
+				<tr>
+				<td>CSS property:  visibility</td>
+				<td>visibility</td>
+				</tr>
+				<tr>
+				<td>Span tag: b</td>
+				<td>fontWeight</td>
+				</tr>
+				<tr>
+				<td>Span tag:  i</td>
+				<td>fontStyle</td>
+				</tr>
+				<tr>
+				<td>Span tag:  u</td>
+				<td>textDecoration</td>
+				</tr>
+				</tbody></table>
+
+				<h4>Mapping of default values and ::cue pseudo element without arguments</h4>
+
+					<p>If a WebVTT document references CSS using a ::cue pseudo element without arguments, a <code>&lt;style&gt;</code> element should be created in the TTML <code>&lt;head&gt;</code> section, to hold styling information.  This <code>&lt;style&gt;</code> element should then be referenced in the <code>&lt;body&gt;</code> element. If there is no use of ::cue pseudo elements in the WebVTT document,  the TTML <code>&lt;style&gt;</code> element should be set according to the initial values that apply by default in WebVTT.</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;style xml:id=&quot;bodyStyle&quot; tts:color=&quot;rgba(255,255,255,255)&quot; tts:fontFamily=&quot;sansSerif&quot; ..../&gt;
+					</code></pre>
+
+					<p>If there are no ::cue pseudo element without arguments applied to a WebVTT file, then all CSS properties that override the default values specified in WebVTT should also be set in the &quot;bodyStyle&quot; <code>&lt;body&gt;</code> element.</p>
+
+					<p><strong>Example: Translating CSS associated with VTT to TTML</strong></p>
+
+					<p>This example begins with a css fragment that defines a ::cue.</p>
+
+					<pre class="example prettyprint highlight"><code class="css">::cue {
+  font-family: Verdana;
+}
+					</code></pre>
+
+					<p>This information can be translated into a TTML <code>&lt;style&gt;</code> element, with a synthesized id, to be used to reference in the <code>&lt;body&gt;</code> element of the TTML document.</p>
+
+					<pre class="example prettyprint highlight"><code class="xml">&lt;style xml:id=&quot;bodyStyle&quot; tts:color=&quot;rgba(255,255,255,255)&quot; tts:fontFamily=&quot;Verdana&quot; ..../&gt;
+					</code></pre>
+
+				<h4>Mapping of ::cue pseudo element with cue-id as argument</h4>
+
+					<p>For every ::cue pseudo element where the argument is a cue-id a corresponding <code>&lt;style&gt;</code> element in TTML should be created and should be referenced by the <code>&lt;p&gt;</code> element that corresponds to that cue.</p>
+
+					<p><strong>Example CSS associated with VTT</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="css">::cue(#id1) {
+  font-family: Verdana;
+}
+					</code></pre>
+
+					<p><strong>Example VTT</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="vtt">id1
+00:00:00.000 --&gt; 00:00:02.000
+Some text
+					</code></pre>
+
+					<p><strong>Example TTML</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="xml">....
+&lt;style xml:id=&quot;pStyleId1&quot; tts:fontFamily=&quot;Verdana&quot; ..../&gt;
+....
+&lt;p style=&quot;pStyleId1&quot; begin=&quot;00:00:00.000&quot; end=&quot;00:00:02.000&quot; ..../&gt;
+					</code></pre>
+
+				<h4>Mapping of ::cue pseudo element with class name as argument</h4>
+
+					<p>For every ::cue pseudo element where the argument is a class name a corresponding <code>&lt;style&gt;</code> element in TTML should be created and should be referenced by the <code>&lt;span&gt;</code> element that corresponds to the tag in WebVTT that uses this classname.</p>
+
+					<p><strong>Example</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="css">::cue(.cyanColor) {
+  font-color: cyan;
+}
+					</code></pre>
+
+					<p><strong>Example VTT</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="vtt">00:00:00.000 --&gt; 00:00:02.000
+&lt;c.cyanColor&gt;Some text
+					</code></pre>
+
+					<p><strong>Example TTML</strong></p>
+
+					<pre class="example prettyprint highlight"><code class="xml">....
+&lt;style xml:id=&quot;cyanColor&quot; tts:color=&quot;cyan&quot; /&gt;
+....
+&lt;span style=&quot;cyanColor&quot;&gt;Some text&lt;/span&gt;
+					</code></pre>
+			</section>
+			<section>
+			<h2>Mapping of span tags for bold, italic and underline</h2>
+
+				<p>Three <code>&lt;style&gt;</code> elements should be created to map the WebVTT tags for bold, italic and underline:</p>
+
+				<p><strong>Example TTML</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;style xml:id=&quot;bold&quot; tts:fontWeight=&quot;bold&quot; /&gt;
+&lt;style xml:id=&quot;italic&quot; tts:fontStyle=&quot;italic&quot; /&gt;
+&lt;style xml:id=&quot;underline&quot; tts:textDecoration=&quot;underline&quot; /&gt;
+				</code></pre>
+
+				<p>The <code>&lt;style&gt;</code> elements should be referenced by the <code>&lt;span&gt;</code> elements that correspond to the span tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code> and <code>&lt;u&gt;</code>. </p>
+			</section>
+		</section>
+				
+		<section>
+		<h2>Converting Timing</h2>
+
+			<p>WebVTT offers fewer options for Timing Expressions than TTML and does not provide a means to hierarchically group cues.  These restrictions simplify the process of mapping from WebVTT to TTML.   In fact, it is possible to use WebVTT timing information without any transformation, provided the correct values are specified for timing parameters and attributes in the destination TTML file.</p>
+
+			<p>This section describes the best values to use for TTML timing parameters and attributes and then provides some conversion examples.</p>
+
+			<section>
+			<h2>Timing Parameters</h2>
+
+				<p>Setting TTML timing parameters to the following values will allow WebVTT cues to be transformed into TTML <code>&lt;p&gt;</code> elements with no conversion of timing information required.</p>
+
+				<p><strong>Parameter:  Time Base</strong></p>
+
+				<table class='simple'><thead>
+				<tr>
+				<th>TTML Parameter</th>
+				<th>Value</th>
+				</tr>
+				</thead><tbody>
+				<tr>
+				<td>ttp:timeBase</td>
+				<td>media</td>
+				</tr>
+				</tbody></table>
+
+				<p>Note: </p>
+
+				<ul>
+				<li>Setting the time base to &quot;media&quot; removes the need for additional timing parameters, as it relates to other time base values.</li>
+				</ul>
+
+			</section>
+			
+			<section>
+			<h2>Timing Attributes</h2>
+
+				<table class='simple'><thead>
+				<tr>
+				<th>TTML Attribute</th>
+				<th>Value</th>
+				</tr>
+				</thead><tbody>
+				<tr>
+				<td>timeContainer</td>
+				<td>par</td>
+				</tr>
+				</tbody></table>
+
+				<p>Notes:   </p>
+
+				<ul>
+				<li>Setting the time container to “par” or parallel on all elements within the TTML body will specify that the times from WebVTT cues can be used in TTML without any adjustments. </li>
+				<li>The default value for timeContainer is par, so it does not need to be explicitly stated in TTML.</li>
+				</ul>
+
+				<p><strong>Example:  WebVTT to TTML Conversion</strong></p>
+
+				<p>This example begins with a short WebVTT file:</p>
+
+				<pre class="example prettyprint highlight"><code>WEBVTT
+
+00.00:00.000 --&gt; 00.00:10.000 
+This caption starts at 0s and remains for 10s.
+
+00.00:15.000 --&gt; 00.00:20.000 
+This caption starts at 15s and remains for 5s.
+				</code></pre>
+
+				<p><strong>Step 1:  Convert from WebVTT to TTML syntax</strong></p>
+
+				<p>Transform the cues into TTML <code>&lt;p&gt;</code> elements.</p>
+
+				<pre class="example prettyprint highlight"><code class="vtt">&lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:10.000&quot;&gt; 
+This caption starts at 0s and remains for 10s.&lt;/p&gt;
+
+&lt;p begin=&quot;00:00:15.000&quot; end=&quot;00:00:20.000&quot;&gt; 
+This caption starts at 15s and remains for 5s.&lt;/p&gt;
+				</code></pre>
+
+				<p><strong>Step 2:  Add the TTML Hierarchical Elements</strong></p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;body&gt;
+   	&lt;div&gt;
+		&lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:10.000&quot; &gt; 
+		This caption starts at 0s and remains for 10s.&lt;/p&gt;
+
+		&lt;p begin=&quot;00:00:15.000&quot; end=&quot;00:00:20.000&quot; &gt; 
+		This caption starts at 15s and remains for 5s.&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+				</code></pre>
+
+				<p>or, to be explicit, state the timeContainer attribute for the containing elements:</p>
+
+				<pre class="example prettyprint highlight"><code class="xml">&lt;body timeContainer=&quot;par&quot;&gt;
+	&lt;div timeContainer=&quot;par&quot;&gt;
+		&lt;p begin=&quot;00:00:00.000&quot; end=&quot;00:00:10.000&quot; &gt; 
+		This caption starts at 0s and remains for 10s.&lt;/p&gt;
+
+		&lt;p begin=&quot;00:00:15.000&quot; end=&quot;00:00:20.000&quot; &gt; 
+		This caption starts at 15s and remains for 5s.&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+				</code></pre>
+    		</section>  
+    	</section>  
+    </section>  
+    
+    <section class='appendix'>
+      <h2>References</h2>
+      <p>
+        <a href="http://www.w3.org/TR/ttml1/">TTML Specification</a>
+      </p>
+      <p>
+        <a href="http://www.w3.org/TR/ttml-imsc1/">IMSC Profile Definition</a>
+      </p>
+      <p>
+        <a href="http://dev.w3.org/html5/webvtt/">WebVTT Specification</a>
+      </p>
+      <p>
+        <a href="http://www.w3.org/TR/CSS2/">CSS Specification</a>
+      </p>
+    </section>
+  </body>
+</html>

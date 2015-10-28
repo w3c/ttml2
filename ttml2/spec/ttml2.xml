@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: ttml2.xml,v 92170886f8a3 2015/08/07 15:56:59 nigel $ -->
+<!-- $Id: ttml2.xml,v 6f5c20a7123d 2015/10/28 22:38:31 glenn $ -->
 <!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.10//EN" "xmlspec-ttml2.dtd" [
 <!ENTITY % entities SYSTEM "entities.dtd" >
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "Editors' copy $Date: 2015/08/07 15:56:59 $">
+<!ENTITY document.status "Editors' copy $Date: 2015/10/28 22:38:31 $">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "http://www.w3.org/TR/2013/REC-ttml1-20130924/">
 <!ENTITY versionOfTT "2">
@@ -133,7 +133,7 @@ ref="smil3"/> document.</p>
 </abstract>
 &status;
 <langusage><language id='en-us'>English</language></langusage>
-<revisiondesc><p>Last Modified: $Date: 2015/08/07 15:56:59 $</p></revisiondesc>
+<revisiondesc><p>Last Modified: $Date: 2015/10/28 22:38:31 $</p></revisiondesc>
 </header>
 <body>
 <div1 id="intro">
@@ -8186,7 +8186,8 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <div3 id="style-attribute-disparity">
 <head>tts:disparity</head>
 <p>The <att>tts:disparity</att> attribute is used to specify the binocular disparity to be applied
-in order to simulate stereopsis (stereoscopic depth).</p>
+in order to simulate stereopsis (stereoscopic depth).  A disparity of zero corresponds to the plane of display; a negative value corresponds to depths in front
+ of the plane of display; and a positive value corresponds to depths behind the plane of display. See <bibref ref="stereoscopy"/> for an introduction to stereoscopy, and <bibref ref="smiththreed"/> for details on the relationship between disparity and perceived depth.</p>
 <p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
@@ -8226,8 +8227,9 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<p>If specified, the value of this attribute consists of a <loc href="#style-value-length">&lt;length&gt;</loc> specification, the computed value
-of which is evenly divided along the horizontal axis between left and right stereoscopic images.</p>
+<p>When rendering a region on the right (left) image of a stereoscopic image pair, the center of the region shall be offset along the horizontal axis by a value equal to ½ (-½) the computed value of <att>tts:disparity</att>.</p>
+<p><att>tts:disparity</att> is ignored unless rendering onto a stereoscopic image pair.</p>
+<p>The author should ensure that the perceived depth of a region is positioned in front of any object in the scene during the entire time the region is visible. The stereoscopic effect will be broken if an object in the scene is perceived to be in front of the region.</p>
 <p>If a <att>tts:disparity</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
 equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
 disparity of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
@@ -8243,7 +8245,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 the computed disparity and the supported disparity is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value least distant from 0 is used.</p>
 </note>
-<p>The <att>tts:disparity</att> style is illustrated by the following example.</p>
+<p>The <att>tts:disparity</att> style is illustrated by the following example fragment and rendition. Note that, in typical television scenarios, disparity ranges from -1% to 2% of screen width. This example, which uses a disparity of 5%, exaggerates the effects of disparity for clarity of illustration.</p>
 <table id="style-attribute-disparity-example-1" role="example">
 <caption>Example Fragment &ndash; Disparity</caption>
 <tbody>
@@ -8251,13 +8253,14 @@ the computed value, then the value least distant from 0 is used.</p>
 <td>
 <eg xml:space="preserve">
 &lt;region xml:id="r1"&gt;
-  &lt;style tts:extent="30% 10%"/&gt;
-  &lt;style tts:position="center bottom 10%"/&gt;
-  &lt;style <phrase role="strong">tts:disparity="0.7%"</phrase>/&gt;
+  &lt;style tts:extent="80% 10%"/&gt;
+  &lt;style tts:origin="10% 10%"/&gt;
+  &lt;style <phrase role="strong">tts:disparity="5%"</phrase>/&gt;
+	...
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
-  3D Text Sample
+  Stereoscopic
 &lt;/p&gt;
 </eg>
 </td>
@@ -8265,11 +8268,14 @@ the computed value, then the value least distant from 0 is used.</p>
 </tbody>
 </table>
 <p></p>
-<ednote>
-<name>Disparity Example</name>
-<date>2015-01-17</date>
-<edtext>Insert example image of tts:disparity.</edtext>
-</ednote>
+<table id="style-attribute-disparity-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Disparity (Left and Right images of a stereoscopic pair)</caption>
+<tbody>
+<tr>
+<td><graphic source="images/disparity1.png" alt="TTML disparity style property"/></td>
+</tr>
+</tbody>
+</table>
 </div3>
 <div3 id="style-attribute-display">
 <head>tts:display</head>
@@ -20514,6 +20520,9 @@ Requirements for Analog Television Receivers</titleref>,
 United States Code of Federal Regulations, Title 47, Volume 1, Part 79, &sect; 79.101. (See
 <xspecref href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf">http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf</xspecref>.)
 </bibl>
+<bibl id="smiththreed" key="SMITH">Smith, Michael D.; Malia, Jason, <titleref
+href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=7271939&amp;isnumber=7271882">Controlling Miniaturization in Stereoscopic 3D Imagery</titleref>, in Motion Imaging Journal, SMPTE , vol.124, no.3, pp.50-58, April 2015 doi: 10.5594/j18531
+</bibl>
 <bibl id="cea608e" key="CEA-608-E">
 EIA/CEA-608-E,
 <titleref href="http://www.ce.org/">Line 21 Data
@@ -20583,6 +20592,8 @@ in XML</titleref>, W3C Recommendation, 14 January 1999. (See
 href="http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09.html">The Disposition
 of Names in an XML Namespace</titleref>, TAG Finding, 9 January 2006. (See
 <xspecref href="http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09.html">http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09</xspecref>.)
+</bibl>
+<bibl id="stereoscopy" key="STEREO"><titleref href="https://en.wikipedia.org/wiki/Stereoscopy">Stereoscopy</titleref>, Wikipedia.
 </bibl>
 <bibl id="qaf-sg" key="QAF SG">Karl Dubost, et al.,
 <titleref

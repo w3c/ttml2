@@ -1,0 +1,101 @@
+# .......................................................................
+# TTML2 Parameter Items Module ..........................................
+# .......................................................................
+
+namespace ttp = "http://www.w3.org/ns/ttml#parameter"
+
+# profile - profile definition or use declaration
+TTAF.parameters.profile =
+  element ttp:profile {
+    TTAF.parameters.profile.attlist,
+    TTAF.parameters.profile.content
+  }
+
+TTAF.parameters.profile.attlist &=
+  TTAF.id.attrib,
+  attribute combine { TTAF.ProfileCombination.datatype }?,
+  attribute designator { TTAF.Profile.datatype }?,
+  attribute type { TTAF.ProfileType.datatype }?,
+  attribute use { TTAF.Profile.datatype }?
+
+TTAF.parameters.profile.content.extra = empty
+TTAF.parameters.profile.content =
+  (TTAF.Metadata.class*,
+   ((TTAF.parameters.features*,TTAF.parameters.extensions*)|TTAF.parameters.profile*),
+   TTAF.parameters.profile.content.extra*)
+
+# features - container for feature elements
+TTAF.parameters.features =
+  element ttp:features {
+    TTAF.parameters.features.attlist,
+    TTAF.parameters.features.content
+  }
+
+TTAF.parameters.features.attlist &=
+  TTAF.id.attrib,
+  attribute xml:base { TTAF.URI.datatype }?
+
+TTAF.parameters.features.content.extra = empty
+TTAF.parameters.features.content =
+  (TTAF.Metadata.class*,
+   TTAF.parameters.feature*,
+   TTAF.parameters.features.content.extra*)
+
+# feature - feature requirements declaration
+TTAF.parameters.feature =
+  element ttp:feature {
+    TTAF.parameters.feature.attlist,
+    TTAF.parameters.feature.content
+  }
+
+TTAF.parameters.feature.attlist =
+  TTAF.id.attrib,
+  attribute extends { TTAF.Extends.datatype }?,
+  attribute restricts { TTAF.Restricts.datatype }?,
+  attribute value { TTAF.FeatureValue.datatype }?
+
+TTAF.parameters.feature.content =
+  TTAF.FeatureDesignator.datatype
+
+# extensions - container for extension elements
+TTAF.parameters.extensions =
+  element ttp:extensions {
+    TTAF.parameters.extensions.attlist,
+    TTAF.parameters.extensions.content
+  }
+
+TTAF.parameters.extensions.attlist &=
+  TTAF.id.attrib,
+  attribute xml:base { TTAF.URI.datatype }?
+
+TTAF.parameters.extensions.content.extra = empty
+TTAF.parameters.extensions.content =
+  (TTAF.Metadata.class*,
+   TTAF.parameters.extension*,
+   TTAF.parameters.extensions.content.extra*)
+
+# extension - extension requirements declaration
+TTAF.parameters.extension =
+  element ttp:extension {
+    TTAF.parameters.extension.attlist,
+    TTAF.parameters.extension.content
+  }
+
+TTAF.parameters.extension.attlist =
+  TTAF.id.attrib,
+  attribute extends { TTAF.Extends.datatype }?,
+  attribute restricts { TTAF.Restricts.datatype }?,
+  attribute value { TTAF.ExtensionValue.datatype }?
+
+TTAF.parameters.extension.content =
+  TTAF.ExtensionDesignator.datatype
+
+## ParameterItems.class
+TTAF.ParameterItems.extra = empty
+TTAF.ParameterItems.class |=
+  TTAF.parameters.profile |
+  TTAF.ParameterItems.extra
+
+# .......................................................................
+# .......................................................................
+# .......................................................................

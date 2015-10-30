@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>TTML API Level 2</title>
+<script src='http://www.w3.org/Tools/respec/respec-w3c-common' class=remove async></script>
+<script class=remove>
+respecConfig = {
+    // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+    specStatus:           "ED",
+
+    // the specification's short name, as in http://www.w3.org/TR/short-name/
+    shortName:            "ttml2-api",
+
+    // use respec source as current ED uri
+    edDraftURI: "http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2-api/Overview.html",
+
+    // editors, add as many as you like
+    // only "name" is required
+    editors:  [
+        { name: "Glenn Adams",
+          company: "Cox Communications, Inc.", companyURL: "http://www.cox.com/" },
+    ],
+
+    // name of the WG
+    wg:           "Timed Text Working Group",
+
+    // URI of the public WG page
+    wgURI:        "http://www.w3.org/AudioVideo/TT/",
+
+    // name (without the @w3c.org) of the public mailing to which comments are due
+    wgPublicList: "public-tt",
+
+    // URI of the patent status for this WG, for Rec-track documents
+    // !!!! IMPORTANT !!!!
+    // This is important for Rec-track documents, do not copy a patent URI from a random
+    // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+    // Team Contact.
+    wgPatentURI: "http://www.w3.org/2004/01/pp-impl/34314/status",
+
+    noRecTrack: false,
+
+    localBiblio: {
+      "DOM4" : "A. van Kesteren et al., Eds. <a href='http://www.w3.org/TR/2013/WD-dom-20131107/'><cite>W3C DOM4</cite></a>, W3C Working Draft, URL: <a href='http://www.w3.org/TR/2013/WD-dom-20131107/'>http://www.w3.org/TR/2013/WD-dom-20131107/</a>",
+      "HTML5" : "R. Berjon et al., Eds. <a href='http://www.w3.org/html/wg/drafts/html/master/Overview.html'><cite>HTML 5.1 Nightly</cite></a>, W3C Editor's Draft, URL: <a href='http://www.w3.org/html/wg/drafts/html/master/Overview.html'>http://www.w3.org/html/wg/drafts/html/master/Overview.html</a>",
+      "TTML1" : "G. Adams et al., Eds. <a href='http://www.w3.org/TR/2013/REC-ttml1-20130924/'><cite>Timed Text Markup Language 1 (TTML1) (Second Edition)</cite></a>, W3C Recommendation, URL: <a href='http://www.w3.org/TR/2013/REC-ttml1-20130924/'>http://www.w3.org/TR/2013/REC-ttml1-20130924/</a>",
+      "TTML1API" : "G. Adams et al., Eds. <a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html'><cite>TTML API Level 1</cite></a>, W3C Editor's Draft, URL: <a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html'>http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html</a>",
+      "TTML2" : "G. Adams et al., Eds. <a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html'><cite>Timed Text Markup Language 2 (TTML2)</cite></a>, W3C Editor's Draft, URL: <a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html'>http://dvcs.w3.org/hg/ttml/raw-file/default/ttml2/spec/ttml2.html</a>",
+      "WEBIDL" : "C. McCormack et al., Eds. <a href='http://dev.w3.org/2006/webapi/WebIDL/'><cite>HTML 5.1 Nightly</cite></a>, W3C Editor's Draft, URL: <a href='http://dev.w3.org/2006/webapi/WebIDL/'>http://dev.w3.org/2006/webapi/WebIDL/</a>",
+    },
+
+};
+function term(doc, content) {
+    // perform transformations to make it render and prettier
+    return '<span class="ttmlTerm">' + doc._esc(content) + '</span>';
+}
+function template(doc, content) {
+    // perform transformations to make it render and prettier
+    return '<div class="template">' + content + '</div>';
+}
+var examples = 0;
+function example(doc, content) {
+    // perform transformations to make it render and prettier
+    var prefix = examples < 9 ? "E000" : "E00";
+    return '<div class=numbered title=' + prefix + (++examples) + '>' + content + '</div>';
+}
+</script>
+</head>
+<body>
+<section id='abstract'>
+<p>This document defines a Level 2 API for exposing parsed and formatted Timed Text Markup Language (TTML) content to Web Applications.</p>
+</section>
+<section id='sotd'>
+<p><b>This document is an editor's draft that has no official standing.</b></p>
+</section>
+<section id='introduction'>
+<h2>Introduction</h2>
+<p><em>This section is non-normative.</em></p>
+<p>This document defines a Level 2 API for exposing parsed and formatted Timed Text Markup Language (TTML) content to Web Applications. The parsed form
+of TTML is exposed as a DOM representation of a <a>TTML intermediate synchronic document</a>. The formatted form of TTML is exposed as an HTML document
+fragment that encodes a renderable representation of the parsed form.</p>
+</section>
+<section id='use-cases'>
+<h2>Use Cases</h2>
+<p><em>This section is non-normative.</em></p>
+<p>This section describes common use cases for the TTML API Level 2.</p>
+<section>
+<h3>User Agent Rendering of Parsed TTML Content</h3>
+<p>When a <a>text track</a> is in the <a>showing mode</a> and the <a>text track's list of cues</a> includes an instance of <a><code>TTMLCue</code></a>,
+then a <a>user agent</a> attempts to render the cue using the HTML document fragment associated with the cue.</p>
+</section>
+<section>
+<h3>Web Application Rendering of Parsed TTML Content</h3>
+<p>When a <a>text track</a> is not in the <a>showing mode</a> and the <a>text track's list of cues</a> includes an instance of <a><code>TTMLCue</code></a>,
+then a Web Application may render the cue, for example, by making direct use of the cue's parsed form or by using the cue's formatted HTML form.</p>
+</section>
+<section>
+<h3>Web Application Use of Parsed TTML Content Metadata</h3>
+<p>When a <a>text track</a> is not in the <a>showing mode</a> and the <a>text track's list of cues</a> includes an instance of <a><code>TTMLCue</code></a>,
+then a Web Application may access parsed TTML metadata contained in the TTML DOM representation exposed by the cue.</p>
+</section>
+</section>
+<section id='terminology'>
+<h2>Definitions</h2>
+<section id='terminology'>
+<h3>Terminology</h3>
+<dl>
+<dt>[TBS]</dt>
+<dd>To Be Supplied.</dd>
+</dd>
+</dl>
+</section>
+<section id='externals'>
+<h3>External Definitions</h3>
+<p>This specification relies upon the certain concepts and APIs defined in other specifications as follows:</p>
+<dl>
+<dt>DOM</dt>
+<dd>The concepts
+<a href='http://dom.spec.whatwg.org#concept-throw'><dfn>throw</dfn></a>, and
+<a href='http://dom.spec.whatwg.org#xml-document'><dfn>XML document</dfn></a>,
+the interfaces
+<a href='http://dom.spec.whatwg.org#document'><dfn><code>Document</code></dfn></a>,
+<a href='http://dom.spec.whatwg.org#documentfragment'><dfn><code>DocumentFragment</code></dfn></a>, and
+<a href='http://dom.spec.whatwg.org#element'><dfn><code>Element</code></dfn></a>, and
+and the exception
+<a href='http://dom.spec.whatwg.org#syntaxerror'><dfn><code>SyntaxError</code></dfn></a>.
+[[!DOM4]]</dd>
+<dt>HTML</dt>
+<dd>The concepts
+<a href='http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#interactive'><dfn>interactive browsers</dfn></a>,
+<a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#media-resource-specific-text-track'><dfn>media-resource-specific text track</dfn></a>,
+<a href='http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#non-interactive'><dfn>non-interactive browsers</dfn></a>, and
+<a href='http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#structured-clone'><dfn>structured clone</dfn></a>,
+<a href='http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#showing-0'><dfn>showing mode</dfn></a>,
+<a href='http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#text-track-model'><dfn>text track</dfn></a>,
+<a href='http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#text-track-model'><dfn>text track's list of cues</dfn></a>, and
+<a href='http://www.w3.org/html/wg/drafts/html/master/introduction.html#a-quick-introduction-to-html'><dfn>user agent</dfn></a>,
+and the interfaces
+<a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#texttrack'><dfn><code>TextTrack</code></dfn></a> and
+<a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#texttrackcue'><dfn><code>TextTrackCue</code></dfn></a>.
+[[!HTML5]]</dd>
+<dt>TTML</dt>
+<dd>The concepts
+<a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#ttml-content-doctype'><dfn>TTML content</dfn></a>,
+<a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#semantics-region-layout-step-2'><dfn>TTML intermediate synchronic document</dfn></a>, and
+<a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#time-expression-semantics-media'><dfn>TTML media time</dfn></a>.
+[[!TTML1]]</dd>
+<dt>TTML API Level 1</dt>
+<dd>The interface
+<a href='http://dvcs.w3.org/hg/ttml/raw-file/default/ttml1-api/Overview.html#RawTTMLCue'><dfn><code>RawTTMLCue</code></dfn></a>.
+[[!TTML1API]]</dd>
+<dt>WebIDL</dt>
+<dd>The generic semantics that apply to IDL specifications. [[!WEBIDL]]</dd>
+</dl>
+</section>
+</section>
+<section id='conformance'>
+<p>An <a title='user agent'>HTML user agent</a> that claims to support the rendering of any profile of [[!TTML1]] or claims to support any profile of [[!TTML2]],
+or any subsequent version thereof, MUST implement
+support for the TTML Level 2 API defined herein, and, if it renders <A>TTML content</a> in any fashion or exposes <a>TTML content</a> to Web Applications in any fashion,
+then it also MUST render or expose that content to Web Applications using this API.</p>
+</section>
+<section id='dependencies'>
+<h2>Dependencies</h2>
+</section>
+<section id='apis'>
+<h2>API Definitions</h2>
+<section id='TTMLCue'>
+<h2>TTMLCue Interface</h2>
+<dl class='idl' title='[Constructor(double startTime, double endTime, Document? content)] interface TTMLCue : RawTTMLCue'>
+<dt>attribute boolean deferUpdates</dt>
+<dd><p>Access deferred update flag of cue.</p>
+<p>Upon read, return <code>true</code> if rendering updates are being deferred; otherwise, return <code>false</code>.
+Upon write, perform the following ordered steps:</p>
+<ol>
+<li>if the current value is the same as the new value, then return;</li>
+<li>if the current value is <code>false</code> and the new value is <code>true</code>, then set the current value to <code>true</code> and
+begin deferring rendering updates;</li>
+<li>if the current value is <code>true</code> and the new value is <code>false</code>, then set the current value to <code>false</code> and
+asynchronously perform a rendering update.</li>
+</dd>
+<dt>[SameObject] readonly attribute Document ttml</dt>
+<dd>Obtain a reference to a live copy of an <a>XML document</a> that represents the current content of the cue.</dd>
+<dt>DocumentFragment getCueAsHTML()</dt>
+<dd>Obtain a reference to a (non-live) structured clone of the HTML rendition that represents the content of the cue at the time of the immediately preceding completed rendering update.</dd>
+</dl>
+<section>
+<h3>Constructors</h3>
+<dl class='constructors'>
+<dt id='widl-TTMLCue-TTMLCue-double-startTime-double-endTime-DocumentFragment-content'><code>TTMLCue</code></dt>
+<dd>
+<table class='parameters'>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Nullable</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+<tr>
+<td class='prmName'>startTime</td>
+<td class='prmType'><code><a>double</a></code></td>
+<td class='prmNullFalse'>✘</td>
+<td class='prmOptFalse'>✘</td>
+<td class='prmDesc'>
+A <a>TTML media time</a> relative cue starting time, as further defined by
+<a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#dom-TextTrackCue-startTime'><dfn><code>startTime</code></dfn></a> [[!HTML5]].
+</td>
+</tr>
+<tr>
+<td class='prmName'>endTime</td>
+<td class='prmType'><code><a>double</a></code></td>
+<td class='prmNullFalse'>✘</td>
+<td class='prmOptFalse'>✘</td>
+<td class='prmDesc'>
+A <a>TTML media time</a> relative cue ending time, as further defined by
+<a href='http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#dom-TextTrackCue-endTime'><dfn><code>endTime</code></dfn></a> [[!HTML5]].
+</td>
+</tr>
+<tr>
+<td class='prmName'>content</td>
+<td class='prmType'><code><a>Document</a></code></td>
+<td class='prmNullTrue'>✔</td>
+<td class='prmOptFalse'>✘</td>
+<td class='prmDesc'>
+A <a><code>Document</code></a> representing a <a>TTML intermediate synchronic document</a>.
+</td>
+</tr>
+</table>
+<p>If the <code>startTime</code> argument is less than zero, then <a>throw</a> a <a><code>SyntaxError</code></a> exception.</p>
+<p>If the <code>endTime</code> argument is less than zero, then <a>throw</a> a <a><code>SyntaxError</code></a> exception.
+If the <code>endTime</code> argument is less than <code>startTime</code>, then set the cue's end time to <code>startTime</code>.</p>
+<p>If the <code>content</code> argument is <code>null</code>, then the constructed cue object represents
+a <dfn>cue with no content</dfn>. Otherwise, if any of the following constraints are not true, then
+<a>throw</a> a <a><code>SyntaxError</code></a> exception:</p>
+<ul>
+<li>The value of <code><var>content</var>.contentType</code> is either "<code>application/ttml+xml</code>" or "<code>application/xml</code>".</li>
+<li>The value of <code><var>content</var>.documentElement</code> is not <code>null</code>.
+<li>The value of <code><var>content</var>.documentElement.namespaceURI</code> is "<code>http://www.w3.org/ns/ttml</code>".
+<li>The value of <code><var>content</var>.documentElement.localName</code> is "<code>tt</code>".
+</ul>
+<p>Otherwise, set the cue's content to a <a>structured clone</a> of <code><var>content</var></code>.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+</body>
+</html>

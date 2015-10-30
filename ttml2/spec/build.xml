@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Apache Ant script to build spec.
+     Philippe Le Hegaret, W3C -->
+      
+<project name="TimedText" default="generate" basedir=".">
+    <path id="saxon8.classpath">
+        <pathelement location="saxon8/saxon8.jar"/>
+    </path>
+    <property name="html.dir" value="${basedir}"/>
+    <property name="html.name" value="ttml2.html"/>
+    <property name="stylesheet" value="xmlspec-ttml2.xsl"/>
+    <property name="glossary" value="extract-glist.xsl"/>
+    <property name="generateBPlist" value="generateBPlist.xsl"/>
+    <property name="last-public-draft" value="20070706"/>
+    
+    <property name="jing.jar" value="${basedir}/jing/jing.jar"/>
+    <property name="rnc.dir" value="${basedir}/rnc"/>
+    <property name="rnc.schema" value="${rnc.dir}/ttml2.rnc"/>
+    <property name="xsd.dir" value="${basedir}/xsd"/>
+    <property name="xsd.schema" value="${xsd.dir}/ttml2.xsd"/>
+    <property name="xsd.isd.schema" value="${xsd.dir}/ttml2-isd.xsd"/>
+    <property name="profiles.dir" value="${basedir}/profiles"/>
+    <property name="examples.dir" value="${basedir}/examples"/>
+
+    <patternset id="escapable">
+      <include name="examples/*.xml"/>
+      <include name="profiles/*.xml"/>
+    </patternset>
+
+    <patternset id="escaped">
+      <include name="examples/*.esc"/>
+      <include name="profiles/*.esc"/>
+    </patternset>
+
+    <target name="clean-escapes" description="Clean escaped entites.">
+      <delete quiet="true">
+	<fileset dir="${basedir}">
+	  <patternset refid="escaped"/>
+	</fileset>
+      </delete>
+    </target>
+
+    <target name="clean" depends="clean-escapes">
+        <delete quiet="true" file="${html.name}"/>
+    </target>
+
+    <target name="validate-schema-rnc" description="Validates DFXP's RNC Schema.">
+        <java fork="true" jar="${jing.jar}" dir="${rnc.dir}">
+            <arg value="-c"/>
+            <arg value="ttml2.rnc"/>
+        </java>
+    </target>
+
+    <target name="generate-schema-archive-rnc" description="Generate DFXP's RNC Schema archive." depends="validate-schema-rnc">
+        <zip destfile="${rnc.dir}/schema.zip">
+            <fileset dir="${rnc.dir}">
+                <include name="*.rnc"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="create-xsd-bindings" description="Create JAXB Bindings for DFXP's XSD Schema.">
+        <exec executable="xjc" dir="xsd">
+          <arg value="-quiet"/>
+          <arg value="-b"/>
+          <arg value="ttml2-bindings.xjb"/>
+          <arg value="ttml2.xsd"/>
+          <arg value="ttml2-isd.xsd"/>
+        </exec>
+    </target>
+
+    <target name="delete-xsd-bindings" description="Delete JAXB Bindings for DFXP's XSD Schema.">
+        <delete includeemptydirs="true">
+          <fileset dir="xsd/org"/>
+        </delete>
+    </target>
+
+    <target name="validate-schema-xsd" description="Validates DFXP's XSD Schema using JAXB tool set." depends="create-xsd-bindings, delete-xsd-bindings"/>
+
+    <target name="generate-schema-archive-xsd" description="Generate DFXP's XSD Schema archive." depends="validate-schema-xsd">
+        <zip destfile="${xsd.dir}/schema.zip">
+            <fileset dir="${xsd.dir}">
+                <include name="*.xsd"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="validate-schemas" description="Validate DFXP schemas" depends="validate-schema-rnc, validate-schema-xsd"/>
+
+    <target name="generate-schema-archives" description="Generate DFXP schema archives" depends="generate-schema-archive-rnc, generate-schema-archive-xsd"/>
+
+    <target name="validate-profile-transformation" description="Validates transformation profile.">
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${profiles.dir}/ttml2-presentation.xml"/>
+        </java>
+    </target>
+
+    <target name="validate-profile-presentation" description="Validates presentation profile.">
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${profiles.dir}/ttml2-presentation.xml"/>
+        </java>
+    </target>
+
+    <target name="validate-profile-full" description="Validates full profile.">
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${profiles.dir}/ttml2-full.xml"/>
+        </java>
+    </target>
+
+    <target name="validate-profiles"
+	    depends="validate-profile-transformation,validate-profile-presentation,validate-profile-full"/>
+
+    <target name="validate-example-1" description="Validates Example 1.">
+        <!-- validate using RNC schema -->
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${examples.dir}/ex1.xml"/>
+        </java>
+        <!-- validate using XSD schema -->
+        <schemavalidate fullchecking="true" warn="true">
+          <schema namespace="http://www.w3.org/ns/ttml" file="${xsd.schema}"/>
+          <fileset dir="${examples.dir}">
+            <include name="ex1.xml"/>
+          </fileset>
+        </schemavalidate>
+    </target>
+
+    <target name="validate-example-3" description="Validates Example 3.">
+        <!-- validate using RNC schema -->
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${examples.dir}/ex3-all-elements.xml"/>
+        </java>
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${examples.dir}/ex3-all-styles.xml"/>
+        </java>
+        <!-- validate using XSD schema -->
+        <schemavalidate fullchecking="true" warn="true">
+          <schema namespace="http://www.w3.org/ns/ttml" file="${xsd.schema}"/>
+          <fileset dir="${examples.dir}">
+            <include name="ex3-all-elements.xml"/>
+            <include name="ex3-all-styles.xml"/>
+          </fileset>
+        </schemavalidate>
+    </target>
+
+    <target name="validate-example-4" description="Validates Example 4.">
+        <!-- validate using RNC schema -->
+        <java fork="true" jar="${jing.jar}">
+            <arg value="-c"/>
+            <arg value="${rnc.schema}"/>
+            <arg value="${examples.dir}/ex4.xml"/>
+        </java>
+        <!-- validate using XSD schema -->
+        <schemavalidate fullchecking="true" warn="true">
+          <schema namespace="http://www.w3.org/ns/ttml#isd" file="${xsd.isd.schema}"/>
+          <schema namespace="http://www.w3.org/ns/ttml#parameter" file="${xsd.dir}/ttml2-parameter-items.xsd"/>
+          <schema namespace="http://www.w3.org/ns/ttml" file="${xsd.dir}/ttml2-content.xsd"/>
+          <fileset dir="${examples.dir}">
+            <include name="ex4.xml"/>
+          </fileset>
+        </schemavalidate>
+    </target>
+
+    <target name="validate-examples"
+	    depends="validate-example-1, validate-example-3, validate-example-4"/>
+
+    <target name="validate-xsl" description="Validates all XML files.">
+        <xmlvalidate lenient="true">
+            <fileset dir="." includes="*.xsl"/>
+        </xmlvalidate>
+    </target>
+
+    <target name="validate-svg" description="Validates all SVG files.">
+        <xmlvalidate lenient="false" warn="yes">
+            <fileset dir="." includes="*.svg"/>
+        </xmlvalidate>
+    </target>
+
+    <target name="build-escapes" description="Generate escaped entites.">
+      <apply executable="sed">
+        <arg value="-f"/>
+        <arg value="escape.sed"/>
+	<fileset dir="${basedir}">
+	  <patternset refid="escapable"/>
+	</fileset>
+	<redirector>
+	  <outputmapper>
+    	    <mapper type="glob" from="*" to="*.esc"/>
+	  </outputmapper>
+	</redirector>
+      </apply>
+    </target>
+
+    <target name="validate-tt-specs" description="Validates all Timed Text spec files."
+        depends="build-escapes">
+        <xmlvalidate lenient="false" warn="yes" file="ttml2.xml"/>
+    </target>
+
+    <target name="validate-tt-specs-dont-build-escapes" description="Validates all Timed Text spec files.">
+        <xmlvalidate lenient="false" warn="yes" file="ttml2.xml"/>
+    </target>
+
+    <target name="validate" depends="validate-schemas,validate-examples,validate-xsl,validate-svg,validate-tt-specs,validate-schema-rnc,validate-profiles"/>
+
+    <target name="html" description="Transforms xml into html.">
+        <echo>Generating ttml2.html</echo>
+        <java fork="true" classname="net.sf.saxon.Transform">
+            <classpath refid="saxon8.classpath"/>
+            <arg value="-o"/>
+            <arg value="${html.dir}/${html.name}"/>
+            <arg value="ttml2.xml"/>
+            <arg value="${stylesheet}"/>
+            <arg value="showAssertions=true"/>
+        </java>    
+    </target>
+
+    <target name="generate" description="Generate the specification without updating escaped entities."
+	    depends="generate-schema-archives,validate-tt-specs,html">
+    </target>
+    
+    <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
+	    depends="generate-schema-archives,validate-tt-specs-dont-build-escapes,html">
+    </target>
+
+    <target name="kwexpand">
+        <exec executable="hg">
+          <arg value="kwexpand"/>
+          <arg value="ttml2.xml"/>
+        </exec>
+    </target>
+
+    <target name="kwshrink">
+        <exec executable="hg">
+          <arg value="kwshrink"/>
+          <arg value="ttml2.xml"/>
+        </exec>
+    </target>
+
+    <target name="rg" description="Regenerate using shortened generation, while expanding keywords."
+            depends="kwexpand,sg,kwshrink">
+    </target>
+
+    <target name="commit">
+        <exec executable="hg">
+          <arg value="commit"/>
+          <arg value="-m"/>
+          <arg value="[ttml2] regenerate ED"/>
+        </exec>
+    </target>
+
+    <target name="rgc" description="Regenerate and commit."
+            depends="rg,commit">
+    </target>
+
+</project>

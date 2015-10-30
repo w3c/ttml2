@@ -1,0 +1,184 @@
+# .......................................................................
+# TTML2 Embedded Content Module .........................................
+# .......................................................................
+
+# Embedded Content Attributes
+
+TTAF.encoding.attrib
+  = attribute encoding { TTAF.DataEncoding.datatype }?
+TTAF.format.attrib
+  = attribute format { TTAF.DataFormat.datatype }?
+TTAF.length.attrib
+  = attribute length { TTAF.DataLength.datatype }?
+TTAF.src.attrib
+  = attribute src { TTAF.DataSource.datatype }?
+TTAF.type.attrib
+  = attribute type { TTAF.DataType.datatype }?
+
+# Data Attribute Class
+TTAF.Data.attrib.class &=
+  TTAF.format.attrib,
+  TTAF.src.attrib,
+  TTAF.type.attrib
+
+# Embedded Content Elements
+
+# audio
+TTAF.audio =
+  element audio {
+    TTAF.audio.attlist,
+    TTAF.audio.content
+  }
+
+TTAF.audio.attlist &=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.Data.attrib.class
+
+TTAF.audio.content.extra = empty
+TTAF.audio.content =
+  (TTAF.Metadata.class*,
+   (TTAF.source | TTAF.audio.content.extra)*)
+
+# chunk
+TTAF.chunk =
+  element chunk {
+    TTAF.chunk.attlist,
+    TTAF.chunk.content
+  }
+
+TTAF.chunk.attlist &=
+  TTAF.id.attrib,
+  TTAF.encoding.attrib,
+  TTAF.length.attrib
+
+TTAF.chunk.content.extra = empty
+TTAF.chunk.content =
+  text
+
+# data
+TTAF.data =
+  element data {
+    TTAF.data.attlist,
+    TTAF.data.content
+  }
+
+TTAF.data.attlist &=
+  TTAF.Core.attrib.class,
+  TTAF.Data.attrib.class,
+  TTAF.encoding.attrib,
+  TTAF.length.attrib
+
+TTAF.data.content.extra = empty
+TTAF.data.content =
+  (text |
+    (TTAF.Metadata.class*,
+     (TTAF.chunk+ | TTAF.source+),
+     TTAF.data.content.extra*))
+
+# font
+TTAF.font =
+  element font {
+    TTAF.font.attlist,
+    TTAF.font.content
+  }
+
+TTAF.font.attlist &=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.Data.attrib.class,
+  attribute family { TTAF.FontFamily.datatype },
+  attribute range { TTAF.UnicodeRange.datatype },
+  attribute style { TTAF.FontStyle.datatype },
+  attribute weight { TTAF.FontWeight.datatype }
+
+TTAF.font.content.extra = empty
+TTAF.font.content =
+  (TTAF.Metadata.class*,
+   (TTAF.source | TTAF.font.content.extra)*)
+
+# image
+TTAF.image =
+  element image {
+    TTAF.image.attlist,
+    TTAF.image.content
+  }
+
+TTAF.image.attlist &=
+  TTAF.Core.attrib.class,
+  TTAF.Metadata.attrib.class,
+  TTAF.Styled.attrib.class,
+  TTAF.Data.attrib.class,
+  TTAF.XLink.attrib.class
+
+TTAF.image.content.extra = empty
+TTAF.image.content =
+  (TTAF.Metadata.class*,
+   (TTAF.source | TTAF.image.content.extra)*)
+
+# resources
+TTAF.resources =
+  element resources {
+    TTAF.resources.attlist,
+    TTAF.resources.content
+  }
+
+TTAF.resources.attlist &=
+  TTAF.Core.attrib.class
+
+TTAF.resources.content.extra = empty
+TTAF.resources.content =
+  (TTAF.Metadata.class*,
+   (TTAF.Resource.class | TTAF.resources.content.extra)*)
+
+# source
+TTAF.source =
+  element source {
+    TTAF.source.attlist,
+    TTAF.source.content
+  }
+
+TTAF.source.attlist &=
+  TTAF.Core.attrib.class,
+  TTAF.Data.attrib.class
+
+TTAF.source.content.extra = empty
+TTAF.source.content =
+  (TTAF.Metadata.class*,
+   TTAF.data?,
+   TTAF.source.content.extra*)
+
+# Audio.class
+TTAF.Audio.extra = empty
+TTAF.Audio.class |=
+  TTAF.audio | TTAF.Audio.extra
+
+# Data.class
+TTAF.Data.extra = empty
+TTAF.Data.class |=
+  TTAF.data | TTAF.Data.extra
+
+# Font.class
+TTAF.Font.extra = empty
+TTAF.Font.class |=
+  TTAF.font | TTAF.Font.extra
+
+# Image.class
+TTAF.Image.extra = empty
+TTAF.Image.class |=
+  TTAF.image | TTAF.Image.extra
+
+# Embedded.class
+TTAF.Embedded.extra = empty
+TTAF.Embedded.class |=
+  TTAF.audio | TTAF.image | TTAF.Embedded.extra
+
+# Resource.class
+TTAF.Resource.extra = empty
+TTAF.Resource.class |=
+  TTAF.Data.class | TTAF.Embedded.class | TTAF.Font.class
+
+# .......................................................................
+# .......................................................................
+# .......................................................................

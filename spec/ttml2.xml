@@ -15266,6 +15266,83 @@ based timing or event based timing in <bibref ref="smil3"/>, where the specific 
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
 </ulist>
+<div3 id="semantics-media-timing">
+<head>Media Timing</head>
+<p>When <code>ttp:timeBase="media"</code> the computed document times are used as the equivalent media times with no offset.</p>
+<note role="clarification"><p>Any additional media time processing imposed by e.g. a wrapper format is out of scope of the TTML specification.</p>
+<p>For example <bibref ref="isobmff"/> and <bibref ref="dash"/> provide mechanisms for wrapping TTML documents as samples or segments and defining the offset of their media timelines relative to other media such as audio or video.</p></note>
+<p>The following document fragments are equivalent in timing:</p>
+<table id="example-fragment-media-timing-1" role="example">
+<caption>Example Fragment &ndash; 1</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ttp:timeBase="media" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1" begin="1s"&gt;
+      &lt;p xml:id="p1" begin="0s" end="1s"&gt;First paragraph&lt;/p&gt;
+      &lt;p xml:id="p2" begin="2s" end="3s"&gt;Second paragraph&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>
+<table id="example-fragment-media-timing-2" role="example">
+<caption>Example Fragment &ndash; 2</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ttp:timeBase="media" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1"&gt;
+      &lt;p xml:id="p1" begin="1s" end="2s"&gt;First paragraph&lt;/p&gt;
+      &lt;p xml:id="p2" begin="3s" end="4s"&gt;Second paragraph&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>    
+<table id="media-timing-fragment-graphic-1" role="example-images">
+<caption>Timing diagram showing the mapping of document times to media times in the absence of other external information.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="media-timing-fragment-1-img" source="images/timing_media_1.svg" alt="Media time"/></td>
+</tr>
+<tr>
+  <td>In this example, using the the terminology of <bibref ref="smil3"/>, the implicit duration of the <el>body</el> element is identical to its computed duration which is also the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>.</td>
+</tr>
+</tbody>
+</table>
+  <p>However if the <loc href="#terms-document-processing-context">document processing context</loc> specifies a range of applicable media times, those limit the resolved begin and end times and therefore the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>.</p>
+<p>In the following example the processing context defines that the media time range over which the document is active is from 1.5s to 3.5s, and this defines the Root Temporal Extent since timed content is present at both of those times.</p>    
+<table id="media-timing-fragment-graphic-2" role="example-images">
+<caption>Timing diagram showing the mapping of document times to media times when the media time range is constrained by the processing context.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="media-timing-fragment-2-img" source="images/timing_media_2.svg" alt="Media time"/></td>
+</tr>
+<tr>
+  <td>The grey background indicates the periods when the <loc href="#terms-document-processing-context">document processing context</loc> defines the document to be inactive.</td>
+</tr>
+  <tr><td>If the document processing context were to define that the media time range is 0-3s then the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc> would be from 1s to 2s as defined by p1 and p2 would never be shown.</td>
+</tr>
+</tbody>
+</table>
+</div3> <!-- semantics-media-timing -->
 </div2> <!-- semantics-timing -->
 </div1> <!-- timing -->
 <div1 id="animation">
@@ -20564,10 +20641,16 @@ Consumer Electronics Association (CEA).
 <titleref href="http://www.w3.org/TR/css-writing-modes-3/">CSS Writing Modes Level 3</titleref>. (See
 <xspecref href="http://www.w3.org/TR/css-writing-modes-3/">http://www.w3.org/TR/css-writing-modes-3/</xspecref>.)
 </bibl>
+<bibl id="dash" key="MPEG DASH">ISO/IEC 23009-1,
+<titleref href="http://www.iso.org/">Information technology &ndash; Dynamic adaptive streaming over HTTP (DASH)</titleref>,
+International Organization for Standardization (ISO).</bibl>
 <bibl id="dcmes" key="DCMES 1.1">Dublin Core Metadata Initiative,
 <titleref href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1: Reference Description</titleref>. (See
 <xspecref href="http://dublincore.org/documents/dces/">http://dublincore.org/documents/dces/</xspecref>.)
 </bibl>
+<bibl id="isobmff" key="ISOBMFF">ISO/IEC 14496-30,
+<titleref href="http://www.iso.org/">Information technology &ndash; Coding of audio-visual objects &ndash; Part 30: Timed text and other visual overlays in ISO base media file format</titleref>, 
+International Organization for Standardization (ISO).</bibl>
 <bibl id="jlreq" key="JLREQ">Richard Ishida et al.,
 <titleref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">Requirements for Japanese Text Layout</titleref>
 W3C Working Group Note, 3 April 2012.

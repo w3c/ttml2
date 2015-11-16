@@ -1,8 +1,9 @@
-= How to build TTML2 =
+# How to build TTML2
 
 To build TTML2 spec, you need to have Apache ant installed.
 
-== Using Mercurial ==
+## Using Mercurial
+
 __TODO:__ fix this when we know how to build without Mercurial's keywordmaps feature to put dates and times in.
 Make sure the following are included in your .hgrc as well as whatever else you need to make hg go, like your username in [ui], w3c authentication in [auth], proxy in [http_proxy] if you need it, etc:
 

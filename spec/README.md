@@ -1,5 +1,9 @@
+= How to build TTML2 =
+
 To build TTML2 spec, you need to have Apache ant installed.
 
+== Using Mercurial ==
+__TODO:__ fix this when we know how to build without Mercurial's keywordmaps feature to put dates and times in.
 Make sure the following are included in your .hgrc as well as whatever else you need to make hg go, like your username in [ui], w3c authentication in [auth], proxy in [http_proxy] if you need it, etc:
 
 --
@@ -41,3 +45,4 @@ If you're Not the Editor but want to push a change, omit steps 7 and 8 and repla
 When committing, you can enter multi-line commit messages more easily by omitting the -m argument; you can then edit your message in your standard editor (e.g. vi).
 
 Commit messages should have at least a first line be preceded by [ttml] with a summary of the changes. Subsequent lines can be used for further detail.
+

@@ -2,9 +2,24 @@
 
 To build TTML2 spec, you need to have Apache ant installed.
 
-## Using Mercurial
+## Using github
+
+1. Checkout an up to date branch.
+2. Create a 
+2. If you haven't already built the escaped entity includes do:
+`ant build-escapes`
+3. Edit `ttml.xml`
+4. `ant sg`
+5. If more edits, go to 3.
+6. `ant rg`
+7. Create and submit your Pull Request.
 
 __TODO:__ fix this when we know how to build without Mercurial's keywordmaps feature to put dates and times in.
+
+Commit messages should have at least a first line be preceded by `[ttml]` with a summary of the changes. Subsequent lines can be used for further detail.
+
+## Using Mercurial
+
 Make sure the following are included in your .hgrc as well as whatever else you need to make hg go, like your username in `[ui]`, w3c authentication in `[auth]`, proxy in `[http_proxy]` if you need it, etc:
 
 --

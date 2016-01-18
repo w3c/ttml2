@@ -52,9 +52,9 @@ table.example div { background-color: #c8ffff }
 table.example-images { text-align: center; border: 0px solid black; width: 85%; border-collapse: collapse }
 table.example-images caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
 table.example-images td { border: 0px solid black; text-align: center }
-table.example-images-bordered { text-align: center; border: 0px solid black; width: 85%; border-collapse: collapse }
+table.example-images-bordered { text-align: center; border: 2px solid black; width: 85%; border-collapse: collapse }
 table.example-images-bordered caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
-table.example-images-bordered td { border: 1px solid red; text-align: left }
+table.example-images-bordered td { border: 2px solid black; }
 div.exampleInner { width: 85%; }
 .tbd { background-color: #ffff33; border: 2px solid black; width: 85% }
 .strong { font-weight: bold }
@@ -62,6 +62,9 @@ div.exampleInner { width: 85%; }
 .obsoleted { background-color: #f26d7d }
 .reqattr { font-weight: bold }
 .optattr { font-style: italic }
+.left { text-align: left }
+.center { text-align: center }
+.right { text-align: right }
 </xsl:text>
 </xsl:param>
 <xsl:output method="html" encoding="utf-8" indent="no"/>
@@ -461,6 +464,44 @@ div.exampleInner { width: 85%; }
 </xsl:template>
 
 <!-- table specref -->
+<xsl:template match="table">
+  <xsl:call-template name="anchor"/>
+  <table>
+    <xsl:for-each select="@*">
+      <!-- Wait: some of these aren't HTML attributes after all... -->
+      <xsl:choose>
+        <xsl:when test="local-name(.) = 'role'">
+          <xsl:attribute name="class">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="local-name(.) = 'diff' or local-name(.) = 'id'">
+          <!-- nop -->
+        </xsl:when>
+        <xsl:when test="local-name(.) = 'css'">
+          <xsl:attribute name="style">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+    <xsl:apply-templates/>
+    <xsl:if test=".//footnote">
+      <tbody>
+        <tr>
+          <td>
+            <xsl:apply-templates select=".//footnote" mode="table.notes"/>
+          </td>
+        </tr>
+      </tbody>
+    </xsl:if>
+  </table>
+</xsl:template>
+
+<!-- table specref -->
 <xsl:template match="table" mode="specref">
   <a>
     <xsl:attribute name="href">
@@ -470,6 +511,62 @@ div.exampleInner { width: 85%; }
       <xsl:apply-templates select="caption" mode="text"/>
     </b>
   </a>
+</xsl:template>
+
+<!-- col|tr -->
+<xsl:template match="col|tr">
+  <xsl:element name="{local-name(.)}">
+    <xsl:for-each select="@*">
+      <!-- Wait: some of these aren't HTML attributes after all... -->
+      <xsl:choose>
+        <xsl:when test="local-name(.) = 'role'">
+          <xsl:attribute name="class">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="local-name(.) = 'diff'">
+          <!-- nop -->
+        </xsl:when>
+        <xsl:when test="local-name(.) = 'css'">
+          <xsl:attribute name="style">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+
+<!-- th|td -->
+<xsl:template match="td|th">
+  <xsl:element name="{local-name(.)}">
+    <xsl:for-each select="@*">
+      <!-- Wait: some of these aren't HTML attributes after all... -->
+      <xsl:choose>
+        <xsl:when test="local-name(.) = 'role'">
+          <xsl:attribute name="class">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="local-name(.) = 'diff'"/>
+        <xsl:when test="local-name(.) = 'colspan' and . = 1"/>
+        <xsl:when test="local-name(.) = 'rowspan' and . = 1"/>
+        <xsl:when test="local-name(.) = 'css'">
+          <xsl:attribute name="style">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+    <xsl:apply-templates/>
+  </xsl:element>
 </xsl:template>
 
 <!-- authlist -->
@@ -492,6 +589,47 @@ div.exampleInner { width: 85%; }
     <xsl:text>:</xsl:text>
   </dt>
   <xsl:apply-templates/>
+</xsl:template>
+
+<!-- graphic -->
+<xsl:template match="graphic">
+  <img src="{@source}">
+    <xsl:if test="@alt">
+      <xsl:attribute name="alt">
+        <xsl:value-of select="@alt"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+  </img>
+</xsl:template>
+
+<!-- miscellaneous html -->
+<xsl:template match="a|div|em|h1|h2|h3|h4|h5|h6|li|ol|pre|ul">
+  <xsl:element name="{local-name(.)}">
+    <xsl:for-each select="@*">
+      <!-- Wait: some of these aren't HTML attributes after all... -->
+      <xsl:choose>
+        <xsl:when test="local-name(.) = 'role'">
+          <xsl:attribute name="class">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="local-name(.) = 'css'">
+          <xsl:attribute name="style">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+    <xsl:apply-templates/>
+  </xsl:element>
 </xsl:template>
 
 </xsl:stylesheet>

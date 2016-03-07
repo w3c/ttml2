@@ -3,4 +3,6 @@
 
 This is the repository for ttml2. You're welcome to contribute! Let's make the Web rock our socks
 off!
-https://w3c.github.io/charter-drafts/timed-text-charter-2016.html
+
+View in HTML:
+https://rawgit.com/w3c/ttml2/master/spec/ttml2.html

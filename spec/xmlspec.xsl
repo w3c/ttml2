@@ -153,9 +153,11 @@
   <xsl:key name="ids" match="*[@id]" use="@id"/>
   <xsl:key name="specrefs" match="specref" use="@ref"/>
 
+  <!--
   <xsl:output method="html"
        encoding="utf-8"
-       indent="no"/>
+       doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
+       indent="no"/> -->
 
   <!-- not handled:
     attribute:   unhandled IDL stuff

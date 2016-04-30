@@ -71,6 +71,7 @@ div.exampleInner { width: 85%; }
 
 <!-- spec: the specification itself -->
 <xsl:template match="spec">
+  <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
   <html>
     <xsl:if test="header/langusage/language">
       <xsl:attribute name="lang">
@@ -130,7 +131,7 @@ div.exampleInner { width: 85%; }
 <xsl:template name="css">
   <link rel="stylesheet" type="text/css">
     <xsl:attribute name="href">
-      <xsl:text>http://www.w3.org/StyleSheets/TR/2016/</xsl:text>
+      <xsl:text>https://www.w3.org/StyleSheets/TR/2016/</xsl:text>
       <xsl:choose>
         <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
         <xsl:otherwise>

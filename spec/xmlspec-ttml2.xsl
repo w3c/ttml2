@@ -81,6 +81,7 @@ div.exampleInner { width: 85%; }
       <xsl:if test="$output.mode='html'">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       </xsl:if>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
       <title>
 	<xsl:apply-templates select="header/title"/>
 	<xsl:if test="header/version">
@@ -127,6 +128,31 @@ div.exampleInner { width: 85%; }
 
 <!-- css: styling of spec -->
 <xsl:template name="css">
+  <link rel="stylesheet" type="text/css">
+    <xsl:attribute name="href">
+      <xsl:text>http://www.w3.org/StyleSheets/TR/2016/</xsl:text>
+      <xsl:choose>
+        <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <!-- Editor's review drafts are a special case. -->
+            <xsl:when test="/spec/@w3c-doctype='review' or contains(/spec/header/w3c-doctype, 'Editor')">W3C-ED</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='wd'">W3C-WD</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='rec'">W3C-REC</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='pr'">W3C-PR</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='per'">W3C-PER</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='cr'">W3C-CR</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='note'">W3C-NOTE</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='wgnote'">W3C-WG-NOTE</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='memsub'">W3C-Member-SUBM</xsl:when>
+            <xsl:when test="/spec/@w3c-doctype='teamsub'">W3C-Team-SUBM</xsl:when>
+            <xsl:otherwise>base</xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text>.css</xsl:text>
+    </xsl:attribute>
+  </link>
   <style type="text/css">
     <xsl:text>
 code           { font-family: monospace; }
@@ -163,31 +189,6 @@ div.exampleHeader { font-weight: bold;
     </xsl:if>
     <xsl:value-of select="$additional.css"/>
   </style>
-  <link rel="stylesheet" type="text/css">
-    <xsl:attribute name="href">
-      <xsl:text>https://www.w3.org/StyleSheets/TR/2016/</xsl:text>
-      <xsl:choose>
-        <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
-        <xsl:otherwise>
-          <xsl:choose>
-            <!-- Editor's review drafts are a special case. -->
-            <xsl:when test="/spec/@w3c-doctype='review' or contains(/spec/header/w3c-doctype, 'Editor')">W3C-ED</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='wd'">W3C-WD</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='rec'">W3C-REC</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='pr'">W3C-PR</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='per'">W3C-PER</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='cr'">W3C-CR</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='note'">W3C-NOTE</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='wgnote'">W3C-WG-NOTE</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='memsub'">W3C-Member-SUBM</xsl:when>
-            <xsl:when test="/spec/@w3c-doctype='teamsub'">W3C-Team-SUBM</xsl:when>
-            <xsl:otherwise>base</xsl:otherwise>
-          </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:text>.css</xsl:text>
-    </xsl:attribute>
-  </link>
 </xsl:template>
 
 <!-- additional header content -->

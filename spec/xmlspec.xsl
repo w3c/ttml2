@@ -155,7 +155,6 @@
 
   <xsl:output method="html"
        encoding="utf-8"
-       doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
        indent="no"/>
 
   <!-- not handled:

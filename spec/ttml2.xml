@@ -3064,6 +3064,9 @@ Styling Attributes
 <loc href="#style-attribute-ruby">tts:ruby</loc>,
 <loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
 <loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc>,
+<loc href="#style-attribute-rubyOverflow">tts:rubyOverflow</loc>,
+<loc href="#style-attribute-rubyOverhang">tts:rubyOverhang</loc>,
+<loc href="#style-attribute-rubyOverhangClass">tts:rubyOverhangClass</loc>,
 <loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-rubyReserve">tts:rubyReserve</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
@@ -3785,13 +3788,10 @@ ttp:contentProfiles
   | "any(" designators ")"
 
 designators
-  : designator (lwsp designator)*
+  : designator (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> designator)*
 
 designator
   : xsd:anyURI
-
-lwsp
-  : ( ' ' | '\t' | '\n' | '\r' )+
 </eg>
 </td>
 </tr>
@@ -4124,13 +4124,10 @@ ttp:processorProfiles
   | "any(" designators ")"
 
 designators
-  : designator (lwsp designator)*
+  : designator (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> designator)*
 
 designator
   : xsd:anyURI
-
-lwsp
-  : ( ' ' | '\t' | '\n' | '\r' )+
 </eg>
 </td>
 </tr>
@@ -10735,6 +10732,219 @@ such an offset.</p>
 <edtext>Add example source and rendering of tts:rubyOffset.</edtext>
 </ednote>
 </div3>
+<div3 id="style-attribute-rubyOverflow">
+<head>tts:rubyOverflow</head>
+<p>The <att>tts:rubyOverflow</att> attribute is used to specify constraint resolution rules for handling certain edge effects
+involving ruby text in potential overflow scenarios. For example, if the inline progression dimension of a ruby text area exceeds the
+inline progression dimension of its associated base text, and that base text appears at the start or end edge of a line area, then
+the ruby text may potentially overflow its containing block area depending on the applicable ruby text alignment as determined by
+the <att>tts:rubyAlign</att> style property.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-rubyOverflow" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>shiftRuby</code> |
+<code>shiftBase</code> |
+<code>overflow</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>shiftRuby</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>.
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If specified, the value of <att>tts:rubyOverflow</att> expresses how to resolve potential overflow scenarios where ruby text
+may otherwise overflow its containing block in line start or end edge contexts.</p>
+<p>If the value of this attribute is <code>overflow</code>, then ruby text in these line edge contexts is allowed to overflow its containing block,
+in which case the semantics of <att>tts:overflow</att> apply; that is, both base text to line edge alignment and
+ruby text to base text alignment is preserved, while allowing the ruby text to overflow the containing block area.</p>
+<p>If the value of this attribute is <code>shiftBase</code>, then overflow is prevented by relaxing the base text to line edge alignment by
+inseting the the base text while preserving ruby text to base alignment.</p>
+<p>If the value of this attribute is <code>shiftRuby</code>, then overflow is prevented by relaxing the ruby text to base text alignment by
+inseting the the ruby text while preserving base text to line edge alignment. When inseting ruby text, the semantics of
+<att>tts:overHang</att> apply for the purpose of determining whether and how much overhang is permitted between the inset ruby text and
+adjacent base text.</p>
+<p>When inseting ruby text or base text in order to resolve a potential overflow scenario, only the minimum (non-negative) inset is applied.</p>
+<ednote>
+<name>Ruby Overflow Example</name>
+<date>2016-04-29</date>
+<edtext>Add example source and rendering of tts:rubyOverflow.</edtext>
+</ednote>
+<note role="explanation">
+<p>The semantics of the style property represented by this attribute are intended to provide authorial
+control over the special cases of ruby presentation described in
+<bibref ref="jlreq"/>, &sect;3.3.8, <emph>Adjustments of Ruby with Length Longer than that of the Base Characters</emph>,
+and <bibref ref="cssruby"/>, &sect;5, <emph>Edge Effects</emph>.</p>
+</note>
+</div3>
+<div3 id="style-attribute-rubyOverhang">
+<head>tts:rubyOverhang</head>
+<p>The <att>tts:rubyOverhang</att> attribute is used to specify constraint resolution rules for handling potential cases of overhang between
+ruby text and adjacent base text, where by adjacent base text is meant baseline aligned inline content that is immediately adjacent to
+the base text associated with the ruby text. In the case where the inline progression dimension of the ruby text exceeds the
+inline progression dimension of its associated base text, or in ruby overflow cases where the ruby text must be inset, then it is possible
+that the ruby text may overhang content set on the baseline that is not part of the ruby text's associated base text. In such
+cases, the <att>tts:rubyOverhang</att> attribute may be used to determine whether and how much overhang is allowed to occur.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-rubyOverhang" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>none</code> |
+<code>allow</code> |
+<code>always</code> |
+<code>overlap</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>allow</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is
+<code>container</code>.</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If specified, the value of <att>tts:rubyOverhang</att> expresses how to resolve potential overhang scenarios where ruby text
+may otherwise overhang adjacent base text.</p>
+<p>If the value of this attribute is <code>none</code>, then overhang is prevented by inserting filler space before and/or after the
+base text associated with the ruby text. When inserting such filler (space), only the minimum (non-negative) filler is applied to prevent overlap.</p>
+<p>If the value of this attribute is <code>allow</code>, then overhang is allowed to occur in accordance with the semantics
+of <att>tts:rubyOverhangClass</att> while preventing overlap between adjacent ruby text containers.</p>
+<p>If the value of this attribute is <code>always</code>, then apply the semantics of <code>allow</code> such that
+the overhang class is the character class containing all characters.</p>
+<p>If the value of this attribute is <code>overlap</code>, then apply the semantics of <code>always</code> except that no filler
+is inserted in order to prevent overlap between adjacent ruby text containers. In this case, the author would need to explcitly insert
+significant white space or filler in order to prevent overlap.</p>
+<ednote>
+<name>Ruby Overhang Example</name>
+<date>2016-04-29</date>
+<edtext>Add example source and rendering of tts:rubyOverhang.</edtext>
+</ednote>
+<note role="explanation">
+<p>The semantics of the style property represented by this attribute are intended to provide authorial
+control over the special cases of ruby presentation described in
+<bibref ref="jlreq"/>, &sect;3.3.8, <emph>Adjustments of Ruby with Length Longer than that of the Base Characters</emph>,
+and <bibref ref="cssruby"/>, &sect;5, <emph>Edge Effects</emph>.</p>
+</note>
+</div3>
+
+<div3 id="style-attribute-rubyOverhangClass">
+<head>tts:rubyOverhangClass</head>
+<p>The <att>tts:rubyOverhangClass</att> attribute is used to provide fine-grained control over the semantics of
+the style property expressed by the <att>tts:rubyOverhang</att> attribute. In particular, it used to specify the set
+of base text characters which accept overhanging ruby text. If a base text character is not in this specified set, then ruby
+text is prevented from overhanging that character.</p>
+<p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
+this attribute applies as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-rubyOverhangClass" role="common">
+<col width="25%"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>auto</code> |
+(
+<loc href="#style-value-named-character-class">&lt;named-character-class&gt;</loc> |
+<loc href="#style-value-character-class">&lt;character-class&gt;</loc>
+)+
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>auto</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is
+<code>container</code>.</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>If specified, the value of <att>tts:rubyOverhangClass</att> expresses constraints on which base characters allow ruby text to overhang them.</p>
+<p>If the value of this attribute is <code>auto</code>, then the character class that permits overhang is implementation dependent; however, the
+following recommendations apply in the absence of more specific implementation requirements:</p>
+<ulist>
+<item><p>If the language of the base text is specified or can be inferred as Japanese, then <code>auto</code> should be interpreted as if the following
+were specified: <code>ideographic hiragana punctuationMarks</code>.</p></item>
+<item><p>If the language of the base text is specified or can be inferred as Chinese or Korean, then <code>auto</code> should be interpreted as if the
+following were specified: <code>ideographic</code>.</p></item>
+</ulist>
+<p>If a base character is encountered that is not in the computed value of the <att>tts:rubyOverhangClass</att>, then ruby text must not overhang
+that character.</p>
+<ednote>
+<name>Ruby Overhang Class Example</name>
+<date>2016-04-29</date>
+<edtext>Add example source and rendering of tts:rubyOverhangClass.</edtext>
+</ednote>
+<note role="explanation">
+<p>The semantics of the style property represented by this attribute are intended to provide authorial
+control over the special cases of ruby presentation described in
+<bibref ref="jlreq"/>, &sect;3.3.8, <emph>Adjustments of Ruby with Length Longer than that of the Base Characters</emph>,
+and <bibref ref="cssruby"/>, &sect;5, <emph>Edge Effects</emph>.</p>
+</note>
+</div3>
+
 <div3 id="style-attribute-rubyPosition">
 <head>tts:rubyPosition</head>
 <p>The <att>tts:rubyPosition</att> attribute is used to specify the position of ruby text in the block progression dimension
@@ -12291,23 +12501,27 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-border-color"/></p></item>
 <item><p><specref ref="style-value-border-style"/></p></item>
 <item><p><specref ref="style-value-border-thickness"/></p></item>
+<item><p><specref ref="style-value-character-class"/></p></item>
 <item><p><specref ref="style-value-color"/></p></item>
 <item><p><specref ref="style-value-digit"/></p></item>
 <item><p><specref ref="style-value-emphasis-color"/></p></item>
-<item><p><specref ref="style-value-emphasis-style"/></p></item>
 <item><p><specref ref="style-value-emphasis-position"/></p></item>
+<item><p><specref ref="style-value-emphasis-style"/></p></item>
 <item><p><specref ref="style-value-family-name"/></p></item>
 <item><p><specref ref="style-value-generic-family-name"/></p></item>
 <item><p><specref ref="style-value-hex-digit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
+<item><p><specref ref="style-value-lwsp"/></p></item>
 <item><p><specref ref="style-value-measure"/></p></item>
+<item><p><specref ref="style-value-named-character-class"/></p></item>
 <item><p><specref ref="style-value-named-color"/></p></item>
 <item><p><specref ref="style-value-non-negative-integer"/></p></item>
 <item><p><specref ref="style-value-number"/></p></item>
 <item><p><specref ref="style-value-percentage"/></p></item>
 <item><p><specref ref="style-value-position"/></p></item>
 <item><p><specref ref="style-value-shadow"/></p></item>
+<item><p><specref ref="style-value-whitespace"/></p></item>
 </ulist>
 <p>In the syntax representations defined in this section, no
 linear whitespace (LWSP) is implied or permitted between tokens
@@ -12417,6 +12631,42 @@ to be implementation dependent; however, the resolved lengths must adhere to the
 constraints: thickness(thin) &lt; thickness(medium); thickness(medium) &lt; thickness(thick).</p>
 <p>If a border thickness is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc>,
 then it must not take the form of a percentage value; i.e., it must take the form of a scalar value.</p>
+</div3>
+<div3 id="style-value-character-class">
+<head>&lt;character-class&gt;</head>
+<p>A &lt;character-class&gt; value is used to express an enumerated set of characters.</p>
+<table id="character-class-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;character-class&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;character-class&gt;
+  : '[' ( class-character-range | class-character )+ ']'
+
+class-character-range
+  : class-character '-' class-character
+
+class-character
+  : unicode-escape
+  | { char - { specials } }
+
+unicode-escape
+  : '\\u' hexDigit{6}
+  | '\\u' hexDigit{4}
+  | '\\' char
+
+specials
+  : '-'
+  | ']'
+  | '\''
+  | '\"'
+  | <loc href="#style-value-whitespace">&lt;whitespace&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 <div3 id="style-value-color">
 <head>&lt;color&gt;</head>
@@ -12530,6 +12780,64 @@ emphasis marks.</p>
 it must be interpreted as if a style of <code>current</code> were specified; as such, an implementation that
 supports text emphasis marks must minimally support the <code>current</code> value.</p>
 </div3>
+<div3 id="style-value-emphasis-position">
+<head>&lt;emphasis-position&gt;</head>
+<p>An &lt;emphasis-position&gt; expression is used to express the position of text
+emphasis marks.</p>
+<table id="emphasis-position-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;emphasis-position&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;emphasis-position&gt;
+  : auto
+  | before
+  | after
+  | outside
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<glist>
+<gitem>
+<label><code>auto</code></label>
+<def>
+<p>If the containing block area consists of exactly two line areas, then equivalent to <code>outside</code>; otherwise,
+equivalent to <code>before</code>.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>before</code></label>
+<def>
+<p>Towards the before edge of the affected glyph areas. If a horizontal writing mode applies, then this is towards the
+top of the glyph areas. If a vertical writing mode applies, then this is either towards the right or left of the glyph
+areas, according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
+<code>tbrl</code> or <code>tblr</code>, respectively.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>after</code></label>
+<def>
+<p>Towards the after edge of the affected glyph areas. If a horizontal writing mode applies, then this is towards the
+bottom of the glyph areas. If a vertical writing mode applies, then this is either towards the left or right of the glyph
+areas, according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
+<code>tbrl</code> or <code>tblr</code>, respectively.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>outside</code></label>
+<def>
+<p>Equivalent to <code>before</code> for all but the last affected line area; otherwise, equivalent to <code>after</code>
+for the last affected line area.</p>
+</def>
+</gitem>
+</glist>
+<p>If an implementation does not recognize or otherwise distinguish an emphasis position value, then
+it must be interpreted as if a position of <code>auto</code> were specified; as such, an implementation that
+supports text emphasis marks must minimally support the <code>auto</code> value.</p>
+</div3>
 <div3 id="style-value-emphasis-style">
 <head>&lt;emphasis-style&gt;</head>
 <p>An &lt;emphasis-style&gt; expression is used to express the style of text
@@ -12609,64 +12917,6 @@ equivalent to <code>filled circle</code>.</p>
 it must be interpreted as if a style of <code>auto</code> were specified; as such, an implementation that
 supports text emphasis marks must minimally support the <code>auto</code> value.</p>
 </div3>
-<div3 id="style-value-emphasis-position">
-<head>&lt;emphasis-position&gt;</head>
-<p>An &lt;emphasis-position&gt; expression is used to express the position of text
-emphasis marks.</p>
-<table id="emphasis-position-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;emphasis-position&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;emphasis-position&gt;
-  : auto
-  | before
-  | after
-  | outside
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<glist>
-<gitem>
-<label><code>auto</code></label>
-<def>
-<p>If the containing block area consists of exactly two line areas, then equivalent to <code>outside</code>; otherwise,
-equivalent to <code>before</code>.</p>
-</def>
-</gitem>
-<gitem>
-<label><code>before</code></label>
-<def>
-<p>Towards the before edge of the affected glyph areas. If a horizontal writing mode applies, then this is towards the
-top of the glyph areas. If a vertical writing mode applies, then this is either towards the right or left of the glyph
-areas, according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
-<code>tbrl</code> or <code>tblr</code>, respectively.</p>
-</def>
-</gitem>
-<gitem>
-<label><code>after</code></label>
-<def>
-<p>Towards the after edge of the affected glyph areas. If a horizontal writing mode applies, then this is towards the
-bottom of the glyph areas. If a vertical writing mode applies, then this is either towards the left or right of the glyph
-areas, according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
-<code>tbrl</code> or <code>tblr</code>, respectively.</p>
-</def>
-</gitem>
-<gitem>
-<label><code>outside</code></label>
-<def>
-<p>Equivalent to <code>before</code> for all but the last affected line area; otherwise, equivalent to <code>after</code>
-for the last affected line area.</p>
-</def>
-</gitem>
-</glist>
-<p>If an implementation does not recognize or otherwise distinguish an emphasis position value, then
-it must be interpreted as if a position of <code>auto</code> were specified; as such, an implementation that
-supports text emphasis marks must minimally support the <code>auto</code> value.</p>
-</div3>
 <div3 id="style-value-family-name">
 <head>&lt;family-name&gt;</head>
 <p>A &lt;family-name&gt; expression specifies a font family name.</p>
@@ -12681,10 +12931,7 @@ supports text emphasis marks must minimally support the <code>auto</code> value.
   | <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
 
 unquoted-string
-  : identifier ( lwsp identifier )*
-
-lwsp
-  : ( ' ' | '\t' | '\n' | '\r' )+
+  : identifier ( <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> identifier )*
 
 identifier
   : [-]? identifier-start identifier-following*
@@ -12882,6 +13129,23 @@ one percent (1%) of the width and height of the <loc href="#terms-root-container
 For example, the length <code>25vw</code> is interpreted as 25% of the width of
 the <loc href="#terms-root-container-region">root container region</loc>.</p>
 </div3>
+<div3 id="style-value-lwsp">
+<head>&lt;lwsp&gt;</head>
+<p>A &lt;lwsp&gt; is used to express the common linear whitespace (lwsp) syntactic construct.</p>
+<table id="lwsp-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;lwsp&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;lwsp&gt;
+  : <loc href="#style-value-whitespace">&lt;whitespace&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
 <div3 id="style-value-measure">
 <head>&lt;measure&gt;</head>
 <p>A &lt;measure&gt; value expresses a distance used to measure an allocation
@@ -12961,6 +13225,49 @@ hard, i.e., mandatory, break points, even if that means overflowing the parent's
 </def>
 </gitem>
 </glist>
+</div3>
+<div3 id="style-value-named-character-class">
+<head>&lt;named-character-class&gt;</head>
+<p>A &lt;named-character-class&gt; value is used to express an enumerated character class with a convenient name, where the character class
+is defined by <bibref ref="jlreq"/>, Appendix A, <emph>Character Classes</emph>.</p>
+<p>For the purpose of parsing, a distinction must not be made between lower and upper case.</p>
+<table id="named-character-class-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;named-character-class&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;named-character-class&gt;
+  : "closeBrackets"                         // JLREQ cl-2
+  | "closeWarichu"                          // JLREQ cl-29
+  | "commas"                                // JLREQ cl-7
+  | "fullStops"                             // JLREQ cl-6
+  | "groupedNumerals"                       // JLREQ cl-24
+  | "hiragana"                              // JLREQ cl-15
+  | "hyphens"                               // JLREQ cl-3
+  | "ideographic"                           // JLREQ cl-19
+  | "ideographicSpace"                      // JLREQ cl-14
+  | "inseperables"                          // JLREQ cl-8
+  | "iterationMarks"                        // JLREQ cl-9
+  | "katakana"                              // JLREQ cl-16
+  | "mathOperators"                         // JLREQ cl-18
+  | "mathSymbols"                           // JLREQ cl-17
+  | "middleDots"                            // JLREQ cl-5
+  | "openBrackets                           // JLREQ cl-1
+  | "openWarichu"                           // JLREQ cl-28
+  | "postAbbreviations"                     // JLREQ cl-13
+  | "preAbbreviations"                      // JLREQ cl-12
+  | "punctuationMarks"                      // JLREQ cl-4
+  | "smallKana"                             // JLREQ cl-11
+  | "soundMarks"                            // JLREQ cl-10
+  | "unitSymbols"                           // JLREQ cl-25
+  | "western"                               // JLREQ cl-27
+  | "westernWordSpace"                      // JLREQ cl-26
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 <div3 id="style-value-named-color">
 <head>&lt;named-color&gt;</head>
@@ -13466,6 +13773,23 @@ is 20 by 10, and the extent of the <loc href="#terms-root-container-region">root
 shadow thickness will be a nominal 480 / 10 * 0.1 pixels, i.e., 4.8px,
 without taking into account rasterization effects.</p>
 </note>
+</div3>
+<div3 id="style-value-whitespace">
+<head>&lt;whitespace&gt;</head>
+<p>A &lt;whitespace&gt; value is used to express a common whitespace characters.</p>
+<table id="whitespace-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;whitespace&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;whitespaces&gt;
+  : ( ' ' | '\t' | '\n' | '\r' )
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 </div2> <!-- styling-style-value-expressions -->
 <div2 id="semantics-styling">
@@ -16014,7 +16338,7 @@ optionally surrounded by linear white-space (LWSP) characters.</p>
 <td>
 <eg xml:space="preserve">
 &lt;key-splines&gt;
-  : control [ lwsp? ";" lwsp? control ]*
+  : control [ <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? control ]*
 
 control
   : x1 comma? y1 comma? x2 comma? y2
@@ -16032,9 +16356,6 @@ whole, fraction
 
 comma
   : ","
-
-lwsp
-  : ( ' ' | '\t' | '\n' | '\r' )+
 </eg>
 </td>
 </tr>
@@ -16055,7 +16376,7 @@ optionally surrounded by linear white-space (LWSP) characters.</p>
 <td>
 <eg xml:space="preserve">
 &lt;key-times&gt;
-  : time [ lwsp? ";" lwsp? time ]*
+  : time [ <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? time ]*
 
 time                                // 0 &ge; <emph>value</emph> &ge; 1
   : whole
@@ -16064,9 +16385,6 @@ time                                // 0 &ge; <emph>value</emph> &ge; 1
 
 whole, fraction
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-
-lwsp
-  : ( ' ' | '\t' | '\n' | '\r' )+
 </eg>
 </td>
 </tr>
@@ -17246,8 +17564,8 @@ TT Feature Namespace base URI.</p>
 <ednote>
 <name>New style property features</name>
 <date>2016-01-17</date>
-<edtext>Add features to cover new style properties: border, fontVariantPosition, ruby, rubyAlign, rubyOffset, rubyPosition,
-rubyReserve, textOrientation, etc.</edtext>
+<edtext>Add features to cover new style properties: border, fontVariantPosition, ruby, rubyAlign, rubyOffset, rubyOverflow,
+rubyOverhang, rubyOverhangClass, rubyPosition, rubyReserve, textCombine, textOrientation, etc.</edtext>
 </ednote>
 <p></p>
 <ednote>
@@ -20620,6 +20938,11 @@ Positioning System</titleref>, US Air Force.
 W3C Recommendation, 28 October 2014. (See
 <xspecref href="http://www.w3.org/TR/2014/REC-html5-20141028/">http://www.w3.org/TR/2014/REC-html5-20141028/</xspecref>.)
 </bibl>
+<bibl id="jlreq" key="JLREQ">Richard Ishida et al.,
+<titleref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">Requirements for Japanese Text Layout</titleref>
+W3C Working Group Note, 3 April 2012.
+(See <xspecref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">http://www.w3.org/TR/2012/NOTE-jlreq-20120403/</xspecref>.)
+</bibl>
 <bibl id="media-queries" key="Media Queries">Florian Rivoal,,
 <titleref href="http://www.w3.org/TR/2012/REC-css3-mediaqueries-20120619/">Media Queries</titleref>, W3C Recommendation, 19 June 2012. (See
 <xspecref href="http://www.w3.org/TR/2012/REC-css3-mediaqueries-20120619/">http://www.w3.org/TR/2012/REC-css3-mediaqueries-20120619/</xspecref>.)
@@ -20825,11 +21148,6 @@ International Organization for Standardization (ISO).</bibl>
 <bibl id="isobmff" key="ISOBMFF">ISO/IEC 14496-30,
 <titleref href="http://www.iso.org/">Information technology &ndash; Coding of audio-visual objects &ndash; Part 30: Timed text and other visual overlays in ISO base media file format</titleref>, 
 International Organization for Standardization (ISO).</bibl>
-<bibl id="jlreq" key="JLREQ">Richard Ishida et al.,
-<titleref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">Requirements for Japanese Text Layout</titleref>
-W3C Working Group Note, 3 April 2012.
-(See <xspecref href="http://www.w3.org/TR/2012/NOTE-jlreq-20120403/">http://www.w3.org/TR/2012/NOTE-jlreq-20120403/</xspecref>.)
-</bibl>
 <bibl id="mpeg7-5" key="MPEG7-5">
 ISO/IEC 15938-5,
 <titleref

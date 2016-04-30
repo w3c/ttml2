@@ -300,16 +300,16 @@ div.exampleHeader { font-weight: bold;
           <xsl:apply-templates select="pubdate/year"/>
           <xsl:text>&#xa0;</xsl:text>
           <a href="http://www.w3.org/">
-            <acronym title="World Wide Web Consortium">W3C</acronym>
+            <abbr title="World Wide Web Consortium">W3C</abbr>
           </a>
           <sup>&#xae;</sup>
           <xsl:text> (</xsl:text>
           <a href="http://www.csail.mit.edu/">
-            <acronym title="Massachusetts Institute of Technology">MIT</acronym>
+            <abbr title="Massachusetts Institute of Technology">MIT</abbr>
           </a>
           <xsl:text>, </xsl:text>
           <a href="http://www.ercim.eu/">
-            <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
+            <abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr>
           </a>
           <xsl:text>, </xsl:text>
           <a href="http://www.keio.ac.jp/">Keio</a>
@@ -640,16 +640,9 @@ div.exampleHeader { font-weight: bold;
 <!-- ednote: editors' note -->
 <xsl:template match="ednote">
   <xsl:if test="$show.ednotes != 0">
-    <table border="1" class="ednote" summary="Editor's Notes">
-      <xsl:attribute name="summary">
-	<xsl:text>Editorial note</xsl:text>
-	<xsl:if test="name">
-	  <xsl:text>: </xsl:text>
-	  <xsl:value-of select="name"/>
-	</xsl:if>
-      </xsl:attribute>
+    <table style="border: 1px solid black" class="ednote">
       <tr class="ednote-r1">
-	<td align="left" valign="top">
+	<td style="text-align: left; vertical-align: top;">
 	  <b>
 	    <xsl:text>Editorial note</xsl:text>
 	    <xsl:if test="name">
@@ -658,7 +651,7 @@ div.exampleHeader { font-weight: bold;
 	    </xsl:if>
 	  </b>
 	</td>
-	<td align="right" valign="top">
+	<td style="text-align: right; vertical-align: top;">
 	  <xsl:choose>
 	    <xsl:when test="date">
 	      <xsl:apply-templates select="date"/>
@@ -668,7 +661,7 @@ div.exampleHeader { font-weight: bold;
 	</td>
       </tr>
       <tr class="ednote-r2">
-	<td colspan="2" align="left" valign="top">
+	<td colspan="2" style="text-align: left; vertical-align: top;">
 	  <xsl:apply-templates select="edtext"/>
 	</td>
       </tr>
@@ -680,7 +673,7 @@ div.exampleHeader { font-weight: bold;
 <xsl:template match="glist">
   <xsl:choose>
   <xsl:when test="@role = 'acronyms'">
-    <table class="acronyms" summary="Glossary List">
+    <table class="acronyms">
       <xsl:for-each select="gitem">
         <tr>
           <xsl:apply-templates select="label" mode="acronym"/>

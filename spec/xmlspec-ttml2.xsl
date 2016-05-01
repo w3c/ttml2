@@ -10,61 +10,6 @@
 <xsl:variable name="output.mode" select="'html'"/>
 <xsl:param name="additional.css">
 <xsl:text>
-li p { margin-top: 0.3em; margin-bottom: 0.3em; }
-div.issue { border: 2px solid black; background-color: #ffff66; padding: 0em 1em; margin: 0em 0em }
-table.ednote { border-collapse: collapse; border: 2px solid black; width: 85% }
-table.ednote td { background-color: #ddaa66; border: 2px solid black }
-table.acronyms td.label { width: 15% }
-table.acronyms td.def { width: 65% }
-table.graphic { border: 0px none black; width: 100%; border-collapse: collapse }
-table.graphic caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
-table.graphic td { border: 0px none black; text-align: center }
-table.common { border: 2px solid black; width: 85%; border-collapse: collapse }
-table.common caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
-table.common th { padding: 0em 0.5em; border: 2px solid black; text-align: left }
-table.common td { padding: 0em 0.5em; border: 2px solid black }
-table.syntax { border: 0px solid black; width: 85%; border-collapse: collapse }
-table.syntax caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
-table.syntax th { border: 0px solid black; text-align: left }
-table.syntax td { border: 0px solid black }
-table.syntax div { background-color: #ffffc8 }
-table.semantics { border: 0px solid black; width: 85%; border-collapse: collapse }
-table.semantics caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
-table.semantics th { border: 0px solid black; text-align: left }
-table.semantics td {
-  border-left: 0px solid black;
-  border-right: 0px solid black;
-  border-top: 4px double #d3d3d3;
-  border-bottom: 4px double #d3d3d3;
-  background-color: #ccffcc
-}
-table.semantics code.formulae {
-  padding: 1em;
-  border: 1px dashed #005a9c;
-  line-height: 1.1em;
-  background-color: #fdfdfd;
-}
-table.example { border: 0px solid black; width: 85%; border-collapse: collapse }
-table.example caption { font-weight: bold; text-align: left; padding-bottom: 0.5em }
-table.example th { border: 0px solid black; text-align: left }
-table.example td { border: 0px solid black;  }
-table.example div { background-color: #c8ffff }
-table.example-images { text-align: center; border: 0px solid black; width: 85%; border-collapse: collapse }
-table.example-images caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
-table.example-images td { border: 0px solid black; text-align: center }
-table.example-images-bordered { text-align: center; border: 2px solid black; width: 85%; border-collapse: collapse }
-table.example-images-bordered caption { font-weight: bold; text-align: center; padding-bottom: 0.5em }
-table.example-images-bordered td { border: 2px solid black; }
-div.exampleInner { width: 85%; }
-.tbd { background-color: #ffff33; border: 2px solid black; width: 85% }
-.strong { font-weight: bold }
-.deprecated { background-color: #fbaf5c }
-.obsoleted { background-color: #f26d7d }
-.reqattr { font-weight: bold }
-.optattr { font-style: italic }
-.left { text-align: left }
-.center { text-align: center }
-.right { text-align: right }
 </xsl:text>
 </xsl:param>
 <xsl:output method="html" encoding="utf-8" indent="no"/>
@@ -129,6 +74,348 @@ div.exampleInner { width: 85%; }
 
 <!-- css: styling of spec -->
 <xsl:template name="css">
+  <style type="text/css">
+    <xsl:text>
+code
+{
+font-family: monospace;
+}
+
+div.constraint, div.issue, div.note, div.notice
+{
+margin-left: 2em;
+}
+
+div.exampleInner pre
+{
+margin-left: 1em;
+margin-top: 0em;
+margin-bottom: 0em
+}
+
+div.exampleOuter
+{
+border: 4px double gray;
+margin: 0em;
+padding: 0em
+}
+
+div.exampleInner
+{
+background-color: #d5dee3;
+border-top-width: 4px;
+border-top-style: double;
+border-top-color: #d3d3d3;
+border-bottom-width: 4px;
+border-bottom-style: double;
+border-bottom-color: #d3d3d3;
+padding: 4px; margin: 0em
+}
+
+div.exampleWrapper
+{
+margin: 4px
+}
+
+div.exampleHeader
+{
+font-weight: bold;
+margin: 4px
+}
+
+div.issue
+{
+background-color: #ffff66;
+border: 2px solid black;
+margin: 0em 0em
+padding: 0em 1em;
+}
+
+li p
+{
+margin-bottom: 0.3em;
+margin-top: 0.3em;
+}
+
+ol.enumar
+{
+list-style-type: decimal;
+}
+
+ol.enumla
+{
+list-style-type: lower-alpha;
+}
+
+ol.enumlr
+{
+list-style-type: lower-roman;
+}
+
+ol.enumua
+{
+list-style-type: upper-alpha;
+}
+
+ol.enumur
+{
+list-style-type: upper-roman;
+}
+
+table.acronyms td.label
+{
+width: 15%;
+}
+
+table.acronyms td.def
+{
+width: 65%;
+}
+
+table.common
+{
+border: 2px solid black;
+border-collapse: collapse;
+width: 100%;
+}
+
+table.common caption
+{
+font-weight: bold;
+padding-bottom: 0.5em;
+text-align: left;
+}
+
+table.common th
+{
+border: 2px solid black;
+padding: 0em 0.5em;
+text-align: left;
+}
+
+table.common td
+{
+border: 2px solid black;
+padding: 0em 0.5em;
+}
+
+table.ednote
+{
+border-collapse: collapse;
+border: 2px solid black;
+width: 100%;
+}
+
+table.ednote td
+{
+background-color: #ddaa66;
+border: 2px solid black;
+}
+
+table.example
+{
+border: 0px solid black;
+border-collapse: collapse;
+width: 100%;
+}
+
+table.example caption
+{
+font-weight: bold;
+padding-bottom: 0.5em;
+text-align: left;
+}
+
+table.example div
+{
+background-color: #c8ffff;
+}
+
+table.example td
+{
+border: 0px solid black; 
+}
+
+table.example th
+{
+border: 0px solid black;
+text-align: left;
+}
+
+table.example-images
+{
+border-collapse: collapse;
+border: 0px solid black;
+text-align: center;
+width: 100%;
+}
+
+table.example-images caption
+{
+font-weight: bold;
+padding-bottom: 0.5em;
+text-align: center;
+}
+
+table.example-images td
+{
+border: 0px solid black;
+text-align: center;
+}
+
+table.example-images-bordered
+{
+border: 2px solid black;
+border-collapse: collapse
+text-align: center;
+width: 100%;
+}
+
+table.example-images-bordered caption
+{
+font-weight: bold;
+padding-bottom: 0.5em;
+text-align: center;
+}
+
+table.example-images-bordered td
+{
+border: 2px solid black;
+}
+
+table.graphic
+{
+border: 0px none black;
+border-collapse: collapse
+width: 100%;
+}
+
+table.graphic caption
+{
+font-weight: bold;
+padding-bottom: 0.5em
+text-align: center;
+}
+
+table.graphic td
+{
+border: 0px none black;
+text-align: center
+}
+
+table.semantics
+{
+border: 0px solid black;
+border-collapse: collapse
+width: 100%;
+}
+
+table.semantics caption
+{
+font-weight: bold;
+padding-bottom: 0.5em
+text-align: left;
+}
+
+table.semantics code.formulae {
+background-color: #fdfdfd;
+border: 1px dashed #005a9c;
+line-height: 1.1em;
+padding: 1em;
+}
+
+table.semantics td {
+background-color: #ccffcc
+border-bottom: 4px double #d3d3d3;
+border-left: 0px solid black;
+border-right: 0px solid black;
+border-top: 4px double #d3d3d3;
+}
+
+table.semantics th
+{
+border: 0px solid black;
+text-align: left
+}
+
+table.syntax
+{
+border-collapse: collapse;
+border: 0px solid black;
+width: 100%;
+}
+
+table.syntax caption
+{
+font-weight: bold;
+padding-bottom: 0.5em;
+text-align: left;
+}
+
+table.syntax div
+{
+background-color: #ffffc8;
+}
+
+table.syntax td
+{
+border: 0px solid black;
+}
+
+table.syntax th
+{
+border: 0px solid black;
+text-align: left;
+}
+
+.center
+{
+text-align: center;
+}
+
+.deprecated
+{
+background-color: #fbaf5c;
+}
+
+.left
+{
+text-align: left;
+}
+
+.obsoleted
+{
+background-color: #f26d7d;
+}
+
+.optattr
+{
+font-style: italic;
+}
+
+.reqattr
+{
+font-weight: bold;
+}
+
+.right
+{
+text-align: right;
+}
+
+.strong
+{
+font-weight: bold;
+}
+
+.tbd
+{
+background-color: #ffff33;
+border: 2px solid black;
+width: 100%
+}
+    </xsl:text>
+  </style>
   <link rel="stylesheet" type="text/css">
     <xsl:attribute name="href">
       <xsl:text>https://www.w3.org/StyleSheets/TR/2016/</xsl:text>
@@ -154,42 +441,6 @@ div.exampleInner { width: 85%; }
       <xsl:text>.css</xsl:text>
     </xsl:attribute>
   </link>
-  <style type="text/css">
-    <xsl:text>
-code           { font-family: monospace; }
-
-div.constraint,
-div.issue,
-div.note,
-div.notice     { margin-left: 2em; }
-
-ol.enumar      { list-style-type: decimal; }
-ol.enumla      { list-style-type: lower-alpha; }
-ol.enumlr      { list-style-type: lower-roman; }
-ol.enumua      { list-style-type: upper-alpha; }
-ol.enumur      { list-style-type: upper-roman; }
-    </xsl:text>
-    <xsl:if test="$tabular.examples = 0">
-      <xsl:text>
-div.exampleInner pre { margin-left: 1em;
-                       margin-top: 0em; margin-bottom: 0em}
-div.exampleOuter {border: 4px double gray;
-                  margin: 0em; padding: 0em}
-div.exampleInner { background-color: #d5dee3;
-                   border-top-width: 4px;
-                   border-top-style: double;
-                   border-top-color: #d3d3d3;
-                   border-bottom-width: 4px;
-                   border-bottom-style: double;
-                   border-bottom-color: #d3d3d3;
-                   padding: 4px; margin: 0em }
-div.exampleWrapper { margin: 4px }
-div.exampleHeader { font-weight: bold;
-                    margin: 4px}
-      </xsl:text>
-    </xsl:if>
-    <xsl:value-of select="$additional.css"/>
-  </style>
 </xsl:template>
 
 <!-- additional header content -->
@@ -325,8 +576,8 @@ div.exampleHeader { font-weight: bold;
         </p>
       </xsl:otherwise>
     </xsl:choose>
+    <hr/>
   </div>
-  <hr/>
   <xsl:apply-templates select="notice"/>
   <xsl:apply-templates select="abstract"/>
   <xsl:apply-templates select="status"/>

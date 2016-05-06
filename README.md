@@ -1,8 +1,7 @@
 
 # Specification 'ttml2'
 
-This is the repository for ttml2. You're welcome to contribute! Let's make the Web rock our socks
-off!
+This is the repository for Timed Text Markup Language 2 (TTML2).
 
 View in HTML:
-https://rawgit.com/w3c/ttml2/master/spec/ttml2.html
+http://w3c.github.io/ttml2/spec/ttml2.html

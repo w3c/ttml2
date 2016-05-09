@@ -32,3 +32,7 @@ If such an issue should arise, then a new issue should be created, which should 
 ## Non-Pull-Request Commits
 
 Only the editor or a delegated team member may perform a non-PR based commit. These should generally be limited to trivial changes or changes that do not affect specificiation content. If performed by a delegated team member, that member should coordinate with the editor to avoid unintended conflicts.
+
+## See also
+
+[Building the spec HTML](spec/README.md)

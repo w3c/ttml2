@@ -38,3 +38,6 @@ Only the editor or a delegated team member may perform a non-PR based commit. Th
 This project operates on the principles of lazy consensus, a reasonable description of which can be found at
 [Apache Rave™ Project](https://rave.apache.org/docs/governance/lazyConsensus.html).
 
+## See Also
+
+* [Building the Specification](spec/README.md)

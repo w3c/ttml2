@@ -21,7 +21,7 @@ A nominal 14 day review period applies to a PR starting on the date the PR was c
 
 The editor may merge a PR, with or without changes, at any time, with or without notice. The editor may delegate the merging of a PR to the creator of the PR or to another party. If merging a PR has been delegated, then the editor and delegatee should coordinate mergers to avoid unintended conflicts.
 
-If a PR merge is effected prior to the end of the nominal review period starting on the day the PR was created, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed.
+If a PR merge is effected prior to the end of the nominal review period, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed.
 
 A PR merged before the period has elapsed that has no ``Merge Early`` label should be considered an error state, and such label should be added.
 
@@ -37,7 +37,7 @@ Since the PR merge process described above is based on a Commit-Then-Review (CTR
 
 If such an issue should arise, then a new issue should be created, which should @mention the original issue in its title and/or descriptive text.
 
-If an issue documenting an objection is entered against an issue marked as ``Merge Early``, then a ``Merge Objection`` label should be applied to the latter issue, i.e., the issue on which an early PR merge occurred.
+If an issue documenting an objection is entered against an issue marked as ``Merge Early``, then a ``Merge Objection`` label should be applied to the latter issue, i.e., the issue on which an early PR merge occurred. In addition, a comment must be added to the latter issue that @mentions the issue describing the objection.
 
 ## Non-Pull-Request Commits
 

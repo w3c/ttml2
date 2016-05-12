@@ -13,21 +13,29 @@ issue-0158-use-of-60-seconds-in-clock-expression
 issue-0156-create-customizations-section
 </pre>
 
+## Nominal Pull-Request Review Period
+
+A nominal 14 day review period applies to a PR starting on the date the PR was created. Notwithstanding this nominal review period, and at the editor's discretion, a merge of the PR may occur prior to the end of this period.
+
 ## Pull-Request Merging
 
 The editor may merge a PR, with or without changes, at any time, and with or without notice. The editor may delegate the merging of a PR to the creator of the PR or to another party. If merging a PR has been delegated, then the editor and delegatee should coordinate mergers to avoid unintended conflicts.
+
+If a PR merge is effected prior to the end of a 14-day period starting on the day the PR was created, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed. A PR merged before the period has elapsed that has no ``Merge Early`` label should be considered an error state, and such label should be added.
 
 PR merges occur only from a PR branch to the gh-pages (default) branch.
 
 ## Post Pull-Request Merge Issues
 
-Since the pull-request merge process described above is based on a Commit-Then-Review (CTR) process, it is possible that issues may arise that require resolution post-merge, e.g.,
+Since the PR merge process described above is based on a Commit-Then-Review (CTR) process, it is possible that issues may arise that require resolution post-merge, e.g.,
 
 * technical problem with post-merge specification content
 * editorial problem with post-merge specification content
 * principled objection to merge
 
 If such an issue should arise, then a new issue should be created, which should @mention the original issue in its title and/or descriptive text.
+
+If an issue documenting an objection is entered against an issue marked as ``Merge Early``, then a ``Merge Objection`` label should be applied to the latter issue, i.e., the issue on which an early PR merge occurred.
 
 ## Non-Pull-Request Commits
 

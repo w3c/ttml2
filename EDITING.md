@@ -19,9 +19,11 @@ A nominal 14 day review period applies to a PR starting on the date the PR was c
 
 ## Pull-Request Merging
 
-The editor may merge a PR, with or without changes, at any time, and with or without notice. The editor may delegate the merging of a PR to the creator of the PR or to another party. If merging a PR has been delegated, then the editor and delegatee should coordinate mergers to avoid unintended conflicts.
+The editor may merge a PR, with or without changes, at any time, with or without notice. The editor may delegate the merging of a PR to the creator of the PR or to another party. If merging a PR has been delegated, then the editor and delegatee should coordinate mergers to avoid unintended conflicts.
 
-If a PR merge is effected prior to the end of a 14-day period starting on the day the PR was created, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed. A PR merged before the period has elapsed that has no ``Merge Early`` label should be considered an error state, and such label should be added.
+If a PR merge is effected prior to the end of the nominal review period starting on the day the PR was created, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed.
+
+A PR merged before the period has elapsed that has no ``Merge Early`` label should be considered an error state, and such label should be added.
 
 PR merges occur only from a PR branch to the gh-pages (default) branch.
 

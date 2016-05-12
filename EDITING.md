@@ -23,7 +23,7 @@ The editor may merge a PR, with or without changes, at any time, with or without
 
 If a PR merge is effected prior to the end of the nominal review period, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed.
 
-A PR merged before the period has elapsed that has no ``Merge Early`` label should be considered an error state, and such label should be added.
+A PR merged prior to the end of the nominal review period that has no ``Merge Early`` label should be considered in an error state, and such label should be added retroactively.
 
 PR merges occur only from a PR branch to the gh-pages (default) branch.
 
@@ -37,7 +37,7 @@ Since the PR merge process described above is based on a Commit-Then-Review (CTR
 
 If such an issue should arise, then a new issue should be created, which should @mention the original issue in its title and/or descriptive text.
 
-If an issue documenting an objection is entered against an issue marked as ``Merge Early``, then a ``Merge Objection`` label should be applied to the latter issue, i.e., the issue on which an early PR merge occurred. In addition, a comment must be added to the latter issue that @mentions the issue describing the objection.
+If an issue documenting an objection is entered against an issue marked as ``Merge Early``, then a ``Merge Objection`` label should be applied to the latter issue, i.e., the issue on which an early PR merge occurred. In addition, a comment must be added to the latter issue that @mentions the former issue.
 
 ## Non-Pull-Request Commits
 

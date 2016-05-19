@@ -13,17 +13,15 @@ issue-0158-use-of-60-seconds-in-clock-expression
 issue-0156-create-customizations-section
 </pre>
 
-## Nominal Pull-Request Review Period
+## Pull-Request Review Period
 
-A nominal 14 day review period applies to a PR starting on the date the PR was created. Notwithstanding this nominal review period, and at the editor's discretion, a merge of the PR may occur prior to the end of this period.
+A nominal 14 day review period applies to a PR starting on the date the PR was created. A minimum 3 day period will be applied absent a compelling reason to expedite merging. During this 3 day period, a reviewer may explicitly request that the editor apply a longer review period up to the nominal 14 day period. Provided there is no compelling reason to the contrary, such a request will be granted routinely.
 
 ## Pull-Request Merging
 
-The editor may merge a PR, with or without changes, at any time, with or without notice. The editor may delegate the merging of a PR to the creator of the PR or to another party. If merging a PR has been delegated, then the editor and delegatee should coordinate mergers to avoid unintended conflicts.
+The editor may merge a PR, with or without changes, at any time, subject to the review period guidelines described above. The editor may delegate the merging of a PR to the creator of the PR or to another party. If merging a PR has been delegated, then the editor and delegatee should coordinate mergers to avoid unintended conflicts.
 
-If a PR merge is effected prior to the end of the nominal review period, then a ``Merge Early`` label must be applied to the associated issue; otherwise, a ``Merge Standard`` label may be applied, or, if not present, assumed to apply if the nominal review period has elapsed.
-
-A PR merged prior to the end of the nominal review period that has no ``Merge Early`` label should be considered in an error state, and such label should be added retroactively.
+If a PR merge is effected prior to the end of the nominal review period, then a ``Merge Early`` label should be applied to the associated issue.
 
 PR merges occur only from a PR branch to the gh-pages (default) branch.
 

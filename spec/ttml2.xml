@@ -7846,7 +7846,8 @@ as a style property only to those element types indicated in the following table
 [
 <loc href="#style-value-border-thickness">&lt;border-thickness&gt;</loc> ||
 <loc href="#style-value-border-style">&lt;border-style&gt;</loc> ||
-<loc href="#style-value-border-color">&lt;border-color&gt;</loc>
+<loc href="#style-value-border-color">&lt;border-color&gt;</loc> ||
+<loc href="#style-value-border-radii">&lt;border-radii&gt;</loc>
 ]
 </td>
 </tr>
@@ -7899,6 +7900,12 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <p>If no border color is specified in the value of the <att>tts:border</att> property,
 then the border color must be interpreted as if a color equal
 to the computed value of the element's <code>tts:color</code> style property were specified.</p>
+<p>If no border radii is specified in the value of the <att>tts:border</att> property,
+then the border radii must be interpreted as if a radii of
+<code>0</code> were specified.</p>
+<p>If a computed value of the border radii associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value,
+where closest supported value is interpreted as described above for border thickness.</p>
 <p>The <att>tts:border</att> style is illustrated by the following example.</p>
 <table id="style-attribute-border-example-1" role="example">
 <caption>Example Fragment &ndash; Border</caption>
@@ -7943,7 +7950,7 @@ to the computed value of the element's <code>tts:color</code> style property wer
 -->
 <note role="derivation">
 <p>The semantics of the style property represented by this attribute are based upon 
-that defined by <bibref ref="xsl11"/>, &sect; 7.31.3.</p>
+that defined by <bibref ref="xsl11"/>, &sect; 7.31.3, and <bibref ref="css3-bb"/>, &sect; 4 and &sect; 5.</p>
 </note>
 </div3>
 <div3 id="style-attribute-bpd">
@@ -12505,6 +12512,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <ulist>
 <item><p><specref ref="style-value-alpha"/></p></item>
 <item><p><specref ref="style-value-border-color"/></p></item>
+<item><p><specref ref="style-value-border-radii"/></p></item>
 <item><p><specref ref="style-value-border-style"/></p></item>
 <item><p><specref ref="style-value-border-thickness"/></p></item>
 <item><p><specref ref="style-value-character-class"/></p></item>
@@ -12585,6 +12593,32 @@ or more borders.</p>
 </tbody>
 </table>
 </div3>
+<div3 id="style-value-border-radii">
+<head>&lt;border-radii&gt;</head>
+<p>A &lt;border-radii&gt; expression is used to express the radii of one
+or more borders.</p>
+<table id="border-radii-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;border-radii&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;border-radii&gt;
+  : "radii(" <loc href="#style-value-length">&lt;length&gt;</loc> ( "," <loc href="#style-value-length">&lt;length&gt;</loc> )? ")"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If two <loc href="#style-value-length">&lt;length&gt;</loc> expressions are specified, then the first length
+corresponds to the quarter ellipse radius for the inline progression dimension (for content) or
+horizontal direction (for regions), while the second length, if present, corresponds to the
+quarter ellipse radius for the block progression dimension (for content) or vertical direction
+(for regions), or, if only one length is present, then it is interpreted as if two lengths were
+specified with the same value.</p>
+<p>If a <loc href="#terms-presentation-processor">presentation processor</loc> supports only a single radii length and
+two lengths are specified, then the larger of the two lengths should be used as a single radii length.</p>
+</div3>
 <div3 id="style-value-border-style">
 <head>&lt;border-style&gt;</head>
 <p>A &lt;border-style&gt; expression is used to express the style of one
@@ -12648,25 +12682,25 @@ then it must not take the form of a percentage value; i.e., it must take the for
 <td>
 <eg xml:space="preserve">
 &lt;character-class&gt;
-  : '[' ( class-character-range | class-character )+ ']'
+  : "[" ( class-character-range | class-character )+ "]"
 
 class-character-range
-  : class-character '-' class-character
+  : class-character "-" class-character
 
 class-character
   : unicode-escape
   | { char - { specials } }
 
 unicode-escape
-  : '\\u' hexDigit{6}
-  | '\\u' hexDigit{4}
-  | '\\' char
+  : "\\u" hexDigit{6}
+  | "\\u" hexDigit{4}
+  | "\\" char
 
 specials
-  : '-'
-  | ']'
-  | '\''
-  | '\"'
+  : "-"
+  | "]"
+  | "\'"
+  | "\""
   | <loc href="#style-value-whitespace">&lt;whitespace&gt;</loc>
 </eg>
 </td>
@@ -12956,7 +12990,7 @@ non-ascii-or-c1
   : [^\0-\237]
 
 escape
-  : '\\' <emph>char</emph>
+  : "\\" <emph>char</emph>
 </eg>
 <!-- " -->
 </td>
@@ -13790,7 +13824,7 @@ without taking into account rasterization effects.</p>
 <td>
 <eg xml:space="preserve">
 &lt;whitespaces&gt;
-  : ( ' ' | '\t' | '\n' | '\r' )
+  : ( " " | "\t" | "\n" | "\r" )
 </eg>
 </td>
 </tr>

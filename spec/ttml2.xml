@@ -1349,6 +1349,14 @@ related media object.</p>
 in relationship with some external application or presentation context.</p>
 </def>
 </gitem>
+<gitem id="terms-safe-crop-area">
+<label>[safe crop area]</label>
+<def>
+<p>The rectangular portion of the <loc href="#terms-root-container-region">root container region</loc>
+identified as being unsuitable for cropping by the <loc href="#terms-presentation-processor">presentation processor</loc>.
+</p>
+</def>
+</gitem>
 <gitem id="terms-simple-data-embedding">
 <label>[simple data embedding]</label>
 <def>
@@ -1551,6 +1559,24 @@ specification identifies three such targets:
 </p>
 </def>
 </gitem>
+  <gitem id="terms-visible-rendering-region">
+    <label>[visible rendering region]</label>
+    <def>
+      <p>A <loc href="#terms-related-media-object-region">related media object region</loc> for the 
+        <loc href="#terms-related-media-object">related media object</loc> that is the rectangular 
+        area of the visual display medium within which the TTML content is being presented; this 
+        would normally be coincident with the area within which any related media object is being
+        presented; it can but does not necessarily fully enclose the entire 
+        <loc href="#terms-root-container-region">root container region</loc>.
+        <note role="elaboration"><p>Scaling or translating the presentation can change the visible rendering region.</p></note>
+        <note role="clarification"><p>It is possible for the visible rendering region to extend outside the root container 
+        region, e.g. to have the equivalent of a negative origin or a size greater than 100% in one
+        or both dimensions, however this does not imply an expectation that content which overflows
+        the root container region will not be clipped to the limits of the 
+        root container region.</p></note>
+      </p>
+    </def>
+  </gitem>
 </glist>
 </div2> <!-- terms -->
 <div2 id="conventions">
@@ -3019,6 +3045,7 @@ Parameter Attributes
 <loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
 <loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
+<loc href="#parameter-attribute-safeCropArea">ttp:safeCropArea</loc>,
 <loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -4244,6 +4271,7 @@ of arguments is determined in accordance with the lexical order of
 <p>A <att>ttp:processorProfileCombination</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
+
 <div3 id="profile-attribute-validation">
 <head>ttp:validation</head>
 <p>The <att>ttp:validation</att> attribute is used to specify whether validation processing
@@ -4390,6 +4418,7 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
 <item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
+<item><p><specref ref="parameter-attribute-safeCropArea"/></p></item>
 <item><p><specref ref="parameter-attribute-storageAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
@@ -4889,6 +4918,53 @@ numerator | demoninator
 If specified, then both numerator and demoninator must be non-zero.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-safeCropArea">
+<head>ttp:safeCropArea</head>
+<p>The <att>ttp:safeCropArea</att> attribute indicates the area that a presentation processor should display without cropping.</p>
+<p>The <att>ttp:safeCropArea</att> attribute allows the content author to define the portion of the 
+<loc href="#terms-root-container-region">root container region</loc> that needs to remain visible. 
+Typically the <loc href="#terms-safe-crop-area">safe crop area</loc> would be an area that fully contains all of the referenced regions within the content.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="profile-attribute-safe-crop-area-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:safeCropArea</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:safeCropArea
+  : &lt;origin&gt; <loc href="#style-value-whitespace">&lt;whitespace&gt;</loc> &lt;extent&gt;
+
+&lt;origin&gt;
+  : &lt;x&gt; <loc href="#style-value-whitespace">&lt;whitespace&gt;</loc> &lt;y&gt;
+
+&lt;extent&gt;
+  : &lt;width&gt; <loc href="#style-value-whitespace">&lt;whitespace&gt;</loc> &lt;height&gt;
+
+&lt;x&gt; | &lt;y&gt; | &lt;width&gt; | &lt;height&gt;
+  : <loc href="#style-value-length">&lt;length&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Width and x percentage values shall be relative to the width of the root container region.
+Height and y percentage values shall be relative to the height of the root container region.</p>
+<p>The safe crop area shall not extend outside the root container region in any dimension.</p>
+<p>The safe crop area is defined in the coordinate space of the document instance, and has an origin and extent. If the origin is omitted then the safe crop area shall be located in a centred position relative to the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<p>If not specified, the safe crop area shall be coincident with the root container region, that is it shall have the equivalent value to <code>&quot;0% 0% 100% 100%&quot;</code>.</p>
+<p>The safe crop area should fully enclose all regions that are referenced within the content in the document instance.</p>
+<note role="motivation">
+<p>This allows content providers to supply documents that contain content outside the safe crop area if they determine that cropping such content is acceptable. An example where this may arise would be a presentation style that places all text in a full width region with a visible background color. If the text is known to occupy only a portion of that region then only that portion where text will be presented needs to be in the safe crop area, since cropping part of the background leads to no loss of information.</p>
+</note>
+<p>In cases where the content for a related video is supplied in a sequence of TTML document instances the Safe Crop Area should not vary between document instances where the related video is editorially similar and should fully enclose all Regions that are referenced within the content in the whole sequence of document instances. For example if multiple documents contain captions or subtitles for a single programme whose aspect ratio (including black bars etc.) do not change then the Safe Crop Area should remain consistent across all of those documents. This avoids potentially jarring receiver behaviour that dynamically resizes text across document boundaries.</p>
+<note role="elaboration">
+<p>The related video for a sequence of TTML documents depends on the context; typically it could be considered a single programme, rather than the entire continuous stream of a live rolling new channel for example.</p>
+</note>
+<note role="clarification">
+<p>Any regions that fall wholly or partially outside the safe crop area could be clipped by the presentation processor.
+</p>
+</note>  
 </div3>
 <div3 id="parameter-attribute-storageAspectRatio">
 <head>ttp:storageAspectRatio</head>
@@ -15819,6 +15895,91 @@ href="http://www.unicode.org/reports/tr14/#Algorithm">Line
 Breaking Algorithm</loc> <bibref ref="uax14"/> apply when performing
 line layout on the content of the <loc href="#terms-document-instance">document instance</loc>.</p>
 </div3> <!-- semantics-line-layout -->
+<div3 id="semantics-safe-crop-area-layout">
+<head>Safe crop area presentation</head>
+<p>Presentation processors that support safe crop area semantics shall display the TTML 
+content that falls within the <loc href="terms-safe-crop-area">safe crop area</loc>.
+Presentation Processors should use best endeavours to maintain text size and positional
+alignment of TTML content within the safe crop area relative to the related media object.</p>
+<p>As a minimum, if the safe crop area extends outside the 
+<loc href="#terms-visible-rendering-region">visible rendering region</loc> in any 
+dimension then the <loc href="#terms-presentation-processor">presentation processor</loc> 
+shall apply translation and/or scaling to the 
+<loc href="#terms-root-container-region">root container region</loc> so that, after this 
+transformation, the visible rendering region does fully enclose the safe crop area.</p>
+<note role="explanation">
+<p>Translation and/or scaling of the root container region effectively changes the origin 
+  and extent of the visible rendering region when expressed in the coordinates of the
+  document instance, when the actual (device) rendering area corresponding to the visible 
+  rendering region is held constant.</p>
+</note>
+<note role="motivation">
+<p>Processors are in general required to maintain the position of the root container region,
+and by extension each region, relative to the related media object, however in some cases 
+where the media is video the display systems can be configured not to show the entire video
+frame, so the processor needs to make a decision on how to present the subtitle content, 
+with the typical options being to scale or crop.</p></note>
+<note role="example"><p>For example if a 4:3 video is being displayed on a 16:9 display
+the system could display only the central 16:9 portion of that video, by cropping the top 
+and bottom of the 4:3 video frame. This would be a visible rendering region whose effective
+origin is 0% 12.5% and whose effective extent is 100% 75%. If the safe crop area were to 
+extend beyond that visible rendering region, e.g. a 14:9 full height horizontally centered
+area, the content would be cropped. After applying suitable translation and/or scaling to 
+the video and the root container region the resultant visible rendering region fully 
+encloses (inclusively of edges) the safe crop area. The following diagram illustrates this
+example:</p></note>
+  <table id="example-safe-crop-area" role="example">
+    <caption>Example Fragment &ndash; <code>ttp:safeCropArea</code></caption>
+    <tbody>
+      <tr>
+        <td>
+          <eg xml:space="preserve">
+&lt;tt ttp:safeCropArea="6.25% 0% 87.5% 100%" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1"&gt;
+      &lt;p xml:id="p1" begin="1s" end="2s"&gt;Text occupies this area&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>    
+<table id="safe-crop-area-fragment-graphic-1" role="example-images">
+<caption>Diagram showing the presentation of the above example fragment without and with safe crop area semantics.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="safe-crop-area-fragment-1-img" source="images/safeCropArea1.png" alt="Safe Crop Area"/></td>
+</tr>
+</tbody>
+</table>
+<note role="usage"><p>The video presentation system behaviour is out of scope of this 
+document, however it would be possible for the video to be translated and/or scaled 
+alongside the root container region to ensure that the relative positions of TTML 
+content and video are maintained; this behaviour could be a user configuration setting.</p>
+</note>
+<note role="clarification">
+<p>This section does not modify the conformance requirements for processors described
+elsewhere in this document, in particular how the root container region relates to a 
+related media object. If the safe crop area does not extend outside the visible rendering
+region then those conformance requirements suffice to ensure that the presentation 
+processor displays that part of the root container region that overlaps with the 
+visible rendering region, maintaining relative positioning with any related media object.</p>
+</note>
+<note role="usage">
+<p>The translation and scaling algorithm is left undefined and is therefore implementation 
+specific, or may be specified by the interchange or processing context. However the outcome
+of this implementation is testable, by verifying that all of the content within the safe
+crop area is displayed within the visible rendering area.</p></note>
+<note role="guideline">
+<p>Scaling algorithms should take into account that text size scales with height not width;
+anamorphic scaling could result in text occupying an unexpected width, leading to overflow
+and wrap that were not in the original authored document.</p></note>
+</div3> <!-- semantics-safe-crop-area-layout -->
 </div2> <!-- layout-semantics -->
 </div1> <!-- layout -->
 <div1 id="timing">
@@ -18800,6 +18961,19 @@ href="#style-attribute-ruby"><att>tts:ruby</att></loc> is nested, in which case
 the semantics of nested application is treated as inline content (using ruby delimiters).</p>
 <p>The <code>#ruby-non-nested</code> feature is a semantic restriction of the <code>#ruby</code> feature.</p>
 </div3>
+<div3 id="feature-safeCropArea">
+<head>#safeCropArea</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#safeCropArea</code> feature if it recognizes and is capable
+of transforming all defined values of the <loc
+href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#safeCropArea</code> feature if it implements presentation semantic support
+for all defined values of the <loc
+href="##parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc>
+attribute with the semantics defined by <specref ref="semantics-safe-crop-area-layout"/>.</p>
+</div3>
 <div3 id="feature-showBackground">
 <head>#showBackground</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -19873,6 +20047,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td><loc href="#feature-profile"><code>#profile</code></loc></td>
 <td>M</td>
 <td>M</td>
+</tr>
+<tr>
+<td><loc href="#feature-safeCropArea"><code>#safeCropArea</code></loc></td>
+<td>O</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-showBackground"><code>#showBackground</code></loc></td>
@@ -22223,6 +22402,13 @@ no default attribute value
 <td><emph>none</emph></td>
 <td></td>
 <td>expresses frame counting (drop) modes</td>
+<td></td>
+</tr>
+<tr>
+<td><loc href="#parameter-attribute-safeCropArea"><code>ttp:safeCropArea</code></loc></td>
+<td><emph>none</emph></td>
+<td></td>
+<td>expresses area of content that must be displayed</td>
 <td></td>
 </tr>
 <tr>

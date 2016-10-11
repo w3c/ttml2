@@ -3019,6 +3019,7 @@ Parameter Attributes
 <loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
 <loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
+<loc href="#parameter-attribute-safeCropArea">ttp:safeCropArea</loc>,
 <loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -4390,6 +4391,7 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
 <item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
+<item><p><specref ref="parameter-attribute-safeCropArea"/></p></item>
 <item><p><specref ref="parameter-attribute-storageAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
@@ -4888,6 +4890,69 @@ numerator | demoninator
 <p>If not specified, then square pixels (i.e., aspect ratio 1:1) must be assumed to apply.
 If specified, then both numerator and demoninator must be non-zero.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
+
+<div3 id="parameter-attribute-safeCropArea">
+<head>ttp:safeCropArea</head>
+<p>The <att>ttp:safeCropArea</att> attribute may be used to designate a subset of the <loc href="#terms-root-container-region">root
+container region</loc> within which the rendered content should not to be cropped during presentation processing.</p>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-safeCropArea-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:safeCropArea</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:safeCropArea
+  : origin? extent
+
+origin
+  : x y
+
+extent
+  : width height
+
+x, y, width, height
+  : <loc href="#style-value-percentage">&lt;percentage&gt;</loc>                            // where <emph>percentage</emph> is non-negative
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
+  is the minimum of the resolved value of the specified <emph>width</emph> and
+  the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
+  <item><p>the interim computed value of <emph>height</emph>, <emph>I<sub>H</sub></emph>,
+  is the minimum of the resolved value of the specified <emph>height</emph> and
+  the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
+<p>The computed values of the <emph>x</emph> and <emph>y</emph> of the origin of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>x</emph> is
+  one half of the difference between the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>W</sub></emph>;
+  otherwise, it is the minimum of the resolved value of the specified <emph>x</emph> and the computed <emph>width</emph> of the
+  <loc href="#terms-root-container-region">root container region</loc>;</p></item>
+  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>y</emph> is
+  one half of the difference between the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>H</sub></emph>;
+  otherwise, it is the minimum of the resolved value of the specified <emph>y</emph> and the computed <emph>height</emph> of the
+  <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
+<p>The final computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>the final computed value of <emph>width</emph> is the minimum of (1) the difference between the computed <emph>width</emph>
+  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>x</emph> and (2) the interim computed value of <emph>width</emph>,
+  <emph>I<sub>W</sub></emph>;</p></item>
+  <item><p>the final computed value of <emph>height</emph> is the minimum of (1) the difference between the computed <emph>height</emph>
+  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
+  <emph>I<sub>H</sub></emph>.</p></item>
+</ulist>
+<p>Percentage values specified by this attribute are resolved with respect to the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<p>When presented on a visual medium, the rendered content of the safe crop area should remain visible, i.e., not be cropped, unless overridden
+by a higher level protocol.</p>
+<p>A <att>ttp:safeCropArea</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-storageAspectRatio">
@@ -19463,6 +19528,15 @@ transforming the <loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</
 <code>#rubyReserve</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</att></loc> attribute.</p>
 </div3>
+<div3 id="feature-safeCropArea">
+<head>#safeCropArea</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#safeCropArea</code> feature if it recognizes and is capable of
+transforming the <loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#safeCropArea</code> feature if it implements presentation semantic support for the
+<loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc> attribute.</p>
+</div3>
 <div3 id="feature-showBackground">
 <head>#showBackground</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -20897,6 +20971,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-rubyReserve"><code>#rubyReserve</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-safeCropArea"><code>#safeCropArea</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>

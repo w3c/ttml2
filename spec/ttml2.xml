@@ -4901,11 +4901,24 @@ If specified, then both numerator and demoninator must be non-zero.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
-
 <div3 id="parameter-attribute-safeCropArea">
 <head>ttp:safeCropArea</head>
-<p>The <att>ttp:safeCropArea</att> attribute may be used to designate a subset of the <loc href="#terms-root-container-region">root
-container region</loc> within which the rendered content should not to be cropped during presentation processing.</p>
+<p>The <att>ttp:safeCropArea</att> attribute may be used to designate a rectangular area of the <loc href="#terms-root-container-region">root
+container region</loc> outside of which renderable content may be safely cropped during presentation processing.</p>
+<note role="motivation">
+  <p>Under normal circumstances, renderable content within the <loc href="#terms-root-container-region">root container region</loc>
+  is not cropped during presentation processing. That is, the entirety of the <loc href="#terms-root-container-region">root container region</loc>
+  is presented. However, under special circumstances, such as when a <loc href="#terms-related-media-object">related media object</loc> is cropped, then
+  some cropping may also be applied to the <loc href="#terms-root-container-region">root container region</loc>. The <att>ttp:safeCropArea</att> parameter
+  attribute provides a means for the author to signal a portion of the <loc href="#terms-root-container-region">root container region</loc>
+  where cropping may safely occur, which is to say that the complement of this portion should not be cropped, i.e., the interior of the
+  safe crop area is not safe to crop and should remain visible when presented.</p>
+</note>
+<note role="elaboration">
+  <p>Alternative names have been suggested for this attribute that would emphasize the intent to ensure that content remains visible as opposed
+  to suggesting an intent to allow content to be hidden (by cropping). After considering alternatives, the current name has been retained in order to
+  reflect existing industry practice surrounding this concept.</p>
+</note>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-safeCropArea-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:safeCropArea</caption>
@@ -4929,6 +4942,12 @@ x, y, width, height
 </tr>
 </tbody>
 </table>
+<p>Computed values of the origin and extent of the safe crop area are determined by the rules described below,
+where percentage values are resolved with respect to the width and height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<note role="explanation">
+  <p>The intent of the following rules is to ensure
+  that the safe crop area is bounded by the <loc href="#terms-root-container-region">root container region</loc>.</p>
+</note>
 <p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
 <ulist>
   <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
@@ -4958,8 +4977,7 @@ x, y, width, height
   of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
   <emph>I<sub>H</sub></emph>.</p></item>
 </ulist>
-<p>Percentage values specified by this attribute are resolved with respect to the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<p>When presented on a visual medium, the rendered content of the safe crop area must not be cropped unless overridden
+<p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
 by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
 <p>A <att>ttp:safeCropArea</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>

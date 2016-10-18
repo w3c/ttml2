@@ -1135,6 +1135,15 @@ that effectively represent the content, styling, layout, and timing of a source 
 an <loc href="#terms-intermediate-synchronic-document">intermediate synchronic document</loc>.</p>
 </def>
 </gitem>
+
+<gitem id="terms-higher-level-protocol">
+<label>[higher level protocol]</label>
+<def>
+<p>A protocol or process of the <loc href="#terms-document-processing-context">document processing context</loc>
+that is outside the scope of this specification.</p>
+</def>
+</gitem>
+
 <gitem id="terms-nested-profile">
 <label>[nested profile]</label>
 <def>
@@ -3023,6 +3032,7 @@ Parameter Attributes
 <loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
 <loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
+<loc href="#parameter-attribute-safeCropArea">ttp:safeCropArea</loc>,
 <loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -4394,6 +4404,7 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
 <item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
+<item><p><specref ref="parameter-attribute-safeCropArea"/></p></item>
 <item><p><specref ref="parameter-attribute-storageAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
@@ -4892,6 +4903,87 @@ numerator | demoninator
 <p>If not specified, then square pixels (i.e., aspect ratio 1:1) must be assumed to apply.
 If specified, then both numerator and demoninator must be non-zero.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-safeCropArea">
+<head>ttp:safeCropArea</head>
+<p>The <att>ttp:safeCropArea</att> attribute may be used to designate a rectangular area of the <loc href="#terms-root-container-region">root
+container region</loc> outside of which renderable content may be safely cropped during presentation processing.</p>
+<note role="motivation">
+  <p>Under normal circumstances, renderable content within the <loc href="#terms-root-container-region">root container region</loc>
+  is not cropped during presentation processing. That is, the entirety of the <loc href="#terms-root-container-region">root container region</loc>
+  is presented. However, under special circumstances, such as when a <loc href="#terms-related-media-object">related media object</loc> is cropped, then
+  some cropping may also be applied to the <loc href="#terms-root-container-region">root container region</loc>. The <att>ttp:safeCropArea</att> parameter
+  attribute provides a means for the author to signal a portion of the <loc href="#terms-root-container-region">root container region</loc>
+  where cropping may safely occur, which is to say that the complement of this portion should not be cropped, i.e., the interior of the
+  safe crop area is not safe to crop and should remain visible when presented.</p>
+</note>
+<note role="elaboration">
+  <p>Alternative names have been suggested for this attribute that would emphasize the intent to ensure that content remains visible as opposed
+  to suggesting an intent to allow content to be hidden (by cropping). After considering alternatives, the current name has been retained in order to
+  reflect existing industry practice surrounding this concept.</p>
+</note>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-safeCropArea-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:safeCropArea</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:safeCropArea
+  : origin? extent
+
+origin
+  : x y
+
+extent
+  : width height
+
+x, y, width, height
+  : <loc href="#style-value-percentage">&lt;percentage&gt;</loc>                            // where <emph>percentage</emph> is non-negative
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Computed values of the origin and extent of the safe crop area are determined by the rules described below,
+where percentage values are resolved with respect to the width and height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<note role="explanation">
+  <p>The intent of the following rules is to ensure
+  that the safe crop area is bounded by the <loc href="#terms-root-container-region">root container region</loc>.</p>
+</note>
+<p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
+  is the minimum of the resolved value of the specified <emph>width</emph> and
+  the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
+  <item><p>the interim computed value of <emph>height</emph>, <emph>I<sub>H</sub></emph>,
+  is the minimum of the resolved value of the specified <emph>height</emph> and
+  the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
+<p>The computed values of the <emph>x</emph> and <emph>y</emph> of the origin of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>x</emph> is
+  one half of the difference between the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>W</sub></emph>;
+  otherwise, it is the minimum of the resolved value of the specified <emph>x</emph> and the computed <emph>width</emph> of the
+  <loc href="#terms-root-container-region">root container region</loc>;</p></item>
+  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>y</emph> is
+  one half of the difference between the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>H</sub></emph>;
+  otherwise, it is the minimum of the resolved value of the specified <emph>y</emph> and the computed <emph>height</emph> of the
+  <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
+<p>The final computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>the final computed value of <emph>width</emph> is the minimum of (1) the difference between the computed <emph>width</emph>
+  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>x</emph> and (2) the interim computed value of <emph>width</emph>,
+  <emph>I<sub>W</sub></emph>;</p></item>
+  <item><p>the final computed value of <emph>height</emph> is the minimum of (1) the difference between the computed <emph>height</emph>
+  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
+  <emph>I<sub>H</sub></emph>.</p></item>
+</ulist>
+<p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
+by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
+<p>A <att>ttp:safeCropArea</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-storageAspectRatio">
@@ -13634,8 +13726,8 @@ units
   : "px"
   | "em"
   | "c"                                     // abbreviation of "cell"
-  | "vw"
-  | "vh"
+  | "rw"
+  | "rh"
 </eg>
 </td>
 </tr>
@@ -13663,9 +13755,9 @@ font when used to specify lengths in the block progression direction.</p>
 <p>The semantics of the unit of measure <code>c</code> (cell) are
 defined by the parameter <specref
 ref="parameter-attribute-cellResolution"/>.</p>
-<p>The units of measure <code>vw</code> and <code>vh</code> are defined as
+<p>The units of measure <code>rw</code> and <code>rh</code> are defined as
 one percent (1%) of the width and height of the <loc href="#terms-root-container-region">root container region</loc>, respectively.
-For example, the length <code>25vw</code> is interpreted as 25% of the width of
+For example, the length <code>25rw</code> is interpreted as 25% of the width of
 the <loc href="#terms-root-container-region">root container region</loc>.</p>
 </div3>
 <div3 id="style-value-lwsp">
@@ -19661,6 +19753,15 @@ transforming the <loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</
 <code>#rubyReserve</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</att></loc> attribute.</p>
 </div3>
+<div3 id="feature-safeCropArea">
+<head>#safeCropArea</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#safeCropArea</code> feature if it recognizes and is capable of
+transforming the <loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#safeCropArea</code> feature if it implements presentation semantic support for the
+<loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc> attribute.</p>
+</div3>
 <div3 id="feature-showBackground">
 <head>#showBackground</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -21095,6 +21196,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-rubyReserve"><code>#rubyReserve</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-safeCropArea"><code>#safeCropArea</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>

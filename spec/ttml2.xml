@@ -3088,7 +3088,7 @@ Styling Attributes
 <loc href="#style-attribute-fontShear">tts:fontShear</loc>,
 <loc href="#style-attribute-fontSize">tts:fontSize</loc>,
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
-<loc href="#style-attribute-fontVariantPosition">tts:fontVariantPosition</loc>,
+<loc href="#style-attribute-fontVariant">tts:fontVariant</loc>,
 <loc href="#style-attribute-fontWeight">tts:fontWeight</loc>,
 <loc href="#style-attribute-ipd">tts:ipd</loc>,
 <loc href="#style-attribute-letterSpacing">tts:letterSpacing</loc>,
@@ -7463,7 +7463,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-fontSelectionStrategy"/></p></item>
 <item><p><specref ref="style-attribute-fontSize"/></p></item>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
-<item><p><specref ref="style-attribute-fontVariantPosition"/></p></item>
+<item><p><specref ref="style-attribute-fontVariant"/></p></item>
 <item><p><specref ref="style-attribute-fontWeight"/></p></item>
 <item><p><specref ref="style-attribute-ipd"/></p></item>
 <item><p><specref ref="style-attribute-letterSpacing"/></p></item>
@@ -9567,29 +9567,22 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.7.</p>
 </note>
 </div3>
-<div3 id="style-attribute-fontVariantPosition">
-<head>tts:fontVariantPosition</head>
-<p>The <att>tts:fontVariantPosition</att> attribute is used to enable the selection
-of typographic subscript and superscript glyphs.</p>
-<issue id="issue-ttml2-132">
-<head>Generalize Font Variation</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/132">https://github.com/w3c/ttml2/issues/132</loc></source>
-<p>Rename tts:fontVariantPosition to tts:fontVariant and introduce width and ruby variation.</p>
-</issue>
+<div3 id="style-attribute-fontVariant">
+<head>tts:fontVariant</head>
+<p>The <att>tts:fontVariant</att> attribute is used to enable the selection
+of typographic glyph variants.</p>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
-<table id="style-property-details-fontVariantPosition" role="common">
+<table id="style-property-details-fontVariant" role="common">
 <col css="width: 25%;"/>
 <col/>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>normal</code> |
-<code>sub</code> |
-<code>super</code>
+<loc href="#style-value-glyph-variant">&lt;glyph-variant&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -9625,12 +9618,12 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <ednote>
 <name>Font Position Variant Example</name>
 <date>2014-09-24</date>
-<edtext>Add example source and rendering of tts:fontVariantPosition.</edtext>
+<edtext>Add example source and rendering of tts:fontVariant.</edtext>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="css3-fonts"/>,
-&sect; 6.5.</p>
+&sect; 6.11.</p>
 </note>
 </div3>
 <div3 id="style-attribute-fontWeight">
@@ -12949,6 +12942,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-emphasis-style"/></p></item>
 <item><p><specref ref="style-value-family-name"/></p></item>
 <item><p><specref ref="style-value-generic-family-name"/></p></item>
+<item><p><specref ref="style-value-glyph-variant"/></p></item>
 <item><p><specref ref="style-value-hex-digit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
@@ -13499,6 +13493,44 @@ and <code>proportionalSerif</code>, respectively.</p>
 an initial value), then its typographic characteristics are considered to be implementation
 dependent; however, it is recommended that this default font family be mapped to
 an monospaced, sans-serif font.</p>
+</div3>
+<div3 id="style-value-glyph-variant">
+<head>&lt;glyph-variant&gt;</head>
+<p>A &lt;glyph-variant&gt; expression specifies one or more keywords that influence the character
+to glyph mapping process, and, specifically, whether and which type of variant glyph is to be selected
+(if available in the applicable font) when peforming presentation processing.</p>
+<table id="glyph-variant-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;glyph-variant&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;glyph-variant&gt;
+  : "normal"
+  | [ "super" | "sub" ] || [ "full" | "half" ] || ruby
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If the value <code>normal</code> applies, then, unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies, 
+none of subscript, superscript, full, half, or ruby
+glyph variations are selected.</p>
+<p>If the keyword <code>super</code> applies, then superscript glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>sups</code> feature is enabled. If the keyword <code>sub</code> applies,
+then subscript glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>subs</code> feature is enabled.</p>
+<p>If the keyword <code>full</code> applies, then full width glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>fwid</code> feature is enabled. If the keyword <code>half</code> applies,
+then half width glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>hwid</code> feature is enabled.</p>
+<p>If the keyword <code>ruby</code> applies, then ruby glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>ruby</code> feature is enabled.</p>
+<p>If multiple variations apply, then glyphs that satisfy the maximum number of applicable variantions are selected. For example,
+if both <code>super</code> and <code>half</code> variations are specified, then glyphs that are simultaneously designated as both superscript and
+half width variations are selected (if available). If only subsets of the requested variations can be satisfied, and there is more than
+one possible subset that would result in a difference in the selected variation glyphs, then which subset applies is considered implementation
+dependent, i.e., determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 </div3>
 <div3 id="style-value-hex-digit">
 <head>&lt;hex-digit&gt;</head>

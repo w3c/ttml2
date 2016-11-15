@@ -67,6 +67,7 @@
 	  </dl>
 	</div>
       </xsl:if>
+      <p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to top">↑</abbr></a></p>
       <script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
     </body>
   </html>
@@ -90,14 +91,14 @@ div.exampleInner pre
 {
 margin-left: 1em;
 margin-top: 0em;
-margin-bottom: 0em
+margin-bottom: 0em;
 }
 
 div.exampleOuter
 {
 border: 4px double gray;
 margin: 0em;
-padding: 0em
+padding: 0em;
 }
 
 div.exampleInner
@@ -109,26 +110,27 @@ border-top-color: #d3d3d3;
 border-bottom-width: 4px;
 border-bottom-style: double;
 border-bottom-color: #d3d3d3;
-padding: 4px; margin: 0em
+padding: 4px;
+margin: 0em;
 }
 
 div.exampleWrapper
 {
-margin: 4px
+margin: 4px;
 }
 
 div.exampleHeader
 {
 font-weight: bold;
-margin: 4px
+margin: 4px;
 }
 
 div.issue
 {
 background-color: #ffff66;
 border: 2px solid black;
-margin: 0em 0em
 padding: 0em 1em;
+margin: 0em;
 }
 
 li p
@@ -266,7 +268,7 @@ text-align: center;
 table.example-images-bordered
 {
 border: 2px solid black;
-border-collapse: collapse
+border-collapse: collapse;
 text-align: center;
 width: 100%;
 }
@@ -286,34 +288,34 @@ border: 2px solid black;
 table.graphic
 {
 border: 0px none black;
-border-collapse: collapse
+border-collapse: collapse;
 width: 100%;
 }
 
 table.graphic caption
 {
 font-weight: bold;
-padding-bottom: 0.5em
+padding-bottom: 0.5em;
 text-align: center;
 }
 
 table.graphic td
 {
 border: 0px none black;
-text-align: center
+text-align: center;
 }
 
 table.semantics
 {
 border: 0px solid black;
-border-collapse: collapse
+border-collapse: collapse;
 width: 100%;
 }
 
 table.semantics caption
 {
 font-weight: bold;
-padding-bottom: 0.5em
+padding-bottom: 0.5em;
 text-align: left;
 }
 
@@ -325,7 +327,7 @@ padding: 1em;
 }
 
 table.semantics td {
-background-color: #ccffcc
+background-color: #ccffcc;
 border-bottom: 4px double #d3d3d3;
 border-left: 0px solid black;
 border-right: 0px solid black;
@@ -335,7 +337,7 @@ border-top: 4px double #d3d3d3;
 table.semantics th
 {
 border: 0px solid black;
-text-align: left
+text-align: left;
 }
 
 table.syntax
@@ -412,7 +414,7 @@ font-weight: bold;
 {
 background-color: #ffff33;
 border: 2px solid black;
-width: 100%
+width: 100%;
 }
     </xsl:text>
   </style>
@@ -438,7 +440,6 @@ width: 100%
           </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:text>.css</xsl:text>
     </xsl:attribute>
   </link>
 </xsl:template>
@@ -453,10 +454,7 @@ width: 100%
   <div class="head">
     <xsl:if test="not(/spec/@role='editors-copy')">
       <p>
-        <a href="http://www.w3.org/">
-          <img src="http://www.w3.org/StyleSheets/TR/2016/logos/W3C"
-            alt="W3C" height="48" width="72"/>
-        </a>
+        <a href="https://www.w3.org/"><img height="48" width="72" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C"/></a>
         <xsl:choose>
           <xsl:when test="/spec/@w3c-doctype='memsub'">
             <a href='http://www.w3.org/Submission/'>
@@ -679,6 +677,25 @@ width: 100%
   </xsl:choose>
 </xsl:template>
 
+<!-- status: the status of the spec -->
+<xsl:template match="status">
+  <div>
+    <xsl:text>&#10;</xsl:text>
+    <h2>
+      <xsl:call-template name="anchor">
+        <xsl:with-param name="conditional" select="0"/>
+        <xsl:with-param name="default.id" select="'status'"/>
+      </xsl:call-template>
+      <xsl:text>Status of This Document</xsl:text>
+    </h2>
+    <xsl:if test="/spec/@role='editors-copy'">
+      <p><strong>This document is an editor's copy that has
+      no official standing.</strong></p>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
+
 <!-- body: the meat of the spec -->
 <xsl:template match="body">
   <xsl:if test="$toc.level &gt; 0">
@@ -686,9 +703,9 @@ width: 100%
       <h2 class="introductory" id="table-of-contents">
         <xsl:text>Table of Contents</xsl:text>
       </h2>
-      <ul class="toc" role="directory">
+      <ol class="toc" role="directory">
         <xsl:apply-templates select="div1" mode="toc"/>
-      </ul>
+      </ol>
       <xsl:if test="../back">
         <xsl:text>&#10;</xsl:text>
         <h2 class="introductory" id="table-of-contents-appendices">
@@ -918,6 +935,18 @@ width: 100%
       </tr>
     </table>
   </xsl:if>
+</xsl:template>
+
+<!-- author: an editor of a spec -->
+<xsl:template match="author">
+  <dd>
+    <xsl:if test="@w3c-uid">
+      <xsl:attribute name="data-editor-id">
+        <xsl:value-of select="@w3c-uid"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </dd>
 </xsl:template>
 
 <!-- glist: glossary list -->

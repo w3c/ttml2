@@ -6,8 +6,8 @@
 <!ENTITY status SYSTEM "status.xml">
 <!ENTITY document.status "Editors' copy $Date$">
 <!ENTITY title "&title;">
-<!ENTITY prevloc "http://www.w3.org/TR/2015/WD-ttml2-20150212/">
-<!ENTITY latestedloc "http://w3c.github.io/ttml2/spec/ttml2.html">
+<!ENTITY prevloc "https://www.w3.org/TR/2016/WD-ttml2-20160524/">
+<!ENTITY latestedloc "https://w3c.github.io/ttml2/spec/ttml2.html">
 <!ENTITY versionOfTT "2">
 <!ENTITY tbd "<phrase role='tbd'>To Be Defined</phrase>">
 <!ENTITY sp "&#x0020;">
@@ -74,7 +74,7 @@
 <loc href="&prevloc;">&prevloc;</loc>
 </prevlocs>
 <authlist id="editors" role="editor">
-<author>
+<author w3c-uid="34030">
 <name>Glenn Adams</name>
 <affiliation>Skynav</affiliation>
 </author>
@@ -3021,6 +3021,7 @@ Parameter Attributes
 <td>
 <loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc>,
 <loc href="#parameter-attribute-clockMode">ttp:clockMode</loc>,
+<loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc>,
 <loc href="#parameter-attribute-dropMode">ttp:dropMode</loc>,
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc>,
@@ -3029,7 +3030,6 @@ Parameter Attributes
 <loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-safeCropArea">ttp:safeCropArea</loc>,
-<loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
 <loc href="#parameter-attribute-timeBase">ttp:timeBase</loc>,
@@ -4393,6 +4393,7 @@ of which TTML Content can be related to an external environment.</p>
 <ulist>
 <item><p><specref ref="parameter-attribute-cellResolution"/></p></item>
 <item><p><specref ref="parameter-attribute-clockMode"/></p></item>
+<item><p><specref ref="parameter-attribute-displayAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-dropMode"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
@@ -4401,7 +4402,6 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-safeCropArea"/></p></item>
-<item><p><specref ref="parameter-attribute-storageAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
 <item><p><specref ref="parameter-attribute-timeBase"/></p></item>
@@ -4510,6 +4510,38 @@ tolerance of TAI.</p>
 <p>If not specified, the value of this parameter must be considered
 to be <code>utc</code>.</p>
 <p>A <att>ttp:clockMode</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-displayAspectRatio">
+<head>ttp:displayAspectRatio</head>
+<p>The <att>ttp:displayAspectRatio</att> attribute may be used to express the <loc href="#terms-display-aspect-ratio">display aspect ratio</loc> associated with the
+<loc href="#terms-authoring-viewport">authoring viewport</loc>.</p>
+<issue id="issue-ttml2-30">
+<head>Maintaining Display Aspect Ratio</head>
+<source><loc href="https://github.com/w3c/ttml2/issues/30">https://github.com/w3c/ttml2/issues/30</loc></source>
+<p>Tie up loose ends with respect to support for retaining display aspect ratio. See also new values of <loc href="#style-attribute-extent"><att>tts:extent</att></loc>:
+<code>contain</code> and <code>cover</code>.</p>
+</issue>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-displayAspectRatio-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:displayAspectRatio</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:displayAspectRatio
+  : numerator demoninator                   // <emph>numerator</emph> != 0; <emph>demoninator</emph> != 0
+
+numerator | demoninator
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If specified, then both numerator and demoninator must be non-zero.
+If not specified, then the storage aspect ratio of the <loc href="#terms-authoring-viewport">authoring viewport</loc> is undefined.</p>
+<p>A <att>ttp:displayAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-dropMode">
@@ -4980,38 +5012,6 @@ where percentage values are resolved with respect to the width and height of the
 <p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
 by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
 <p>A <att>ttp:safeCropArea</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-</div3>
-<div3 id="parameter-attribute-storageAspectRatio">
-<head>ttp:storageAspectRatio</head>
-<p>The <att>ttp:storageAspectRatio</att> attribute may be used to express the <loc href="#terms-storage-aspect-ratio">storage aspect ratio</loc> associated with the
-<loc href="#terms-authoring-viewport">authoring viewport</loc>.</p>
-<issue id="issue-ttml2-30">
-<head>Maintaining Display Aspect Ratio</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/30">https://github.com/w3c/ttml2/issues/30</loc></source>
-<p>Tie up loose ends with respect to support for retaining display aspect ratio. See also new values of <loc href="#style-attribute-extent"><att>tts:extent</att></loc>:
-<code>contain</code> and <code>cover</code>.</p>
-</issue>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-storageAspectRatio-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:storageAspectRatio</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:storageAspectRatio
-  : numerator demoninator                   // <emph>numerator</emph> != 0; <emph>demoninator</emph> != 0
-
-numerator | demoninator
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, then both numerator and demoninator must be non-zero.
-If not specified, then the storage aspect ratio of the <loc href="#terms-authoring-viewport">authoring viewport</loc> is undefined.</p>
-<p>A <att>ttp:storageAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-subFrameRate">
@@ -18333,7 +18333,7 @@ feature if it recognizes and is capable of transforming the following
 core attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
 <ulist>
 <item><p><loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc></p></item>
-<item><p><loc href="#profile-attribute-contentProfileMethod"><att>ttp:contentProfileMethod</att></loc></p></item>
+<item><p><loc href="#profile-attribute-contentProfileCombination"><att>ttp:contentProfileCombination</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#contentProfiles</code>
 feature if it implements presentation semantic support for the
@@ -18613,32 +18613,6 @@ the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to a <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
-</div3>
-<div3 id="feature-featureNarrowing">
-<head>#featureNarrowing</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#featureNarrowing</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#parameter-attribute-featureNarrowing"><att>ttp:featureNarrowing</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#featureNarrowing</code> feature if it implements presentation semantic support
-for the <loc
-href="#parameter-attribute-featureNarrowing"><att>ttp:featureNarrowing</att></loc>
-attribute.</p>
-</div3>
-<div3 id="feature-featureWidening">
-<head>#featureWidening</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#featureWidening</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#parameter-attribute-featureWidening"><att>ttp:featureWidening</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#featureWidening</code> feature if it implements presentation semantic support
-for the <loc
-href="#parameter-attribute-featureWidening"><att>ttp:featureWidening</att></loc>
-attribute.</p>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -19365,6 +19339,32 @@ href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
 that consist of four <loc
 href="#style-value-length">&lt;length&gt;</loc> specification.</p>
 </div3>
+<div3 id="feature-permitFeatureNarrowing">
+<head>#permitFeatureNarrowing</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#permitFeatureNarrowing</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#permitFeatureNarrowing</code> feature if it implements presentation semantic support
+for the <loc
+href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-permitFeatureWidening">
+<head>#permitFeatureWidening</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#permitFeatureWidening</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#permitFeatureWidening</code> feature if it implements presentation semantic support
+for the <loc
+href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
+attribute.</p>
+</div3>
 <div3 id="feature-pixelAspectRatio">
 <head>#pixelAspectRatio</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -19417,7 +19417,7 @@ feature if it recognizes and is capable of transforming the following
 core attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
 <ulist>
 <item><p><loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc></p></item>
-<item><p><loc href="#profile-attribute-processorProfileMethod"><att>ttp:processorProfileMethod</att></loc></p></item>
+<item><p><loc href="#profile-attribute-processorProfileCombination"><att>ttp:processorProfileCombination</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#processorProfiles</code>
 feature if it implements presentation semantic support for the
@@ -20710,16 +20710,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-featureNarrowing"><code>#featureNarrowing</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-featureWidening"><code>#featureWidening</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
 <td><loc href="#feature-font"><code>#font</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -20966,6 +20956,16 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-padding-4"><code>#padding-4</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-permitFeatureNarrowing"><code>#permitFeatureNarrowing</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-permitFeatureWidening"><code>#permitFeatureWidening</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -21546,7 +21546,7 @@ which is expressed as an XML document wherein the root element adheres to
 express maximum compliance for both transformation and presentation processing.</p>
 <note role="elaboration">
 <p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-full">DFXP Full Profile</xspecref>.</p>
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-full">DFXP Full Profile</xspecref>.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-full;</eg>
 </div2>
@@ -21556,7 +21556,7 @@ express maximum compliance for both transformation and presentation processing.<
 express minimum compliance for presentation processing.</p>
 <note role="elaboration">
 <p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
 it requires support for the
 <loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>  and
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
@@ -21569,7 +21569,7 @@ it requires support for the
 express minimum compliance for transformation processing.</p>
 <note role="elaboration">
 <p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
 it requires support for the
 <loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>  and
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
@@ -22233,7 +22233,7 @@ are available for use with an
 <item><p><loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc></p></item>
 <item><p><loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc></p></item>
 <item><p><loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc></p></item>
-<item><p><loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc></p></item>
+<item><p><loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc></p></item>
 <item><p><loc href="#parameter-attribute-tickRate">ttp:tickRate</loc></p></item>
 </ulist>

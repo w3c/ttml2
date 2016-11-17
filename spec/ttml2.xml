@@ -12,6 +12,7 @@
 <!ENTITY tbd "<phrase role='tbd'>To Be Defined</phrase>">
 <!ENTITY sp "&#x0020;">
 <!ENTITY sect "&#x00a7;">
+<!ENTITY times "&#x00d7;">
 <!ENTITY aring "&#x00e5;">
 <!ENTITY ccedil "&#x00e7;">
 <!ENTITY Ccedil "&#x00c7;">
@@ -8957,10 +8958,12 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <head>tts:extent</head>
 <p>The <att>tts:extent</att> attribute may be used for the following purposes:</p>
 <olist>
-<item><p>to specify the <emph>width</emph> and <emph>height</emph> of a region area;</p></item>
-<item><p>to specify the <emph>width</emph> and <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>, which has the effect of defining
-the <loc href="#terms-document-coordinate-space">document coordinate space</loc>;</p></item>
-<item><p>to specify or override the <emph>width</emph> and (or) <emph>height</emph> of an image's intrinsic extent.</p></item>
+<item><p>to specify the <emph>width</emph> and <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>,
+which has the effect of defining
+the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
+about which see also <specref ref="root-container-regiion-semantics"/>;</p></item>
+<item><p>to specify or override the <emph>width</emph> and <emph>height</emph> of a <loc href="#terms-content-region">content region</loc>;</p></item>
+<item><p>to specify or override the <emph>width</emph> and (or) <emph>height</emph> of intrinsic extent of an image.</p></item>
 </olist>
 <p>This attribute may be specified by any
 element type
@@ -8987,8 +8990,6 @@ as a style property only to those element types indicated in the following table
 <td><emph>Applies to:</emph></td>
 <td>
 <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
-<loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
 </td>
@@ -9021,18 +9022,35 @@ of the style property must be considered to be the same as the extent of the <lo
 <edtext>Define semantics of new <code>contain</code> and <code>cover</code> values. Exclude these values from use with an <el>image</el> element.
 Enlarge usage of extent on root (tt) element to permit use of <code>contain</code> and <code>cover</code>.</edtext>
 </ednote>
-<p>The extent of the <loc href="#terms-root-container-region">root container region</loc> is determined either by a
-<att>tts:extent</att> specified on the <el>tt</el> element, if
-present, or as described by <specref ref="document-structure-vocabulary-tt"/> if not present.
-If <att>tts:extent</att> is specified on the <el>tt</el> element, then
-the width and height must be expressed in terms of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
-and these specifications must be expressed as non-percentage, definite lengths using pixel units.</p>
-<p>If a <att>tts:extent</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
-extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of this attribute.</p>
+<p>If a <att>tts:extent</att> attribute is specified on the <el>tt</el> element, then the specified value is
+restricted to one of the following:
+(1) the <code>auto</code> keyword,
+(2) the <code>contain</code> keyword, or
+(3) two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
+where these specifications are expressed as non-percentage, definite lengths using pixel units.
+All other syntactically legal values must not be used in this context, and,
+if used, must be considered an error for the purpose of validation processing and must be ignored
+for the purpose of presentation processing, in which case the initial value (<code>auto</code>) applies.</p>
+<p>If a <att>tts:extent</att> attribute is specified on a <el>region</el> element, then the specified value is
+restricted to one of the following:
+(1) the <code>auto</code> keyword or
+(2) two <loc href="#style-value-measure">&lt;measure&gt;</loc> specifications.
+All other syntactically legal values must not be used in this context, and,
+if used, must be considered an error for the purpose of validation processing and must be ignored
+for the purpose of presentation processing, in which case the initial value (<code>auto</code>) applies.</p>
+<p>If a <att>tts:extent</att> attribute is specified on a <el>div</el> or <el>p</el> element, then the semantics specified by
+<specref ref="style-attribute-extent-special-usage"/> apply.</p>
 <p>If a <att>tts:extent</att> attribute is specified on an <el>image</el> element, then its computed value determines or overrides the image's intrinsic
-width and (or) height.</p>
+width and height.</p>
+<p>If the value of this attribute is <code>auto</code>, then the computed value of its associated property is determined as follows:</p>
+<olist>
+  <item><p>if the property applies to the <el>tt</el> element, then <code>auto</code> is interpreted as if the value <code>contain</code>
+  were specified;</p></item>
+  <item><p>if the property applies to a <el>region</el> element, either directly or indirectly, then <code>auto</code> is interpreted as if
+  the value <code>auto auto</code> were specified;</p></item>
+  <item><p>if the property applies to an <el>image</el> element, then <code>auto</code> is interpreted as if a value equal to the image's intrinsic width
+  and height were specified using two pixel-based <loc href="#style-value-length">&lt;length&gt;</loc> components.</p></item>
+</olist>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -9079,6 +9097,18 @@ while use of a smaller extent makes region overflow more likely.</p>
 </tr>
 </tbody>
 </table>
+<div4 id="style-attribute-extent-special-usage">
+<head>Special Usage</head>
+<ednote>
+<name>Revision Required - Issue #168</name>
+<date>2016-11-05</date>
+<edtext>Revise or rewrite the following paragraph as required for issue #168.</edtext>
+</ednote>
+<p>If a <att>tts:extent</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
+extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of this attribute.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-fontFamily">
 <head>tts:fontFamily</head>
@@ -21575,6 +21605,86 @@ it requires support for the
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-transformation;</eg>
+</div2>
+</div1>
+<div1 id="root-container-regiion-semantics">
+<head>Root Container Region Semantics</head>
+<p><emph>This appendix is normative.</emph></p>
+<p>This appendix specifies the semantics for determining essential characteristics of the root container region and its use, including:</p>
+<ulist>
+<item><p>aspect ratios (display, storage, pixel)</p></item>
+<item><p>resolution</p></item>
+<item><p>coordinate space</p></item>
+</ulist>
+<div2 id="root-container-regiion-semantics-aspect-ratios">
+<head>Aspect Ratios</head>
+<p>Three aspect ratios apply to the <loc href="#terms-root-container-region">root container region</loc>:</p>
+<glist>
+<gitem>
+  <label>display aspect ratio (DAR)</label>
+  <def><p>the <emph>display</emph> aspect ratio of the root container corresponds with the displayed aspect ratio of the root container, i.e.,
+  the actual (or intended) physical aspect ratio when it is (to be) presented on a visual medium;
+  this <emph>display</emph> aspect ratio may be specified by the
+  <loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc> attribute on the
+  <loc href="#content-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below;</p></def>
+</gitem>
+<gitem>
+  <label>storage aspect ratio (SAR)</label>
+  <def><p>the <emph>storage</emph> aspect ratio of the root container corresponds with the logical aspect ratio of the root container
+  in storage or sample units;
+  this <emph>storage</emph> aspect ratio may be specified (indirectly) by the
+  <loc href="#style-attribute-extent">tts:extent</loc> attribute on the
+  <loc href="#content-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below;</p></def>
+</gitem>
+<gitem>
+  <label>pixel aspect ratio (PAR)</label>
+  <def><p>the <emph>pixel</emph> aspect ratio of the root container corresponds with the actual (or intended) physical aspect ratio of
+  each individual physical (as opposed to logical) pixel of the root container when it is (to be) presented on a visual medium;
+  this <emph>pixel</emph> aspect ratio may be specified by the
+  <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRato</loc> attribute on the
+  <loc href="#content-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p></def>
+</gitem>
+</glist>
+<p>The following sub-sections specify how these aspect ratios are resolved according to which are specified in a document.</p>
+<div3>
+<head>Three Aspect Ratios</head>
+<p>If all three aspect ratios are specified, and if their values satisfy the equation <code>DAR = SAR &times; PAR</code>,
+then these are considered the resolved aspect ratios. However, if the equation is not satisfied, then, when performing
+validation processing, an error should be reported (subject to validation processor configuration), and, when performing
+presentation processing, the specified <code>PAR</code> value is ignored in which case the following sub-section applies.</p>
+</div3>
+<div3>
+<head>Two Aspect Ratios</head>
+<p>If two of the three aspect ratios are specified (or remaining after ignoring a conflicting <code>PAR</code>),
+then the resolved value of the third aspect ratio is determined using the equation <code>DAR = SAR &times; PAR</code>.</p>
+</div3>
+<div3>
+<head>One Aspect Ratio</head>
+<p>If only one of the three aspect ratios is specified, then the resolved values of the other two aspect ratios are determined as follows:</p>
+<olist>
+  <item>
+    <p>If <code>DAR</code> is specified, then its resolved value is its specified value, and the values of <code>SAR</code> and <code>PAR</code>
+    are determined as follows:</p>
+    <olist>
+      <item><p>the resolved value of <code>SAR</code> is the resolved value of <code>DAR</code>;</p></item>
+      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one);</p></item>
+    </olist>
+  </item>
+  <item>
+    <p>If <code>SAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>PAR</code>
+    are determined as follows:</p>
+    <olist>
+      <item><p>the resolved value of <code>DAR</code> is the resolved value of <code>SAR</code>;</p></item>
+      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one);</p></item>
+    </olist>
+  </item>
+  <item><p>If <code>PAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>SAR</code>
+  are determined as follows:</p></item>
+</olist>
+</div3>
+<div3>
+<head>No Aspect Ratio</head>
+</div3>
 </div2>
 </div1>
 <div1 id="time-expression-semantics">

@@ -6,12 +6,13 @@
 <!ENTITY status SYSTEM "status.xml">
 <!ENTITY document.status "Editors' copy $Date$">
 <!ENTITY title "&title;">
-<!ENTITY prevloc "http://www.w3.org/TR/2015/WD-ttml2-20150212/">
-<!ENTITY latestedloc "http://w3c.github.io/ttml2/spec/ttml2.html">
+<!ENTITY prevloc "https://www.w3.org/TR/2016/WD-ttml2-20161117/">
+<!ENTITY latestedloc "https://w3c.github.io/ttml2/spec/ttml2.html">
 <!ENTITY versionOfTT "2">
 <!ENTITY tbd "<phrase role='tbd'>To Be Defined</phrase>">
 <!ENTITY sp "&#x0020;">
 <!ENTITY sect "&#x00a7;">
+<!ENTITY times "&#x00d7;">
 <!ENTITY aring "&#x00e5;">
 <!ENTITY ccedil "&#x00e7;">
 <!ENTITY Ccedil "&#x00c7;">
@@ -74,7 +75,7 @@
 <loc href="&prevloc;">&prevloc;</loc>
 </prevlocs>
 <authlist id="editors" role="editor">
-<author>
+<author w3c-uid="34030">
 <name>Glenn Adams</name>
 <affiliation>Skynav</affiliation>
 </author>
@@ -91,6 +92,10 @@
 <author>
 <name>Frans de Jong</name>
 <affiliation>European Broadcasting Union</affiliation>
+</author>
+<author>
+<name>Dae Kim</name>
+<affiliation>Netflix</affiliation>
 </author>
 <author>
 <name>Pierre-Anthony Lemieux</name>
@@ -114,7 +119,7 @@
 </author>
 </authlist>
 <!--
-<errataloc href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml10/spec/ttml-issues.html"/>
+<errataloc href="https://w3c.github.io/ttml2/spec/ttml2-issues.html"/>
 <translationloc href="http://www.w3.org/2003/03/Translations/byTechnology?technology=ttml2"/>
 -->
 <abstract id="abstract">
@@ -515,9 +520,21 @@ and may specify inline overrides to styling.</p>
 <head>Acronyms</head>
 <glist role="acronyms">
 <gitem>
+<label>BPD</label>
+<def>
+<p>Block Progression Dimension</p>
+</def>
+</gitem>
+<gitem>
 <label>DFXP</label>
 <def>
 <p>Distribution Format Exchange Profile</p>
+</def>
+</gitem>
+<gitem>
+<label>IPD</label>
+<def>
+<p>Inline Progression Dimension</p>
 </def>
 </gitem>
 <gitem>
@@ -555,6 +572,14 @@ and may specify inline overrides to styling.</p>
 <div2 id="terms">
 <head>Terminology</head>
 <glist>
+<gitem id="terms-absolute-dimension">
+<label>[absolute dimension]</label>
+<def>
+<p>A scalar value that denotes a length on either the
+<loc href="#terms-horizontal-axis">horizontal axis</loc> or the
+<loc href="#terms-vertical-axis">vertical axis</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-abstract-document-instance">
 <label>[abstract document instance]</label>
 <def>
@@ -650,6 +675,22 @@ block display is indicated when a CSS <code>display</code> property with the val
 occurs when composing a <code>fo:block</code> element.</p>
 </def>
 </gitem>
+<gitem id="terms-block-progression-dimension">
+<label>[block progression dimension]</label>
+<def>
+<p>A <loc href="#terms-relative-dimension">relative dimension</loc> on the block progression axis,
+i.e., in the positive <loc href="#terms-block-progression-direction">block progression direction</loc>,
+abbreviated as <emph>bpd</emph>.</p>
+</def>
+</gitem>
+<gitem id="terms-block-progression-direction">
+<label>[block progression direction]</label>
+<def>
+  <p>The direction taken by the progression of block areas in some formatting context. In the context of horizontal writing modes,
+  the block progression direction is typically top-to-bottom; whereas, in the context of vertical writing modes,
+  it is typically right-to-left or left-to-right.</p>
+</def>
+</gitem>
 <gitem id="terms-character-information-item">
 <label>[character information item]</label>
 <def>
@@ -669,7 +710,7 @@ child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elemen
 <label>[computed cell size]</label>
 <def>
 <p>The size (extent) of a cell computed by dividing the width of the <loc href="#terms-root-container-region">root container region</loc>
-by the column count, i.e., the number of cells in the horizontal axis, and by dividing
+by the column count, i.e., the number of cells in the <loc href="#terms-horizontal-axis">horizontal axis</loc>, and by dividing
 the height of the <loc href="#terms-root-container-region">root container region</loc> by the row count, i.e., the number of cells in the vertical
 axis, where the column and row counts are determined by the <att>ttp:cellResolution</att> parameter attribute.</p>
 </def>
@@ -829,13 +870,10 @@ and <loc href="#terms-pixel-aspect-ratio">pixel aspect ratio</loc>.</p>
 <gitem id="terms-document-coordinate-space">
 <label>[document coordinate space]</label>
 <def>
-<p></p>
-<ednote>
-<name>Document Coordinate Space Definition</name>
-<date>2015-01-05</date>
-<edtext>Either define or express in terms of (some) viewport.</edtext>
-</ednote>
-<p></p>
+<p>A logical coordinate space which determines the aspect ratio and resolution of the
+<loc href="#terms-root-container-region">root container region</loc> used to format and present a
+<loc href="#terms-document-instance">document instance</loc>, more about which see
+<specref ref="root-container-region-semantics"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-document-instance">
@@ -1013,6 +1051,12 @@ process include the computed values of font related properties, the capabilities
 glyph metrics, and other data used in the character to glyph mapping and rendering process.</p>
 </def>
 </gitem>
+<gitem id="terms-height">
+<label>[height]</label>
+<def>
+<p>An <loc href="#terms-absolute-dimension">absolute dimension</loc> on the <loc href="#terms-vertical-axis">vertical axis</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-fragment-identifier">
 <label>[fragment identifier]</label>
 <def>
@@ -1091,6 +1135,22 @@ inline display is indicated when a CSS <code>display</code> property with the va
 occurs when composing a <code>fo:inline</code> element.</p>
 </def>
 </gitem>
+<gitem id="terms-inline-progression-dimension">
+<label>[inline progression dimension]</label>
+<def>
+<p>A <loc href="#terms-relative-dimension">relative dimension</loc> on the inline progression axis,
+i.e., in the positive <loc href="#terms-inline-progression-direction">inline progression direction</loc>,
+abbreviated as <emph>ipd</emph>.</p>
+</def>
+</gitem>
+<gitem id="terms-inline-progression-direction">
+<label>[inline progression direction]</label>
+<def>
+  <p>The direction taken by the progression of inline areas in some formatting context. In the context of horizontal writing modes,
+  the inline progression direction is typically left-to-right or right-to-left; whereas, in the context of vertical writing modes,
+  it is typically top-to-bottom.</p>
+</def>
+</gitem>
 <gitem id="terms-inline-region">
 <label>[inline region]</label>
 <def>
@@ -1131,7 +1191,27 @@ that effectively represent the content, styling, layout, and timing of a source 
 an <loc href="#terms-intermediate-synchronic-document">intermediate synchronic document</loc>.</p>
 </def>
 </gitem>
-
+<gitem id="terms-intrinsic-block-content-extent">
+<label>[intrinsic block content extent]</label>
+<def>
+<p>The extent, i.e., width and height, of a sequence of block level content determined by formatting the content to an unbounded block
+container area, and determining the width and height of the resulting, formatted block container.</p>
+</def>
+</gitem>
+<gitem id="terms-intrinsic-image-extent">
+<label>[intrinsic image extent]</label>
+<def>
+<p>The extent, i.e., width and height of an image determined from information internal to the image itself, e.g.,
+the width and height of the image's pixel array.</p>
+</def>
+</gitem>
+<gitem id="terms-intrinsic-inline-content-extent">
+<label>[intrinsic inline content extent]</label>
+<def>
+<p>The extent, i.e., width and height, of a sequence of inline level content determined by formatting the content to an unbounded inline
+container area, and determining the width and height of the resulting, formatted inline container.</p>
+</def>
+</gitem>
 <gitem id="terms-higher-level-protocol">
 <label>[higher level protocol]</label>
 <def>
@@ -1139,7 +1219,12 @@ an <loc href="#terms-intermediate-synchronic-document">intermediate synchronic d
 that is outside the scope of this specification.</p>
 </def>
 </gitem>
-
+<gitem id="terms-horizontal-axis">
+<label>[horizontal axis]</label>
+<def>
+<p>An axis parallel to the plane of the horizon.</p>
+</def>
+</gitem>
 <gitem id="terms-nested-profile">
 <label>[nested profile]</label>
 <def>
@@ -1299,6 +1384,13 @@ internal refers to being internal to a <loc href="#terms-document-instance">docu
 or the internal state representation thereof.</p>
 </def>
 </gitem>
+<gitem id="terms-reduced-xml-infoset">
+<label>[reduced xml infoset]</label>
+<def>
+<p>An XML Information Set <bibref ref="infoset"/> that satisfies the
+constraints specify by <specref ref="reduced-infoset"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-region">
 <label>[region]</label>
 <def>
@@ -1306,13 +1398,6 @@ or the internal state representation thereof.</p>
 desired or potential presentation processing, and which is represented as
 a rectangular area of a presentation surface into which content
 is composed and rendered during presentation processing.</p>
-</def>
-</gitem>
-<gitem id="terms-reduced-xml-infoset">
-<label>[reduced xml infoset]</label>
-<def>
-<p>An XML Information Set <bibref ref="infoset"/> that satisfies the
-constraints specify by <specref ref="reduced-infoset"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-related-media-object">
@@ -1344,11 +1429,19 @@ related media object.</p>
 <p>A <loc href="#terms-viewport">viewport</loc> targeted to a <loc href="#terms-related-media-object-region">related media object region</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-relative-dimension">
+<label>[relative dimension]</label>
+<def>
+<p>A scalar value that denotes a length on either the inline or block progression axis in accordance with
+the applicable writing mode.</p>
+</def>
+</gitem>
 <gitem id="terms-root-container-region">
 <label>[root container region]</label>
 <def>
 <p>A logical region that establishes a coordinate system into which
-<loc href="#terms-content-region">content regions</loc> are placed and optionally clipped.</p>
+<loc href="#terms-content-region">content regions</loc> are placed and optionally clipped,
+about which see also <specref ref="root-container-region-semantics"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-root-temporal-extent">
@@ -1420,6 +1513,16 @@ active time interval of the feature.</p>
 <p>A <loc href="#terms-region">region</loc> that is <loc href="#terms-temporally-active">temporally active</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-text-orientation">
+<label>[text orientation]</label>
+<def>
+<p>A characterization of the orientation of a glyph area in terms of degrees of rotation, where
+0&deg; designates an <code>upright</code> orientation, 
+90&deg;, i.e, 90 degrees clockwise, designates a <code>sidewaysRight</code> orientation, and
+270&deg;, i.e, 90 degrees counter-clockwise, designates a <code>sidewaysLeft</code> orientation,
+about which see also <specref ref="style-attribute-textOrientation"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-timed-text">
 <label>[timed text]</label>
 <def>
@@ -1446,7 +1549,7 @@ the <loc href="#ttml-content-doctype">TTML Content Document Type</loc>.</p>
 <label>[timed text content document instance]</label>
 <def>
 <p>A concrete realization of a <loc href="#terms-timed-text-content-document">timed text content document</loc>,
-about which see <specref ref="concrete-encoding"/>.</p>
+about which see also <specref ref="concrete-encoding"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-timed-text-document-instance">
@@ -1541,6 +1644,12 @@ and found to be valid as defined by <specref ref="doctypes"/>.</p>
 <p>&tbd;</p>
 </def>
 </gitem>
+<gitem id="terms-vertical-axis">
+<label>[vertical axis]</label>
+<def>
+<p>An axis perpendicular to the plane of the horizon.</p>
+</def>
+</gitem>
 <gitem id="terms-viewport">
 <label>[viewport]</label>
 <def>
@@ -1558,6 +1667,19 @@ specification identifies three such targets:
 <loc href="#terms-display-region-target">display region target</loc>, and
 <loc href="#terms-related-media-object-region-target">related media object region target</loc>.
 </p>
+</def>
+</gitem>
+<gitem id="terms-width">
+<label>[width]</label>
+<def>
+<p>An <loc href="#terms-absolute-dimension">absolute dimension</loc> on the <loc href="#terms-horizontal-axis">horizontal axis</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-writing-mode">
+<label>[writing mode]</label>
+<def>
+<p>An enumeration collection of tokens, each of which designates a combination of the axis and direction of flow of
+both inline and block oriented content, about which see <specref ref="style-attribute-writingMode"/>.</p>
 </def>
 </gitem>
 </glist>
@@ -3019,8 +3141,10 @@ Metadata Attributes
 Parameter Attributes
 </td>
 <td>
+<loc href="#parameter-attribute-activeArea">ttp:activeArea</loc>,
 <loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc>,
 <loc href="#parameter-attribute-clockMode">ttp:clockMode</loc>,
+<loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc>,
 <loc href="#parameter-attribute-dropMode">ttp:dropMode</loc>,
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc>,
@@ -3028,8 +3152,6 @@ Parameter Attributes
 <loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
 <loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
-<loc href="#parameter-attribute-safeCropArea">ttp:safeCropArea</loc>,
-<loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
 <loc href="#parameter-attribute-timeBase">ttp:timeBase</loc>,
@@ -4391,8 +4513,10 @@ of which TTML Content can be related to an external environment.</p>
 <head>Parameter Attribute Vocabulary</head>
 <p>The following attributes are defined in the TT Parameter Namespace.</p>
 <ulist>
+<item><p><specref ref="parameter-attribute-activeArea"/></p></item>
 <item><p><specref ref="parameter-attribute-cellResolution"/></p></item>
 <item><p><specref ref="parameter-attribute-clockMode"/></p></item>
+<item><p><specref ref="parameter-attribute-displayAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-dropMode"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
@@ -4400,8 +4524,6 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
 <item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
-<item><p><specref ref="parameter-attribute-safeCropArea"/></p></item>
-<item><p><specref ref="parameter-attribute-storageAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
 <item><p><specref ref="parameter-attribute-timeBase"/></p></item>
@@ -4409,6 +4531,87 @@ of which TTML Content can be related to an external environment.</p>
 <p>Unless explicitly stated otherwise, linear white-space (LWSP) must
 appear between adjacent non-terminal components of a TT Parameter value
 unless some other delimiter is permitted and used.</p>
+<div3 id="parameter-attribute-activeArea">
+<head>ttp:activeArea</head>
+<p>The <att>ttp:activeArea</att> attribute may be used to designate a rectangular area of the <loc href="#terms-root-container-region">root
+container region</loc> outside of which renderable content may be safely cropped during presentation processing.</p>
+<note role="motivation">
+  <p>Under normal circumstances, renderable content within the <loc href="#terms-root-container-region">root container region</loc>
+  is not cropped during presentation processing. That is, the entirety of the <loc href="#terms-root-container-region">root container region</loc>
+  is presented. However, under special circumstances, such as when a <loc href="#terms-related-media-object">related media object</loc> is cropped, then
+  some cropping may also be applied to the <loc href="#terms-root-container-region">root container region</loc>. The <att>ttp:activeArea</att> parameter
+  attribute provides a means for the author to signal a portion of the <loc href="#terms-root-container-region">root container region</loc>
+  where cropping may safely occur, which is to say that the complement of this portion should not be cropped, i.e., the interior of the
+  safe crop area is not safe to crop and should remain visible when presented.</p>
+</note>
+<note role="elaboration">
+  <p>Alternative names have been suggested for this attribute that would emphasize the intent to ensure that content remains visible as opposed
+  to suggesting an intent to allow content to be hidden (by cropping). After considering alternatives, the current name has been retained in order to
+  reflect existing industry practice surrounding this concept.</p>
+</note>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-activeArea-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:activeArea</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:activeArea
+  : origin? extent
+
+origin
+  : x y
+
+extent
+  : width height
+
+x, y, width, height
+  : <loc href="#style-value-percentage">&lt;percentage&gt;</loc>                            // where <emph>percentage</emph> is non-negative
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Computed values of the origin and extent of the safe crop area are determined by the rules described below,
+where percentage values are resolved with respect to the width and height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
+<note role="explanation">
+  <p>The intent of the following rules is to ensure
+  that the safe crop area is bounded by the <loc href="#terms-root-container-region">root container region</loc>.</p>
+</note>
+<p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
+  is the minimum of the resolved value of the specified <emph>width</emph> and
+  the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
+  <item><p>the interim computed value of <emph>height</emph>, <emph>I<sub>H</sub></emph>,
+  is the minimum of the resolved value of the specified <emph>height</emph> and
+  the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
+<p>The computed values of the <emph>x</emph> and <emph>y</emph> of the origin of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>x</emph> is
+  one half of the difference between the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>W</sub></emph>;
+  otherwise, it is the minimum of the resolved value of the specified <emph>x</emph> and the computed <emph>width</emph> of the
+  <loc href="#terms-root-container-region">root container region</loc>;</p></item>
+  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>y</emph> is
+  one half of the difference between the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>H</sub></emph>;
+  otherwise, it is the minimum of the resolved value of the specified <emph>y</emph> and the computed <emph>height</emph> of the
+  <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
+<p>The final computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
+<ulist>
+  <item><p>the final computed value of <emph>width</emph> is the minimum of (1) the difference between the computed <emph>width</emph>
+  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>x</emph> and (2) the interim computed value of <emph>width</emph>,
+  <emph>I<sub>W</sub></emph>;</p></item>
+  <item><p>the final computed value of <emph>height</emph> is the minimum of (1) the difference between the computed <emph>height</emph>
+  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
+  <emph>I<sub>H</sub></emph>.</p></item>
+</ulist>
+<p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
+by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
+<p>A <att>ttp:activeArea</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
 <div3 id="parameter-attribute-cellResolution">
 <head>ttp:cellResolution</head>
 <p>The <att>ttp:cellResolution</att> attribute may be used by an author
@@ -4510,6 +4713,38 @@ tolerance of TAI.</p>
 <p>If not specified, the value of this parameter must be considered
 to be <code>utc</code>.</p>
 <p>A <att>ttp:clockMode</att> attribute is considered to be significant only
+when specified on the <el>tt</el> element.</p>
+</div3>
+<div3 id="parameter-attribute-displayAspectRatio">
+<head>ttp:displayAspectRatio</head>
+<p>The <att>ttp:displayAspectRatio</att> attribute may be used to express the <loc href="#terms-display-aspect-ratio">display aspect ratio</loc> associated with the
+<loc href="#terms-authoring-viewport">authoring viewport</loc>.</p>
+<issue id="issue-ttml2-30">
+<head>Maintaining Display Aspect Ratio</head>
+<source><loc href="https://github.com/w3c/ttml2/issues/30">https://github.com/w3c/ttml2/issues/30</loc></source>
+<p>Tie up loose ends with respect to support for retaining display aspect ratio. See also new values of <loc href="#style-attribute-extent"><att>tts:extent</att></loc>:
+<code>contain</code> and <code>cover</code>.</p>
+</issue>
+<p>If specified, the value of this attribute must adhere to the following syntax:</p>
+<table id="parameter-attribute-displayAspectRatio-syntax" role="syntax">
+<caption>Syntax Representation &ndash; ttp:displayAspectRatio</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+ttp:displayAspectRatio
+  : numerator demoninator                   // <emph>numerator</emph> != 0; <emph>demoninator</emph> != 0
+
+numerator | demoninator
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If specified, then both numerator and demoninator must be non-zero.
+If not specified, then the storage aspect ratio of the <loc href="#terms-authoring-viewport">authoring viewport</loc> is undefined.</p>
+<p>A <att>ttp:displayAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-dropMode">
@@ -4899,119 +5134,6 @@ numerator | demoninator
 <p>If not specified, then square pixels (i.e., aspect ratio 1:1) must be assumed to apply.
 If specified, then both numerator and demoninator must be non-zero.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-</div3>
-<div3 id="parameter-attribute-safeCropArea">
-<head>ttp:safeCropArea</head>
-<p>The <att>ttp:safeCropArea</att> attribute may be used to designate a rectangular area of the <loc href="#terms-root-container-region">root
-container region</loc> outside of which renderable content may be safely cropped during presentation processing.</p>
-<note role="motivation">
-  <p>Under normal circumstances, renderable content within the <loc href="#terms-root-container-region">root container region</loc>
-  is not cropped during presentation processing. That is, the entirety of the <loc href="#terms-root-container-region">root container region</loc>
-  is presented. However, under special circumstances, such as when a <loc href="#terms-related-media-object">related media object</loc> is cropped, then
-  some cropping may also be applied to the <loc href="#terms-root-container-region">root container region</loc>. The <att>ttp:safeCropArea</att> parameter
-  attribute provides a means for the author to signal a portion of the <loc href="#terms-root-container-region">root container region</loc>
-  where cropping may safely occur, which is to say that the complement of this portion should not be cropped, i.e., the interior of the
-  safe crop area is not safe to crop and should remain visible when presented.</p>
-</note>
-<note role="elaboration">
-  <p>Alternative names have been suggested for this attribute that would emphasize the intent to ensure that content remains visible as opposed
-  to suggesting an intent to allow content to be hidden (by cropping). After considering alternatives, the current name has been retained in order to
-  reflect existing industry practice surrounding this concept.</p>
-</note>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-safeCropArea-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:safeCropArea</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:safeCropArea
-  : origin? extent
-
-origin
-  : x y
-
-extent
-  : width height
-
-x, y, width, height
-  : <loc href="#style-value-percentage">&lt;percentage&gt;</loc>                            // where <emph>percentage</emph> is non-negative
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Computed values of the origin and extent of the safe crop area are determined by the rules described below,
-where percentage values are resolved with respect to the width and height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<note role="explanation">
-  <p>The intent of the following rules is to ensure
-  that the safe crop area is bounded by the <loc href="#terms-root-container-region">root container region</loc>.</p>
-</note>
-<p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
-  is the minimum of the resolved value of the specified <emph>width</emph> and
-  the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
-  <item><p>the interim computed value of <emph>height</emph>, <emph>I<sub>H</sub></emph>,
-  is the minimum of the resolved value of the specified <emph>height</emph> and
-  the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
-</ulist>
-<p>The computed values of the <emph>x</emph> and <emph>y</emph> of the origin of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>x</emph> is
-  one half of the difference between the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>W</sub></emph>;
-  otherwise, it is the minimum of the resolved value of the specified <emph>x</emph> and the computed <emph>width</emph> of the
-  <loc href="#terms-root-container-region">root container region</loc>;</p></item>
-  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>y</emph> is
-  one half of the difference between the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>H</sub></emph>;
-  otherwise, it is the minimum of the resolved value of the specified <emph>y</emph> and the computed <emph>height</emph> of the
-  <loc href="#terms-root-container-region">root container region</loc>.</p></item>
-</ulist>
-<p>The final computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>the final computed value of <emph>width</emph> is the minimum of (1) the difference between the computed <emph>width</emph>
-  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>x</emph> and (2) the interim computed value of <emph>width</emph>,
-  <emph>I<sub>W</sub></emph>;</p></item>
-  <item><p>the final computed value of <emph>height</emph> is the minimum of (1) the difference between the computed <emph>height</emph>
-  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
-  <emph>I<sub>H</sub></emph>.</p></item>
-</ulist>
-<p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
-by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
-<p>A <att>ttp:safeCropArea</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-</div3>
-<div3 id="parameter-attribute-storageAspectRatio">
-<head>ttp:storageAspectRatio</head>
-<p>The <att>ttp:storageAspectRatio</att> attribute may be used to express the <loc href="#terms-storage-aspect-ratio">storage aspect ratio</loc> associated with the
-<loc href="#terms-authoring-viewport">authoring viewport</loc>.</p>
-<issue id="issue-ttml2-30">
-<head>Maintaining Display Aspect Ratio</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/30">https://github.com/w3c/ttml2/issues/30</loc></source>
-<p>Tie up loose ends with respect to support for retaining display aspect ratio. See also new values of <loc href="#style-attribute-extent"><att>tts:extent</att></loc>:
-<code>contain</code> and <code>cover</code>.</p>
-</issue>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-storageAspectRatio-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:storageAspectRatio</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:storageAspectRatio
-  : numerator demoninator                   // <emph>numerator</emph> != 0; <emph>demoninator</emph> != 0
-
-numerator | demoninator
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, then both numerator and demoninator must be non-zero.
-If not specified, then the storage aspect ratio of the <loc href="#terms-authoring-viewport">authoring viewport</loc> is undefined.</p>
-<p>A <att>ttp:storageAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-subFrameRate">
@@ -6679,9 +6801,16 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 <td>
 <eg xml:space="preserve">
 &lt;image
+  <loc href="#animation-attribute-animate">animate</loc> = IDREFS
+  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
+  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
+  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
+  <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
+  <loc href="#style-attribute-style">style</loc> = IDREFS
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>+
   <loc href="#content-attribute-xlink-href">xlink:href</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#anyURI">xsd:anyURI</loc>
@@ -6694,7 +6823,8 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
   {<emph>any attribute in TT Style namespace</emph>}
   {<emph>any attribute in TT Metadata namespace</emph>}
   {<emph>any attribute not in default or any TT namespace</emph>}&gt;
-  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
+  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
+  href="#element-vocab-group-animation">Animation.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
 &lt;/image&gt;
 </eg>
 </td>
@@ -7535,6 +7665,7 @@ element types:</p>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
 <item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
@@ -7590,6 +7721,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -7678,6 +7810,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -7767,6 +7900,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -7789,41 +7923,21 @@ as a style property only to those element types indicated in the following table
 <p>If the value of this attribute is <code>auto</code>, then the computed value
 of the style property must be considered to be the same as the intrinsic extent (size) of the associated background image.</p>
 <p>If the value of this attribute is <code>contain</code>, then the computed value
-of the style property must be determined as follows:</p>
-<olist>
-  <item><p>Let <emph>SAR<sub>C</sub> </emph> be the storage aspect ratio of the
-  <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc>.</p></item>
-<item><p>Let <emph>SAR<sub>I</sub> </emph> be the intrinsic storage aspect ratio of the image.</p></item>
-<item>
-  <p>Determine scaling factor <emph>SF</emph> as follows:</p>
-  <olist>
-    <item><p>If <emph>SAR<sub>C</sub> </emph> is less than or equal to <emph>SAR<sub>I</sub> </emph>, then <emph>SF</emph>
-    is <emph>W<sub>C</sub> </emph>/<emph>W<sub>I</sub> </emph>, where <emph>W<sub>C</sub> </emph> and <emph>W<sub>I</sub> </emph>
-    are the widths of the <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc> and the image, respectively.</p></item>
-    <item><p>Otherwise, <emph>SAR<sub>C</sub> </emph> is greater than <emph>SAR<sub>I</sub> </emph>, then <emph>SF</emph>
-    is <emph>H<sub>C</sub> </emph>/<emph>H<sub>I</sub> </emph>, where <emph>H<sub>C</sub> </emph> and <emph>H<sub>I</sub> </emph>
-    are the heights of the <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc> and the image, respectively.</p></item>
-  </olist>
-</item>
-</olist>
+of the style property is determined by performing the
+<loc href="#semantics-style-procedures-contain"><phrase role="strong">[compute containment scaling]</phrase></loc> procedure,
+where the target rectangle <emph>TR</emph> is initialized to the intrinsic width and height of the image,
+the reference rectangle <emph>RR</emph> is set to the <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc>,
+and the resulting output value of the target rectangle <emph>TR</emph> is the computed value.</p>
 <p>If the value of this attribute is <code>cover</code>, then the computed value
-of the style property must be determined as follows:</p>
-<olist>
-<item><p>Let <emph>SF<sub>W </sub> </emph> be <emph>W<sub>C</sub> </emph>/<emph>W<sub>I</sub> </emph>, where
-<emph>W<sub>C</sub> </emph> and <emph>W<sub>I</sub> </emph> are the width of the <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc>
-and the intrinsic width of the image, respectively.</p></item>
-<item><p>Let <emph>SF<sub>H </sub> </emph> be <emph>H<sub>C</sub> </emph>/<emph>H<sub>I</sub> </emph>, where
-<emph>H<sub>C</sub> </emph> and <emph>H<sub>I</sub> </emph> be the height of the <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc>
-and the intrinsic height of the image, respectively.</p></item>
-<item><p>If <emph>SF<sub>W</sub> </emph> and <emph>SF<sub>H</sub> </emph> are greater than one, let <emph>SF</emph> be
-the lesser of <emph>SF<sub>W</sub> </emph> and <emph>SF<sub>H</sub> </emph>.</p></item>
-<item><p>Otherwise, let  <emph>SF</emph> be the greater of <emph>SF<sub>W</sub> </emph> and <emph>SF<sub>H</sub> </emph>.</p></item>
-<item><p>Then the computed value of this property is the image's intrinsic extent (size) multipled by scaling factor <emph>SF</emph>.</p></item>
-</olist>
+of the style property is determined by performing the
+<loc href="#semantics-style-procedures-cover"><phrase role="strong">[compute cover scaling]</phrase></loc> procedure,
+where the target rectangle <emph>TR</emph> is initialized to the intrinsic width and height of the image,
+the reference rectangle <emph>RR</emph> is set to the <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc>,
+and the resulting output value of the target rectangle <emph>TR</emph> is the computed value.</p>
 <p>If the value of this attribute consists of two <loc href="#style-value-measure">&lt;measure&gt;</loc>
 specifications, then the first specification is the <emph>width</emph> and the second specification is the <emph>height</emph>,
 respectively, of the computed value of this property, in which case both <loc href="#style-value-measure">&lt;measure&gt;</loc> specifications
-must resolve to non-negative lengths.</p>
+must resolve (or be resolvable) to non-negative lengths.</p>
 <p>If the computed value of this style property differs from the image's intrinsic extent (size), then the image raster is scaled independently
 in each dimension to match the computed extent value.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
@@ -7896,6 +8010,7 @@ none
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -8010,6 +8125,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -8086,6 +8202,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -8169,6 +8286,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -8252,6 +8370,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -8741,6 +8860,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -8957,10 +9077,17 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <head>tts:extent</head>
 <p>The <att>tts:extent</att> attribute may be used for the following purposes:</p>
 <olist>
-<item><p>to specify the <emph>width</emph> and <emph>height</emph> of a region area;</p></item>
-<item><p>to specify the <emph>width</emph> and <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>, which has the effect of defining
-the <loc href="#terms-document-coordinate-space">document coordinate space</loc>;</p></item>
-<item><p>to specify or override the <emph>width</emph> and (or) <emph>height</emph> of an image's intrinsic extent.</p></item>
+<item><p>to specify the <loc href="#terms-width"><emph>width</emph></loc> and <loc href="#terms-height"><emph>height</emph></loc>
+of the <loc href="#terms-root-container-region">root container region</loc>,
+which has the effect of defining
+the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
+about which see also <specref ref="root-container-region-semantics"/>;</p></item>
+<item><p>to specify or override the
+<loc href="#terms-width"><emph>width</emph></loc> and <loc href="#terms-height"><emph>height</emph></loc>
+of a <loc href="#terms-content-region">content region</loc>;</p></item>
+<item><p>to specify the
+<loc href="#terms-width"><emph>width</emph></loc> and <loc href="#terms-height"><emph>height</emph></loc>
+of an image, overriding its intrinsic extent.</p></item>
 </olist>
 <p>This attribute may be specified by any
 element type
@@ -8987,10 +9114,10 @@ as a style property only to those element types indicated in the following table
 <td><emph>Applies to:</emph></td>
 <td>
 <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
-<loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>; see prose for special usage with 
+<loc href="#content-vocabulary-div"><el>div</el></loc> and
+<loc href="#content-vocabulary-p"><el>p</el></loc>
 </td>
 </tr>
 <tr>
@@ -9007,32 +9134,77 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
+<p>If a <att>tts:extent</att> attribute is specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element,
+then the specified value is restricted to one of the following:
+(1) the <code>auto</code> keyword,
+(2) the <code>contain</code> keyword, or
+(3) two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
+where these specifications are expressed as non-percentage, definite lengths using pixel units.
+All other syntactically legal values must not be used in this context, and,
+if used, must be considered an error for the purpose of validation processing and must be ignored
+for the purpose of presentation processing, in which case the initial value (<code>auto</code>) applies.</p>
+<p>If a <att>tts:extent</att> attribute is specified on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
+then its computed value determines the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc>
+of the associated <loc href="#terms-content-region">content region</loc>.</p>
+<p>If a <att>tts:extent</att> attribute is specified on an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element, then its computed value determines the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of the image.</p>
+<p>If a <att>tts:extent</att> attribute is specified on a <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, then the semantics specified by
+<specref ref="style-attribute-extent-special-usage"/> apply.</p>
+<p>If the value of this attribute is <code>auto</code>, then the computed value of its associated property is determined as follows:</p>
+<olist>
+  <item><p>if the property applies to the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then <code>auto</code> is interpreted as if the value <code>contain</code>
+  were specified;</p></item>
+  <item><p>if the property applies to a <loc href="#layout-vocabulary-region"><el>region</el></loc> element, either directly or indirectly, then <code>auto</code> is interpreted as if
+  the value "<code>auto</code> <code>auto</code>" were specified;</p></item>
+  <item><p>if the property applies to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element, then <code>auto</code>
+  is interpreted as if a value equal to the image's intrinsic extent were specified using two pixel-based <loc href="#style-value-length">&lt;length&gt;</loc> components, for example, "<code>200px</code> <code>100px</code>".</p></item>
+</olist>
+
+<p>If the value of this attribute is <code>contain</code>, then the computed value of its associated property is determined as follows:</p>
+<olist>
+  <item><p>if the property applies to the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then <code>contain</code> is interpreted as specified in
+  <specref ref="root-container-region-semantics"/>;</p></item>
+  <item><p>if the property applies to a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
+  then the computed value is determined by performing the
+  <loc href="#semantics-style-procedures-contain"><phrase role="strong">[compute containment scaling]</phrase></loc> procedure,
+  where the target rectangle <emph>TR</emph> is initialized to the
+  <loc href="#terms-intrinsic-block-content-extent">intrinsic block content extent</loc> of the region's content,
+  the reference rectangle <emph>RR</emph> is set to the extent of the <loc href="#terms-root-container-region">root container region</loc>,
+  and the resulting output value of the target rectangle <emph>TR</emph> is the computed value;</p></item>
+  <item><p>if the property applies to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element,
+  then the computed value is determined by performing the
+  <loc href="#semantics-style-procedures-contain"><phrase role="strong">[compute containment scaling]</phrase></loc> procedure,
+  where the target rectangle <emph>TR</emph> is initialized to the
+  <loc href="#terms-intrinsic-image-extent">intrinsic image extent</loc> of the image,
+  the reference rectangle <emph>RR</emph> is set to the available content space in the containing block area or line area
+  in accordance to whether the current formatting context is a block or inline formatting context, respectively,
+  and the resulting output value of the target rectangle <emph>TR</emph> is the computed value.</p></item>
+</olist>
+
+<p>If the value of this attribute is <code>cover</code>, then the computed value of its associated property is determined as follows:</p>
+<olist>
+  <item><p>if the property applies to a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
+  then the computed value is determined by performing the
+  <loc href="#semantics-style-procedures-cover"><phrase role="strong">[compute cover scaling]</phrase></loc> procedure,
+  where the target rectangle <emph>TR</emph> is initialized to the
+  <loc href="#terms-intrinsic-block-content-extent">intrinsic block content extent</loc> of the region's content,
+  the reference rectangle <emph>RR</emph> is set to the extent of the <loc href="#terms-root-container-region">root container region</loc>,
+  and the resulting output value of the target rectangle <emph>TR</emph> is the computed value;</p></item>
+  <item><p>if the property applies to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element,
+  then the computed value is determined by performing the
+  <loc href="#semantics-style-procedures-cover"><phrase role="strong">[compute cover scaling]</phrase></loc> procedure,
+  where the target rectangle <emph>TR</emph> is initialized to the
+  <loc href="#terms-intrinsic-image-extent">intrinsic image extent</loc> of the image,
+  the reference rectangle <emph>RR</emph> is set to the available content space in the containing block area or line area
+  in accordance to whether the current formatting context is a block or inline formatting context, respectively,
+  and the resulting output value of the target rectangle <emph>TR</emph> is the computed value.</p></item>
+</olist>
+
 <p>If the value of this attribute consists of two <loc href="#style-value-measure">&lt;measure&gt;</loc>
-specifications, then they must be interpreted as <emph>width</emph>
-and <emph>height</emph>, where the first specification is the
-<emph>width</emph>, and the second specification is the <emph>height</emph>.</p>
-<p>Each <loc href="#style-value-measure">&lt;measure&gt;</loc> value used to express an extent dimension must be non-negative.</p>
-<p>If applied to a <loc href="#terms-region">region</loc> other than the <loc href="#terms-root-container-region">root container region</loc> and 
-the value of this attribute is <code>auto</code>, then the computed value
-of the style property must be considered to be the same as the extent of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<ednote>
-<name>Semantics of contain and cover</name>
-<date>2015-01-05</date>
-<edtext>Define semantics of new <code>contain</code> and <code>cover</code> values. Exclude these values from use with an <el>image</el> element.
-Enlarge usage of extent on root (tt) element to permit use of <code>contain</code> and <code>cover</code>.</edtext>
-</ednote>
-<p>The extent of the <loc href="#terms-root-container-region">root container region</loc> is determined either by a
-<att>tts:extent</att> specified on the <el>tt</el> element, if
-present, or as described by <specref ref="document-structure-vocabulary-tt"/> if not present.
-If <att>tts:extent</att> is specified on the <el>tt</el> element, then
-the width and height must be expressed in terms of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
-and these specifications must be expressed as non-percentage, definite lengths using pixel units.</p>
-<p>If a <att>tts:extent</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
-extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of this attribute.</p>
-<p>If a <att>tts:extent</att> attribute is specified on an <el>image</el> element, then its computed value determines or overrides the image's intrinsic
-width and (or) height.</p>
+specifications, then they must be interpreted as
+<loc href="#terms-width"><emph>width</emph></loc> and <loc href="#terms-height"><emph>height</emph></loc>, where the first specification is the
+<loc href="#terms-width"><emph>width</emph></loc>, and the second specification is the <loc href="#terms-height"><emph>height</emph></loc>,
+in which case both <loc href="#style-value-measure">&lt;measure&gt;</loc>
+specifications must resolve (or be resolvable) to non-negative lengths.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -9079,6 +9251,18 @@ while use of a smaller extent makes region overflow more likely.</p>
 </tr>
 </tbody>
 </table>
+<div4 id="style-attribute-extent-special-usage">
+<head>Special Usage</head>
+<ednote>
+<name>Revision Required - Issue #168</name>
+<date>2016-11-05</date>
+<edtext>Revise or rewrite the following paragraph as required for issue #168.</edtext>
+</ednote>
+<p>If a <att>tts:extent</att> attribute is specified on a <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, then that specification must be considered to be
+equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, where the
+extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
+value of this attribute.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-fontFamily">
 <head>tts:fontFamily</head>
@@ -9331,14 +9515,69 @@ the appropriate sign.</p>
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
-<p>The <att>tts:fontShear</att> style is illustrated by the following
-example.</p>
-<ednote>
-<name>Font Shear Example</name>
-<date>2015-01-07</date>
-<edtext>Insert example fragment and image of tts:fontShear.</edtext>
-</ednote>
+<p>The <att>tts:fontShear</att> style is illustrated by the following example.</p>
+<table id="font-shear-example-1" role="example">
+<caption>Example Fragment &ndash; Font Shear</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p region="horizontal"&gt;
+  &lt;span <phrase role="strong">tts:fontShear="16.78842%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="50%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="64.333%"</phrase>&gt;三日坊主&lt;/span&gt;
+&lt;/p&gt;
+&lt;p region="vertical"&gt;
+  &lt;span <phrase role="strong">tts:fontShear="16.78842%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="50%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="64.333%"</phrase>&gt;三日坊主&lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="font-shear-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Font Shear</caption>
+<tbody>
+<tr>
+<td><graphic source="images/fontShear_1.png" alt="TTML fontShear style property"/></td>
+</tr>
+</tbody>
+</table>
+<table id="font-shear-example-2" role="example">
+<caption>Example Fragment &ndash; Font Shear w/negative values</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p region="horizontal"&gt;
+  &lt;span <phrase role="strong">tts:fontShear="-16.78842%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="-50%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="-64.333%"</phrase>&gt;三日坊主&lt;/span&gt;
+&lt;/p&gt;
+&lt;p region="vertical"&gt;
+  &lt;span <phrase role="strong">tts:fontShear="-16.78842%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="-50%"</phrase>&gt;三日坊主&lt;/span&gt;&lt;br/&gt;
+  &lt;span <phrase role="strong">tts:fontShear="-64.333%"</phrase>&gt;三日坊主&lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="font-shear-example-2-images" role="example-images">
+<caption>Example Rendition &ndash; Font Shear w/negative values</caption>
+<tbody>
+<tr>
+<td><graphic source="images/fontShear_2.png" alt="TTML fontShear style property"/></td>
+</tr>
+</tbody>
+</table>
 </div3>
+
 <div3 id="style-attribute-fontSize">
 <head>tts:fontSize</head>
 <p>The <att>tts:fontSize</att> attribute is used to specify a style property
@@ -10064,6 +10303,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -10407,6 +10647,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -11093,11 +11334,39 @@ otherwise (the number of ruby and base glyph areas are not equal), the semantics
 descendants are considered; i.e., non-spacing glyph area descendants, such as combining marks, have no impact on ruby alignment.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>auto</code>.</p>
-<ednote>
-<name>Ruby Align Example</name>
-<date>2014-09-20</date>
-<edtext>Add example source and rendering of tts:rubyAlign.</edtext>
-</ednote>
+<p>The <att>tts:rubyAlign</att> style is illustrated by the following example.</p>
+<table id="ruby-align-example-1" role="example">
+<caption>Example Fragment &ndash; Ruby Align</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;styling&gt;
+  &lt;style xml:id="s3" tts:ruby="container"/&gt;
+  &lt;style xml:id="s4" tts:ruby="base"/&gt;
+  &lt;style xml:id="s5" tts:ruby="text"/&gt;
+&lt;/styling&gt;
+...
+&lt;p&gt;
+  &lt;span style="s3" <phrase role="strong">tts:rubyAlign="start"</phrase>&gt;&lt;span style="s4"&gt;自業自得&lt;/span&gt;&lt;span style="s5"&gt;一二三&lt;/span&gt;&lt;/span&gt;
+      &lt;span style="s3" <phrase role="strong">tts:rubyAlign="spaceAround"</phrase>&gt;&lt;span style="s4"&gt;自業自得&lt;/span&gt;&lt;span style="s5"&gt;一二三&lt;/span&gt;&lt;/span&gt;&lt;br/&gt;
+  &lt;span style="s3" <phrase role="strong">tts:rubyAlign="end"</phrase>&gt;&lt;span style="s4"&gt;自業自得&lt;/span&gt;&lt;span style="s6"&gt;一二三&lt;/span&gt;&lt;/span&gt;
+      &lt;span style="s3" <phrase role="strong">tts:rubyAlign="spaceBetween"</phrase>&gt;&lt;span style="s4"&gt;自業自得&lt;/span&gt;&lt;span style="s6"&gt;一二三&lt;/span&gt;&lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="ruby-align-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Ruby Align</caption>
+<tbody>
+<tr>
+<td><graphic source="images/rubyAlign_1.png" alt="TTML rubyAlign style property"/></td>
+</tr>
+</tbody>
+</table>
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon and extend the semantics defined by <bibref ref="cssruby"/>, &sect;4.3, and the examples and example
@@ -11463,18 +11732,69 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tbody>
 </table>
 <p></p>
-<ednote>
-<name>Ruby Position Example</name>
-<date>2014-09-20</date>
-<edtext>Add example source and rendering of tts:rubyPosition.</edtext>
-</ednote>
+<p>The <att>tts:rubyPosition</att> style is illustrated by the following example.</p>
+<table id="ruby-position-example-1" role="example">
+<caption>Example Fragment &ndash; Ruby Position</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;styling&gt;
+&lt;style xml:id="s3" tts:ruby="container"/&gt;
+&lt;style xml:id="s4" tts:ruby="base"/&gt;
+&lt;style xml:id="s5" tts:ruby="text"/&gt;
+&lt;/styling&gt;
+...
+&lt;p region="<phrase role="strong">tblr</phrase>"&gt;
+  &lt;span style="s3" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span style="s4">一二&lt;/span&gt;
+    &lt;span style="s5">一二&lt;/span&gt;
+  &lt;/span&gt;三四&lt;br/&gt;五六
+  &lt;span style="s3" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span style="s4"&gt;七八&lt;/span&gt;
+    &lt;span style="s5"&gt;七八&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/p&gt;
+&lt;p region="<phrase role="strong">lrtb</phrase>"&gt;
+  &lt;span style="s3" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span style="s4">一二&lt;/span&gt;
+    &lt;span style="s5">一二&lt;/span&gt;
+  &lt;/span&gt;三四&lt;br/&gt;五六
+  &lt;span style="s3" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span style="s4"&gt;七八&lt;/span&gt;
+    &lt;span style="s5"&gt;七八&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/p&gt;
+&lt;p region="<phrase role="strong">tbrl</phrase>"&gt;
+  &lt;span style="s3" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span style="s4">一二&lt;/span&gt;
+    &lt;span style="s5">一二&lt;/span&gt;
+  &lt;/span&gt;三四&lt;br/&gt;五六
+  &lt;span style="s3" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span style="s4"&gt;七八&lt;/span&gt;
+    &lt;span style="s5"&gt;七八&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="ruby-position-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Ruby Position</caption>
+<tbody>
+<tr>
+<td><graphic source="images/rubyPosition_1.png" alt="TTML rubyPosition style property"/></td>
+</tr>
+</tbody>
+</table>
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="cssruby"/>, &sect;4.1, and the examples and example
 renderings shown there apply modulo the mappings defined above.</p>
 </note>
 </div3>
-
 <div3 id="style-attribute-rubyReserve">
 <head>tts:rubyReserve</head>
 <p>The <att>tts:rubyReserve</att> attribute is used to specify additional space to apply to affected line
@@ -11559,19 +11879,13 @@ with a value equal to one half of the <emph>used value</emph> of the <code>tts:l
 
 <p>If the <loc href="#style-value-length">&lt;length&gt;</loc> component is specified, it must be non-negative.</p>
 
-<ednote>
-<name>Ruby Reserve Example</name>
-<date>2016-01-16</date>
-<edtext>Add example source to match following renditions. Add <code>none</code>, <code>both</code>, <code>outside</code>, <code>around</code>,
-and <code>between</code> renditions.</edtext>
-</ednote>
 <p></p>
-<table id="style-attribute-rubyReserve-images" role="example-images-bordered" css="width: 800px">
+<table id="style-attribute-rubyReserve-images" role="example-images-bordered" css="width: 630px">
 <caption>Example Renditions &ndash; Ruby Reserve</caption>
 <colgroup>
   <col css="text-align: left"/>
-  <col css="text-align: center; width: 324px"/>
-  <col css="text-align: center; width: 324px"/>
+  <col css="text-align: center; width: 234px"/>
+  <col css="text-align: center; width: 234px"/>
 </colgroup>
 <thead>
 <tr>
@@ -11582,19 +11896,44 @@ and <code>between</code> renditions.</edtext>
 </thead>
 <tbody>
 <tr>
+<td><code>none</code></td>
+<td><graphic source="images/rubyReserve_1A_none.png" alt="TTML rubyReserve style property: 'auto'" css="width: 230px; height: 240px"/></td>
+<td><graphic source="images/rubyReserve_1B_none.png" alt="TTML rubyReserve style property: 'auto'" css="width: 230px; height: 240px"/></td>
+</tr>
+<tr>
 <td><code>auto</code></td>
-<td><graphic source="images/rubyReserve1.png" alt="TTML rubyReserve style property: 'auto'" css="width: 320px; height: 108px"/></td>
-<td><graphic source="images/rubyReserve4.png" alt="TTML rubyReserve style property: 'auto'" css="width: 320px; height: 108px"/></td>
+<td><graphic source="images/rubyReserve_2A_auto.png" alt="TTML rubyReserve style property: 'before'" css="width: 230px; height: 213px"/></td>
+<td><graphic source="images/rubyReserve_2B_auto.png" alt="TTML rubyReserve style property: 'before'" css="width: 230px; height: 213px"/></td>
 </tr>
 <tr>
 <td><code>before</code></td>
-<td><graphic source="images/rubyReserve2.png" alt="TTML rubyReserve style property: 'before'" css="width: 320px; height: 108px"/></td>
-<td><graphic source="images/rubyReserve5.png" alt="TTML rubyReserve style property: 'before'" css="width: 320px; height: 108px"/></td>
+<td><graphic source="images/rubyReserve_3A_before.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 213px"/></td>
+<td><graphic source="images/rubyReserve_3B_before.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 213px"/></td>
 </tr>
 <tr>
 <td><code>after</code></td>
-<td><graphic source="images/rubyReserve3.png" alt="TTML rubyReserve style property: 'after'" css="width: 320px; height: 108px"/></td>
-<td><graphic source="images/rubyReserve6.png" alt="TTML rubyReserve style property: 'after'" css="width: 320px; height: 108px"/></td>
+<td><graphic source="images/rubyReserve_4A_after.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 213px"/></td>
+<td><graphic source="images/rubyReserve_4B_after.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 213px"/></td>
+</tr>
+<tr>
+<td><code>both</code></td>
+<td><graphic source="images/rubyReserve_5A_both.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 267px"/></td>
+<td><graphic source="images/rubyReserve_5B_both.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 267px"/></td>
+</tr>
+<tr>
+<td><code>outside</code></td>
+<td><graphic source="images/rubyReserve_6A_outside.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 213px"/></td>
+<td><graphic source="images/rubyReserve_6B_outside.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 213px"/></td>
+</tr>
+<tr>
+<td><code>around</code></td>
+<td><graphic source="images/rubyReserve_7A_around.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 240px"/></td>
+<td><graphic source="images/rubyReserve_7B_around.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 240px"/></td>
+</tr>
+<tr>
+<td><code>between</code></td>
+<td><graphic source="images/rubyReserve_8A_between.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 182px"/></td>
+<td><graphic source="images/rubyReserve_8B_between.png" alt="TTML rubyReserve style property: 'after'" css="width: 230px; height: 182px"/></td>
 </tr>
 </tbody>
 </table>
@@ -12097,11 +12436,36 @@ If no emphasis color is specified,
 then the emphasis color must be interpreted as if a color of <code>current</code> were specified.
 If no emphasis position is specified,
 then the emphasis position must be interpreted as if a position of <code>auto</code> were specified.</p>
-<ednote>
-<name>Text Emphasis Example</name>
-<date>2015-01-05</date>
-<edtext>Insert example fragment and image of tts:textEmphasis.</edtext>
-</ednote>
+
+<p>The <att>tts:textEmphasis</att> style is illustrated by the following example.</p>
+<table id="text-emphasis-example-1" role="example">
+<caption>Example Fragment &ndash; Text Emphasis</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="filled circle before"</phrase>&gt;花&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="filled dot before"</phrase>&gt;よ&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="filled sesame before"</phrase>&gt;り&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="open circle before"</phrase>&gt;だ&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="open dot before"</phrase>&gt;ん&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="open sesame before"</phrase>&gt;ご&lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="text-emphasis-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Text Emphasis</caption>
+<tbody>
+<tr>
+<td><graphic source="images/textEmphasis_1.png" alt="TTML textEmphasis style property"/></td>
+</tr>
+</tbody>
+</table>
 <note role="derivation">
 <p>The semantics of the style property represented by this attribute are based upon 
 that defined by <bibref ref="css3-decoration"/>, &sect; 3.</p>
@@ -12520,6 +12884,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -13629,14 +13994,16 @@ units
 </table>
 <p>If no <emph>units</emph> component is specified in a &lt;length&gt; expression, then it is to be treated as
 if <code>px</code> (pixels) units were specified.</p>
-<p>The semantics of
-the unit of measure <code>px</code> (pixel) 
-are as defined by <bibref ref="xsl11"/>, &sect; 5.9.13.</p>
-<issue id="issue-ttml2-27">
-<head>Definition of Pixel</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/27">https://github.com/w3c/ttml2/issues/27</loc></source>
-<p>Replace unworkable (and unadopted) definition of pixel with an appropriate definition based on units of some viewport coordinate space.</p>
-</issue>
+<p>If the computed value of the <loc href="#profile-attribute-version"><att>ttp:version</att></loc> attribute on the
+root <el>tt</el> element is two (2) or greater, then the unit of measure <code>px</code> (pixel) corresponds with a logical pixel
+in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>; otherwise,
+it corresponds with the semantics defined by <bibref ref="xsl11"/>, &sect; 5.9.13.</p>
+<note role="historical">
+<p>In previous versions of this specification, a pixel was defined to be equivalent to the semantics adopted
+by <bibref ref="xsl11"/>, &sect; 5.9.13. However, a preponderance of implementations adopted instead the semantics
+specified here; namely, as a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
+which in most cases, has been tied to the coordinate space of a <loc href="#terms-related-media-object">related media object</loc>.</p>
+</note>
 <p>When specified relative to a font whose size is expressed as a single length
 measure or as two length measures of equal length, the unit of measure <code>em</code> is considered to be
 identical to that defined by <bibref ref="xsl11"/>, &sect; 5.9.13;
@@ -13673,17 +14040,17 @@ the <loc href="#terms-root-container-region">root container region</loc>.</p>
 </div3>
 <div3 id="style-value-measure">
 <head>&lt;measure&gt;</head>
-<p>A &lt;measure&gt; value expresses a distance used to measure an allocation
-dimension in either the inline progression direction, the <emph>ipd</emph>, or the block progression direction, the <emph>bpd</emph>, where
-the direction that applies is determined by the context of use.</p>
-<note role="clarification">
-<p>The terms <emph>ipd</emph> and <emph>bpd</emph> are interpreted in a writing mode relative manner
-such that <emph>ipd</emph> always corresponds to a measure in the inline
-progression direction and <emph>bpd</emph> always corresponds to a measure in the block progression direction.
-Therefore, in horizontal writing modes, <emph>ipd</emph> expresses a horizontal measure
-and <emph>bpd</emph> expresses a vertical measure, while, in vertical writing mode, <emph>ipd</emph> expresses a vertical measure
-and <emph>bpd</emph> expresses a horizontal measure, where horizontal and vertical are always interpreted in an absolute sense.</p>
-</note>
+<p>A &lt;measure&gt; value expresses a distance as an 
+<loc href="#terms-absolute-dimension">absolute dimension</loc> or a
+<loc href="#terms-relative-dimension">relative dimension</loc>, where the context of use determines which dimension applies.</p>
+<p>If one of the two absolute dimensions, <loc href="#terms-height">height</loc> or <loc href="#terms-width">width</loc>, applies,
+then the associated relative dimension, <loc href="#terms-block-progression-dimension">bpd</loc> or
+<loc href="#terms-inline-progression-dimension">ipd</loc>, is determined in accordance with the applicable
+<loc href="#terms-writing-mode">writing mode</loc> and <loc href="#terms-text-orientation">text orientation</loc>, such that
+the associated relative dimension governs the interpretation of the specified measure as described below.</p>
+<p>Otherwise, one of the two relative dimensions, <loc href="#terms-block-progression-dimension">bpd</loc> or
+<loc href="#terms-inline-progression-dimension">ipd</loc>, applies, in which case that relative dimension governs the
+interpretation of the specified measure as specified below.</p>
 <table id="measure-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;measure&gt;</caption>
 <tbody>
@@ -13707,7 +14074,10 @@ and <emph>bpd</emph> expresses a horizontal measure, where horizontal and vertic
 <gitem>
 <label><code>auto</code></label>
 <def>
-<p>As determined by <specref ref="semantics-style-automatic-measure-calculation"/>.</p>
+<p>For <emph>ipd</emph>, either (1) the intrinsic size in the <loc href="#terms-inline-progression-direction">inline progression direction</loc>
+when applied to an image, or (2) the numeric value that would be obtained if the <code>available</code> value were specified.
+For <emph>bpd</emph>, either (1) the intrinsic size in the <loc href="#terms-block-progression-direction">block progression direction</loc>
+when applied to an image, or (2) the numeric value that would be obtained if the <code>available</code> value were specified.</p>
 </def>
 </gitem>
 <gitem>
@@ -13722,7 +14092,8 @@ the current element's combined border and padding <emph>bpd</emph>.</p>
 <gitem>
 <label><code>fitContent</code></label>
 <def>
-<p>A numeric value equal to the maximum of the values of (1) <code>minContent</code> and (2) the minimum of values of <code>maxContent</code> and <code>available</code>.</p>
+<p>A numeric value equal to the maximum of the values of (1) <code>minContent</code> and (2) the minimum of values of <code>maxContent</code>
+and <code>available</code>.</p>
 </def>
 </gitem>
 <gitem>
@@ -14328,7 +14699,6 @@ where positive denotes towards the after edge and negative towards the before ed
 The third <loc href="#style-value-length">&lt;length&gt;</loc> term, if present, denotes the blur radius, and must be non-negative.</p>
 <p>If no <loc href="#style-value-color">&lt;color&gt;</loc> term is
 present, then the computed value of the <att>tts:color</att> property applies.</p>
-<p>If applied to a glyph area, then an <code>inset</code> token and a spread distance, if either or both are present, are ignored for purpose of presentation processing.</p>
 <note role="elaboration">
 <p>When a <loc href="#style-value-length">&lt;length&gt;</loc> expressed in
 cells is used in a <att>tts:textShadow</att> value,
@@ -15042,22 +15412,82 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 </olist>
 </div4>
 </div3>
-<div3 id="semantics-style-automatic-measure-calculation">
-<head>Automatic Measure Calculation</head>
-<ednote>
-<name>Automatic Measures</name>
-<date>2014-11-30</date>
-<edtext>Define semantics for resolving the <code>auto</code> value as used with a  <loc href="#style-value-measure">&lt;measure&gt;</loc> expression,
-the definition of which should be consistent with <bibref ref="css3-box"/>, &sect; 15.</edtext>
-</ednote>
-<p></p>
-<ednote>
-<name>Automatic Measure Applied to Image</name>
-<date>2015-01-25</date>
-<edtext>Define semantics for resolving the <code>auto</code> value as used with a  <loc href="#style-value-measure">&lt;measure&gt;</loc> expression when
-applied to the width or height of an <el>image</el> element.</edtext>
-</ednote>
-</div3> <!-- semantics-style-automatic-measure-calculation -->
+<div3 id="semantics-style-procedures">
+<head>Style Procedures</head>
+<p>This section defines miscellaneous style related procedures referenced elsewhere in this specification.</p>
+<div4 id="semantics-style-procedures-contain">
+<head>Containment Calculations</head>
+<glist>
+<gitem>
+<label>[compute containment scaling](<emph>inout</emph> target rectangle TR, <emph>in</emph> reference rectangle RR)</label>
+<def>
+<olist>
+  <item><p>If the units of measure of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
+  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>, is zero, then set <emph>W<sub>t</sub></emph> to one;
+  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
+  <item><p>Let <emph>SAR<sub>r</sub></emph> be the storage aspect ratio of the reference rectangle <emph>RR</emph>.</p></item>
+  <item><p>Let <emph>SAR<sub>t</sub></emph> be the storage aspect ratio of the target rectangle <emph>TR</emph>.</p></item>
+  <item>
+    <p>Determine scaling factor <emph>SF</emph> as follows:</p>
+    <olist>
+      <item><p>If <emph>SAR<sub>r</sub></emph> is less than or equal to <emph>SAR<sub>t</sub></emph>, then <emph>SF</emph>
+      is <emph>W<sub>r</sub></emph> / <emph>W<sub>t</sub></emph>, where <emph>W<sub>r</sub></emph> and <emph>W<sub>t</sub></emph>
+      are the widths of the reference and target rectangles, respectively.</p></item>
+      <item><p>Otherwise, <emph>SAR<sub>r</sub></emph> is greater than <emph>SAR<sub>t</sub></emph>, then <emph>SF</emph>
+      is <emph>H<sub>r</sub></emph> / <emph>H<sub>t</sub></emph>, where <emph>H<sub>r</sub></emph> and <emph>H<sub>t</sub></emph>
+      are the heights of the reference and target rectangles, respectively.</p></item>
+    </olist>
+  </item>
+  <item><p>
+  If <emph>SF</emph> is not equal to <emph>1.0</emph>, then
+  set <emph>W<sub>t</sub></emph> to <emph>SF</emph> * <emph>W<sub>t</sub></emph>
+  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>,
+  i.e., scale target rectangle <emph>TR</emph> in place by scale factor <emph>SF</emph>.
+  </p></item>
+</olist>
+</def>
+</gitem>
+</glist>
+<note role="explanation">
+  <p>For the purpose of implementing the above algorithm, storage aspect ratios and scaling factors are
+  to be represented in a form that provides at least 7 significant decimal digits.</p>
+</note>
+</div4>  <!-- semantics-style-procedure-contain -->
+<div4 id="semantics-style-procedures-cover">
+<head>Cover Calculations</head>
+<glist>
+<gitem>
+<label>[compute cover scaling](<emph>inout</emph> target rectangle TR, <emph>in</emph> reference rectangle RR)</label>
+<def>
+<olist>
+  <item><p>If the units of measure of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
+  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>, is zero, then set <emph>W<sub>t</sub></emph> to one;
+  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
+  <item><p>Let <emph>SF<sub>W </sub> </emph> be <emph>W<sub>R</sub> </emph>/<emph>W<sub>T</sub> </emph>, where
+  <emph>W<sub>R</sub> </emph> and <emph>W<sub>T</sub> </emph> are the widths of the reference rectangle RR
+  and the target rectangle TR, respectively.</p></item>
+  <item><p>Let <emph>SF<sub>H </sub> </emph> be <emph>H<sub>R</sub> </emph>/<emph>H<sub>T</sub> </emph>, where
+  <emph>H<sub>R</sub> </emph> and <emph>H<sub>T</sub> </emph> be the heights of the reference rectangle RR
+  and the target rectangle TR, respectively.</p></item>
+  <item><p>If <emph>SF<sub>W</sub> </emph> and <emph>SF<sub>H</sub> </emph> are greater than one, let <emph>SF</emph> be
+  the lesser of <emph>SF<sub>W</sub> </emph> and <emph>SF<sub>H</sub> </emph>;
+  otherwise, let  <emph>SF</emph> be the greater of <emph>SF<sub>W</sub> </emph> and <emph>SF<sub>H</sub> </emph>.</p></item>
+  <item><p>
+  If <emph>SF</emph> is not equal to <emph>1.0</emph>, then
+  set <emph>W<sub>t</sub></emph> to <emph>SF</emph> * <emph>W<sub>t</sub></emph>
+  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>,
+  i.e., scale target rectangle <emph>TR</emph> in place by scale factor <emph>SF</emph>.
+  </p></item>
+</olist>
+</def>
+</gitem>
+</glist>
+<note role="explanation">
+  <p>For the purpose of implementing the above algorithm, scaling factors are
+  to be represented in a form that provides at least 7 significant decimal digits.</p>
+</note>
+</div4>  <!-- semantics-style-procedure-cover -->
+</div3> <!-- semantics-style-procedures -->
 </div2> <!-- semantics-styling -->
 </div1> <!-- styling -->
 <div1 id="layout">
@@ -16132,6 +16562,7 @@ has time container semantics, then <code>par</code> time container semantics mus
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
@@ -16274,7 +16705,7 @@ is equivalent to zero.</p>
 </item>
 <item>
 <p>The implicit duration of a <el>body</el>, <el>div</el>, <el>p</el>,
-or <el>span</el> element is determined in accordance to (1) whether
+<el>span</el>, or <el>image</el> element is determined in accordance to (1) whether
 the element is a parallel or sequential time container, (2) the default
 <code>endsync</code> semantics defined above by <specref ref="timing-attribute-timeContainer"/>,
 and (3) the semantics of <bibref ref="smil3"/> as applied to these time
@@ -16776,6 +17207,7 @@ element types:</p>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
@@ -17821,6 +18253,15 @@ for future standardization.</p>
 <p>The following sub-sections define all feature designations, expressed
 as relative URIs (fragment identifiers) with respect to the 
 TT Feature Namespace base URI.</p>
+<div3 id="feature-activeArea">
+<head>#activeArea</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#activeArea</code> feature if it recognizes and is capable of
+transforming the <loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#activeArea</code> feature if it implements presentation semantic support for the
+<loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc> attribute.</p>
+</div3>
 <div3 id="feature-animate">
 <head>#animate</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate</code>
@@ -18356,7 +18797,7 @@ feature if it recognizes and is capable of transforming the following
 core attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
 <ulist>
 <item><p><loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc></p></item>
-<item><p><loc href="#profile-attribute-contentProfileMethod"><att>ttp:contentProfileMethod</att></loc></p></item>
+<item><p><loc href="#profile-attribute-contentProfileCombination"><att>ttp:contentProfileCombination</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#contentProfiles</code>
 feature if it implements presentation semantic support for the
@@ -18636,32 +19077,6 @@ the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to a <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
-</div3>
-<div3 id="feature-featureNarrowing">
-<head>#featureNarrowing</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#featureNarrowing</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#parameter-attribute-featureNarrowing"><att>ttp:featureNarrowing</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#featureNarrowing</code> feature if it implements presentation semantic support
-for the <loc
-href="#parameter-attribute-featureNarrowing"><att>ttp:featureNarrowing</att></loc>
-attribute.</p>
-</div3>
-<div3 id="feature-featureWidening">
-<head>#featureWidening</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#featureWidening</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#parameter-attribute-featureWidening"><att>ttp:featureWidening</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#featureWidening</code> feature if it implements presentation semantic support
-for the <loc
-href="#parameter-attribute-featureWidening"><att>ttp:featureWidening</att></loc>
-attribute.</p>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -19388,6 +19803,32 @@ href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
 that consist of four <loc
 href="#style-value-length">&lt;length&gt;</loc> specification.</p>
 </div3>
+<div3 id="feature-permitFeatureNarrowing">
+<head>#permitFeatureNarrowing</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#permitFeatureNarrowing</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#permitFeatureNarrowing</code> feature if it implements presentation semantic support
+for the <loc
+href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
+attribute.</p>
+</div3>
+<div3 id="feature-permitFeatureWidening">
+<head>#permitFeatureWidening</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#permitFeatureWidening</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#permitFeatureWidening</code> feature if it implements presentation semantic support
+for the <loc
+href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
+attribute.</p>
+</div3>
 <div3 id="feature-pixelAspectRatio">
 <head>#pixelAspectRatio</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -19440,7 +19881,7 @@ feature if it recognizes and is capable of transforming the following
 core attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
 <ulist>
 <item><p><loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc></p></item>
-<item><p><loc href="#profile-attribute-processorProfileMethod"><att>ttp:processorProfileMethod</att></loc></p></item>
+<item><p><loc href="#profile-attribute-processorProfileCombination"><att>ttp:processorProfileCombination</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#processorProfiles</code>
 feature if it implements presentation semantic support for the
@@ -19645,15 +20086,6 @@ transforming the <loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#rubyReserve</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</att></loc> attribute.</p>
-</div3>
-<div3 id="feature-safeCropArea">
-<head>#safeCropArea</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#safeCropArea</code> feature if it recognizes and is capable of
-transforming the <loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#safeCropArea</code> feature if it implements presentation semantic support for the
-<loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-showBackground">
 <head>#showBackground</head>
@@ -20418,6 +20850,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td><phrase role="strong">Presentation</phrase></td>
 </tr>
 <tr>
+<td><loc href="#feature-activeArea"><code>#activeArea</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-animate"><code>#animate</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -20733,16 +21170,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-featureNarrowing"><code>#featureNarrowing</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-featureWidening"><code>#featureWidening</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
 <td><loc href="#feature-font"><code>#font</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -20993,6 +21420,16 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
+<td><loc href="#feature-permitFeatureNarrowing"><code>#permitFeatureNarrowing</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-permitFeatureWidening"><code>#permitFeatureWidening</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-pixelAspectRatio"><code>#pixelAspectRatio</code></loc></td>
 <td>O</td>
 <td>O</td>
@@ -21089,11 +21526,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-rubyReserve"><code>#rubyReserve</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-safeCropArea"><code>#safeCropArea</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -21569,7 +22001,7 @@ which is expressed as an XML document wherein the root element adheres to
 express maximum compliance for both transformation and presentation processing.</p>
 <note role="elaboration">
 <p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-full">DFXP Full Profile</xspecref>.</p>
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-full">DFXP Full Profile</xspecref>.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-full;</eg>
 </div2>
@@ -21579,7 +22011,7 @@ express maximum compliance for both transformation and presentation processing.<
 express minimum compliance for presentation processing.</p>
 <note role="elaboration">
 <p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
 it requires support for the
 <loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>  and
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
@@ -21592,12 +22024,157 @@ it requires support for the
 express minimum compliance for transformation processing.</p>
 <note role="elaboration">
 <p>This profile is a superset of the
-<xspecref href="https://dvcs.w3.org/hg/ttml/raw-file/default/ttml1/spec/ttml1.html#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
 it requires support for the
 <loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>  and
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-transformation;</eg>
+</div2>
+</div1>
+<div1 id="root-container-region-semantics">
+<head>Root Container Region Semantics</head>
+<p><emph>This appendix is normative.</emph></p>
+<p>This appendix specifies the semantics for determining essential characteristics of the root container region and its use, including:</p>
+<ulist>
+<item><p>aspect ratios (display, storage, pixel)</p></item>
+<item><p>resolution</p></item>
+<item><p>coordinate space</p></item>
+</ulist>
+<div2 id="root-container-region-semantics-aspect-ratios">
+<head>Aspect Ratios</head>
+<p>Three aspect ratios apply to the <loc href="#terms-root-container-region">root container region</loc>:</p>
+<glist>
+<gitem>
+  <label>display aspect ratio (DAR)</label>
+  <def>
+    <p></p>
+    <p>The <emph>display</emph> aspect ratio of the root container corresponds with the displayed aspect ratio of the root container, i.e.,
+    the actual (or intended) physical aspect ratio when it is (to be) presented on a visual medium;
+    this <emph>display</emph> aspect ratio may be specified by the
+    <loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc> attribute on the
+    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p>
+  </def>
+</gitem>
+<gitem>
+  <label>storage aspect ratio (SAR)</label>
+  <def>
+    <p></p>
+    <p>The <emph>storage</emph> aspect ratio of the root container corresponds with the logical aspect ratio of the root container
+    in storage or sample units;
+    this <emph>storage</emph> aspect ratio may be specified (indirectly) by the
+    <loc href="#style-attribute-extent">tts:extent</loc> attribute on the
+    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p>
+    <p>When the <loc href="#style-attribute-extent">tts:extent</loc> attribute is specified on the
+    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then the <code>SAR</code> is assumed to have been specified as
+    follows:</p>
+    <olist>
+      <item><p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute consists of
+      two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, then the <code>SAR</code> is considered
+      to be specified and having a numeric value equal to the
+      <loc href="#terms-width">width</loc> of the extent divided its <loc href="#terms-height">height</loc>.</p></item>
+      <item><p>Otherwise (the computed value is <code>contain</code>),
+      the <code>SAR</code> is considered to be unspecified and is resolved according to the rules specified below.</p></item>
+    </olist>
+  </def>
+</gitem>
+<gitem>
+  <label>pixel aspect ratio (PAR)</label>
+  <def>
+    <p></p>
+    <p>The <emph>pixel</emph> aspect ratio of the root container corresponds with the actual (or intended) physical aspect ratio of
+    each individual physical (as opposed to logical) pixel of the root container when it is (to be) presented on a visual medium;
+    this <emph>pixel</emph> aspect ratio may be specified by the
+    <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRato</loc> attribute on the
+    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p>
+  </def>
+</gitem>
+</glist>
+<p>The following sub-sections specify how these aspect ratios are resolved according to which are specified in a document.</p>
+<div3 id="root-container-region-semantics-0-aspect-ratio">
+<head>No Aspect Ratio</head>
+<p>If none of the three aspect ratios is specified, then a default value for <code>PAR</code> of <code>1</code> (one) is assumed to apply,
+and the values of <code>DAR</code> and <code>SAR</code> are resolved according to <specref ref="root-container-region-semantics-1-aspect-ratio"/> below.</p>
+</div3>
+<div3 id="root-container-region-semantics-1-aspect-ratio">
+<head>One Aspect Ratio</head>
+<p>If only one of the three aspect ratios is specified, then the resolved values of the other two aspect ratios are determined as follows:</p>
+<olist>
+  <item>
+    <p>If <code>DAR</code> is specified, then its resolved value is its specified value, and the values of <code>SAR</code> and <code>PAR</code>
+    are determined as follows:</p>
+    <olist>
+      <item><p>the resolved value of <code>SAR</code> is the resolved value of <code>DAR</code>;</p></item>
+      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one);</p></item>
+    </olist>
+  </item>
+  <item>
+    <p>If <code>SAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>PAR</code>
+    are determined as follows:</p>
+    <olist>
+      <item><p>the resolved value of <code>DAR</code> is the resolved value of <code>SAR</code>;</p></item>
+      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one);</p></item>
+    </olist>
+  </item>
+  <item>
+    <p>If <code>PAR</code> is specified or its default value assumed to apply,
+    then its resolved value is its specified or assumed value, and the values of <code>SAR</code> and <code>DAR</code> are determined as follows:</p>
+    <olist>
+      <item><p>if a <loc href="#terms-related-media-object">related media object</loc> exists and has a defined <code>SAR</code>,
+      then the resolved value of <code>SAR</code> is the <code>SAR</code> of the
+      <loc href="#terms-related-media-object">related media object</loc>;</p></item>
+      <item><p>otherwise, the resolved value of <code>SAR</code>
+      is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p></item>
+    </olist>
+    <p>The value of <code>DAR</code> is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below.</p>
+  </item>
+</olist>
+</div3>
+<div3 id="root-container-region-semantics-2-aspect-ratio">
+<head>Two Aspect Ratios</head>
+<p>If two of the three aspect ratios are specified or previously resolved,
+then the resolved value of the third aspect ratio is determined using the equation <code>DAR = SAR &times; PAR</code>.</p>
+</div3>
+<div3 id="root-container-region-semantics-3-aspect-ratio">
+<head>Three Aspect Ratios</head>
+<p>If all three aspect ratios are specified and if their values satisfy the equation <code>DAR = SAR &times; PAR</code>,
+then they are considered the resolved aspect ratios. However, if the equation is not satisfied, then, when performing
+validation processing, an error should be reported (subject to validation processor configuration), and, when performing
+presentation processing, the specified <code>PAR</code> value is ignored and the resolved value of <code>PAR</code> is
+determined by <specref ref="root-container-region-semantics-2-aspect-ratio"/> above.</p>
+</div3>
+</div2>
+<div2 id="root-container-region-semantics-resolution">
+<head>Resolution</head>
+<p>The root container region is subdivided into a fixed number of rows and columns of equally sized (but possibly non-square) pixels where
+the number of columns signifies the resolution of the root container region on the <loc href="#terms-horizontal-axis">horizontal axis</loc> and
+the number of rows signifies the resolution of the root container region on the <loc href="#terms-vertical-axis">vertical axis</loc>, where the
+former is defined to be the <loc href="#terms-width">width</loc> and the
+latter is defined to be the <loc href="#terms-height">height</loc> of the root container region, respectively.</p>
+<p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute
+is specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element and consists of
+two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, then these two expressions denote
+the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of the root container region, and,
+consequently, determine its resolution.
+Otherwise, if a <loc href="#terms-related-media-object">related media object</loc> exists, then the resolution of
+the root container region is the resolution of the <loc href="#terms-related-media-object">related media object</loc>, or,
+if no <loc href="#terms-related-media-object">related media object</loc> exists, then the resolution of
+the root container region is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+</div2>
+<div2 id="root-container-region-semantics-coordinate-space">
+<head>Coordinate Space</head>
+<p>The coordinate space of the root container region, also known as the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
+is an unbounded, two-dimensional plane on which a closed set of logical pixels are defined that take the form of a rectangle <emph>R</emph> such that
+the said pixels are interior to (inside of) the <emph>R</emph>, and where the origin (position) of this coordinate space is coincident with the upper,
+left-hand corner of <emph>R</emph>, and where positive pixels on the vertical axis extend downwards and positive pixels on the horizontal axis
+extend rightwards.
+Furthermore, the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of <emph>R</emph> is set to the
+resolved resolution of the root container region.
+Lastly, the aspect ratios that apply to <emph>R</emph> are established according to the resolved values of <code>DAR</code>, <code>SAR</code>,
+and <code>PAR</code> as indicated above.</p>
+<p>Unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies,
+the <loc href="#terms-document-coordinate-space">document coordinate space</loc> is determined once and only once when processing a
+given document instance.</p>
 </div2>
 </div1>
 <div1 id="time-expression-semantics">
@@ -22256,7 +22833,7 @@ are available for use with an
 <item><p><loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultipler</loc></p></item>
 <item><p><loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc></p></item>
 <item><p><loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc></p></item>
-<item><p><loc href="#parameter-attribute-storageAspectRatio">ttp:storageAspectRatio</loc></p></item>
+<item><p><loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc></p></item>
 <item><p><loc href="#parameter-attribute-tickRate">ttp:tickRate</loc></p></item>
 </ulist>
@@ -22268,7 +22845,7 @@ encoded as a well-formed <bibref ref="xml10"/> document using the UTF-8 characte
 an <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element or
 an <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element as the root document element.</p>
 <p>When a resource consisting of a concrete ISD Sequence or ISD instance is interchanged and a media type is used to identify the content type
-of that resource, then the media type <code>application/ttml+xml</code> should be used, about which see <bibref ref="ttml1"/> Appendix C.
+of that resource, then the media type <code>application/ttml+xml</code> should be used, about which see also <bibref ref="ttml1"/> Appendix C.
 If this media type is used, the optional <code>profile</code> parameter must not be specified, or, if specified, must be ignored by a processor.</p>
 </div2>
 <div2 id="isd-examples">
@@ -24458,10 +25035,10 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <head>Parameter Attributes</head>
 <p>The following attributes were added in order to expand parameter functionality:</p>
 <ulist>
+<item><p><loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRatio</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-mediaDuration"><att>ttp:mediaDuration</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-safeCropArea"><att>ttp:safeCropArea</att></loc></p></item>
 </ulist>
 </div3>
 
@@ -24487,34 +25064,34 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <head>Styling Attributes</head>
 <p>The following attributes were added in order to expand styling functionality:</p>
 <ulist>
-<item><p><loc href="#style-attribute-backgroundClip"><att>ttp:backgroundClip</att></loc></p></item>
-<item><p><loc href="#style-attribute-backgroundExtent"><att>ttp:backgroundExtent</att></loc></p></item>
-<item><p><loc href="#style-attribute-backgroundImage"><att>ttp:backgroundImage</att></loc></p></item>
-<item><p><loc href="#style-attribute-backgroundOrigin"><att>ttp:backgroundOrigin</att></loc></p></item>
-<item><p><loc href="#style-attribute-backgroundPosition"><att>ttp:backgroundPosition</att></loc></p></item>
-<item><p><loc href="#style-attribute-backgroundRepeat"><att>ttp:backgroundRepeat</att></loc></p></item>
-<item><p><loc href="#style-attribute-border"><att>ttp:border</att></loc></p></item>
-<item><p><loc href="#style-attribute-bpd"><att>ttp:bpd</att></loc></p></item>
-<item><p><loc href="#style-attribute-disparity"><att>ttp:disparity</att></loc></p></item>
-<item><p><loc href="#style-attribute-fontKerning"><att>ttp:fontKerning</att></loc></p></item>
-<item><p><loc href="#style-attribute-fontSelectionStrategy"><att>ttp:fontSelectionStrategy</att></loc></p></item>
-<item><p><loc href="#style-attribute-fontShear"><att>ttp:fontShear</att></loc></p></item>
-<item><p><loc href="#style-attribute-fontVariant"><att>ttp:fontVariant</att></loc></p></item>
-<item><p><loc href="#style-attribute-ipd"><att>ttp:ipd</att></loc></p></item>
-<item><p><loc href="#style-attribute-letterSpacing"><att>ttp:letterSpacing</att></loc></p></item>
-<item><p><loc href="#style-attribute-position"><att>ttp:position</att></loc></p></item>
-<item><p><loc href="#style-attribute-ruby"><att>ttp:ruby</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyAlign"><att>ttp:rubyAlign</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyOffset"><att>ttp:rubyOffset</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyOverflow"><att>ttp:rubyOverflow</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyOverhang"><att>ttp:rubyOverhang</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyOverhangClass"><att>ttp:rubyOverhangClass</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyPosition"><att>ttp:rubyPosition</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyReserve"><att>ttp:rubyReserve</att></loc></p></item>
-<item><p><loc href="#style-attribute-textCombine"><att>ttp:textCombine</att></loc></p></item>
-<item><p><loc href="#style-attribute-textEmphasis"><att>ttp:textEmphasis</att></loc></p></item>
-<item><p><loc href="#style-attribute-textOrientation"><att>ttp:textOrientation</att></loc></p></item>
-<item><p><loc href="#style-attribute-textShadow"><att>ttp:textShadow</att></loc></p></item>
+<item><p><loc href="#style-attribute-backgroundClip"><att>tts:backgroundClip</att></loc></p></item>
+<item><p><loc href="#style-attribute-backgroundExtent"><att>tts:backgroundExtent</att></loc></p></item>
+<item><p><loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc></p></item>
+<item><p><loc href="#style-attribute-backgroundOrigin"><att>tts:backgroundOrigin</att></loc></p></item>
+<item><p><loc href="#style-attribute-backgroundPosition"><att>tts:backgroundPosition</att></loc></p></item>
+<item><p><loc href="#style-attribute-backgroundRepeat"><att>tts:backgroundRepeat</att></loc></p></item>
+<item><p><loc href="#style-attribute-border"><att>tts:border</att></loc></p></item>
+<item><p><loc href="#style-attribute-bpd"><att>tts:bpd</att></loc></p></item>
+<item><p><loc href="#style-attribute-disparity"><att>tts:disparity</att></loc></p></item>
+<item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc></p></item>
+<item><p><loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc></p></item>
+<item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>
+<item><p><loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc></p></item>
+<item><p><loc href="#style-attribute-ipd"><att>tts:ipd</att></loc></p></item>
+<item><p><loc href="#style-attribute-letterSpacing"><att>tts:letterSpacing</att></loc></p></item>
+<item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
+<item><p><loc href="#style-attribute-ruby"><att>tts:ruby</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyOverflow"><att>tts:rubyOverflow</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyOverhang"><att>tts:rubyOverhang</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyOverhangClass"><att>tts:rubyOverhangClass</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyPosition"><att>tts:rubyPosition</att></loc></p></item>
+<item><p><loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</att></loc></p></item>
+<item><p><loc href="#style-attribute-textCombine"><att>tts:textCombine</att></loc></p></item>
+<item><p><loc href="#style-attribute-textEmphasis"><att>tts:textEmphasis</att></loc></p></item>
+<item><p><loc href="#style-attribute-textOrientation"><att>tts:textOrientation</att></loc></p></item>
+<item><p><loc href="#style-attribute-textShadow"><att>tts:textShadow</att></loc></p></item>
 </ulist>
 </div3>
 

@@ -715,6 +715,13 @@ the height of the <loc href="#terms-root-container-region">root container region
 axis, where the column and row counts are determined by the <att>ttp:cellResolution</att> parameter attribute.</p>
 </def>
 </gitem>
+<gitem id="terms-computed-style-set">
+<label>[computed style set]</label>
+<def>
+<p>A <loc href="#terms-style-set">style set</loc> containing computed style values as determined
+by <specref ref="semantics-style-resolution-processing-css"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-content-element">
 <label>[content element]</label>
 <def>
@@ -1475,11 +1482,31 @@ of an <loc href="#terms-embedded-data-resource">embedded data resource</loc> by 
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element.</p>
 </def>
 </gitem>
+<gitem id="terms-specified-style-set">
+<label>[specified style set]</label>
+<def>
+<p>A <loc href="#terms-style-set">style set</loc> containing specified style values as determined
+by <specref ref="semantics-style-resolution-processing-sss"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-storage-aspect-ratio">
 <label>[storage aspect ratio]</label>
 <def>
 <p>The ratio between the number of horizontal samples and the number of vertical samples of a two-dimensional
 representation of an image, a video frame, a viewport or region, etc.</p>
+</def>
+</gitem>
+<gitem id="terms-style-set">
+<label>[style set]</label>
+<def>
+<p>A style property set as defined
+by <loc href="#semantics-style-property-set">style property set</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-styled-element">
+<label>[styled element]</label>
+<def>
+<p>An element which is or may be associated with a <loc href="#terms-computed-style-set">computed style set</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-synthetic-document-syncbase">
@@ -9577,7 +9604,6 @@ span.</p>
 </tbody>
 </table>
 </div3>
-
 <div3 id="style-attribute-fontSize">
 <head>tts:fontSize</head>
 <p>The <att>tts:fontSize</att> attribute is used to specify a style property
@@ -9613,8 +9639,8 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td>if not <loc href="#content-vocabulary-span"><el>region</el></loc> element,
-then relative to parent element's font size; otherwise, relative to the
+<td>if not <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element,
+then relative to nearest ancestor <loc href="#terms-styled-element">styled element's</loc> computed font size; otherwise, relative to the
 <loc href="#terms-computed-cell-size">computed cell size</loc></td>
 </tr>
 <tr>
@@ -9648,6 +9674,8 @@ units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
+<p>If the value of this attribute specifies an <code>em</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
+then it is treated as if an equivalent percentage value were specified, where <code>1em</code> is equal to <code>100%</code>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -14023,6 +14051,9 @@ equal to the inline progression dimension of the anamorphically
 scaled font when used to specify lengths in the inline progression
 direction and equal to the block progression dimension of the scaled
 font when used to specify lengths in the block progression direction.</p>
+<p>Unless specified otherwise, the <code>em</code> unit is resolved in relation to the
+computed value of the property associated with the <loc href="#style-attribute-fontSize">tts:fontSize</loc> attribute that
+applies to the element in which context the <code>em</code> unit is resolved.</p>
 <p>The semantics of the unit of measure <code>c</code> (cell) are
 defined by the parameter <specref
 ref="parameter-attribute-cellResolution"/>.</p>
@@ -15135,7 +15166,7 @@ of all style properties that apply to content and layout elements:</p>
 <p>For the purpose of interpreting the style resolution processing
 model specified below, the following conceptual definitions apply:</p>
 <glist>
-<gitem>
+<gitem id="semantics-style-property">
 <label>[style property]</label>
 <def>
 <p>a style property, <emph>P</emph>, is considered to consist of a
@@ -15161,7 +15192,7 @@ tuple <code>[category, type, value expression]</code></p>
 <p></p>
 </def>
 </gitem>
-<gitem>
+<gitem id="semantics-style-property-set">
 <label>[style (property) set]</label>
 <def>
 <p>a style (property) set consists of an unordered collection of style

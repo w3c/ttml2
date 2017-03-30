@@ -6802,6 +6802,13 @@ based on the actual character content of that document.</p>
 <div3 id="embedded-content-vocabulary-image">
 <head>image</head>
 <p>The <el>image</el> element is used to define an author supplied <loc href="#terms-image-resource">image resource</loc>.</p>
+
+<note role="clarification">
+<p>
+<specref ref="png-hdr-signaling"/> specifies a means of using ITU BT.2100 PQ full-range images with the PNG Format.
+</p>
+</note>
+
 <p>An <el>image</el> element may appear in two contexts: (1) as a child of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element and
 (2) as a child of an element in the <loc href="#element-vocab-group-block">Block.class</loc> element group, namely, as a child of a
 <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, or
@@ -23333,6 +23340,11 @@ href="http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09.html">The Disposi
 of Names in an XML Namespace</titleref>, TAG Finding, 9 January 2006. (See
 <xspecref href="http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09.html">http://www.w3.org/2001/tag/doc/namespaceState-2006-01-09</xspecref>.)
 </bibl>
+
+<bibl id="png" key="PNG">David Duce, <titleref
+href="http://www.w3.org/TR/2003/REC-PNG-20031110">Portable Network Graphics (PNG) Specification (Second Edition)</titleref>.
+</bibl>
+
 <bibl id="qaf-sg" key="QAF SG">Karl Dubost, et al.,
 <titleref
 href="http://www.w3.org/TR/2005/REC-qaframe-spec-20050817/">QA
@@ -25405,6 +25417,88 @@ where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
 
 </inform-div1>
 
+<div1 id="png-hdr-signaling">
+<head>Using ITU BT.2100 PQ full-range images with the PNG Format</head>
+<p><emph>This appendix is normative.</emph></p>
+<div2>
+<head>Introduction</head>
+<p>The <code>gAMA</code> chunk of the Portable Network Graphics (PNG) format (specified in <bibref ref="png"/>) parameterizes the transfer function of the image as a power law. 
+As such, it cannot model the PQ transfer function specified in <bibref ref="bt2100_1"/>, which is commonly used for HDR images.</p>
+<p>The following specifies a means of storing iITU BT.2100 PQ full-range images in the PNG format, without 
+modification to existing chunks or the introduction of new chunks.</p>
+</div2>
+
+
+<div2>
+<head>HDR PNG File</head>
+<p>
+The file shall conform to <bibref ref="png"/>.
+</p><p>
+The image type shall be <code>truecolor</code>.
+</p><p>
+The file shall contain an <code>iCCP</code> chunk with a profile name equal to
+ one of the values in <specref ref="hdr-systems"/>.
+</p><p>
+The embedded ICC profile of the <code>iCCP</code> chunk, the <code>cHRM</code> chunk and the <code>gAMA</code> chunk should be set according to the profile
+ name, as specified in <specref ref="hdr-systems"/>.
+</p>
+<note role="clarification">
+<p>
+The <code>gAMA</code>, <code>cHRM</code> and embedded ICC profile are provided
+ for compatibility with processors that do not conform to this Appendix.
+</p>
+</note>
+<p>
+The embedded ICC profile shall be compressed using Method 0, as specified in <bibref ref="png"/>.
+</p>
+<table id="hdr-systems" role="common">
+<caption>HDR Systems</caption>
+<thead>
+<tr>
+<th>Pixel Color Specifications</th>
+<th><code>iCCP</code> Chunk Profile Name</th>
+<th><code>iCCP</code> Chunk Embedded ICC Profile</th>
+<th><code>gAMA</code> Chunk</th>
+<th><code>cHRM</code> Chunk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full-range PQ as specified in <bibref ref="bt2100_1"/></td>
+<td><code>TTML2_COLOR_ITUR2100PQFull</code></td>
+<td><loc href="icc/TTML2_COLOR_ITUR2100PQFull.icc">TTML2_COLOR_ITUR2100PQFull.icc</loc></td>
+<td>15000</td>
+<td>
+
+<table>
+<thead>
+<tr><th>Parameter</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><th>White point x</th><th>31270</th></tr>
+<tr><th>White point y</th><th>32900</th></tr>
+<tr><th>Red x</th><th>70800</th></tr>
+<tr><th>Red y</th><th>29200</th></tr>
+<tr><th>Green x</th><th>17000</th></tr>
+<tr><th>Green y</th><th>79700</th></tr>
+<tr><th>Blue x</th><th>13100</th></tr>
+<tr><th>Blue y</th><th>4600</th></tr>
+</tbody>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+<note role="clarification">
+<p>
+The value of the <code>gAMA</code> chunk is selected for a close match to the PQ EOTF below 100 nits.
+</p>
+</note>
+
+</div2>
+
+</div1>
 
 &acknowledgements;
 </back>

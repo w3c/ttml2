@@ -10321,18 +10321,19 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 <div3 id="style-attribute-luminance">
 <head>tts:luminance</head>
 <p>The <att>tts:luminance</att> attribute is used to specify the absolute luminance of a region when
-its presentation fidelity requires a greater dynamic range than that provided by the <bibref ref="srgb"/> color space.</p>
+its presentation fidelity requires a greater dynamic range than that provided by the sRGB color space <bibref ref="srgb"/>.</p>
 <note role="clarification">
-<p>The sRGB colorspace specifies an absolute reference white point luminance of 80 cd∙m<sup>-2</sup>. 
-As a result, sRGB elements, i.e. elements whose color is specified in the sRGB space, cannot be
- reliably composited with high-dynamic range (HDR) images intended for display with significantly
- greater peak luminance, e.g. images that use the PQ EOTF specified in <bibref ref="bt2100_1"/>. Specifically:
- <ulist>
-<item><p>sRGB elements can appear too dim if they remains unscaled and the average luminance of the scene
- exceeds 80 cd∙m<sup>-2</sup>; and
+<p>The sRGB color space specifies an absolute reference white point luminance of 80 cd∙m<sup>-2</sup>. 
+As a result, elements presented in a color specified in the sRGB space (sRGB elements) cannot be
+reliably composited with high-dynamic range (HDR) content intended for display with significantly
+greater peak luminance, such as content that uses the perceptual quantizer electro-optical transfer function (PQ EOTF)
+specified in <bibref ref="bt2100_1"/>. Specifically,
+<ulist>
+<item><p>sRGB elements may appear too dim if they remain unscaled and the average luminance of the scene
+exceeds 80 cd∙m<sup>-2</sup>; and
 </p></item>
-<item><p>conversely, sRGB elements can appear too bright if they are uniformly scaled to an arbitrary large
- luminance, say 10,000 cd∙m<sup>-2</sup>.
+<item><p>sRGB elements may appear too bright if they are uniformly scaled to an arbitrary large
+luminance, such as 10,000 cd∙m<sup>-2</sup>.
 </p>
 </item>
 </ulist>
@@ -10349,12 +10350,12 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code><loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc></code>
+<code><loc href="#style-value-number">&lt;non-negative-number&gt;</loc></code>
 </td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
-<td><code>1</code></td>
+<td><code>1.0</code></td>
 </tr>
 <tr>
 <td><emph>Applies to:</emph></td>
@@ -10372,58 +10373,17 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>continuous, discrete</td>
 </tr>
 </tbody>
 </table>
-
-<p>When applying <att>tts:luminance</att>, the linear optical output value
- (C<sub>r</sub>, C<sub>g</sub>, C<sub>b</sub>)
- of the components of a pixel of a region is given by:
+<p>When applying <att>tts:luminance</att>, the linear optical output values
+(C<sub>r</sub>, C<sub>g</sub>, C<sub>b</sub>) of the components of a pixel of a region are defined as
+80 cd∙m<sup>-2</sup> ∙ <att>tts:luminance</att> ∙ (r, g, b), where (r, g, b) are the normalized linear sRGB components of the pixel.
 </p>
-<p>
-(C<sub>r</sub>, C<sub>g</sub>, C<sub>b</sub>) = 80 cd∙m<sup>-2</sup> ∙ <att>tts:luminance</att> ∙ (r, g, b)
-</p>
-<p>
-where (r, g, b) are the normalized linear sRGB components of the pixel.
-</p>
-
-<table id="hdr-computation-example" role="example">
-<caption>Example &ndash; Absolute linear optical output calculation using tts:luminance</caption>
-<tbody>
-<tr>
-<td>
-<slist>
-<sitem>
-Given <code>tts:luminance="1.5"</code>, the absolute linear optical output of the components of a rendered pixel with color <code>rgb(218,165,32)</code> is:
-</sitem>
-<sitem>
-(109.83, 56.28, 1.1) cd∙m<sup>-2</sup> ≈ 80 cd∙m<sup>-2</sup> ∙ 1.5 ∙((218/255)<sup>2.4</sup>, (165/255)<sup>2.4</sup>, (32/255)<sup>2.4</sup>)
-</sitem>
-</slist>
-</td>
-</tr>
-</tbody>
-</table>
-
-<p>
-<specref ref="absolute-hdr-compositing"/> provides a detailed example of compositing sRGB pixels onto HDR pixels using <att>tts:luminance</att>.
-</p>
-
-<note role="clarification">
-<p>
-As specified in <specref ref="style-value-color"/>, blending of a <loc href="#terms-document-instance">document instance</loc> onto a target image is typically performed using pixel components encoded using 
-the inverse EOTF of the target image, as opposed to pixel components expressed in 
-linear light. As a result, the use of semi-transparent regions can yield 
-perceptually different results depending on the inverse EOTF used by the target 
-image, especially when there is a large luminance difference between the pixels of the <loc href="#terms-document-instance">document instance</loc> and the target image, e.g. video. Authors are therefore encouraged to consider visual results involving semi-transparent elements.
-</p>
-</note>
-
 <p>If a computed value of the property associated with this attribute is not supported,
-then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest value.</p>
-
-<p>The style is illustrated by the following example.</p>
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
+<p>The <att>tts:luminance</att> style is illustrated by the following example.</p>
 <table id="style-attribute-luminance-example-1" role="example">
 <caption>Example Fragment &ndash; tts:luminance</caption>
 <tbody>
@@ -10442,19 +10402,50 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
   &lt;style tts:origin="10% 10%"/&gt;
   &lt;style tts:backgroundColor="black"/&gt;
   &lt;style tts:color="white"/&gt;
+  &lt;style tts:luminance="1.0"/&gt;
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
-  The absolute luminance of this text is specified higher 3.8 times brighter than the other text. 
+  The absolute luminance of the text in region one "r1" should be 3.8 times
+  brighter than the absolute luminance of the text in region two "r2". 
 &lt;/p&gt;
 &lt;p region="r2"&gt;
-  The other text.
+  Other text with the identity luminance adjustment (1.0).
 &lt;/p&gt;
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
+<p>An example of luminance adjustment calculations is described below.</p>
+<table id="hdr-computation-example" role="example">
+<caption>Example &ndash; Absolute linear optical output calculation using tts:luminance</caption>
+<tbody>
+<tr>
+<td>
+Given <code>tts:luminance="1.5"</code>, the absolute linear optical output of the components of a rendered pixel with color <code>rgb(218,165,32)</code>
+is (109.83, 56.28, 1.1) cd∙m<sup>-2</sup> ≈ 80 cd∙m<sup>-2</sup> ∙ 1.5 ∙((218/255)<sup>2.4</sup>, (165/255)<sup>2.4</sup>, (32/255)<sup>2.4</sup>),
+where the exponent of 2.4 is the gamma correction applied by the EOTF.
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>A detailed example of compositing sRGB pixels onto HDR pixels using <att>tts:luminance</att>
+is provided in Appendix <specref ref="hdr-compositing"/>.</p>
+</note>
+<note role="clarification">
+<p>
+As specified in <specref ref="style-value-color"/>, compositing regions of a rendered <loc href="#terms-document-instance">document instance</loc>
+onto a target medium is typically performed using pixel components encoded using 
+the inverse EOTF of the target medium, as opposed to pixel components expressed in 
+linear light. As a result, the use of semi-transparent regions can yield 
+perceptually different results depending on the inverse EOTF used by the target 
+medium, especially when there is a large difference in luminance between the pixels of the
+rendered <loc href="#terms-document-instance">document instance</loc> and the target medium.
+Consequently, authors are encouraged to consider visual results involving semi-transparent elements.
+</p>
+</note>
 </div3>
 <div3 id="style-attribute-opacity">
 <head>tts:opacity</head>
@@ -13541,6 +13532,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-named-character-class"/></p></item>
 <item><p><specref ref="style-value-named-color"/></p></item>
 <item><p><specref ref="style-value-non-negative-integer"/></p></item>
+<item><p><specref ref="style-value-non-negative-number"/></p></item>
 <item><p><specref ref="style-value-number"/></p></item>
 <item><p><specref ref="style-value-percentage"/></p></item>
 <item><p><specref ref="style-value-position"/></p></item>
@@ -14422,9 +14414,30 @@ subset of the set of named colors specified by <bibref ref="svg11"/>, &sect; 4.2
 </tbody>
 </table>
 </div3>
+<div3 id="style-value-non-negative-number">
+<head>&lt;non-negative-number&gt;</head>
+<p>A &lt;non-negative-number&gt; expression is used to express an arbitrary, non-negative integer or real valued number.</p>
+<table id="non-negative-number-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;non-negative-number&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;non-negative-number&gt;
+  : <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
+  | non-negative-real
+
+non-negative-real
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>* "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
 <div3 id="style-value-number">
 <head>&lt;number&gt;</head>
-<p>An &lt;number&gt; expression is used to express an arbitrary, signed integer or real valued number.</p>
+<p>An &lt;number&gt; expression is used to express an arbitrary, optionally signed integer or real valued number.</p>
 <table id="number-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;number&gt;</caption>
 <tbody>
@@ -14432,19 +14445,10 @@ subset of the set of named colors specified by <bibref ref="svg11"/>, &sect; 4.2
 <td>
 <eg xml:space="preserve">
 &lt;number&gt;
-  : sign? non-negative-number
+  : sign? <loc href="#style-value-non-negative-number">&lt;non-negative-number&gt;</loc>
 
 sign
   : "+" | "-"
-
-number
-
-non-negative-number
-  : <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
-  | non-negative-real
-
-non-negative-real
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>* "." <loc href="#style-value-digit">&lt;digit&gt;</loc>+
 </eg>
 </td>
 </tr>
@@ -19810,6 +19814,28 @@ the <loc
 href="#style-attribute-lineHeight"><att>tts:lineHeight</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-luminance">
+<head>#luminance</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#luminance</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-luminance"><att>tts:luminance</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#luminance</code> feature if it (1) implements presentation semantic support for
+the <loc
+href="#style-attribute-luminance"><att>tts:luminance</att></loc>
+attribute and (2) is capable of displaying or generating an output display
+signal that distinguishes between at least seven (7) distinct values of luminance,
+such as
+<code>0.125</code>,
+<code>0.250</code>,
+<code>0.500</code>,
+<code>1.000</code>,
+<code>2.000</code>,
+<code>4.000</code>, and
+<code>8.000</code>.</p>
+</div3>
 <div3 id="feature-markerMode">
 <head>#markerMode</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -21553,6 +21579,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-lineHeight"><code>#lineHeight</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-luminance"><code>#luminance</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -24974,6 +25005,97 @@ TTML <loc href="#doctypes">Abstract Document Instance</loc>.</p>
 </note>
 </div2>
 </inform-div1>
+<inform-div1 id="hdr-compositing">
+<head>High Dynamic Range Compositing</head>
+<p>
+The following illustrates the use of <att>tts:luminance</att> to composite sRGB pixels onto HDR pixels. 
+</p>
+<olist>
+<item>
+<p>
+Let (r, g, b) be a full-range 8-bit sRGB pixel with opacity between 0 and 1.
+</p>
+</item>
+<item>
+<p>
+Let (R, G, B) and (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>) be full-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using PQ EOTF and full-range quantization, with opacity A and A<sub>c</sub> between 0 and 1.
+</p>
+</item>
+<item>
+<p>
+Invert the 8-bit full-range quantization:
+</p><p>
+(r, g, b) / 255 → (r, g, b)
+</p>
+</item>
+<item>
+<p>
+Linearize using the sRGB EOTF:
+</p><p>
+(r<sup>2.4</sup>, g<sup>2.4</sup>, b<sup>2.4</sup>) → (r, g, b)
+</p>
+</item>
+<item>
+<p>
+Compute HDR absolute luminance using the <att>tts:luminance</att> attribute and the sRGB illuminant:
+</p><p>
+80 cd∙m<sup>-2</sup> ∙ <att>tts:luminance</att> ∙ (r, g, b) → (r, g, b)
+</p>
+</item>
+<item>
+<p>
+Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:
+</p><p>
+ [(0.62740389593470, 0.32928303837789, 0.04331306568741),
+ (0.06909728935823, 0.91954039507545, 0.01136231556630),
+ (0.01639143887515, 0.08801330787723, 0.89559525324763)] ∙ (r, g, b) → (r, g, b)
+</p>
+</item>
+<item>
+<p>
+Normalize to 10,000 cd∙m<sup>-2</sup>:
+</p><p>
+(r, g, b) / 10000 cd∙m<sup>-2</sup> → (r, g, b)
+</p>
+</item>
+<item>
+<p>
+Apply inverse PQ EOTF specified in <bibref ref="bt2100_1"/>:
+</p><p>
+(PQ(r), PQ(g), PQ(b)) → (r, g, b)
+</p><p>
+with PQ(L) = [(c1 + c2 ∙ L<sup>m1</sup>) / (1 + c3 ∙ L<sup>m1</sup>)]<sup>m2</sup> and m1 = 0.1593017578125, m2 = 78.84375, c1 = 0.8359375, c2 = 18.8515625, and c3 = 18.6875.
+</p>
+</item>
+<item>
+<p>
+Apply opacity:
+</p><p>
+(1-a) ∙ (r, g, b) → (r, g, b)
+</p>
+</item>
+<item>
+<p>
+Apply 10-bit full-range quantization:
+</p><p>
+(Q(r), Q(g), Q(b)) → (r, g, b)
+</p><p>
+where Q(N) = floor(1023 ∙ N + 0.5)
+</p>
+</item>
+<item>
+<p>
+Apply composition to yield (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>):
+</p><p>
+(clamp(r + R), clamp(g + G), clamp(b + B)) → (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)
+</p><p>
+1 + (1 - a) ∙ (A - 1) → A<sub>c</sub>
+</p><p>
+where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
+</p>
+</item>
+</olist>
+</inform-div1>
 <inform-div1 id="streaming">
 <head>Streaming TTML Content</head>
 <p>TTML Content is designed to support streamability by implementing the
@@ -25294,6 +25416,7 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc></p></item>
 <item><p><loc href="#style-attribute-ipd"><att>tts:ipd</att></loc></p></item>
 <item><p><loc href="#style-attribute-letterSpacing"><att>tts:letterSpacing</att></loc></p></item>
+<item><p><loc href="#style-attribute-luminance"><att>tts:luminance</att></loc></p></item>
 <item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
 <item><p><loc href="#style-attribute-ruby"><att>tts:ruby</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc></p></item>
@@ -25309,105 +25432,8 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-textShadow"><att>tts:textShadow</att></loc></p></item>
 </ulist>
 </div3>
-
 </div2>
-
 </inform-div1>
-
-<inform-div1 id="absolute-hdr-compositing">
-<head>HDR Compositing Example</head>
-<p>
-The following illustrates the use of <att>tts:luminance</att> to composite sRGB pixels onto HDR pixels. 
-</p>
-<olist>
-<item>
-<p>
-Let (r, g, b) be a full-range 8-bit sRGB pixel with opacity a between 0 and 1.
-</p>
-</item>
-<item>
-<p>
-Let (R, G, B) and (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>) be full-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using PQ EOTF and full-range quantization, with opacity A and A<sub>c</sub> between 0 and 1.
-</p>
-</item>
-<item>
-<p>
-Inverse the 8-bit full-range quantization:
-</p><p>
-(r, g, b) / 255 → (r, g, b)
-</p>
-</item>
-<item>
-<p>
-Linearize using the sRGB EOTF:
-</p><p>
-(r<sup>2.4</sup>, g<sup>2.4</sup>, b<sup>2.4</sup>) → (r, g, b)
-</p>
-</item>
-<item>
-<p>
-Compute HDR absolute luminance using the <att>tts:luminance</att> attribute and the sRGB illuminant:
-</p><p>
-80 cd∙m<sup>-2</sup> ∙ <att>tts:luminance</att> ∙ (r, g, b) → (r, g, b)
-</p>
-</item>
-<item>
-<p>
-Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:
-</p><p>
- [(0.62740389593470, 0.32928303837789, 0.04331306568741),
- (0.06909728935823, 0.91954039507545, 0.01136231556630),
- (0.01639143887515, 0.08801330787723, 0.89559525324763)] ∙ (r, g, b) → (r, g, b)
-</p>
-</item>
-<item>
-<p>
-Normalize to 10,000 cd∙m<sup>-2</sup>:
-</p><p>
-(r, g, b) / 10000 cd∙m<sup>-2</sup> → (r, g, b)
-</p>
-</item>
-<item>
-<p>
-Apply inverse PQ EOTF specified in <bibref ref="bt2100_1"/>:
-</p><p>
-(PQ(r), PQ(g), PQ(b)) → (r, g, b)
-</p><p>
-with PQ(L) = [(c1 + c2 ∙ L<sup>m1</sup>) / (1 + c3 ∙ L<sup>m1</sup>)]<sup>m2</sup> and m1 = 0.1593017578125, m2 = 78.84375, c1 = 0.8359375, c2 = 18.8515625, and c3 = 18.6875.
-</p>
-</item>
-<item>
-<p>
-Apply opacity:
-</p><p>
-(1-a) ∙ (r, g, b) → (r, g, b)
-</p>
-</item>
-<item>
-<p>
-Apply 10-bit full-range quantization:
-</p><p>
-(Q(r), Q(g), Q(b)) → (r, g, b)
-</p><p>
-where Q(N) = floor(1023 ∙ N + 0.5)
-</p>
-</item>
-<item>
-<p>
-Composite to yield (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)
-</p><p>
-(clamp(r + R), clamp(g + G), clamp(b + B)) → (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)
-</p><p>
-1 + (1 - a) ∙ (A - 1) → A<sub>c</sub>
-</p><p>
-where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
-</p>
-</item>
-</olist>
-
-</inform-div1>
-
-
 &acknowledgements;
 </back>
 </spec>

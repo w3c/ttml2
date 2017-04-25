@@ -25061,7 +25061,7 @@ TTML <loc href="#doctypes">Abstract Document Instance</loc>.</p>
 <p>This appendix illustrates how sRGB pixels can be composited onto high dynamic range (HDR) pixels.</p>
 <div2>
 <head>PQ</head>
-<p>The following illustrates the use of <att>tts:luminanceGain</att> to composite sRGB pixels onto HDR pixels using the absolute luminance PQ scheme.
+<p>The following illustrates the use of <loc href="#style-attribute-luminance"><att>tts:luminanceGain</att></loc> to composite sRGB pixels onto HDR pixels using the absolute luminance PQ scheme.
 </p>
 <olist>
 <item>
@@ -25154,34 +25154,34 @@ where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
 <p>The following illustrates compositing of sRGB pixels onto Hybrid Log-Gamma (HLG) HDR pixels.
 </p>
   <olist>
-    <item><p>Let (r, g, b) be a full-range 8-bit sRGB pixel with opacity of A between 0 and 255.</p></item>
-    <item><p>Let (R,G,B) and (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>) be narrow-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using HLG EOTF and narrow-range quantization. Subscript <sub>c</sub> denoting the video signal post-compositing.</p></item>
-    <item><p>Let (X,Y,Z) be pixels in the system colorimetry specified in CIE 1931 XYZ colour space.</p></item>
+    <item><p>Let <code>(r, g, b)</code> be a full-range 8-bit sRGB pixel with opacity of A between 0 and 255.</p></item>
+    <item><p>Let <code>(R,G,B)</code> and <code>(R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code> be narrow-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using HLG EOTF and narrow-range quantization. Subscript <sub>c</sub> denoting the video signal post-compositing.</p></item>
+    <item><p>Let <code>(X,Y,Z)</code> be pixels in the system colorimetry specified in CIE 1931 XYZ colour space.</p></item>
     <item><p>Invert the 8-bit full-range quantization:</p>
-    <p>(r, g, b)/255 → (r, g, b)</p>
-    <p>A/255 → A</p></item>
+    <p><code>(r, g, b)/255 → (r, g, b)</code></p>
+    <p><code>A/255 → A</code></p></item>
     <item><p>Linearize using the sRGB EOTF:</p>
-    <p>(r<sup>2.2</sup>,g<sup>2.2</sup>,b<sup>2.2</sup>) → (r,g,b)</p></item>
+    <p><code>(r<sup>2.2</sup>,g<sup>2.2</sup>,b<sup>2.2</sup>) → (r,g,b)</code></p></item>
     <item><p>Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:</p>
-    <p>[(0.4124, 0.3576, 0.1805),
-(0.2126, 0.7152, 0.0722), (0.0193,0.1192,0.9505)]•(r,g,b)→(X,Y,Z)</p>
-    <p>[(1.7167, −0.3557, −0.2534),
-(−0.6667, 1.6165, 0.0158), (0.0176,−0.04277,0.9421)]•(X,Y,Z)→(r,g,b)</p></item>
+    <p><code>[(0.4124, 0.3576, 0.1805),
+(0.2126, 0.7152, 0.0722), (0.0193,0.1192,0.9505)]•(r,g,b)→(X,Y,Z)</code></p>
+    <p><code>[(1.7167, −0.3557, −0.2534),
+(−0.6667, 1.6165, 0.0158), (0.0176,−0.04277,0.9421)]•(X,Y,Z)→(r,g,b)</code></p></item>
     <item><p>Apply simplified inverse HLG OOTF:</p>
-    <p>((0.265r),(0.265g),(0.265b)) → (r,g,b)</p></item>
+    <p><code>((0.265r),(0.265g),(0.265b)) → (r,g,b)</code></p></item>
     <item><p>Apply HLG OETF specified in <bibref ref="bt2100_1"/>:</p>
-    <p>(HLG(r),HLG(g),HLG(b)) → (r,g,b)</p>
-    <p>where HLG(x) = (3x)<sup>0.5</sup> if 0   x   1/12 or HLG(x) = a•ln(12x−b)+c if x > 1/12 and a = 0.17883277 and b = 1−4a and c = 0.5−a•ln(4a)<sup>5b</sup></p></item>
+    <p><code>(HLG(r),HLG(g),HLG(b)) → (r,g,b)</code></p>
+    <p>where <code>HLG(x) = (3x)<sup>0.5</sup></code> if <code>0 ≤ x ≤ 1/12</code> or <code>HLG(x) = a•ln(12x−b)+c</code> if <code>x > 1/12</code> and <code>a = 0.17883277</code> and <code>b = 1−4a</code> and <code>c = 0.5−a•ln(4a)<sup>5b</sup></code></p></item>
     <item><p>Apply 10-bit narrow-range quantization:</p>
-    <p>(Q(r),Q(g),Q(b)) → (r,g,b)</p>
-    <p>where Q(x) = f loor((940 − 64) • x + 64.5)</p></item>
-    <item><p>Composite foreground graphic (r,g,b) over background video (R,G,B) with opacity A to yield (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>):</p>
-    <p>((A•r+(1−A)R),(A•g+(1−A)G),(A•b+(1−A)B)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</p></item>
+    <p><code>(Q(r),Q(g),Q(b)) → (r,g,b)</code></p>
+    <p>where <code>Q(x) = floor((940 − 64) • x + 64.5)</code></p></item>
+    <item><p>Composite foreground graphic (r,g,b) over background video <code>(R,G,B)</code> with opacity <code>A</code> to yield <code>(R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code>:</p>
+    <p><code>((A•r+(1−A)R),(A•g+(1−A)G),(A•b+(1−A)B)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code></p></item>
     <item><p>Clamp output to 10-bit signal range:</p>
-    <p>(clamp(Rc),clamp(Gc),clamp(Bc)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</p>
-    <p>where clamp(x) = x if 0   x   1023 or 0 if x &lt; 0 or 1023 if x &gt; 1023</p></item>
+    <p><code>(clamp(Rc),clamp(Gc),clamp(Bc)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code></p>
+    <p>where <code>clamp(x) = x</code> if <code>0 ≤ x ≤ 1023</code> or <code>0</code> if <code>x &lt; 0</code> or <code>1023</code> if <code>x &gt; 1023</code></p></item>
   </olist>
-  <note>The above algorithm does not use the <att>tts:luminanceGain</att> attribute since no absolute gain level is needed for HLG HDR.</note>
+  <note><p>The above algorithm does not use the <loc href="#style-attribute-luminance"><att>tts:luminanceGain</att></loc> attribute since no absolute gain level is needed for HLG HDR.</p></note>
 </div2>
 </inform-div1>
 <inform-div1 id="streaming">

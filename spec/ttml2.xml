@@ -3260,7 +3260,7 @@ Styling Attributes
 <loc href="#style-attribute-ipd">tts:ipd</loc>,
 <loc href="#style-attribute-letterSpacing">tts:letterSpacing</loc>,
 <loc href="#style-attribute-lineHeight">tts:lineHeight</loc>,
-<loc href="#style-attribute-luminance">tts:luminance</loc>,
+<loc href="#style-attribute-luminanceGain">tts:luminanceGain</loc>,
 <loc href="#style-attribute-opacity">tts:opacity</loc>,
 <loc href="#style-attribute-origin">tts:origin</loc>,
 <loc href="#style-attribute-overflow">tts:overflow</loc>,
@@ -7641,7 +7641,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-ipd"/></p></item>
 <item><p><specref ref="style-attribute-letterSpacing"/></p></item>
 <item><p><specref ref="style-attribute-lineHeight"/></p></item>
-<item><p><specref ref="style-attribute-luminance"/></p></item>
+<item><p><specref ref="style-attribute-luminanceGain"/></p></item>
 <item><p><specref ref="style-attribute-opacity"/></p></item>
 <item><p><specref ref="style-attribute-origin"/></p></item>
 <item><p><specref ref="style-attribute-overflow"/></p></item>
@@ -10313,10 +10313,11 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </p>
 </note>
 </div3>
-<div3 id="style-attribute-luminance">
-<head>tts:luminance</head>
-<p>The <att>tts:luminance</att> attribute is used to specify the absolute luminance of a region when
-its presentation fidelity requires a greater dynamic range than that provided by the sRGB color space <bibref ref="srgb"/>.</p>
+<div3 id="style-attribute-luminanceGain">
+<head>tts:luminanceGain</head>
+<p>The <att>tts:luminanceGain</att> attribute is used to specify the absolute luminance of a region when
+its presentation requires a greater dynamic range than that provided by the sRGB color space <bibref ref="srgb"/>, 
+and when that presentation requires an absolute luminance value.</p>
 <note role="clarification">
 <p>The sRGB color space specifies an absolute reference white point luminance of 80 cd∙m<sup>-2</sup>. 
 As a result, elements presented in a color specified in the sRGB space (sRGB elements) cannot be
@@ -10338,7 +10339,7 @@ luminance, such as 10,000 cd∙m<sup>-2</sup>.
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
-<table id="style-property-details-luminance" role="common">
+<table id="style-property-details-luminanceGain" role="common">
 <col css="width: 25%;"/>
 <col/>
 <tbody>
@@ -10372,15 +10373,15 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<p>When applying <att>tts:luminance</att>, the linear optical output values
+<p>When applying <att>tts:luminanceGain</att>, the linear optical output values
 (C<sub>r</sub>, C<sub>g</sub>, C<sub>b</sub>) of the components of a pixel of a region are defined as
-80 cd∙m<sup>-2</sup> ∙ <att>tts:luminance</att> ∙ (r, g, b), where (r, g, b) are the normalized linear sRGB components of the pixel.
+80 ∙ <att>tts:luminanceGain</att> ∙ (r, g, b), where (r, g, b) are the normalized linear sRGB components of the pixel.
 </p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
-<p>The <att>tts:luminance</att> style is illustrated by the following example.</p>
-<table id="style-attribute-luminance-example-1" role="example">
-<caption>Example Fragment &ndash; tts:luminance</caption>
+<p>The <att>tts:luminanceGain</att> style is illustrated by the following example.</p>
+<table id="style-attribute-luminanceGain-example-1" role="example">
+<caption>Example Fragment &ndash; tts:luminanceGain</caption>
 <tbody>
 <tr>
 <td>
@@ -10390,14 +10391,14 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
   &lt;style tts:origin="10% 70%"/&gt;
   &lt;style tts:backgroundColor="black"/&gt;
   &lt;style tts:color="white"/&gt;
-  &lt;style tts:luminance="3.8"/&gt;
+  &lt;style tts:luminanceGain="3.8"/&gt;
 &lt;/region&gt;
 &lt;region xml:id="r2"&gt;
   &lt;style tts:extent="60% 20%"/&gt;
   &lt;style tts:origin="10% 10%"/&gt;
   &lt;style tts:backgroundColor="black"/&gt;
   &lt;style tts:color="white"/&gt;
-  &lt;style tts:luminance="1.0"/&gt;
+  &lt;style tts:luminanceGain="1.0"/&gt;
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
@@ -10414,19 +10415,19 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </table>
 <p>An example of luminance adjustment calculations is described below.</p>
 <table id="hdr-computation-example" role="example">
-<caption>Example &ndash; Absolute linear optical output calculation using tts:luminance</caption>
+<caption>Example &ndash; Absolute linear optical output calculation using tts:luminanceGain</caption>
 <tbody>
 <tr>
 <td>
-Given <code>tts:luminance="1.5"</code>, the absolute linear optical output of the components of a rendered pixel with color <code>rgb(218,165,32)</code>
-is (109.83, 56.28, 1.1) cd∙m<sup>-2</sup> ≈ 80 cd∙m<sup>-2</sup> ∙ 1.5 ∙((218/255)<sup>2.4</sup>, (165/255)<sup>2.4</sup>, (32/255)<sup>2.4</sup>),
-where the exponent of 2.4 is the gamma correction applied by the EOTF.
+Given <code>tts:luminanceGain="1.5"</code>, the absolute linear optical output of the components of a rendered pixel with color <code>rgb(218,165,32)</code>
+is (82.37, 42.21, 0.82) ≈ 80 ∙ 1.5 ∙((218/255)<sup>2.4</sup>, (165/255)<sup>2.4</sup>, (32/255)<sup>2.4</sup>),
+where the exponent of 2.4 is the gamma correction applied by the sRGB EOTF.
 </td>
 </tr>
 </tbody>
 </table>
 <note role="elaboration">
-<p>A detailed example of compositing sRGB pixels onto HDR pixels using <att>tts:luminance</att>
+<p>A detailed example of compositing sRGB pixels onto HDR pixels using <att>tts:luminanceGain</att>
 is provided in Appendix <specref ref="hdr-compositing"/>.</p>
 </note>
 <note role="clarification">
@@ -19835,27 +19836,17 @@ the <loc
 href="#style-attribute-lineHeight"><att>tts:lineHeight</att></loc>
 attribute.</p>
 </div3>
-<div3 id="feature-luminance">
-<head>#luminance</head>
+<div3 id="feature-luminanceGain">
+<head>#luminanceGain</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#luminance</code> feature if it recognizes and is capable of
+<code>#luminanceGain</code> feature if it recognizes and is capable of
 transforming the <loc
-href="#style-attribute-luminance"><att>tts:luminance</att></loc>
+href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#luminance</code> feature if it (1) implements presentation semantic support for
+<code>#luminanceGain</code> feature if it implements presentation semantic support for
 the <loc
-href="#style-attribute-luminance"><att>tts:luminance</att></loc>
-attribute and (2) is capable of displaying or generating an output display
-signal that distinguishes between at least seven (7) distinct values of luminance,
-such as
-<code>0.125</code>,
-<code>0.250</code>,
-<code>0.500</code>,
-<code>1.000</code>,
-<code>2.000</code>,
-<code>4.000</code>, and
-<code>8.000</code>.</p>
+href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc>.</p>
 </div3>
 <div3 id="feature-markerMode">
 <head>#markerMode</head>
@@ -21619,7 +21610,7 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-luminance"><code>#luminance</code></loc></td>
+<td><loc href="#feature-luminanceGain"><code>#luminanceGain</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -23341,11 +23332,6 @@ Requirements for Analog Television Receivers</titleref>,
 United States Code of Federal Regulations, Title 47, Volume 1, Part 79, &sect; 79.101. (See
 <xspecref href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf">http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf</xspecref>.)
 </bibl>
-<bibl id="cie-xyz" key="CIE-XYZ"><titleref
-href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">ISO 11664-1:2007(E)/CIE S 014-1/E:2006</titleref>
-. Joint ISO/CIE Standard: Colorimetry Part 1. CIE Standard Colorimetric Observers.
-(See <xspecref href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en</xspecref>.)
-</bibl>
 <bibl id="cmaf" key="CMAF">ISO/IEC 23000-19,
 <titleref href="">Information technology &ndash; Coding of audio-visual objects &ndash; Part 19:
 Common media application format (CMAF) for segmented media</titleref>, International Organization for Standardization (ISO).
@@ -23471,6 +23457,11 @@ The Extensible Hypertext Markup Language (Second Edition)</titleref>,
 W3C Recommendation, 01
 August 2002. (See
 <xspecref href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/">http://www.w3.org/TR/2002/REC-xhtml1-20020801/</xspecref>.)
+</bibl>
+<bibl id="cie-xyz" key="XYZ">ISO 11664-1:2007,
+<titleref href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">Joint ISO/CIE Standard: Colorimetry Part 1. CIE Standard Colorimetric Observers</titleref>,
+International Organization for Standardization (ISO). 
+(See <xspecref href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en</xspecref>.)
 </bibl>
 </blist>
 </inform-div1>
@@ -25066,7 +25057,9 @@ TTML <loc href="#doctypes">Abstract Document Instance</loc>.</p>
 <p>This appendix illustrates how sRGB pixels can be composited onto high dynamic range (HDR) pixels.</p>
 <div2>
 <head>Perceptual Quantizer</head>
-<p>The following illustrates the use of <loc href="#style-attribute-luminance"><att>tts:luminanceGain</att></loc> to composite sRGB pixels onto HDR pixels using the absolute luminance perceptual quantizer (PQ) scheme.
+<p>
+The following illustrates the use of <loc href="#style-attribute-luminance"><att>tts:luminanceGain</att></loc> to composite sRGB pixels onto HDR pixels
+that conform to the system colorimetry specified in <bibref ref="bt2100_1"/> using perceptual quantizer (PQ) EOTF and full-range quantization.
 </p>
 <olist>
 <item>
@@ -25095,9 +25088,9 @@ Linearize using the sRGB EOTF:
 </item>
 <item>
 <p>
-Compute HDR absolute luminance using the <att>tts:luminance</att> attribute and the sRGB illuminant:
+Compute HDR absolute luminance using the <att>tts:luminanceGain</att> attribute and the sRGB illuminant:
 </p><p>
-80 cd∙m<sup>-2</sup> ∙ <att>tts:luminance</att> ∙ (r, g, b) → (r, g, b)
+80 ∙ <att>tts:luminanceGain</att> ∙ (r, g, b) → (r, g, b)
 </p>
 </item>
 <item>
@@ -25113,7 +25106,7 @@ Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:
 <p>
 Normalize to 10,000 cd∙m<sup>-2</sup>:
 </p><p>
-(r, g, b) / 10000 cd∙m<sup>-2</sup> → (r, g, b)
+(r, g, b) / 10000 → (r, g, b)
 </p>
 </item>
 <item>
@@ -25509,7 +25502,7 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc></p></item>
 <item><p><loc href="#style-attribute-ipd"><att>tts:ipd</att></loc></p></item>
 <item><p><loc href="#style-attribute-letterSpacing"><att>tts:letterSpacing</att></loc></p></item>
-<item><p><loc href="#style-attribute-luminance"><att>tts:luminance</att></loc></p></item>
+<item><p><loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc></p></item>
 <item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
 <item><p><loc href="#style-attribute-ruby"><att>tts:ruby</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc></p></item>

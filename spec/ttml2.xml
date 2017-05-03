@@ -8558,6 +8558,10 @@ as a style property only to those element types indicated in the following table
 </tbody>
 </table>
 <p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
+<p>If a <att>tts:bpd</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element
+and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>,
+then the semantics of <att>tts:bpd</att> only apply when computing the block progression dimension of any applicable background color or image;
+however, the dimensions of the content rectangles of the generated areas are not changed.</p>
 <p>The <att>tts:bpd</att> style is illustrated by the following example.</p>
 <ednote>
 <name>Block Progression Dimension Percentage</name>
@@ -8929,7 +8933,7 @@ layout and presentation.</p>
 to a <loc href="#content-vocabulary-span"><el>span</el></loc> element, then
 <loc href="#terms-inline-block-display">inline block display</loc> semantics apply and the element
 is a candidate for region layout and presentation. Furthermore, it is considered an error if the
-<code>inlineBlock</code> value to applied to any element which is not a <loc href="#content-vocabulary-span"><el>span</el></loc> element.</p>
+<code>inlineBlock</code> value is applied to any element which is not a <loc href="#content-vocabulary-span"><el>span</el></loc> element.</p>
 <p>The <att>tts:display</att> style is illustrated by the following example.</p>
 <table id="style-attribute-display-example-1" role="example">
 <caption>Example Fragment &ndash; Display</caption>
@@ -10054,6 +10058,10 @@ as a style property only to those element types indicated in the following table
 </tbody>
 </table>
 <p>If a <loc href="#style-value-measure">&lt;measure&gt;</loc> is expressed as a <loc href="#style-value-length">&lt;length&gt;</loc> value, then it must be non-negative.</p>
+<p>If a <att>tts:ipd</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element
+and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>,
+then the semantics of <att>tts:ipd</att> only apply when computing the inline progression dimension of any applicable background color or image;
+however, the dimensions of the content rectangles of the generated areas are not changed.</p>
 <p>The <att>tts:ipd</att> style is illustrated by the following example.</p>
 <ednote>
 <name>Inline Progression Dimension Percentage</name>
@@ -12265,18 +12273,18 @@ as a style property only to those element types indicated in the following table
 <p>The <att>tts:textAlign</att> attribute is inheritable only on a <loc href="#content-vocabulary-p"><el>p</el></loc> element. If not
 specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element, then the <att>tts:textAlign</att> style property  does not apply to that
 element, rather, normal inline composition and alignment apply.</p>
-<p>If a <att>tts:textAlign</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element,
-and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>
+<p>If a <att>tts:textAlign</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element
+and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>,
 then the semantics of <att>tts:textAlign</att> are ignored for the purpose of presentation processing.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>start</code>.</p>
-<p>The <att>tts:textAlign</att> style is illustrated by the following example.</p>
-  <table id="style-attribute-textAlign-example-1" role="example">
-    <caption>Example Fragment &ndash; Text Align</caption>
-    <tbody>
-      <tr>
-        <td>
-          <eg xml:space="preserve">
+<p>The <att>tts:textAlign</att> style is illustrated by the following examples.</p>
+<table id="style-attribute-textAlign-example-1" role="example">
+<caption>Example Fragment &ndash; Text Align</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="355px 43px"/&gt;
   &lt;style tts:origin="0px 0px"/&gt;
@@ -12301,20 +12309,20 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
   The frumious Bandersnatch!
 &lt;/p&gt;
 </eg>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <p></p>
-  <table id="style-attribute-textAlign-example-1-images" role="example-images">
-    <caption>Example Rendition &ndash; Text Align</caption>
-    <tbody>
-      <tr>
-        <td><graphic source="images/textAlign.png" alt="TTML textAlign style property"/></td>
-      </tr>
-    </tbody>
-  </table>
-  <p></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-textAlign-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Text Align</caption>
+<tbody>
+<tr>
+<td><graphic source="images/textAlign.png" alt="TTML textAlign style property"/></td>
+</tr>
+</tbody>
+</table>
+<p></p>
 <table id="style-attribute-textAlign-example-2" role="example">
 <caption>Example Fragment &ndash; Differing Text Align on p and span</caption>
 <tbody>
@@ -12339,13 +12347,13 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 &lt;/region&gt;
 ...
 &lt;p region="r1"&gt;
-  &lt;span <phrase role="strong">tts:textAlign="end"</phrase>&gt;
+  &lt;span <phrase role="strong">tts:display="inlineBlock" tts:textAlign="end"</phrase>&gt;
     span textAlign="end"&lt;br/&gt;
     p textAlign="start"
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="r2"&gt;
-  &lt;span <phrase role="strong">tts:textAlign="start"</phrase>&gt;
+  &lt;span <phrase role="strong">tts:display="inlineBlock" tts:textAlign="start"</phrase>&gt;
     span textAlign="start"&lt;br/&gt;
     p textAlign="center"
   &lt;/span&gt;
@@ -12364,7 +12372,11 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
-<p></p>
+<note role="explanation">
+<p>In this second example, the <code>tts:display="inlineBlock"</code> attribute is required in order to
+cause <loc href="#terms-inline-block-display">inline block display</loc> semantics to be applied to
+the <code>span</code> elements so that text alignment semantics will be respected (within their containing inline blocks).</p>
+</note>
 <note role="derivation">
 <p>The semantics of the style property
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,

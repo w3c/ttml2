@@ -5950,6 +5950,12 @@ attribute that evaluates to <code>false</code>, then the content of that element
 <p>The <att>xml:lang</att> attribute must be specified on the <el>tt</el>
 element and may be specified by an instance of any other element type
 in the core vocabulary catalog except parameter vocabulary.</p>
+<note role="elaboration">
+<p>As specified by <bibref ref="xml10"/>, &sect;2.12, the association of language with an element
+applies to all of that element's descendants unless overridden by a descendant. In other words,
+the language that is associated with an element is either specified on the element or is effectively
+inherited from that element's nearest ancestor element.</p>
+</note>
 </div3>
 <div3 id="content-attribute-xml-space">
 <head>xml:space</head>
@@ -18244,6 +18250,12 @@ the definition of a specific named item may further constrain the context of use
 <p>The definition of a particular named item will typically constrain the set of permitted values. Furthermore, it may
 specify that a particular value is implied in the absence of a specified value.</p>
 </note>
+<note role="elaboration">
+<p>When the value of a named metadata item consists of natural language text, the
+<loc href="#content-attribute-xml-lang"><att>xml:lang</att></loc> attribute may be directly
+specified on the metadata item element or indirectly inherited from that element's nearest ancestor
+in order to identify the language that applies to the named metadata item value.</p>
+</note>
 <p>The use of a named metadata item is illustrated by the following example, which shows the use of a named metadata item
 in order to associate a <loc href="#terms-simple-data-embedding">simple data embedding</loc> with an original file name.</p>
 <table id="metadata-vocabulary-item-example-1" role="example">
@@ -18256,7 +18268,8 @@ in order to associate a <loc href="#terms-simple-data-embedding">simple data emb
 &lt;image&gt;
   &lt;source&gt;
     &lt;data type="image/png"&gt;
-      <phrase role="strong">&lt;ttm:item name="originalFileName" xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;image.png&lt;/ttm:item&gt;</phrase>
+      <phrase role="strong">&lt;ttm:item name="originalFileName"
+        xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;image.png&lt;/ttm:item&gt;</phrase>
       &lt;chunk length="119"&gt;
         iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
@@ -18278,28 +18291,6 @@ i.e., if the encoded image bytes had been included directly as #PCDATA in the <l
 then it would not have been possible to include the <el>ttm:item</el> child element. See the supported content models on the
 <loc href="#embedded-content-vocabulary-data">data</loc> element for more information.</p>
 </note>
-<p>The use of named metadata items with different language content is illustrated by the following example.</p>
-<table id="metadata-vocabulary-item-example-2" role="example">
-<caption>Example Fragment &ndash; Named Metadata Items in different languages</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-...
-&lt;p&gt;
-  &lt;image&gt;
-    &lt;source src="#heart-image"/&gt;
-    &lt;ttm:item name="altText" xml:lang="en"&gt;A heart&lt;/ttm:item&gt;
-    &lt;ttm:item name="altText" xml:lang="fr"&gt;Un coeur&lt;/ttm:item&gt;
-  &lt;/image&gt;
-&lt;/p&gt;
-...
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
 </div3>
 <div3 id="metadata-vocabulary-name">
 <head>ttm:name</head>

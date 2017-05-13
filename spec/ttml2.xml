@@ -6031,6 +6031,17 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
 <item><p><specref ref="content-value-quoted-string"/></p></item>
 <item><p><specref ref="content-value-supports-function"/></p></item>
 </ulist>
+<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
+<olist>
+  <item><p>linear whitespace (LWSP)
+  must appear between sub-expressions of a <code>||</code> expression;</p></item>
+  <item><p>linear whitespace (LWSP)
+  must appear between sub-expressions of a <code>&amp;&amp;</code> expression;</p></item>
+  <item><p>linear whitespace (LWSP)
+  may appear before and after the sub-expressions of a comma separated list expression;</p></item>
+  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
+  unless explicitly specified.</p></item>
+</olist>
 <div3 id="content-value-arguments">
 <head>&lt;arguments&gt;</head>
 <p>A &lt;arguments&gt; value is a sub-expression used with a <code>function-expression</code> non-terminal of an
@@ -6042,12 +6053,12 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
 <td>
 <eg xml:space="preserve">
 &lt;arguments&gt;
-  : "(" ")"
-  | "(" argument-list ")"
+  : "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
+  | "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? argument-list <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 argument-list
   : <loc href="#content-value-expression">&lt;expression&gt;</loc>
-  | argument-list "," <loc href="#content-value-expression">&lt;expression&gt;</loc>
+  | argument-list <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#content-value-expression">&lt;expression&gt;</loc>
 </eg>
 </td>
 </tr>
@@ -6159,40 +6170,40 @@ of a <loc href="#content-value-condition-function">&lt;condition-function&gt;</l
 
 logical-or-expression
   : logical-and-expression
-  | logical-or-expression "||" logical-and-expression
+  | logical-or-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "||" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? logical-and-expression
 
 logical-and-expression
   : equality-expression
-  | logical-and-expression "&amp;&amp;" equality-expression
+  | logical-and-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "&amp;&amp;" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? equality-expression
 
 equality-expression
   : relational-expression
-  | equality-expression "==" relational-expression
-  | equality-expression "!=" relational-expression
+  | equality-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "==" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? relational-expression
+  | equality-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "!=" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? relational-expression
 
 relational-expression
   : additive-expression
-  | relational-expression "&lt;" additive-expression
-  | relational-expression "&gt;" additive-expression
-  | relational-expression "&lt;=" additive-expression
-  | relational-expression "&gt;=" additive-expression
+  | relational-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "&lt;" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? additive-expression
+  | relational-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "&gt;" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? additive-expression
+  | relational-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "&lt;=" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? additive-expression
+  | relational-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "&gt;=" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? additive-expression
 
 additive-expression
   : multiplicitive-expression
-  | additive-expression "+" multiplicitive-expression
-  | additive-expression "-" multiplicitive-expression
+  | additive-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "+" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? multiplicitive-expression
+  | additive-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "-" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? multiplicitive-expression
 
 multiplicitive-expression
   : unary-expression
-  | multiplicitive-expression "*" unary-expression
-  | multiplicitive-expression "/" unary-expression
-  | multiplicitive-expression "%" unary-expression
+  | multiplicitive-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "*" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? unary-expression
+  | multiplicitive-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "/" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? unary-expression
+  | multiplicitive-expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "%" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? unary-expression
 
 unary-expression
   : primary-or-function-expression
-  | "+" unary-expression
-  | "-" unary-expression
-  | "!" unary-expression
+  | "+" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? unary-expression
+  | "-" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? unary-expression
+  | "!" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? unary-expression
 
 primary-or-function-expression
   : primary-expression
@@ -6201,10 +6212,10 @@ primary-or-function-expression
 primary-expression
   : identifier
   | literal
-  | "(" expression ")"
+  | "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 function-expression
-  : identifier <loc href="#content-value-arguments">&lt;arguments&gt;</loc>
+  : identifier <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#content-value-arguments">&lt;arguments&gt;</loc>
 
 identifier
   : <loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>
@@ -6271,7 +6282,7 @@ in order to perform a media query on the <loc href="#terms-related-media-object"
 <td>
 <eg xml:space="preserve">
 &lt;media-function&gt;
-  : "media" "(" media-query ")"
+  : "media" "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? media-query <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 media-query
   : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
@@ -6324,7 +6335,7 @@ in order to obtain a named parameter of the <loc href="#terms-document-processin
 <td>
 <eg xml:space="preserve">
 &lt;parameter-function&gt;
-  : "parameter" "(" parameter-name ")"
+  : "parameter" "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? parameter-name <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 parameter-name
   : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
@@ -6351,7 +6362,7 @@ is supported or not.</p>
 <td>
 <eg xml:space="preserve">
 &lt;supports-function&gt;
-  : "supports" "(" feature-or-extension-designator ")"
+  : "supports" "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? feature-or-extension-designator <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 feature-or-extension-designator
   : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
@@ -7250,9 +7261,17 @@ sniffing.</p>
 <item><p><specref ref="embedded-content-value-image-format"/></p></item>
 <item><p><specref ref="embedded-content-value-unicode-range"/></p></item>
 </ulist>
-<p>In the syntax representations defined in this section, no
-linear whitespace (LWSP) is implied or permitted between tokens
-unless explicitly specified.</p>
+<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
+<olist>
+  <item><p>linear whitespace (LWSP)
+  must appear between sub-expressions of a <code>||</code> expression;</p></item>
+  <item><p>linear whitespace (LWSP)
+  must appear between sub-expressions of a <code>&amp;&amp;</code> expression;</p></item>
+  <item><p>linear whitespace (LWSP)
+  may appear before and after the sub-expressions of a comma separated list expression;</p></item>
+  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
+  unless explicitly specified.</p></item>
+</olist>
 <div3 id="embedded-content-value-audio">
 <head>&lt;audio&gt;</head>
 <p>An &lt;audio&gt; value expression is used to specify an <loc href="#terms-audio-resource">audio resource</loc> by reference.</p>
@@ -13725,9 +13744,17 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <item><p><specref ref="style-value-shadow"/></p></item>
 <item><p><specref ref="style-value-whitespace"/></p></item>
 </ulist>
-<p>In the syntax representations defined in this section, no
-linear whitespace (LWSP) is implied or permitted between tokens
-unless explicitly specified.</p>
+<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
+<olist>
+  <item><p>linear whitespace (LWSP)
+  must appear between sub-expressions of a <code>||</code> expression;</p></item>
+  <item><p>linear whitespace (LWSP)
+  must appear between sub-expressions of a <code>&amp;&amp;</code> expression;</p></item>
+  <item><p>linear whitespace (LWSP)
+  may appear before and after the sub-expressions of a comma separated list expression;</p></item>
+  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
+  unless explicitly specified.</p></item>
+</olist>
 <div3 id="style-value-alpha">
 <head>&lt;alpha&gt;</head>
 <p>An &lt;alpha&gt; expression is used to express an opacity value,
@@ -13880,7 +13907,7 @@ class-character
 unicode-escape
   : "\\u" hexDigit{6}
   | "\\u" hexDigit{4}
-  | "\\" char
+  | "\\" <emph><code>char</code></emph>
 
 specials
   : "-"
@@ -13893,6 +13920,11 @@ specials
 </tr>
 </tbody>
 </table>
+<p>In addition to adhering to the syntax rules specified above, the following semantic rules apply:</p>
+<ulist>
+<item><p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
+to the <code>Char</code> production defined by <bibref ref="xml10"/>&nbsp;&sect;2.2.</p></item>
+</ulist>
 </div3>
 <div3 id="style-value-color">
 <head>&lt;color&gt;</head>
@@ -14176,7 +14208,7 @@ non-ascii-or-c1
   : [^\0-\237]
 
 escape
-  : "\\" <emph>char</emph>
+  : "\\" <emph><code>char</code></emph>
 </eg>
 <!-- " -->
 </td>
@@ -14400,7 +14432,7 @@ the <loc href="#terms-root-container-region">root container region</loc>.</p>
 </div3>
 <div3 id="style-value-lwsp">
 <head>&lt;lwsp&gt;</head>
-<p>A &lt;lwsp&gt; is used to express the common linear whitespace (lwsp) syntactic construct.</p>
+<p>A &lt;lwsp&gt; is used to express the common linear whitespace (LWSP) syntactic construct.</p>
 <table id="lwsp-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;lwsp&gt;</caption>
 <tbody>
@@ -14668,16 +14700,16 @@ sign
 <td>
 <eg xml:space="preserve">
 &lt;position&gt;
-  : offset-position-h                       // single component value
-  | offset-position-v                       // single component value
-  | offset-position-h offset-position-v     // two component values
-  | offset-position-v offset-position-h     // two component values
-  | position-keyword-h edge-offset-v        // three component values
-  | position-keyword-v edge-offset-h        // three component values
-  | edge-offset-h position-keyword-v        // three component values
-  | edge-offset-v position-keyword-h        // three component values
-  | edge-offset-h edge-offset-v             // four component values
-  | edge-offset-v edge-offset-h             // four component values
+  : offset-position-h                             // single component value
+  | offset-position-v                             // single component value
+  | offset-position-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> offset-position-v    // two component values
+  | offset-position-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> offset-position-h    // two component values
+  | position-keyword-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-v       // three component values
+  | position-keyword-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-h       // three component values
+  | edge-offset-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-v       // three component values
+  | edge-offset-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-h       // three component values
+  | edge-offset-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-v            // four component values
+  | edge-offset-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-h            // four component values
 
 offset-position-h
   : position-keyword-h
@@ -14688,10 +14720,10 @@ offset-position-v
   | <loc href="#style-value-length">&lt;length&gt;</loc>
 
 edge-offset-h
-  : edge-keyword-h <loc href="#style-value-length">&lt;length&gt;</loc>
+  : edge-keyword-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
 
 edge-offset-v
-  : edge-keyword-v <loc href="#style-value-length">&lt;length&gt;</loc>
+  : edge-keyword-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
 
 position-keyword-h
   : center
@@ -15080,7 +15112,8 @@ generated area is not a glyph area, then it applies to the border rectangle of t
 </table>
 <p>A shadow value expression consists of an optional <code>inset</code> token term,
 two to three <loc href="#style-value-length">&lt;length&gt;</loc> terms, and
-an optional <loc href="#style-value-color">&lt;color&gt;</loc> term.</p>
+an optional <loc href="#style-value-color">&lt;color&gt;</loc> term,
+and where terms are separated from one another by linear white space (LWSP).</p>
 <p>The first <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the inline progression direction of the associated area,
 where positive denotes towards the end edge and negative towards the start edge,
 the second <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the block progression direction of the associated area,
@@ -17668,6 +17701,13 @@ attribute.</p>
 <item><p><specref ref="animation-value-key-times"/></p></item>
 <item><p><specref ref="animation-value-repeat-count"/></p></item>
 </ulist>
+<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
+<olist>
+  <item><p>linear whitespace (LWSP)
+  may appear before and after the sub-expressions of a semicolon separated list expression;</p></item>
+  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
+  unless explicitly specified.</p></item>
+</olist>
 <div3 id="animation-value-animation-value">
 <head>&lt;animation-value&gt;</head>
 <p>An &lt;animation-value&gt; expression is used to specify the starting (initial), intermediate,
@@ -17810,7 +17850,7 @@ optionally surrounded by linear white-space (LWSP) characters.</p>
 <td>
 <eg xml:space="preserve">
 &lt;key-times&gt;
-  : time [ <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? time ]*
+  : time [ ";" time ]*
 
 time                                // 0 &ge; <emph>value</emph> &ge; 1
   : whole

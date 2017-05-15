@@ -5958,6 +5958,45 @@ attribute that evaluates to <code>false</code>, then the content of that element
 <p>The <att>xml:lang</att> attribute must be specified on the <el>tt</el>
 element and may be specified by an instance of any other element type
 in the core vocabulary catalog except parameter vocabulary.</p>
+<note role="elaboration">
+<p>As specified by <bibref ref="xml10"/>, &sect;2.12, the association of language with an element
+applies to all of that element's descendants unless overridden by a descendant. In other words,
+the language that is associated with an element is either specified on the element or is effectively
+inherited from that element's nearest ancestor element.</p>
+</note>
+<p>The use of <code>xml:lang</code> on content and metadata elements is illustrated by the following example.</p>
+<table id="xml-lang-example-1" role="example">
+<caption>Example Fragment &ndash; Language Identification of Content and Metadata</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ... <phrase role="strong">xml:lang=&quot;&quot;</phrase>&gt;
+...
+&lt;p <phrase role="strong">xml:lang=&quot;en&quot;</phrase>&gt;Jean said hello.&lt;/p&gt;
+&lt;p <phrase role="strong">xml:lang=&quot;fr&quot;</phrase>&gt;Jean dit bonjour.&lt;/p&gt;
+&lt;p&gt;
+  &lt;image src="#talking-image"&gt;
+    &lt;ttm:item name="altText" <phrase role="strong">xml:lang="en"</phrase>&gt;Talking&lt;/ttm:item&gt;
+    &lt;ttm:item name="altText" <phrase role="strong">xml:lang="fr"</phrase>&gt;Parlant&lt;/ttm:item&gt;
+  &lt;/image&gt;
+&lt;/p&gt;
+...
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="explanation">
+<p>In this example, the root <code>tt</code> element is identified with the empty language tag, meaning unknown or unspecified language, which
+identification is effectively inherited by descendant elements (unless overridden). Next, the first two <code>p</code> (paragraph) elements
+are associated with <code>en</code> (English) and <code>fr</code> (French) language identifiers, respectively. Finally, the third <code>p</code>
+(paragraph) element consists of a foreground image, which is associated with two alternative text descriptions by use of
+<loc href="#metadata-vocabulary-item">named metadata items</loc>,
+and these text descriptions are, in turn, associated with <code>en</code> (English) and <code>fr</code> (French) language identifiers.</p>
+</note>
+<p></p>
 </div3>
 <div3 id="content-attribute-xml-space">
 <head>xml:space</head>
@@ -18242,6 +18281,12 @@ the definition of a specific named item may further constrain the context of use
 <p>The definition of a particular named item will typically constrain the set of permitted values. Furthermore, it may
 specify that a particular value is implied in the absence of a specified value.</p>
 </note>
+<note role="elaboration">
+<p>When the value of a named metadata item consists of natural language text, the
+<loc href="#content-attribute-xml-lang"><att>xml:lang</att></loc> attribute may be directly
+specified on the metadata item element or indirectly inherited from that element's nearest ancestor
+in order to identify the language that applies to the named metadata item value.</p>
+</note>
 <p>The use of a named metadata item is illustrated by the following example, which shows the use of a named metadata item
 in order to associate a <loc href="#terms-simple-data-embedding">simple data embedding</loc> with an original file name.</p>
 <table id="metadata-vocabulary-item-example-1" role="example">
@@ -18254,7 +18299,8 @@ in order to associate a <loc href="#terms-simple-data-embedding">simple data emb
 &lt;image&gt;
   &lt;source&gt;
     &lt;data type="image/png"&gt;
-      <phrase role="strong">&lt;ttm:item name="originalFileName" xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;image.png&lt;/ttm:item&gt;</phrase>
+      <phrase role="strong">&lt;ttm:item name="originalFileName"
+        xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;image.png&lt;/ttm:item&gt;</phrase>
       &lt;chunk length="119"&gt;
         iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=

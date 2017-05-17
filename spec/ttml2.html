@@ -338,9 +338,9 @@ background-color: #ffff33;
 border: 2px solid black;
 width: 100%;
 }
-    </style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED"></head><body>Last Modified: $Date: Wed May 17 09:18:41 2017 -0600 $<div id="revisions"></div><div class="head">
+    </style><link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED"></head><body>Last Modified: $Date: Wed May 17 10:26:10 2017 -0600 $<div id="revisions"></div><div class="head">
 <h1><a id="title"></a>Timed Text Markup Language 2 (TTML2)</h1>
-<h2><a id="w3c-doctype"></a>Editors' copy $Date: Wed May 17 09:18:41 2017 -0600 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
+<h2><a id="w3c-doctype"></a>Editors' copy $Date: Wed May 17 10:26:10 2017 -0600 $ @@ @@@@ @@@@</h2><dl><dt>This version:</dt><dd>
 <a href="ttml2.html">ttml2.html</a>
 </dd><dt>Latest editor's draft:</dt><dd><a href="https://w3c.github.io/ttml2/spec/ttml2.html">https://w3c.github.io/ttml2/spec/ttml2.html</a></dd><dt>Latest version:</dt><dd><a href="https://www.w3.org/TR/ttml2/">https://www.w3.org/TR/ttml2/</a></dd><dt>Latest recommendation:</dt><dd><a href="https://www.w3.org/TR/ttml1/">https://www.w3.org/TR/ttml1/</a></dd><dt>Previous version:</dt><dd>
 <a href="https://www.w3.org/TR/2016/WD-ttml2-20161117/">https://www.w3.org/TR/2016/WD-ttml2-20161117/</a>
@@ -2416,7 +2416,7 @@ the computed frame rate and drop mode. All time expressions are interpreted
 in relationship to this time coordinate space based upon
 <a href="#terms-smpte-time-code">smpte time code</a> synchronization events (markers),
 where the <a href="#terms-document-processing-context">document processing context</a> emits these events with implied constraints
-regarding time coordinate monoticity and resynchronization in
+regarding time coordinate monotonicity and resynchronization in
 the presence of dropped frames.</p><p>Use of <code>continuous</code> marker mode with the <code>smpte</code>
 time base is different from using the <code>media</code> time base
 because (1) the semantics of the <code>ttp:dropMode</code> parameter
@@ -7563,9 +7563,11 @@ an <code>xml:id</code> attribute, then add an implied <code>xml:id</code> attrib
 otherwise, let <em>ID</em> be the value of the <code>xml:id</code> attribute of <em>R'&nbsp;</em>;</p></li><li><p>if present, remove the following attributes from the <code>[attributes]</code> information item property of <em>R'&nbsp;</em>:
 <code>begin</code>,
 <code>dur</code>, and
-<code>end</code>;</p></li><li><p>add a <code>begin</code> attribute to the <code>[attributes]</code> information item property of <em>R'&nbsp;</em> with
-a value equivalent to the computed begin time of <em>B</em> within the root temporal extent;</p></li><li><p>add a <code>dur</code> attribute to the <code>[attributes]</code> information item property of <em>R'&nbsp;</em> with
-a value equivalent to the computed simple duration of <em>B</em>;</p></li></ul></li><li><p>if the TTML <a href="#terms-document-instance">document instance</a> does not have a
+<code>end</code>;</p></li><li><p>add <code>begin</code> and <code>end</code> attributes to the <code>[attributes]</code> information item property of <em>R'&nbsp;</em>
+  as follows:</p><ol class="enumla"><li><p>if not operating in smpte time base and discontinuous marker mode, then set the values of these <code>begin</code> and <code>end</code>
+    attributes to values equivalent to the respective computed begin and end times of <em>B</em> within the root temporal extent;</p></li><li><p>otherwise (smpte discontinuous mode), set the values of these <code>begin</code> and <code>end</code>
+    attributes to values that correspond to the labeled synchronization events (markers) that apply to the respective begin and end times of
+    <em>B</em> within the root temporal extent;</p></li></ol></li></ul></li><li><p>if the TTML <a href="#terms-document-instance">document instance</a> does not have a
 <a href="#document-structure-vocabulary-head"><code>head</code></a> element, then insert an empty
 <a href="#document-structure-vocabulary-head"><code>head</code></a> element as the first child of
 the <a href="#document-structure-vocabulary-tt"><code>tt</code></a> element;</p></li><li><p>if the <a href="#document-structure-vocabulary-head"><code>head</code></a> element does not have
@@ -7576,7 +7578,7 @@ a <a href="#layout-vocabulary-layout"><code>layout</code></a> child element, the
 the <a href="#document-structure-vocabulary-head"><code>head</code></a> element if neither are present;</p></li><li><p>append <em>R'&nbsp;</em> to the <code>[children]</code> information item property of the
 <a href="#layout-vocabulary-layout"><code>layout</code></a> element child of the 
 <a href="#document-structure-vocabulary-head"><code>head</code></a> element;</p></li><li><p>add a <a href="#layout-attribute-region"><code>region</code></a> attribute with value <em>ID</em> to the <code>[attributes]</code> information
-item property of <em>B</em>;</p></li><li><p>remove <em>R</em> from the <code>[children]</code> information item property of <em>B</em>;</p></li></ol><div class="issue"><p class="prefix"><a id="issue-ttml2-105"></a><b>Issue (issue-ttml2-105):</b></p><p class="prefix"><b>Duration Restrictions</b></p><p><b>Source</b>: <a href="https://github.com/w3c/ttml2/issues/105">https://github.com/w3c/ttml2/issues/105</a></p><p>Handle case where use of <code>dur</code> is not permitted, e.g., when using discontinuous SMPTE time base.</p><p class="prefix"><b>Resolution:</b></p><p>None recorded.</p></div></dd></dl><p>The use of an <em>implied inline region specification</em> and the resulting generated inline region is shown by the following two example documents.</p><a id="semantics-inline-region-input-example-1-implied"></a><table class="example"><caption>Example – Implied Inline Region Specification</caption><tbody><tr><td>
+item property of <em>B</em>;</p></li><li><p>remove <em>R</em> from the <code>[children]</code> information item property of <em>B</em>.</p></li></ol></dd></dl><p>The use of an <em>implied inline region specification</em> and the resulting generated inline region is shown by the following two example documents.</p><a id="semantics-inline-region-input-example-1-implied"></a><table class="example"><caption>Example – Implied Inline Region Specification</caption><tbody><tr><td>
 <div class="exampleInner"><pre>
 &lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
   &lt;head/&gt;

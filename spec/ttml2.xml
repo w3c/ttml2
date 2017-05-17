@@ -5025,7 +5025,7 @@ the computed frame rate and drop mode. All time expressions are interpreted
 in relationship to this time coordinate space based upon
 <loc href="#terms-smpte-time-code">smpte time code</loc> synchronization events (markers),
 where the <loc href="#terms-document-processing-context">document processing context</loc> emits these events with implied constraints
-regarding time coordinate monoticity and resynchronization in
+regarding time coordinate monotonicity and resynchronization in
 the presence of dropped frames.</p>
 <p>Use of <code>continuous</code> marker mode with the <code>smpte</code>
 time base is different from using the <code>media</code> time base
@@ -16296,6 +16296,18 @@ otherwise, let <emph>ID</emph> be the value of the <att>xml:id</att> attribute o
 <att>end</att>;</p>
 </item>
 <item>
+  <p>add <att>begin</att> and <att>end</att> attributes to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph>
+  as follows:</p>
+  <olist>
+    <item><p>if not operating in smpte time base and discontinuous marker mode, then set the values of these <att>begin</att> and <att>end</att>
+    attributes to values equivalent to the respective computed begin and end times of <emph>B</emph> within the root temporal extent;</p></item>
+    <item><p>otherwise (smpte discontinuous mode), set the values of these <att>begin</att> and <att>end</att>
+    attributes to values that correspond to the labeled synchronization events (markers) that apply to the respective begin and end times of
+    <emph>B</emph> within the root temporal extent;</p></item>
+  </olist>
+</item>
+<!--
+<item>
 <p>add a <att>begin</att> attribute to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> with
 a value equivalent to the computed begin time of <emph>B</emph> within the root temporal extent;</p>
 </item>
@@ -16305,6 +16317,7 @@ information item property of <emph>R'&nbsp;</emph> with value equivalent to the 
 add an <att>end</att> attribute to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> with
 a value equivalent to the computed end time of <emph>B</emph> within the root temporal extent;</p>
 </item>
+-->
 </ulist>
 </item>
 <item>
@@ -16331,14 +16344,9 @@ the <loc href="#document-structure-vocabulary-head"><el>head</el></loc> element 
 item property of <emph>B</emph>;</p>
 </item>
 <item>
-<p>remove <emph>R</emph> from the <code>[children]</code> information item property of <emph>B</emph>;</p>
+<p>remove <emph>R</emph> from the <code>[children]</code> information item property of <emph>B</emph>.</p>
 </item>
 </olist>
-<issue id="issue-ttml2-105">
-<head>Duration Restrictions</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/105">https://github.com/w3c/ttml2/issues/105</loc></source>
-<p>Handle case where use of <code>dur</code> is not permitted, e.g., when using discontinuous SMPTE time base.</p>
-</issue>
 </def>
 </gitem>
 </glist>

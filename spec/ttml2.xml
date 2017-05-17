@@ -855,7 +855,7 @@ means of a <att>designator</att> attribute or prose text in a specification of p
 </def>
 </gitem>
 <gitem id="terms-display-aspect-ratio">
-<label>[display aspect ratio]</label>
+<label>[display aspect ratio (or DAR)]</label>
 <def>
 <p>The ratio between the horizontal dimension and vertical dimension of a displayed image, video frame,
 viewport or region, display device, etc. Equal to the product of <loc href="#terms-storage-aspect-ratio">storage aspect ratio</loc>
@@ -877,10 +877,7 @@ and <loc href="#terms-pixel-aspect-ratio">pixel aspect ratio</loc>.</p>
 <gitem id="terms-document-coordinate-space">
 <label>[document coordinate space]</label>
 <def>
-<p>A logical coordinate space which determines the aspect ratio and resolution of the
-<loc href="#terms-root-container-region">root container region</loc> used to format and present a
-<loc href="#terms-document-instance">document instance</loc>, more about which see
-<specref ref="root-container-region-semantics"/>.</p>
+<p>See <specref ref="root-container-region-semantics"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-document-instance">
@@ -1314,7 +1311,7 @@ A <loc href="#terms-default-region">default out-of-line region</loc> is implied 
 </def>
 </gitem>
 <gitem id="terms-pixel-aspect-ratio">
-<label>[pixel aspect ratio]</label>
+<label>[pixel aspect ratio (or PAR)]</label>
 <def>
 <p>The ratio between the horizontal dimension and vertical dimension of a displayed pixel. Note that the dimensions of a display pixel may or may not
 correspond to the <loc href="#terms-dot-pitch">dot pitch</loc> of the display device on which it is rendered.</p>
@@ -1508,7 +1505,7 @@ by <specref ref="semantics-style-resolution-processing-sss"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-storage-aspect-ratio">
-<label>[storage aspect ratio]</label>
+<label>[storage aspect ratio (or SAR)]</label>
 <def>
 <p>The ratio between the number of horizontal samples and the number of vertical samples of a two-dimensional
 representation of an image, a video frame, a viewport or region, etc.</p>
@@ -4760,8 +4757,7 @@ when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="parameter-attribute-displayAspectRatio">
 <head>ttp:displayAspectRatio</head>
-<p>The <att>ttp:displayAspectRatio</att> attribute may be used to express the <loc href="#terms-display-aspect-ratio">display aspect ratio</loc> associated with the
-<loc href="#terms-authoring-viewport">authoring viewport</loc>.</p>
+<p>The <att>ttp:displayAspectRatio</att> attribute may be used to specify the <loc href="#terms-display-aspect-ratio">display aspect ratio</loc> of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <issue id="issue-ttml2-30">
 <head>Maintaining Display Aspect Ratio</head>
 <source><loc href="https://github.com/w3c/ttml2/issues/30">https://github.com/w3c/ttml2/issues/30</loc></source>
@@ -4786,7 +4782,7 @@ numerator | demoninator
 </tbody>
 </table>
 <p>If specified, then both numerator and demoninator must be non-zero.
-If not specified, then the storage aspect ratio of the <loc href="#terms-authoring-viewport">authoring viewport</loc> is undefined.</p>
+If not specified, then the display aspect ratio of the <loc href="#terms-root-container-region">root container region</loc> is undefined.</p>
 <p>A <att>ttp:displayAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 </div3>
@@ -5155,8 +5151,7 @@ specification of time expression syntax and semantics.</p>
 </div3>
 <div3 id="parameter-attribute-pixelAspectRatio">
 <head>ttp:pixelAspectRatio</head>
-<p>The <att>ttp:pixelAspectRatio</att> attribute may be used to express the <loc href="#terms-pixel-aspect-ratio">pixel aspect ratio</loc> associated with the
-<loc href="#terms-authoring-viewport">authoring viewport</loc>.</p>
+<p>The <att>ttp:pixelAspectRatio</att> attribute may be used to specify the <loc href="#terms-pixel-aspect-ratio">pixel aspect ratio</loc> of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-pixelAspectRatio-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:pixelAspectRatio</caption>
@@ -5174,7 +5169,7 @@ numerator | demoninator
 </tr>
 </tbody>
 </table>
-<p>If not specified, then square pixels (i.e., aspect ratio 1:1) must be assumed to apply.
+<p>If not specified, then both <code>numerator</code> and <code>demoninator</code> must be assumed to be equal to 1.
 If specified, then both numerator and demoninator must be non-zero.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
@@ -5401,10 +5396,13 @@ implicit duration of the <el>body</el> element of the document, if the <el>body<
 <p>If the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute is specified on the <el>tt</el>
 element, then it must adhere to <specref ref="style-attribute-extent"/>, in which case it
 specifies the spatial extent of the <loc href="#terms-root-container-region">root container region</loc> in
-which <loc href="#terms-content-region">content regions</loc> are located and presented. If no <att>tts:extent</att>
+which <loc href="#terms-content-region">content regions</loc> are located and presented.
+<!-- If no <att>tts:extent</att>
 attribute is specified, then the spatial extent of the <loc href="#terms-root-container-region">root container region</loc> is
 considered to be determined by the <loc href="#terms-document-processing-context">document processing context</loc>.
-The origin of the <loc href="#terms-root-container-region">root container region</loc> is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+The origin of the <loc href="#terms-root-container-region">root container region</loc> is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.
+ -->
+</p>
 <note role="clarification">
 <p>In the absence of other requirements, and if a <loc href="#terms-related-media-object">related media object</loc> exists, then it is recommended
 that the <loc href="#terms-document-processing-context">document processing context</loc> determine that:</p>
@@ -9120,10 +9118,7 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <p>The <att>tts:extent</att> attribute may be used for the following purposes:</p>
 <olist>
 <item><p>to specify the <loc href="#terms-width"><emph>width</emph></loc> and <loc href="#terms-height"><emph>height</emph></loc>
-of the <loc href="#terms-root-container-region">root container region</loc>,
-which has the effect of defining
-the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
-about which see also <specref ref="root-container-region-semantics"/>;</p></item>
+of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
 <item><p>to specify or override the
 <loc href="#terms-width"><emph>width</emph></loc> and <loc href="#terms-height"><emph>height</emph></loc>
 of a <loc href="#terms-content-region">content region</loc>;</p></item>
@@ -14178,16 +14173,19 @@ units
 </table>
 <p>If no <emph>units</emph> component is specified in a &lt;length&gt; expression, then it is to be treated as
 if <code>px</code> (pixels) units were specified.</p>
-<p>If the computed value of the <loc href="#profile-attribute-version"><att>ttp:version</att></loc> attribute on the
-root <el>tt</el> element is two (2) or greater, then the unit of measure <code>px</code> (pixel) corresponds with a logical pixel
-in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>; otherwise,
-it corresponds with the semantics defined by <bibref ref="xsl11"/>, &sect; 5.9.13.</p>
-<note role="historical">
-<p>In previous versions of this specification, a pixel was defined to be equivalent to the semantics adopted
-by <bibref ref="xsl11"/>, &sect; 5.9.13. However, a preponderance of implementations adopted instead the semantics
-specified here; namely, as a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
-which in most cases, has been tied to the coordinate space of a <loc href="#terms-related-media-object">related media object</loc>.</p>
-</note>
+
+<p>the unit of measure <code>px</code> (pixel) is determined as follows:</p>
+<ulist>
+<item><p>if the <att>tts:extent</att> attribute is specified using <code>px</code> units on the <el>tt</el> element, then:</p>
+<ulist>
+<item><p>one <code>px</code> unit in the horizontal dimension is equal to 100/(root container width in <code>px</code>) <code>rw</code>; and</p></item>
+<item><p>one <code>px</code> unit in the vertical dimension is equal to 100/(root container height in <code>px</code>) <code>rh</code>; and</p></item>
+</ulist>
+</item>
+<item><p>otherwise, a <code>px</code> corresponds with the semantics defined by <bibref ref="xsl11"/>, &sect; 5.9.13, and its mapping to the document coordinate space is undefined.</p></item>
+</ulist>
+
+
 <p>When specified relative to a font whose size is expressed as a single length
 measure or as two length measures of equal length, the unit of measure <code>em</code> is considered to be
 identical to that defined by <bibref ref="xsl11"/>, &sect; 5.9.13;
@@ -22310,146 +22308,64 @@ it requires support for the
 <div1 id="root-container-region-semantics">
 <head>Root Container Region Semantics</head>
 <p><emph>This appendix is normative.</emph></p>
-<p>This appendix specifies the semantics for determining essential characteristics of the root container region and its use, including:</p>
-<ulist>
-<item><p>aspect ratios (display, storage, pixel)</p></item>
-<item><p>resolution</p></item>
-<item><p>coordinate space</p></item>
-</ulist>
 <div2 id="root-container-region-semantics-aspect-ratios">
-<head>Aspect Ratios</head>
-<p>Three aspect ratios apply to the <loc href="#terms-root-container-region">root container region</loc>:</p>
-<glist>
-<gitem>
-  <label>display aspect ratio (DAR)</label>
-  <def>
-    <p></p>
-    <p>The <emph>display</emph> aspect ratio of the root container corresponds with the displayed aspect ratio of the root container, i.e.,
-    the actual (or intended) physical aspect ratio when it is (to be) presented on a visual medium;
-    this <emph>display</emph> aspect ratio may be specified by the
-    <loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc> attribute on the
-    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p>
-  </def>
-</gitem>
-<gitem>
-  <label>storage aspect ratio (SAR)</label>
-  <def>
-    <p></p>
-    <p>The <emph>storage</emph> aspect ratio of the root container corresponds with the logical aspect ratio of the root container
-    in storage or sample units;
-    this <emph>storage</emph> aspect ratio may be specified (indirectly) by the
-    <loc href="#style-attribute-extent">tts:extent</loc> attribute on the
-    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p>
-    <p>When the <loc href="#style-attribute-extent">tts:extent</loc> attribute is specified on the
-    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then the <code>SAR</code> is assumed to have been specified as
-    follows:</p>
-    <olist>
-      <item><p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute consists of
-      two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, then the <code>SAR</code> is considered
-      to be specified and having a numeric value equal to the
-      <loc href="#terms-width">width</loc> of the extent divided its <loc href="#terms-height">height</loc>.</p></item>
-      <item><p>Otherwise (the computed value is <code>contain</code>),
-      the <code>SAR</code> is considered to be unspecified and is resolved according to the rules specified below.</p></item>
-    </olist>
-  </def>
-</gitem>
-<gitem>
-  <label>pixel aspect ratio (PAR)</label>
-  <def>
-    <p></p>
-    <p>The <emph>pixel</emph> aspect ratio of the root container corresponds with the actual (or intended) physical aspect ratio of
-    each individual physical (as opposed to logical) pixel of the root container when it is (to be) presented on a visual medium;
-    this <emph>pixel</emph> aspect ratio may be specified by the
-    <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRato</loc> attribute on the
-    <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, or may be implied using other information as described below.</p>
-  </def>
-</gitem>
-</glist>
-<p>The following sub-sections specify how these aspect ratios are resolved according to which are specified in a document.</p>
-<div3 id="root-container-region-semantics-0-aspect-ratio">
-<head>No Aspect Ratio</head>
-<p>If none of the three aspect ratios is specified, then a default value for <code>PAR</code> of <code>1</code> (one) is assumed to apply,
-and the values of <code>DAR</code> and <code>SAR</code> are resolved according to <specref ref="root-container-region-semantics-1-aspect-ratio"/> below.</p>
-</div3>
-<div3 id="root-container-region-semantics-1-aspect-ratio">
-<head>One Aspect Ratio</head>
-<p>If only one of the three aspect ratios is specified, then the resolved values of the other two aspect ratios are determined as follows:</p>
-<olist>
-  <item>
-    <p>If <code>DAR</code> is specified, then its resolved value is its specified value, and the values of <code>SAR</code> and <code>PAR</code>
-    are determined as follows:</p>
-    <olist>
-      <item><p>the resolved value of <code>SAR</code> is the resolved value of <code>DAR</code>;</p></item>
-      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one);</p></item>
-    </olist>
-  </item>
-  <item>
-    <p>If <code>SAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>PAR</code>
-    are determined as follows:</p>
-    <olist>
-      <item><p>the resolved value of <code>DAR</code> is the resolved value of <code>SAR</code>;</p></item>
-      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one);</p></item>
-    </olist>
-  </item>
-  <item>
-    <p>If <code>PAR</code> is specified or its default value assumed to apply,
-    then its resolved value is its specified or assumed value, and the values of <code>SAR</code> and <code>DAR</code> are determined as follows:</p>
-    <olist>
-      <item><p>if a <loc href="#terms-related-media-object">related media object</loc> exists and has a defined <code>SAR</code>,
-      then the resolved value of <code>SAR</code> is the <code>SAR</code> of the
-      <loc href="#terms-related-media-object">related media object</loc>;</p></item>
-      <item><p>otherwise, the resolved value of <code>SAR</code>
-      is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p></item>
-    </olist>
-    <p>The value of <code>DAR</code> is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below.</p>
-  </item>
-</olist>
-</div3>
-<div3 id="root-container-region-semantics-2-aspect-ratio">
-<head>Two Aspect Ratios</head>
-<p>If two of the three aspect ratios are specified or previously resolved,
-then the resolved value of the third aspect ratio is determined using the equation <code>DAR = SAR &times; PAR</code>.</p>
-</div3>
-<div3 id="root-container-region-semantics-3-aspect-ratio">
-<head>Three Aspect Ratios</head>
-<p>If all three aspect ratios are specified and if their values satisfy the equation <code>DAR = SAR &times; PAR</code>,
-then they are considered the resolved aspect ratios. However, if the equation is not satisfied, then, when performing
-validation processing, an error should be reported (subject to validation processor configuration), and, when performing
-presentation processing, the specified <code>PAR</code> value is ignored and the resolved value of <code>PAR</code> is
-determined by <specref ref="root-container-region-semantics-2-aspect-ratio"/> above.</p>
-</div3>
-</div2>
-<div2 id="root-container-region-semantics-resolution">
-<head>Resolution</head>
-<p>The root container region is subdivided into a fixed number of rows and columns of equally sized (but possibly non-square) pixels where
-the number of columns signifies the resolution of the root container region on the <loc href="#terms-horizontal-axis">horizontal axis</loc> and
-the number of rows signifies the resolution of the root container region on the <loc href="#terms-vertical-axis">vertical axis</loc>, where the
-former is defined to be the <loc href="#terms-width">width</loc> and the
-latter is defined to be the <loc href="#terms-height">height</loc> of the root container region, respectively.</p>
-<p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute
-is specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element and consists of
-two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, then these two expressions denote
-the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of the root container region, and,
-consequently, determine its resolution.
-Otherwise, if a <loc href="#terms-related-media-object">related media object</loc> exists, then the resolution of
-the root container region is the resolution of the <loc href="#terms-related-media-object">related media object</loc>, or,
-if no <loc href="#terms-related-media-object">related media object</loc> exists, then the resolution of
-the root container region is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+<head>Resolving Aspect Ratios</head>
+<p>The following table specifies how the <loc href="#terms-display-aspect-ratio">DAR</loc>, <loc href="#terms-storage-aspect-ratio">SAR</loc> and <loc href="#terms-pixel-aspect-ratio">PAR</loc> of the root container region are resolved.</p>
+
+<table id="table-root-container-aspect-ratio-resolution" role="common">
+<caption>Resolving Root Container Aspect Ratios</caption>
+<thead>
+  <tr>
+    <th>ttp:displayAspectRatio</th>
+    <th>tts:extent in 'px'</th>
+    <th>DAR</th>
+    <th>SAR</th>
+    <th>PAR</th>
+  </tr>
+  </thead>
+ <tbody>
+  <tr>
+    <td colspan="2">is specified on &lt;tt&gt;?</td>
+    <td colspan="3">resolves to...</td>
+  </tr>
+  <tr>
+    <td>no</td>
+    <td>no</td>
+    <td>determined by the document processing context</td>
+    <td>DAR / PAR</td>
+    <td>computed value of ttp:pixelAspectRatio</td>
+  </tr>
+  <tr>
+    <td>yes</td>
+    <td>no</td>
+    <td>specified value of ttp:displayAspectRatio</td>
+    <td>DAR / PAR</td>
+    <td>computed value of ttp:pixelAspectRatio</td>
+  </tr>
+  <tr>
+    <td>yes</td>
+    <td>yes</td>
+    <td>specified value of ttp:displayAspectRatio</td>
+    <td>width of tts:extent divided by height of tts:extent </td>
+    <td>DAR / SAR</td>
+  </tr>
+  <tr>
+    <td>no</td>
+    <td>yes</td>
+    <td>SAR x PAR</td>
+    <td>width of tts:extent divided by height of tts:extent</td>
+    <td>computed value of ttp:pixelAspectRatio</td>
+  </tr>
+</tbody>
+</table>
 </div2>
 <div2 id="root-container-region-semantics-coordinate-space">
 <head>Coordinate Space</head>
-<p>The coordinate space of the root container region, also known as the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
-is an unbounded, two-dimensional plane on which a closed set of logical pixels are defined that take the form of a rectangle <emph>R</emph> such that
-the said pixels are interior to (inside of) the <emph>R</emph>, and where the origin (position) of this coordinate space is coincident with the upper,
-left-hand corner of <emph>R</emph>, and where positive pixels on the vertical axis extend downwards and positive pixels on the horizontal axis
-extend rightwards.
-Furthermore, the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of <emph>R</emph> is set to the
-resolved resolution of the root container region.
-Lastly, the aspect ratios that apply to <emph>R</emph> are established according to the resolved values of <code>DAR</code>, <code>SAR</code>,
-and <code>PAR</code> as indicated above.</p>
-<p>Unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies,
-the <loc href="#terms-document-coordinate-space">document coordinate space</loc> is determined once and only once when processing a
-given document instance.</p>
+<p>The coordinate space of the root container region, also known as the <loc href="#terms-document-coordinate-space">document coordinate space</loc>, is a cartesian coordinate system with:</p>
+<ulist>
+<item><p>its origin coincident with the upper left-hand corner of the <loc href="#terms-root-container-region">root container region</loc>; and</p></item>
+<item><p>the point with coordinates (1, 1) coincident with the lower right-hand corner of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
+</ulist>
 </div2>
 </div1>
 <div1 id="time-expression-semantics">

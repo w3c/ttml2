@@ -4792,13 +4792,20 @@ ttp:clockMode
 ref="parameter-attribute-timeBase"/>, is designated as
 <code>clock</code>, then this parameter applies as follows: if the
 parameter's value is <code>local</code>, then time expressions are
-interpreted as local wall-clock time coordinates;
+interpreted as local wall-clock time (and date) coordinates;
 if <code>utc</code>, then time expressions are
 interpreted as UTC time coordinates
 <bibref ref="utc"/>;
 if <code>gps</code>, then time expressions are
 interpreted as GPS time coordinates
 <bibref ref="gps"/>.</p>
+<note role="elaboration">
+<p>No specific timezone is implied by time (and date) expressions when
+<code>local</code> clock mode applies. In particular, a <loc href="#terms-content-processor">content processor</loc>
+is expected to interpret a local time (and date) expression in the local timezone, wherever processing takes place.
+If an author intends that time (and date) expressions be fixed to a specific time zone, then they may convert time (and date)
+expressions to UTC and specify use of the <code>utc</code> clock mode.</p>
+</note>
 <note role="explanation">
 <p>The primary difference between GPS time and UTC time is that GPS
 time is not adjusted for leap seconds, while UTC time is adjusted as
@@ -17349,6 +17356,11 @@ is used in a <loc href="#terms-document-instance">document instance</loc> and th
 (1) <phrase role="deprecated">use of an <emph>offset-time</emph> form of &lt;time-expression&gt; is deprecated</phrase>, and
 (2) <phrase role="deprecated">use of a <emph>fraction</emph> seconds component in a <emph>clock-time</emph> form of &lt;time-expression&gt; is
 deprecated</phrase>.</p>
+<note role="explanation">
+<p>The &lt;time-expression&gt; syntax specified above explicitly excludes the representation of time zone information. If an author
+wishes to correlate a &lt;time-expression&gt; with a specific time zone, then they may convert time expressions to UTC and specify
+use of the <code>utc</code> clock mode, about which see <specref ref="parameter-attribute-clockMode"/>.</p>
+</note>
 </div3>
 </div2> <!-- timing-time-value-expressions -->
 <div2 id="semantics-timing">

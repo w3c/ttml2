@@ -6930,10 +6930,7 @@ by an <el>image</el> element or by a <loc href="#style-attribute-backgroundImage
 in an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
 </note>
 <p>When an <el>image</el> element appears in an <loc href="#terms-image-presentation-context">image presentation context</loc>, it
-serves as a non-sharable definition of an <loc href="#terms-image-resource">image resource</loc> that implies presentation (rendering) semantics.
-In this case, the active time interval of the <el>image</el> element is the same as the active time interval of its parent
-<loc href="#terms-content-element">content element</loc>.
-</p>
+serves as a non-sharable definition of an <loc href="#terms-image-resource">image resource</loc> that implies presentation (rendering) semantics.</p>
 <note role="elaboration">
 <p>A non-sharable definition of an <loc href="#terms-image-resource">image resource</loc> may or may not specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute, but this
 identifier is not referenced by other <el>image</el> elements, or, if it is, the reference is ignored.</p>
@@ -6949,8 +6946,9 @@ value of <code>block</code> or <code>inline</code>, respectively.</p>
 <p>The presentation of an <loc href="#terms-image-resource">image resource</loc> referenced by a
 <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc> style attribute must not affect content layout.</p>
 <p>The <el>image</el> element accepts as its children
-zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by zero or more
-<loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
+zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group, followed by
+zero or more elements in the <loc href="#element-vocab-group-animation"><code>Animation.class</code></loc> element group, followed by
+zero or more <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
 <table id="elt-syntax-image" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: image</caption>
 <tbody>
@@ -7012,9 +7010,27 @@ when intrinsic width or height information is not available or is intended to be
 <el>image</el> element in an <loc href="#terms-image-presentation-context">image presentation context</loc> and on the
 <el>image</el> element in an <loc href="#terms-image-defining-context">image defining context</loc> to which the former refers, then
 the attribute specified on the former takes precedence over the one specified on the latter.</p>
+<note role="clarification">
+<p>Presentation of an image to which a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> style attribute applies
+is expected to be subject to an anamorphic scaling operation in order to obtain the width and height of the specified extent.</p>  
+</note>
 <p>The linking attributes <att>xlink:*</att> may be used to link an <el>image</el> element with related content, using the
 specified location (<code>href</code>), roles, and title. The behavior of link activation is affected by the <att>xlink:show</att> attribute,
 the precise meaning of which is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+<p>When an <el>image</el> appears in an <loc href="#terms-image-defining-context">image defining context</loc> the following additional
+constraints apply:</p>
+<olist>
+  <item><p>attributes
+  <loc href="#animation-attribute-animate"><att>animate</att></loc>,
+  <loc href="#timing-attribute-begin"><att>begin</att></loc>,
+  <loc href="#timing-attribute-dur"><att>dur</att></loc>,
+  <loc href="#timing-attribute-end"><att>end</att></loc>,
+  <loc href="#layout-attribute-region"><att>region</att></loc>, and
+  <loc href="#timing-attribute-timeContainer"><att>timeContainer</att></loc>
+  must not be specified, and, if they appear, must be ignored for the purpose of presentation processing;</p></item>
+  <item><p>elements from the <loc href="#element-vocab-group-animation"><code>Animation.class</code></loc> element group must
+  not appear as child elements, and, if they appear, must be ignored for the purpose of presentation processing.</p></item>
+</olist>
 <p>The use of the <el>image</el> element is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-image-example-1" role="example">
 <caption>Example Fragment &ndash; External Image Resources</caption>
@@ -16284,6 +16300,7 @@ element types:</p>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 </ulist>
 <note role="seealso">
 <p>See <specref ref="semantics-region-layout"/> below for further information on content

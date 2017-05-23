@@ -9797,7 +9797,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>yes, excepting <specref ref="style-attribute-fontSize-special-semantics"/></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -9811,12 +9811,6 @@ then relative to nearest ancestor <loc href="#terms-styled-element">styled eleme
 </tr>
 </tbody>
 </table>
-<p></p>
-<issue id="issue-ttml2-133a">
-<head>Ruby Text Size Inheritance</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/133">https://github.com/w3c/ttml2/issues/133</loc></source>
-<p>Special treatment is needed for inheritance of font size on ruby annotation text.</p>
-</issue>
 <p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length applies
 equally to horizontal and vertical scaling of a glyph's EM square; if two
 <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
@@ -9898,6 +9892,35 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.4. The addition of a second length component to permit specifying font
 width and height independently is an extension introduced by TTML.</p>
 </note>
+<div4 id="style-attribute-fontSize-special-semantics">
+<head>Special Semantics</head>
+<p>When applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element
+for which the computed value of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is
+either <code>textContainer</code> or <code>text</code>, then, when resolving the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>, the following special inheritance
+rules apply.</p>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code>
+does not inherit <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> from its parent.
+Instead, if no <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute is specified on the
+ruby text container <loc href="#content-vocabulary-span"><el>span</el></loc> element, a value equal to 50% of the value of the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> on the nearest ancestor
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>container</code> is used;
+otherwise, the specified value is used.</p>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>text</code>
+does not inherit <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> unless its parent is a
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code>.
+Instead, if no <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute is specified on the
+ruby text <loc href="#content-vocabulary-span"><el>span</el></loc> element, a value equal to 50% of the value of the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> on the nearest ancestor
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code> or <code>container</code> is used,
+whichever is most immediate to the ruby text <loc href="#content-vocabulary-span"><el>span</el></loc> element;
+otherwise, the specified value is used.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-fontStyle">
 <head>tts:fontStyle</head>

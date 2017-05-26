@@ -9728,7 +9728,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>see <loc href="#style-attribute-fontSize-special-semantics">special semantics</loc></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -9742,33 +9742,61 @@ then relative to nearest ancestor <loc href="#terms-styled-element">styled eleme
 </tr>
 </tbody>
 </table>
-<p></p>
-<issue id="issue-ttml2-133a">
-<head>Ruby Text Size Inheritance</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/133">https://github.com/w3c/ttml2/issues/133</loc></source>
-<p>Special treatment is needed for inheritance of font size on ruby annotation text.</p>
-</issue>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
 <p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length applies
-equally to horizontal and vertical scaling of a glyph's EM square; if two
-<loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
-scaling and the second expresses vertical scaling.</p>
-<note role="example">
-<p>Use of independent horizontal and vertical font sizes is expected to be used
-with cell based units in order to denote fonts that are two rows in height and
-one column in width.</p>
-</note>
+equally to the horizontal and vertical size of a glyph's EM square;
+if two <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
+size and the second expresses vertical size.</p>
+<p>If horizontal and vertical sizes are expressed independently, then the
+units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
 <note role="clarification">
 <p>A glyph's EM square is conventionally defined as the EM square of the font that contains the glyph. That is,
 glyphs do not have an EM square that is distinct from their font's EM square.</p>
 </note>
-<p>If horizontal and vertical sizes are expressed independently, then the
-units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
+<p>Relative <loc href="#style-value-length">&lt;length&gt;</loc> values
+that appear in this attribute, i.e., values expressed in percentage (<code>%</code>), cell (<code>c</code>), or EM (<code>em</code>) units,
+are resolved in relation to a referenced 2-dimensional size value consisting of two components, a width component and
+a height component. If the relative unit is a percentage, then the referenced value is either the computed value
+of the font size of the nearest styled ancestor element or the <loc href="#terms-computed-cell-size">computed cell size</loc>.
+If the relative unit is cells (<code>c</code>), then the referenced value is the
+<loc href="#terms-computed-cell-size">computed cell size</loc>.
+If the relative unit is EMs (<code>em</code>), then the referenced value is determined as if percentage units
+were used, where <code>1em</code> equals <code>100%</code>.</p>
+<p>When a single relative <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then
+this <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the height component of the referenced value;
+when two relative
+<loc href="#style-value-length">&lt;length&gt;</loc> values are specified,
+the first <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the width component of the referenced value and
+the second <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the height component of the referenced value.</p>
+<note role="example">
+<p>Anamorphic font scaling, i.e., fonts scaled to independent (and distinct) horizontal and vertical sizes,
+is expected to be used in a number of contexts, such as
+when an author desires to synthesize a narrow or wide font face,
+when an author desires to employ font sizes based on non-square cell units, etc.</p>
+</note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
+<p>If the value of this attribute specifies a <code>c</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
+then it is resolved in terms of the height (only) or (both) the width and height of a
+<emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>, which is to say, in terms of
+the <loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
+<note role="example">
+<p>For example, consider a paragraph (<code>p</code>) element <code>P</code>.
+If the <loc href="#terms-computed-cell-size">computed cell size</loc> is (24px,36px), and if
+<code>tts:fontSize="1c"</code> is specified on <code>P</code>, then the computed value of <code>tts:fontSize</code>
+resolves to (36px,36px), while if <code>tts:fontSize="1c 1c"</code> is specified on <code>P</code>,
+then the computed value resolves to (24px,36px).</p>
+</note>
 <p>If the value of this attribute specifies an <code>em</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
 then it is treated as if an equivalent percentage value were specified, where <code>1em</code> is equal to <code>100%</code>.</p>
+<note role="example">
+<p>For example, consider a span element <code>S</code>, a child of a paragraph (<code>p</code>) element <code>P</code>.
+If the computed value of <code>tts:fontSize</code> on <code>P</code> is (18px,24px), and if
+<code>tts:fontSize="1em"</code> is specified on <code>S</code>, then this is equivalent to specifying <code>100%</code>,
+which resolves to (24px,24px). However, if <code>tts:fontSize="1em 1em"</code> is specified on <code>S</code>,
+then this is equivalent to specifying <code>100% 100%</code>  which resolves to (18px,24px).</p>
+</note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -9776,15 +9804,6 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 the computed font size and the supported font size is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value most distant from 0 (single length specification) or [0,0] (two length specifications) is used,
 i.e., the largest font size, is used.</p>
-</note>
-<note role="elaboration">
-<p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
-the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.
-When a single &lt;length&gt; is expressed using cell units, then it refers to the height of
-the <loc href="#terms-computed-cell-size">computed cell size</loc>.
-When two &lt;length&gt; values are expressed using cell units, then the first refers to the width of
-the <loc href="#terms-computed-cell-size">computed cell size</loc>, and the second refers to the height of the
-<loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
 </note>
 <p>The <att>tts:fontSize</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontSize-example-1" role="example">
@@ -9829,6 +9848,17 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.4. The addition of a second length component to permit specifying font
 width and height independently is an extension introduced by TTML.</p>
 </note>
+<div4 id="style-attribute-textSize-special-semantics">
+<head>Special Semantics</head>
+<p>The computed value of the property associated with this attribute consists of a 2-tuple
+the entries of which denote the computed values of the width and height components of the font size respectively.
+Furthermore, when applying inheritance semantics, each of these entries is considered to
+be inherited separately from the other.</p>
+<note role="elaboration">
+<p>Notwithstanding the separate inheritance of width and height components of the computed font size,
+there is, at present, no mechanism that permits specifying only one component.</p>
+</note>
+</div4>
 </div3>
 <div3 id="style-attribute-fontStyle">
 <head>tts:fontStyle</head>
@@ -12919,9 +12949,9 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <div4 id="style-attribute-textDecoration-special-semantics">
 <head>Special Semantics</head>
 <p>The computed value of the property associated with this attribute consists of a 3-tuple,
-each of which denotes, respectively, whether an underline, line through, or overline
+where each ewntry denotes, respectively, whether an underline, line through, or overline
 decoration is to be applied to the affected text.
-Furthermore, when applying inheritance semantics, each of these sub-values is considered to
+Furthermore, when applying inheritance semantics, each of these entries is considered to
 be inherited separately from the others.</p>
 <note role="example">
 <p>For example, if the computed value of <code>tts:textDecoration</code> that applies to a <code>div</code> (division) element

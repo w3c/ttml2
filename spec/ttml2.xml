@@ -13034,8 +13034,7 @@ that defined by <bibref ref="css3-decoration"/>, &sect; 3.</p>
 <p>The <att>tts:textOrientation</att> attribute is used to specify a style property that
 defines a text orientation to apply to glyphs that are selected for <loc href="#terms-glyph-area">glyph areas</loc> generated
 by content flowed into a region to which a vertical writing mode applies.</p>
-<p>This attribute may be specified by any
-element type
+<p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-textOrientation" role="common">
@@ -13079,27 +13078,38 @@ as a style property only to those element types indicated in the following table
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
-<p>If the value of this attribute is <code>mixed</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways, i.e., 90&deg; clockwise from
-their nominal orientation in horizontal text, while glyphs from vertical scripts are not
-affected.</p>
-<p>If the value of this attribute is <code>sidewaysLeft</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways with 90&deg; counter-clockwise rotation.</p>
-<p>If the value of this attribute is <code>sidewaysRight</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways with 90&deg; clockwise rotation.</p>
-<p>If the value of this attribute is <code>sideways</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways, either 90&deg; clockwise or
-90&deg; counter-clockwise, according to whether the writing mode is
-<code>tbrl</code> or <code>tblr</code>, respectively. Glyphs from vertical scripts are not
-affected.</p>
-<p>If the value of this attribute is <code>upright</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set upright, i.e., using their
-nominal orientation in horizontal text, while glyphs from vertical scripts are not
-affected. In addition, for purposes of bidirectional processing, this value causes all
+
+<p>The presentation semantics of this style property apply only when a vertical
+writing mode applies; therefore, if a horizontal writing mode applies, this style
+property has no effect.</p>
+
+<p>In the following, glyphs associated with content characters are described in terms of whether
+they are rotated or not rotated in vertical writing modes, where this determination is made in accordance with
+the <code>Vertical_Orientation</code> of each content character as determined by <bibref ref="utr50"/>.</p>
+<p>If the value of this attribute is <code>mixed</code>, then rotated glyphs are set sideways
+and non-rotated glyphs are set upright, where <emph>sideways</emph> means rotated either 90&deg; clockwise or 90&deg; count-clockwise,
+respectively, in accordance with whether the applicable block progression direction is right-to-left or left-to-right, and where <emph>upright</emph>
+means not rotated.</p>
+<note role="clarification">
+<p>According to <bibref ref="utr50"/>, visual rotation of a glyph may occur through either the substitution of
+a rotated glyph or by performing an affine rotation transformation on the glyph's outline (or raster image),
+where the determination of which of these applies depends on the specific font used during presentation processing.</p>
+</note>
+<p>If the value of this attribute is <code>sidewaysLeft</code>, then rotated glyphs
+are rotated 90&deg; counter-clockwise.</p>
+<p>If the value of this attribute is <code>sidewaysRight</code>, then rotated glyphs
+are rotated 90&deg; clockwise.</p>
+<p>If the value of this attribute is <code>sideways</code>, then rotated glyphs
+are rotated either 90&deg; clockwise or 90&deg; count-clockwise, respectively,
+in accordance with whether the applicable block progression direction is right-to-left or left-to-right.</p>
+<p>If the value of this attribute is <code>upright</code>, then all characters are considered
+to have a vertical orientation of <code>U</code>, in which case no glyphs are rotated. In this case the
+(potential) substitution of rotated glyphs and the application of an affine rotation transformation
+are disabled, and the glyph rendered is the non-rotated form.
+In addition, for purposes of bidirectional processing, this value causes all
 affected characters to be treated as strong left-to-right, i.e., to be treated as if
 a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeOverride</att> of
 <code>override</code> were applied.</p>
-<p>If a vertical writing mode does not apply, then this style property has no effect.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>mixed</code>.</p>
 <p>The <att>tts:textOrientation</att> style is illustrated by the following
@@ -13111,7 +13121,7 @@ example.</p>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
-represented by this attribute are based upon that defined by <bibref ref="css3-wm"/>,
+represented by this attribute are based upon that defined by <bibref ref="utr50"/> and <bibref ref="css3-wm"/>,
 &sect; 5.1.</p>
 </note>
 </div3>
@@ -13684,6 +13694,11 @@ as a style property only to those element types indicated in the following table
 </table>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>lrtb</code>.</p>
+<note role="elaboration">
+<p>A writing mode for which the inline progression direction is left-to-right or right-to-left is referred to
+as a <emph>horizontal writing mode</emph>, while a writing mode for which the inline progression direction is
+top-to-bottom is referred to as a <emph>vertical writing mode</emph>.</p>
+</note>
 <p>The <att>tts:writingMode</att> style is illustrated by the following example.</p>
 <table id="style-attribute-writingMode-example-1" role="example">
 <caption>Example Fragment &ndash; Writing Mode</caption>
@@ -23763,6 +23778,11 @@ Recommendation TF.460,
 href="http://www.itu.int/">Standard-Frequency and Time-Signal
 Emissions</titleref>, International
 Telecommunciations Union, Radio Sector (ITU-R).
+</bibl>
+<bibl id="utr50" key="UTR50">K. Ishii, <titleref
+href="http://www.unicode.org/reports/tr50/tr50-17.html">Unicode Vertical Text Layout</titleref>, Unicode Consortium, 23 November 2016. (See
+<xspecref
+href="http://www.unicode.org/reports/tr50/tr50-17.html">http://www.unicode.org/reports/tr50/tr50-17.html</xspecref>.)
 </bibl>
 <bibl id="wcag" key="WCAG">Ben Caldwell, et al., Eds.,
 <titleref href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web

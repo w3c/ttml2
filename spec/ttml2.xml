@@ -15887,6 +15887,7 @@ element type of <emph>E</emph> is not the animation element type
 immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph>E</emph>,
 merge the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
+<!-- step 6 -->
 <item>
 <p><phrase role="strong">[implicit inheritance and initial value fallback]</phrase> if the
 element type of <emph>E</emph> is not animation element type <el>animate</el> or <el>set</el>
@@ -15896,26 +15897,16 @@ then for each style property
 above in <specref ref="styling-attribute-vocabulary"/>, perform the
 following ordered sub-steps:</p>
 <olist>
+<!-- (a) -->
 <item>
 <p>if <emph>P</emph> is present in the specified
 style set of <emph>E</emph>, <emph>SSS(E)</emph>, then continue to the
 next style property;</p>
 </item>
+<!-- (b) -->
 <item>
-<p>if <emph>P</emph> is defined to be inheritable and <emph>E</emph> is
-not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
-<ulist>
-<item>
-<p>set <emph>P&prime;</emph> to the result of
-looking up the value of <emph>P</emph> in the computed style set of
-the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>, such that
-<emph>CSS(NEAREST-ANCESTOR(E))</emph> contains a definition of <emph>P</emph>;</p>
-</item>
-</ulist>
-</item>
-<item>
-<p>otherwise (<emph>P</emph> is not inheritable or <emph>E</emph> is
-the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element), perform the following:</p>
+<p>if (1) <emph>P</emph> is inheritable and <emph>E</emph> is the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element
+or (2) if <emph>P</emph> is not inheritable and <emph>P</emph> applies to <emph>E</emph>, then perform the following:</p>
 <ulist>
 <item><p>set <emph>P&prime;</emph> to the initial value of
 property <emph>P</emph>, where the initial value of a property is
@@ -15929,6 +15920,20 @@ in <specref ref="styling-attribute-vocabulary"/>;</p></item>
 </item>
 </ulist>
 </item>
+<!-- (c) -->
+<item>
+<p>if <emph>P</emph> is inheritable and <emph>E</emph> is
+not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
+<ulist>
+<item>
+<p>set <emph>P&prime;</emph> to the result of
+looking up the value of <emph>P</emph> in the computed style set of
+the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>, such that
+<emph>CSS(NEAREST-ANCESTOR(E))</emph> contains a definition of <emph>P</emph>;</p>
+</item>
+</ulist>
+</item>
+<!-- (d) -->
 <item>
 <p>if the value of <emph>P&prime;</emph> is not undefined, then merge
 <emph>P&prime;</emph> into the specified style set of <emph>E</emph>,

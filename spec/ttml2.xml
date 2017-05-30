@@ -5886,14 +5886,28 @@ in the core vocabulary catalog:</p>
 </ulist>
 <div3 id="content-attribute-condition">
 <head>condition</head>
-<p>The <att>condition</att> attribute is used to conditionally exclude an element from semantic processing.</p>
+<p>The <att>condition</att> attribute is used to conditionally exclude an element from semantic processing,
+in which case the element is said to be <emph>conditionalized</emph>.</p>
+<note role="clarification">
+<p>The use of a <att>condition</att> attribute by an element does not prevent either the parsing of that element (and its descendant) or
+the insertion of the parsed representation of that element (and its descendants) into the
+<loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> associated with the containing
+<loc href="#terms-document-instance">document instance</loc>.</p>
+</note>
 <p>The <att>condition</att> attribute may be used with any element in the core vocabulary catalog
 except profile matter, i.e., elements of the <loc href="#element-vocab-type-profile">Profile Module</loc>.</p>
 <p>The value of a <att>condition</att> attribute must adhere to a
-<loc href="#content-value-condition">&lt;condition&gt;</loc> expression.</p>
+<loc href="#content-value-condition">&lt;condition&gt;</loc> expression
+which is evaluated at the time of presentation processing (lazy evaluation)
+or prior to the time of presentation processing (eager evaluation), where eager evaluation may occur only when the value resulting
+from evaluation cannot change or is known to not change during presentation processing.</p>
+<note role="example">
+<p>For example, if a condition expression depends on the value of a <loc href="content-value-condition-function">condition function</loc>,
+then the condition expression's value may change during presentation processing, in which case eager evaluation cannot be used.</p>
+</note>
 <p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and the
 its <loc href="#content-value-condition">&lt;condition&gt;</loc> expression value evaluates to <code>false</code>,
-then the semantics of the element and its descendant elements must be ignored.</p>
+then the semantics of the element and its descendant elements must be ignored unless explicitly specified otherwise.</p>
 <note role="elaboration">
 <p>For example, if a <loc href="#content-vocabulary-p"><el>p</el></loc> element specifies a <att>condition</att>
 attribute that evaluates to <code>false</code>, then the content of that element is ignored for presentation purposes.</p>
@@ -7658,6 +7672,13 @@ ref="semantics-style-association-chained-referential"/>.</p>
 refer to a <el>style</el> element, then the referenced <el>style</el>
 element must appear as a descendant of the <el>styling</el> element, and
 not in any other context.</p>
+</note>
+<note role="elaboration">
+<p>If a <loc href="#content-attribute-condition"><att>condition</att></loc> attribute applies to
+a <el>style</el> element and that condition evaluates to <code>false</code>,
+then its nested and inline styles are ignored; however, styles that would
+be included by means of referential or chained referential styling are not ignored.
+See <specref ref="semantics-style-resolution-processing-sss"/> for further details.</p>
 </note>
 </div3>
 <div3 id="styling-vocabulary-styling">
@@ -15898,9 +15919,11 @@ anonymous span <emph>E</emph>,
 <emph>SSS(E)</emph>, is determined according to the following ordered
 rules:</p>
 <olist>
+<!-- 1. [initialization] -->
 <item><p><phrase role="strong">[initialization]</phrase> initialize
 the specified style set <emph>SSS</emph> of <emph>E</emph> to the
 empty set;</p></item>
+<!-- 2. [referential and chained styling] -->
 <item><p><phrase role="strong">[referential and chained referential
 styling]</phrase> for each <el>style</el> element <emph>S<sub>REF</sub></emph>
 referenced by a <att>style</att> attribute specified on
@@ -15911,23 +15934,29 @@ merge the specified style set of
 <emph>S<sub>REF</sub></emph>, <emph>SSS(S<sub>REF</sub>)</emph>, into
 the specified style set of <emph>E</emph>,
 <emph>SSS(E)</emph>;</p></item>
-<item><p><phrase role="strong">[nested styling]</phrase> for each
-nested <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
+<!-- 3. [nested styling] -->
+<item><p><phrase role="strong">[nested styling]</phrase>
+if <emph>E</emph> is not conditionalized or if its condition does not evaluate to <code>false</code>, then
+for each nested <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
 <emph>E</emph>, and in the specified order of child elements, merge
 the specified style set of <emph>S<sub>NEST</sub></emph>,
 <emph>SSS(S<sub>NEST</sub>)</emph>, into the specified style set of
 <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
-<item><p><phrase role="strong">[inline styling]</phrase> for each
-style property <emph>P</emph> expressed as a specified styling
+<!-- 4. [inline styling] -->
+<item><p><phrase role="strong">[inline styling]</phrase>
+if <emph>E</emph> is not conditionalized or if its condition does not evaluate to <code>false</code>, then
+for each style property <emph>P</emph> expressed as a specified styling
 attribute of <emph>E</emph>,
 merge <emph>P</emph> into the specified style
 set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
+<!-- 5. [animation styling] -->
 <item><p><phrase role="strong">[animation styling]</phrase> if the
 element type of <emph>E</emph> is not the animation element type
 <el>set</el>, then for each
 immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph>E</emph>,
 merge the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
+<!-- 6. [implicit inheritance and initial value feedback] -->
 <item>
 <p><phrase role="strong">[implicit inheritance and initial value fallback]</phrase> if the
 element type of <emph>E</emph> is not animation element type <el>animate</el> or <el>set</el>

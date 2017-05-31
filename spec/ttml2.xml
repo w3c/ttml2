@@ -5388,7 +5388,6 @@ zero or one <el>body</el> element.</p>
 &lt;tt
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#style-attribute-position">tts:position</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
@@ -5426,10 +5425,7 @@ in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bib
 This would permit, for example, the interchange of information that reflects
 the semantics of <bibref ref="cta708e"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
 </note>
-<p>If the <loc href="#style-attribute-position"><att>tts:position</att></loc> attribute is specified on the <el>tt</el>
-element, then it must adhere to <specref ref="style-attribute-position"/>, in which case it
-specifies the position of the <loc href="#terms-root-container-region">root container region</loc> relative to a reference positioning rectangle.</p>
-<p>Except for the <att>tts:extent</att> and <att>tts:position</att> attributes described above, an attribute in the TT Style Namespace should not
+<p>Except for the <att>tts:extent</att> attribute described above, an attribute in the TT Style Namespace should not
 be specified on the <el>tt</el> element unless it denotes an inheritable style property, in which case such inheritable style property is available
 for <loc href="#semantics-style-inheritance-root">root style inheritance</loc>. If a non-inheritable style property is specified, then
 it must be ignored for the purpose of non-validation processing. In the case of validation
@@ -5951,6 +5947,9 @@ in the core vocabulary catalog except parameter vocabulary.</p>
 applies to all of that element's descendants unless overridden by a descendant. In other words,
 the language that is associated with an element is either specified on the element or is effectively
 inherited from that element's nearest ancestor element.</p>
+<p>This language association process is based solely on the structure of the
+<loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> of a <loc href="#terms-document-instance">document instance</loc>
+and occurs prior to performing <loc href="#semantics-region-layout-step-1">intermediate synchronic document construction</loc>.</p>
 </note>
 <p>The use of <code>xml:lang</code> on content and metadata elements is illustrated by the following example.</p>
 <table id="xml-lang-example-1" role="example">
@@ -5992,6 +5991,15 @@ and these text descriptions are, in turn, associated with <code>en</code> (Engli
 <bibref ref="xml10"/>, &sect;2.10, <emph>White Space Handling</emph>.</p>
 <p>The <att>xml:space</att> attribute may be used with any element in
 the core vocabulary catalog except parameter vocabulary.</p>
+<note role="elaboration">
+<p>As specified by <bibref ref="xml10"/>, &sect;2.10, the application whitespace signalling that applies to an element
+applies to all of that element's descendants unless overridden by a descendant. In other words,
+the application whitespace signaling that applies to an element is either specified on the element or is effectively
+inherited from that element's nearest ancestor element.</p>
+<p>This application whitespace signalling process is based solely on the structure of the
+<loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> of a <loc href="#terms-document-instance">document instance</loc>
+and occurs prior to performing <loc href="#semantics-region-layout-step-1">intermediate synchronic document construction</loc>.</p>
+</note>
 <p>The semantics of the value <code>default</code> are fixed to mean that
 when performing presentation processing of a <loc href="#terms-document-instance">document instance</loc> as
 described by <specref ref="semantics-region-layout-step-2"/>,
@@ -8783,7 +8791,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>yes, but see <loc href="#style-attribute-textDecoration-special-semantics">special semantics</loc></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -8834,6 +8842,29 @@ The title of the book is
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.29.1.</p>
 </note>
+<div4 id="style-attribute-direction-special-semantics">
+<head>Special Semantics</head>
+<p>When performing style resolution processing (see <specref ref="semantics-style-resolution-processing"/>),
+the resolution of the computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+<emph><code>R</code></emph> is determined according to the following ordered rules, where the first applicable rule applies:</p>
+<olist>
+  <item><p>if a <att>tts:direction</att> attribute is specified on <emph><code>R</code></emph>, then the computed value
+  <att>tts:direction</att> is the specified value;</p></item>
+  <item><p>if a <att>tts:writingMode</att> attribute is specified on <emph><code>R</code></emph>, then the computed value
+  <att>tts:direction</att> is the
+  <loc href="#terms-inline-progression-dimension">inline progression direction</loc> determined by the computed value of
+  <att>tts:writingMode</att> on <emph><code>R</code></emph>;</p></item>
+  <item><p>otherwise, the computed value of <att>tts:direction</att> is the value inherited from the root <el>tt</el> element.</p></item>
+</olist>
+<note role="elaboration">
+<p>The computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+as determined above effectively becomes the value of <att>tts:direction</att> inherited by elements that are subject to
+<loc href="#semantics-style-inheritance-region">region style inheritance</loc> semantics.</p>
+</note>
+<p>In the case of any other element <emph><code>E</code></emph>, where <emph><code>E</code></emph> is not a
+<loc href="#layout-vocabulary-region"><el>region</el></loc> element, the presence or absence of a <att>tts:writingMode</att> attribute
+has no affect on the resolution of the computed value of <att>tts:direction</att> on <emph><code>E</code></emph>.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-disparity">
 <head>tts:disparity</head>
@@ -9728,7 +9759,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>see <loc href="#style-attribute-fontSize-special-semantics">special semantics</loc></td>
+<td>yes, excepting <specref ref="style-attribute-fontSize-special-semantics"/></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -9742,9 +9773,6 @@ then relative to nearest ancestor <loc href="#terms-styled-element">styled eleme
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length applies
 equally to the horizontal and vertical size of a glyph's EM square;
 if two <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
@@ -9848,10 +9876,36 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.4. The addition of a second length component to permit specifying font
 width and height independently is an extension introduced by TTML.</p>
 </note>
-<div4 id="style-attribute-textSize-special-semantics">
+<div4 id="style-attribute-fontSize-special-semantics">
 <head>Special Semantics</head>
 <p>The computed value of the property associated with this attribute consists of a 2-tuple
 the entries of which denote the computed values of the width and height components of the font size respectively.</p>
+<p>When applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element
+for which the computed value of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is
+either <code>textContainer</code> or <code>text</code>, then, when resolving the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>, the following special inheritance
+rules apply.</p>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code>
+does not inherit <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> from its parent.
+Instead, if no <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute is specified on the
+ruby text container <loc href="#content-vocabulary-span"><el>span</el></loc> element, a value equal to 50% of the value of the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> on the nearest ancestor
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>container</code> is used;
+otherwise, the specified value is used.</p>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>text</code>
+does not inherit <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> unless its parent is a
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code>.
+Instead, if no <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute is specified on the
+ruby text <loc href="#content-vocabulary-span"><el>span</el></loc> element, a value equal to 50% of the value of the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> on the nearest ancestor
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code> or <code>container</code> is used,
+whichever is most immediate to the ruby text <loc href="#content-vocabulary-span"><el>span</el></loc> element;
+otherwise, the specified value is used.</p>
 </div4>
 </div3>
 <div3 id="style-attribute-fontStyle">
@@ -11101,7 +11155,6 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>
@@ -12871,7 +12924,7 @@ href="#content-vocabulary-span"><el>span</el></loc></td>
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>see <loc href="#style-attribute-textDecoration-special-semantics">special semantics</loc></td>
+<td>yes, but see <loc href="#style-attribute-textDecoration-special-semantics">special semantics</loc></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -13058,8 +13111,7 @@ that defined by <bibref ref="css3-decoration"/>, &sect; 3.</p>
 <p>The <att>tts:textOrientation</att> attribute is used to specify a style property that
 defines a text orientation to apply to glyphs that are selected for <loc href="#terms-glyph-area">glyph areas</loc> generated
 by content flowed into a region to which a vertical writing mode applies.</p>
-<p>This attribute may be specified by any
-element type
+<p>This attribute may be specified by any element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
 as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-textOrientation" role="common">
@@ -13103,27 +13155,38 @@ as a style property only to those element types indicated in the following table
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
-<p>If the value of this attribute is <code>mixed</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways, i.e., 90&deg; clockwise from
-their nominal orientation in horizontal text, while glyphs from vertical scripts are not
-affected.</p>
-<p>If the value of this attribute is <code>sidewaysLeft</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways with 90&deg; counter-clockwise rotation.</p>
-<p>If the value of this attribute is <code>sidewaysRight</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways with 90&deg; clockwise rotation.</p>
-<p>If the value of this attribute is <code>sideways</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set sideways, either 90&deg; clockwise or
-90&deg; counter-clockwise, according to whether the writing mode is
-<code>tbrl</code> or <code>tblr</code>, respectively. Glyphs from vertical scripts are not
-affected.</p>
-<p>If the value of this attribute is <code>upright</code>, then, in vertical writing modes,
-glyphs from horizontal scripts are set upright, i.e., using their
-nominal orientation in horizontal text, while glyphs from vertical scripts are not
-affected. In addition, for purposes of bidirectional processing, this value causes all
+
+<p>The presentation semantics of this style property apply only when a vertical
+writing mode applies; therefore, if a horizontal writing mode applies, this style
+property has no effect.</p>
+
+<p>In the following, glyphs associated with content characters are described in terms of whether
+they are rotated or not rotated in vertical writing modes, where this determination is made in accordance with
+the <code>Vertical_Orientation</code> of each content character as determined by <bibref ref="utr50"/>.</p>
+<p>If the value of this attribute is <code>mixed</code>, then rotated glyphs are set sideways
+and non-rotated glyphs are set upright, where <emph>sideways</emph> means rotated either 90&deg; clockwise or 90&deg; count-clockwise,
+respectively, in accordance with whether the applicable block progression direction is right-to-left or left-to-right, and where <emph>upright</emph>
+means not rotated.</p>
+<note role="clarification">
+<p>According to <bibref ref="utr50"/>, visual rotation of a glyph may occur through either the substitution of
+a rotated glyph or by performing an affine rotation transformation on the glyph's outline (or raster image),
+where the determination of which of these applies depends on the specific font used during presentation processing.</p>
+</note>
+<p>If the value of this attribute is <code>sidewaysLeft</code>, then rotated glyphs
+are rotated 90&deg; counter-clockwise.</p>
+<p>If the value of this attribute is <code>sidewaysRight</code>, then rotated glyphs
+are rotated 90&deg; clockwise.</p>
+<p>If the value of this attribute is <code>sideways</code>, then rotated glyphs
+are rotated either 90&deg; clockwise or 90&deg; count-clockwise, respectively,
+in accordance with whether the applicable block progression direction is right-to-left or left-to-right.</p>
+<p>If the value of this attribute is <code>upright</code>, then all characters are considered
+to have a vertical orientation of <code>U</code>, in which case no glyphs are rotated. In this case the
+(potential) substitution of rotated glyphs and the application of an affine rotation transformation
+are disabled, and the glyph rendered is the non-rotated form.
+In addition, for purposes of bidirectional processing, this value causes all
 affected characters to be treated as strong left-to-right, i.e., to be treated as if
 a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeOverride</att> of
 <code>override</code> were applied.</p>
-<p>If a vertical writing mode does not apply, then this style property has no effect.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>mixed</code>.</p>
 <p>The <att>tts:textOrientation</att> style is illustrated by the following
@@ -13135,7 +13198,7 @@ example.</p>
 </ednote>
 <note role="derivation">
 <p>The semantics of the style property
-represented by this attribute are based upon that defined by <bibref ref="css3-wm"/>,
+represented by this attribute are based upon that defined by <bibref ref="utr50"/> and <bibref ref="css3-wm"/>,
 &sect; 5.1.</p>
 </note>
 </div3>
@@ -13194,11 +13257,13 @@ present, then it denotes the outline color; if no <emph>color</emph> term is
 present, the computed value of the <att>tts:color</att> applies.  The first
 <emph>length</emph> term denotes the outline thickness and the second length
 term, if present, indicates the blur radius.</p>
+<p>When a relative <loc href="#style-value-length">&lt;length&gt;</loc> value is specified for outline thickness or blur radius,
+then it is resolved in terms of the height component of the referenced font size or <loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express thickness and blur radius must be non-negative.</p>
 <note role="elaboration">
 <p>When a <loc href="#style-value-length">&lt;length&gt;</loc> expressed in
 cells is used in a <att>tts:textOutline</att> value,
-the cell's dimension in the block progression dimension applies.
+the cell's height applies.
 For example, if text outline thickness is specified as 0.1c, the cell resolution
 is 20 by 10, and the extent of the <loc href="#terms-root-container-region">root container region</loc> is 640 by 480, then the
 outline thickness will be a nominal 480 / 10 * 0.1 pixels, i.e., 4.8px,
@@ -13706,6 +13771,11 @@ as a style property only to those element types indicated in the following table
 </table>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>lrtb</code>.</p>
+<note role="elaboration">
+<p>A writing mode for which the inline progression direction is left-to-right or right-to-left is referred to
+as a <emph>horizontal writing mode</emph>, while a writing mode for which the inline progression direction is
+top-to-bottom is referred to as a <emph>vertical writing mode</emph>.</p>
+</note>
 <p>The <att>tts:writingMode</att> style is illustrated by the following example.</p>
 <table id="style-attribute-writingMode-example-1" role="example">
 <caption>Example Fragment &ndash; Writing Mode</caption>
@@ -17043,6 +17113,22 @@ href="http://www.unicode.org/reports/tr14/#Algorithm">Line
 Breaking Algorithm</loc> <bibref ref="uax14"/> apply when performing
 line layout on the content of the <loc href="#terms-document-instance">document instance</loc>.</p>
 </div3> <!-- semantics-line-layout -->
+<div3 id="semantics-rendering-model">
+<head>Rendering Model</head>
+<p>The rendering order employed by a <loc href="#terms-presentation-processor">presentation processor</loc> must be consistent with
+the rendering model specified by <bibref ref="xsl11"/>, &sect;4.9; in addition, the following constraints apply:</p>
+<ulist>
+  <item><p>inline area descendants of a line area that are generated by ruby text spans are rendered
+  after other inline area descendants of the line area;</p></item>
+  <item><p>the intrinsic marks of a block area or an inline area generated by an
+  <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element consist of the raster of the associated image.</p></item>
+</ulist>
+<note role="clarification">
+  <p>The marks produced by an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element referenced by a
+  <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc> attribute are not included in the intrinsic
+  marks of a block area or an inline area, i.e., they are part of an area's background marks.</p>
+</note>
+</div3> <!-- semantics-rendering-order -->
 </div2> <!-- layout-semantics -->
 </div1> <!-- layout -->
 <div1 id="timing">
@@ -18827,6 +18913,13 @@ and information item properties:</p>
 <item><p><code>[local name]</code></p></item>
 <item><p><code>[normalized value]</code></p></item>
 </ulist>
+<note role="clarification">
+<p>If a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> is constructed from a concrete representation of an XML
+document entity, then a <code>[normalized value]</code> information item may contain unnormalized XML whitespace characters
+&amp;#9; (HT), &amp;#10; (LF), &amp;#13; (CR), and &amp;#20; (SPACE), as specified in <bibref ref="xml10"/>, &sect; 3.3.3, step (3), first bullet.
+In particular, this may occur if a numeric character reference is used to denote one of these whitespace characters (which is not normalized)
+rather than using the whitespace character itself (which would be normalized).</p>
+</note>
 <note role="elaboration">
 <p>See also <loc href="#terms-attribute-information-item">attribute information item</loc>.</p>
 </note>
@@ -23391,6 +23484,10 @@ An ISD instance may be represented as a standalone document instance or
 in a collection represented as an ISD Sequence instance.</p>
 <p>All ISD related vocabulary is defined in the TTML ISD Namespace, defined here as <code>http://www.w3.org/ns/ttml#isd</code>,
 where the recommended prefix is <code>isd</code>.</p>
+<note role="clarification">
+<p>In addition to using elements from the TTML ISD Namespace, an ISD document instance will typically contain vocabulary from one or more
+of the other TTML namespaces defined in <specref ref="vocabulary-namespaces"/>.</p>
+</note>
 <p>A TTML <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>, in short, an <emph>ISD</emph> or <emph>ISD instance</emph>,
 represents a discrete, temporally non-overlapping interval, an <emph>ISD interval</emph>,
 of a source TTML document where, except for non-discrete animation, all content, styling, and layout information remains static within that interval.
@@ -23488,9 +23585,13 @@ processor profile requirements that must be met in order to process the document
 </div3>
 <div3 id="isd-vocabulary-isd">
 <head>isd:isd</head>
-<p>The <el>isd:isd</el> element serves either as (1) the root document element of a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate
-Synchronic Document</loc> or (2) as a child of an <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element of a
-<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> document.</p>
+<p>The <el>isd:isd</el> element serves either as
+(1) the root document element of a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc> or
+(2) as a child of an <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element of a
+<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> document,
+where an <el>isd:isd</el> element is derived from and replaces a root <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element
+retained in each intermediate synchronic document form, <emph>DOC<sub>inter</sub></emph>&thinsp;, created by the
+<loc href="#procedure-construct-intermediate-document">construct intermediate document</loc> procedure.</p>
 <p>The <el>isd:isd</el> element accepts as its children zero or more <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc> elements,
 followed by zero or one <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> element,
 followed by zero or more <loc href="#isd-vocabulary-css"><el>isd:css</el></loc> elements,
@@ -23710,17 +23811,17 @@ W3C Working Group Note, 3 April 2012.
 <titleref
 href="http://www.rfc-editor.org/rfc/rfc2045.txt">Multipurpose Internet
 Mail Extensions (MIME) Part One: Format of Internet Message Bodies</titleref>,
-RFC 2045, November 1996, IETF.(See
+RFC 2045, November 1996, IETF. (See
 <xspecref href="http://www.rfc-editor.org/rfc/rfc2045.txt">http://www.rfc-editor.org/rfc/rfc2045.txt</xspecref>.)
 </bibl>
 <bibl id="media-types" key="MIME Media Types">Ned Freed and Nathaniel Borenstein,  
 <titleref
 href="http://www.rfc-editor.org/rfc/rfc2046.txt">Multipurpose Internet
 Mail Extensions (MIME) Part Two: Media Types</titleref>,
-RFC 2046, November 1996, IETF.(See
+RFC 2046, November 1996, IETF. (See
 <xspecref href="http://www.rfc-editor.org/rfc/rfc2046.txt">http://www.rfc-editor.org/rfc/rfc2046.txt</xspecref>.)
 </bibl>
-<bibl id="rng" key="RELAX NG">ISO/IEC 19757-2,
+<bibl id="rng" key="RELAX NG">ISO/IEC 19757-2:2003,
 <titleref href="http://www.iso.org/">Information technology &ndash; Document
 Schema Definition Language (DSDL) &ndash; Part 2: Regular-grammar-based validation &ndash; RELAX NG</titleref>,
 International Organization for Standardization (ISO).
@@ -23736,11 +23837,11 @@ Multimedia Integration Language (SMIL 3.0)</titleref>,
 W3C Recommendation, 1 December 2008. (See
 <xspecref href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">http://www.w3.org/TR/2008/REC-SMIL3-20081201/</xspecref>.)
 </bibl>
-<bibl id="smpte12m" key="SMPTE 12M">ANSI/SMPTE 12M,
+<bibl id="smpte12m" key="SMPTE 12M">ANSI/SMPTE 12M:1999,
 <titleref href="https://www.smpte.org/">Television, Audio and Film &ndash;
 Time and Control Code</titleref>, SMPTE Standard.
 </bibl>
-<bibl id="srgb" key="SRGB">IEC 61966-2-1,
+<bibl id="srgb" key="SRGB">IEC 61966-2-1:1999,
 <titleref
 href="http://www.iec.ch/">Multimedia
 systems and equipment &ndash; Colour measurement and management
@@ -23776,15 +23877,20 @@ href="http://www.unicode.org/reports/tr14/tr14-17.html">http://www.unicode.org/r
 <bibl id="uri" key="URI">T. Berner-Lee, R. Fielding, and L. Masinter,
 <titleref
 href="http://www.rfc-editor.org/rfc/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</titleref>,
-RFC 2396, August 1998, IETF.(See
+RFC 2396, August 1998, IETF. (See
 <xspecref href="http://www.rfc-editor.org/rfc/rfc2396.txt">http://www.rfc-editor.org/rfc/rfc2396.txt</xspecref>.)
 </bibl>
 <bibl id="utc" key="UTC">
-Recommendation TF.460,
+Recommendation TF.460-6,
 <titleref
 href="http://www.itu.int/">Standard-Frequency and Time-Signal
 Emissions</titleref>, International
 Telecommunciations Union, Radio Sector (ITU-R).
+</bibl>
+<bibl id="utr50" key="UTR50">K. Ishii, <titleref
+href="http://www.unicode.org/reports/tr50/tr50-17.html">Unicode Vertical Text Layout</titleref>, Unicode Consortium, 23 November 2016. (See
+<xspecref
+href="http://www.unicode.org/reports/tr50/tr50-17.html">http://www.unicode.org/reports/tr50/tr50-17.html</xspecref>.)
 </bibl>
 <bibl id="wcag" key="WCAG">Ben Caldwell, et al., Eds.,
 <titleref href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web
@@ -23824,7 +23930,7 @@ W3C Recommendation, 04 February 2004. (See
 <bibl id="xml-media" key="XML Media Types">Makato Murata, Simon St. Laurent,
 Kan Khon, Eds., <titleref
 href="http://www.rfc-editor.org/rfc/rfc3023.txt">XML Media Types</titleref>,
-RFC 3023, January 2001, IETF.(See
+RFC 3023, January 2001, IETF. (See
 <xspecref
 href="http://www.rfc-editor.org/rfc/rfc3023.txt">http://www.rfc-editor.org/rfc/rfc3023.txt</xspecref>.)
 </bibl>
@@ -23991,6 +24097,11 @@ The Extensible Hypertext Markup Language (Second Edition)</titleref>,
 W3C Recommendation, 01
 August 2002. (See
 <xspecref href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/">http://www.w3.org/TR/2002/REC-xhtml1-20020801/</xspecref>.)
+</bibl>
+<bibl id="xml-guidelines" key="XML Guidelines">Scott Hollenbeck, et al.,
+<titleref href="http://www.rfc-editor.org/rfc/rfc3470.txt">Guidelines for the use of Extensible Markup Language (XML)
+within IETF Protocols</titleref>,
+RFC 3470, January 2003, IETF. (See <xspecref href="http://www.rfc-editor.org/rfc/rfc3470.txt">http://www.rfc-editor.org/rfc/rfc3470.txt</xspecref>.)
 </bibl>
 <bibl id="cie-xyz" key="XYZ">ISO 11664-1:2007,
 <titleref href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">Joint ISO/CIE Standard: Colorimetry Part 1. CIE Standard Colorimetric Observers</titleref>,
@@ -25593,6 +25704,73 @@ TTML <loc href="#doctypes">Abstract Document Instance</loc>.</p>
 </item>
 </olist>
 </note>
+</div2>
+</inform-div1>
+<inform-div1 id="security-and-privacy">
+<head>Security and Privacy Considerations</head>
+<div2>
+<head>Use of XML as Concrete Encoding</head>
+<p>When <bibref ref="xml10"/> is used as the concrete encoding of a
+<loc href="#terms-timed-text-document-instance">timed text document instance</loc>, the security
+considerations specified by <bibref ref="xml-media"/> and <bibref ref="xml-guidelines"/> apply.</p>
+<note role="elaboration">
+<p>XML entities are not included in the <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc>
+of a <loc href="#terms-timed-text-document-instance">timed text document instance</loc>; nevertheless,
+implementations are encouraged to provide protection against recursive entity expansion or
+prevent entity expansion altogether in a TTML processor.</p>
+</note>
+</div2>
+<div2>
+<head>Document Processing</head>
+<p>A <loc href="#terms-timed-text-document-instance">timed text document instance</loc> is intended to
+be processed in some manner by a <loc href="#terms-content-processor">content processor</loc>.
+Although this specification defines the meaning of conformant processing of a
+<loc href="#terms-timed-text-document-instance">timed text document instance</loc> by such a processor,
+the actual implementation of that processor is outside the scope of this specification.</p>
+</div2>
+<div2>
+<head>Resource Fetching</head>
+<p>This specification defines mechanism that allow a <loc href="#terms-timed-text-document-instance">timed text document instance</loc>
+to make reference to external resources, including
+audio, font, image, and untyped (generic) data resources.
+The fetching of such resources as well as fetching the concrete representation of a
+<loc href="#terms-timed-text-document-instance">timed text document instance</loc>
+is under full control of the <loc href="#terms-content-processor">content processor</loc>. As such,
+any controls designed to allow or restrict access to such resources are also outside the scope of this specification.</p>
+<p>If the fetching of such resources is prevented by the <loc href="#terms-content-processor">content processor</loc>,
+then the entire document or portions of the document may not be processed as intended, and, therefore, some or all of a document's
+content may not be available for presentation processing.</p>
+</div2>
+<div2>
+<head>Caching of Resources or Processing State</head>
+<p>The processing of a <loc href="#terms-timed-text-document-instance">timed text document instance</loc> defined herein
+does not specify or depend in any manner on the <loc href="#terms-content-processor">content processor</loc>
+caching or storing any resource or processing state.</p>
+</div2>
+<div2>
+<head>No Script Language</head>
+<p>This specification does not include or make reference to the processing of any script language or executable code.</p>
+</div2>
+<div2>
+<head>No External Style Sheets</head>
+<p>This specification does not include or make reference to the processing of any external style sheet or style specification; rather,
+all style information is directly integrated into the TTML document syntax, and is processed in terms of
+the <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> respresentation of this syntax.</p>
+</div2>
+<div2>
+<head>Access to Processing State</head>
+<p>A mechanism is defined herein to allow the conditional processing of content where conditional expressions
+may take into account certain processing state, including a user language preference, a related media language,
+whether forced captions are enabled or not, and whether a media query expression is satisfied or not.
+However, direct access to this state is not provided to TTML content; rather the <loc href="#terms-content-processor">content processor</loc>
+accesses this state and make a binary (yes or no) determination of whether a condition is satisfied or not.</p>
+</div2>
+<div2>
+<head>Hyperlinking Mechanisms</head>
+<p>A mechanism is defined herein, based on <bibref ref="xlink11"/>, that permits an author to associate content with
+external documents. Whether or not semantic support is provided for this mechanism by the
+<loc href="#terms-content-processor">content processor</loc> is a determination made outside the scope of this specification.
+Furthermore, the semantics of link activation, if supported, is similarly outside the scope of this specification.</p>
 </div2>
 </inform-div1>
 <inform-div1 id="hdr-compositing">

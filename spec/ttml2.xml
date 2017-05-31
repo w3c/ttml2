@@ -5389,7 +5389,6 @@ zero or one <el>body</el> element.</p>
 &lt;tt
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#style-attribute-position">tts:position</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
@@ -5427,10 +5426,7 @@ in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bib
 This would permit, for example, the interchange of information that reflects
 the semantics of <bibref ref="cta708e"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
 </note>
-<p>If the <loc href="#style-attribute-position"><att>tts:position</att></loc> attribute is specified on the <el>tt</el>
-element, then it must adhere to <specref ref="style-attribute-position"/>, in which case it
-specifies the position of the <loc href="#terms-root-container-region">root container region</loc> relative to a reference positioning rectangle.</p>
-<p>Except for the <att>tts:extent</att> and <att>tts:position</att> attributes described above, an attribute in the TT Style Namespace should not
+<p>Except for the <att>tts:extent</att> attribute described above, an attribute in the TT Style Namespace should not
 be specified on the <el>tt</el> element unless it denotes an inheritable style property, in which case such inheritable style property is available
 for <loc href="#semantics-style-inheritance-root">root style inheritance</loc>. If a non-inheritable style property is specified, then
 it must be ignored for the purpose of non-validation processing. In the case of validation
@@ -8796,7 +8792,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>yes, but see <loc href="#style-attribute-textDecoration-special-semantics">special semantics</loc></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -8847,6 +8843,29 @@ The title of the book is
 represented by this attribute are based upon that defined by <bibref ref="xsl11"/>,
 &sect; 7.29.1.</p>
 </note>
+<div4 id="style-attribute-direction-special-semantics">
+<head>Special Semantics</head>
+<p>When performing style resolution processing (see <specref ref="semantics-style-resolution-processing"/>),
+the resolution of the computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+<emph><code>R</code></emph> is determined according to the following ordered rules, where the first applicable rule applies:</p>
+<olist>
+  <item><p>if a <att>tts:direction</att> attribute is specified on <emph><code>R</code></emph>, then the computed value
+  <att>tts:direction</att> is the specified value;</p></item>
+  <item><p>if a <att>tts:writingMode</att> attribute is specified on <emph><code>R</code></emph>, then the computed value
+  <att>tts:direction</att> is the
+  <loc href="#terms-inline-progression-dimension">inline progression direction</loc> determined by the computed value of
+  <att>tts:writingMode</att> on <emph><code>R</code></emph>;</p></item>
+  <item><p>otherwise, the computed value of <att>tts:direction</att> is the value inherited from the root <el>tt</el> element.</p></item>
+</olist>
+<note role="elaboration">
+<p>The computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+as determined above effectively becomes the value of <att>tts:direction</att> inherited by elements that are subject to
+<loc href="#semantics-style-inheritance-region">region style inheritance</loc> semantics.</p>
+</note>
+<p>In the case of any other element <emph><code>E</code></emph>, where <emph><code>E</code></emph> is not a
+<loc href="#layout-vocabulary-region"><el>region</el></loc> element, the presence or absence of a <att>tts:writingMode</att> attribute
+has no affect on the resolution of the computed value of <att>tts:direction</att> on <emph><code>E</code></emph>.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-disparity">
 <head>tts:disparity</head>
@@ -9741,7 +9760,7 @@ as a style property only to those element types indicated in the following table
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>yes, excepting <specref ref="style-attribute-fontSize-special-semantics"/></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -9755,33 +9774,58 @@ then relative to nearest ancestor <loc href="#terms-styled-element">styled eleme
 </tr>
 </tbody>
 </table>
-<p></p>
-<issue id="issue-ttml2-133a">
-<head>Ruby Text Size Inheritance</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/133">https://github.com/w3c/ttml2/issues/133</loc></source>
-<p>Special treatment is needed for inheritance of font size on ruby annotation text.</p>
-</issue>
 <p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length applies
-equally to horizontal and vertical scaling of a glyph's EM square; if two
-<loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
-scaling and the second expresses vertical scaling.</p>
-<note role="example">
-<p>Use of independent horizontal and vertical font sizes is expected to be used
-with cell based units in order to denote fonts that are two rows in height and
-one column in width.</p>
-</note>
+equally to the horizontal and vertical size of a glyph's EM square;
+if two <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
+size and the second expresses vertical size.</p>
+<p>If horizontal and vertical sizes are expressed independently, then the
+units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
 <note role="clarification">
 <p>A glyph's EM square is conventionally defined as the EM square of the font that contains the glyph. That is,
 glyphs do not have an EM square that is distinct from their font's EM square.</p>
 </note>
-<p>If horizontal and vertical sizes are expressed independently, then the
-units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
+<p>Relative <loc href="#style-value-length">&lt;length&gt;</loc> values
+that appear in this attribute, i.e., values expressed in percentage (<code>%</code>), cell (<code>c</code>), or EM (<code>em</code>) units,
+are resolved in relation to a referenced 2-dimensional size value consisting of two components, a width component and
+a height component. If the relative unit is a percentage, then the referenced value is either the computed value
+of the font size of the nearest styled ancestor element or the <loc href="#terms-computed-cell-size">computed cell size</loc>.
+If the relative unit is cells (<code>c</code>), then the referenced value is the
+<loc href="#terms-computed-cell-size">computed cell size</loc>.
+If the relative unit is EMs (<code>em</code>), then the referenced value is determined as if percentage units
+were used, where <code>1em</code> equals <code>100%</code>.</p>
+<p>When a single relative <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then
+this <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the height component of the referenced value;
+when two relative
+<loc href="#style-value-length">&lt;length&gt;</loc> values are specified,
+the first <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the width component of the referenced value and
+the second <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the height component of the referenced value.</p>
+<note role="example">
+<p>Anamorphic font scaling, i.e., fonts scaled to independent (and distinct) horizontal and vertical sizes,
+is expected to be used in a number of contexts, such as
+when an author desires to synthesize a narrow or wide font face,
+when an author desires to employ font sizes based on non-square cell units, etc.</p>
+</note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
+<p>If the value of this attribute specifies a <code>c</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
+then it is resolved in terms of the height (only) or (both) the width and height of a
+<emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>, which is to say, in terms of
+the <loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
+<note role="example">
+<p>For example, consider a paragraph (<code>p</code>) element <code>P</code>.
+If the <loc href="#terms-computed-cell-size">computed cell size</loc> is (24px,36px), and if
+<code>tts:fontSize="1c"</code> is specified on <code>P</code>, then the computed value of <code>tts:fontSize</code>
+resolves to (36px,36px), while if <code>tts:fontSize="1c 1c"</code> is specified on <code>P</code>,
+then the computed value resolves to (24px,36px).</p>
+</note>
 <p>If the value of this attribute specifies an <code>em</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
 then it is treated as if an equivalent percentage value were specified, where <code>1em</code> is equal to <code>100%</code>.</p>
+<note role="example">
+<p>For example, consider a span element <code>S</code>, a child of a paragraph (<code>p</code>) element <code>P</code>.
+If the computed value of <code>tts:fontSize</code> on <code>P</code> is (18px,24px), and if
+<code>tts:fontSize="1em"</code> is specified on <code>S</code>, then this is equivalent to specifying <code>100%</code>,
+which resolves to (24px,24px). However, if <code>tts:fontSize="1em 1em"</code> is specified on <code>S</code>,
+then this is equivalent to specifying <code>100% 100%</code>  which resolves to (18px,24px).</p>
+</note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -9789,15 +9833,6 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 the computed font size and the supported font size is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value most distant from 0 (single length specification) or [0,0] (two length specifications) is used,
 i.e., the largest font size, is used.</p>
-</note>
-<note role="elaboration">
-<p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
-the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.
-When a single &lt;length&gt; is expressed using cell units, then it refers to the height of
-the <loc href="#terms-computed-cell-size">computed cell size</loc>.
-When two &lt;length&gt; values are expressed using cell units, then the first refers to the width of
-the <loc href="#terms-computed-cell-size">computed cell size</loc>, and the second refers to the height of the
-<loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
 </note>
 <p>The <att>tts:fontSize</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontSize-example-1" role="example">
@@ -9842,6 +9877,37 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.4. The addition of a second length component to permit specifying font
 width and height independently is an extension introduced by TTML.</p>
 </note>
+<div4 id="style-attribute-fontSize-special-semantics">
+<head>Special Semantics</head>
+<p>The computed value of the property associated with this attribute consists of a 2-tuple
+the entries of which denote the computed values of the width and height components of the font size respectively.</p>
+<p>When applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element
+for which the computed value of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is
+either <code>textContainer</code> or <code>text</code>, then, when resolving the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>, the following special inheritance
+rules apply.</p>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code>
+does not inherit <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> from its parent.
+Instead, if no <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute is specified on the
+ruby text container <loc href="#content-vocabulary-span"><el>span</el></loc> element, a value equal to 50% of the value of the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> on the nearest ancestor
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>container</code> is used;
+otherwise, the specified value is used.</p>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>text</code>
+does not inherit <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> unless its parent is a
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code>.
+Instead, if no <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute is specified on the
+ruby text <loc href="#content-vocabulary-span"><el>span</el></loc> element, a value equal to 50% of the value of the computed value
+of <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> on the nearest ancestor
+<loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value
+of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is <code>textContainer</code> or <code>container</code> is used,
+whichever is most immediate to the ruby text <loc href="#content-vocabulary-span"><el>span</el></loc> element;
+otherwise, the specified value is used.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-fontStyle">
 <head>tts:fontStyle</head>
@@ -11187,7 +11253,6 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>
@@ -12957,7 +13022,7 @@ href="#content-vocabulary-span"><el>span</el></loc></td>
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>see <loc href="#style-attribute-textDecoration-special-semantics">special semantics</loc></td>
+<td>yes, but see <loc href="#style-attribute-textDecoration-special-semantics">special semantics</loc></td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -13029,9 +13094,9 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <div4 id="style-attribute-textDecoration-special-semantics">
 <head>Special Semantics</head>
 <p>The computed value of the property associated with this attribute consists of a 3-tuple,
-each of which denotes, respectively, whether an underline, line through, or overline
+where each entry denotes, respectively, whether an underline, line through, or overline
 decoration is to be applied to the affected text.
-Furthermore, when applying inheritance semantics, each of these sub-values is considered to
+Furthermore, when applying inheritance semantics, each of these entries is considered to
 be inherited separately from the others.</p>
 <note role="example">
 <p>For example, if the computed value of <code>tts:textDecoration</code> that applies to a <code>div</code> (division) element
@@ -15985,6 +16050,7 @@ element type of <emph>E</emph> is not the animation element type
 immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph>E</emph>,
 merge the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
+<!-- step 6 -->
 <item>
 <p><phrase role="strong">[implicit inheritance and initial value fallback]</phrase> if the
 element type of <emph>E</emph> is not animation element type <el>animate</el> or <el>set</el>
@@ -15994,13 +16060,15 @@ then for each style property
 above in <specref ref="styling-attribute-vocabulary"/>, perform the
 following ordered sub-steps:</p>
 <olist>
+<!-- (a) -->
 <item>
 <p>if <emph>P</emph> is present in the specified
 style set of <emph>E</emph>, <emph>SSS(E)</emph>, then continue to the
 next style property;</p>
 </item>
+<!-- (b) -->
 <item>
-<p>if <emph>P</emph> is defined to be inheritable and <emph>E</emph> is
+<p>if <emph>P</emph> is inheritable and <emph>E</emph> is
 not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
 <ulist>
 <item>
@@ -16011,9 +16079,10 @@ the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>
 </item>
 </ulist>
 </item>
+<!-- (c) -->
 <item>
-<p>otherwise (<emph>P</emph> is not inheritable or <emph>E</emph> is
-the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element), perform the following:</p>
+<p>if (1) <emph>P</emph> is inheritable and <emph>E</emph> is the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element
+or (2) if <emph>P</emph> is not inheritable and <emph>P</emph> applies to <emph>E</emph>, then perform the following:</p>
 <ulist>
 <item><p>set <emph>P&prime;</emph> to the initial value of
 property <emph>P</emph>, where the initial value of a property is
@@ -16027,6 +16096,7 @@ in <specref ref="styling-attribute-vocabulary"/>;</p></item>
 </item>
 </ulist>
 </item>
+<!-- (d) -->
 <item>
 <p>if the value of <emph>P&prime;</emph> is not undefined, then merge
 <emph>P&prime;</emph> into the specified style set of <emph>E</emph>,
@@ -17146,6 +17216,22 @@ href="http://www.unicode.org/reports/tr14/#Algorithm">Line
 Breaking Algorithm</loc> <bibref ref="uax14"/> apply when performing
 line layout on the content of the <loc href="#terms-document-instance">document instance</loc>.</p>
 </div3> <!-- semantics-line-layout -->
+<div3 id="semantics-rendering-model">
+<head>Rendering Model</head>
+<p>The rendering order employed by a <loc href="#terms-presentation-processor">presentation processor</loc> must be consistent with
+the rendering model specified by <bibref ref="xsl11"/>, &sect;4.9; in addition, the following constraints apply:</p>
+<ulist>
+  <item><p>inline area descendants of a line area that are generated by ruby text spans are rendered
+  after other inline area descendants of the line area;</p></item>
+  <item><p>the intrinsic marks of a block area or an inline area generated by an
+  <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element consist of the raster of the associated image.</p></item>
+</ulist>
+<note role="clarification">
+  <p>The marks produced by an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element referenced by a
+  <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc> attribute are not included in the intrinsic
+  marks of a block area or an inline area, i.e., they are part of an area's background marks.</p>
+</note>
+</div3> <!-- semantics-rendering-order -->
 </div2> <!-- layout-semantics -->
 </div1> <!-- layout -->
 <div1 id="timing">
@@ -23910,7 +23996,7 @@ Mail Extensions (MIME) Part Two: Media Types</titleref>,
 RFC 2046, November 1996, IETF. (See
 <xspecref href="http://www.rfc-editor.org/rfc/rfc2046.txt">http://www.rfc-editor.org/rfc/rfc2046.txt</xspecref>.)
 </bibl>
-<bibl id="rng" key="RELAX NG">ISO/IEC 19757-2,
+<bibl id="rng" key="RELAX NG">ISO/IEC 19757-2:2003,
 <titleref href="http://www.iso.org/">Information technology &ndash; Document
 Schema Definition Language (DSDL) &ndash; Part 2: Regular-grammar-based validation &ndash; RELAX NG</titleref>,
 International Organization for Standardization (ISO).
@@ -23926,11 +24012,11 @@ Multimedia Integration Language (SMIL 3.0)</titleref>,
 W3C Recommendation, 1 December 2008. (See
 <xspecref href="http://www.w3.org/TR/2008/REC-SMIL3-20081201/">http://www.w3.org/TR/2008/REC-SMIL3-20081201/</xspecref>.)
 </bibl>
-<bibl id="smpte12m" key="SMPTE 12M">ANSI/SMPTE 12M,
+<bibl id="smpte12m" key="SMPTE 12M">ANSI/SMPTE 12M:1999,
 <titleref href="https://www.smpte.org/">Television, Audio and Film &ndash;
 Time and Control Code</titleref>, SMPTE Standard.
 </bibl>
-<bibl id="srgb" key="SRGB">IEC 61966-2-1,
+<bibl id="srgb" key="SRGB">IEC 61966-2-1:1999,
 <titleref
 href="http://www.iec.ch/">Multimedia
 systems and equipment &ndash; Colour measurement and management
@@ -23970,7 +24056,7 @@ RFC 2396, August 1998, IETF. (See
 <xspecref href="http://www.rfc-editor.org/rfc/rfc2396.txt">http://www.rfc-editor.org/rfc/rfc2396.txt</xspecref>.)
 </bibl>
 <bibl id="utc" key="UTC">
-Recommendation TF.460,
+Recommendation TF.460-6,
 <titleref
 href="http://www.itu.int/">Standard-Frequency and Time-Signal
 Emissions</titleref>, International

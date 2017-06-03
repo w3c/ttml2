@@ -777,14 +777,11 @@ Timed Text Markup Language content.</p>
 <gitem id="terms-content-region">
 <label>[content region]</label>
 <def>
-<p>A logical region into which rendered content is placed when modeling or
-performing presentation processing.</p>
-<ednote>
-<name>Content Region vs Region</name>
-<date>2014-12-10</date>
-<edtext>Clean up terminology regarding content region vs region, which difference is vague at best.</edtext>
-</ednote>
-<p></p>
+  <p>A logical, rectangular region into which content is rendered when performing presentation processing.
+  Abbreviated simply as <emph>region</emph> when the context is unambiguous, each content region is
+  defined by an explicitly specified or an implied <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+  which defines the extent of the content region in relation to a <loc href="#terms-root-container-region">root container region</loc>
+  as well as other stylistic and temporal characteristics.</p>
 </def>
 </gitem>
 <gitem id="terms-data-binding-context">
@@ -1100,15 +1097,6 @@ a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element 
 <p>A <loc href="#terms-data-resource">data resource</loc> that contains a raster image.</p>
 </def>
 </gitem>
-<gitem id="terms-implied-inline-region">
-<label>[implied inline region]</label>
-<def>
-<p>An anonymous (unidentified) <loc href="#terms-inline-region">inline region</loc> that is implied in the context of a block level
-<loc href="#terms-content-element">content element</loc>
-due the presence of a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> or <loc href="#style-attribute-origin"><att>tts:origin</att></loc>
-style attribute on the <loc href="#terms-content-element">content element</loc>.</p>
-</def>
-</gitem>
 <gitem id="terms-inferred-processor-profile">
 <label>[inferred processor profile]</label>
 <def>
@@ -1400,10 +1388,15 @@ constraints specify by <specref ref="reduced-infoset"/>.</p>
 <gitem id="terms-region">
 <label>[region]</label>
 <def>
-<p>A logical construct that models authorial intention regarding
-desired or potential presentation processing, and which is represented as
-a rectangular area of a presentation surface into which content
-is composed and rendered during presentation processing.</p>
+<p>The <loc href="#terms-root-container-region">root container region</loc> or a
+<loc href="#terms-content-region">content region</loc>, which, if  used without qualification,
+refers to the latter.</p>
+<note role="clarification">
+  <p>While there is only one, unique root container region associated with document presentation,
+  this specification does not place a restriction on the number of content regions used over time
+  or at a given time. Some <loc href="#terms-content-profile">content profiles</loc>, however, do
+  specify such restrictions.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-related-media-object">
@@ -1439,7 +1432,7 @@ the applicable writing mode.</p>
 <gitem id="terms-root-container-region">
 <label>[root container region]</label>
 <def>
-<p>A logical region that establishes a coordinate system into which
+<p>A unique, logical region that establishes a coordinate system into which
 <loc href="#terms-content-region">content regions</loc> are placed and optionally clipped,
 about which see also <specref ref="root-container-region-semantics"/>.</p>
 </def>
@@ -3256,6 +3249,7 @@ Styling Attributes
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
 <loc href="#style-attribute-fontVariant">tts:fontVariant</loc>,
 <loc href="#style-attribute-fontWeight">tts:fontWeight</loc>,
+<loc href="#style-attribute-inlineAreaBreak">tts:inlineAreaBreak</loc>,
 <loc href="#style-attribute-ipd">tts:ipd</loc>,
 <loc href="#style-attribute-letterSpacing">tts:letterSpacing</loc>,
 <loc href="#style-attribute-lineHeight">tts:lineHeight</loc>,
@@ -5641,19 +5635,6 @@ are available for style inheritance by descendant <loc href="#terms-content-elem
 <el>span</el>, and
 <el>br</el>.</p>
 </note>
-<p>If a
-<loc href="#style-attribute-position"><att>tts:extent</att></loc>,
-<loc href="#style-attribute-position"><att>tts:origin</att></loc>, or
-<loc href="#style-attribute-position"><att>tts:position</att></loc>
-style attribute is specified on a <el>div</el> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> element, where the
-extent, origin, or position of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of the respective attribute. If any of these style attributes are specified,
-then they apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.
-If both <loc href="#style-attribute-position"><att>tts:origin</att></loc> and <loc href="#style-attribute-position"><att>tts:position</att></loc> attributes
-are specified and <loc href="#style-attribute-position"><att>tts:position</att></loc> is a supported property,
-then the <loc href="#style-attribute-position"><att>tts:origin</att></loc> attribute must be ignored when constructing the associated
-<loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>div</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
@@ -5716,19 +5697,6 @@ in a <loc href="#terms-document-instance">document instance</loc> are available 
 descendant <loc href="#terms-content-element">content elements</loc> such as <el>span</el> and
 <el>br</el>.</p>
 </note>
-<p>If a
-<loc href="#style-attribute-position"><att>tts:extent</att></loc>,
-<loc href="#style-attribute-position"><att>tts:origin</att></loc>, or
-<loc href="#style-attribute-position"><att>tts:position</att></loc>
-style attribute is specified on a <el>p</el> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>p</el> element, where the
-extent, origin, or position of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of the respective attribute. If any of these style attributes are specified,
-then they apply to the same <loc href="#terms-implied-inline-region">implied inline region</loc>.
-If both <loc href="#style-attribute-position"><att>tts:origin</att></loc> and <loc href="#style-attribute-position"><att>tts:position</att></loc> attributes
-are specified and <loc href="#style-attribute-position"><att>tts:position</att></loc> is a supported property,
-then the <loc href="#style-attribute-position"><att>tts:origin</att></loc> attribute must be ignored when constructing the associated
-<loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>p</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
@@ -6053,6 +6021,10 @@ elements of an equivalent intermediate XSL-FO document:
 <p><code>white-space-treatment="preserve"</code></p>
 </item>
 </ulist>
+<p>If an unnormalized horizontal tab <code>&amp;#9;</code> (HT) character appears
+in a <loc href="#terms-character-information-item">character information item</loc>
+of a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc>, then, when presented visually, that tab
+character is treated as if it were a single <code>&amp;#20;</code> (SPACE) character.</p>
 <p>When performing other types of processing intended to eventually
 result in a visual presentation by means other than those described
 in this specification, the semantics of space collapsing and
@@ -7744,6 +7716,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
 <item><p><specref ref="style-attribute-fontVariant"/></p></item>
 <item><p><specref ref="style-attribute-fontWeight"/></p></item>
+<item><p><specref ref="style-attribute-inlineAreaBreak"/></p></item>
 <item><p><specref ref="style-attribute-ipd"/></p></item>
 <item><p><specref ref="style-attribute-letterSpacing"/></p></item>
 <item><p><specref ref="style-attribute-lineHeight"/></p></item>
@@ -8485,11 +8458,14 @@ span.</p>
 that defined by <bibref ref="xsl11"/>, &sect; 7.8.4.</p>
 </note>
 </div3>
-
 <div3 id="style-attribute-border">
 <head>tts:border</head>
 <p>The <att>tts:border</att> attribute is used to specify a style property that
 defines the border of a region or an area generated by content flowed into a region.</p>
+<note role="clarification">
+<p>When applied to a region, a border is applied as an inset to a region's extent, which is to say, the content rectangle of a region area is reduced by
+the presence of a border applied to the region.</p>
+</note>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
@@ -8579,7 +8555,7 @@ is minimized.</p>
   &lt;style tts:extent="306px 114px"/&gt;
   &lt;style <phrase role="strong">tts:border="2px solid red"</phrase>/&gt;
   &lt;style tts:color="white"/&gt;
-  &lt;style tts:displayAlign="after"/&gt;
+  &lt;style tts:displayAlign="center"/&gt;
   &lt;style tts:padding="3px 40px"/&gt;
 &lt;/region&gt;
 ...
@@ -8593,12 +8569,6 @@ is minimized.</p>
 </tbody>
 </table>
 <p></p>
-<ednote>
-<name>Border Example Image</name>
-<date>2013-08-24</date>
-<edtext>Insert image of border example.</edtext>
-</ednote>
-<!--
 <table id="style-attribute-border-example-1-images" role="example-images">
 <caption>Example Rendition &ndash; Border</caption>
 <tbody>
@@ -8609,7 +8579,39 @@ is minimized.</p>
 </tr>
 </tbody>
 </table>
--->
+<p>The <att>tts:border</att> style with rounding is illustrated by the following example.</p>
+<table id="style-attribute-border-example-2" role="example">
+<caption>Example Fragment &ndash; Border with Rounding</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;style xml:id="roundedBorder" <phrase role="strong">tts:border="2px solid lime 10px"</phrase> tts:backgroundColor="black"/&gt;
+...
+&lt;div tts:color="white" tts:textAlign="center"&gt;
+  &lt;p style="roundedBorder"&gt;Border rounding on a &lt;br/&gt;p element.&lt;/p&gt;
+  &lt;p&gt;
+    &lt;span style="roundedBorder"&gt;Border rounding on span&lt;/span&gt;
+    &lt;br/&gt;
+    &lt;span style="roundedBorder"&gt;A shorter span&lt;/span&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-border-example-2-images" role="example-images">
+<caption>Example Rendition &ndash; Border rounding</caption>
+<tbody>
+<tr>
+<td>
+<graphic source="images/border-rounding.png" alt="TTML border style property"/>
+</td>
+</tr>
+</tbody>
+</table>
 <note role="derivation">
 <p>The semantics of the style property represented by this attribute are based upon 
 that defined by <bibref ref="xsl11"/>, &sect; 7.31.3, and <bibref ref="css3-bb"/>, &sect; 4 and &sect; 5.</p>
@@ -8913,9 +8915,10 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#layout-vocabulary-region"><el>region</el></loc>
+<loc href="#layout-vocabulary-region"><el>region</el></loc>; see 
+<loc href="#style-attribute-disparity-special-usage">special usage</loc> for
+<loc href="#content-vocabulary-div"><el>div</el></loc> and
+<loc href="#content-vocabulary-p"><el>p</el></loc>
 </td>
 </tr>
 <tr>
@@ -8935,14 +8938,9 @@ as a style property only to those element types indicated in the following table
 <p>When rendering a region on the right (left) image of a stereoscopic image pair, the center of the region is offset along the horizontal axis by a value equal to ½ (-½) the computed value of <att>tts:disparity</att>, where a positive offset is to the right, and a negative offset is to the left.</p>
 <p>Unless rendering onto a steroscopic image pair, the <att>tts:disparity</att> attribute is ignored for the purpose of presentation processing.</p>
 <p>The author should ensure that the perceived depth of a region is positioned in front of any object in the scene during the entire time the region is visible. The stereoscopic effect will be broken if an object in the scene is perceived to be in front of the region.</p>
-<p>If a <att>tts:disparity</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
-disparity of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of this attribute.</p>
 <p>If applicable, inheritance of disparity occurs only by means of <specref ref="semantics-style-inheritance-root"/>, whether the inheriting region is
-an <loc href="#terms-out-of-line-region">out-of-line region</loc>,
-an <loc href="#terms-inline-region">inline region</loc>,
-or an <loc href="#terms-implied-inline-region">implied inline region</loc>.</p>
+an <loc href="#terms-out-of-line-region">out-of-line region</loc> or
+an <loc href="#terms-inline-region">inline region</loc>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -8990,6 +8988,11 @@ its associated text.</p>
 </tr>
 </tbody>
 </table>
+<div4 id="style-attribute-disparity-special-usage">
+<head>Special Usage</head>
+<p>When <att>tts:disparity</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
+<loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-display">
 <head>tts:display</head>
@@ -9258,8 +9261,8 @@ of a <loc href="#terms-content-region">content region</loc>;</p></item>
 of an image, overriding its intrinsic extent.</p></item>
 </olist>
 <note role="clarification">
-<p>If padding is applied to a region, then the region's extent includes that padding, i.e., padding is applied as an inset, and, therefore,
-is interior to the region's extent.</p>
+<p>If either (or both) border or (and) padding are applied to a region, then the region's extent includes that border and padding,
+i.e., border and padding are both applied as insets, and, therefore, are interior to the extent of the region.</p>
 </note>
 <p>This attribute may be specified by any
 element type
@@ -9287,7 +9290,8 @@ as a style property only to those element types indicated in the following table
 <td>
 <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>,
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>; see prose for special usage with 
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc>; see 
+<loc href="#style-attribute-extent-special-usage">special usage</loc> for
 <loc href="#content-vocabulary-div"><el>div</el></loc> and
 <loc href="#content-vocabulary-p"><el>p</el></loc>
 </td>
@@ -9326,7 +9330,7 @@ of the associated <loc href="#terms-content-region">content region</loc>.</p>
   <item><p>if the property applies to the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then <code>auto</code> is interpreted as if the value <code>contain</code>
   were specified;</p></item>
   <item><p>if the property applies to a <loc href="#layout-vocabulary-region"><el>region</el></loc> element, either directly or indirectly, then <code>auto</code> is interpreted as if
-  the value "<code>auto</code> <code>auto</code>" were specified;</p></item>
+  the value "<code>100%</code> <code>100%</code>" were specified;</p></item>
   <item><p>if the property applies to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element, then <code>auto</code>
   is interpreted as if a value equal to the image's intrinsic extent were specified using two pixel-based <loc href="#style-value-length">&lt;length&gt;</loc> components, for example, "<code>200px</code> <code>100px</code>".</p></item>
 </olist>
@@ -9425,15 +9429,8 @@ while use of a smaller extent makes region overflow more likely.</p>
 </table>
 <div4 id="style-attribute-extent-special-usage">
 <head>Special Usage</head>
-<ednote>
-<name>Revision Required - Issue #168</name>
-<date>2016-11-05</date>
-<edtext>Revise or rewrite the following paragraph as required for issue #168.</edtext>
-</ednote>
-<p>If a <att>tts:extent</att> attribute is specified on a <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, where the
-extent of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of this attribute.</p>
+<p>When <att>tts:extent</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
+<loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
 </div3>
 <div3 id="style-attribute-fontFamily">
@@ -9795,26 +9792,57 @@ then relative to nearest ancestor <loc href="#terms-styled-element">styled eleme
 </tbody>
 </table>
 <p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length applies
-equally to horizontal and vertical scaling of a glyph's EM square; if two
-<loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
-scaling and the second expresses vertical scaling.</p>
-<note role="example">
-<p>Use of independent horizontal and vertical font sizes is expected to be used
-with cell based units in order to denote fonts that are two rows in height and
-one column in width.</p>
-</note>
+equally to the horizontal and vertical size of a glyph's EM square;
+if two <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
+size and the second expresses vertical size.</p>
+<p>If horizontal and vertical sizes are expressed independently, then the
+units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
 <note role="clarification">
 <p>A glyph's EM square is conventionally defined as the EM square of the font that contains the glyph. That is,
 glyphs do not have an EM square that is distinct from their font's EM square.</p>
 </note>
-<p>If horizontal and vertical sizes are expressed independently, then the
-units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
+<p>Relative <loc href="#style-value-length">&lt;length&gt;</loc> values
+that appear in this attribute, i.e., values expressed in percentage (<code>%</code>), cell (<code>c</code>), or EM (<code>em</code>) units,
+are resolved in relation to a referenced 2-dimensional size value consisting of two components, a width component and
+a height component. If the relative unit is a percentage, then the referenced value is either the computed value
+of the font size of the nearest styled ancestor element or the <loc href="#terms-computed-cell-size">computed cell size</loc>.
+If the relative unit is cells (<code>c</code>), then the referenced value is the
+<loc href="#terms-computed-cell-size">computed cell size</loc>.
+If the relative unit is EMs (<code>em</code>), then the referenced value is determined as if percentage units
+were used, where <code>1em</code> equals <code>100%</code>.</p>
+<p>When a single relative <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then
+this <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the height component of the referenced value;
+when two relative
+<loc href="#style-value-length">&lt;length&gt;</loc> values are specified,
+the first <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the width component of the referenced value and
+the second <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in terms of the height component of the referenced value.</p>
+<note role="example">
+<p>Anamorphic font scaling, i.e., fonts scaled to independent (and distinct) horizontal and vertical sizes,
+is expected to be used in a number of contexts, such as
+when an author desires to synthesize a narrow or wide font face,
+when an author desires to employ font sizes based on non-square cell units, etc.</p>
+</note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
+<p>If the value of this attribute specifies a <code>c</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
+then it is resolved in terms of the height (only) or (both) the width and height of a
+<emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>, which is to say, in terms of
+the <loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
+<note role="example">
+<p>For example, consider a paragraph (<code>p</code>) element <code>P</code>.
+If the <loc href="#terms-computed-cell-size">computed cell size</loc> is (24px,36px), and if
+<code>tts:fontSize="1c"</code> is specified on <code>P</code>, then the computed value of <code>tts:fontSize</code>
+resolves to (36px,36px), while if <code>tts:fontSize="1c 1c"</code> is specified on <code>P</code>,
+then the computed value resolves to (24px,36px).</p>
+</note>
 <p>If the value of this attribute specifies an <code>em</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
 then it is treated as if an equivalent percentage value were specified, where <code>1em</code> is equal to <code>100%</code>.</p>
+<note role="example">
+<p>For example, consider a span element <code>S</code>, a child of a paragraph (<code>p</code>) element <code>P</code>.
+If the computed value of <code>tts:fontSize</code> on <code>P</code> is (18px,24px), and if
+<code>tts:fontSize="1em"</code> is specified on <code>S</code>, then this is equivalent to specifying <code>100%</code>,
+which resolves to (24px,24px). However, if <code>tts:fontSize="1em 1em"</code> is specified on <code>S</code>,
+then this is equivalent to specifying <code>100% 100%</code>  which resolves to (18px,24px).</p>
+</note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -9822,15 +9850,6 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 the computed font size and the supported font size is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value most distant from 0 (single length specification) or [0,0] (two length specifications) is used,
 i.e., the largest font size, is used.</p>
-</note>
-<note role="elaboration">
-<p>The expression <code>1c</code> means one cell, where <code>'c'</code> expresses
-the <emph>cell</emph> length unit as defined by <specref ref="style-value-length"/>.
-When a single &lt;length&gt; is expressed using cell units, then it refers to the height of
-the <loc href="#terms-computed-cell-size">computed cell size</loc>.
-When two &lt;length&gt; values are expressed using cell units, then the first refers to the width of
-the <loc href="#terms-computed-cell-size">computed cell size</loc>, and the second refers to the height of the
-<loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
 </note>
 <p>The <att>tts:fontSize</att> style is illustrated by the following example.</p>
 <table id="style-attribute-fontSize-example-1" role="example">
@@ -9877,6 +9896,8 @@ width and height independently is an extension introduced by TTML.</p>
 </note>
 <div4 id="style-attribute-fontSize-special-semantics">
 <head>Special Semantics</head>
+<p>The computed value of the property associated with this attribute consists of a 2-tuple
+the entries of which denote the computed values of the width and height components of the font size respectively.</p>
 <p>When applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element
 for which the computed value of <loc href="#style-attribute-ruby"><att>tts:ruby</att></loc> is
 either <code>textContainer</code> or <code>text</code>, then, when resolving the computed value
@@ -10155,6 +10176,103 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 &sect; 7.9.9.</p>
 </note>
 </div3>
+
+<div3 id="style-attribute-inlineAreaBreak">
+<head>tts:inlineAreaBreak</head>
+<p>The <att>tts:inlineAreaBreak</att> attribute is used to specify a style property that
+defines whether border and padding apply at the start and end edges of an inline area 
+in the context of a fragmentation (break) boundary, for example, at line breaks.</p>
+<p>This attribute may be specified by any element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-inlineAreaBreak" role="common">
+<col css="width: 25%;"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>clone</code> |
+<code>cloneMostNested</code> |
+<code>slice</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>cloneMostNested</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>no</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
+<p>If the value of this attribute is <code>clone</code>, then the border and padding of
+the inline areas generated by the current element are cloned on both sides of a fragmentation (break) boundary.
+Furthermore, any background and padding that applies to ancestor, nesting inline areas at this boundary are also applied.</p>
+<p>If the value of this attribute is <code>cloneMostNested</code>, then the border and padding of
+the inline areas generated by the current element are cloned on both sides of a fragmentation (break) boundary.
+However, any background and padding that would apply to ancestor, nesting inline areas at this boundary are ignored;
+that is, all outer nesting inline areas are treated as if <code>slice</code> applied at this boundary regardless
+of the computed value of this style property that applies to such ancestors.</p>
+<p>If the value of this attribute is <code>slice</code>, then the border and padding of
+the inline areas generated by the current element are not cloned at this fragmentation (break) boundary.</p>
+<p>The <att>tts:inlineAreaBreak</att> style is illustrated by the following example.</p>
+<table id="style-attribute-inlineAreaBreak-example-1" role="example">
+<caption>Example Fragment &ndash; Inline Area Break</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p&gt;
+  &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;
+    AB
+    &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;CD&lt;br/&gt;EF&lt;/span&gt;
+    GH
+  &lt;/span&gt;
+&lt;/p&gt;
+...
+&lt;p&gt;
+  &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;
+    AB
+    &lt;span <phrase role="strong">tts:inlineAreaBreak="cloneMostNested"</phrase>&gt;CD&lt;br/&gt;EF&lt;/span&gt;
+    GH
+  &lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<ednote>
+<name>Inline Area Break Example Image</name>
+<date>2017-05-28</date>
+<edtext>Insert image of inlineAreaBreak example.</edtext>
+</ednote>
+<note role="derivation">
+<p>The semantics of the style property represented by this attribute are based upon 
+that defined by <bibref ref="css3-frag"/>, &sect; 5.</p>
+</note>
+</div3>
+
 <div3 id="style-attribute-ipd">
 <head>tts:ipd</head>
 <p>The <att>tts:ipd</att> attribute is used to specify the
@@ -10750,9 +10868,10 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#layout-vocabulary-region"><el>region</el></loc>
+<loc href="#layout-vocabulary-region"><el>region</el></loc>; see 
+<loc href="#style-attribute-origin-special-usage">special usage</loc> for
+<loc href="#content-vocabulary-div"><el>div</el></loc> and
+<loc href="#content-vocabulary-p"><el>p</el></loc>
 </td>
 </tr>
 <tr>
@@ -10774,10 +10893,6 @@ then they must be interpreted as <emph>x</emph> and <emph>y</emph> coordinates, 
 is the <emph>x</emph> coordinate, and the second specification is the <emph>y</emph> coordinate.</p>
 <p>If the value of this attribute is <code>auto</code>, then the computed value
 of the style property must be considered to be the same as the origin of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<p>If a <att>tts:origin</att> attribute is specified on a <el>div</el> or <el>p</el> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
-origin of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of this attribute.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -10820,6 +10935,11 @@ the computed value, then the value least distant from [0,0], i.e., closest to th
 </tr>
 </tbody>
 </table>
+<div4 id="style-attribute-origin-special-usage">
+<head>Special Usage</head>
+<p>When <att>tts:origin</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
+<loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-overflow">
 <head>tts:overflow</head>
@@ -10869,6 +10989,13 @@ as a style property only to those element types indicated in the following table
 not be clipped outside of the affected region.
 If the value is <code>hidden</code>, then content should
 be clipped outside of the affected region.</p>
+<note role="clarification">
+<p>Marks produced by content associated with a region's content rectangle may be rendered outside that
+content rectangle, thus intersecting with the region's padding and border rectangles, without any affect from
+the <att>tts:overflow</att> attribute. Such marks only become a candidate for region overflow when they would
+extend outside the region's extent which is coincident with the region's border rectangle, which contains the
+region's padding rectangle, which contains the region's content rectangle.</p>
+</note>
 <note role="explanation">
 <p>Unless a manual line break element <el>br</el> is used by the content author,
 a paragraph of a given region will generate no more than one line area in that
@@ -11027,6 +11154,13 @@ it is resolved as follows:</p>
   <loc href="#terms-absolute-dimension">absolute dimension</loc> of the nearest ancestor area, unless that dimension is dependent on the
   size of the content of that area, in which case the percentage resolves to the corresponding component of the applicable initial value.</p></item>
 </ulist>
+<note role="clarification">
+  <p>Each <loc href="#style-value-length">&lt;length&gt;</loc> component used with this attribute is associated with
+  a specific, writing mode relative edge, which is then resolved to an <loc href="#terms-absolute-dimension">absolute dimension</loc>
+  in accordance with the applicable writing mode. If that <loc href="#terms-absolute-dimension">absolute dimension</loc> is horizontal (vertical),
+  then a percentage value is resolved in terms of the same horizontal (vertical) <loc href="#terms-absolute-dimension">absolute dimension</loc> of
+  the reference area (either the root container region or the nearest ancestor area).</p>
+</note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -11152,9 +11286,10 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-div"><el>div</el></loc>,
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#layout-vocabulary-region"><el>region</el></loc>
+<loc href="#layout-vocabulary-region"><el>region</el></loc>; see 
+<loc href="#style-attribute-position-special-usage">special usage</loc> for
+<loc href="#content-vocabulary-div"><el>div</el></loc> and
+<loc href="#content-vocabulary-p"><el>p</el></loc>
 </td>
 </tr>
 <tr>
@@ -11204,11 +11339,6 @@ content rectangles (boxes) are coterminous.</p>
 on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then that value must be expressed using pixel (<code>px</code>) units,
 in which case a pixel must be interpreted as a pixel in the <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>
 (and not a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>).</p>
-<p>If a <att>tts:position</att> attribute is specified on a <loc href="#content-vocabulary-div"><el>div</el></loc> or
-<loc href="#content-vocabulary-p"><el>p</el></loc> element, then that specification must be considered to be
-equivalent to specifying an anonymous <loc href="#terms-inline-region">inline region</loc> child of the <el>div</el> or <el>p</el> element, where the
-position of the corresponding region, also referred to as an <loc href="#terms-implied-inline-region">implied inline region</loc>, is equal to the
-value of this attribute.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -11263,6 +11393,11 @@ centered in the horizontal dimension and has a bottom edge 10% above the bottom 
 <p>The semantics of the style property represented by this attribute are based upon 
 the <code>background-position</code> property defined by <bibref ref="css3-bb"/>, &sect; 3.6.</p>
 </note>
+<div4 id="style-attribute-position-special-usage">
+<head>Special Usage</head>
+<p>When <att>tts:position</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
+<loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
+</div4>
 </div3>
 <div3 id="style-attribute-ruby">
 <head>tts:ruby</head>
@@ -12993,9 +13128,9 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <div4 id="style-attribute-textDecoration-special-semantics">
 <head>Special Semantics</head>
 <p>The computed value of the property associated with this attribute consists of a 3-tuple,
-each of which denotes, respectively, whether an underline, line through, or overline
+where each entry denotes, respectively, whether an underline, line through, or overline
 decoration is to be applied to the affected text.
-Furthermore, when applying inheritance semantics, each of these sub-values is considered to
+Furthermore, when applying inheritance semantics, each of these entries is considered to
 be inherited separately from the others.</p>
 <note role="example">
 <p>For example, if the computed value of <code>tts:textDecoration</code> that applies to a <code>div</code> (division) element
@@ -15956,7 +16091,7 @@ element type of <emph>E</emph> is not the animation element type
 immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph>E</emph>,
 merge the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
-<!-- 6. [implicit inheritance and initial value feedback] -->
+<!-- step 6 -->
 <item>
 <p><phrase role="strong">[implicit inheritance and initial value fallback]</phrase> if the
 element type of <emph>E</emph> is not animation element type <el>animate</el> or <el>set</el>
@@ -15966,13 +16101,15 @@ then for each style property
 above in <specref ref="styling-attribute-vocabulary"/>, perform the
 following ordered sub-steps:</p>
 <olist>
+<!-- (a) -->
 <item>
 <p>if <emph>P</emph> is present in the specified
 style set of <emph>E</emph>, <emph>SSS(E)</emph>, then continue to the
 next style property;</p>
 </item>
+<!-- (b) -->
 <item>
-<p>if <emph>P</emph> is defined to be inheritable and <emph>E</emph> is
+<p>if <emph>P</emph> is inheritable and <emph>E</emph> is
 not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
 <ulist>
 <item>
@@ -15983,9 +16120,10 @@ the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>
 </item>
 </ulist>
 </item>
+<!-- (c) -->
 <item>
-<p>otherwise (<emph>P</emph> is not inheritable or <emph>E</emph> is
-the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element), perform the following:</p>
+<p>if (1) <emph>P</emph> is inheritable and <emph>E</emph> is the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element
+or (2) if <emph>P</emph> is not inheritable and <emph>P</emph> applies to <emph>E</emph>, then perform the following:</p>
 <ulist>
 <item><p>set <emph>P&prime;</emph> to the initial value of
 property <emph>P</emph>, where the initial value of a property is
@@ -15999,6 +16137,7 @@ in <specref ref="styling-attribute-vocabulary"/>;</p></item>
 </item>
 </ulist>
 </item>
+<!-- (d) -->
 <item>
 <p>if the value of <emph>P&prime;</emph> is not undefined, then merge
 <emph>P&prime;</emph> into the specified style set of <emph>E</emph>,
@@ -16326,6 +16465,64 @@ ref="metadata-attribute-role-syntax"/>, and where the roles identified
 by this attribute express the semantic roles of the region
 independently from the semantic roles of any content targeted to
 (associated with) the region.</p>
+<div4 id="layout-vocabulary-region-special-inline-animation-semantics">
+<head>Special Inline Animation Semantics</head>
+<p>When specified on a <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element <emph>E</emph>,
+the following style attributes apply exceptionally to the <el>region</el> <emph>R</emph> associated with <emph>E</emph> as further specified below:</p>
+<ulist>
+  <item><p><loc href="#style-attribute-disparity"><att>tts:disparity</att></loc></p></item>
+  <item><p><loc href="#style-attribute-extent"><att>tts:extent</att></loc></p></item>
+  <item><p><loc href="#style-attribute-origin"><att>tts:origin</att></loc></p></item>
+  <item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
+</ulist>
+<p>In such cases, the application of these style attributes are considered to be
+equivalent to an anonymous <loc href="#terms-inline-animation">inline animation</loc> taking
+the form of a <loc href="#animation-vocabulary-set"><el>set</el></loc> animation element <emph>A</emph>, where the
+animation applies to <emph>R</emph> over an active time interval equivalent to the active time
+interval of <emph>E</emph>, and where, if multiple animation elements
+(<emph>A<sub>i</sub></emph>, ..., <emph>A<sub>j</sub></emph>) already apply to <emph>R</emph>,
+then <emph>A</emph> applies subsequent to these the last of these existing animations, namely, immediately after <emph>A<sub>j</sub></emph>.</p>
+<p>These special semantics are depicted by the following model example using a <att>tts:extent</att> style attribute,
+but which model applies generally to all the above listed style attributes:</p>
+<table id="anonymous-inline-set-example-extent-input" role="example">
+<caption>Example &ndash; Anonymous Inline Animation of Region - Input Fragment</caption>
+<tbody>
+<tr>
+<td>
+<eg>
+&lt;region xml:id="r1" <phrase role="strong">tts:extent="80% 10%"</phrase> .../&gt;
+...
+&lt;p region="r1" begin="10s" end="12s" <phrase role="strong">tts:extent="70% 20%"</phrase>&gt;change extent&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the above input fragment example, a <att>tts:extent</att> attribute is specified on a paragraph (<el>p</el>) element
+which, without loss of generality, is assigned to the time interval <code>[10s,12s)</code>. This attribute
+is then used to synthesize an anonymous animation in the form of a <el>set</el> element in the following output fragment, with the attribute copied
+into the <el>set</el> element along with equivalent timing attributes. The original <att>tts:extent</att> is then
+removed from the paragraph (<el>p</el>).</p>
+<table id="anonymous-inline-set-example-extent-output" role="example">
+<caption>Example &ndash; Anonymous Inline Animation of Region - Equivalent Output Fragment</caption>
+<tbody>
+<tr>
+<td>
+<eg>
+&lt;region xml:id="r1" <phrase role="strong">tts:extent="80% 10%"</phrase> ...&gt;
+  &lt;set begin="10s" end="12s" <phrase role="strong">tts:extent="70% 20%"</phrase>&lt;/set&gt;
+&lt;/region&gt;
+...
+&lt;p region="r1" begin="10s" end="12s"&gt;change extent&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The resulting output fragment shows that the original extent of the region is retained, but that
+the child animation overrides this extent during the indicated time interval, thus producing an effect of (temporarily) changing
+the extent of the region as desired.</p>
+</div4>
 </div3>
 </div2> <!-- layout-element-vocabulary -->
 <div2 id="layout-attribute-vocabulary">
@@ -16446,101 +16643,25 @@ specification and the content that references that region. Semantically, each
 <loc href="#terms-out-of-line-region">out-of-line region</loc> referenced implicitly only by the
 <loc href="#terms-content-element">content element</loc> in whose context the
 <loc href="#terms-inline-region">inline region</loc> is specified (or implied).</p>
-<p>An <loc href="#terms-inline-region">inline region</loc> is declared in one of two ways:
-(1) by specifying a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> or
-<loc href="#style-attribute-origin"><att>tts:origin</att></loc> style attribute on
-a <loc href="#terms-content-element">content element</loc>
-in the <loc href="#element-vocab-group-block">Block.class</loc> element group, or
-(2) by specifying an explicit  <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+<p>An <loc href="#terms-inline-region">inline region</loc> is declared
+by specifying an explicit  <loc href="#layout-vocabulary-region"><el>region</el></loc> element
 child of a <loc href="#terms-content-element">content element</loc>
-in the <loc href="#element-vocab-group-block">Block.class</loc> element group. The
-former is referred to as an <emph>implied inline region specification</emph>,
-the latter as an <emph>explicit inline region specification</emph>; furthermore, the former is considered
-to be a syntactic shorthand for the latter, and is processed by converting it into the latter as
-described below.</p>
+in the <loc href="#element-vocab-group-block">Block.class</loc> element group, which is
+referred to as an <emph>explicit inline region specification</emph>.</p>
 <p>Inline regions are processed in accordance with the procedure
-<phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>, which
-entails first generating implied inline regions, and then generating out-of-line regions that correspond with implied
-or explicit inline regions. This latter procedure additionally binds content elements associated with inline regions
+<phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>
+which generates out-of-line regions that correspond with the
+explicit inline regions. This latter procedure additionally binds content elements associated with inline regions
 to the corresponding generated out-of-line regions.</p>
 <note role="elaboration">
 <p>A <loc href="#terms-content-element">content element</loc> can only be associated with a single
 <loc href="#terms-region">region</loc>. Consequently, if a <loc href="#terms-content-element">content element</loc>
-specifies a <loc href="#layout-attribute-region"><att>region</att></loc> attribute, then any <emph>implied inline region specification</emph>
-or <emph>explicit inline region specification</emph> is ignored. If the <loc href="#terms-content-element">content element</loc> does not specify a
-<loc href="#layout-attribute-region"><att>region</att></loc> attribute, but it includes
-both an <emph>implied inline region specification</emph> and an <emph>explicit inline region specification</emph>,
-then the former is ignored in favor of the latter.</p>
+specifies a <loc href="#layout-attribute-region"><att>region</att></loc> attribute, then any 
+<emph>explicit inline region specification</emph> is ignored.</p>
 </note>
 <glist>
 <gitem id="procedure-process-inline-regions">
 <label>[process inline regions]</label>
-<def>
-<olist>
-<item>
-<p>perform procedure <phrase role="strong"><loc href="#procedure-generate-inline-regions">[generate inline regions]</loc></phrase>;</p>
-</item>
-<item>
-<p>perform procedure <phrase role="strong"><loc href="#procedure-generate-out-of-line-regions">[generate out-of-line regions]</loc></phrase>;</p>
-</item>
-</olist>
-</def>
-</gitem>
-<gitem id="procedure-generate-inline-regions">
-<label>[generate inline regions]</label>
-<def>
-<p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
-in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
-perform the following ordered steps:</p>
-<olist>
-<item>
-<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains
-neither <loc href="#style-attribute-extent"><att>tts:extent</att></loc> nor
-<loc href="#style-attribute-origin"><att>tts:origin</att></loc> style attribute, then exit this procedure;</p>
-</item>
-<item>
-<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
-<loc href="#layout-attribute-region"><att>region</att></loc> attribute, then exit this procedure</p>
-</item>
-<item>
-<p>if the <code>[children]</code> information item property of <emph>B</emph> contains a
-<loc href="#layout-vocabulary-region"><el>region</el></loc> element, then exit this procedure;</p>
-</item>
-<item>
-<p>create an empty <loc href="#layout-vocabulary-region"><el>region</el></loc> element <emph>R</emph>,
-initialized as follows:</p>
-<ulist>
-<item>
-<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
-<loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute,
-then copy that attribute to the <code>[attributes]</code> information item property of <emph>R</emph>;
-otherwise, add a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute with value <code>auto</code>
-to the <code>[attributes]</code> information item property of <emph>R</emph>;</p>
-</item>
-<item>
-<p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
-<loc href="#style-attribute-origin"><att>tts:origin</att></loc> attribute,
-then copy that attribute to the <code>[attributes]</code> information item property of <emph>R</emph>;
-otherwise, add a <loc href="#style-attribute-origin"><att>tts:origin</att></loc> attribute with value <code>auto</code>
-to the <code>[attributes]</code> information item property of <emph>R</emph>;</p>
-</item>
-</ulist>
-</item>
-<item>
-<p>insert <emph>R</emph> into the <code>[children]</code> information item property of <emph>B</emph>
-such that <emph>R</emph> immediately precedes the first <loc href="#terms-content-element">content element</loc>
-child of <emph>B</emph>, or, if none is present, then <emph>R</emph> is the last child element of <emph>B</emph>;</p>
-</item>
-<item>
-<p>remove the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> and
-<loc href="#style-attribute-origin"><att>tts:origin</att></loc> style attributes, if present, from the
-<code>[attributes]</code> information item property of <emph>B</emph>;</p>
-</item>
-</olist>
-</def>
-</gitem>
-<gitem id="procedure-generate-out-of-line-regions">
-<label>[generate out-of-line regions]</label>
 <def>
 <p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
 in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
@@ -16632,52 +16753,10 @@ item property of <emph>B</emph>;</p>
 </def>
 </gitem>
 </glist>
-<p>The use of an <emph>implied inline region specification</emph> and the resulting generated inline region is shown by the following two example documents.</p>
-<table id="semantics-inline-region-input-example-1-implied" role="example">
-<caption>Example &ndash; Implied Inline Region Specification</caption>
-<tbody>
-<tr>
-<td>
-<eg>
-&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
-  &lt;head/&gt;
-  &lt;body&gt;
-    &lt;div <phrase role="strong">tts:extent="540px 100px" tts:origin="50px 339px"</phrase>&gt;
-      &lt;p&gt;Some Content&lt;/p&gt;
-    &lt;div/&gt;
-  &lt;body/&gt;
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<table id="semantics-generated-out-of-line-region-example-1-implied" role="example">
-<caption>Example &ndash; Generated Inline Region</caption>
-<tbody>
-<tr>
-<td>
-<eg>
-&lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
-  &lt;head/&gt;
-  &lt;body&gt;
-    &lt;div&gt;
-      <phrase role="strong">&lt;region tts:extent="540px 100px" tts:origin="50px 339px"/&gt;</phrase>
-      &lt;p&gt;Some Content&lt;/p&gt;
-    &lt;div/&gt;
-  &lt;body/&gt;
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The use of an <emph>explicit inline region specification</emph> or a generated inline region that derives from
-an <emph>implicit inline region specification</emph>
-and the resulting generated out-of-line region is shown by the following two example documents.</p>
+<p>The use of an <emph>explicit inline region specification</emph>
+and the resulting generated out-of-line region is shown by the following example document.</p>
 <table id="semantics-inline-region-input-example-2-explicit" role="example">
-<caption>Example &ndash; Explicit or Generated Inline Region Specification</caption>
+<caption>Example &ndash; Explicit Inline Region Specification</caption>
 <tbody>
 <tr>
 <td>
@@ -19093,9 +19172,9 @@ vocabulary defined by <specref ref="animation"/>:</p>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
 </div3>
-<div3 id="feature-animation-2">
-<head>#animation-2</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animation-2</code>
+<div3 id="feature-animation-version-2">
+<head>#animation-version-2</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animation-version-2</code>
 feature if it recognizes and is capable of transforming the following
 vocabulary defined by <specref ref="animation"/>:</p>
 <ulist>
@@ -19106,7 +19185,7 @@ vocabulary defined by <specref ref="animation"/>:</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animation</code>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
-<p>The <code>#animation-2</code> feature is a syntactic and semantic extension of the <code>#animation</code> feature.</p>
+<p>The <code>#animation-version-2</code> feature is a syntactic and semantic extension of the <code>#animation</code> feature.</p>
 </div3>
 <div3 id="feature-audio">
 <head>#audio</head>
@@ -19313,9 +19392,9 @@ href="#feature-unicodeBidi"><code>#unicodeBidi</code></loc></p></item>
 href="#feature-writingMode-horizontal"><code>#writingMode-horizontal</code></loc></p></item>
 </ulist>
 </div3>
-<div3 id="feature-bidi-2">
-<head>#bidi-2</head>
-<p>A TTML processor supports the <code>#bidi-2</code> feature if it
+<div3 id="feature-bidi-version-2">
+<head>#bidi-version-2</head>
+<p>A TTML processor supports the <code>#bidi-version-2</code> feature if it
 supports the following features:</p>
 <ulist>
 <item><p><loc href="#feature-bidi"><code>#bidi</code></loc></p></item>
@@ -19324,19 +19403,14 @@ supports the following features:</p>
 </div3>
 <div3 id="feature-border">
 <head>#border</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#border</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-border"><att>tts:border</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#border</code> feature if it (1) implements presentation semantic support
-for the <loc
-href="#style-attribute-border"><att>tts:border</att></loc>
-attribute
-and (2) is capable of displaying or generating an output display
-signal that distinguishes between at least sixteen (16) values of border colors,
-including all primary and secondary colors of the SRGB color space.</p>
+<p>A TTML processor supports the <code>#border</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-border-block"><code>#border-block</code></loc></p></item>
+<item><p><loc href="#feature-border-inline"><code>#border-inline</code></loc></p></item>
+<item><p><loc href="#feature-border-region"><code>#border-region</code></loc></p></item>
+<item><p><loc href="#feature-inlineAreaBreak-cloneMostNested"><code>#inlineAreaBreak-cloneMostNested</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-border-block">
 <head>#border-block</head>
@@ -19347,14 +19421,11 @@ href="#style-attribute-border"><att>tts:border</att></loc>
 attribute when applied to a content element that would generate a
 block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#border-block</code> feature if it (1) implements presentation semantic
+<code>#border-block</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
 attribute when applied to a content element that generates a
-block area
-and (2) is capable of displaying or generating an output display
-signal that distinguishes between at least sixteen (16) values of border colors,
-including all primary and secondary colors of the SRGB color space.</p>
+block area.</p>
 </div3>
 <div3 id="feature-border-inline">
 <head>#border-inline</head>
@@ -19365,14 +19436,11 @@ href="#style-attribute-border"><att>tts:border</att></loc>
 attribute when applied to a content element that would generate an
 inline area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#border-inline</code> feature if it (1) implements presentation semantic
+<code>#border-inline</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
 attribute when applied to a content element that generates an
-inline area
-and (2) is capable of displaying or generating an output display
-signal that distinguishes between at least sixteen (16) values of border colors,
-including all primary and secondary colors of the SRGB color space.</p>
+inline area.</p>
 </div3>
 <div3 id="feature-border-radii">
 <head>#border-radii</head>
@@ -19422,14 +19490,11 @@ href="#style-attribute-border"><att>tts:border</att></loc>
 attribute when applied to a <loc
 href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#border-region</code> feature if it (1) implements presentation semantic
+<code>#border-region</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
 attribute when applied to a <loc
-href="#layout-vocabulary-region"><el>region</el></loc> element
-and (2) is capable of displaying or generating an output display
-signal that distinguishes between at least sixteen (16) values of border colors,
-including all primary and secondary colors of the SRGB color space.</p>
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
 </div3>
 <div3 id="feature-bpd">
 <head>#bpd</head>
@@ -19536,7 +19601,7 @@ including all primary and secondary colors of the SRGB color space.</p>
 <div3 id="feature-condition">
 <head>#condition</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#condition</code>
-feature if it (1) recognizes and is capable of transforming the following
+feature if it recognizes and is capable of transforming the following
 vocabulary defined by <specref ref="content"/>:</p>
 <ulist>
 <item><p><loc href="#content-attribute-condition"><att>condition</att></loc></p></item>
@@ -20124,6 +20189,24 @@ vocabulary defined by <specref ref="styling"/>:</p>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
 </div3>
+<div3 id="feature-inlineAreaBreak">
+<head>#inlineAreaBreak</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#inlineAreaBreak</code> feature if it recognizes and is capable of
+transforming the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#inlineAreaBreak</code> feature if it implements presentation semantic support for the
+<loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
+</div3>
+<div3 id="feature-inlineAreaBreak-cloneMostNested">
+<head>#inlineAreaBreak-cloneMostNested</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#inlineAreaBreak-cloneMostNested</code> feature if it recognizes and is capable of
+transforming the <code>cloneMostNested</code> value of the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#inlineAreaBreak-cloneMostNested</code> feature if it implements presentation semantic support for
+the <code>cloneMostNested</code> value of the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
+</div3>
 <div3 id="feature-ipd">
 <head>#ipd</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -20528,16 +20611,8 @@ attribute.</p>
 </div3>
 <div3 id="feature-padding">
 <head>#padding</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#padding</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-padding"><att>tts:padding</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#padding</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-padding"><att>tts:padding</att></loc>
-attribute.</p>
+<p>A TTML processor supports the <code>#padding</code> feature if it
+supports the <loc href="#feature-padding-region"><code>#padding-region</code></loc> feature.</p>
 </div3>
 <div3 id="feature-padding-1">
 <head>#padding-1</head>
@@ -20594,6 +20669,62 @@ feature if it implements presentation semantic support for values of the <loc
 href="#style-attribute-padding"><att>tts:padding</att></loc> attribute
 that consist of four <loc
 href="#style-value-length">&lt;length&gt;</loc> specification.</p>
+</div3>
+<div3 id="feature-padding-block">
+<head>#padding-block</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#padding-block</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute when applied to a content element that would generate a
+block area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#padding-block</code> feature if it implements presentation semantic
+support for the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute when applied to a content element that generates a
+block area.</p>
+</div3>
+<div3 id="feature-padding-inline">
+<head>#padding-inline</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#padding-inline</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute when applied to a content element that would generate an
+inline area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#padding-inline</code> feature if it implements presentation semantic
+support for the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute when applied to a content element that generates an
+inline area.</p>
+</div3>
+<div3 id="feature-padding-region">
+<head>#padding-region</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#padding-region</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#padding-region</code> feature if it implements presentation semantic
+support for the <loc
+href="#style-attribute-padding"><att>tts:padding</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+</div3>
+<div3 id="feature-padding-version-2">
+<head>#padding-version-2</head>
+<p>A TTML processor supports the <code>#padding-version-2</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-padding-block"><code>#padding-block</code></loc></p></item>
+<item><p><loc href="#feature-padding-inline"><code>#padding-inline</code></loc></p></item>
+<item><p><loc href="#feature-padding-region"><code>#padding-region</code></loc></p></item>
+<item><p><loc href="#feature-inlineAreaBreak-cloneMostNested"><code>#inlineAreaBreak-cloneMostNested</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-permitFeatureNarrowing">
 <head>#permitFeatureNarrowing</head>
@@ -21728,7 +21859,7 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-animation-2"><code>#animation-2</code></loc></td>
+<td><loc href="#feature-animation-version-2"><code>#animation-version-2</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -21808,7 +21939,7 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
-<td><loc href="#feature-bidi"><code>#bidi-2</code></loc></td>
+<td><loc href="#feature-bidi-version-2"><code>#bidi-version-2</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -22269,6 +22400,26 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-padding-4"><code>#padding-4</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-block"><code>#padding-block</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-inline"><code>#padding-inline</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-region"><code>#padding-region</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-padding-version-2"><code>#padding-version-2</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -24905,6 +25056,12 @@ listed below, but are considered to be part of the specific element
 type's derivation described in <specref
 ref="element-vocab-derivation-table"/>
 above.</p>
+<ednote>
+<name>Update Derivation Table</name>
+<date>2017-05-27</date>
+<edtext>Update following table to reflect new and changed attribute vocabulary.</edtext>
+</ednote>
+<p></p>
 <table id="attribute-vocab-derivation-table" role="common">
 <caption>Table M-2 &ndash; Attributes</caption>
 <col css="width: 20%;"/>
@@ -25139,6 +25296,13 @@ no default attribute value
 <td><code>font-weight</code></td>
 <td><bibref ref="xsl11"/></td>
 <td>-<code>inherit</code>, -<code>bolder</code>, -<code>lighter</code>, -<code>&lt;number&gt;</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td><loc href="#style-attribute-inlineAreaBreak"><code>tts:inlineAreaBreak</code></loc></td>
+<td><code>box-decoration-break</code></td>
+<td><bibref ref="css3-frag"/></td>
+<td>-<code>inherit</code>, +<code>cloneMostNested</code></td>
 <td>1</td>
 </tr>
 <tr>
@@ -26226,6 +26390,7 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc></p></item>
+<item><p><loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc></p></item>
 <item><p><loc href="#style-attribute-ipd"><att>tts:ipd</att></loc></p></item>
 <item><p><loc href="#style-attribute-letterSpacing"><att>tts:letterSpacing</att></loc></p></item>
 <item><p><loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc></p></item>

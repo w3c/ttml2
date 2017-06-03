@@ -749,7 +749,22 @@ by <specref ref="semantics-style-resolution-processing-css"/>.</p>
 <p>Any element of a type defined in or for use by this specification that permits the specification of a
 <loc href="#content-attribute-condition"><att>condition</att></loc> attribute the evaluation of which
 determines whether the defined semantics of the element apply or are ignored. In the absence of such
-attribute, the semantics of the element always apply.</p>
+attribute, the semantics of the element always apply.
+</p>
+</def>
+</gitem>
+<gitem id="terms-conditionalized-excluded">
+<label>[conditionally excluded (or included)]</label>
+<def>
+<p>If the condition expression of a <loc href="#terms-conditionalized-element">conditionalized element</loc> evaluates
+to <code>false</code>, then the element is said to be <emph>conditionally excluded</emph>; in contrast, 
+if the condition does not evaluate to <code>false</code>, then the element is said to be <emph>conditionally included</emph>.</p>
+<p>When an element is conditionally excluded, then, unless specified otherwise, all of its semantics are ignored.</p>
+<note role="elaboration">
+<p>In the case of certain elements, for example the <loc href="#styling-vocabulary-style"><el>style</el></loc> element,
+conditional exclusion causes some but not all of the element's semantics to be ignored,
+in which case such behavior is described explicitly.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-content-image">
@@ -5854,8 +5869,8 @@ in the core vocabulary catalog:</p>
 </ulist>
 <div3 id="content-attribute-condition">
 <head>condition</head>
-<p>The <att>condition</att> attribute is used to conditionally exclude an element from semantic processing,
-in which case the element is said to be <emph>conditionalized</emph>.</p>
+<p>The <att>condition</att> attribute is used to conditionally include or exclude an element from semantic processing,
+in which case the element is referred to as a <loc href="#terms-conditionalized-element">conditionalized element</loc>.</p>
 <note role="clarification">
 <p>The use of a <att>condition</att> attribute by an element does not prevent either the parsing of that element (and its descendant) or
 the insertion of the parsed representation of that element (and its descendants) into the
@@ -16071,7 +16086,7 @@ the specified style set of <emph>E</emph>,
 <emph>SSS(E)</emph>;</p></item>
 <!-- 3. [nested styling] -->
 <item><p><phrase role="strong">[nested styling]</phrase>
-if <emph>E</emph> is not conditionalized or if its condition does not evaluate to <code>false</code>, then
+if <emph>E</emph> is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>, then
 for each nested <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
 <emph>E</emph>, and in the specified order of child elements, merge
 the specified style set of <emph>S<sub>NEST</sub></emph>,
@@ -16079,7 +16094,7 @@ the specified style set of <emph>S<sub>NEST</sub></emph>,
 <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <!-- 4. [inline styling] -->
 <item><p><phrase role="strong">[inline styling]</phrase>
-if <emph>E</emph> is not conditionalized or if its condition does not evaluate to <code>false</code>, then
+if <emph>E</emph> is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>, then
 for each style property <emph>P</emph> expressed as a specified styling
 attribute of <emph>E</emph>,
 merge <emph>P</emph> into the specified style
@@ -16546,6 +16561,11 @@ element types:</p>
 <item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 </ulist>
+<note role="elaboration">
+<p>If a <loc href="#layout-vocabulary-region"><el>region</el></loc> element referenced by
+a <att>region</att> attribute is <loc href="#terms-conditionally-excluded">conditionally excluded</loc>,
+then that region is not associated with the element on which the <att>region</att> attribute is specified.</p>
+</note>
 <note role="seealso">
 <p>See <specref ref="semantics-region-layout"/> below for further information on content
 flow in a region.</p>
@@ -16883,16 +16903,19 @@ to the following ordered rules, where the first rule satisfied
 is used and remaining rules are skipped:</p>
 <olist>
 <item><p>if the element specifies a <loc
-href="#layout-attribute-region"><att>region</att></loc> attribute,
+href="#layout-attribute-region"><att>region</att></loc> attribute
+and that region is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>,
 then the element is associated with the region referenced by that
 attribute;</p></item>
 <item><p>if some ancestor of that element specifies a <loc
-href="#layout-attribute-region"><att>region</att></loc> attribute,
+href="#layout-attribute-region"><att>region</att></loc> attribute
+and that region is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>,
 then the element is associated with the region referenced by the most
 immediate ancestor that specifies this attribute;</p></item>
 <item><p> if the element contains a descendant element that
 specifies a <loc
-href="#layout-attribute-region"><att>region</att></loc> attribute,
+href="#layout-attribute-region"><att>region</att></loc> attribute
+and that region is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>,
 then the element is associated with the region referenced by that
 attribute;</p></item>
 <item><p>if a default region was implied (due to the absence of any

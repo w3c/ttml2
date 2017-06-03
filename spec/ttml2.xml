@@ -3256,6 +3256,7 @@ Styling Attributes
 <loc href="#style-attribute-display">tts:display</loc>,
 <loc href="#style-attribute-displayAlign">tts:displayAlign</loc>,
 <loc href="#style-attribute-extent">tts:extent</loc>,
+<loc href="#style-attribute-fillLineGap">tts:fillLineGap</loc>,
 <loc href="#style-attribute-fontFamily">tts:fontFamily</loc>,
 <loc href="#style-attribute-fontKerning">tts:fontKerning</loc>,
 <loc href="#style-attribute-fontSelectionStrategy">tts:fontSelectionStrategy</loc>,
@@ -7723,6 +7724,7 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-display"/></p></item>
 <item><p><specref ref="style-attribute-displayAlign"/></p></item>
 <item><p><specref ref="style-attribute-extent"/></p></item>
+<item><p><specref ref="style-attribute-fillLineGap"/></p></item>
 <item><p><specref ref="style-attribute-fontFamily"/></p></item>
 <item><p><specref ref="style-attribute-fontKerning"/></p></item>
 <item><p><specref ref="style-attribute-fontShear"/></p></item>
@@ -9447,6 +9449,67 @@ while use of a smaller extent makes region overflow more likely.</p>
 <p>When <att>tts:extent</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
 <loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
+</div3>
+<div3 id="style-attribute-fillLineGap">
+<head>tts:fillLineGap</head>
+<p>The <att>tts:fillLineGap</att> attribute is used by the <specref ref="semantics-rendering-model"/> to
+determine whether a background color that applies to an inline area is extended to the before and after edges of a
+container line area when performing rendering processing.</p>
+<p>This attribute may be specified by any element type
+that permits use of attributes in the TT Style Namespace; however, this attribute applies
+as a style property only to those element types indicated in the following table.</p>
+<table id="style-property-details-fillLineGap" role="common">
+<col css="width: 25%;"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>true</code> |
+<code>false</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+</tbody>
+</table>
+<p>If a background color applies to an inline area child of a line area, then if the value of this attribute is <code>true</code>,
+that background area is, for rendering purposes, extended in the block progression dimension so as to be coincident with the before
+and after edges of the line area; otherwise, if the value of this attribute is <code>false</code>, then that background area is not
+extended, but remains bounded by the inline area's border rectangle.</p>
+<note role="explanation">
+<p>In other words, when this attribute's value is <code>true</code>, background colors rendered on inline areas of adjacent lines
+abut one another rather than leaving a visible gap in the block progression dimension, i.e., they fill any line gap (also known as leading).</p>
+</note>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>false</code>.</p>
+<p>The <att>tts:fillLineGap</att> style is illustrated by the following
+example.</p>
+<ednote>
+<name>Fill Line Gap Example</name>
+<date>2017-06-03</date>
+<edtext>Insert example fragment and image of tts:fillLineGap.</edtext>
+</ednote>
 </div3>
 <div3 id="style-attribute-fontFamily">
 <head>tts:fontFamily</head>
@@ -17222,6 +17285,9 @@ line layout on the content of the <loc href="#terms-document-instance">document 
 </div3> <!-- semantics-line-layout -->
 <div3 id="semantics-rendering-model">
 <head>Rendering Model</head>
+<p>This section specifies the details of certain aspects of the rendering of a formatted TTML document instance.</p>
+<div4 id="semantics-rendering-model-painting-order">
+<head>Painting Order</head>
 <p>The rendering order employed by a <loc href="#terms-presentation-processor">presentation processor</loc> must be consistent with
 the rendering model specified by <bibref ref="xsl11"/>, &sect;4.9; in addition, the following constraints apply:</p>
 <ulist>
@@ -17235,6 +17301,15 @@ the rendering model specified by <bibref ref="xsl11"/>, &sect;4.9; in addition, 
   <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage</att></loc> attribute are not included in the intrinsic
   marks of a block area or an inline area, i.e., they are part of an area's background marks.</p>
 </note>
+</div4> <!-- semantics-rendering-model-painting-order -->
+<div4 id="semantics-rendering-model-inline-area-background">
+<head>Painting Background Color of Inline Areas</head>
+<p>When the computed value of the <loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> that applies to a block
+area generated by a <loc href="#content-vocabulary-p"><el>p</el></loc> element is not <code>false</code>,
+then, when rendering a background color of an inline area child of a line area, the before and after edges of the background color are
+extended so as to be coincident with the before and after edges of the line area; otherwise, the before and after edges of the background color
+are as determined by the block progression dimension of the border rectangle of the inline area.</p>
+</div4> <!-- semantics-rendering-model-inline-area-background -->
 </div3> <!-- semantics-rendering-order -->
 </div2> <!-- layout-semantics -->
 </div1> <!-- layout -->
@@ -19946,6 +20021,15 @@ href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to a <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
 </div3>
+<div3 id="feature-fillLineGap">
+<head>#fillLineGap</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#fillLineGap</code> feature if it recognizes and is capable of
+transforming the <loc href="#parameter-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#fillLineGap</code> feature if it implements presentation semantic support for the
+<loc href="#parameter-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
+</div3>
 <div3 id="feature-font">
 <head>#font</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#font</code>
@@ -22168,6 +22252,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-extent-root"><code>#extent-root</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fillLineGap"><code>#fillLineGap</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -25294,6 +25383,13 @@ no default attribute value
 <td></td>
 </tr>
 <tr>
+<td><loc href="#style-attribute-fillLineGap"><code>tts:fillLineGap</code></loc></td>
+<td><emph>none</emph></td>
+<td></td>
+<td>expresses rendering behavior of background of inline areas</td>
+<td></td>
+</tr>
+<tr>
 <td><loc href="#style-attribute-fontFamily"><code>tts:fontFamily</code></loc></td>
 <td><code>font-family</code></td>
 <td><bibref ref="xsl11"/></td>
@@ -26409,6 +26505,7 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-border"><att>tts:border</att></loc></p></item>
 <item><p><loc href="#style-attribute-bpd"><att>tts:bpd</att></loc></p></item>
 <item><p><loc href="#style-attribute-disparity"><att>tts:disparity</att></loc></p></item>
+<item><p><loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>

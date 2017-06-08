@@ -24205,6 +24205,8 @@ href="https://www.itu.int/rec/R-REC-BT.2100">Image parameter values for high dyn
 <bibl id="dash" key="MPEG DASH">ISO/IEC 23009-1,
 <titleref href="http://www.iso.org/">Information technology &ndash; Dynamic adaptive streaming over HTTP (DASH)</titleref>,
 International Organization for Standardization (ISO).</bibl>
+<bibl id="ebuttlive" key="EBU-TT Live">EBU Tech3370,
+<titleref href="https://tech.ebu.ch/publications/tech3370">EBU-TT Part 3 Live Subtitling</titleref>, European Broadcasting Union (EBU)</bibl>
 <bibl id="mpeg7-5" key="MPEG7-5">
 ISO/IEC 15938-5,
 <titleref
@@ -26101,14 +26103,25 @@ subsequent data prior to sending current data);</p>
 <item>
 <p>can be progressively decoded (i.e., does not require forward
 references, but uses only reverse references when necessary);</p>
+<ednote role="question" id="issue-384-q1" diff="chg">
+<edtext>Inline regions and styles can be defined after the text they apply to.</edtext>
+</ednote>
 </item>
 <item>
 <p>does not require dereferencing (and subsequent loading) of any
 resources other than TTML Content (i.e., no embedded URIs);</p>
+<ednote role="question" id="issue-384-q2" diff="chg">
+<edtext>We can now reference external resources such as audio, fonts and images.</edtext>
+</ednote>
 </item>
 <item>
 <p>does not support alternative content forms (e.g., different
 language, graphics formats, time bases) in a single document;</p>
+<ednote role="question" id="issue-384-q3" diff="chg">
+<edtext>Was this ever strictly true? It is possible to put alternate language versions in now,
+and to conditionalise them based on an external parameter. Similarly for text or image based
+rendering. Remove this?</edtext>
+</ednote>
 </item>
 <item>
 <p>has timing structure compiled into inline format that makes
@@ -26118,8 +26131,13 @@ presentation order;</p>
 <item>
 <p>constrains content models to prevent arbitrary nested content
 structures;</p>
+<ednote role="question" id="issue-384-q4" diff="chg">
+<edtext>I'm not sure of the relevance of this however any number of nested divs and nested spans are permitted. Remove this?</edtext>
+</ednote>
 </item>
 </ulist>
+<div2 id="root-fragmentation">
+<head>Root and branch fragmentation</head>
 <p>One possible means by which TTML Content may be streamed is to
 partition a <loc href="#terms-document-instance">document instance</loc>'s information set into
 non-overlapping fragments, where one particular fragment, call it the
@@ -26149,6 +26167,43 @@ shown in <specref ref="fragment-streaming-graphic"/>.</p>
 <p>This specification does not define a transport buffer model or a decoder
 capabilities model.</p>
 </note>
+</div2>
+<div2 id="temporal-fragmentation">
+<head>Temporal fragmentation</head>
+<p>Another possible means by which TTML Content may be streamed is to
+partition a <loc href="#terms-document-instance">document instance</loc>'s information set into
+temporally bound fragments, each of which is itself a document instance that contains all the
+front matter (head) and content required to present it, where the temporal interval for each
+fragment is constrained, possibly by the <loc href="#terms-document-processing-context">
+document processing context</loc>, such that it does not
+overlap the temporal interval of any other fragment.</p>
+<p>In order to ensure that all the content is correctly displayed, any content that falls into an
+<loc href="#terms-intermediate-synchronic-document">ISD</loc> whose interval overlaps with more
+than one fragmentation interval must be duplicated within each fragment that is required to
+generate that ISD. It is possible for implementations to identify adjacent ISDs that are identical
+except in their intervals and replace them with a single ISD covering the combined interval.</p>
+<note role="example">
+<p>This technique is used for example in <bibref ref="isobmff"/> and in <bibref ref="ebuttlive"/>.</p>
+</note>
+<p>An example of such a fragmentation of a <loc href="#terms-document-instance">document instance</loc> is
+shown in <specref ref="fragment-streaming-graphic-2"/>.</p>
+<table id="fragment-streaming-graphic-2" role="example-images">
+<caption>Figure 4 &ndash; Temporal fragmentation</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="graphic-temporal-fragmentation" source="images/temporal-fragmentation.png" alt="Temporal Fragment Streaming"/></td>
+</tr>
+</tbody>
+</table>
+<note role="explanation">
+<p>In the above example, a single document instance has content visible during intervals
+T<sub>1</sub> through T<sub>6</sub> and is fragmented into two document instances (segments),
+the first including all content and referenced styles and regions required during T<sub>1</sub>
+through T<sub>3</sub>, the second including all content and referenced styles and regions required
+during T<sub>4</sub> through T<sub>6</sub>. 
+</p>
+</note></div2>
 </inform-div1>
 <inform-div1 id="common-styling">
 <head>Common Caption Style Examples</head>

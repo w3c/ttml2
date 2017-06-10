@@ -8692,6 +8692,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -9180,11 +9181,6 @@ represented by this attribute are based upon that defined by <bibref ref="css2"/
 <head>tts:displayAlign</head>
 <p>The <att>tts:displayAlign</att> attribute is used to specify a style property that
 defines the alignment of block areas in the block progression direction.</p>
-<issue id="issue-ttml2-370">
-<head>Justification in block progression dimension</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/370">https://github.com/w3c/ttml2/issues/370</loc></source>
-<p>Add <code>justify</code> value to support justification in block progression dimension.</p>
-</issue>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespace; however, this attribute applies
@@ -9198,7 +9194,8 @@ as a style property only to those element types indicated in the following table
 <td>
 <code>before</code> |
 <code>center</code> |
-<code>after</code>
+<code>after</code> |
+<code>justify</code>
 </td>
 </tr>
 <tr>
@@ -9210,6 +9207,9 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
+<loc href="#content-vocabulary-div"><el>div</el></loc>,
+<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#layout-vocabulary-region"><el>region</el></loc>
 </td>
 </tr>
@@ -10403,6 +10403,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
+<loc href="#document-structure-vocabulary-body"><el>body</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
@@ -19791,16 +19792,71 @@ href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
 </div3>
 <div3 id="feature-displayAlign">
 <head>#displayAlign</head>
+<p>A TTML processor supports the <code>#displayAlign</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-displayAlign-region"><code>#displayAlign-region</code></loc></p></item>
+<item><p><loc href="#feature-displayAlign-relative"><code>#displayAlign-relative</code></loc></p></item>
+</ulist>
+</div3>
+<div3 id="feature-displayAlign-block">
+<head>#displayAlign-block</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#displayAlign</code> feature if it recognizes and is capable of
-transforming all defined values of the <loc
+<code>#displayAlign-block</code> feature if it implements transformation semantic
+support for the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute when applied to a content element that would generate a block area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#displayAlign-block</code> feature if it implements presentation semantic
+support for the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute when applied to a content element that generates a block area.</p>
+</div3>
+<div3 id="feature-displayAlign-justify">
+<head>#displayAlign-justify</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#displayAlign-justify</code> feature if it recognizes and is
+capable of transforming the <code>justify</code> value of the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#displayAlign-justify</code> feature if it implements presentation semantic support for the <code>justify</code> value
+of the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc> attribute.</p>
+</div3>
+<div3 id="feature-displayAlign-region">
+<head>#displayAlign-region</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#displayAlign-region</code> feature if it implements transformation semantic
+support for the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute when applied to a <loc href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#displayAlign-region</code> feature if it implements presentation semantic
+support for the <loc
+href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+</div3>
+<div3 id="feature-displayAlign-relative">
+<head>#displayAlign-relative</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#displayAlign-relative</code> feature if it recognizes and is
+capable of transforming the <code>before</code>, <code>center</code>,
+and <code>after</code> values of the <loc
 href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#displayAlign</code> feature if it implements presentation semantic support
-for all defined values of the <loc
+<code>#displayAlign-relative</code> feature if it implements presentation semantic
+support for the <code>before</code>, <code>center</code>, and
+<code>after</code> values of the <loc
 href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
 attribute.</p>
+</div3>
+<div3 id="feature-displayAlign-version-2">
+<head>#displayAlign-version-2</head>
+<p>A TTML processor supports the <code>#displayAlign-version-2</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-displayAlign-block"><code>#displayAlign-content</code></loc></p></item>
+<item><p><loc href="#feature-displayAlign-justify"><code>#displayAlign-justify</code></loc></p></item>
+<item><p><loc href="#feature-displayAlign-region"><code>#displayAlign-region</code></loc></p></item>
+<item><p><loc href="#feature-displayAlign-relative"><code>#displayAlign-relative</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-displayAspectRatio">
 <head>#displayAspectRatio</head>
@@ -25325,7 +25381,7 @@ no default attribute value
 <td><loc href="#style-attribute-displayAlign"><code>tts:displayAlign</code></loc></td>
 <td><code>display-align</code></td>
 <td><bibref ref="xsl11"/></td>
-<td>-<code>inherit</code></td>
+<td>-<code>inherit</code>, +<code>justify</code></td>
 <td>1</td>
 </tr>
 <tr>

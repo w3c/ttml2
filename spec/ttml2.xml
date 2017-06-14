@@ -633,6 +633,15 @@ a sharable definition to be referenced by another <loc href="#embedded-content-v
 in an <loc href="#terms-audio-presentation-context">audio presentation context</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-audio-generating-element">
+<label>[audio generating element]</label>
+<def>
+<p>An <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element in an
+<loc href="#terms-audio-presentation-context">audio presentation context</loc> or a
+<loc href="#content-vocabulary-span"><el>span</el></loc> element whose character content is
+used to generate a <loc href="#terms-speech-data-resource">speech data resource</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-audio-presentation-context">
 <label>[audio presentation context]</label>
 <def>
@@ -14052,7 +14061,7 @@ that support inline style specifications:</p>
 <div3 id="audio-style-attribute-gain">
 <head>tta:gain</head>
 <p>The <att>tta:gain</att> attribute is used to specify an audio style property that
-determines a <emph>gain</emph> multiplier to be applied to the the sum of all active audio content during
+determines a <emph>gain</emph> multiplier to be applied to the the applicable audio content during
 the active duration of the element on which this attribute is specified.</p>
 <p>This attribute may be specified by any element type
 that permits use of attributes in the TT Audio Style Namespace; however, this attribute applies
@@ -14074,7 +14083,7 @@ as an audio style property only to those element types indicated in the followin
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#embedded-content-vocabulary-span"><el>audio</el></loc>,
+<loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>
@@ -14126,12 +14135,22 @@ the applicable audio content is not modified.</p>
   Furthermore, distinct gains are specified on each source audio as well as on the output of <code>p</code>,
   such that the final output is <code>0.3[0.5(track1) + 0.8(track2)]</code>.</p>
 </note>
+<note role="derivation">
+<p>The semantics of the style property represented by this attribute are based upon 
+that defined by <bibref ref="webaudio"/>, &sect; 2.7 where the element on which the property
+is specified generates a <code>GainNode</code> in the audio graph, whose <code>gain</code>
+attribute has the same computed value, and whose input is for a 
+<loc href="#terms-content-element">content element</loc> that is not an
+<loc href="#terms-audio-generating-element">audio generating element</loc> the sum of the
+parent element's audio output and all child audio generating elements' audio output,
+otherwise for an audio generating element is the element's own audio output.</p>
+</note>
 </div3>
 
 <div3 id="audio-style-attribute-pan">
 <head>tta:pan</head>
 <p>The <att>tta:pan</att> attribute is used to specify an audio style property that
-determines a stereoscopic <emph>pan</emph> vector to be applied to the the sum of all applicable audio content during
+determines a stereoscopic <emph>pan</emph> vector to be applied to the the applicable audio content during
 the active duration of the element on which this attribute is specified.</p>
 <p>This attribute may be specified by any element type
 that permits use of attributes in the TT Audio Style Namespace; however, this attribute applies
@@ -14153,7 +14172,7 @@ as an audio style property only to those element types indicated in the followin
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#embedded-content-vocabulary-span"><el>audio</el></loc>,
+<loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>,
 <loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-div"><el>div</el></loc>
@@ -14206,6 +14225,16 @@ of <code>1</code> designates fully right.</p>
   and this child <code>p</code> combines a second active audio track to form the output to its children.
   Furthermore, distinct pans are specified on each source audio as well as on the output of <code>p</code>,
   such that the final output pan is <code>0.3[0.5(track1) + 0.8(track2)]</code>.</p>
+</note>
+<note role="derivation">
+<p>The semantics of the style property represented by this attribute are based upon 
+that defined by <bibref ref="webaudio"/>, &sect; 2.21 where the element on which the property
+is specified generates a <code>StereoPannerNode</code> in the audio graph, whose <code>pan</code>
+attribute has the same computed value, and whose input is for a 
+<loc href="#terms-content-element">content element</loc> that is not an
+<loc href="#terms-audio-generating-element">audio generating element</loc> the sum of the
+parent element's audio output and all child audio generating elements' audio output,
+otherwise for an audio generating element is the element's own audio output.</p>
 </note>
 </div3>
 <div3 id="audio-style-attribute-pitch">
@@ -14267,7 +14296,9 @@ span.</p>
 </table>
 <note role="derivation">
 <p>The semantics of the style property represented by this attribute are derived from 
-that defined by <bibref ref="ssml"/>.</p>
+that defined by <bibref ref="ssml"/> &sect;3.2.4 where the equivalent of a <code>prosody</code>
+element with a <code>pitch</code> attribute equal to the computed value is applied to the spoken
+character content.</p>
 </note>
 </div3>
 <div3 id="audio-style-attribute-speak">
@@ -14334,8 +14365,10 @@ normal, fast, or slow speech rate, respectively.</p>
 </tbody>
 </table>
 <note role="derivation">
-<p>The semantics of the style property represented by this attribute are based upon 
-that defined by <bibref ref="ssml"/>.</p>
+<p>The semantics of the style property represented by this attribute are derived from 
+that defined by <bibref ref="ssml"/> &sect;3.2.4 where the equivalent of a <code>prosody</code>
+element with a <code>rate</code> attribute equal to the computed value is applied to the spoken
+character content.</p>
 </note>
 </div3>
 
@@ -24317,6 +24350,17 @@ href="http://www.unicode.org/reports/tr50/tr50-17.html">http://www.unicode.org/r
 <titleref href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web
 Content Accessibility Guidelines (WCAG) 2.0</titleref>, W3C Recommendation, 11 December 2008. (See
 <xspecref href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</xspecref>.)
+</bibl>
+<bibl id="webaudio" key="WEBAUDIO">Paul Adenot, Raymond Toy, Eds.,
+<titleref href="http://www.w3.org/TR/webaudio/">Web
+Web Audio API</titleref>, W3C Working Draft, 8 December 2015. (See
+<xspecref href="http://www.w3.org/TR/webaudio/">http://www.w3.org/TR/webaudio/</xspecref>.)
+<ednote>
+<name>Reference status</name>
+<date>2017-06-14</date>
+<edtext>The basis of reference for the WebAudio specification is that it transitions to 
+Recommendation prior to TTML2. If this does not occur, refactor this reference.</edtext>
+</ednote>
 </bibl>
 <bibl id="xlink11" key="XLink 1.1">Steve DeRose, et al.
 <titleref href="http://www.w3.org/TR/2010/REC-xlink11-20100506/">XML Linking Language (XLink) Version 1.1</titleref>,

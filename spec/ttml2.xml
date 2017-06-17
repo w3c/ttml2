@@ -12424,11 +12424,6 @@ and <bibref ref="cssruby"/>, &sect;5, <emph>Edge Effects</emph>.</p>
 <head>tts:rubyPosition</head>
 <p>The <att>tts:rubyPosition</att> attribute is used to specify the position of ruby text in the block progression dimension
 with respect to its associated ruby base.</p>
-<issue id="issue-ttml2-374">
-<head>Add auto and outside value to tts:rubyPosition.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/374">https://github.com/w3c/ttml2/issues/374</loc></source>
-<p>Add <code>auto</code> and <code>outside</code> values as defined by &lt;emphasis-position&gt; expressions.</p>
-</issue>
 <p>This attribute may be specified by any element type that permits use of attributes in the TT Style Namespace; however,
 this attribute applies as a style property only to those element types indicated in the following table.</p>
 <table id="style-property-details-rubyPosition" role="common">
@@ -12438,13 +12433,12 @@ this attribute applies as a style property only to those element types indicated
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>before</code> |
-<code>after</code>
+<code><loc href="#style-value-annotation-position">&lt;annotation-position&gt;</loc></code>
 </td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
-<td><code>before</code></td>
+<td><code>auto</code></td>
 </tr>
 <tr>
 <td><emph>Applies to:</emph></td>
@@ -12467,18 +12461,18 @@ this attribute applies as a style property only to those element types indicated
 </tbody>
 </table>
 <p></p>
-<p>If the value of this attribute is <code>before</code>, then an inline area generated from a ruby text container or ruby text annotation
-is placed before (prior to) the first edge in the block progression dimension of the inline area generated from an associated ruby base container or ruby base annotation.
-If the value is <code>after</code>, then an inline area generated from a ruby text container or ruby text annotation
-is placed after (subsequent to) the second edge in the block progression dimension of the inline area generated from an associated ruby base container or ruby base
-annotation.</p>
+<p>The style property associated with this attribute determines the relative positioning
+of inline areas generated from ruby text containers or ruby text annotations with respect to their
+associated base text, where the directional semantics of
+<loc href="#style-value-annotation-position">&lt;annotation-position&gt;</loc> apply.</p>
 <p>The absolute position of the ruby text container or ruby text annotation is determined
-in accordance to the computed value of the <code>tts:writingMode</code> style property of the region into which the affected content is placed; in particular, the
-mappings defined enumerated by <specref ref="rubyPosition-semantics-mapping-table"/> apply as further defined by <bibref ref="cssruby"/>, &sect;4.1.</p>
+in accordance to the computed value of the <code>tts:writingMode</code> style property of the region into which the affected content is placed;
+in particular, the mappings defined enumerated by <specref ref="rubyPosition-semantics-mapping-table"/> apply as further defined
+by <bibref ref="cssruby"/>, &sect;4.1.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>before</code>.</p>
 <table id="rubyPosition-semantics-mapping-table" role="common">
-<caption>Table 8-2 &ndash; Ruby Position Semantics Mapping by Writing Mode</caption>
+<caption>Table 8-2 &ndash; Absolute Ruby Position Semantics Mapping by Writing Mode</caption>
 <col css="width: 20%;"/>
 <col css="width: 20%;"/>
 <col css="width: 20%;"/>
@@ -14154,6 +14148,8 @@ represented by this attribute are based upon that defined by <bibref ref="xsl11"
 <p>Style property values include the use of the following expressions:</p>
 <ulist>
 <item><p><specref ref="style-value-alpha"/></p></item>
+<item><p><specref ref="style-value-annotation-color"/></p></item>
+<item><p><specref ref="style-value-annotation-position"/></p></item>
 <item><p><specref ref="style-value-border-color"/></p></item>
 <item><p><specref ref="style-value-border-radii"/></p></item>
 <item><p><specref ref="style-value-border-style"/></p></item>
@@ -14227,6 +14223,101 @@ closest supported value.</p>
 the computed opacity and the supported opacity is minimized. If there are multiple closest supported values equally distant from
 the computed value, then the value most distant from 0, i.e., the greatest opacity, is used.</p>
 </note>
+</div3>
+<div3 id="style-value-annotation-color">
+<head>&lt;annotation-color&gt;</head>
+<p>An &lt;annotation-color&gt; expression is used to express the color of text
+annotation marks, such as ruby or emphasis marks.</p>
+<table id="annotation-color-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;annotation-color&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;annotation-color&gt;
+  : current
+  | <loc href="#style-value-color">&lt;color&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<glist>
+<gitem>
+<label><code>current</code></label>
+<def>
+<p>Equivalent to the computed value of <loc href="#style-attribute-color"><att>tts:color</att></loc> of the affected text.</p>
+</def>
+</gitem>
+<gitem>
+<label><loc href="#style-value-color">&lt;color&gt;</loc></label>
+<def>
+<p>The specified color.</p>
+</def>
+</gitem>
+</glist>
+<p>If an implementation does not recognize or otherwise distinguish annotation color value, then
+it must be interpreted as if a style of <code>current</code> were specified; as such, an implementation that
+supports text annotation marks must minimally support the <code>current</code> value.</p>
+</div3>
+<div3 id="style-value-annotation-position">
+<head>&lt;annotation-position&gt;</head>
+<p>An &lt;annotation-position&gt; expression is used to express the position of text
+annotation marks, such as ruby or emphasis marks.</p>
+<table id="annotation-position-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;annotation-position&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;annotation-position&gt;
+  : auto
+  | before
+  | after
+  | outside
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<glist>
+<gitem>
+<label><code>auto</code></label>
+<def>
+<p>If the containing block area consists of exactly two line areas, then equivalent to <code>outside</code>; otherwise,
+equivalent to <code>before</code>.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>before</code></label>
+<def>
+<p>Towards the before edge of the affected <loc href="#terms-glyph-area">glyph areas</loc>. If a horizontal writing mode applies, then this is towards the
+top of the <loc href="#terms-glyph-area">glyph areas</loc>. If a vertical writing mode applies, then this is either towards the right or left of the
+<loc href="#terms-glyph-area">glyph areas</loc>,
+according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
+<code>tbrl</code> or <code>tblr</code>, respectively.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>after</code></label>
+<def>
+<p>Towards the after edge of the affected <loc href="#terms-glyph-area">glyph areas</loc>. If a horizontal writing mode applies, then this is towards the
+bottom of the <loc href="#terms-glyph-area">glyph areas</loc>. If a vertical writing mode applies, then this is either towards the left or right of the
+<loc href="#terms-glyph-area">glyph areas</loc>, according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
+<code>tbrl</code> or <code>tblr</code>, respectively.</p>
+</def>
+</gitem>
+<gitem>
+<label><code>outside</code></label>
+<def>
+<p>Equivalent to <code>before</code> for all but the last affected line area; otherwise, equivalent to <code>after</code>
+for the last affected line area.</p>
+</def>
+</gitem>
+</glist>
+<p>If an implementation does not recognize or otherwise distinguish an annotation position value, then
+it must be interpreted as if a position of <code>before</code> were specified; as such, an implementation that
+supports text annotation marks must minimally support the <code>before</code> value.</p>
 </div3>
 <div3 id="style-value-border-color">
 <head>&lt;border-color&gt;</head>
@@ -14451,30 +14542,12 @@ emphasis marks.</p>
 <td>
 <eg xml:space="preserve">
 &lt;emphasis-color&gt;
-  : current
-  | <loc href="#style-value-color">&lt;color&gt;</loc>
+  : <loc href="#style-value-annotation-color">&lt;annotation-color&gt;</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<glist>
-<gitem>
-<label><code>current</code></label>
-<def>
-<p>Equivalent to the computed value of <loc href="#style-attribute-color"><att>tts:color</att></loc> of the affected text.</p>
-</def>
-</gitem>
-<gitem>
-<label><loc href="#style-value-color">&lt;color&gt;</loc></label>
-<def>
-<p>The specified color.</p>
-</def>
-</gitem>
-</glist>
-<p>If an implementation does not recognize or otherwise distinguish emphasis color value, then
-it must be interpreted as if a style of <code>current</code> were specified; as such, an implementation that
-supports text emphasis marks must minimally support the <code>current</code> value.</p>
 </div3>
 <div3 id="style-value-emphasis-position">
 <head>&lt;emphasis-position&gt;</head>
@@ -14487,53 +14560,12 @@ emphasis marks.</p>
 <td>
 <eg xml:space="preserve">
 &lt;emphasis-position&gt;
-  : auto
-  | before
-  | after
-  | outside
+  : <loc href="#style-value-annotation-position">&lt;annotation-position&gt;</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<glist>
-<gitem>
-<label><code>auto</code></label>
-<def>
-<p>If the containing block area consists of exactly two line areas, then equivalent to <code>outside</code>; otherwise,
-equivalent to <code>before</code>.</p>
-</def>
-</gitem>
-<gitem>
-<label><code>before</code></label>
-<def>
-<p>Towards the before edge of the affected <loc href="#terms-glyph-area">glyph areas</loc>. If a horizontal writing mode applies, then this is towards the
-top of the <loc href="#terms-glyph-area">glyph areas</loc>. If a vertical writing mode applies, then this is either towards the right or left of the
-<loc href="#terms-glyph-area">glyph areas</loc>,
-according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
-<code>tbrl</code> or <code>tblr</code>, respectively.</p>
-</def>
-</gitem>
-<gitem>
-<label><code>after</code></label>
-<def>
-<p>Towards the after edge of the affected <loc href="#terms-glyph-area">glyph areas</loc>. If a horizontal writing mode applies, then this is towards the
-bottom of the <loc href="#terms-glyph-area">glyph areas</loc>. If a vertical writing mode applies, then this is either towards the left or right of the
-<loc href="#terms-glyph-area">glyph areas</loc>, according to whether <loc href="#style-attribute-writingMode"><att>tts:writingMode</att></loc> resolves to
-<code>tbrl</code> or <code>tblr</code>, respectively.</p>
-</def>
-</gitem>
-<gitem>
-<label><code>outside</code></label>
-<def>
-<p>Equivalent to <code>before</code> for all but the last affected line area; otherwise, equivalent to <code>after</code>
-for the last affected line area.</p>
-</def>
-</gitem>
-</glist>
-<p>If an implementation does not recognize or otherwise distinguish an emphasis position value, then
-it must be interpreted as if a position of <code>auto</code> were specified; as such, an implementation that
-supports text emphasis marks must minimally support the <code>auto</code> value.</p>
 </div3>
 <div3 id="style-value-emphasis-style">
 <head>&lt;emphasis-style&gt;</head>

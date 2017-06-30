@@ -6,7 +6,7 @@
 <!ENTITY status SYSTEM "status.xml">
 <!ENTITY document.status "Editors' copy $Date$">
 <!ENTITY title "&title;">
-<!ENTITY prevloc "https://www.w3.org/TR/2016/WD-ttml2-20161117/">
+<!ENTITY prevloc "https://www.w3.org/TR/2017/WD-ttml2-20170106/">
 <!ENTITY latestedloc "https://w3c.github.io/ttml2/spec/ttml2.html">
 <!ENTITY versionOfTT "2">
 <!ENTITY tbd "<phrase role='tbd'>To Be Defined</phrase>">
@@ -779,7 +779,7 @@ attribute, the semantics of the element always apply.
 </p>
 </def>
 </gitem>
-<gitem id="terms-conditionalized-excluded">
+<gitem id="terms-conditionally-excluded">
 <label>[conditionally excluded (or included)]</label>
 <def>
 <p>If the condition expression of a <loc href="#terms-conditionalized-element">conditionalized element</loc> evaluates
@@ -5991,7 +5991,7 @@ which is evaluated at the time of presentation processing (lazy evaluation)
 or prior to the time of presentation processing (eager evaluation), where eager evaluation may occur only when the value resulting
 from evaluation cannot change or is known to not change during presentation processing.</p>
 <note role="example">
-<p>For example, if a condition expression depends on the value of a <loc href="content-value-condition-function">condition function</loc>,
+<p>For example, if a condition expression depends on the value of a <loc href="#content-value-condition-function">condition function</loc>,
 then the condition expression's value may change during presentation processing, in which case eager evaluation cannot be used.</p>
 </note>
 <p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and the
@@ -10857,17 +10857,15 @@ and when that presentation requires an absolute luminance value.</p>
 As a result, elements presented in a color specified in the sRGB space (sRGB elements) cannot be
 reliably composited with high-dynamic range (HDR) content intended for display with significantly
 greater peak luminance, such as content that uses the perceptual quantizer electro-optical transfer function (PQ EOTF)
-specified in <bibref ref="bt2100_1"/>. Specifically,
+specified in <bibref ref="bt2100_1"/>. Specifically,</p>
 <ulist>
 <item><p>sRGB elements may appear too dim if they remain unscaled and the average luminance of the scene
 exceeds 80 cd∙m<sup>-2</sup>; and
 </p></item>
 <item><p>sRGB elements may appear too bright if they are uniformly scaled to an arbitrary large
-luminance, such as 10,000 cd∙m<sup>-2</sup>.
-</p>
+luminance, such as 10,000 cd∙m<sup>-2</sup>.</p>
 </item>
 </ulist>
-</p>
 </note>
 <p>This attribute may be specified by any
 element type
@@ -10890,7 +10888,7 @@ as a style property only to those element types indicated in the following table
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-region"><el>region</el></loc>
+<loc href="#layout-vocabulary-region"><el>region</el></loc>
 </td>
 </tr>
 <tr>
@@ -11565,7 +11563,9 @@ content rectangles (boxes) are coterminous.</p>
 </note>
 <p>If a horizontal or vertical position offset is specified by a <att>tts:position</att> attribute in the form of a scalar value
 on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then that value must be expressed using pixel (<code>px</code>) units,
-in which case a pixel must be interpreted as a pixel in the <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>
+in which case a pixel must be interpreted as a pixel in the
+<!-- FIXME <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>-->
+presentation context coordinate space
 (and not a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>).</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
@@ -20624,10 +20624,10 @@ href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
 <head>#fillLineGap</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#fillLineGap</code> feature if it recognizes and is capable of
-transforming the <loc href="#parameter-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
+transforming the <loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#fillLineGap</code> feature if it implements presentation semantic support for the
-<loc href="#parameter-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
+<loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -25087,9 +25087,9 @@ within IETF Protocols</titleref>,
 RFC 3470, January 2003, IETF. (See <xspecref href="http://www.rfc-editor.org/rfc/rfc3470.txt">http://www.rfc-editor.org/rfc/rfc3470.txt</xspecref>.)
 </bibl>
 <bibl id="cie-xyz" key="XYZ">ISO 11664-1:2007,
-<titleref href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">Joint ISO/CIE Standard: Colorimetry Part 1. CIE Standard Colorimetric Observers</titleref>,
+<titleref href="https://www.iso.org/standard/52495.html">Joint ISO/CIE Standard: Colorimetry Part 1. CIE Standard Colorimetric Observers</titleref>,
 International Organization for Standardization (ISO). 
-(See <xspecref href="https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en">https://www.iso.org/obp/ui/#iso:std:iso:11664:-1:ed-1:v1:en</xspecref>.)
+(See <xspecref href="https://www.iso.org/standard/52495.html">https://www.iso.org/standard/52495.html</xspecref>.)
 </bibl>
 <bibl id="xproc" key="XPROC">Norman Walsh, Alex Milowski, Henry S. Thompson, Eds.,
 <titleref href="https://www.w3.org/TR/xproc/">XProc: An XML Pipeline Language</titleref>,
@@ -26780,7 +26780,7 @@ Furthermore, the semantics of link activation, if supported, is similarly outsid
 <div2>
 <head>Perceptual Quantizer</head>
 <p>
-The following illustrates the use of <loc href="#style-attribute-luminance"><att>tts:luminanceGain</att></loc> to composite sRGB pixels onto HDR pixels
+The following illustrates the use of <loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc> to composite sRGB pixels onto HDR pixels
 that conform to the system colorimetry specified in <bibref ref="bt2100_1"/> using perceptual quantizer (PQ) EOTF and full-range quantization.
 </p>
 <olist>
@@ -26901,7 +26901,7 @@ where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
     <p><code>(clamp(Rc),clamp(Gc),clamp(Bc)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code></p>
     <p>where <code>clamp(x) = x</code> if <code>0 ≤ x ≤ 1023</code> or <code>0</code> if <code>x &lt; 0</code> or <code>1023</code> if <code>x &gt; 1023</code></p></item>
   </olist>
-  <note><p>The above algorithm does not use the <loc href="#style-attribute-luminance"><att>tts:luminanceGain</att></loc> attribute since no absolute gain level is needed for HLG HDR. Rather, this algorithm maps peak sRGB white to "graphics white" in HLG which is defined as 75% of the narrow range signal defined in <bibref ref="bt2100_1"/>.</p></note>
+  <note><p>The above algorithm does not use the <loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc> attribute since no absolute gain level is needed for HLG HDR. Rather, this algorithm maps peak sRGB white to "graphics white" in HLG which is defined as 75% of the narrow range signal defined in <bibref ref="bt2100_1"/>.</p></note>
 </div2>
 </inform-div1>
 <inform-div1 id="streaming">

@@ -26863,9 +26863,13 @@ Apply composition to yield (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>):
 (clamp(r + R), clamp(g + G), clamp(b + B)) → (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)
 </p><p>
 1 + (1 - a) ∙ (A - 1) → A<sub>c</sub>
-</p><p>
-where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
 </p>
+<p>where</p>
+<p><code>clamp(x) = 0</code> for <code>x &lt; 0</code></p>
+<p>and</p>
+<p><code>clamp(x) = x</code> for <code>0 ≤ x ≤ 1023</code></p>
+<p>and</p>
+<p><code>clamp(x) = 1023</code> for <code>x &gt; 1023</code></p>
 </item>
 </olist>
 </div2>
@@ -26891,7 +26895,9 @@ where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
     <p><code>((0.265r),(0.265g),(0.265b)) → (r,g,b)</code></p></item>
     <item><p>Apply HLG OETF specified in <bibref ref="bt2100_1"/>:</p>
     <p><code>(HLG(r),HLG(g),HLG(b)) → (r,g,b)</code></p>
-    <p>where <code>HLG(x) = (3x)<sup>0.5</sup></code> if <code>0 ≤ x ≤ 1/12</code> or <code>HLG(x) = a•ln(12x−b)+c</code> if <code>x > 1/12</code> and <code>a = 0.17883277</code> and <code>b = 1−4a</code> and <code>c = 0.5−a•ln(4a)</code></p></item>
+    <p>where</p><p><code>HLG(x) = (3x)<sup>0.5</sup></code> for <code>0 ≤ x ≤ 1/12</code></p><p>and</p>
+    <p><code>HLG(x) = a•ln(12x−b)+c</code> for <code>x > 1/12</code>,</p>
+    <p>and <code>a = 0.17883277</code> and <code>b = 1−4a</code> and <code>c = 0.5−a•ln(4a)</code></p></item>
     <item><p>Apply 10-bit narrow-range quantization:</p>
     <p><code>(Q(r),Q(g),Q(b)) → (r,g,b)</code></p>
     <p>where <code>Q(x) = floor((940 − 64) • x + 64.5)</code></p></item>
@@ -26899,7 +26905,13 @@ where clamp(x) = {x, if x ∈ [0, 1023]} or {1023, if x > 1023}
     <p><code>((A•r+(1−A)R),(A•g+(1−A)G),(A•b+(1−A)B)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code></p></item>
     <item><p>Clamp output to 10-bit signal range:</p>
     <p><code>(clamp(Rc),clamp(Gc),clamp(Bc)) → (R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code></p>
-    <p>where <code>clamp(x) = x</code> if <code>0 ≤ x ≤ 1023</code> or <code>0</code> if <code>x &lt; 0</code> or <code>1023</code> if <code>x &gt; 1023</code></p></item>
+    <p>where</p>
+    <p><code>clamp(x) = 0</code> for <code>x &lt; 0</code></p>
+    <p>and</p>
+    <p><code>clamp(x) = x</code> for <code>0 ≤ x ≤ 1023</code></p>
+    <p>and</p>
+    <p><code>clamp(x) = 1023</code> for <code>x &gt; 1023</code></p>
+    </item>
   </olist>
   <note><p>The above algorithm does not use the <loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc> attribute since no absolute gain level is needed for HLG HDR. Rather, this algorithm maps peak sRGB white to "graphics white" in HLG which is defined as 75% of the narrow range signal defined in <bibref ref="bt2100_1"/>.</p></note>
 </div2>

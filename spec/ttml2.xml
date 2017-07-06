@@ -26786,83 +26786,83 @@ that conform to the system colorimetry specified in <bibref ref="bt2100_1"/> usi
 <olist>
 <item>
 <p>
-Let (r, g, b) be a full-range 8-bit sRGB pixel with opacity between 0 and 1.
+Let <code>(r, g, b)</code> be a full-range 8-bit sRGB pixel with opacity between 0 and 1.
 </p>
 </item>
 <item>
 <p>
-Let (R, G, B) and (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>) be full-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using PQ EOTF and full-range quantization, with opacity A and A<sub>c</sub> between 0 and 1.
+Let <code>(R, G, B)</code> and <code>(R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)</code> be full-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using PQ EOTF and full-range quantization, with opacity <code>A</code> and <code>A<sub>c</sub></code> between 0 and 1.
 </p>
 </item>
 <item>
 <p>
 Invert the 8-bit full-range quantization:
 </p><p>
-(r, g, b) / 255 → (r, g, b)
+<code>(r, g, b) / 255 → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
 Linearize using the sRGB EOTF:
 </p><p>
-(r<sup>2.4</sup>, g<sup>2.4</sup>, b<sup>2.4</sup>) → (r, g, b)
+<code>(r<sup>2.4</sup>, g<sup>2.4</sup>, b<sup>2.4</sup>) → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
 Compute HDR absolute luminance using the <att>tts:luminanceGain</att> attribute and the sRGB illuminant:
 </p><p>
-80 ∙ <att>tts:luminanceGain</att> ∙ (r, g, b) → (r, g, b)
+<code>80 ∙ </code><att>tts:luminanceGain</att><code> ∙ (r, g, b) → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
 Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:
 </p><p>
- [(0.62740389593470, 0.32928303837789, 0.04331306568741),
+<code> [(0.62740389593470, 0.32928303837789, 0.04331306568741),
  (0.06909728935823, 0.91954039507545, 0.01136231556630),
- (0.01639143887515, 0.08801330787723, 0.89559525324763)] ∙ (r, g, b) → (r, g, b)
+ (0.01639143887515, 0.08801330787723, 0.89559525324763)] ∙ (r, g, b) → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
 Normalize to 10,000 cd∙m<sup>-2</sup>:
 </p><p>
-(r, g, b) / 10000 → (r, g, b)
+<code>(r, g, b) / 10000 → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
 Apply inverse PQ EOTF specified in <bibref ref="bt2100_1"/>:
 </p><p>
-(PQ(r), PQ(g), PQ(b)) → (r, g, b)
+<code>(PQ(r), PQ(g), PQ(b)) → (r, g, b)</code>
 </p><p>
-with PQ(L) = [(c1 + c2 ∙ L<sup>m1</sup>) / (1 + c3 ∙ L<sup>m1</sup>)]<sup>m2</sup> and m1 = 0.1593017578125, m2 = 78.84375, c1 = 0.8359375, c2 = 18.8515625, and c3 = 18.6875.
+with <code>PQ(L) = [(c1 + c2 ∙ L<sup>m1</sup>) / (1 + c3 ∙ L<sup>m1</sup>)]<sup>m2</sup></code> and <code>m1 = 0.1593017578125</code>, <code>m2 = 78.84375</code>, <code>c1 = 0.8359375</code>, <code>c2 = 18.8515625</code>, and <code>c3 = 18.6875</code>.
 </p>
 </item>
 <item>
 <p>
 Apply opacity:
 </p><p>
-(1-a) ∙ (r, g, b) → (r, g, b)
+<code>(1-a) ∙ (r, g, b) → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
 Apply 10-bit full-range quantization:
 </p><p>
-(Q(r), Q(g), Q(b)) → (r, g, b)
+<code>(Q(r), Q(g), Q(b)) → (r, g, b)</code>
 </p><p>
-where Q(N) = floor(1023 ∙ N + 0.5)
+where <code>Q(N) = floor(1023 ∙ N + 0.5)</code>
 </p>
 </item>
 <item>
 <p>
-Apply composition to yield (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>):
+Apply composition to yield <code>(R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)</code>:
 </p><p>
-(clamp(r + R), clamp(g + G), clamp(b + B)) → (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)
+<code>(clamp(r + R), clamp(g + G), clamp(b + B)) → (R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)</code>
 </p><p>
-1 + (1 - a) ∙ (A - 1) → A<sub>c</sub>
+<code>1 + (1 - a) ∙ (A - 1) → A<sub>c</sub></code>
 </p>
 <p>where</p>
 <p><code>clamp(x) = 0</code> for <code>x &lt; 0</code></p>

@@ -2,6 +2,12 @@
 <xs:schema targetNamespace="http://www.w3.org/ns/ttml#datatype"
         xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:ttd="http://www.w3.org/ns/ttml#datatype">
+  <xs:simpleType name="activeArea">
+    <xs:annotation>
+      <xs:documentation>percentage percentage (percentage percentage)?</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
   <xs:simpleType name="agent">
     <xs:restriction base="xs:IDREFS"/>
   </xs:simpleType>
@@ -16,6 +22,14 @@
       <xs:documentation>animationValue [ ";" animationValue ]*</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="annotationPosition">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="auto"/>
+      <xs:enumeration value="before"/>
+      <xs:enumeration value="after"/>
+      <xs:enumeration value="outside"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="areaRectangle">
     <xs:restriction base="xs:token">
@@ -72,6 +86,9 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="color">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="contentProfiles">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="dataEncoding">
@@ -172,6 +189,9 @@
       <xs:enumeration value="remove"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="fillLineGap">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
   <xs:simpleType name="fontFamily">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
@@ -269,6 +289,13 @@
       <xs:enumeration value="first"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="inlineAreaBreak">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="clone"/>
+      <xs:enumeration value="cloneMostNested"/>
+      <xs:enumeration value="slice"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="keySplines">
     <xs:annotation>
       <xs:documentation>
@@ -327,6 +354,12 @@
   <xs:simpleType name="lineHeight">
     <xs:annotation>
       <xs:documentation>normal | length</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="luminance">
+    <xs:annotation>
+      <xs:documentation>string</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
@@ -447,15 +480,11 @@
   <xs:simpleType name="position">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
+  <xs:simpleType name="processorProfiles">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
   <xs:simpleType name="profile">
     <xs:restriction base="xs:anyURI"/>
-  </xs:simpleType>
-  <xs:simpleType name="profiles">
-    <xs:restriction>
-      <xs:simpleType>
-        <xs:list itemType="ttd:profile"/>
-      </xs:simpleType>
-    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="profileCombination">
     <xs:restriction base="xs:token">
@@ -561,20 +590,9 @@
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="rubyPosition">
-    <xs:restriction base="xs:token">
-      <xs:enumeration value="auto"/>
-      <xs:enumeration value="before"/>
-      <xs:enumeration value="after"/>
-      <xs:enumeration value="outside"/>
-    </xs:restriction>
+    <xs:restriction base="ttd:annotationPosition"/>
   </xs:simpleType>
   <xs:simpleType name="rubyReserve">
-    <xs:restriction base="xs:string"/>
-  </xs:simpleType>
-  <xs:simpleType name="safeCropArea">
-    <xs:annotation>
-      <xs:documentation>percentage percentage (percentage percentage)?</xs:documentation>
-    </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="script">
@@ -714,7 +732,7 @@
   </xs:simpleType>
   <xs:simpleType name="textShadow">
     <xs:annotation>
-      <xs:documentation>none | [ shadow ]#</xs:documentation>
+      <xs:documentation>none | ( shadow )+</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
@@ -797,5 +815,22 @@
       <xs:documentation>auto | integer</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="gain">
+    <xs:restriction base="xs:decimal"/>   
+  </xs:simpleType>
+  <xs:simpleType name="pan">
+    <xs:restriction base="xs:decimal"/>
+  </xs:simpleType>
+  <xs:simpleType name="pitch">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="speak">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="fast"/>
+      <xs:enumeration value="slow"/>
+    </xs:restriction>
   </xs:simpleType>
 </xs:schema>

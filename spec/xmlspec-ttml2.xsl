@@ -743,7 +743,7 @@ width: 100%;
       <span class="secno"><xsl:apply-templates select="." mode="divnum"/></span>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <xsl:if test="count(div2) > 1">
+    <xsl:if test="count(div2) > 0">
       <xsl:if test="$toc.level &gt; 1">
         <ul class="toc">
           <xsl:apply-templates select="div2" mode="toc"/>
@@ -764,7 +764,7 @@ width: 100%;
       <span class="secno"><xsl:apply-templates select="." mode="divnum"/></span>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <xsl:if test="count(div3) > 1">
+    <xsl:if test="count(div3) > 0">
       <xsl:if test="$toc.level &gt; 2">
         <ul class="toc">
           <xsl:apply-templates select="div3" mode="toc"/>
@@ -785,7 +785,7 @@ width: 100%;
       <span class="secno"><xsl:apply-templates select="." mode="divnum"/></span>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <xsl:if test="count(div4) > 1">
+    <xsl:if test="count(div4) > 0">
       <xsl:if test="$toc.level &gt; 3">
         <ul class="toc">
           <xsl:apply-templates select="div4" mode="toc"/>
@@ -806,7 +806,7 @@ width: 100%;
       <span class="secno"><xsl:apply-templates select="." mode="divnum"/></span>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <xsl:if test="count(div5) > 1">
+    <xsl:if test="count(div5) > 0">
       <xsl:if test="$toc.level &gt; 4">
         <ul class="toc">
           <xsl:apply-templates select="div5" mode="toc"/>
@@ -842,7 +842,7 @@ width: 100%;
       <xsl:apply-templates select="head" mode="text"/>
       <xsl:text> (Non-Normative)</xsl:text>
     </a>
-    <xsl:if test="count(div2) > 1">
+    <xsl:if test="count(div2) > 0">
       <xsl:if test="$toc.level &gt; 2">
         <ul class="toc">
           <xsl:apply-templates select="div2" mode="toc"/>

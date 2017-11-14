@@ -1358,6 +1358,22 @@ A <loc href="#terms-default-region">default out-of-line region</loc> is implied 
 <loc href="#terms-out-of-line-region">out-of-line region</loc> is specified explicitly.</p>
 </def>
 </gitem>
+<gitem id="terms-override-content-profile">
+<label>[override content profile]</label>
+<def>
+<p>A <loc href="#terms-content-profile">content profile</loc> that is determined to override all other
+possible determinations of a <loc href="#terms-content-profile">content profile</loc>.</p>
+<p></p>
+</def>
+</gitem>
+<gitem id="terms-override-processor-profile">
+<label>[override processor profile]</label>
+<def>
+<p>A <loc href="#terms-processor-profile">processor profile</loc> that is determined to override all other
+possible determinations of a <loc href="#terms-processor-profile">processor profile</loc>.</p>
+<p></p>
+</def>
+</gitem>
 <gitem id="terms-pixel-aspect-ratio">
 <label>[pixel aspect ratio]</label>
 <def>
@@ -2725,7 +2741,16 @@ in order to maintain content profile invariants.</p>
 defined as follows:</p>
 <olist>
 <item>
-<p>if a <att>ttp:contentProfiles</att> attribute is specified on the root <el>tt</el> element, then</p>
+<p>if the <loc href="#terms-document-processing-context">document processing context</loc> determines that a specific
+<loc href="#terms-override-content-profile">override content profile</loc> <emph>P<sub>O</sub></emph> is to override all other determinations, then the
+<loc href="#terms-effective-content-profile">effective content profile</loc> is <emph>P<sub>O</sub></emph>;</p>
+<note role="example"><p>For example, an <bibref ref="ebuttd"/> document that complies with this specification
+may specify an <code>ebuttm:conformsToStandard</code> element to signal compliance with the <bibref ref="ebuttd"/> content profile.
+In such a case, a <loc href="#terms-content-processor">content processor</loc> that supports that profile may use the presence of
+that element as an override to determine the <loc href="#terms-effective-content-profile">effective content profile</loc>.</p></note>
+</item>
+<item>
+<p>otherwise, if a <att>ttp:contentProfiles</att> attribute is specified on the root <el>tt</el> element, then</p>
 <olist>
 <item>
 <p>if the <att>ttp:contentProfiles</att> attribute is specified using the <code>all(...)</code> function syntax or
@@ -2798,7 +2823,12 @@ The <loc href="#terms-effective-processor-profile">effective processor profile</
 defined as follows:</p>
 <olist>
 <item>
-<p>if a <att>ttp:processorProfiles</att> attribute is specified on the root <el>tt</el> element, then</p>
+<p>if the <loc href="#terms-document-processing-context">document processing context</loc> determines that a specific
+<loc href="#terms-override-processor-profile">override processor profile</loc> <emph>P<sub>O</sub></emph> is to override all other determinations, then the
+<loc href="#terms-effective-processor-profile">effective processor profile</loc> is <emph>P<sub>O</sub></emph>;</p>
+</item>
+<item>
+<p>otherwise, if a <att>ttp:processorProfiles</att> attribute is specified on the root <el>tt</el> element, then</p>
 <olist>
 <item>
 <p>if the <att>ttp:processorProfiles</att> attribute is specified using the <code>all(...)</code> function syntax or
@@ -8093,7 +8123,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <code>border</code> |
 <code>content</code> |
-<code>padding</code> |
+<code>padding</code>
 </td>
 </tr>
 <tr>
@@ -8503,7 +8533,7 @@ as a style property only to those element types indicated in the following table
 <td>
 <code>border</code> |
 <code>content</code> |
-<code>padding</code> |
+<code>padding</code>
 </td>
 </tr>
 <tr>
@@ -21390,7 +21420,7 @@ vocabulary defined by <specref ref="metadata"/>:</p>
 <item><p><loc href="#metadata-vocabulary-title"><el>ttm:name</el></loc></p></item>
 <item><p><loc href="#metadata-vocabulary-title"><el>ttm:actor</el></loc></p></item>
 <item><p><loc href="#metadata-attribute-agent">@<att>ttm:agent</att></loc></p></item>
-<item><p><loc href="#metadata-attribute-role"><att>ttm:role</att></loc></p></item>
+<item><p><loc href="#metadata-attribute-role">@<att>ttm:role</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#metadata</code>
 feature if it recognizes and is capable of presenting the information
@@ -25132,14 +25162,21 @@ Consumer Technology Association (CTA).
 <titleref href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1: Reference Description</titleref>. (See
 <xspecref href="http://dublincore.org/documents/dces/">http://dublincore.org/documents/dces/</xspecref>.)
 </bibl>
-<bibl id="isobmff" key="ISOBMFF">ISO/IEC 14496-30,
-<titleref href="http://www.iso.org/">Information technology &ndash; Coding of audio-visual objects &ndash; Part 30: Timed text and other visual overlays in ISO base media file format</titleref>, 
-International Organization for Standardization (ISO).</bibl>
+<bibl id="ebuttd" key="EBU-TT-D">EBU Tech 3380,
+<titleref href="https://tech.ebu.ch/publications/tech3380">EBU-TT-D Subtitling Distribution Format, Version 1.0</titleref>,
+European Broadcasting Union (EBU), March 2015.
+(See <xspecref href="https://tech.ebu.ch/publications/tech3380">https://tech.ebu.ch/publications/tech3380</xspecref>.)</bibl>
+<bibl id="ebuttlive" key="EBU-TT-Live">EBU Tech 3370,
+<titleref href="https://tech.ebu.ch/publications/tech3370">EBU-TT Part 3 Live Subtitling Applications, Version 1.0</titleref>, European Broadcasting Union (EBU), May 2017.
+(See <xspecref href="https://tech.ebu.ch/publications/tech3370">https://tech.ebu.ch/publications/tech3370</xspecref>.)</bibl>
 <bibl id="html51" key="HTML 5.1">Steve Faulkner, Arron Eicholz, Travis Leithead, and Alex Danilo, Eds.,
 <titleref href="http://www.w3.org/TR/2014/REC-html5-20141028/">HTML 5.1 2nd Edition</titleref>,
 W3C Recommendation, 3 October 2017. (See
 <xspecref href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</xspecref>.)
 </bibl>
+<bibl id="isobmff" key="ISOBMFF">ISO/IEC 14496-30,
+<titleref href="http://www.iso.org/">Information technology &ndash; Coding of audio-visual objects &ndash; Part 30: Timed text and other visual overlays in ISO base media file format</titleref>, 
+International Organization for Standardization (ISO).</bibl>
 <bibl id="bt2100_1" key="ITU BT.2100-1">Recommendation ITU-R BT.2100-1,
 <titleref
 href="https://www.itu.int/rec/R-REC-BT.2100">Image parameter values for high dynamic range television for use in production and international programme exchange</titleref>
@@ -25147,8 +25184,6 @@ href="https://www.itu.int/rec/R-REC-BT.2100">Image parameter values for high dyn
 <bibl id="dash" key="MPEG DASH">ISO/IEC 23009-1,
 <titleref href="http://www.iso.org/">Information technology &ndash; Dynamic adaptive streaming over HTTP (DASH)</titleref>,
 International Organization for Standardization (ISO).</bibl>
-<bibl id="ebuttlive" key="EBU-TT Live">EBU Tech3370,
-<titleref href="https://tech.ebu.ch/publications/tech3370">EBU-TT Part 3 Live Subtitling</titleref>, European Broadcasting Union (EBU)</bibl>
 <bibl id="mpeg7-5" key="MPEG7-5">
 ISO/IEC 15938-5,
 <titleref
@@ -27489,7 +27524,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-textShadow"><att>tts:textShadow</att></loc></p></item>
 </ulist>
 </div3>
-
 <div3>
 <head>Styling Attributes for Audio</head>
 <p>The following attributes were added in order to expand audio styling functionality:</p>

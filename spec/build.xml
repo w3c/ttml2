@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Apache Ant script to build spec.
-     Philippe Le Hegaret, W3C -->
+<!-- Apache Ant script to build spec. Philippe Le Hegaret, W3C -->
       
 <project name="TimedText" default="generate" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
     <path id="saxon8.classpath">
@@ -21,6 +20,8 @@
     <property name="xsd.isd.schema" value="${xsd.dir}/ttml2-isd.xsd"/>
     <property name="profiles.dir" value="${basedir}/profiles"/>
     <property name="examples.dir" value="${basedir}/examples"/>
+
+    <property name="build.dir" value="${basedir}/build"/>
 
     <patternset id="escapable">
       <include name="examples/*.xml"/>
@@ -225,54 +226,73 @@
         </java>    
     </target>
 
+    <target name="kwexpand">
+      <echo message="Expanding keywords."/>
+      <exec executable="git" resultproperty="ttml2.diff" failonerror="false">
+        <arg value="diff"/>
+        <arg value="--quiet"/>
+        <arg value="ttml2.xml"/>
+      </exec>
+      <condition property="ttml2.dirty">
+        <equals arg1="${ttml2.diff}" arg2="1"/>
+      </condition>
+      <echo message="Warning ttml2.xml has uncommitted modifications." if:set="ttml2.dirty"/>
+      <tstamp>
+        <format property="today.mm" pattern="MM"/>
+      </tstamp>
+      <tstamp>
+        <format property="today.month" pattern="MMMM"/>
+      </tstamp>
+      <tstamp>
+        <format property="today.dd" pattern="dd"/>
+      </tstamp>
+      <tstamp>
+        <format property="today.day" pattern="EEEE"/>
+      </tstamp>
+      <tstamp>
+        <format property="today.year" pattern="yyyy"/>
+      </tstamp>
+      <exec executable="git" outputproperty="dateHash" failonerror="false">
+        <arg value="log"/>
+        <arg value="--quiet"/>
+        <arg value="-1"/>
+        <arg value="--oneline"/>
+      </exec>
+      <replace file="${html.dir}/${html.name}" token="$Date$" value="${dateHash}"/>
+      <replace file="${html.dir}/${html.name}" token="$dateMM$" value="${today.mm}"/>
+      <replace file="${html.dir}/${html.name}" token="$dateMonth$" value="${today.month}"/>
+      <replace file="${html.dir}/${html.name}" token="$dateDD$" value="${today.dd}"/>
+      <replace file="${html.dir}/${html.name}" token="$dateDay$" value="${today.dd}"/>
+      <replace file="${html.dir}/${html.name}" token="$dateYear$" value="${today.year}"/>
+    </target>
+
     <target name="generate" description="Generate the specification without updating escaped entities."
-	    depends="generate-schema-archives,validate-tt-specs,html">
+	    depends="generate-schema-archives,validate-tt-specs,html,kwexpand">
     </target>
     
     <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
 	    depends="generate-schema-archives,validate-tt-specs-dont-build-escapes,html">
     </target>
 
-    <target name="kwexpand">
-        <exec executable="git" resultproperty="ttml2.diff" failonerror="false">
-          <arg value="diff"/>
-          <arg value="--quiet"/>
-          <arg value="ttml2.xml"/>
-        </exec>
-        <condition property="ttml2.dirty">
-          <equals arg1="${ttml2.diff}" arg2="1"/>
-        </condition>
-        <fail message="Unable to expand keywords, ttml2.xml has uncommitted modifications." if:set="ttml2.dirty"/>
-        <delete file="ttml2.xml"/>
-        <echo message="Checkout fresh copy while expanding keywords."/>
-        <exec executable="git">
-          <arg value="checkout"/>
-          <arg value="--"/>
-          <arg value="ttml2.xml"/>
-        </exec>
+    <target name="rg" description="Regenerate using shortened generation and expands keywords."
+            depends="sg, kwexpand">
     </target>
 
-    <target name="kwshrink">
-    </target>
-
-    <target name="rg" description="Regenerate using shortened generation, while expanding keywords."
-            depends="kwexpand,sg,kwshrink">
-    </target>
-
-    <target name="commit">
-        <exec executable="git">
-          <arg value="add"/>
-          <arg value="ttml2.html"/>
-        </exec>
-        <exec executable="git">
-          <arg value="commit"/>
-          <arg value="-m"/>
-          <arg value="Regenerate ED."/>
-        </exec>
-    </target>
-
-    <target name="rgc" description="Regenerate and commit."
-            depends="rg,commit">
+    <target name="build" description="Build the specification for publication" depends="generate">
+      <delete includeemptydirs="true" quiet="true">
+        <fileset dir="${build.dir}"/>
+      </delete>
+      <mkdir dir="${build.dir}"/>
+      <mkdir dir="${build.dir}/images"/>
+      <mkdir dir="${build.dir}/rnc"/>
+      <mkdir dir="${build.dir}/xsd"/>
+      <copy file="${html.dir}/${html.name}" tofile="${build.dir}/index.html"/>
+      <copy todir="${build.dir}/images">
+        <fileset dir="${basedir}/images" includes="*.png"/>
+        <fileset dir="${basedir}/images" includes="*.svg"/>
+      </copy>
+      <copy file="${rnc.dir}/schema.zip" todir="${build.dir}/rnc"/>
+      <copy file="${xsd.dir}/schema.zip" todir="${build.dir}/xsd"/>
     </target>
 
 </project>

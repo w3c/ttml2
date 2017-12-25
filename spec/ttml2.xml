@@ -1598,7 +1598,7 @@ otherwise determined by the <loc href="#terms-document-processing-context">docum
 <label>[temporally active]</label>
 <def>
 <p>A syntactic or semantic feature, e.g., an element or the presentation of an element, is
-<emph>temporally active</emph> when the current time of selected time base intersects with the
+<emph>temporally active</emph> when the current time of the selected time base intersects with the
 active time interval of the feature.</p>
 </def>
 </gitem>
@@ -13004,8 +13004,10 @@ with a value equal to one half of the <emph>used value</emph> of the <code>tts:l
 <div3 id="style-attribute-showBackground">
 <head>tts:showBackground</head>
 <p>The <att>tts:showBackground</att> attribute is used to specify
-constraints on when the background color of a region is intended to be
+constraints on when the background of a region is intended to be
 presented.</p>
+<note role="elaboration"><p>The background of a region includes marks produced by either (or both) (1) a background color or (2) a background image,
+if either apply to the region.</p></note>
 <p>This attribute may be specified by any
 element type
 that permits use of attributes in the TT Style Namespaces; however, this attribute applies
@@ -13049,14 +13051,14 @@ as a style property only to those element types indicated in the following table
 </tr>
 </tbody>
 </table>
-<p>If the value of this attribute is <code>always</code>, then the
-background color of a region is always rendered when performing presentation
-processing on a visual medium; if the value is <code>whenActive</code>,
-then the background color of a region is rendered only when some
-content is flowed into the region.</p>
-<p>A region satisfies the <code>whenActive</code> case if (1) it is a
-<loc href="#terms-temporally-active-region">temporally active region</loc> and (2) content is selected into the region,
-where that content is also <loc href="#terms-temporally-active">temporally active</loc>.</p>
+<p>If a region is not <loc href="#terms-temporally-active">temporally active</loc>, then its background is not rendered; however, if it is
+<loc href="#terms-temporally-active">temporally active</loc>, then</p>
+<olist>
+  <item><p>if the value of this attribute is <code>whenActive</code>, then the region's background is rendered only when
+  content is selected into the region, where that content is also <loc href="#terms-temporally-active">temporally active</loc>;</p></item>
+  <item><p>otherwise, if the value of this attribute is <code>always</code>, then this region's background is rendered irresepctive of
+  whether content is selected into the region.</p></item>
+</olist>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>always</code>.</p>
 <p>The <att>tts:showBackground</att> style is illustrated by the following example.</p>

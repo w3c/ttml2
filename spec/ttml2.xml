@@ -1384,6 +1384,34 @@ possible determinations of a <loc href="#terms-processor-profile">processor prof
 <p>See definition of <loc href="#root-container-region-semantics-par">PAR</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-presentation-context">
+<label>[presentation context]</label>
+<def>
+<p>See <loc href="#terms-presentation-processing-context">presentation processing context</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-presentation-processing-context">
+<label>[presentation processing context]</label>
+<def>
+  <p>A hypothetical display device on which the <loc href="#terms-root-container-region">root container region</loc> and a
+  <loc href="#terms-related-media-object-region">related media object region</loc> are presented.</p>
+</def>
+</gitem>
+<gitem id="terms-presentation-context-coordinate-space">
+<label>[presentation context coordinate space]</label>
+<def>
+  <p>The coordinate space associated with the <loc href="#terms-presentation-context">presentation context</loc>.</p>
+  <note role="clarification">
+    <p>For a given implementation of a <loc href="#terms-presentation-processor">presentation processor</loc>,
+    it is possible that <emph>display pixels</emph> associated with <emph>logical pixels</emph> in the
+    <loc href="#terms-document-coordinate-space">document coordinate space</loc> correspond exactly with
+    <emph>presentation pixels</emph> in the <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>;
+    however, such an exact correspondence need not apply, and, in particular, the (implementation defined) mapping between these coordinate spaces
+    may be subject to a transformation of pixel aspect ratios, resolutions, color spaces, color sample depths,
+    and other implementation specific properties.</p>
+  </note>
+</def>
+</gitem>
 <gitem id="terms-presentation-related-element">
 <label>[presentation related element]</label>
 <def>
@@ -1484,15 +1512,8 @@ information, and with which that <loc href="#terms-document-instance">document i
 <gitem id="terms-related-media-object-region">
 <label>[related media object region]</label>
 <def>
-<p>When a non-null <loc href="#terms-related-media-object">related media object</loc> exists, the region of this media object,
-expressed in the coordinate system that applies to the <loc href="#terms-document-instance">document instance</loc> that is associated with the
-related media object.</p>
-<issue id="issue-ttml2-360">
-<head>Update Definition of Related Media Object Region</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/360">https://github.com/w3c/ttml2/issues/360</loc></source>
-<p>Untangle definition from use of document coordinate space.</p>
-</issue>
-<p></p>
+  <p>A region of the <loc href="#terms-presentation-processing-context">presentation processing context</loc> where a non-null, visual
+  <loc href="#terms-related-media-object">related media object</loc> is presented.</p>
 </def>
 </gitem>
 <gitem id="terms-relative-dimension">
@@ -1505,7 +1526,7 @@ the applicable writing mode.</p>
 <gitem id="terms-root-container-region">
 <label>[root container region]</label>
 <def>
-<p>A unique, logical region that establishes a coordinate system into which
+<p>A unique, logical, rectangular region that establishes a coordinate system into which
 <loc href="#terms-content-region">content regions</loc> are placed and optionally clipped,
 about which see also <specref ref="root-container-region-semantics"/>.</p>
 </def>
@@ -5575,10 +5596,8 @@ that the <loc href="#terms-document-processing-context">document processing cont
 </note>
 <note role="elaboration">
 <p>If an author desires to signal the (storage or image) aspect ratio of the <loc href="#terms-root-container-region">root container region</loc>
-without specifying its resolution, then this may be accomplished by using metadata specified
-in an external namespace, such as <att>m708:aspectRatio</att> as defined in <bibref ref="smpte2052-11"/>, &sect;5.4.4.
-This would permit, for example, the interchange of information that reflects
-the semantics of <bibref ref="cta708e"/> , &sect;4.5 “Caption Service Metadata”, “ASPECT RATIO”.</p>
+without specifying its resolution, then this may be accomplished by using
+the <loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRato</att></loc> parameter attribute.</p>
 </note>
 <p>Except for the <att>tts:extent</att> attribute described above, an attribute in the TT Style Namespace should not
 be specified on the <el>tt</el> element unless it denotes an inheritable style property, in which case such inheritable style property is available
@@ -11553,8 +11572,7 @@ content rectangles (boxes) are coterminous.</p>
 <p>If a horizontal or vertical position offset is specified by a <att>tts:position</att> attribute in the form of a scalar value
 on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then that value must be expressed using pixel (<code>px</code>) units,
 in which case a pixel must be interpreted as a pixel in the
-<!-- FIXME <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>-->
-presentation context coordinate space
+<loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>
 (and not a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>).</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
@@ -23322,7 +23340,7 @@ it requires support for the
     <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element or is inferred using other information as described below.</p>
     <note role="elaboration">
       <p>The actual, physical presentation of the pixels of the root container may be subject to numerous transformations in
-      aspect ratio, sample resolution, and color space subsequent to all defined TTML presentation processing. Such post-TTML
+      aspect ratio, sample resolution, and color space subsequent to defined TTML presentation processing. Such post-TTML
       processing is wholly out of scope of this specification.</p>
     </note>
   </def>
@@ -23342,12 +23360,12 @@ it requires support for the
       <item><p>if the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute consists of
       two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, the storage aspect ratio is considered
       to be specified and having a numeric value equal to the
-      <loc href="#terms-width">width</loc> of the extent divided its <loc href="#terms-height">height</loc>;</p></item>
+      <loc href="#terms-width">width</loc> of the extent divided by its <loc href="#terms-height">height</loc>;</p></item>
       <item><p>otherwise (the computed value is <code>contain</code>),
       the storage aspect ratio is considered to be unspecified and is inferred using other information described below.</p></item>
     </olist>
     <note role="elaboration">
-      <p>On its own, a logical pixel has no intrinsic aspect ratio; however, when mapped to a display pixel, it assumes the fixed aspect ratio
+      <p>On its own, a logical pixel has no intrinsic aspect ratio; however, when mapped to a display pixel, it assumes the fixed value
       defined by the pixel aspect ratio of the root container as specified below.</p>
     </note>
   </def>
@@ -23365,7 +23383,7 @@ it requires support for the
   </def>
 </gitem>
 </glist>
-<p>The following sub-sections specify how these aspect ratios are resolved according to which are specified in a document.</p>
+<p>The following sub-sections specify how these aspect ratios are resolved according to which (ratios) are specified in a document.</p>
 <div3 id="root-container-region-semantics-0-aspect-ratio">
 <head>No Aspect Ratio</head>
 <p>If none of the three aspect ratios is specified, then the three aspect ratios are determined according to the following ordered steps:</p>
@@ -23434,7 +23452,7 @@ the number of columns signifies the resolution of the root container region on t
 the number of rows signifies the resolution of the root container region on the <loc href="#terms-vertical-axis">vertical axis</loc>, where the
 former is defined to be the <loc href="#terms-width">width</loc> and the
 latter is defined to be the <loc href="#terms-height">height</loc> of the root container region, respectively,
-and where the collection of resolutions along both axes is referred to as the
+and where the collection of (these two) resolutions along both axes is referred to as the
 <emph>collective resolution</emph> (or <emph>spatial extent</emph>) of the root container region.</p>
 <p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute
 is specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element and consists of
@@ -23457,7 +23475,7 @@ in order to assign a logical resolution that preserves that same precision.</p>
 <head>Coordinate Space</head>
 <p>The coordinate space of the root container region, also known as the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
 is an unbounded, two-dimensional plane on which a closed set of logical pixels are defined that take the form of a rectangle <emph>R</emph> such that
-the said pixels are interior to (inside of) <emph>R</emph>, and where the origin (position) of this coordinate space is coincident with the upper,
+the said pixels are interior to (inside of) the boundary of <emph>R</emph>, and where the origin (position) of this coordinate space is coincident with the upper,
 left-hand corner of <emph>R</emph>, and where positive pixels on the vertical axis extend downwards and positive pixels on the horizontal axis
 extend rightwards.
 Furthermore, the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of <emph>R</emph> is set to the

@@ -1212,4 +1212,16 @@ width: 100%;
   </xsl:element>
 </xsl:template>
 
+<!-- term: the actual mention of a term within a termdef -->
+<xsl:template match="term">
+  <em><xsl:apply-templates/></em>
+</xsl:template>
+
+<!-- termdef: sentence or phrase defining a term -->
+<xsl:template match="termdef">
+  <a id="{@id}" title="{@term}">
+    <xsl:apply-templates/>
+  </a>
+</xsl:template>
+
 </xsl:stylesheet>

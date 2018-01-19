@@ -3378,7 +3378,6 @@ Parameter Attributes
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
 <loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
-<loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -4752,7 +4751,6 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
 <item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
-<item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
@@ -5288,55 +5286,6 @@ encoded, or the <loc href="#terms-related-media-object">related media object</lo
 <p>If not specified, the value of this parameter must be considered
 to be <code>indefinite</code>.</p>
 <p>A <att>ttp:mediaDuration</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax and semantics.</p>
-</note>
-</div3>
-<div3 id="parameter-attribute-mediaOffset">
-<head>ttp:mediaOffset</head>
-<p>The <att>ttp:mediaOffset</att> attribute is used to specify the
-temporal offset between the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
-and the begin time of a <loc href="#terms-related-media-object">related media object</loc> when operating in a
-<loc href="#time-expression-semantics-media">Media Time Base</loc>
-or a <loc href="#time-expression-semantics-smpte">SMPTE Time Base</loc>. It does not apply and
-must not be specified when operating in a <loc href="#time-expression-semantics-clock">Clock Time Base</loc>.</p>
-<issue id="issue-ttml2-76">
-<head>Media Time Offset</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/76">https://github.com/w3c/ttml2/issues/76</loc></source>
-<p>Tie up loose ends with respect to definition of media time offset, particulary regarding the definition of the origin and beginning of
-the document temporal extent.</p>
-</issue>
-<p></p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-mediaOffset-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:mediaOffset</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:mediaOffset
-  : sign? <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                  // restricted to <emph>offset-time</emph> form
-
-sign
-  : "+" | "-"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the value of this parameter must adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> optionally expressed with a sign.
-If not specified, the value of this parameter must be considered
-to be <code>0s</code>.</p>
-<p>If no sign is specified or it is specified as <code>+</code>, then the begin time of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> follows the begin time of the
-<loc href="#terms-related-media-object">related media object</loc>; otherwise (sign is present and
-specified as <code>-</code>), the begin time of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> precedes the begin time of the
-<loc href="#terms-related-media-object">related media object</loc>.</p>
-<p>A <att>ttp:mediaOffset</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <note role="explanation">
 <p>See <specref ref="timing-time-value-expressions"/> for the
@@ -23766,9 +23715,9 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <p>If the computed <code>frameRateMultiplier</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
 </note>
 <note role="clarification">
-<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
-<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
-<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> property.</p>
+<p>The above formalisms assume that the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the
+begin time of a <loc href="#terms-related-media-object">related media object</loc>. If this assumption doesn't hold, then an additional offset
+that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
 </div2>
 <div2 id="time-expression-semantics-smpte">
@@ -23895,11 +23844,6 @@ immediately prior sibling timed element;
 <p>Given the derived media time base as described above, then 
 media time base <phrase role="strong"><code>M</code></phrase> is related to the local real time <phrase role="strong"><code>R</code></phrase>
 as described in <specref ref="time-expression-semantics-media"/> above.</p>
-<note role="clarification">
-<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
-<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
-<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> property.</p>
-</note>
 </div2>
 </div1>
 <div1 id="isd">
@@ -24175,7 +24119,6 @@ are available for use with an
 <item><p><loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc></p></item>
 <item><p><loc href="#parameter-attribute-frameRate">ttp:frameRate</loc></p></item>
 <item><p><loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc></p></item>
 <item><p><loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc></p></item>
@@ -28187,7 +28130,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRatio</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-mediaDuration"><att>ttp:mediaDuration</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc></p></item>
 </ulist>
 </div3>
 <div3>

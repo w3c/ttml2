@@ -182,8 +182,7 @@ external multimedia integration technology, such as SMIL.</p>
 <note role="historical">
 <p>In previous drafts of this specification, TTML was referred to as DFXP (Distribution
 Format Exchange Profile). This latter term is retained for historical reasons in
-certain contexts, such as profile names and designators, and the short name
-<code>ttaf1-dfxp</code> used in URLs to refer to this specification.</p>
+certain contexts, such as profile names and designators.</p>
 </note>
 <div2 id="model">
 <head>System Model</head>
@@ -3378,8 +3377,6 @@ Parameter Attributes
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
-<loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
-<loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -3763,7 +3760,7 @@ infomation about support and usage requirements for a particular feature.</p>
 &lt;ttp:feature
   extends = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   restricts = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  value = (optional|required|<phrase role="obsoleted">use</phrase>|prohibited) : <emph>see prose below</emph>
+  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -3871,7 +3868,7 @@ if the value attribute is not specified, then the feature specification
 must be interpreted as if the value <code>optional</code> were specified;
 </p></item>
 </ulist>
-<p>The value <phrase role="obsoleted"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="obsoleted">obsoleted</phrase>. If it
+<p>The value <phrase role="deprecated"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="deprecated">deprecated</phrase>. If it
 appears in a profile specification, then it must be interpreted as if <code>required</code>
 had been specified.</p>
 <p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
@@ -3971,7 +3968,7 @@ infomation about support and usage requirements for a particular extension.</p>
 &lt;ttp:extension
   extends = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   restricts = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  value = (optional|required|<phrase role="obsoleted">use</phrase>|prohibited) : <emph>see prose below</emph>
+  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -4079,7 +4076,7 @@ if the value attribute is not specified, then the extension specification
 must be interpreted as if the value <code>optional</code> were specified;
 </p></item>
 </ulist>
-<p>The value <phrase role="obsoleted"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="obsoleted">obsoleted</phrase>. If it
+<p>The value <phrase role="deprecated"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="deprecated">deprecated</phrase>. If it
 appears in a profile specification, then it must be interpreted as if <code>required</code>
 had been specified.</p>
 <p>If some well known extension is not specified by
@@ -4752,8 +4749,6 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-frameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
-<item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
-<item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
@@ -5256,92 +5251,6 @@ were some other non-linearity or discontinuity in marker labeling, for
 example, two consecutive frames labeled as <code>10:00:00:00</code>
 and <code>10:00:01:00</code>.
 </p>
-</note>
-</div3>
-<div3 id="parameter-attribute-mediaDuration">
-<head>ttp:mediaDuration</head>
-<p>The <att>ttp:mediaDuration</att> attribute is used to specify the
-temporal extent (simple duration) of a <loc href="#terms-related-media-object">related media object</loc>.</p>
-<p>If the temporal extent (simple duration) of the <loc href="#terms-related-media-object">related media object</loc> is known at authoring time, then this
-attribute should be specified; otherwise, if no <loc href="#terms-related-media-object">related media object</loc> applies or its
-temporal extent is unknown, then this attribute should not be specified.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-mediaDuration-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:mediaDuration</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:mediaDuration
-  : <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                        // restricted to <emph>offset-time</emph> form
-  | "indefinite"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the value of this parameter must either (1) adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> or (2) take the value <code>indefinite</code>.</p>
-<p>If the value <code>indefinite</code> is specified, then there is no <loc href="#terms-related-media-object">related media object</loc>,
-the temporal extent (simple duration) of the
-<loc href="#terms-related-media-object">related media object</loc> is not known at the time this attribute is
-encoded, or the <loc href="#terms-related-media-object">related media object</loc> has no temporal end point.</p>
-<p>If not specified, the value of this parameter must be considered
-to be <code>indefinite</code>.</p>
-<p>A <att>ttp:mediaDuration</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax and semantics.</p>
-</note>
-</div3>
-<div3 id="parameter-attribute-mediaOffset">
-<head>ttp:mediaOffset</head>
-<p>The <att>ttp:mediaOffset</att> attribute is used to specify the
-temporal offset between the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
-and the begin time of a <loc href="#terms-related-media-object">related media object</loc> when operating in a
-<loc href="#time-expression-semantics-media">Media Time Base</loc>
-or a <loc href="#time-expression-semantics-smpte">SMPTE Time Base</loc>. It does not apply and
-must not be specified when operating in a <loc href="#time-expression-semantics-clock">Clock Time Base</loc>.</p>
-<issue id="issue-ttml2-76">
-<head>Media Time Offset</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/76">https://github.com/w3c/ttml2/issues/76</loc></source>
-<p>Tie up loose ends with respect to definition of media time offset, particulary regarding the definition of the origin and beginning of
-the document temporal extent.</p>
-</issue>
-<p></p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-mediaOffset-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:mediaOffset</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:mediaOffset
-  : sign? <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                  // restricted to <emph>offset-time</emph> form
-
-sign
-  : "+" | "-"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the value of this parameter must adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> optionally expressed with a sign.
-If not specified, the value of this parameter must be considered
-to be <code>0s</code>.</p>
-<p>If no sign is specified or it is specified as <code>+</code>, then the begin time of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> follows the begin time of the
-<loc href="#terms-related-media-object">related media object</loc>; otherwise (sign is present and
-specified as <code>-</code>), the begin time of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> precedes the begin time of the
-<loc href="#terms-related-media-object">related media object</loc>.</p>
-<p>A <att>ttp:mediaOffset</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax and semantics.</p>
 </note>
 </div3>
 <div3 id="parameter-attribute-pixelAspectRatio">
@@ -6227,6 +6136,11 @@ above if possible.</p>
 <note role="derivation">
 <p>The semantics of the above four cited XSL-FO properties are defined by
 by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respectively.</p>
+</note>
+<note role="clarification">
+<p>No presentation semantics are specified for the TAB (U+0009) character. Furthermore, the TAB (U+0009) character can generate a glyph area.
+ As a result, the use of the TAB (U+0009) character in <code>#PCDATA</code> content within <code>p</code> and <code>span</code> elements is
+ not recommended.</p>
 </note>
 </div3>
 </div2> <!-- content-attribute-vocabulary -->
@@ -14810,7 +14724,7 @@ and <code>proportionalSerif</code>, respectively.</p>
 <p>If the generic family name <code>default</code> is specified (or implied by
 an initial value), then its typographic characteristics are considered to be implementation
 dependent; however, it is recommended that this default font family be mapped to
-an monospaced, sans-serif font.</p>
+a monospaced, sans-serif font.</p>
 </div3>
 <div3 id="style-value-glyph-variant">
 <head>&lt;glyph-variant&gt;</head>
@@ -17040,7 +16954,7 @@ then the element is associated with the default region;</p></item>
 adjacent synchronic <loc href="#terms-document-instance">document instances</loc>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
 <emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>,
-then it is preferred that the implementation make the transition between
+then the implementation can apply processing to make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cta608e"/>, &sect; C.3, and <bibref ref="ccreq"/>.</p>
 </note>
@@ -21820,7 +21734,7 @@ same vocabulary enumerated above.</p>
 <specref ref="conformance-generic-processor"/> and
 (2) implements the transformation semantics of the following features:</p>
 <ulist>
-<item><p><loc href="#content"><code>#content</code></loc></p></item>
+<item><p><loc href="#feature-content"><code>#content</code></loc></p></item>
 <item><p><loc href="#feature-core"><code>#core</code></loc></p></item>
 <item><p><loc href="#feature-profile"><code>#profile</code></loc></p></item>
 <item><p><loc href="#feature-structure"><code>#structure</code></loc></p></item>
@@ -23422,8 +23336,13 @@ otherwise, the value of <code>DAR</code> is determined (arbitrarily) by the
     <p>if <code>SAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>PAR</code>
     are determined as follows:</p>
     <olist>
-      <item><p>the resolved value of <code>DAR</code> is the resolved value of <code>SAR</code>;</p></item>
-      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one).</p></item>
+      <item><p>if a <loc href="#terms-related-media-object">related media object</loc> exists and has a defined <code>DAR</code>,
+      then the resolved value of <code>DAR</code> is the display aspect ratio of the
+      <loc href="#terms-related-media-object">related media object</loc> and the value of <code>PAR</code>
+      is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below;</p></item>
+      <item><p>otherwise, the resolved value of <code>DAR</code>
+      is determined by the <loc href="#terms-document-processing-context">document processing context</loc> and the value of <code>PAR</code>
+      is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below;</p></item>
     </olist>
   </item>
   <item>
@@ -23769,9 +23688,9 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <p>If the computed <code>frameRateMultiplier</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
 </note>
 <note role="clarification">
-<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
-<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
-<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> property.</p>
+<p>The above formalisms assume that the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the
+begin time of a <loc href="#terms-related-media-object">related media object</loc>. If this assumption doesn't hold, then an additional offset
+that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
 </div2>
 <div2 id="time-expression-semantics-smpte">
@@ -23898,11 +23817,6 @@ immediately prior sibling timed element;
 <p>Given the derived media time base as described above, then 
 media time base <phrase role="strong"><code>M</code></phrase> is related to the local real time <phrase role="strong"><code>R</code></phrase>
 as described in <specref ref="time-expression-semantics-media"/> above.</p>
-<note role="clarification">
-<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
-<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
-<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> property.</p>
-</note>
 </div2>
 </div1>
 <div1 id="isd">
@@ -24178,7 +24092,6 @@ are available for use with an
 <item><p><loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc></p></item>
 <item><p><loc href="#parameter-attribute-frameRate">ttp:frameRate</loc></p></item>
 <item><p><loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc></p></item>
 <item><p><loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc></p></item>
@@ -28189,8 +28102,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <ulist>
 <item><p><loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRatio</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaDuration"><att>ttp:mediaDuration</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc></p></item>
 </ulist>
 </div3>
 <div3>

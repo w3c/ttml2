@@ -3385,7 +3385,6 @@ Parameter Attributes
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
-<loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -4758,7 +4757,6 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-frameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
-<item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
@@ -5261,43 +5259,6 @@ were some other non-linearity or discontinuity in marker labeling, for
 example, two consecutive frames labeled as <code>10:00:00:00</code>
 and <code>10:00:01:00</code>.
 </p>
-</note>
-</div3>
-<div3 id="parameter-attribute-mediaDuration">
-<head>ttp:mediaDuration</head>
-<p>The <att>ttp:mediaDuration</att> attribute is used to specify the
-temporal extent (simple duration) of a <loc href="#terms-related-media-object">related media object</loc>.</p>
-<p>If the temporal extent (simple duration) of the <loc href="#terms-related-media-object">related media object</loc> is known at authoring time, then this
-attribute should be specified; otherwise, if no <loc href="#terms-related-media-object">related media object</loc> applies or its
-temporal extent is unknown, then this attribute should not be specified.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-mediaDuration-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:mediaDuration</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:mediaDuration
-  : <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                        // restricted to <emph>offset-time</emph> form
-  | "indefinite"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the value of this parameter must either (1) adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> or (2) take the value <code>indefinite</code>.</p>
-<p>If the value <code>indefinite</code> is specified, then there is no <loc href="#terms-related-media-object">related media object</loc>,
-the temporal extent (simple duration) of the
-<loc href="#terms-related-media-object">related media object</loc> is not known at the time this attribute is
-encoded, or the <loc href="#terms-related-media-object">related media object</loc> has no temporal end point.</p>
-<p>If not specified, the value of this parameter must be considered
-to be <code>indefinite</code>.</p>
-<p>A <att>ttp:mediaDuration</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax and semantics.</p>
 </note>
 </div3>
 <div3 id="parameter-attribute-pixelAspectRatio">
@@ -6183,6 +6144,11 @@ above if possible.</p>
 <note role="derivation">
 <p>The semantics of the above four cited XSL-FO properties are defined by
 by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respectively.</p>
+</note>
+<note role="clarification">
+<p>No presentation semantics are specified for the TAB (U+0009) character. Furthermore, the TAB (U+0009) character can generate a glyph area.
+ As a result, the use of the TAB (U+0009) character in <code>#PCDATA</code> content within <code>p</code> and <code>span</code> elements is
+ not recommended.</p>
 </note>
 </div3>
 </div2> <!-- content-attribute-vocabulary -->
@@ -15718,9 +15684,6 @@ ref="semantics-style-inheritance-content"/> below.</p>
 other out-of-line style properties, thus creating a chain of references starting at the
 affected element. When expressed in this manner, the association of style information
 is referred to as <emph>chained referential styling</emph>.</p>
-<p>If the same style property is specified in more than one referenced
-style set, then the last referenced style set applies, where the order of application starts from
-the affected element and proceeds to referenced style sets, and, in turn, to subsequent referenced style sets.</p>
 <p>A loop in a sequence of chained style references must be considered an error.</p>
 <p>The use of referential styling is restricted to making
 reference to <el>style</el> element descendants of a <el>styling</el>
@@ -15751,6 +15714,11 @@ given priority as described above by <specref ref="semantics-style-association-i
 </tr>
 </tbody>
 </table>
+<note role="explanation">
+<p>In the above example, the text of the second paragraph is yellow, since <code>tts:color='yellow'</code>
+ effectively overwrites (is merged over) the <code>tts:color='white'</code> that style <code>s2</code> obtains by a reference to style
+  <code>s1</code>.</p>
+</note>
 </div4>
 <div4 id="semantics-style-association-nested">
 <head>Nested Styling</head>
@@ -16994,7 +16962,7 @@ then the element is associated with the default region;</p></item>
 adjacent synchronic <loc href="#terms-document-instance">document instances</loc>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
 <emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>,
-then it is preferred that the implementation make the transition between
+then the implementation can apply processing to make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cta608e"/>, &sect; C.3, and <bibref ref="ccreq"/>.</p>
 </note>
@@ -23376,8 +23344,13 @@ otherwise, the value of <code>DAR</code> is determined (arbitrarily) by the
     <p>if <code>SAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>PAR</code>
     are determined as follows:</p>
     <olist>
-      <item><p>the resolved value of <code>DAR</code> is the resolved value of <code>SAR</code>;</p></item>
-      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one).</p></item>
+      <item><p>if a <loc href="#terms-related-media-object">related media object</loc> exists and has a defined <code>DAR</code>,
+      then the resolved value of <code>DAR</code> is the display aspect ratio of the
+      <loc href="#terms-related-media-object">related media object</loc> and the value of <code>PAR</code>
+      is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below;</p></item>
+      <item><p>otherwise, the resolved value of <code>DAR</code>
+      is determined by the <loc href="#terms-document-processing-context">document processing context</loc> and the value of <code>PAR</code>
+      is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below;</p></item>
     </olist>
   </item>
   <item>
@@ -28137,7 +28110,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <ulist>
 <item><p><loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRatio</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaDuration"><att>ttp:mediaDuration</att></loc></p></item>
 </ulist>
 </div3>
 <div3>

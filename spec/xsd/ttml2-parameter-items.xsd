@@ -19,6 +19,16 @@
     <xs:attribute name="use" type="ttd:profile"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:attributeGroup>
+  <xs:attributeGroup name="schemas.attlist">
+    <xs:attributeGroup ref="tt:Core.ID.attrib.class"/>
+    <xs:attribute ref="xml:base"/>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="schema.attlist">
+    <xs:attribute name="type" type="ttd:dataType"/>
+    <xs:attributeGroup ref="tt:Core.ID.attrib.class"/>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:attributeGroup>
   <xs:attributeGroup name="features.attlist">
     <xs:attributeGroup ref="tt:Core.ID.attrib.class"/>
     <xs:attribute ref="xml:base"/>
@@ -48,6 +58,7 @@
       <xs:group ref="tt:Metadata.class" minOccurs="0" maxOccurs="unbounded"/>
       <xs:choice>
         <xs:sequence>
+          <xs:element ref="ttp:schemas" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="ttp:features" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element ref="ttp:extensions" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
@@ -57,6 +68,20 @@
       </xs:choice>
     </xs:sequence>
     <xs:attributeGroup ref="ttp:profile.attlist"/>
+  </xs:complexType>
+  <xs:complexType name="schemas.eltype">
+    <xs:sequence>
+      <xs:group ref="tt:Metadata.class" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="ttp:schema" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="ttp:schemas.attlist"/>
+  </xs:complexType>
+  <xs:complexType name="schema.eltype">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attributeGroup ref="ttp:schema.attlist"/>
+      </xs:extension>
+    </xs:simpleContent>
   </xs:complexType>
   <xs:complexType name="features.eltype">
     <xs:sequence>
@@ -87,6 +112,8 @@
     </xs:simpleContent>
   </xs:complexType>
   <xs:element name="profile" type="ttp:profile.eltype"/>
+  <xs:element name="schemas" type="ttp:schemas.eltype"/>
+  <xs:element name="schema" type="ttp:schema.eltype"/>
   <xs:element name="features" type="ttp:features.eltype"/>
   <xs:element name="feature" type="ttp:feature.eltype"/>
   <xs:element name="extensions" type="ttp:extensions.eltype"/>

@@ -21,8 +21,39 @@ TTAF.parameters.profile.attlist &=
 TTAF.parameters.profile.content.extra = empty
 TTAF.parameters.profile.content =
   (TTAF.Metadata.class*,
-   ((TTAF.parameters.features*,TTAF.parameters.extensions*)|TTAF.parameters.profile*),
+   ((TTAF.parameters.schemas*,TTAF.parameters.features*,TTAF.parameters.extensions*)|TTAF.parameters.profile*),
    TTAF.parameters.profile.content.extra*)
+
+# schemas - container for schema elements
+TTAF.parameters.schemas =
+  element ttp:schemas {
+    TTAF.parameters.schemas.attlist,
+    TTAF.parameters.schemas.content
+  }
+
+TTAF.parameters.schemas.attlist &=
+  TTAF.id.attrib,
+  attribute xml:base { TTAF.URI.datatype }?
+
+TTAF.parameters.schemas.content.extra = empty
+TTAF.parameters.schemas.content =
+  (TTAF.Metadata.class*,
+   TTAF.parameters.schema*,
+   TTAF.parameters.schemas.content.extra*)
+
+# schema - schema requirements declaration
+TTAF.parameters.schema =
+  element ttp:schema {
+    TTAF.parameters.schema.attlist,
+    TTAF.parameters.schema.content
+  }
+
+TTAF.parameters.schema.attlist =
+  TTAF.id.attrib,
+  attribute type { TTAF.DataType.datatype }?
+
+TTAF.parameters.schema.content =
+  TTAF.URI.datatype
 
 # features - container for feature elements
 TTAF.parameters.features =

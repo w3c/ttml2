@@ -3829,7 +3829,7 @@ not implement or otherwise support the feature in order to process the document;
 <item><p>if the feature is implemented or otherwise supported by a processor, then continue processing
 the document;</p></item>
 <item><p>otherwise, if
-(1) the <att>extends</att> attribute is specified on the root <el>tt</el> element,
+(1) the <att>extends</att> attribute is specified on this <el>ttp:feature</el> element,
 (2) the value of the <att>extends</att> attribute designates a feature that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
@@ -3837,7 +3837,7 @@ property of the root <el>tt</el> element is not <code>false</code>,
 then continue processing the document;</p>
 </item>
 <item><p>otherwise, if
-(1) the <att>restricts</att> attribute is specified on the root <el>tt</el> element,
+(1) the <att>restricts</att> attribute is specified on this <el>ttp:feature</el> element,
 (2) the value of the <att>restricts</att> attribute designates a feature that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
@@ -4037,7 +4037,7 @@ not implement or otherwise support the extension in order to process the documen
 <item><p>if the extension is implemented or otherwise supported by a processor, then continue processing
 the document;</p></item>
 <item><p>otherwise, if
-(1) the <att>extends</att> attribute is specified on the root <el>tt</el> element,
+(1) the <att>extends</att> attribute is specified on this <el>ttp:extension</el> element,
 (2) the value of the <att>extends</att> attribute designates an extension that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
@@ -4045,7 +4045,7 @@ property of the root <el>tt</el> element is not <code>false</code>,
 then continue processing the document;</p>
 </item>
 <item><p>otherwise, if
-(1) the <att>restricts</att> attribute is specified on the root <el>tt</el> element,
+(1) the <att>restricts</att> attribute is specified on this <el>ttp:extension</el> element,
 (2) the value of the <att>restricts</att> attribute designates an extension that is implemented or otherwise supported by
 a processor, and
 (3) the computed value of the <loc href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
@@ -5408,7 +5408,6 @@ zero or one <el>body</el> element.</p>
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
   {<emph>any attribute in TT Parameter Namespace</emph>}
-  {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
   {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#document-structure-vocabulary-head">head</loc>?, <loc href="#document-structure-vocabulary-body">body</loc>?
 &lt;/tt&gt;
@@ -5439,11 +5438,6 @@ that the <loc href="#terms-document-processing-context">document processing cont
 without specifying its resolution, then this may be accomplished by using
 the <loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRato</att></loc> parameter attribute.</p>
 </note>
-<p>Except for the <att>tts:extent</att> attribute described above, an attribute in the TT Style Namespace should not
-be specified on the <el>tt</el> element unless it denotes an inheritable style property, in which case such inheritable style property is available
-for <loc href="#semantics-style-inheritance-root">root style inheritance</loc>. If a non-inheritable style property is specified, then
-it must be ignored for the purpose of non-validation processing. In the case of validation
-processing, such usage should be reported as a warning, or, if strict validation is performed, as an error.</p>
 <p>An <att>xml:lang</att> attribute must be specified on the <el>tt</el> element.
 If the attribute value is empty, it signifies that there is no default language that applies
 to the text contained within the <loc href="#terms-document-instance">document instance</loc>.</p>
@@ -7858,8 +7852,8 @@ This convention is likewise extended to token values of such
 properties.</p>
 </note>
 <note role="clarification">
-<p>An inheritable style property may be expressed as a specified attribute on the
-root <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element or on a
+<p>An inheritable style property may be expressed as a specified attribute on a
+<loc href="#document-layout-vocabulary-tt"><el>region</el></loc> element or on a
 <loc href="#terms-content-element">content element</loc> type
 independently of whether the property applies to that
 element type. This capability permits the expression of an inheritable
@@ -8947,7 +8941,7 @@ the resolution of the computed value of <att>tts:direction</att> on a <loc href=
   <att>tts:direction</att> is the
   <loc href="#terms-inline-progression-dimension">inline progression direction</loc> determined by the computed value of
   <att>tts:writingMode</att> on <emph><code>R</code></emph>;</p></item>
-  <item><p>otherwise, the computed value of <att>tts:direction</att> is the value inherited from the root <el>tt</el> element.</p></item>
+  <item><p>otherwise, the computed value of <att>tts:direction</att> is the initial value.</p></item>
 </olist>
 <note role="elaboration">
 <p>The computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
@@ -8990,7 +8984,7 @@ between disparity and perceived depth.</p>
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes (see prose)</td>
+<td>no</td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -9009,9 +9003,6 @@ between disparity and perceived depth.</p>
 <p>When rendering a region on the right (left) image of a stereoscopic image pair, the center of the region is offset along the horizontal axis by a value equal to ½ (-½) the computed value of <att>tts:disparity</att>, where a positive offset is to the right, and a negative offset is to the left.</p>
 <p>Unless rendering onto a steroscopic image pair, the <att>tts:disparity</att> attribute is ignored for the purpose of presentation processing.</p>
 <p>The author should ensure that the perceived depth of a region is positioned in front of any object in the scene during the entire time the region is visible. The stereoscopic effect will be broken if an object in the scene is perceived to be in front of the region.</p>
-<p>If applicable, inheritance of disparity occurs only by means of <specref ref="semantics-style-inheritance-root"/>, whether the inheriting region is
-an <loc href="#terms-out-of-line-region">out-of-line region</loc> or
-an <loc href="#terms-inline-region">inline region</loc>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -9834,7 +9825,7 @@ generated by content flowed into a region.</p>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
-<td>if not <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element,
+<td>if not <loc href="#document-layout-vocabulary-region"><el>region</el></loc> element,
 then relative to nearest ancestor <loc href="#terms-styled-element">styled element's</loc> computed font size; otherwise, relative to the
 <loc href="#terms-computed-cell-size">computed cell size</loc></td>
 </tr>
@@ -15775,7 +15766,6 @@ using:
 <ulist>
 <item><p><loc href="#semantics-style-inheritance-content">content style inheritance</loc></p></item>
 <item><p><loc href="#semantics-style-inheritance-region">region style inheritance</loc></p></item>
-<item><p><loc href="#semantics-style-inheritance-root">root style inheritance</loc></p></item>
 </ulist>
 <p>For the purpose of determining inherited styles, the element hierarchy of
 an intermediate synchronic document form of a <loc href="#terms-document-instance">document instance</loc> must be used, where
@@ -15858,46 +15848,6 @@ set of region <emph>R</emph>, and</p></item>
 items <code>Yellow Monospace</code> effectively inherits the <att>tts:color</att>
 and <att>tts:fontFamily</att> styles specified on the <el>region</el>
 element into which the <el>p</el> element is flowed (presented).</p>
-</note>
-</div4>
-<div4 id="semantics-style-inheritance-root">
-<head>Root Style Inheritance</head>
-<p>Style properties are inherited from the root <loc href="#document-structure-vocabulary-tt">tt</loc> element in the following case:</p>
-<olist>
-<item><p>if an inheritable style property <emph>P</emph> is not associated with
-a <loc href="#layout-vocabulary-region"><el>region</el></loc> element, and</p></item>
-<item><p>if that
-style property <emph>P</emph> is in the computed style
-set of the root <loc href="#document-structure-vocabulary-tt">tt</loc> element.</p></item>
-</olist>
-<note role="motivation">
-<p>Root style inheritance provides a mechanism by means of which <el>region</el> elements
-can inherit a common style rather than repeating the specification of the style on each
-<el>region</el> element.</p>
-</note>
-<table id="style-inheritance-example-4" role="example">
-<caption>Example &ndash; Root Style Inheritance</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;tt <phrase role="strong">tts:color="yellow"</phrase>&gt;
-...
-&lt;region xml:id="r1" <phrase role="strong">tts:fontFamily="monospaceSerif"</phrase>/&gt;
-...
-&lt;p region="r1"&gt;Yellow Monospace&lt;/p&gt;
-...
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<note role="explanation">
-<p>In the above example, the <el>region</el> element inherits the
-<att>tts:color</att> style specified on the <el>tt</el> element, which,
-along with the <att>tts:fontFamily</att> style specified on the <el>region</el>
-element, are inherited by <el>p</el> element when selected into the region.</p>
 </note>
 </div4>
 </div3>
@@ -16173,7 +16123,7 @@ next style property;</p>
 <!-- (b) -->
 <item>
 <p>if <emph>P</emph> is inheritable and <emph>E</emph> is
-not the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then perform the following:</p>
+not the <loc href="#document-layout-vocabulary-region"><el>region</el></loc> element, then perform the following:</p>
 <ulist>
 <item>
 <p>set <emph>P&prime;</emph> to the result of
@@ -16185,7 +16135,7 @@ the nearest ancestor element of <emph>E</emph>, <emph>NEAREST-ANCESTOR(E)</emph>
 </item>
 <!-- (c) -->
 <item>
-<p>if (1) <emph>P</emph> is inheritable and <emph>E</emph> is the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element
+<p>if (1) <emph>P</emph> is inheritable and <emph>E</emph> is the <loc href="#document-layout-vocabulary-region"><el>region</el></loc> element
 or (2) if <emph>P</emph> is not inheritable and <emph>P</emph> applies to <emph>E</emph>, then perform the following:</p>
 <ulist>
 <item><p>set <emph>P&prime;</emph> to the initial value of

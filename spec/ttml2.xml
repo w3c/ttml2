@@ -3379,7 +3379,6 @@ Metadata Attributes
 Parameter Attributes
 </td>
 <td>
-<loc href="#parameter-attribute-activeArea">ttp:activeArea</loc>,
 <loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc>,
 <loc href="#parameter-attribute-clockMode">ttp:clockMode</loc>,
 <loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc>,
@@ -4746,7 +4745,6 @@ of which TTML Content can be related to an external environment.</p>
 <head>Parameter Attribute Vocabulary</head>
 <p>The following attributes are defined in the TT Parameter Namespace.</p>
 <ulist>
-<item><p><specref ref="parameter-attribute-activeArea"/></p></item>
 <item><p><specref ref="parameter-attribute-cellResolution"/></p></item>
 <item><p><specref ref="parameter-attribute-clockMode"/></p></item>
 <item><p><specref ref="parameter-attribute-displayAspectRatio"/></p></item>
@@ -4759,87 +4757,6 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
 <item><p><specref ref="parameter-attribute-timeBase"/></p></item>
 </ulist>
-<div3 id="parameter-attribute-activeArea">
-<head>ttp:activeArea</head>
-<p>The <att>ttp:activeArea</att> attribute may be used to designate a rectangular area of the <loc href="#terms-root-container-region">root
-container region</loc> outside of which renderable content may be safely cropped during presentation processing.</p>
-<note role="motivation">
-  <p>Under normal circumstances, renderable content within the <loc href="#terms-root-container-region">root container region</loc>
-  is not cropped during presentation processing. That is, the entirety of the <loc href="#terms-root-container-region">root container region</loc>
-  is presented. However, under special circumstances, such as when a <loc href="#terms-related-media-object">related media object</loc> is cropped, then
-  some cropping may also be applied to the <loc href="#terms-root-container-region">root container region</loc>. The <att>ttp:activeArea</att> parameter
-  attribute provides a means for the author to signal a portion of the <loc href="#terms-root-container-region">root container region</loc>
-  where cropping may safely occur, which is to say that the complement of this portion should not be cropped, i.e., the interior of the
-  safe crop area is not safe to crop and should remain visible when presented.</p>
-</note>
-<note role="elaboration">
-  <p>Alternative names have been suggested for this attribute that would emphasize the intent to ensure that content remains visible as opposed
-  to suggesting an intent to allow content to be hidden (by cropping). After considering alternatives, the current name has been retained in order to
-  reflect existing industry practice surrounding this concept.</p>
-</note>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-activeArea-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:activeArea</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:activeArea
-  : (origin <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>)? extent
-
-origin
-  : x <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> y
-
-extent
-  : width <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> height
-
-x, y, width, height
-  : <loc href="#style-value-percentage">&lt;percentage&gt;</loc>                            // where <emph>percentage</emph> is non-negative
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Computed values of the origin and extent of the safe crop area are determined by the rules described below,
-where percentage values are resolved with respect to the width and height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<note role="explanation">
-  <p>The intent of the following rules is to ensure
-  that the safe crop area is bounded by the <loc href="#terms-root-container-region">root container region</loc>.</p>
-</note>
-<p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
-  is the minimum of the resolved value of the specified <emph>width</emph> and
-  the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
-  <item><p>the interim computed value of <emph>height</emph>, <emph>I<sub>H</sub></emph>,
-  is the minimum of the resolved value of the specified <emph>height</emph> and
-  the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
-</ulist>
-<p>The computed values of the <emph>x</emph> and <emph>y</emph> of the origin of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>x</emph> is
-  one half of the difference between the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>W</sub></emph>;
-  otherwise, it is the minimum of the resolved value of the specified <emph>x</emph> and the computed <emph>width</emph> of the
-  <loc href="#terms-root-container-region">root container region</loc>;</p></item>
-  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>y</emph> is
-  one half of the difference between the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>H</sub></emph>;
-  otherwise, it is the minimum of the resolved value of the specified <emph>y</emph> and the computed <emph>height</emph> of the
-  <loc href="#terms-root-container-region">root container region</loc>.</p></item>
-</ulist>
-<p>The final computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>the final computed value of <emph>width</emph> is the minimum of (1) the difference between the computed <emph>width</emph>
-  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>x</emph> and (2) the interim computed value of <emph>width</emph>,
-  <emph>I<sub>W</sub></emph>;</p></item>
-  <item><p>the final computed value of <emph>height</emph> is the minimum of (1) the difference between the computed <emph>height</emph>
-  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
-  <emph>I<sub>H</sub></emph>.</p></item>
-</ulist>
-<p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
-by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
-<p>A <att>ttp:activeArea</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-</div3>
 <div3 id="parameter-attribute-cellResolution">
 <head>ttp:cellResolution</head>
 <p>The <att>ttp:cellResolution</att> attribute may be used by an author
@@ -12651,13 +12568,13 @@ equal to or less than a specified count, or two (2) if no count is specified.</p
 <td>
 <eg xml:space="preserve">
 &lt;p region="tbrlLeft"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="none"</phrase>>AB34&lt;/span&gt;三四
+  &lt;span <phrase role="strong">tts:textCombine="none"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 &lt;p region="tbrlCenter"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="all"</phrase>>AB34&lt;/span&gt;三四
+  &lt;span <phrase role="strong">tts:textCombine="all"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 &lt;p region="tbrlRight"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="digits"</phrase>>AB34&lt;/span&gt;三四
+  &lt;span <phrase role="strong">tts:textCombine="digits"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 </eg>
 </td>
@@ -19208,15 +19125,6 @@ TT Feature Namespace base URI.</p>
 <p>Feature designations in this section that have the suffix <code>-version-2</code> are newly defined by
 this (second) version of the TTML specification, i.e., TTML2.</p>
 </note>
-<div3 id="feature-activeArea">
-<head>#activeArea</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#activeArea</code> feature if it recognizes and is capable of
-transforming the <loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#activeArea</code> feature if it implements presentation semantic support for the
-<loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc> attribute.</p>
-</div3>
 <div3 id="feature-animate">
 <head>#animate</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate</code>
@@ -22044,11 +21952,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td><phrase role="strong">Feature</phrase></td>
 <td><phrase role="strong">Transformation</phrase></td>
 <td><phrase role="strong">Presentation</phrase></td>
-</tr>
-<tr>
-<td><loc href="#feature-activeArea"><code>#activeArea</code></loc></td>
-<td>O</td>
-<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-animate"><code>#animate</code></loc></td>
@@ -28140,7 +28043,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <head>Parameter Attributes</head>
 <p>The following attributes were added in order to expand parameter functionality:</p>
 <ulist>
-<item><p><loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRatio</att></loc></p></item>
 </ulist>
 </div3>

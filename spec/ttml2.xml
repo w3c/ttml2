@@ -2239,6 +2239,41 @@ conformant <loc href="#terms-document-instance">document instance</loc>, a given
 constrained by the author or authoring tool to satisfy a more
 restrictive definition of validity.</p>
 </note>
+<note>
+<p>As illustrated in the following example, an <loc href="#terms-abstract-document-instance">abstract document instance</loc> can be a 
+<loc href="#terms-valid-abstract-document-instance">valid abstract document instance</loc> even if it includes elements and attributes whose 
+namespace names are listed in <specref ref="namespace-vocab-table"/> but whose local names are not part of the vocabulary defined by this version 
+of the specification. Specifically, the element <code>foo</code> and the attribute <att>tts:foo</att> are pruned by above steps (1) and (3), 
+respectively, because they are not members of the associated <loc href="#terms-abstract-document-type">abstract document type</loc>, even though their 
+namespace names are listed in <specref ref="namespace-vocab-table"/>.
+</p>
+<table id="document-types-example" role="example">
+<caption>Example Fragment &ndash; Pruning of elements and attributes that are not members of the associated 
+  <loc href="#terms-abstract-document-type">abstract document type</loc></caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt
+  xmlns=&quot;http://www.w3.org/ns/ttml&quot;
+  xmlns:tts=&quot;http://www.w3.org/ns/ttml#styling&quot;
+  xml:lang=&quot;en&quot;&gt;
+  &lt;body&gt;
+    &lt;foo&gt;Foo&lt;/foo&gt;
+    &lt;div&gt;
+      &lt;p
+        tts:foo=&quot;bar&quot;&gt;
+          Bar
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</note>
 <div2 id="ttml-content-doctype">
 <head>TTML Content Document Type</head>
 <p>The TTML Content Document Type is an <loc href="#terms-abstract-document-type">abstract document type</loc> of a profile
@@ -2271,6 +2306,10 @@ formal validity of a <loc href="#terms-document-instance">document instance</loc
 which all foreign namespace elements and attributes have been removed. Therefore, the
 exceptional reporting of this false negative does not impact the formal assessment
 of <loc href="#terms-document-instance">document instance</loc> validity.</p>
+</note>
+<note role="clarification">
+<p>The schemas referenced by this specification are intended for use after the pruning steps (1)-(3) specified by <specref ref="doctypes"/> have been
+ applied.</p>
 </note>
 <note role="clarification">
 <p>A conforming <loc href="#conformance-generic-processor">Generic Processor</loc> is required to support the ingestion and processing

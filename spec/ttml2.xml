@@ -958,7 +958,14 @@ may define certain behavioral defaults, such as the establishment or creation of
 <loc href="#terms-synthetic-document-syncbase">synthetic document syncbase</loc>.</p>
 </def>
 </gitem>
-<gitem id="terms-effective-content-profile">
+<gitem id="terms-document-temporal-coordinate-space">
+<label>[document temporal coordinate space]</label>
+<def>
+<p>The temporal coordinate system relative to which computed time expressions are interpreted in a 
+<loc href="#terms-document-instance">document instance</loc>, more about which see
+<specref ref="parameter-attribute-timeBase"/>.</p>
+</def>
+</gitem><gitem id="terms-effective-content-profile">
 <label>[effective content profile]</label>
 <def>
 <p>The <loc href="#terms-content-profile">content profile</loc> computed from the set of all <loc href="#terms-content-profile">content profiles</loc>
@@ -5291,8 +5298,7 @@ when specified on the <el>tt</el> element.</p>
 <div3 id="parameter-attribute-timeBase">
 <head>ttp:timeBase</head>
 <p>The <att>ttp:timeBase</att> attribute is used to specify the
-temporal coordinate system by means of which time expressions are
-interpreted in a <loc href="#terms-document-instance">document instance</loc>.</p>
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-timeBase-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:timeBase</caption>
@@ -5548,8 +5554,10 @@ element group apply semantically to the <el>body</el> element.</p>
 </table>
 <p>An author may specify a temporal interval for a <el>body</el> element using
 the <att>begin</att>, <att>dur</att>, and <att>end</att> attributes. If the begin point
-of this interval remains unspecified, then the begin point is interpreted as the beginning
-point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>. Similarly, if the end point of this interval remains unspecified, then the
+of this interval remains unspecified, then the begin point is interpreted as the later of the beginning
+point of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
+and the beginning point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.
+If the end point of this interval remains unspecified, then the
 end point is interpreted as the ending point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
 <note role="explanation">
 <p>A <loc href="#terms-document-instance">document instance</loc> referenced from a SMIL presentation
@@ -5557,8 +5565,8 @@ is expected to follow the same timing rules as apply to other SMIL media
 objects.</p>
 </note>
 <p>If relative begin or end times are specified on the <el>body</el>
-element, then these times are resolved by reference to the beginning and
-ending time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
+element, then these times are resolved by reference to the beginning 
+of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>.</p>
 <p>If the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is shorter than the computed duration of the
 <el>body</el> element, then the active time interval of a <el>body</el> element is
 truncated to the active end point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
@@ -17668,7 +17676,9 @@ context.</caption>
 </table>
 <p>The gray background indicates the periods when
 the <loc href="#terms-document-processing-context">document processing
-context</loc> defines the document to be inactive.</p>
+context</loc> defines the document to be inactive. The 
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
+is unaffected by this transformation.</p>
 <p>If the document processing context were to define that the media
 time range is 0-3s then
 the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>
@@ -23521,7 +23531,8 @@ expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><
 </sitem>
 <sitem/>
 <sitem>
-where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M</code> in seconds, with 0 corresponding to the beginning of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>;
+where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M</code> in seconds, with 0 corresponding to the beginning of the
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>;
 </sitem>
 <sitem/>
 <sitem>
@@ -23532,7 +23543,7 @@ where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M<
 <sitem>
 and <code>epochOffset &isin; &real;</code>, <code>0 &le; epochOffset &lt; &infin;</code>, <code>epochOffset</code> in seconds, with 0 corresponding to the beginning of
 an epoch <code>E</code>, and where the value of <code>epochOffset</code> is the difference between the local real time at the beginning of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> and the local real time at the beginning of epoch <code>E</code>, expressed in seconds.
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc> and the local real time at the beginning of epoch <code>E</code>, expressed in seconds.
 </sitem>
 </slist>
 </td>
@@ -23624,7 +23635,7 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <p>If the computed <code>frameRateMultiplier</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
 </note>
 <note role="clarification">
-<p>The above formalisms assume that the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the
+<p>The above formalisms assume that the begin time of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc> is related to the
 begin time of a <loc href="#terms-related-media-object">related media object</loc>. If this assumption doesn't hold, then an additional offset
 that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
@@ -23901,11 +23912,12 @@ a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and, 
 <code>s</code> (seconds),
 <code>f</code> (frames),
 <code>t</code> (ticks), or may omit the metric, in which case <code>s</code> seconds is implied. This
-begin time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+begin time is expressed as an offset from the begin time of the 
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
 of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived.</p>
-<p>An <att>end</att> attribute must be similarlly specified, where the same constraints apply.
+<p>An <att>end</att> attribute must be similarly specified, where the same constraints apply.
 If the value of the <att>end</att> attribute takes the form of a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>,
-this end time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+this end time is expressed as an offset from the begin time of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
 of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived;
 otherwise (the value is <code>indefinite</code>), the temporal extent is not known at the time this attribute is encoded
 or there is no temporal end point.</p>

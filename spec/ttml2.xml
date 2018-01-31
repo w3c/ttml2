@@ -11485,35 +11485,30 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tbody>
 </table>
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
-<issue id="issue-ttml2-372">
-<head>Further constrain ruby container content.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/372">https://github.com/w3c/ttml2/issues/372</loc></source>
-<p>Proscribe the following from appearing in a ruby container:</p>
-<ulist>
-<item><p>use of span children of container that do not specify a ruby style, i.e., that
-do not play a role in ruby structure; if present, then such span is ignored for presentation purposes;</p></item>
-<item><p>use of #PCDATA children of container, baseContainer, and textContainer; i.e., permit #PCDATAA only
-in base, text, and delimiter; if used, then ignore for presentaion purposes;</p></item>
-<item><p>use of <el>br</el> element in ruby or its descendants, and, if used, treat as normal
-(collapsible) whitespace;</p></item>
-<item><p>use of U+2028 (LINE SEPARATOR) and U+2029 (PARAGRAPH SEPARATOR) in ruby or its descendants, and, if used, they are
-interpreted as normal (collapsible) whitespace.</p></item>
-</ulist>
-</issue>
 <ulist>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
 computed value of <att>tts:ruby</att> of all ancestor elements is <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
 or <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then its
 preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
@@ -11521,6 +11516,8 @@ computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseCont
 <code>textContainer</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of no more than one sibling is <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>baseContainer</code>;</p></item>
@@ -11532,6 +11529,10 @@ computed value of <att>tts:ruby</att> of its parent element is <code>container</
 then the computed value of <att>tts:ruby</att> of no sibling is <code>base</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then each of its text fragment
+descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>textContainer</code>;</p></item>
@@ -11545,6 +11546,10 @@ then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then each of its text fragment
+descendats does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
 <code>text</code>;</p></item>
@@ -11552,10 +11557,16 @@ computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</co
 computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then each of its text fragment
+descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR).</p></item>
 </ulist>
 <p>A validating processor must treat a violation of any of the above constraints as an error.
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
-presentation of ruby text annotations.</p>
+presentation of ruby text annotations, and, for content that violates some constraint, if that content is
+a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
+then it should be mapped to a U+0020 (SPACE) character, of, if some other content, then ignored (not presented).</p>
 <p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
 inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
 must generate normal inline areas.</p>

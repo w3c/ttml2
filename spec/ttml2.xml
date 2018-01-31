@@ -11431,8 +11431,6 @@ styling.</p>
 <p></p>
 <p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
 <specref ref="ruby-semantics-mapping-table"/> apply.</p>
-<p>If a computed value of the property associated with this attribute is not supported,
-then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="ruby-semantics-mapping-table" role="common">
 <caption>Table 8-1 &ndash; Ruby Semantics Mapping</caption>
 <col css="width: 25%;"/>
@@ -11484,6 +11482,12 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p>For the purpose of presentation processing, the <loc href="#terms-document-processing-context">document processing context</loc> determines the 
+mode of presentation: normal or fallback. 
+When performing normal presentation processing of ruby text annotations, delimiter content must not generate any inline areas. 
+When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content must generate normal inline areas.
+If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentaton.</p>
+
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
 <issue id="issue-ttml2-372">
 <head>Further constrain ruby container content.</head>
@@ -11553,13 +11557,7 @@ computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter<
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
 </ulist>
-<p>A validating processor must treat a violation of any of the above constraints as an error.
-For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
-presentation of ruby text annotations.</p>
-<p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
-inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
-must generate normal inline areas.</p>
-<p>If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentaton.</p>
+<p>A validating processor must treat a violation of any of the above constraints as an error.</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">

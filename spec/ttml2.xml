@@ -16707,11 +16707,6 @@ synchronic document form,
 <label>[construct intermediate document]</label>
 <def>
 <p></p>
-<issue id="issue-ttml1-197">
-<head>ISD Construction Prunes &lt;br/&gt; Erroneously</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/197">https://github.com/w3c/ttml1/issues/197</loc></source>
-<p>Should not prune empty break &lt;br/&gt; elements, or should previously convert to LINE SEPARATOR.</p>
-</issue>
 <olist>
 <item>
 <p>perform procedure <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>;</p>
@@ -16723,10 +16718,16 @@ sub-tree
 headed by the <el>body</el> element;</p>
 </item>
 <item>
-<p>evaluating this sub-tree in a postorder traversal, prune elements if they
-are not a <loc href="#terms-presentation-related-element">presentation related element</loc>, if they are temporally inactive,
-or if they aren't associated with region <emph>R</emph> according to the
-<phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure;</p>
+<p>evaluating this sub-tree in a postorder traversal, prune elements if any of the following conditions is true:
+<olist>
+<item><p>they are not a <loc href="#terms-presentation-related-element">presentation related element</loc>
+<!-- ttml1 uses "neither a <loc href="#element-vocab-type-content">Content</loc> nor <loc href="#element-vocab-type-animation">Animation</loc> elements" -->; or</p></item>
+<item><p>they are temporally inactive; or</p></item>
+<item><p>they are empty and neither <loc href="#element-vocab-type-animation">Animation</loc> elements nor <loc href="#content-vocabulary-br">br</loc> elements; or</p></item>
+<item><p>they <!-- ttml1 "are <loc href="#element-vocab-type-content">Content</loc> elements and" -->aren't associated with region <emph>R</emph>
+ according to the <phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure.</p></item>
+</olist>
+</p>
 </item>
 <item>
 <p>if the pruned sub-tree is non-empty, then reparent it to the <emph>R</emph>

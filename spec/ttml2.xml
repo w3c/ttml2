@@ -17451,112 +17451,6 @@ based timing or event based timing in <bibref ref="smil3"/>, where the specific 
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
 </ulist>
-<div3 id="semantics-media-timing">
-<head>Media Timing</head>
-<p><emph>This sub-section is non-normative.</emph></p>
-<issue id="issue-ttml2-378-1">
-<head>Merge informative media timing material into Appendix I</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/378">https://github.com/w3c/ttml2/issues/378</loc></source>
-<p>Generalize and rename <specref ref="time-expression-semantics"/> to Root Container Region Semantics, merging informative material from
-<specref ref="semantics-media-timing"/> while updating this material as needed.</p>
-</issue>
-<p>When <code>ttp:timeBase="media"</code> the computed document times
-are used as the equivalent media times with no offset.</p>
-<note role="clarification"><p>Any additional media time processing
-imposed by e.g. a wrapper format is out of scope of the TTML
-specification.</p>
-<p>For example, <bibref ref="isobmff"/> provides a mechanism for wrapping TTML documents
-as samples in segmented and non-segmented files, <bibref ref="dash"/> provides
-further segmentation semantics for fragmented delivery over HTTP and
-MPEG-2 TS.</p>
-</note>
-<p>The following document fragments are equivalent in timing:</p>
-<table id="example-fragment-media-timing-1" role="example">
-<caption>Example Fragment &ndash; Media Timing 1</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;tt ttp:timeBase="media" ...&gt;
-...
-&lt;body&gt;
-   &lt;div xml:id="d1" begin="1s"&gt;
-      &lt;p xml:id="p1" begin="0s" end="1s"&gt;First paragraph&lt;/p&gt;
-      &lt;p xml:id="p2" begin="2s" end="3s"&gt;Second paragraph&lt;/p&gt;
-   &lt;/div&gt;
-&lt;/body&gt;
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p/>
-<table id="example-fragment-media-timing-2" role="example">
-<caption>Example Fragment &ndash; Media Timing 2</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;tt ttp:timeBase="media" ...&gt;
-...
-&lt;body&gt;
-   &lt;div xml:id="d1"&gt;
-      &lt;p xml:id="p1" begin="1s" end="2s"&gt;First paragraph&lt;/p&gt;
-      &lt;p xml:id="p2" begin="3s" end="4s"&gt;Second paragraph&lt;/p&gt;
-   &lt;/div&gt;
-&lt;/body&gt;
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p/>    
-<table id="media-timing-fragment-graphic-1" role="example-images">
-<caption>Timing diagram showing the mapping of document times to media
-times in the absence of other external information.</caption>
-<col/>
-<tbody>
-<tr>
-<td><graphic id="media-timing-fragment-1-img" source="images/timing_media_1.svg" alt="Media time"/></td>
-</tr>
-</tbody>
-</table>
-<p>In this example, using the terminology of
-<bibref ref="smil3"/>, the implicit duration of the <el>body</el>
-element is identical to its computed duration which is also
-the <loc href="#terms-root-temporal-extent">Root Temporal
-Extent</loc>.  However if
-the <loc href="#terms-document-processing-context">document processing
-context</loc> specifies a range of applicable media times, those limit
-the resolved begin and end times and therefore
-the <loc href="#terms-root-temporal-extent">Root Temporal
-Extent</loc>.</p>
-<p>In the following example the processing context defines that the
-media time range over which the document is active is from 1.5s to
-3.5s, and this defines the Root Temporal Extent since timed content is
-present at both of those times.</p>
-<table id="media-timing-fragment-graphic-2" role="example-images">
-<caption>Timing diagram showing the mapping of document times to media
-times when the media time range is constrained by the processing
-context.</caption>
-<col/>
-<tbody>
-<tr>
-<td><graphic id="media-timing-fragment-2-img" source="images/timing_media_2.svg" alt="Media time"/></td>
-</tr>
-</tbody>
-</table>
-<p>The gray background indicates the periods when
-the <loc href="#terms-document-processing-context">document processing
-context</loc> defines the document to be inactive.</p>
-<p>If the document processing context were to define that the media
-time range is 0-3s then
-the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>
-would be from 1s to 2s as defined by p1 and p2 would never be
-shown.</p>
-</div3> <!-- semantics-media-timing -->
 </div2> <!-- semantics-timing -->
 </div1> <!-- timing -->
 <div1 id="animation">
@@ -23385,7 +23279,9 @@ during playback, presentation timing is not affected.
 <div2 id="time-expression-semantics-media">
 <head>Media Time Base</head>
 <p>When operating with the <code>media</code> time base, the following semantics apply for interpreting time expressions,
-as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
+as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time, document time, and local real time.</p>
+<div3 id="semantics-media-timing-local-time">
+<head>Relationship to Local Real Time</head>
 <p>The media time base <phrase role="strong"><code>M</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
 expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase> as follows:</p>
 <table id="media-time-and-real-time" role="semantics">
@@ -23424,6 +23320,9 @@ i.e., it is not set to the default value of <code>1.0</code>, then that value ma
 presentation, in which case values of <code>R</code> for given values of <code>M</code> are expected to be re-evaluated based on new
 values of <code>playRate</code>.</p>
 </note>
+</div3> <!-- semantics-media-timing-local-time -->
+<div3 id="semantics-media-timing">
+<head>Relationship to Media Time</head>
 <p>Time value expressions, as denoted by a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, are related to
 media time <phrase role="strong"><code>M</code></phrase> in accordance to the
 <code>ttp:frameRate</code>, <code>ttp:subFrameRate</code>, and <code>ttp:frameRateMultiplier</code> parameters as follows:</p>
@@ -23507,6 +23406,107 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 begin time of a <loc href="#terms-related-media-object">related media object</loc>. If this assumption doesn't hold, then an additional offset
 that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
+</div3> <!-- semantics-media-timing -->
+<div3 id="semantics-media-document-timing">
+<head>Relationship to Document Time</head>
+<p><emph>This sub-section is non-normative.</emph></p>
+<p>When <code>ttp:timeBase="media"</code> the computed document times
+are used as the equivalent media times with no offset.</p>
+<note role="clarification"><p>Any additional media time processing
+imposed by e.g. a wrapper format is out of scope of the TTML
+specification.</p>
+<p>For example, <bibref ref="isobmff"/> provides a mechanism for wrapping TTML documents
+as samples in segmented and non-segmented files, <bibref ref="dash"/> provides
+further segmentation semantics for fragmented delivery over HTTP and
+MPEG-2 TS.</p>
+</note>
+<p>The following document fragments are equivalent in timing:</p>
+<table id="example-fragment-media-timing-1" role="example">
+<caption>Example Fragment &ndash; Media Timing 1</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ttp:timeBase="media" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1" begin="1s"&gt;
+      &lt;p xml:id="p1" begin="0s" end="1s"&gt;First paragraph&lt;/p&gt;
+      &lt;p xml:id="p2" begin="2s" end="3s"&gt;Second paragraph&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>
+<table id="example-fragment-media-timing-2" role="example">
+<caption>Example Fragment &ndash; Media Timing 2</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ttp:timeBase="media" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1"&gt;
+      &lt;p xml:id="p1" begin="1s" end="2s"&gt;First paragraph&lt;/p&gt;
+      &lt;p xml:id="p2" begin="3s" end="4s"&gt;Second paragraph&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>    
+<table id="media-timing-fragment-graphic-1" role="example-images">
+<caption>Timing diagram showing the mapping of document times to media
+times in the absence of other external information.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="media-timing-fragment-1-img" source="images/timing_media_1.svg" alt="Media time"/></td>
+</tr>
+</tbody>
+</table>
+<p>In this example, using the terminology of
+<bibref ref="smil3"/>, the implicit duration of the <el>body</el>
+element is identical to its computed duration which is also
+the <loc href="#terms-root-temporal-extent">Root Temporal
+Extent</loc>.  However if
+the <loc href="#terms-document-processing-context">document processing
+context</loc> specifies a range of applicable media times, those limit
+the resolved begin and end times and therefore
+the <loc href="#terms-root-temporal-extent">Root Temporal
+Extent</loc>.</p>
+<p>In the following example the processing context defines that the
+media time range over which the document is active is from 1.5s to
+3.5s, and this defines the Root Temporal Extent since timed content is
+present at both of those times.</p>
+<table id="media-timing-fragment-graphic-2" role="example-images">
+<caption>Timing diagram showing the mapping of document times to media
+times when the media time range is constrained by the processing
+context.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="media-timing-fragment-2-img" source="images/timing_media_2.svg" alt="Media time"/></td>
+</tr>
+</tbody>
+</table>
+<p>The gray background indicates the periods when
+the <loc href="#terms-document-processing-context">document processing
+context</loc> defines the document to be inactive.</p>
+<p>If the document processing context were to define that the media
+time range is 0-3s then
+the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>
+would be from 1s to 2s as defined by p1 and p2 would never be
+shown.</p>
+</div3> <!-- semantics-media-document-timing -->
 </div2>
 <div2 id="time-expression-semantics-smpte">
 <head>SMPTE Time Base</head>

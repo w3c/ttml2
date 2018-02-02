@@ -770,6 +770,14 @@ by <specref ref="semantics-style-resolution-processing-css"/>.</p>
 <label>[content element]</label>
 <def>
 <p>Any of the element types defined by the <loc href="#element-vocab-type-content">Content Module</loc>.</p>
+<note role="clarification">
+  <p>The <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc>
+  and <loc href="#document-structure-vocabulary-head"><el>head</el></loc> element types,
+  which are defined in <specref ref="content-element-vocabulary"/>,
+  are intentionally not included in scope of the above definition, but are included in the definitions of the
+  <loc href="#element-vocab-type-document">Document</loc> and <loc href="#element-vocab-type-head">Head</loc> Modules in
+  <specref ref="element-vocab-table"/>.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-conditionalized-element">
@@ -1893,8 +1901,8 @@ which corresponds to production [3] <code>S</code> as defined by <bibref ref="xm
   <item><p>concatenated (juxtaposed) terms mean that all terms must appear in the stated order, e.g., <code>a b</code> means that the terms
   <code>a</code> and <code>b</code> are present and the former precedes the latter;</p></item>
   <item><p>a vertical bar (<code>|</code>) separates two or more alternatives, of which exactly one must appear;</p></item>
-  <item><p>a double vertical bar (<code>||</code>) separates two or more options, of which one or more must appear in any order;</p></item>
-  <item><p>a double ampersand (<code>&amp;&amp;</code>) separates two or more terms, all of which must appear in any order;</p></item>
+  <item><p>a double vertical bar (<code>||</code>) separates two or more options, of which one or more must appear in any order without duplication,
+  separated by <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
   <item><p>open and close parenthesis (<code>()</code>) are used for grouping and resolving operator precedence;</p></item>
   <item><p>open and close square brackets (<code>[]</code>) are used to express character classes;</p></item>
   <item><p>open and close curly braces (<code>{}</code>) are used in two ways, where the context is generally sufficient to determine which
@@ -1918,12 +1926,14 @@ which corresponds to production [3] <code>S</code> as defined by <bibref ref="xm
     <olist>
       <item><p>grouping</p></item>
       <item><p>concatenation (juxtaposition)</p></item>
-      <item><p><code>&amp;&amp;</code></p></item>
       <item><p><code>||</code></p></item>
       <item><p><code>|</code></p></item>
     </olist>
   </item>
 </ulist>
+<p>Except for linear whitespace that is required to appear between expressions that satisfy the <code>||</code>
+value syntax, no whitespace is permitted unless explicitly marked in a value syntax definition by the appearance of a
+<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> non-terminal.</p>
 <p>Unless stated to the contrary, the terms <emph>horizontal</emph> and <emph>vertical</emph> are interpreted in an absolute sense, not relative to writing mode, while
 <emph>width</emph> refers to a dimension along the <emph>horizontal</emph> axis and
 <emph>height</emph> refers to a dimension along the <emph>vertical</emph> axis. All exceptions are explicitly noted in the text.</p>
@@ -2085,12 +2095,11 @@ the following criteria are satisfied:</p>
 <p>The processor supports the TTML Transformation profile as specified
 by <specref ref="profile-ttml2-transformation"/>.</p>
 </item>
+<item>
+<p>The processor supports the DFXP Transformation profile as specified
+by <specref ref="profile-dfxp-transformation"/>.</p>
+</item>
 </olist>
-<issue id="issue-ttml2-364-1">
-<head>Require support for DFXP transformation profile.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/364">https://github.com/w3c/ttml2/issues/364</loc></source>
-<p>Add requirement to support DFXP transformation and presentation profiles for TTML1 backward compatibility.</p>
-</issue>
 </div3> <!-- conformance-transformation-processor -->
 <div3 id="conformance-presentation-processor">
 <head>Presentation Processor Conformance</head>
@@ -2105,17 +2114,16 @@ the following criteria are satisfied:</p>
 <p>The processor supports the TTML Presentation profile as specified
 by <specref ref="profile-ttml2-presentation"/>.</p>
 </item>
+<item>
+<p>The processor supports the DFXP Presentation profile as specified
+by <specref ref="profile-dfxp-presentation"/>.</p>
+</item>
 </olist>
 <note role="elaboration">
 <p>Two conforming presentation processors are not required to produce the same presentation when processing the same conforming document.
 For example, different presentation processors may use different fonts, different font rasterizers, different line break algorithms,
 as well as different implementations of behavior not prescribed by this specification.</p>
 </note>
-<issue id="issue-ttml2-364-2">
-<head>Require support for DFXP presentation profile.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/364">https://github.com/w3c/ttml2/issues/364</loc></source>
-<p>Add requirement to support DFXP transformation and presentation profiles for TTML1 backward compatibility.</p>
-</issue>
 </div3> <!-- conformance-presentation-processor -->
 </div2> <!-- conformance-processor -->
 <div2 id="claims">
@@ -3369,7 +3377,6 @@ Metadata Attributes
 Parameter Attributes
 </td>
 <td>
-<loc href="#parameter-attribute-activeArea">ttp:activeArea</loc>,
 <loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc>,
 <loc href="#parameter-attribute-clockMode">ttp:clockMode</loc>,
 <loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc>,
@@ -3377,8 +3384,6 @@ Parameter Attributes
 <loc href="#parameter-attribute-frameRate">ttp:frameRate</loc>,
 <loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc>,
 <loc href="#parameter-attribute-markerMode">ttp:markerMode</loc>,
-<loc href="#parameter-attribute-mediaDuration">ttp:mediaDuration</loc>,
-<loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc>,
 <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc>,
 <loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc>,
 <loc href="#parameter-attribute-tickRate">ttp:tickRate</loc>,
@@ -3432,7 +3437,6 @@ Styling Attributes
 <loc href="#style-attribute-display">tts:display</loc>,
 <loc href="#style-attribute-displayAlign">tts:displayAlign</loc>,
 <loc href="#style-attribute-extent">tts:extent</loc>,
-<loc href="#style-attribute-fillLineGap">tts:fillLineGap</loc>,
 <loc href="#style-attribute-fontFamily">tts:fontFamily</loc>,
 <loc href="#style-attribute-fontKerning">tts:fontKerning</loc>,
 <loc href="#style-attribute-fontSelectionStrategy">tts:fontSelectionStrategy</loc>,
@@ -3762,7 +3766,7 @@ infomation about support and usage requirements for a particular feature.</p>
 &lt;ttp:feature
   extends = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   restricts = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  value = (optional|required|<phrase role="obsoleted">use</phrase>|prohibited) : <emph>see prose below</emph>
+  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -3870,7 +3874,7 @@ if the value attribute is not specified, then the feature specification
 must be interpreted as if the value <code>optional</code> were specified;
 </p></item>
 </ulist>
-<p>The value <phrase role="obsoleted"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="obsoleted">obsoleted</phrase>. If it
+<p>The value <phrase role="deprecated"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="deprecated">deprecated</phrase>. If it
 appears in a profile specification, then it must be interpreted as if <code>required</code>
 had been specified.</p>
 <p>If some defined (i.e., standardized) or otherwise well known feature is not specified by
@@ -3970,7 +3974,7 @@ infomation about support and usage requirements for a particular extension.</p>
 &lt;ttp:extension
   extends = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   restricts = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  value = (optional|required|<phrase role="obsoleted">use</phrase>|prohibited) : <emph>see prose below</emph>
+  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
@@ -4078,7 +4082,7 @@ if the value attribute is not specified, then the extension specification
 must be interpreted as if the value <code>optional</code> were specified;
 </p></item>
 </ulist>
-<p>The value <phrase role="obsoleted"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="obsoleted">obsoleted</phrase>. If it
+<p>The value <phrase role="deprecated"><code>use</code></phrase> of the <att>value</att> attribute is <phrase role="deprecated">deprecated</phrase>. If it
 appears in a profile specification, then it must be interpreted as if <code>required</code>
 had been specified.</p>
 <p>If some well known extension is not specified by
@@ -4142,10 +4146,6 @@ must also support and enable an extension defined by a third party.</p>
 <item><p><specref ref="profile-attribute-validationAction"/></p></item>
 <item><p><specref ref="profile-attribute-version"/></p></item>
 </ulist>
-<p>Unless explicitly stated otherwise, linear white-space (LWSP) must
-appear between adjacent non-terminal components of a TT Parameter value
-unless some other delimiter is permitted and used, in which case linear white-space may appear
-between a delimiter and a non-terminal component.</p>
 <div3 id="profile-attribute-contentProfiles">
 <head>ttp:contentProfiles</head>
 <p>The <att>ttp:contentProfiles</att> attribute may be used by a content author
@@ -4743,7 +4743,6 @@ of which TTML Content can be related to an external environment.</p>
 <head>Parameter Attribute Vocabulary</head>
 <p>The following attributes are defined in the TT Parameter Namespace.</p>
 <ulist>
-<item><p><specref ref="parameter-attribute-activeArea"/></p></item>
 <item><p><specref ref="parameter-attribute-cellResolution"/></p></item>
 <item><p><specref ref="parameter-attribute-clockMode"/></p></item>
 <item><p><specref ref="parameter-attribute-displayAspectRatio"/></p></item>
@@ -4751,98 +4750,11 @@ of which TTML Content can be related to an external environment.</p>
 <item><p><specref ref="parameter-attribute-frameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-frameRateMultiplier"/></p></item>
 <item><p><specref ref="parameter-attribute-markerMode"/></p></item>
-<item><p><specref ref="parameter-attribute-mediaDuration"/></p></item>
-<item><p><specref ref="parameter-attribute-mediaOffset"/></p></item>
 <item><p><specref ref="parameter-attribute-pixelAspectRatio"/></p></item>
 <item><p><specref ref="parameter-attribute-subFrameRate"/></p></item>
 <item><p><specref ref="parameter-attribute-tickRate"/></p></item>
 <item><p><specref ref="parameter-attribute-timeBase"/></p></item>
 </ulist>
-<p>Unless explicitly stated otherwise, linear white-space (LWSP) must
-appear between adjacent non-terminal components of a TT Parameter value
-unless some other delimiter is permitted and used, in which case linear white-space may appear
-between a delimiter and a non-terminal component.</p>
-<div3 id="parameter-attribute-activeArea">
-<head>ttp:activeArea</head>
-<p>The <att>ttp:activeArea</att> attribute may be used to designate a rectangular area of the <loc href="#terms-root-container-region">root
-container region</loc> outside of which renderable content may be safely cropped during presentation processing.</p>
-<note role="motivation">
-  <p>Under normal circumstances, renderable content within the <loc href="#terms-root-container-region">root container region</loc>
-  is not cropped during presentation processing. That is, the entirety of the <loc href="#terms-root-container-region">root container region</loc>
-  is presented. However, under special circumstances, such as when a <loc href="#terms-related-media-object">related media object</loc> is cropped, then
-  some cropping may also be applied to the <loc href="#terms-root-container-region">root container region</loc>. The <att>ttp:activeArea</att> parameter
-  attribute provides a means for the author to signal a portion of the <loc href="#terms-root-container-region">root container region</loc>
-  where cropping may safely occur, which is to say that the complement of this portion should not be cropped, i.e., the interior of the
-  safe crop area is not safe to crop and should remain visible when presented.</p>
-</note>
-<note role="elaboration">
-  <p>Alternative names have been suggested for this attribute that would emphasize the intent to ensure that content remains visible as opposed
-  to suggesting an intent to allow content to be hidden (by cropping). After considering alternatives, the current name has been retained in order to
-  reflect existing industry practice surrounding this concept.</p>
-</note>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-activeArea-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:activeArea</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:activeArea
-  : origin? extent
-
-origin
-  : x y
-
-extent
-  : width height
-
-x, y, width, height
-  : <loc href="#style-value-percentage">&lt;percentage&gt;</loc>                            // where <emph>percentage</emph> is non-negative
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Computed values of the origin and extent of the safe crop area are determined by the rules described below,
-where percentage values are resolved with respect to the width and height of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<note role="explanation">
-  <p>The intent of the following rules is to ensure
-  that the safe crop area is bounded by the <loc href="#terms-root-container-region">root container region</loc>.</p>
-</note>
-<p>The interim computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>the interim computed value of <emph>width</emph>, <emph>I<sub>W</sub></emph>,
-  is the minimum of the resolved value of the specified <emph>width</emph> and
-  the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc>;</p></item>
-  <item><p>the interim computed value of <emph>height</emph>, <emph>I<sub>H</sub></emph>,
-  is the minimum of the resolved value of the specified <emph>height</emph> and
-  the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc>.</p></item>
-</ulist>
-<p>The computed values of the <emph>x</emph> and <emph>y</emph> of the origin of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>x</emph> is
-  one half of the difference between the computed <emph>width</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>W</sub></emph>;
-  otherwise, it is the minimum of the resolved value of the specified <emph>x</emph> and the computed <emph>width</emph> of the
-  <loc href="#terms-root-container-region">root container region</loc>;</p></item>
-  <item><p>if no <code>origin</code> component is specified, then the computed value of <emph>y</emph> is
-  one half of the difference between the computed <emph>height</emph> of the <loc href="#terms-root-container-region">root container region</loc> and <emph>I<sub>H</sub></emph>;
-  otherwise, it is the minimum of the resolved value of the specified <emph>y</emph> and the computed <emph>height</emph> of the
-  <loc href="#terms-root-container-region">root container region</loc>.</p></item>
-</ulist>
-<p>The final computed values of the <emph>width</emph> and <emph>height</emph> of the extent of the safe crop area are determined as follows:</p>
-<ulist>
-  <item><p>the final computed value of <emph>width</emph> is the minimum of (1) the difference between the computed <emph>width</emph>
-  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>x</emph> and (2) the interim computed value of <emph>width</emph>,
-  <emph>I<sub>W</sub></emph>;</p></item>
-  <item><p>the final computed value of <emph>height</emph> is the minimum of (1) the difference between the computed <emph>height</emph>
-  of the <loc href="#terms-root-container-region">root container region</loc> and the computed value of <emph>y</emph> and (2) the interim computed value of <emph>height</emph>,
-  <emph>I<sub>H</sub></emph>.</p></item>
-</ulist>
-<p>When presented on a visual medium, renderable content within the bounds of the safe crop area must not be cropped unless overridden
-by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>.</p>
-<p>A <att>ttp:activeArea</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-</div3>
 <div3 id="parameter-attribute-cellResolution">
 <head>ttp:cellResolution</head>
 <p>The <att>ttp:cellResolution</att> attribute may be used by an author
@@ -4857,7 +4769,7 @@ a uniform grid.</p>
 <td>
 <eg xml:space="preserve">
 ttp:cellResolution
-  : columns rows                            // <emph>columns</emph> != 0; <emph>rows</emph> != 0
+  : columns <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> rows                     // <emph>columns</emph> != 0; <emph>rows</emph> != 0
 
 columns | rows
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
@@ -4964,16 +4876,16 @@ when specified on the <el>tt</el> element.</p>
 <td>
 <eg xml:space="preserve">
 ttp:displayAspectRatio
-  : numerator demoninator                   // <emph>numerator</emph> != 0; <emph>demoninator</emph> != 0
+  : numerator <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> denominator            // <emph>numerator</emph> != 0; <emph>denominator</emph> != 0
 
-numerator | demoninator
+numerator | denominator
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>If specified, then both numerator and demoninator must be non-zero. If not specified, then the display aspect ratio of
+<p>If specified, then both numerator and denominator must be non-zero. If not specified, then the display aspect ratio of
 the <loc href="#terms-root-container-region">root container region</loc> is determined by <specref ref="root-container-region-semantics"/>.</p>
 <p>A <att>ttp:displayAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
@@ -5117,7 +5029,7 @@ frame rate.</p>
 <td>
 <eg xml:space="preserve">
 ttp:frameRateMultiplier
-  : numerator denominator                   // <emph>numerator</emph> != 0; <emph>denominator</emph> != 0
+  : numerator <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> denominator            // <emph>numerator</emph> != 0; <emph>denominator</emph> != 0
 
 numerator | denominator
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
@@ -5257,95 +5169,9 @@ and <code>10:00:01:00</code>.
 </p>
 </note>
 </div3>
-<div3 id="parameter-attribute-mediaDuration">
-<head>ttp:mediaDuration</head>
-<p>The <att>ttp:mediaDuration</att> attribute is used to specify the
-temporal extent (simple duration) of a <loc href="#terms-related-media-object">related media object</loc>.</p>
-<p>If the temporal extent (simple duration) of the <loc href="#terms-related-media-object">related media object</loc> is known at authoring time, then this
-attribute should be specified; otherwise, if no <loc href="#terms-related-media-object">related media object</loc> applies or its
-temporal extent is unknown, then this attribute should not be specified.</p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-mediaDuration-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:mediaDuration</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:mediaDuration
-  : <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                        // restricted to <emph>offset-time</emph> form
-  | "indefinite"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the value of this parameter must either (1) adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> or (2) take the value <code>indefinite</code>.</p>
-<p>If the value <code>indefinite</code> is specified, then there is no <loc href="#terms-related-media-object">related media object</loc>,
-the temporal extent (simple duration) of the
-<loc href="#terms-related-media-object">related media object</loc> is not known at the time this attribute is
-encoded, or the <loc href="#terms-related-media-object">related media object</loc> has no temporal end point.</p>
-<p>If not specified, the value of this parameter must be considered
-to be <code>indefinite</code>.</p>
-<p>A <att>ttp:mediaDuration</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax and semantics.</p>
-</note>
-</div3>
-<div3 id="parameter-attribute-mediaOffset">
-<head>ttp:mediaOffset</head>
-<p>The <att>ttp:mediaOffset</att> attribute is used to specify the
-temporal offset between the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
-and the begin time of a <loc href="#terms-related-media-object">related media object</loc> when operating in a
-<loc href="#time-expression-semantics-media">Media Time Base</loc>
-or a <loc href="#time-expression-semantics-smpte">SMPTE Time Base</loc>. It does not apply and
-must not be specified when operating in a <loc href="#time-expression-semantics-clock">Clock Time Base</loc>.</p>
-<issue id="issue-ttml2-76">
-<head>Media Time Offset</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/76">https://github.com/w3c/ttml2/issues/76</loc></source>
-<p>Tie up loose ends with respect to definition of media time offset, particulary regarding the definition of the origin and beginning of
-the document temporal extent.</p>
-</issue>
-<p></p>
-<p>If specified, the value of this attribute must adhere to the following syntax:</p>
-<table id="parameter-attribute-mediaOffset-syntax" role="syntax">
-<caption>Syntax Representation &ndash; ttp:mediaOffset</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-ttp:mediaOffset
-  : sign? <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>                  // restricted to <emph>offset-time</emph> form
-
-sign
-  : "+" | "-"
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the value of this parameter must adhere to the <emph>offset-time</emph> form of
-a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> optionally expressed with a sign.
-If not specified, the value of this parameter must be considered
-to be <code>0s</code>.</p>
-<p>If no sign is specified or it is specified as <code>+</code>, then the begin time of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> follows the begin time of the
-<loc href="#terms-related-media-object">related media object</loc>; otherwise (sign is present and
-specified as <code>-</code>), the begin time of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> precedes the begin time of the
-<loc href="#terms-related-media-object">related media object</loc>.</p>
-<p>A <att>ttp:mediaOffset</att> attribute is considered to be significant only
-when specified on the <el>tt</el> element.</p>
-<note role="explanation">
-<p>See <specref ref="timing-time-value-expressions"/> for the
-specification of time expression syntax and semantics.</p>
-</note>
-</div3>
 <div3 id="parameter-attribute-pixelAspectRatio">
 <head>ttp:pixelAspectRatio</head>
-<p>The <att>ttp:pixelAspectRatio</att> attribute is used to specify the <loc href="#terms-pixel-aspect-ratio">pixel aspect ratio</loc> of the <loc href="#terms-root-container-region">root container region</loc> as elaborated in <specref ref="root-container-region-semantics"/>.</p>
+<p>The <att>ttp:pixelAspectRatio</att> attribute is used to specify the <loc href="#terms-pixel-aspect-ratio">pixel aspect ratio</loc> of the <loc href="#terms-root-container-region">root container region</loc> as elaborated in <specref ref="root-container-region-semantics"/></p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-pixelAspectRatio-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:pixelAspectRatio</caption>
@@ -5354,19 +5180,24 @@ specification of time expression syntax and semantics.</p>
 <td>
 <eg xml:space="preserve">
 ttp:pixelAspectRatio
-  : numerator demoninator                   // <emph>numerator</emph> != 0; <emph>demoninator</emph> != 0
+  : numerator <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> denominator            // <emph>numerator</emph> != 0; <emph>denominator</emph> != 0
 
-numerator | demoninator
+numerator | denominator
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>If specified, then both numerator and demoninator must be non-zero. If not specified, then the pixel aspect ratio of
+<p>If specified, then both numerator and denominator must be non-zero. If not specified, then the pixel aspect ratio of
 the <loc href="#terms-root-container-region">root container region</loc> is determined by <specref ref="root-container-region-semantics"/>.</p>
 <p>A <att>ttp:pixelAspectRatio</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
+<p>The <att>ttp:pixelAspectRatio</att> attribute should not be specified
+unless a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute consisting
+of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications using <code>px</code> (pixel) units is also
+specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element,
+<phrase role="deprecated">without which the use of a <att>ttp:pixelAspectRatio</att> attribute is deprecated</phrase>.</p>
 </div3>
 <div3 id="parameter-attribute-subFrameRate">
 <head>ttp:subFrameRate</head>
@@ -5930,9 +5761,9 @@ element group apply semantically to the <el>span</el> element.</p>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
-  <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>+
+  <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
   <loc href="#content-attribute-xlink-href">xlink:href</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
-  <loc href="#content-attribute-xlink-role">xlink:role</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>+
+  <loc href="#content-attribute-xlink-role">xlink:role</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
   <loc href="#content-attribute-xlink-show">xlink:show</loc> = (<emph>new</emph>|<emph>replace</emph>|<emph>embed</emph>|<emph>other</emph>|<emph>none</emph>) : new
   <loc href="#content-attribute-xlink-title">xlink:title</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
@@ -6220,6 +6051,11 @@ above if possible.</p>
 <p>The semantics of the above four cited XSL-FO properties are defined by
 by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respectively.</p>
 </note>
+<note role="clarification">
+<p>No presentation semantics are specified for the TAB (U+0009) character. Furthermore, the TAB (U+0009) character can generate a glyph area.
+ As a result, the use of the TAB (U+0009) character in <code>#PCDATA</code> content within <code>p</code> and <code>span</code> elements is
+ not recommended.</p>
+</note>
 </div3>
 </div2> <!-- content-attribute-vocabulary -->
 <div2 id="content-value-expressions">
@@ -6237,17 +6073,6 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
 <item><p><specref ref="content-value-supports-function"/></p></item>
 <item><p><specref ref="content-value-uri"/></p></item>
 </ulist>
-<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
-<olist>
-  <item><p>linear whitespace (LWSP)
-  must appear between sub-expressions of a <code>||</code> expression;</p></item>
-  <item><p>linear whitespace (LWSP)
-  must appear between sub-expressions of a <code>&amp;&amp;</code> expression;</p></item>
-  <item><p>linear whitespace (LWSP)
-  may appear before and after the sub-expressions of a comma separated list expression;</p></item>
-  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
-  unless explicitly specified.</p></item>
-</olist>
 <div3 id="content-value-arguments">
 <head>&lt;arguments&gt;</head>
 <p>A &lt;arguments&gt; value is a sub-expression used with a <code>function-expression</code> non-terminal of an
@@ -6421,7 +6246,7 @@ primary-expression
   | "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? expression <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 function-expression
-  : identifier <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#content-value-arguments">&lt;arguments&gt;</loc>
+  : identifier <loc href="#content-value-arguments">&lt;arguments&gt;</loc>
 
 identifier
   : <loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>
@@ -6475,6 +6300,11 @@ string-literal
 </tr>
 </tbody>
 </table>
+<note role="elaboration">
+<p>For avoidance of doubt, take note that no linear whitespace (LWSP) is permitted between the <code>identifier</code> token and the initial open
+parenthesis '<code>(</code>' character of the following <loc href="#content-value-arguments">&lt;arguments&gt;</loc> expression of a
+<code>function-expression</code>.</p>
+</note>
 </div3>
 <div3 id="content-value-media-function">
 <head>&lt;media-function&gt;</head>
@@ -6488,7 +6318,7 @@ in order to perform a media query on the <loc href="#terms-related-media-object"
 <td>
 <eg xml:space="preserve">
 &lt;media-function&gt;
-  : "media" "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? media-query <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
+  : "media(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? media-query <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 media-query
   : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
@@ -6516,10 +6346,10 @@ evaluates to <code>true</code>, otherwise, the value expression evaluates to <co
   | single-quoted-string
 
 double-quoted-string
-  : '"' ( [^"\\] | escape )+ '"'
+  : '"' ([^"\\] | escape)* '"'
 
 single-quoted-string
-  : "'" ( [^'\\] | escape )+ "'"
+  : "'" ([^'\\] | escape)* "'"
 
 escape
   : '\\' <emph>char</emph>
@@ -6529,6 +6359,12 @@ escape
 </tr>
 </tbody>
 </table>
+<note role="elaboration">
+<p>For avoidance of doubt, take note that linear whitespace (LWSP) is permitted in a quoted string expression, but that it
+is subject to <loc href="https://www.w3.org/TR/2006/REC-xml11-20060816/#AVNormalize">XML Attribute-Value Normalization</loc>
+when constructing a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> from a
+<loc href="#terms-timed-text-content-document-instance">timed text document instance</loc>.</p>
+</note>
 </div3>
 <div3 id="content-value-parameter-function">
 <head>&lt;parameter-function&gt;</head>
@@ -6541,7 +6377,7 @@ in order to obtain a named parameter of the <loc href="#terms-document-processin
 <td>
 <eg xml:space="preserve">
 &lt;parameter-function&gt;
-  : "parameter" "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? parameter-name <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
+  : "parameter(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? parameter-name <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 parameter-name
   : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
@@ -6568,7 +6404,7 @@ is supported or not.</p>
 <td>
 <eg xml:space="preserve">
 &lt;supports-function&gt;
-  : "supports" "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? feature-or-extension-designator <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
+  : "supports(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? feature-or-extension-designator <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 feature-or-extension-designator
   : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
@@ -6610,6 +6446,23 @@ designator is (semantically) supported by the <loc href="#terms-content-processo
   as specified in <bibref ref="xml10"/>, &sect; 3.3.3, step (3), first bullet,
   do not appear in an unescaped form in the lexical representation of a <code>&lt;uri&gt;</code> value.</p>
 </note>
+</div3>
+<div3 id="content-value-uri-list">
+<head>&lt;uri-list&gt;</head>
+<p>A &lt;uri-list&gt; value expression is used to specify a non-empty list of URI <bibref ref="uri"/> expressions.</p>
+<table id="uri-list-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;uri-list&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;uri-list&gt;
+  : <loc href="#content-value-uri">&lt;uri&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#content-value-uri">&lt;uri&gt;</loc>)*
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3>
 </div2> <!-- content-value-expressions -->
 </div1> <!-- content -->
@@ -7132,9 +6985,9 @@ zero or more <loc href="#embedded-content-vocabulary-source"><el>source</el></lo
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>+
+  <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
   <loc href="#content-attribute-xlink-href">xlink:href</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
-  <loc href="#content-attribute-xlink-role">xlink:role</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>+
+  <loc href="#content-attribute-xlink-role">xlink:role</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
   <loc href="#content-attribute-xlink-show">xlink:show</loc> = (<emph>new</emph>|<emph>replace</emph>|<emph>embed</emph>|<emph>other</emph>|<emph>none</emph>) : new
   <loc href="#content-attribute-xlink-title">xlink:title</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
@@ -7536,17 +7389,6 @@ sniffing.</p>
 <item><p><specref ref="embedded-content-value-image-format"/></p></item>
 <item><p><specref ref="embedded-content-value-unicode-range"/></p></item>
 </ulist>
-<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
-<olist>
-  <item><p>linear whitespace (LWSP)
-  must appear between sub-expressions of a <code>||</code> expression;</p></item>
-  <item><p>linear whitespace (LWSP)
-  must appear between sub-expressions of a <code>&amp;&amp;</code> expression;</p></item>
-  <item><p>linear whitespace (LWSP)
-  may appear before and after the sub-expressions of a comma separated list expression;</p></item>
-  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
-  unless explicitly specified.</p></item>
-</olist>
 <div3 id="embedded-content-value-audio">
 <head>&lt;audio&gt;</head>
 <p>An &lt;audio&gt; value expression is used to specify an <loc href="#terms-audio-resource">audio resource</loc> by reference.</p>
@@ -7752,7 +7594,7 @@ use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to f
 <td>
 <eg xml:space="preserve">
 &lt;unicode-range&gt;
-  : range ("," range)*
+  : range (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? range)*
 
 range
   : codepoint
@@ -7769,7 +7611,6 @@ hexdigit-or-wildcard
 </tr>
 </tbody>
 </table>
-<p>No LWSP is permitted within a <code>codepoint</code> sub-expression.</p>
 </div3>
 </div2> <!-- embedded-content-value-expressions -->
 </div1> <!-- embedded-content -->
@@ -7963,7 +7804,6 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-display"/></p></item>
 <item><p><specref ref="style-attribute-displayAlign"/></p></item>
 <item><p><specref ref="style-attribute-extent"/></p></item>
-<item><p><specref ref="style-attribute-fillLineGap"/></p></item>
 <item><p><specref ref="style-attribute-fontFamily"/></p></item>
 <item><p><specref ref="style-attribute-fontKerning"/></p></item>
 <item><p><specref ref="style-attribute-fontSelectionStrategy"/></p></item>
@@ -8001,10 +7841,6 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-writingMode"/></p></item>
 <item><p><specref ref="style-attribute-zIndex"/></p></item>
 </ulist>
-<p>Unless explicitly stated otherwise, linear white-space (LWSP) must
-appear between adjacent non-terminal components of a value of a TT
-Style property value unless some other delimiter is permitted and used, in which case linear white-space may appear
-between a delimiter and a non-terminal component.</p>
 <note role="explanation">
 <p>This specification makes use of <emph>lowerCamelCased</emph> local
 names for style attributes that
@@ -8247,12 +8083,7 @@ independently of the image's intrinsic extent (size).</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>auto</code> |
-<code>contain</code> |
-<code>cover</code> |
-<loc href="#style-value-measure">&lt;measure&gt;</loc> <loc href="#style-value-measure">&lt;measure&gt;</loc>
-</td>
+<td><loc href="#style-value-extent">&lt;extent&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -8362,8 +8193,7 @@ element in a block or inline context.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<loc href="#embedded-content-value-image">&lt;image&gt;</loc> |
-none
+none | <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -8727,12 +8557,7 @@ the presence of a border applied to the region.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-[
-<loc href="#style-value-border-thickness">&lt;border-thickness&gt;</loc> ||
-<loc href="#style-value-border-style">&lt;border-style&gt;</loc> ||
-<loc href="#style-value-border-color">&lt;border-color&gt;</loc> ||
-<loc href="#style-value-border-radii">&lt;border-radii&gt;</loc>
-]
+<loc href="#style-value-border">&lt;border&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -9022,9 +8847,9 @@ background color of the <loc href="#terms-root-container-region">root container 
 </div3>
 <div3 id="style-attribute-direction">
 <head>tts:direction</head>
-<p>The <att>tts:direction</att> attribute is used to specify a style property that
-defines the directionality of an embedding or override according to
-the Unicode bidirectional algorithm.</p>
+<p>The <att>tts:direction</att> attribute is used to specify a style property that, depending on the context of use,
+determines (1) the bidirectional paragraph level, or (2) the directionality of a bidirectional embedding or override,
+about which see <bibref ref="uax9"/>.</p>
 <table id="style-property-details-direction" role="common">
 <col css="width: 25%;"/>
 <col/>
@@ -9071,7 +8896,10 @@ the Unicode bidirectional algorithm.</p>
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
 <p>When applied to a <el>p</el> element, the computed value of this property explicitly establishes the
-<emph>paragraph embedding level</emph> as specified by  <bibref ref="uax9"/>, &sect; 4.3, Rule <phrase role="strong">HL1</phrase>.</p>
+<emph>paragraph level</emph> as specified by <bibref ref="uax9"/>, &sect; 4.3, Higher Level Protocol <phrase role="strong">HL1</phrase>.</p>
+<p>When applied to a <el>span</el> element (or anonymous span), the computed value of this property, in combination with the computed value
+of the <att>tts:unicodeBidi</att> style property, determines the directionality of a bidirectional embedding or override as specified by
+<bibref ref="uax9"/>, &sect; 4.3, Higher Level Protocol <phrase role="strong">HL3</phrase>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>ltr</code>.</p>
 <p>The <att>tts:direction</att> style is illustrated by the following example.</p>
@@ -9500,12 +9328,7 @@ i.e., border and padding are both applied as insets, and, therefore, are interio
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>auto</code> |
-<code>contain</code> |
-<code>cover</code> |
-<loc href="#style-value-measure">&lt;measure&gt;</loc> <loc href="#style-value-measure">&lt;measure&gt;</loc>
-</td>
+<td><loc href="#style-value-extent">&lt;extent&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -9660,68 +9483,6 @@ while use of a smaller extent makes region overflow more likely.</p>
 <loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
 </div3>
-<div3 id="style-attribute-fillLineGap">
-<head>tts:fillLineGap</head>
-<p>The <att>tts:fillLineGap</att> attribute is used by the <specref ref="semantics-rendering-model"/> to
-determine whether a background color that applies to an inline area is extended to the before and after edges of a
-container line area when performing rendering processing.</p>
-<table id="style-property-details-fillLineGap" role="common">
-<col css="width: 25%;"/>
-<col/>
-<tbody>
-<tr>
-<td><emph>Values:</emph></td>
-<td>
-<code>true</code> |
-<code>false</code>
-</td>
-</tr>
-<tr>
-<td><emph>Initial:</emph></td>
-<td><code>false</code></td>
-</tr>
-<tr>
-<td><emph>Applies to:</emph></td>
-<td>
-<loc href="#content-vocabulary-p"><el>p</el></loc>
-</td>
-</tr>
-<tr>
-<td><emph>Inherited:</emph></td>
-<td>yes</td>
-</tr>
-<tr>
-<td><emph>Percentages:</emph></td>
-<td>N/A</td>
-</tr>
-<tr>
-<td><emph>Animatable:</emph></td>
-<td>discrete</td>
-</tr>
-<tr>
-<td><emph>Semantic basis:</emph></td>
-<td><loc href="#derivation-fillLineGap">fillLineGap derivation</loc></td>
-</tr>
-</tbody>
-</table>
-<p>If a background color applies to an inline area child of a line area, then if the value of this attribute is <code>true</code>,
-that background area is, for rendering purposes, extended in the block progression dimension so as to be coincident with the before
-and after edges of the line area; otherwise, if the value of this attribute is <code>false</code>, then that background area is not
-extended, but remains bounded by the inline area's border rectangle.</p>
-<note role="explanation">
-<p>In other words, when this attribute's value is <code>true</code>, background colors rendered on inline areas of adjacent lines
-abut one another rather than leaving a visible gap in the block progression dimension, i.e., they fill any line gap (also known as leading).</p>
-</note>
-<p>If a computed value of the property associated with this attribute is not supported,
-then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>false</code>.</p>
-<p>The <att>tts:fillLineGap</att> style is illustrated by the following
-example.</p>
-<issue id="issue-ttml2-359-9">
-<head>Fill Line Gap Example</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/359">https://github.com/w3c/ttml2/issues/359</loc></source>
-<p>Insert example fragment and image of tts:fillLineGap.</p>
-</issue>
-</div3>
 <div3 id="style-attribute-fontFamily">
 <head>tts:fontFamily</head>
 <p>The <att>tts:fontFamily</att> attribute is used to specify a style property that
@@ -9733,11 +9494,7 @@ by content flowed into a region.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-(<loc href="#style-value-family-name">&lt;family-name&gt;</loc> | <loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>)
-(<code>","</code>
-&nbsp;(<loc href="#style-value-family-name">&lt;family-name&gt;</loc> | <loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>))*
-</td>
+<td><loc href="#style-value-font-families">&lt;font-families&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -10052,9 +9809,7 @@ generated by content flowed into a region.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>?
-</td>
+<td><loc href="#style-value-font-size">&lt;font-size&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -10319,7 +10074,7 @@ of typographic glyph variants.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<loc href="#style-value-glyph-variant">&lt;glyph-variant&gt;</loc>
+<loc href="#style-value-font-variant">&lt;font-variant&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -11005,7 +10760,7 @@ defines the opacity (or conversely, the transparency)
 of marks associated with a region or an area generated by content flowed into a region.</p>
 <p>When presented onto a visual medium, the opacity of the region is applied uniformly and on a linear scale
 to all marks produced by content targeted to the
-region after having applied any content element specific opacity to areas generated by that content.</p>
+region after having applied any <loc href="#terms-content-element">content element</loc> specific opacity to areas generated by that content.</p>
 <table id="style-property-details-opacity" role="common">
 <col css="width: 25%;"/>
 <col/>
@@ -11097,10 +10852,7 @@ then the <att>tts:origin</att> attribute must be ignored for the purpose of pres
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>auto</code> |
-<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
-</td>
+<td><loc href="#style-value-origin">&lt;origin&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -11325,12 +11077,7 @@ the presence of padding applied to the region.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<loc href="#style-value-length">&lt;length&gt;</loc> |
-<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> |
-<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> |
-<loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
-</td>
+<td><loc href="#style-value-padding">&lt;padding&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -11822,7 +11569,7 @@ textContainer
   | delimiter text+ delimiter
 
 base | text | delimiter
-  : ( #PCDATA | { span - tts:ruby } )*
+  : (#PCDATA | { span - tts:ruby })*
 </eg>
 <p>This model corresponds to the maximal content model for the <code>ruby</code> element defined by <bibref ref="ruby"/>, &sect;2.1,
 with the exception that <code>rtc</code> is effectively extended to permit the optional use of delimiters (<code>rp</code>):</p>
@@ -12388,19 +12135,7 @@ placement regardless of the presence or absence of ruby text annotations.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>none</code> |
-[
-<code>auto</code> |
-<code>before</code> |
-<code>after</code> |
-<code>both</code> |
-<code>outside</code> |
-<code>around</code> |
-<code>between</code>
-]
-<loc href="#style-value-length">&lt;length&gt;</loc>?
-</td>
+<td><loc href="#style-value-ruby-reserve">&lt;ruby-reserve&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -12627,8 +12362,7 @@ direction.</p>
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
-<loc href="#content-vocabulary-span"><el>span</el></loc>
+<loc href="#content-vocabulary-p"><el>p</el></loc>
 </td>
 </tr>
 <tr>
@@ -12649,12 +12383,6 @@ direction.</p>
 </tr>
 </tbody>
 </table>
-<p>The <att>tts:textAlign</att> attribute is inheritable only on a <loc href="#content-vocabulary-p"><el>p</el></loc> element. If not
-specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element, then the <att>tts:textAlign</att> style property  does not apply to that
-element, rather, normal inline composition and alignment apply.</p>
-<p>If a <att>tts:textAlign</att> attribute is specified on a <loc href="#content-vocabulary-span"><el>span</el></loc> element
-and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>,
-then the semantics of <att>tts:textAlign</att> are ignored for the purpose of presentation processing.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>start</code>.</p>
 <p>The <att>tts:textAlign</att> style is illustrated by the following examples.</p>
@@ -12693,69 +12421,15 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tbody>
 </table>
 <p></p>
-<table id="style-attribute-textAlign-example-1-images" role="example-images">
-<caption>Example Rendition &ndash; Text Align</caption>
-<tbody>
-<tr>
-<td><graphic source="images/textAlign.png" alt="TTML textAlign style property"/></td>
-</tr>
-</tbody>
-</table>
+<table id="style-attribute-textAlign-example-1-images" role="example-images">    
+<caption>Example Rendition &ndash; Text Align</caption>   
+<tbody>   
+<tr>    
+<td><graphic source="images/textAlign.png" alt="TTML textAlign style property"/></td>   
+</tr>   
+</tbody>    
+</table>    
 <p></p>
-<table id="style-attribute-textAlign-example-2" role="example">
-<caption>Example Fragment &ndash; Differing Text Align on p and span</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;region xml:id="r1"&gt;
-  &lt;style tts:extent="446px 72px"/&gt;
-  &lt;style tts:origin="0px 0px"/&gt;
-  &lt;style tts:backgroundColor="green"/&gt;
-  &lt;style tts:color="white"/&gt;
-  &lt;style <phrase role="strong">tts:textAlign="start"</phrase>/&gt;
-  &lt;style tts:displayAlign="center"/&gt;
-&lt;/region&gt;
-&lt;region xml:id="r2"&gt;
-  &lt;style tts:extent="446px 72px"/&gt;
-  &lt;style tts:origin="0px 76px"/&gt;
-  &lt;style tts:backgroundColor="black"/&gt;
-  &lt;style tts:color="white"/&gt;
-  &lt;style <phrase role="strong">tts:textAlign="center"</phrase>/&gt;
-  &lt;style tts:displayAlign="center"/&gt;
-&lt;/region&gt;
-...
-&lt;p region="r1"&gt;
-  &lt;span <phrase role="strong">tts:display="inlineBlock" tts:textAlign="end"</phrase>&gt;
-    span textAlign="end"&lt;br/&gt;
-    p textAlign="start"
-  &lt;/span&gt;
-&lt;/p&gt;
-&lt;p region="r2"&gt;
-  &lt;span <phrase role="strong">tts:display="inlineBlock" tts:textAlign="start"</phrase>&gt;
-    span textAlign="start"&lt;br/&gt;
-    p textAlign="center"
-  &lt;/span&gt;
-&lt;/p&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<table id="style-attribute-textAlign-example-2-images" role="example-images">
-<caption>Example Rendition &ndash; Differing Text Align on p and span</caption>
-<tbody>
-<tr>
-<td><graphic source="images/textAlign_2.png" alt="TTML textAlign style property on p and span"/></td>
-</tr>
-</tbody>
-</table>
-<note role="explanation">
-<p>In this second example, the <code>tts:display="inlineBlock"</code> attribute is required in order to
-cause <loc href="#terms-inline-block-display">inline block display</loc> semantics to be applied to
-the <code>span</code> elements so that text alignment semantics will be respected (within their containing inline blocks).</p>
-</note>
 <note role="elaboration">
 <p>The text alignment of the last line area of the last block area generated by a <loc href="#content-vocabulary-p"><el>p</el></loc> element
 follows the semantics of the <code>text-align-last</code> property with a value of <code>relative</code> per <bibref ref="xsl11"/>, &sect; 7.16.10.</p>
@@ -12779,11 +12453,7 @@ permitted by the line stacking strategy in effect.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>none</code> |
-<code>all</code> |
-[ <code>digits</code> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>? ]
-</td>
+<td><loc href="#style-value-text-combine">&lt;text-combine&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -12831,13 +12501,13 @@ equal to or less than a specified count, or two (2) if no count is specified.</p
 <td>
 <eg xml:space="preserve">
 &lt;p region="tbrlLeft"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="none"</phrase>>AB34&lt;/span&gt;三四
+  &lt;span <phrase role="strong">tts:textCombine="none"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 &lt;p region="tbrlCenter"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="all"</phrase>>AB34&lt;/span&gt;三四
+  &lt;span <phrase role="strong">tts:textCombine="all"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 &lt;p region="tbrlRight"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="digits"</phrase>>AB34&lt;/span&gt;三四
+  &lt;span <phrase role="strong">tts:textCombine="digits"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 </eg>
 </td>
@@ -12865,19 +12535,7 @@ areas that are generated by content flowed into a region.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>none</code> |
-[ [
-<code>underline</code> |
-<code>noUnderline</code>
-] || [
-<code>lineThrough</code> |
-<code>noLineThrough</code>
-] || [
-<code>overline</code> |
-<code>noOverline</code>
-] ]
-</td>
+<td><loc href="#style-value-text-decoration">&lt;text-decoration&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -12984,13 +12642,7 @@ determines whether and how text emphasis marks are presented on affected content
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-[
-<loc href="#style-value-emphasis-style">&lt;emphasis-style&gt;</loc> ||
-<loc href="#style-value-emphasis-color">&lt;emphasis-color&gt;</loc> ||
-<loc href="#style-value-emphasis-position">&lt;emphasis-position&gt;</loc>
-]
-</td>
+<td><loc href="#style-value-text-emphasis">&lt;text-emphasis&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -13188,12 +12840,7 @@ by content flowed into a region.</p>
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>none</code> |
-<loc href="#style-value-color">&lt;color&gt;</loc>?
-<loc href="#style-value-length">&lt;length&gt;</loc>
-<loc href="#style-value-length">&lt;length&gt;</loc>?
-</td>
+<td><loc href="#style-value-text-outline">&lt;text-outline&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -13303,10 +12950,7 @@ then the <loc href="#style-attribute-textOutline"><att>tts:textOutline</att></lo
 <tbody>
 <tr>
 <td><emph>Values:</emph></td>
-<td>
-<code>none</code> |
-( <loc href="#style-value-shadow">&lt;shadow&gt;</loc> )+
-</td>
+<td><loc href="#style-value-text-shadow">&lt;text-shadow&gt;</loc></td>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
@@ -14239,6 +13883,7 @@ character content.</p>
 <item><p><specref ref="style-value-alpha"/></p></item>
 <item><p><specref ref="style-value-annotation-color"/></p></item>
 <item><p><specref ref="style-value-annotation-position"/></p></item>
+<item><p><specref ref="style-value-border"/></p></item>
 <item><p><specref ref="style-value-border-color"/></p></item>
 <item><p><specref ref="style-value-border-radii"/></p></item>
 <item><p><specref ref="style-value-border-style"/></p></item>
@@ -14248,9 +13893,12 @@ character content.</p>
 <item><p><specref ref="style-value-emphasis-color"/></p></item>
 <item><p><specref ref="style-value-emphasis-position"/></p></item>
 <item><p><specref ref="style-value-emphasis-style"/></p></item>
+<item><p><specref ref="style-value-extent"/></p></item>
 <item><p><specref ref="style-value-family-name"/></p></item>
+<item><p><specref ref="style-value-font-families"/></p></item>
+<item><p><specref ref="style-value-font-size"/></p></item>
+<item><p><specref ref="style-value-font-variant"/></p></item>
 <item><p><specref ref="style-value-generic-family-name"/></p></item>
-<item><p><specref ref="style-value-glyph-variant"/></p></item>
 <item><p><specref ref="style-value-hex-digit"/></p></item>
 <item><p><specref ref="style-value-integer"/></p></item>
 <item><p><specref ref="style-value-length"/></p></item>
@@ -14260,23 +13908,20 @@ character content.</p>
 <item><p><specref ref="style-value-non-negative-integer"/></p></item>
 <item><p><specref ref="style-value-non-negative-number"/></p></item>
 <item><p><specref ref="style-value-number"/></p></item>
+<item><p><specref ref="style-value-origin"/></p></item>
+<item><p><specref ref="style-value-padding"/></p></item>
 <item><p><specref ref="style-value-percentage"/></p></item>
 <item><p><specref ref="style-value-position"/></p></item>
+<item><p><specref ref="style-value-ruby-reserve"/></p></item>
 <item><p><specref ref="style-value-shadow"/></p></item>
+<item><p><specref ref="style-value-text-combine"/></p></item>
+<item><p><specref ref="style-value-text-decoration"/></p></item>
+<item><p><specref ref="style-value-text-emphasis"/></p></item>
+<item><p><specref ref="style-value-text-outline"/></p></item>
+<item><p><specref ref="style-value-text-shadow"/></p></item>
 <item><p><specref ref="style-value-pitch"/></p></item>
 <item><p><specref ref="style-value-whitespace"/></p></item>
 </ulist>
-<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
-<olist>
-  <item><p>linear whitespace (LWSP)
-  must appear between sub-expressions of a <code>||</code> expression;</p></item>
-  <item><p>linear whitespace (LWSP)
-  must appear between sub-expressions of a <code>&amp;&amp;</code> expression;</p></item>
-  <item><p>linear whitespace (LWSP)
-  may appear before and after the sub-expressions of a comma separated list expression;</p></item>
-  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
-  unless explicitly specified.</p></item>
-</olist>
 <div3 id="style-value-alpha">
 <head>&lt;alpha&gt;</head>
 <p>An &lt;alpha&gt; expression is used to express an opacity value,
@@ -14399,6 +14044,25 @@ for the last affected line area.</p>
 it must be interpreted as if a position of <code>before</code> were specified; as such, an implementation that
 supports text annotation marks must minimally support the <code>before</code> value.</p>
 </div3>
+<div3 id="style-value-border">
+<head>&lt;border&gt;</head>
+<p>A &lt;border&gt; expression is used to express one or more border style component expressions.</p>
+<table id="border-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;border&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;border&gt;
+  : <loc href="#style-value-border-thickness">&lt;border-thickness&gt;</loc> || <loc href="#style-value-border-style">&lt;border-style&gt;</loc> || <loc href="#style-value-border-color">&lt;border-color&gt;</loc> || <loc href="#style-value-border-radii">&lt;border-radii&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>At least one of the border style components must be present, for example, a <loc href="#style-value-border-style">&lt;border-style&gt;</loc>
+component of value <code>none</code>. Component order is not significant.</p>
+</div3>
 <div3 id="style-value-border-color">
 <head>&lt;border-color&gt;</head>
 <p>A &lt;border-color&gt; expression is used to express the color of one
@@ -14428,7 +14092,7 @@ or more borders.</p>
 <td>
 <eg xml:space="preserve">
 &lt;border-radii&gt;
-  : "radii(" <loc href="#style-value-length">&lt;length&gt;</loc> ( "," <loc href="#style-value-length">&lt;length&gt;</loc> )? ")"
+  : "radii(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#style-value-length">&lt;length&gt;</loc> ( <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#style-value-length">&lt;length&gt;</loc> )? <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 </eg>
 </td>
 </tr>
@@ -14510,8 +14174,8 @@ defined by <bibref ref="srgb"/>.</p>
 &lt;color&gt;
   : "#" rrggbb
   | "#" rrggbbaa
-  | "rgb" "(" r-value "," g-value "," b-value ")"
-  | "rgba" "(" r-value "," g-value "," b-value "," a-value ")"
+  | "rgb(" r-value "," g-value "," b-value ")"
+  | "rgba(" r-value "," g-value "," b-value "," a-value ")"
   | <loc href="#style-value-named-color">&lt;named-color&gt;</loc>
 
 rrggbb
@@ -14521,7 +14185,7 @@ rrggbbaa
   :  <loc href="#style-value-hex-digit">&lt;hex-digit&gt;</loc>{8}
 
 r-value | g-value | b-value | a-value
-  : component-value
+  : <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? component-value <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? 
 
 component-value
   : <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>                    // valid range: [0,255]
@@ -14619,7 +14283,7 @@ emphasis marks.</p>
 &lt;emphasis-style&gt;
   : none
   | auto 
-  | [ filled | open ] || [ circle | dot | sesame ]
+  | ( filled | open ) || ( circle | dot | sesame )
   | <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
 </eg>
 </td>
@@ -14685,6 +14349,26 @@ equivalent to <code>filled circle</code>.</p>
 it must be interpreted as if a style of <code>auto</code> were specified; as such, an implementation that
 supports text emphasis marks must minimally support the <code>auto</code> value.</p>
 </div3>
+<div3 id="style-value-extent">
+<head>&lt;extent&gt;</head>
+<p>An &lt;extent&gt; expression specifies the dimensions of a rectangular area.</p>
+<table id="extent-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;extent&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;extent&gt;
+  : auto
+  | contain
+  | cover
+  | <loc href="#style-value-measure">&lt;measure&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-measure">&lt;measure&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
 <div3 id="style-value-family-name">
 <head>&lt;family-name&gt;</head>
 <p>A &lt;family-name&gt; expression specifies a font family name.</p>
@@ -14699,7 +14383,7 @@ supports text emphasis marks must minimally support the <code>auto</code> value.
   | <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
 
 unquoted-string
-  : identifier ( <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> identifier )*
+  : identifier (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> identifier)*
 
 identifier
   : [-]? identifier-start identifier-following*
@@ -14764,6 +14448,83 @@ ignored by the above syntax. Such an unignored escaped newline would need to be 
 an equivalent <code>{unicode}</code> escape, such as <code>\a</code>, to order to express in CSS.</p>
 </note>
 </div3>
+<div3 id="style-value-font-families">
+<head>&lt;font-families&gt;</head>
+<p>A &lt;font-families&gt; expression specifies a non-empty list of font families.</p>
+<table id="font-families-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;font-families&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;font-families&gt;
+  : font-family (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? font-family)*
+
+font-family
+  : <loc href="#style-value-family-name">&lt;family-name&gt;</loc>
+  | <loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc>
+</eg>
+<!-- " -->
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-font-size">
+<head>&lt;font-size&gt;</head>
+<p>A &lt;font-size&gt; expression specifies a font size in terms of one or two <loc href="#style-value-length">&lt;length&gt;</loc> expressions.</p>
+<table id="font-size-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;font-size&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;font-size&gt;
+  : <loc href="#style-value-length">&lt;length&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-font-variant">
+<head>&lt;font-variant&gt;</head>
+<p>A &lt;font-variant&gt; expression specifies one or more keywords that influence the character
+to glyph mapping process, and, specifically, whether and which type of variant glyph is to be selected
+(if available in the applicable font) when peforming presentation processing.</p>
+<table id="font-variant-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;font-variant&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;font-variant&gt;
+  : "normal"
+  | ("super" | "sub") || ("full" | "half") || ruby
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If the value <code>normal</code> applies, then, unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies, 
+none of subscript, superscript, full, half, or ruby
+glyph variations are selected.</p>
+<p>If the keyword <code>super</code> applies, then superscript glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>sups</code> feature is enabled. If the keyword <code>sub</code> applies,
+then subscript glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>subs</code> feature is enabled.</p>
+<p>If the keyword <code>full</code> applies, then full width glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>fwid</code> feature is enabled. If the keyword <code>half</code> applies,
+then half width glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>hwid</code> feature is enabled.</p>
+<p>If the keyword <code>ruby</code> applies, then ruby glyph variants are selected (if available).
+For example, when rendering with an OpenType font, the OpenType <code>ruby</code> feature is enabled.</p>
+<p>If multiple variations apply, then glyphs that satisfy the maximum number of applicable variations are selected. For example,
+if both <code>super</code> and <code>half</code> variations are specified, then glyphs that are simultaneously designated as both superscript and
+half width variations are selected (if available). If only subsets of the requested variations can be satisfied, and there is more than
+one possible subset that would result in a difference in the selected variation glyphs, then which subset applies is considered implementation
+dependent, i.e., determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+</div3>
 <div3 id="style-value-generic-family-name">
 <head>&lt;generic-family-name&gt;</head>
 <p>A &lt;generic-family-name&gt; expression specifies a font family using a general
@@ -14803,44 +14564,6 @@ and <code>proportionalSerif</code>, respectively.</p>
 an initial value), then its typographic characteristics are considered to be implementation
 dependent; however, it is recommended that this default font family be mapped to
 a monospaced, sans-serif font.</p>
-</div3>
-<div3 id="style-value-glyph-variant">
-<head>&lt;glyph-variant&gt;</head>
-<p>A &lt;glyph-variant&gt; expression specifies one or more keywords that influence the character
-to glyph mapping process, and, specifically, whether and which type of variant glyph is to be selected
-(if available in the applicable font) when peforming presentation processing.</p>
-<table id="glyph-variant-style-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;glyph-variant&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;glyph-variant&gt;
-  : "normal"
-  | [ "super" | "sub" ] || [ "full" | "half" ] || ruby
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If the value <code>normal</code> applies, then, unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies, 
-none of subscript, superscript, full, half, or ruby
-glyph variations are selected.</p>
-<p>If the keyword <code>super</code> applies, then superscript glyph variants are selected (if available).
-For example, when rendering with an OpenType font, the OpenType <code>sups</code> feature is enabled. If the keyword <code>sub</code> applies,
-then subscript glyph variants are selected (if available).
-For example, when rendering with an OpenType font, the OpenType <code>subs</code> feature is enabled.</p>
-<p>If the keyword <code>full</code> applies, then full width glyph variants are selected (if available).
-For example, when rendering with an OpenType font, the OpenType <code>fwid</code> feature is enabled. If the keyword <code>half</code> applies,
-then half width glyph variants are selected (if available).
-For example, when rendering with an OpenType font, the OpenType <code>hwid</code> feature is enabled.</p>
-<p>If the keyword <code>ruby</code> applies, then ruby glyph variants are selected (if available).
-For example, when rendering with an OpenType font, the OpenType <code>ruby</code> feature is enabled.</p>
-<p>If multiple variations apply, then glyphs that satisfy the maximum number of applicable variations are selected. For example,
-if both <code>super</code> and <code>half</code> variations are specified, then glyphs that are simultaneously designated as both superscript and
-half width variations are selected (if available). If only subsets of the requested variations can be satisfied, and there is more than
-one possible subset that would result in a difference in the selected variation glyphs, then which subset applies is considered implementation
-dependent, i.e., determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 </div3>
 <div3 id="style-value-hex-digit">
 <head>&lt;hex-digit&gt;</head>
@@ -14912,7 +14635,12 @@ units
 if <code>px</code> (pixels) units were specified.</p>
 <p>The unit of measure <code>px</code> (pixel) corresponds to a logical pixel of
 the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
-as defined by <specref ref="root-container-region-semantics-coordinate-space"/>.</p>
+as defined by <specref ref="root-container-region-semantics-coordinate-space"/>; however,
+the <code>px</code> (pixel) unit should not be used in a <loc href="#style-value-length">&lt;length&gt;</loc> expression
+unless a <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute consisting
+of two <loc href="#style-value-length">&lt;length&gt;</loc> specifications using <code>px</code> (pixel) units is
+specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element,
+<phrase role="deprecated">without which the use of the <code>px</code> (pixel) unit of measure is deprecated</phrase></p>
 <p>When specified relative to a font whose size is expressed as a single length
 measure or as two length measures of equal length, the unit of measure <code>em</code> is considered to be
 identical to that defined by <bibref ref="xsl11"/>, &sect; 5.9.13;
@@ -15127,6 +14855,45 @@ non-negative-real
 
 sign
   : "+" | "-"
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-origin">
+<head>&lt;origin&gt;</head>
+<p>An &lt;origin&gt; expression specifies the dimensions of a rectangular area.</p>
+<table id="origin-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;origin&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;origin&gt;
+  : auto
+  | <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc
+    href="#style-value-length">&lt;length&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-padding">
+<head>&lt;padding&gt;</head>
+<p>A &lt;padding&gt; expression specifies the insets that apply to an area's padding rectangle.</p>
+<table id="padding-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;padding&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;padding&gt;
+  : <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
+  | <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
+  | <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
+  | <loc href="#style-value-length">&lt;length&gt;</loc>
 </eg>
 </td>
 </tr>
@@ -15584,6 +15351,24 @@ expression. Similarly, the expression <code>(100% - <loc href="#style-value-leng
 is to be interpreted as the difference between 100% and the percentage equivalent of the <loc href="#style-value-length">&lt;length-v&gt;</loc> expression.
 In both cases, the resulting difference may be a negative percentage.</p>
 </div3>
+<div3 id="style-value-ruby-reserve">
+<head>&lt;ruby-reserve&gt;</head>
+<p>A &lt;ruby-reserve&gt; expression is used to reserve space for the placement of ruby annotation text.</p>
+<table id="ruby-reserve-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;ruby-reserve&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;ruby-reserve&gt;
+  : none
+  | (auto | before | after | both | outside | around | between) (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
 <div3 id="style-value-shadow">
 <head>&lt;shadow&gt;</head>
 <p>A &lt;shadow&gt; value expresses a shadow decoration to be applied to a generated area. If
@@ -15597,16 +15382,17 @@ then it applies to the border rectangle of the area.</p>
 <td>
 <eg xml:space="preserve">
 &lt;shadow&gt;
-  : <loc href="#style-value-length">&lt;length&gt;</loc>{2,3} &amp;&amp; <loc href="#style-value-color">&lt;color&gt;</loc>
+  : <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-color">&lt;color&gt;</loc>)?
+  | <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-color">&lt;color&gt;</loc>)?
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>A shadow value expression consists of an optional <code>inset</code> token term,
-two to three <loc href="#style-value-length">&lt;length&gt;</loc> terms, and
+<p>A shadow value expression consists of
+two to three <loc href="#style-value-length">&lt;length&gt;</loc> terms and
 an optional <loc href="#style-value-color">&lt;color&gt;</loc> term,
-and where terms are separated from one another by linear white space (LWSP).</p>
+where terms are separated from one another by linear white space (LWSP).</p>
 <p>The first <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the inline progression direction of the associated area,
 where positive denotes towards the end edge and negative towards the start edge,
 the second <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the block progression direction of the associated area,
@@ -15624,6 +15410,96 @@ shadow thickness will be a nominal 480 / 10 * 0.1 pixels, i.e., 4.8px,
 without taking into account rasterization effects.</p>
 </note>
 </div3>
+<div3 id="style-value-text-combine">
+<head>&lt;text-combine&gt;</head>
+<p>A &lt;text-combine&gt; expression is used to determine the behavior of text combination effects in vertical text.</p>
+<table id="text-combine-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;text-combine&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;text-combine&gt;
+  : none
+  | auto
+  | digits (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>)?
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-text-decoration">
+<head>&lt;text-decoration&gt;</head>
+<p>A &lt;text-decoration&gt; expression is used to determine the behavior of text decoration effects.</p>
+<table id="text-decoration-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;text-decoration&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;text-decoration&gt;
+  : none
+  | ((underline | noUnderline) || (lineThrough | noLineThrough) || (overline | noOverline))
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-text-emphasis">
+<head>&lt;text-emphasis&gt;</head>
+<p>A &lt;text-emphasis&gt; expression is used to determine the behavior of text emphasis effects.</p>
+<table id="text-emphasis-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;text-emphasis&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;text-emphasis&gt;
+  : <loc href="#style-value-emphasis-style">&lt;emphasis-style&gt;</loc> || <loc href="#style-value-emphasis-color">&lt;emphasis-color&gt;</loc> || <loc href="#style-value-emphasis-position">&lt;emphasis-position&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-text-outline">
+<head>&lt;text-outline&gt;</head>
+<p>A &lt;text-outline&gt; expression is used to determine the behavior of text outline effects.</p>
+<table id="text-outline-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;text-outline&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;text-outline&gt;
+  : none
+  | (<loc href="#style-value-color">&lt;color&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>)? <loc href="#style-value-length">&lt;length&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="style-value-text-shadow">
+<head>&lt;text-shadow&gt;</head>
+<p>A &lt;text-shadow&gt; expression is used to determine the behavior of text shadow effects.</p>
+<table id="text-shadow-style-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;text-shadow&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;text-shadow&gt;
+  : none
+  | <loc href="#style-value-shadow">&lt;shadow&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-shadow">&lt;shadow&gt;</loc>)*
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
 <div3 id="style-value-whitespace">
 <head>&lt;whitespace&gt;</head>
 <p>A &lt;whitespace&gt; value is used to express a common whitespace characters.</p>
@@ -15633,7 +15509,7 @@ without taking into account rasterization effects.</p>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;whitespaces&gt;
+&lt;whitespace&gt;
   : ( " " | "\t" | "\n" | "\r" )
 </eg>
 </td>
@@ -15754,9 +15630,6 @@ ref="semantics-style-inheritance-content"/> below.</p>
 other out-of-line style properties, thus creating a chain of references starting at the
 affected element. When expressed in this manner, the association of style information
 is referred to as <emph>chained referential styling</emph>.</p>
-<p>If the same style property is specified in more than one referenced
-style set, then the last referenced style set applies, where the order of application starts from
-the affected element and proceeds to referenced style sets, and, in turn, to subsequent referenced style sets.</p>
 <p>A loop in a sequence of chained style references must be considered an error.</p>
 <p>The use of referential styling is restricted to making
 reference to <el>style</el> element descendants of a <el>styling</el>
@@ -15787,6 +15660,11 @@ given priority as described above by <specref ref="semantics-style-association-i
 </tr>
 </tbody>
 </table>
+<note role="explanation">
+<p>In the above example, the text of the second paragraph is yellow, since <code>tts:color='yellow'</code>
+ effectively overwrites (is merged over) the <code>tts:color='white'</code> that style <code>s2</code> obtains by a reference to style
+  <code>s1</code>.</p>
+</note>
 </div4>
 <div4 id="semantics-style-association-nested">
 <head>Nested Styling</head>
@@ -16768,7 +16646,7 @@ referred to as an <emph>explicit inline region specification</emph>.</p>
 <p>Inline regions are processed in accordance with the procedure
 <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>
 which generates out-of-line regions that correspond with the
-explicit inline regions. This latter procedure additionally binds content elements associated with inline regions
+explicit inline regions. This latter procedure additionally binds <loc href="#terms-content-element">content elements</loc> associated with inline regions
 to the corresponding generated out-of-line regions.</p>
 <note role="elaboration">
 <p>A <loc href="#terms-content-element">content element</loc> can only be associated with a single
@@ -17029,7 +16907,7 @@ then the element is associated with the default region;</p></item>
 adjacent synchronic <loc href="#terms-document-instance">document instances</loc>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
 <emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>,
-then it is preferred that the implementation make the transition between
+then the implementation can apply processing to make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cta608e"/>, &sect; C.3, and <bibref ref="ccreq"/>.</p>
 </note>
@@ -17332,15 +17210,7 @@ the rendering model specified by <bibref ref="xsl11"/>, &sect;4.9; in addition, 
   marks of a block area or an inline area, i.e., they are part of an area's background marks.</p>
 </note>
 </div4> <!-- semantics-rendering-model-painting-order -->
-<div4 id="semantics-rendering-model-inline-area-background">
-<head>Painting Background Color of Inline Areas</head>
-<p>When the computed value of the <loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> that applies to a block
-area generated by a <loc href="#content-vocabulary-p"><el>p</el></loc> element is not <code>false</code>,
-then, when rendering a background color of an inline area child of a line area, the before and after edges of the background color are
-extended so as to be coincident with the before and after edges of the line area; otherwise, the before and after edges of the background color
-are as determined by the block progression dimension of the border rectangle of the inline area.</p>
-</div4> <!-- semantics-rendering-model-inline-area-background -->
-</div3> <!-- semantics-rendering-order -->
+</div3> <!-- semantics-rendering-model -->
 </div2> <!-- layout-semantics -->
 </div1> <!-- layout -->
 <div1 id="timing">
@@ -17593,7 +17463,6 @@ in the preceding syntax definition.</p>
 minutes, seconds, and frames less than 10. Minutes are constrained to
 [0&hellip;59], while seconds (including any fractional part) are constrained to the closed
 interval [0,60], where the value 60 applies only to leap seconds.
-
 Except when <loc href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc> is <code>clock</code>
 and <loc href="#parameter-attribute-clockMode"><att>ttp:clockMode</att></loc> is <code>local</code> or <code>utc</code>,
 use of the <phrase role="deprecated">special value of 60 seconds to denote a leap second is deprecated</phrase>.
@@ -18190,13 +18059,6 @@ attribute.</p>
 <item><p><specref ref="animation-value-key-times"/></p></item>
 <item><p><specref ref="animation-value-repeat-count"/></p></item>
 </ulist>
-<p>In the syntax representations defined in this section, the following rules pertaining to linear whitespace (LWSP) apply:</p>
-<olist>
-  <item><p>linear whitespace (LWSP)
-  may appear before and after the sub-expressions of a semicolon separated list expression;</p></item>
-  <item><p>otherwise, no linear whitespace (LWSP) is implied or permitted between tokens
-  unless explicitly specified.</p></item>
-</olist>
 <div3 id="animation-value-animation-value">
 <head>&lt;animation-value&gt;</head>
 <p>An &lt;animation-value&gt; expression is used to specify the starting (initial), intermediate,
@@ -18237,7 +18099,7 @@ optionally surrounded by linear white-space (LWSP) characters.</p>
 <td>
 <eg xml:space="preserve">
 &lt;animation-value-list&gt;
-  : <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> [ ";" <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> ]*
+  : <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc>)*
 </eg>
 </td>
 </tr>
@@ -18301,10 +18163,10 @@ optionally surrounded by linear white-space (LWSP) characters.</p>
 <td>
 <eg xml:space="preserve">
 &lt;key-splines&gt;
-  : control [ <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? control ]*
+  : control ( <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? control )*
 
 control
-  : x1 comma? y1 comma? x2 comma? y2
+  : x1 <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> y1 <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> x2 <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> y2
 
 x1, x2, y1, y2
   : coordinate
@@ -18316,9 +18178,6 @@ coordinate                                // 0 &ge; <emph>value</emph> &ge; 1
 
 whole, fraction
   : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
-
-comma
-  : ","
 </eg>
 </td>
 </tr>
@@ -18339,7 +18198,7 @@ optionally surrounded by linear white-space (LWSP) characters.</p>
 <td>
 <eg xml:space="preserve">
 &lt;key-times&gt;
-  : time [ ";" time ]*
+  : time ( <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ";" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? time )*
 
 time                                // 0 &ge; <emph>value</emph> &ge; 1
   : whole
@@ -18917,10 +18776,7 @@ to express
 the roles, functions, or characteristics
 of some <loc href="#terms-content-element">content element</loc> that is so labeled.</p>
 <p>If specified, the value of this attribute must adhere to the following
-syntax, where
-the syntactic element <emph>S</emph> must adhere to production
-[3] <code>S</code> as defined by <bibref ref="xml10"/>&nbsp;&sect;
-2.3:</p>
+syntax:</p>
 <table id="metadata-attribute-role-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttm:role</caption>
 <tbody>
@@ -18928,7 +18784,7 @@ the syntactic element <emph>S</emph> must adhere to production
 <td>
 <eg xml:space="preserve">
 ttm:role
-  role ( <emph>S</emph> role )*
+  role (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> role)*
 
 role
   : "action"
@@ -19199,15 +19055,6 @@ TT Feature Namespace base URI.</p>
 <p>Feature designations in this section that have the suffix <code>-version-2</code> are newly defined by
 this (second) version of the TTML specification, i.e., TTML2.</p>
 </note>
-<div3 id="feature-activeArea">
-<head>#activeArea</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#activeArea</code> feature if it recognizes and is capable of
-transforming the <loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#activeArea</code> feature if it implements presentation semantic support for the
-<loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc> attribute.</p>
-</div3>
 <div3 id="feature-animate">
 <head>#animate</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate</code>
@@ -19369,13 +19216,13 @@ supports the following features:</p>
 <code>#backgroundColor-block</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
-attribute when applied to a content element that would generate a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
 block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#backgroundColor-block</code> feature if it (1) implements presentation semantic
 support for the <loc
 href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
-attribute when applied to a content element that generates a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
 block area
 and (2) is capable of displaying or generating an output display
 signal that distinguishes between at least sixteen (16) values of color,
@@ -19387,13 +19234,13 @@ including all primary and secondary colors of the SRGB color space.</p>
 <code>#backgroundColor-inline</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
-attribute when applied to a content element that would generate an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
 inline area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#backgroundColor-inline</code> feature if it (1) implements presentation semantic
 support for the <loc
 href="#style-attribute-backgroundColor"><att>tts:backgroundColor</att></loc>
-attribute when applied to a content element that generates an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
 inline area
 and (2) is capable of displaying or generating an output display
 signal that distinguishes between at least sixteen (16) values of color,
@@ -19521,13 +19368,13 @@ supports the following features:</p>
 <code>#border-block</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
-attribute when applied to a content element that would generate a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
 block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#border-block</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
-attribute when applied to a content element that generates a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
 block area.</p>
 </div3>
 <div3 id="feature-border-inline">
@@ -19536,13 +19383,13 @@ block area.</p>
 <code>#border-inline</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
-attribute when applied to a content element that would generate an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
 inline area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#border-inline</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-border"><att>tts:border</att></loc>
-attribute when applied to a content element that generates an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
 inline area.</p>
 </div3>
 <div3 id="feature-border-radii">
@@ -19818,13 +19665,13 @@ attribute.</p>
 <code>#display-block</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-display"><att>tts:display</att></loc>
-attribute when applied to a content element that would generate a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
 block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#display-block</code> feature if it implements presentation semantic
 support for all defined values of the <loc
 href="#style-attribute-display"><att>tts:display</att></loc>
-attribute when applied to a content element that generates a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
 block area.</p>
 </div3>
 <div3 id="feature-display-inline">
@@ -19833,13 +19680,13 @@ block area.</p>
 <code>#display-inline</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-display"><att>tts:display</att></loc>
-attribute when applied to a content element that would generate an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
 inline area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#display-inline</code> feature if it implements presentation semantic
 support for all defined values of the <loc
 href="#style-attribute-display"><att>tts:display</att></loc>
-attribute when applied to a content element that generates an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
 inline area.</p>
 </div3>
 <div3 id="feature-display-region">
@@ -19871,11 +19718,11 @@ supports the following features:</p>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#displayAlign-block</code> feature if it implements transformation semantic
 support for the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
-attribute when applied to a content element that would generate a block area during presentation processing.</p>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#displayAlign-block</code> feature if it implements presentation semantic
 support for the <loc href="#style-attribute-displayAlign"><att>tts:displayAlign</att></loc>
-attribute when applied to a content element that generates a block area.</p>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a block area.</p>
 </div3>
 <div3 id="feature-displayAlign-justify">
 <head>#displayAlign-justify</head>
@@ -20080,15 +19927,6 @@ the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to a <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
-</div3>
-<div3 id="feature-fillLineGap">
-<head>#fillLineGap</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#fillLineGap</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#fillLineGap</code> feature if it implements presentation semantic support for the
-<loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -20880,13 +20718,13 @@ href="#style-value-length">&lt;length&gt;</loc> specification.</p>
 <code>#padding-block</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-padding"><att>tts:padding</att></loc>
-attribute when applied to a content element that would generate a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
 block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#padding-block</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-padding"><att>tts:padding</att></loc>
-attribute when applied to a content element that generates a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
 block area.</p>
 </div3>
 <div3 id="feature-padding-inline">
@@ -20895,13 +20733,13 @@ block area.</p>
 <code>#padding-inline</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-padding"><att>tts:padding</att></loc>
-attribute when applied to a content element that would generate an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
 inline area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#padding-inline</code> feature if it implements presentation semantic
 support for the <loc
 href="#style-attribute-padding"><att>tts:padding</att></loc>
-attribute when applied to a content element that generates an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
 inline area.</p>
 </div3>
 <div3 id="feature-padding-region">
@@ -21116,22 +20954,22 @@ supports the following features:</p>
 <head>#region-inline-explicit</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#region-inline-explicit</code> feature if it recognizes and is capable
-of transforming explicit inline region element children of content element vocabulary, as further defined by
+of transforming explicit inline region element children of a <loc href="#terms-content-element">content element</loc>, as further defined by
 <loc href="#layout-vocabulary-region"><code>region</code></loc>.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#region-inline-explicit</code> feature if it implements presentation semantic support
-for explicit inline region element children of content element vocabulary, as further defined by
+for explicit inline region element children of a <loc href="#terms-content-element">content element</loc>, as further defined by
 <loc href="#layout-vocabulary-region"><code>region</code></loc>.</p>
 </div3>
 <div3 id="feature-region-inline-implicit">
 <head>#region-inline-implicit</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#region-inline-implicit</code> feature if it recognizes and is capable
-of transforming implicit inline region specifications on content element vocabulary, as further defined by
+of transforming implicit inline region specifications on a <loc href="#terms-content-element">content element</loc>, as further defined by
 <loc href="#layout-vocabulary-region"><code>region</code></loc>.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#region-inline-implicit</code> feature if it implements presentation semantic support
-for implicit inline region specifications on content element vocabulary, as further defined by
+for implicit inline region specifications on a <loc href="#terms-content-element">content element</loc>, as further defined by
 <loc href="#layout-vocabulary-region"><code>region</code></loc>.</p>
 </div3>
 <div3 id="feature-region-timing">
@@ -21898,13 +21736,13 @@ attribute.</p>
 <code>#visibility-block</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-visibility"><att>tts:visibility</att></loc>
-attribute when applied to a content element that would generate a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
 block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#visibility-block</code> feature if it implements presentation semantic
 support for all defined values of the <loc
 href="#style-attribute-visibility"><att>tts:visibility</att></loc>
-attribute when applied to a content element that generates a
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
 block area.</p>
 </div3>
 <div3 id="feature-visibility-inline">
@@ -21913,13 +21751,13 @@ block area.</p>
 <code>#visibility-inline</code> feature if it recognizes and is
 capable of transforming all defined values of the <loc
 href="#style-attribute-visibility"><att>tts:visibility</att></loc>
-attribute when applied to a content element that would generate an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
 inline area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#visibility-inline</code> feature if it implements presentation semantic
 support for all defined values of the <loc
 href="#style-attribute-visibility"><att>tts:visibility</att></loc>
-attribute when applied to a content element that generates an
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
 inline area.</p>
 </div3>
 <div3 id="feature-visibility-region">
@@ -22044,11 +21882,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td><phrase role="strong">Feature</phrase></td>
 <td><phrase role="strong">Transformation</phrase></td>
 <td><phrase role="strong">Presentation</phrase></td>
-</tr>
-<tr>
-<td><loc href="#feature-activeArea"><code>#activeArea</code></loc></td>
-<td>O</td>
-<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-animate"><code>#animate</code></loc></td>
@@ -22372,11 +22205,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-extent-root"><code>#extent-root</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-fillLineGap"><code>#fillLineGap</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -22856,7 +22684,17 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td>O</td>
 </tr>
 <tr>
+<td><loc href="#feature-textAlign-justify"><code>#textAlign-justify</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-textAlign-relative"><code>#textAlign-relative</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-textAlign-version-2"><code>#textAlign-version-2</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>
@@ -23262,11 +23100,14 @@ identifier.</p>
 <div1 id="standard-profiles">
 <head>Standard Profiles</head>
 <p><emph>This appendix is normative.</emph></p>
-<p>This appendix specifies the following standard TTML profiles:</p>
+<p>This appendix specifies or incorporates by reference the following standard TTML profiles:</p>
 <ulist>
 <item><p><specref ref="profile-ttml2-full"/></p></item>
 <item><p><specref ref="profile-ttml2-presentation"/></p></item>
 <item><p><specref ref="profile-ttml2-transformation"/></p></item>
+<item><p><specref ref="profile-dfxp-full"/></p></item>
+<item><p><specref ref="profile-dfxp-presentation"/></p></item>
+<item><p><specref ref="profile-dfxp-transformation"/></p></item>
 </ulist>
 <p>Each TTML profile is defined in terms of a <loc href="#terms-profile-definition-document">profile definition document</loc>,
 which is expressed as an XML document wherein the root element adheres to
@@ -23281,8 +23122,7 @@ which is expressed as an XML document wherein the root element adheres to
 <p>The TTML2 Full Profile is intended to be used to
 express maximum compliance for both transformation and presentation processing.</p>
 <note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-full">DFXP Full Profile</xspecref>.</p>
+<p>This profile is a superset of the <loc href="#profile-dfxp-full">DFXP Full Profile</loc>.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-full;</eg>
 </div2>
@@ -23291,8 +23131,7 @@ express maximum compliance for both transformation and presentation processing.<
 <p>The TTML2 Presentation Profile is intended to be used to
 express minimum compliance for presentation processing.</p>
 <note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-presentation">DFXP Presentation Profile</xspecref>:
+<p>This profile is a superset of the <loc href="#profile-dfxp-presentation">DFXP Presentation Profile</loc>:
 it requires support for the
 <loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>  and
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
@@ -23304,13 +23143,27 @@ it requires support for the
 <p>The TTML2 Transformation Profile is intended to be used to
 express minimum compliance for transformation processing.</p>
 <note role="elaboration">
-<p>This profile is a superset of the
-<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-transformation">DFXP Transformation Profile</xspecref>:
+<p>This profile is a superset of the <loc href="#profile-dfxp-transformation">DFXP Transformation Profile</loc>:
 it requires support for the
 <loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>  and
 <loc href="#feature-version"><code>#version</code></loc> features.</p>
 </note>
 <eg xml:space="preserve">&profile-ttml2-transformation;</eg>
+</div2>
+<div2 id="profile-dfxp-full">
+<head>DFXP Full Profile</head>
+<p>The DFXP Full Profile is specified by <bibref ref="ttml1"/>,
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-full">Appendix F.3, DFXP Full Profile</xspecref>.</p>
+</div2>
+<div2 id="profile-dfxp-presentation">
+<head>DFXP Presentation Profile</head>
+<p>The DFXP Presentation Profile is specified by <bibref ref="ttml1"/>,
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-presentation">Appendix F.2, DFXP Presentation Profile</xspecref>.</p>
+</div2>
+<div2 id="profile-dfxp-transformation">
+<head>DFXP Transformation Profile</head>
+<p>The DFXP Transformation Profile is specified by <bibref ref="ttml1"/>,
+<xspecref href="https://www.w3.org/TR/ttml1/#profile-dfxp-transformation">Appendix F.1, DFXP Transformation Profile</xspecref>.</p>
 </div2>
 </div1>
 <div1 id="root-container-region-semantics">
@@ -23409,8 +23262,13 @@ otherwise, the value of <code>DAR</code> is determined (arbitrarily) by the
     <p>if <code>SAR</code> is specified, then its resolved value is its specified value, and the values of <code>DAR</code> and <code>PAR</code>
     are determined as follows:</p>
     <olist>
-      <item><p>the resolved value of <code>DAR</code> is the resolved value of <code>SAR</code>;</p></item>
-      <item><p>the resolved value of <code>PAR</code> is <code>1</code> (one).</p></item>
+      <item><p>if a <loc href="#terms-related-media-object">related media object</loc> exists and has a defined <code>DAR</code>,
+      then the resolved value of <code>DAR</code> is the display aspect ratio of the
+      <loc href="#terms-related-media-object">related media object</loc> and the value of <code>PAR</code>
+      is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below;</p></item>
+      <item><p>otherwise, the resolved value of <code>DAR</code>
+      is determined by the <loc href="#terms-document-processing-context">document processing context</loc> and the value of <code>PAR</code>
+      is then resolved according to <specref ref="root-container-region-semantics-2-aspect-ratio"/> below;</p></item>
     </olist>
   </item>
   <item>
@@ -23756,9 +23614,9 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <p>If the computed <code>frameRateMultiplier</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
 </note>
 <note role="clarification">
-<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
-<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
-<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> property.</p>
+<p>The above formalisms assume that the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the
+begin time of a <loc href="#terms-related-media-object">related media object</loc>. If this assumption doesn't hold, then an additional offset
+that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
 </div2>
 <div2 id="time-expression-semantics-smpte">
@@ -23885,11 +23743,6 @@ immediately prior sibling timed element;
 <p>Given the derived media time base as described above, then 
 media time base <phrase role="strong"><code>M</code></phrase> is related to the local real time <phrase role="strong"><code>R</code></phrase>
 as described in <specref ref="time-expression-semantics-media"/> above.</p>
-<note role="clarification">
-<p>The begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the begin time of a
-<loc href="#terms-related-media-object">related media object</loc> in accordance with the computed value of the
-<loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc> property.</p>
-</note>
 </div2>
 </div1>
 <div1 id="isd">
@@ -24108,7 +23961,7 @@ and such tuples are compared component-wise by case-sensitive lexical string ord
 <head>isd:region</head>
 <p>The <el>isd:region</el> element is used to represent a layout and presentation region
 and the content selected into that region, where that content takes the form of a
-<loc href="#document-structure-vocabulary-body">body</loc> element and its descendant TTML content elements.</p>
+<loc href="#document-structure-vocabulary-body">body</loc> element and its descendant <loc href="#terms-content-element">content elements</loc>.</p>
 <p>The <el>isd:region</el> element accepts as its children zero or more <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc> elements,
 followed by zero or more <loc href="#animation-vocabulary-animate"><el>animate</el></loc> elements,
 followed by exactly one <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element.</p>
@@ -24149,7 +24002,7 @@ and its descendant elements:</p>
 <loc href="#content-vocabulary-span"><el>span</el></loc> element that contains no other child.</p></item>
 </ulist>
 <p>In addition, for the <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element <emph>B</emph> and
-each of its descendant content elements <emph>C</emph>, if the computed style set of <emph>B</emph> or each <emph>C</emph> is
+each of its descendant <loc href="#terms-content-element">content elements</loc> <emph>C</emph>, if the computed style set of <emph>B</emph> or each <emph>C</emph> is
 not equal to the computed style set of its parent element, then that element, <emph>B</emph> or <emph>C</emph>, must specify a <att>style</att>
 attribute that references an <loc href="#isd-vocabulary-css"><el>isd:css</el></loc> element that specifies the
 element's computed style set.</p>
@@ -24165,7 +24018,6 @@ are available for use with an
 <item><p><loc href="#parameter-attribute-cellResolution">ttp:cellResolution</loc></p></item>
 <item><p><loc href="#parameter-attribute-frameRate">ttp:frameRate</loc></p></item>
 <item><p><loc href="#parameter-attribute-frameRateMultiplier">ttp:frameRateMultiplier</loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaOffset">ttp:mediaOffset</loc></p></item>
 <item><p><loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc></p></item>
 <item><p><loc href="#parameter-attribute-subFrameRate">ttp:subFrameRate</loc></p></item>
@@ -24270,6 +24122,11 @@ Vector Graphics (SVG) 1.1 Second Edition</titleref>, W3C Recommendation, 16
 August 2011. (See
 <xspecref href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</xspecref>.)
 </bibl>
+<bibl id="ttml1" key="TTML1">Glenn Adams, Ed.,
+<titleref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
+W3C Recommendation, 24 September 2013. (See
+<xspecref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">http://www.w3.org/TR/2013/REC-ttml1-20130924/</xspecref>.)
+</bibl>
 <bibl id="uaag" key="UAAG">Ian Jacobs, Jon Gunderson, and Eric Hansen, Eds.,
 <titleref href="http://www.w3.org/TR/2002/REC-UAAG10-20021217/">User
 Agent Accessibility Guidelines 1.0</titleref>, W3C Recommendation, 17
@@ -24277,10 +24134,10 @@ December 2002. (See
 <xspecref href="http://www.w3.org/TR/2002/REC-UAAG10-20021217/">http://www.w3.org/TR/2002/REC-UAAG10-20021217/</xspecref>.)
 </bibl>
 <bibl id="uax9" key="UAX9">M. Davis, A. Lanin, and A. Glass, <titleref
-href="http://www.unicode.org/reports/tr9/tr9-35.html">Unicode Bidirectional
-Algorithm</titleref>, Unicode Consortium, 18 May 2016. (See
+href="http://www.unicode.org/reports/tr9/tr9-37.html">Unicode Bidirectional
+Algorithm</titleref>, Unicode Consortium, 14 May 2017. (See
 <xspecref
-href="http://www.unicode.org/reports/tr9/tr9-35.html">http://www.unicode.org/reports/tr9/tr9-35.html</xspecref>.)
+href="http://www.unicode.org/reports/tr9/tr9-37.html">http://www.unicode.org/reports/tr9/tr9-37.html</xspecref>.)
 </bibl>
 <bibl id="uax14" key="UAX14">Asmus Freytag, <titleref
 href="http://www.unicode.org/reports/tr14/tr14-17.html">Line Breaking
@@ -24524,11 +24381,6 @@ Cases and Requirements</titleref>,
 W3C Working Group Note, 27 April 2006. (See
 <xspecref
 href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</xspecref>.)
-</bibl>
-<bibl id="ttml1" key="TTML1">Glenn Adams, Ed.,
-<titleref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">Timed Text Markup Language 1 (TTML1) (Second Edition)</titleref>,
-W3C Recommendation, 24 September 2013. (See
-<xspecref href="http://www.w3.org/TR/2013/REC-ttml1-20130924/">http://www.w3.org/TR/2013/REC-ttml1-20130924/</xspecref>.)
 </bibl>
 <bibl id="webaudio" key="WEBAUDIO">Paul Adenot, Raymond Toy, Eds.,
 <titleref href="http://www.w3.org/TR/webaudio/">Web
@@ -26092,34 +25944,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 <tr>
 <td><phrase role="strong">Notes</phrase></td>
 <td>shorthand property</td>
-</tr>
-</tbody>
-</table>
-</div4>
-<div4 id="derivation-fillLineGap">
-<head><loc href="#style-attribute-fillLineGap">tts:fillLineGap</loc></head>
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td><emph>none</emph></td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>Values map directly</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>expresses rendering behavior of background of inline areas</td>
 </tr>
 </tbody>
 </table>
@@ -28174,10 +27998,7 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <head>Parameter Attributes</head>
 <p>The following attributes were added in order to expand parameter functionality:</p>
 <ulist>
-<item><p><loc href="#parameter-attribute-activeArea"><att>ttp:activeArea</att></loc></p></item>
 <item><p><loc href="#parameter-attribute-displayAspectRatio"><att>ttp:displayAspectRatio</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaDuration"><att>ttp:mediaDuration</att></loc></p></item>
-<item><p><loc href="#parameter-attribute-mediaOffset"><att>ttp:mediaOffset</att></loc></p></item>
 </ulist>
 </div3>
 <div3>
@@ -28210,7 +28031,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-border"><att>tts:border</att></loc></p></item>
 <item><p><loc href="#style-attribute-bpd"><att>tts:bpd</att></loc></p></item>
 <item><p><loc href="#style-attribute-disparity"><att>tts:disparity</att></loc></p></item>
-<item><p><loc href="#style-attribute-fillLineGap"><att>tts:fillLineGap</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>

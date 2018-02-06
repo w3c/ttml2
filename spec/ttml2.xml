@@ -9660,15 +9660,93 @@ example.</p>
 </div3>
 <div3 id="style-attribute-fontSelectionStrategy">
 <head>tts:fontSelectionStrategy</head>
-<issue id="issue-ttml2-371">
-<head>Define tts:fontSelectionStrategy</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/371">https://github.com/w3c/ttml2/issues/371</loc></source>
-<p>Define <code>tts:fontSelectionStrategy</code> style property based on
-the XSL 1.1 <xspecref href="http://www.w3.org/TR/xsl/#font-selection-strategy">font-selection-strategy</xspecref> and
-recent <loc href="http://lists.w3.org/Archives/Public/public-tt/2014Nov/0051.html">TTWG ML thread</loc>.</p>
-<p>Specify font selection semantics, including how multiple author defined <loc href="#terms-font-resource">font resources</loc> combine
-with (local) platform defined <loc href="#terms-font-resource">font resources</loc> to obtain an ordered list of <loc href="#terms-font-resource">font resources</loc> for performing character to glyph mapping.</p>
-</issue>
+<p>The <att>tts:fontSelectionStrategy</att> attribute is used to specify a style property that
+determines the strategy to be applied when selecting a font from a list of possible fonts during
+presentation processing.</p>
+<table id="style-property-details-fontSelectionStrategy" role="common">
+<col css="width: 25%;"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>"auto"</code> |
+<code>"character"</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>auto</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-p"><el>p</el></loc>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+<tr>
+<td><emph>Semantic basis:</emph></td>
+<td><loc href="#derivation-fontSelectionStrategy">fontSelectionStrategy derivation</loc></td>
+</tr>
+</tbody>
+</table>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
+<p>In addition to the font selection critera specified by <bibref ref="xsl11"/>, &sect; 7.9.3, the
+following criteria also apply:</p>
+<ulist>
+  <item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc>; and</p></item>
+  <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc>.</p></item>
+</ulist>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>normal</code>.</p>
+<p>The <att>tts:fontSelectionStrategy</att> style is illustrated by the following
+example.</p>
+<table id="style-attribute-fontSelectionStrategy-example-1" role="example">
+<caption>Example Fragment &ndash; Font Selection Strategy</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p tts:fontFamily="myfont,unicode"&gt;
+  &lt;span <phrase role="strong">tts:fontSelectionStrategy="character"</phrase>&gt;&amp;#xE000;&amp;#x20DD;&lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<ednote>
+<name>Font Selection Strategy Example Image</name>
+<date>2018-02-04</date>
+<edtext>Insert example image of font selection strategy based on above example code.</edtext>
+</ednote>
+<!--
+<table id="style-attribute-fontSelectionStrategy-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Font Selection Strategy</caption>
+<tbody>
+<tr>
+<td><graphic source="images/fontSelectionStrategy.png" alt="TTML fontSelectionStrategy style property"/></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+-->
 </div3>
 <div3 id="style-attribute-fontShear">
 <head>tts:fontShear</head>
@@ -18323,7 +18401,7 @@ acting the part of a character.</p>
 <p>The use of <phrase role="deprecated">a reference from the
 <att>agent</att> attribute of a <el>ttm:actor</el> element to its
 parent <el>ttm:agent</el> element is deprecated</phrase>, and,
-furthermore, the semantics of such a circular chain of references is
+furthermore, the semantics of such a circular chain of references are
 not defined by this specification.</p>
 <note role="clarification"><p>If an implementation follows such a
 circular chain of agent references, then it is recommended that this
@@ -25900,11 +25978,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontSelectionStrategy">
 <head><loc href="#style-attribute-fontSelectionStrategy">tts:fontSelectionStrategy</loc></head>
-<issue id="derivation-issue-ttml2-371">
-<head>Define tts:fontSelectionStrategy</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/371">https://github.com/w3c/ttml2/issues/371</loc></source>
-<p>Complete details of this derivation when this style property has been defined.</p>
-</issue>
 <p></p>
 <table role="common">
 <col css="width: 20%;"/>
@@ -25920,11 +25993,11 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </tr>
 <tr>
 <td><phrase role="strong">Values</phrase></td>
-<td>-<code>inherit</code></td>
+<td>-<code>inherit</code>, <code>character</code> maps to <code>character-by-character</code></td>
 </tr>
 <tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>None</td>
+<td><phrase role="strong">Selection criteria is expanded.</phrase></td>
+<td>None.</td>
 </tr>
 </tbody>
 </table>

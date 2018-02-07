@@ -1544,6 +1544,10 @@ the applicable writing mode.</p>
 <p>A unique, logical, rectangular region that establishes a coordinate system into which
 <loc href="#terms-content-region">content regions</loc> are placed and optionally clipped,
 about which see also <specref ref="root-container-region-semantics"/>.</p>
+<note role="elaboration">
+<p>The <loc href="#terms-root-container-region">root container region</loc> has no border or padding; consequently, its border, padding, and
+content rectangles are coterminous.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-root-temporal-extent">
@@ -3445,7 +3449,6 @@ Styling Attributes
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
 <loc href="#style-attribute-fontVariant">tts:fontVariant</loc>,
 <loc href="#style-attribute-fontWeight">tts:fontWeight</loc>,
-<loc href="#style-attribute-inlineAreaBreak">tts:inlineAreaBreak</loc>,
 <loc href="#style-attribute-ipd">tts:ipd</loc>,
 <loc href="#style-attribute-letterSpacing">tts:letterSpacing</loc>,
 <loc href="#style-attribute-lineHeight">tts:lineHeight</loc>,
@@ -4976,11 +4979,6 @@ when specified on the <el>tt</el> element.</p>
 <p>The <att>ttp:frameRate</att> attribute is used to specify the frame rate of a related
 media object or the intrinsic frame rate of a <loc href="#terms-document-instance">document instance</loc> in case it is intended
 to function as an independent media object.</p>
-<issue id="issue-ttml1-192">
-<head>Defaulting Frame Rate Multiplier, Sub Frame Rate</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/192">https://github.com/w3c/ttml1/issues/192</loc></source>
-<p>If frame rate is defaulted to processing environment, then frame rate multiplier and sub frame rate should be as well.</p>
-</issue>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-frameRate-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:frameRate</caption>
@@ -5040,8 +5038,8 @@ numerator | denominator
 </table>
 <p>A frame rate multiplier is used when the desired frame rate cannot
 be expressed as an integral number of frames per second.</p>
-<p>If not specified, the frame rate multiplier must be considered to be equal to one (1:1).
-Both numerator and denominator must be non-zero.</p>
+<p>If not specified, the frame rate multiplier must be considered to be equal to some application defined frame rate multiplier, 
+or if no application defined frame rate multiplier applies, then one (1:1). Both numerator and denominator must be non-zero.</p>
 <p>A <att>ttp:frameRateMultiplier</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <note role="example">
@@ -5231,8 +5229,8 @@ with <emph>s</emph> &isin; [0&hellip;<emph>S&minus;1</emph>].</p>
 <p>See <specref ref="time-expression-semantics-media"/> for further details
 on the interpretation of time expressions for the <code>media</code> time base.</p>
 </note>
-<p>If not specified, the sub-frame rate must be considered to be
-equal to one (1). If specified, then the sub-frame rate must be greater than zero (0).</p>
+<p>If not specified, the sub-frame rate must be considered to be equal to some application defined sub-frame rate, or if no application defined 
+sub-frame rate applies, then one (1). If specified, then the sub-frame rate must be greater than zero (0).</p>
 <p>A <att>ttp:subFrameRate</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <note role="clarification">
@@ -5806,8 +5804,10 @@ an <att>xlink:href</att> attribute, and, if it does, then the latter must be ign
 <p>The <el>br</el> element denotes an explicit line break.</p>
 <p>Any metadata specified by children in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc>
 element group applies semantically to the <el>br</el> element and its descendants as a whole.</p>
-<p>Any animation elements specified by children in the <loc href="#element-vocab-group-animation"><code>Animation.class</code></loc>
-element group apply semantically to the <el>br</el> element.</p>
+<p><phrase role="deprecated">The use of <code>Animation.class</code> children is deprecated.</phrase></p>
+<note role="explanation">
+<p>No style attributes apply to <el>br</el> elements therefore animation has no effect on <el>br</el>.</p>
+</note>
 <table id="elt-syntax-br" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: br</caption>
 <tbody>
@@ -5815,14 +5815,8 @@ element group apply semantically to the <el>br</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;br
-  <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
@@ -5846,9 +5840,6 @@ followed by the control code <code>LF</code> (U+000A) when presented on a telety
 Therefore, two <el>br</el> elements in sequence will produce a
 different effect than a single <el>br</el> element.</p>
 </note>
-<p>If no <att>timeContainer</att> attribute is specified on
-a <el>br</el> element, then it must be interpreted as having
-<emph>parallel</emph> time containment semantics.</p>
 </div3>
 </div2> <!-- content-element-vocabulary -->
 <div2 id="content-attribute-vocabulary">
@@ -7819,7 +7810,6 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
 <item><p><specref ref="style-attribute-fontVariant"/></p></item>
 <item><p><specref ref="style-attribute-fontWeight"/></p></item>
-<item><p><specref ref="style-attribute-inlineAreaBreak"/></p></item>
 <item><p><specref ref="style-attribute-ipd"/></p></item>
 <item><p><specref ref="style-attribute-letterSpacing"/></p></item>
 <item><p><specref ref="style-attribute-lineHeight"/></p></item>
@@ -10242,98 +10232,6 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tbody>
 </table>
 </div3>
-<div3 id="style-attribute-inlineAreaBreak">
-<head>tts:inlineAreaBreak</head>
-<p>The <att>tts:inlineAreaBreak</att> attribute is used to specify a style property that
-defines whether border and padding apply at the start and end edges of an inline area 
-in the context of a fragmentation (break) boundary, for example, at line breaks.</p>
-<table id="style-property-details-inlineAreaBreak" role="common">
-<col css="width: 25%;"/>
-<col/>
-<tbody>
-<tr>
-<td><emph>Values:</emph></td>
-<td>
-<code>clone</code> |
-<code>cloneMostNested</code> |
-<code>slice</code>
-</td>
-</tr>
-<tr>
-<td><emph>Initial:</emph></td>
-<td><code>cloneMostNested</code></td>
-</tr>
-<tr>
-<td><emph>Applies to:</emph></td>
-<td>
-<loc href="#content-vocabulary-span"><el>span</el></loc>
-</td>
-</tr>
-<tr>
-<td><emph>Inherited:</emph></td>
-<td>no</td>
-</tr>
-<tr>
-<td><emph>Percentages:</emph></td>
-<td>N/A</td>
-</tr>
-<tr>
-<td><emph>Animatable:</emph></td>
-<td>discrete</td>
-</tr>
-<tr>
-<td><emph>Semantic basis:</emph></td>
-<td><loc href="#derivation-inlineAreaBreak">inlineAreaBreak derivation</loc></td>
-</tr>
-</tbody>
-</table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-<p>If the value of this attribute is <code>clone</code>, then the border and padding of
-the inline areas generated by the current element are cloned on both sides of a fragmentation (break) boundary.
-Furthermore, any background and padding that applies to ancestor, nesting inline areas at this boundary are also applied.</p>
-<p>If the value of this attribute is <code>cloneMostNested</code>, then the border and padding of
-the inline areas generated by the current element are cloned on both sides of a fragmentation (break) boundary.
-However, any background and padding that would apply to ancestor, nesting inline areas at this boundary are ignored;
-that is, all outer nesting inline areas are treated as if <code>slice</code> applied at this boundary regardless
-of the computed value of this style property that applies to such ancestors.</p>
-<p>If the value of this attribute is <code>slice</code>, then the border and padding of
-the inline areas generated by the current element are not cloned at this fragmentation (break) boundary.</p>
-<p>The <att>tts:inlineAreaBreak</att> style is illustrated by the following example.</p>
-<table id="style-attribute-inlineAreaBreak-example-1" role="example">
-<caption>Example Fragment &ndash; Inline Area Break</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;p&gt;
-  &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;
-    AB
-    &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;CD&lt;br/&gt;EF&lt;/span&gt;
-    GH
-  &lt;/span&gt;
-&lt;/p&gt;
-...
-&lt;p&gt;
-  &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;
-    AB
-    &lt;span <phrase role="strong">tts:inlineAreaBreak="cloneMostNested"</phrase>&gt;CD&lt;br/&gt;EF&lt;/span&gt;
-    GH
-  &lt;/span&gt;
-&lt;/p&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<issue id="issue-ttml2-359-12">
-<head>Inline Area Break Example</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/359">https://github.com/w3c/ttml2/issues/359</loc></source>
-<p>Insert example fragment and image of tts:inlineAreaBreak.</p>
-</issue>
-</div3>
 <div3 id="style-attribute-ipd">
 <head>tts:ipd</head>
 <p>The <att>tts:ipd</att> attribute is used to specify the
@@ -11265,7 +11163,7 @@ then the <att>tts:origin</att> attribute must be ignored for the purpose of pres
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
-<td><code>center</code></td>
+<td><code>top left</code></td>
 </tr>
 <tr>
 <td><emph>Applies to:</emph></td>
@@ -11312,22 +11210,7 @@ a vertical line located at 50% of the width of the posititoning area.</p>
 </tr>
 </tbody>
 </table>
-<p>If specified on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then, if a
-<loc href="#terms-related-media-object">related media object</loc> exists, the positioning rectangle corresponds with
-the <loc href="#terms-related-media-object-region">related media object region</loc>, or, if no
-<loc href="#terms-related-media-object">related media object</loc> exists, the positioning rectangle corresponds with
-an unspecified presentation region determined by the <loc href="#terms-document-processing-context">document processing context</loc>.
-For other applicable element types, the positioning rectangle corresponds with the content rectangle (content box)
-of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<note role="elaboration">
-<p>The <loc href="#terms-root-container-region">root container region</loc> has no border or padding; consequently, its border, padding, and
-content rectangles (boxes) are coterminous.</p>
-</note>
-<p>If a horizontal or vertical position offset is specified by a <att>tts:position</att> attribute in the form of a scalar value
-on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then that value must be expressed using pixel (<code>px</code>) units,
-in which case a pixel must be interpreted as a pixel in the
-<loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>
-(and not a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>).</p>
+<p>If specified on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element, then, the positioning rectangle corresponds with the content rectangle of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -16573,7 +16456,6 @@ element types:</p>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 </ulist>
 <note role="elaboration">
@@ -16852,11 +16734,6 @@ synchronic document form,
 <label>[construct intermediate document]</label>
 <def>
 <p></p>
-<issue id="issue-ttml1-197">
-<head>ISD Construction Prunes &lt;br/&gt; Erroneously</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/197">https://github.com/w3c/ttml1/issues/197</loc></source>
-<p>Should not prune empty break &lt;br/&gt; elements, or should previously convert to LINE SEPARATOR.</p>
-</issue>
 <olist>
 <item>
 <p>perform procedure <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>;</p>
@@ -16868,10 +16745,16 @@ sub-tree
 headed by the <el>body</el> element;</p>
 </item>
 <item>
-<p>evaluating this sub-tree in a postorder traversal, prune elements if they
-are not a <loc href="#terms-presentation-related-element">presentation related element</loc>, if they are temporally inactive,
-or if they aren't associated with region <emph>R</emph> according to the
-<phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure;</p>
+<p>evaluating this sub-tree in a postorder traversal, prune elements if any of the following conditions is true:
+<olist>
+<item><p>they are not a <loc href="#terms-presentation-related-element">presentation related element</loc>
+<!-- ttml1 uses "neither a <loc href="#element-vocab-type-content">Content</loc> nor <loc href="#element-vocab-type-animation">Animation</loc> elements" -->; or</p></item>
+<item><p>they are temporally inactive; or</p></item>
+<item><p>they are empty and neither <loc href="#element-vocab-type-animation">Animation</loc> elements nor <loc href="#content-vocabulary-br">br</loc> elements; or</p></item>
+<item><p>they <!-- ttml1 "are <loc href="#element-vocab-type-content">Content</loc> elements and" -->aren't associated with region <emph>R</emph>
+ according to the <phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure.</p></item>
+</olist>
+</p>
 </item>
 <item>
 <p>if the pruned sub-tree is non-empty, then reparent it to the <emph>R</emph>
@@ -17386,7 +17269,6 @@ has time container semantics, then <code>par</code> time container semantics mus
 <ulist>
 <item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
@@ -18064,7 +17946,6 @@ element types:</p>
 <ulist>
 <item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
@@ -18466,6 +18347,24 @@ agent with another agent that portrays the character.</p>
 <p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
 reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
 acting the part of a character.</p>
+<p>The use of <phrase role="deprecated">a reference from the
+<att>agent</att> attribute of a <el>ttm:actor</el> element to its
+parent <el>ttm:agent</el> element is deprecated</phrase>, and,
+furthermore, the semantics of such a circular chain of references is
+not defined by this specification.</p>
+<note role="clarification"><p>If an implementation follows such a
+circular chain of agent references, then it is recommended that this
+condition be detected and further dereferencing of agent references be
+terminated in order to avoid an infinite loop.</p></note>
+<note role="example"><p>In the case of an actor playing themselves,
+for example, Steve Coogan in <emph>The Trip</emph> playing Steve Coogan, the
+expected practice is to use two <el>ttm:agent</el> elements. The first
+element (corresponding to Steve Coogan the person) uses a
+<att>type</att> attribute with value <code>person</code>, while the
+second element (corresponding to Steve Coogan the character) uses (i)
+a <att>type</att> attribute with value <code>character</code> and (ii)
+a child <el>ttm:actor</el> element that references the first
+<el>ttm:agent</el> element.</p></note>
 <p>An example of the <el>ttm:actor</el> element is shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
@@ -19396,7 +19295,6 @@ supports the following features:</p>
 <item><p><loc href="#feature-border-block"><code>#border-block</code></loc></p></item>
 <item><p><loc href="#feature-border-inline"><code>#border-inline</code></loc></p></item>
 <item><p><loc href="#feature-border-region"><code>#border-region</code></loc></p></item>
-<item><p><loc href="#feature-inlineAreaBreak-cloneMostNested"><code>#inlineAreaBreak-cloneMostNested</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-border-block">
@@ -20240,24 +20138,6 @@ vocabulary defined by <specref ref="styling"/>:</p>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
 </div3>
-<div3 id="feature-inlineAreaBreak">
-<head>#inlineAreaBreak</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#inlineAreaBreak</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#inlineAreaBreak</code> feature if it implements presentation semantic support for the
-<loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-</div3>
-<div3 id="feature-inlineAreaBreak-cloneMostNested">
-<head>#inlineAreaBreak-cloneMostNested</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#inlineAreaBreak-cloneMostNested</code> feature if it recognizes and is capable of
-transforming the <code>cloneMostNested</code> value of the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#inlineAreaBreak-cloneMostNested</code> feature if it implements presentation semantic support for
-the <code>cloneMostNested</code> value of the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-</div3>
 <div3 id="feature-ipd">
 <head>#ipd</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -20802,7 +20682,6 @@ supports the following features:</p>
 <item><p><loc href="#feature-padding-block"><code>#padding-block</code></loc></p></item>
 <item><p><loc href="#feature-padding-inline"><code>#padding-inline</code></loc></p></item>
 <item><p><loc href="#feature-padding-region"><code>#padding-region</code></loc></p></item>
-<item><p><loc href="#feature-inlineAreaBreak-cloneMostNested"><code>#inlineAreaBreak-cloneMostNested</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-pan">
@@ -26268,31 +26147,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </tbody>
 </table>
 </div4>
-<div4 id="derivation-inlineAreaBreak">
-<head><loc href="#style-attribute-inlineAreaBreak">tts:inlineAreaBreak</loc></head>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td><bibref ref="css3-frag"/>, &sect; 5</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td><code>box-decoration-break</code></td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>-<code>inherit</code>, +<code>cloneMostNested</code></td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>None</td>
-</tr>
-</tbody>
-</table>
-</div4>
 <div4 id="derivation-ipd">
 <head><loc href="#style-attribute-ipd">tts:ipd</loc></head>
 <ednote>
@@ -28077,7 +27931,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc></p></item>
-<item><p><loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc></p></item>
 <item><p><loc href="#style-attribute-ipd"><att>tts:ipd</att></loc></p></item>
 <item><p><loc href="#style-attribute-letterSpacing"><att>tts:letterSpacing</att></loc></p></item>
 <item><p><loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc></p></item>

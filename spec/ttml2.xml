@@ -18303,6 +18303,24 @@ agent with another agent that portrays the character.</p>
 <p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
 reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
 acting the part of a character.</p>
+<p>The use of <phrase role="deprecated">a reference from the
+<att>agent</att> attribute of a <el>ttm:actor</el> element to its
+parent <el>ttm:agent</el> element is deprecated</phrase>, and,
+furthermore, the semantics of such a circular chain of references is
+not defined by this specification.</p>
+<note role="clarification"><p>If an implementation follows such a
+circular chain of agent references, then it is recommended that this
+condition be detected and further dereferencing of agent references be
+terminated in order to avoid an infinite loop.</p></note>
+<note role="example"><p>In the case of an actor playing themselves,
+for example, Steve Coogan in <emph>The Trip</emph> playing Steve Coogan, the
+expected practice is to use two <el>ttm:agent</el> elements. The first
+element (corresponding to Steve Coogan the person) uses a
+<att>type</att> attribute with value <code>person</code>, while the
+second element (corresponding to Steve Coogan the character) uses (i)
+a <att>type</att> attribute with value <code>character</code> and (ii)
+a child <el>ttm:actor</el> element that references the first
+<el>ttm:agent</el> element.</p></note>
 <p>An example of the <el>ttm:actor</el> element is shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
@@ -18764,7 +18782,12 @@ a <loc href="#metadata-vocabulary-item"><el>ttm:item</el></loc> element.</p>
 <def>
 <p>A string that expresses alternate text content, where the value
 adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>. Typically used to
-provide a textual equivalent or summary for some related image content.</p>
+provide a text equivalent or summary for some related image content.</p>
+<note role="elaboration"><p>This text equivalent may be used to support indexing of the content and also facilitate
+quality checking of a document during authoring.</p></note>
+<note role="elaboration"><p>In contrast to <bibref ref="html52"/>, the text content of this named
+metadata item is not intended to be presented in place of a referring element if the element's primary (as opposed to alternate)
+content cannot be presented; however, this alternate text content can be used by assistive technologies.</p></note>
 </def>
 </gitem>
 <gitem id="named-item-usesForced">

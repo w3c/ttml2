@@ -16697,32 +16697,6 @@ attribute are implied. In addition, a <el>layout</el> container element is impli
 the implied <el>region</el> element.</p>
 </note>
 </div4>
-<div4 id="anonymous-span-construction">
-<head>Anonymous Span Construction</head>
-<p>For the purposes of performing presentation processing, anonymous spans are created
-according to the following <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> 
-procedure:</p>
-<glist>
-<gitem id="procedure-construct-anonymous-spans">
-<label>[construct anonymous spans]</label>
-<def>
-<olist>
-<item><p>for each significant text node in a <loc href="#element-vocab-type-content">Content</loc> element,
-synthesize an anonymous span to enclose the text node, substituting
-the new anonymous span for the original text node child in its sibling
-and parent hierarchy;</p></item>
-<item><p>for each contiguous sequence of anonymous spans, replace the
-sequence with a single anonymous span which contains a sequence of
-text nodes representing the individual text node children of the
-original sequence of anonymous spans;</p></item>
-<item><p>for each span element whose child is a single anonymous span,
-replace the anonymous span with its sequence of child text
-nodes;</p></item>
-</olist>
-</def>
-</gitem>
-</glist>
-</div4>
 <div4 id="semantics-inline-regions">
 <head>Inline Regions</head>
 <p>An <loc href="#terms-inline-region">inline region</loc> is a syntactic mechanism for specifying a
@@ -16928,8 +16902,7 @@ headed by the <el>body</el> element;</p>
 </item>
 <item>
 <p>evaluating this sub-tree in a postorder traversal, prune elements if they
-are not a <loc href="#terms-presentation-related-element">presentation related element</loc>, if they are temporally inactive but not 
-<loc href="#content-vocabulary-br">br</loc> elements,
+are not a <loc href="#terms-presentation-related-element">presentation related element</loc>, if they are temporally inactive,
 or if they aren't associated with region <emph>R</emph> according to the
 <phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure;</p>
 </item>
@@ -17031,14 +17004,36 @@ since such would not necessarily be sufficient to satisfy the full presentation 
 defined by this specification, and would contain a large number of features not needed to
 implement the presentation semantics of TTML.</p>
 </note>
+<glist>
+<gitem id="procedure-construct-anonymous-spans">
+<label>[construct anonymous spans]</label>
+<def>
+<olist>
+<item><p>for each significant text node in a <loc href="#terms-content-element">content element</loc>,
+synthesize an anonymous span to enclose the text node, substituting
+the new anonymous span for the original text node child in its sibling
+and parent hierarchy;</p></item>
+<item><p>for each contiguous sequence of anonymous spans, replace the
+sequence with a single anonymous span which contains a sequence of
+text nodes representing the individual text node children of the
+original sequence of anonymous spans;</p></item>
+<item><p>for each span element whose child is a single anonymous span,
+replace the anonymous span with its sequence of child text
+nodes;</p></item>
+</olist>
+</def>
+</gitem>
+<gitem id="procedure-perform-flow-transformation">
+<label>[perform flow transformation]</label>
+<def>
+<p></p>
 <p>Each intermediate synchronic document produced by <specref
 ref="semantics-region-layout-step-1"/> is mapped 
 to an XSL FO document instance, <emph>F</emph>, as follows:</p>
 <olist>
+<item><p>perform procedure <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase>;</p></item>
 <item>
-<p>perform the <phrase role="strong">[construct anonymous spans]</phrase> procedure;</p>
-<p>resolve styles according to <specref
-ref="semantics-style-resolution-process-overall"/>;</p>
+<p>resolve styles according to <specref ref="semantics-style-resolution-process-overall"/>;</p>
 <note role="clarification">
   <p>A compliant presentation processor is permitted to perform the previous step (anonymous span generation) and this step (style resolution)
   as post-processing steps while performing the <loc href="#procedure-construct-intermediate-document">[construct intermediate document]</loc> procedure,
@@ -17176,6 +17171,9 @@ resulted in that formatting object element;</p>
 <p>For each resulting document instance F, if processing requires presentation on a 
 visual medium, then apply formatting and rendering semantics consistent with that 
 prescribed by <bibref ref="xsl11"/>.</p>
+</def>
+</gitem>
+</glist>
 </div4>
 <div4 id="semantics-region-layout-example">
 <head>Elaborated Example (Non-Normative)</head>
@@ -17602,17 +17600,16 @@ i.e., parallel containment always applies.</p>
 </issue>
 <ulist>
 <item>
-<p>The implicit duration of an anonymous span, a <el>set</el> element, or a <el>span</el> element whose children are exclusively text nodes, 
-is defined as follows: 
-if the parent time container is a parallel time container, then
+<p>The implicit duration of an anonymous span is defined as follows: if
+the anonymous span's parent time container is a parallel time container, then
 the implicit duration is equivalent to the <code>indefinite</code>
-duration value as defined by <bibref ref="smil3"/>; if the 
+duration value as defined by <bibref ref="smil3"/>; if the anonymous span's
 parent time container is a sequential time container, then the implicit duration
 is equivalent to zero.</p>
 </item>
 <item>
-<p>The implicit duration of a <el>body</el>, <el>div</el>, <el>p</el>, <el>audio</el> or <el>image</el> element, or a <el>span</el> whose children 
-are not exclusively text nodes, is determined in accordance to (1) whether
+<p>The implicit duration of a <el>body</el>, <el>div</el>, <el>p</el>,
+<el>span</el>, <el>audio</el> or <el>image</el> element is determined in accordance to (1) whether
 the element is a parallel or sequential time container, (2) the default
 <code>endsync</code> semantics defined above by <specref ref="timing-attribute-timeContainer"/>,
 and (3) the semantics of <bibref ref="smil3"/> as applied to these time
@@ -17642,9 +17639,9 @@ based timing or event based timing in <bibref ref="smil3"/>, where the specific 
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
 </ulist>
-<p>For the purposes of performing presentation processing, the <phrase role="strong">
-<loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> procedure is applied before resolving begin and end 
-times of content elements.</p>
+<div3 id="semantics-anonymous-span-timing">
+<head>Anonymous Span Timing</head>
+<p><emph>This sub-section is non-normative.</emph></p>
 <p>The following example illustrates the timing semantics of anonymous spans that are children of sequential and parallel time containers. 
 The words <emph>Hello</emph> and <emph>Allo</emph> are both contained in anonymous spans that are children of a sequential 
 time container (the <code>p</code> element). As such, neither <emph>Hello</emph> nor <emph>Allo</emph> will be displayed 
@@ -17675,6 +17672,7 @@ its <code>span</code>, <code>p</code>, <code>div</code> and <code>body</code> an
 </tr>
 </tbody>
 </table>
+</div3>
 <div3 id="semantics-media-timing">
 <head>Media Timing</head>
 <p><emph>This sub-section is non-normative.</emph></p>

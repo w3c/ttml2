@@ -1545,6 +1545,10 @@ the applicable writing mode.</p>
 <p>A unique, logical, rectangular region that establishes a coordinate system into which
 <loc href="#terms-content-region">content regions</loc> are placed and optionally clipped,
 about which see also <specref ref="root-container-region-semantics"/>.</p>
+<note role="elaboration">
+<p>The <loc href="#terms-root-container-region">root container region</loc> has no border or padding; consequently, its border, padding, and
+content rectangles are coterminous.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-root-temporal-extent">
@@ -1859,7 +1863,7 @@ as in the following:</p>
 <eg xml:space="preserve">
 &lt;example
   <phrase role="reqattr">count</phrase> = <loc href="http://www.w3.org/TR/xmlschema-2/#integer">xsd:integer</loc>
-  size = (<emph>large</emph>|<emph>medium</emph>|<emph>small</emph>|<emph><phrase role="deprecated">tiny</phrase></emph>|<emph><phrase role="obsoleted">micro</phrase></emph>) : medium&gt;
+  size = (<emph>"large"</emph> | <emph>"medium"</emph> | <emph>"small"</emph> | <emph><phrase role="deprecated">"tiny"</phrase></emph> | <emph><phrase role="obsoleted">"micro"</phrase></emph>) : medium&gt;
   <emph>Content:</emph> (all | any*)
 &lt;/example&gt;
 </eg>
@@ -1876,8 +1880,7 @@ there is a default value, it is shown following a colon. Where an
 <loc href="#terms-attribute-information-item">attribute information item</loc> has a built-in simple type definition
 defined in <bibref ref="xsd-2"/>, a hyperlink to its definition
 therein is given.</p>
-<p>In an XML representation, the expression <emph>{any attribute not in default or any TT Namespace}</emph> applies
-only to namespace qualified attributes; unqualified attributes are not permitted unless explicitly defined in this specification.</p>
+<p>Unqualified attributes are not permitted unless explicitly defined in this specification.</p>
 <p>An information item depicted with a <phrase role="deprecated">light yellow orange</phrase> background color is deprecated (e.g.,
 the <phrase role="deprecated">tiny</phrase> value of the <code>size</code> attribute shown above).
 An information item that is <phrase role="deprecated">deprecated</phrase> may but should not appear in a TTML document instance,
@@ -2227,16 +2230,46 @@ element satisfy their respective element type's content
 specifications, all required attributes are present, and the declared
 value of each attribute satisfies the type declared by the
 associated <loc href="#terms-abstract-document-type">abstract document type</loc>.</p>
-<issue id="issue-ttml1-196">
-<head>Attribute Forward Compatibility</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/196">https://github.com/w3c/ttml1/issues/196</loc></source>
-<p>Enhance step (3) to handle forward compatibility of new attributes introduced into TT Namespaces.</p>
-</issue>
 <note>
 <p>While a conformant processor may not <emph>a priori</emph> reject a
 conformant <loc href="#terms-document-instance">document instance</loc>, a given <loc href="#terms-document-instance">document instance</loc> may be
 constrained by the author or authoring tool to satisfy a more
 restrictive definition of validity.</p>
+</note>
+<note>
+<p>As illustrated in the following example, an <loc href="#terms-abstract-document-instance">abstract document instance</loc> can be a 
+<loc href="#terms-valid-abstract-document-instance">valid abstract document instance</loc> even if it includes elements and attributes whose 
+namespace names are listed in <specref ref="namespace-vocab-table"/> but whose local names are not part of the vocabulary defined by this version 
+of the specification. Specifically, the element <code>foo</code> and the attribute <att>tts:foo</att> are pruned by above steps (1) and (3), 
+respectively, because they are not members of the associated <loc href="#terms-abstract-document-type">abstract document type</loc>, even though their 
+namespace names are listed in <specref ref="namespace-vocab-table"/>.
+</p>
+<table id="document-types-example" role="example">
+<caption>Example Fragment &ndash; Pruning of elements and attributes that are not members of the associated 
+  <loc href="#terms-abstract-document-type">abstract document type</loc></caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt
+  xmlns=&quot;http://www.w3.org/ns/ttml&quot;
+  xmlns:tts=&quot;http://www.w3.org/ns/ttml#styling&quot;
+  xml:lang=&quot;en&quot;&gt;
+  &lt;body&gt;
+    &lt;foo&gt;Foo&lt;/foo&gt;
+    &lt;div&gt;
+      &lt;p
+        tts:foo=&quot;bar&quot;&gt;
+          Bar
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </note>
 <div2 id="ttml-content-doctype">
 <head>TTML Content Document Type</head>
@@ -2270,6 +2303,10 @@ formal validity of a <loc href="#terms-document-instance">document instance</loc
 which all foreign namespace elements and attributes have been removed. Therefore, the
 exceptional reporting of this false negative does not impact the formal assessment
 of <loc href="#terms-document-instance">document instance</loc> validity.</p>
+</note>
+<note role="clarification">
+<p>The schemas referenced by this specification are intended for use after the pruning steps (1)-(3) specified by <specref ref="doctypes"/> have been
+ applied.</p>
 </note>
 <note role="clarification">
 <p>A conforming <loc href="#conformance-generic-processor">Generic Processor</loc> is required to support the ingestion and processing
@@ -2653,13 +2690,13 @@ element</p>
 <gitem id="semantics-profile-state-profile-specification-type">
 <label>type</label>
 <def>
-<p><code>feature|extension</code></p>
+<p><code>"feature" | "extension"</code></p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-specification-value">
 <label>value</label>
 <def>
-<p><code>optional|required|prohibited</code></p>
+<p><code>"optional" | "required" | "prohibited"</code></p>
 </def>
 </gitem>
 </glist>
@@ -2713,13 +2750,13 @@ that corresponds with a <loc href="#profile-vocabulary-profile"><el>ttp:profile<
 <gitem id="semantics-profile-state-profile-type">
 <label>type</label>
 <def>
-<p><code>content|processor</code></p>
+<p><code>"content" | "processor"</code></p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-combine">
 <label>combine</label>
 <def>
-<p><code>leastRestrictive|mostRestrictive|replace</code></p>
+<p><code>"leastRestrictive" | "mostRestrictive" | "replace"</code></p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-use">
@@ -3446,7 +3483,6 @@ Styling Attributes
 <loc href="#style-attribute-fontStyle">tts:fontStyle</loc>,
 <loc href="#style-attribute-fontVariant">tts:fontVariant</loc>,
 <loc href="#style-attribute-fontWeight">tts:fontWeight</loc>,
-<loc href="#style-attribute-inlineAreaBreak">tts:inlineAreaBreak</loc>,
 <loc href="#style-attribute-ipd">tts:ipd</loc>,
 <loc href="#style-attribute-letterSpacing">tts:letterSpacing</loc>,
 <loc href="#style-attribute-lineHeight">tts:lineHeight</loc>,
@@ -3598,12 +3634,11 @@ otherwise it is referred to as a <loc href="#terms-non-nesting-profile">non-nest
 <td>
 <eg xml:space="preserve">
 &lt;ttp:profile
-  combine = (leastRestrictive|mostRestrictive|replace) : replace
+  combine = (<emph>"leastRestrictive"</emph> | <emph>"mostRestrictive"</emph> | <emph>"replace"</emph>) : replace
   designator = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  type = (processor|content) : processor
+  type = (<emph>"processor"</emph> | <emph>"content"</emph>) : processor
   use = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, ((<loc href="#profile-vocabulary-features">ttp:features</loc>*, <loc href="#profile-vocabulary-extensions">ttp:extensions</loc>*)|<loc href="#profile-vocabulary-profile">ttp:profile</loc>*)
 &lt;/ttp:profile&gt;
 </eg>
@@ -3734,7 +3769,6 @@ zero or more <el>ttp:feature</el> elements.</p>
 &lt;ttp:features
   xml:base = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>TT Feature Namespace</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#profile-vocabulary-feature">ttp:feature</loc>*
 &lt;/ttp:features&gt;
 </eg>
@@ -3767,9 +3801,8 @@ infomation about support and usage requirements for a particular feature.</p>
 &lt;ttp:feature
   extends = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   restricts = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
+  value = (<emph>"optional"</emph> | <emph>"required"</emph> | <emph><phrase role="deprecated">"use"</phrase></emph> | <emph>"prohibited"</emph>) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttp:feature&gt;
 </eg>
@@ -3942,7 +3975,6 @@ zero or more <el>ttp:extension</el> elements.</p>
 &lt;ttp:extensions
   xml:base = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>TT Extension Namespace</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#profile-vocabulary-extension">ttp:extension</loc>*
 &lt;/ttp:extensions&gt;
 </eg>
@@ -3975,9 +4007,8 @@ infomation about support and usage requirements for a particular extension.</p>
 &lt;ttp:extension
   extends = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   restricts = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  value = (optional|required|<phrase role="deprecated">use</phrase>|prohibited) : <emph>see prose below</emph>
+  value = (<emph>"optional"</emph> | <emph>"required"</emph> | <emph><phrase role="deprecated">"use"</phrase></emph> | <emph>"prohibited"</emph>) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/ttp:extension&gt;
 </eg>
@@ -4977,11 +5008,6 @@ when specified on the <el>tt</el> element.</p>
 <p>The <att>ttp:frameRate</att> attribute is used to specify the frame rate of a related
 media object or the intrinsic frame rate of a <loc href="#terms-document-instance">document instance</loc> in case it is intended
 to function as an independent media object.</p>
-<issue id="issue-ttml1-192">
-<head>Defaulting Frame Rate Multiplier, Sub Frame Rate</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/192">https://github.com/w3c/ttml1/issues/192</loc></source>
-<p>If frame rate is defaulted to processing environment, then frame rate multiplier and sub frame rate should be as well.</p>
-</issue>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-frameRate-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:frameRate</caption>
@@ -5041,8 +5067,8 @@ numerator | denominator
 </table>
 <p>A frame rate multiplier is used when the desired frame rate cannot
 be expressed as an integral number of frames per second.</p>
-<p>If not specified, the frame rate multiplier must be considered to be equal to one (1:1).
-Both numerator and denominator must be non-zero.</p>
+<p>If not specified, the frame rate multiplier must be considered to be equal to some application defined frame rate multiplier, 
+or if no application defined frame rate multiplier applies, then one (1:1). Both numerator and denominator must be non-zero.</p>
 <p>A <att>ttp:frameRateMultiplier</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <note role="example">
@@ -5232,8 +5258,8 @@ with <emph>s</emph> &isin; [0&hellip;<emph>S&minus;1</emph>].</p>
 <p>See <specref ref="time-expression-semantics-media"/> for further details
 on the interpretation of time expressions for the <code>media</code> time base.</p>
 </note>
-<p>If not specified, the sub-frame rate must be considered to be
-equal to one (1). If specified, then the sub-frame rate must be greater than zero (0).</p>
+<p>If not specified, the sub-frame rate must be considered to be equal to some application defined sub-frame rate, or if no application defined 
+sub-frame rate applies, then one (1). If specified, then the sub-frame rate must be greater than zero (0).</p>
 <p>A <att>ttp:subFrameRate</att> attribute is considered to be significant only
 when specified on the <el>tt</el> element.</p>
 <note role="clarification">
@@ -5405,10 +5431,9 @@ zero or one <el>body</el> element.</p>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>) : default
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>) : default
   {<emph>any attribute in TT Parameter Namespace</emph>}
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#document-structure-vocabulary-head">head</loc>?, <loc href="#document-structure-vocabulary-body">body</loc>?
 &lt;/tt&gt;
 </eg>
@@ -5488,8 +5513,7 @@ or <loc href="#element-vocab-type-layout">Layout</loc> elements.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#element-vocab-group-profile">Profile.class</loc>*, <loc href="#embedded-content-vocabulary-resources">resources</loc>?, <loc href="#styling-vocabulary-styling">styling</loc>?, <loc href="#layout-vocabulary-layout">layout</loc>?, <loc href="#animation-vocabulary-animation">animation</loc>?
 &lt;/head&gt;
 </eg>
@@ -5530,13 +5554,12 @@ element group apply semantically to the <el>body</el> element.</p>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, <loc
@@ -5623,13 +5646,12 @@ element group apply semantically to the <el>div</el> element.</p>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, <loc
@@ -5688,13 +5710,12 @@ element group apply semantically to the <el>p</el> element.</p>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, <loc
@@ -5761,18 +5782,17 @@ element group apply semantically to the <el>span</el> element.</p>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
   <loc href="#content-attribute-xlink-href">xlink:href</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xlink-role">xlink:role</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
-  <loc href="#content-attribute-xlink-show">xlink:show</loc> = (<emph>new</emph>|<emph>replace</emph>|<emph>embed</emph>|<emph>other</emph>|<emph>none</emph>) : new
+  <loc href="#content-attribute-xlink-show">xlink:show</loc> = (<emph>"new"</emph> | <emph>"replace"</emph> | <emph>"embed"</emph> | <emph>"other"</emph> | <emph>"none"</emph>) : new
   <loc href="#content-attribute-xlink-title">xlink:title</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc
   href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, (<loc
@@ -5807,8 +5827,10 @@ an <att>xlink:href</att> attribute, and, if it does, then the latter must be ign
 <p>The <el>br</el> element denotes an explicit line break.</p>
 <p>Any metadata specified by children in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc>
 element group applies semantically to the <el>br</el> element and its descendants as a whole.</p>
-<p>Any animation elements specified by children in the <loc href="#element-vocab-group-animation"><code>Animation.class</code></loc>
-element group apply semantically to the <el>br</el> element.</p>
+<p><phrase role="deprecated">The use of <code>Animation.class</code> children is deprecated.</phrase></p>
+<note role="explanation">
+<p>No style attributes apply to <el>br</el> elements therefore animation has no effect on <el>br</el>.</p>
+</note>
 <table id="elt-syntax-br" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: br</caption>
 <tbody>
@@ -5816,20 +5838,13 @@ element group apply semantically to the <el>br</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;br
-  <loc href="#animation-attribute-animate">animate</loc> = IDREFS
-  <loc href="#timing-attribute-begin">begin</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#element-vocab-group-animation">Animation.class</loc>*
 &lt;/br&gt;
 </eg>
@@ -5847,9 +5862,6 @@ followed by the control code <code>LF</code> (U+000A) when presented on a telety
 Therefore, two <el>br</el> elements in sequence will produce a
 different effect than a single <el>br</el> element.</p>
 </note>
-<p>If no <att>timeContainer</att> attribute is specified on
-a <el>br</el> element, then it must be interpreted as having
-<emph>parallel</emph> time containment semantics.</p>
 </div3>
 </div2> <!-- content-element-vocabulary -->
 <div2 id="content-attribute-vocabulary">
@@ -6096,8 +6108,7 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
   | "(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? argument-list <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
 
 argument-list
-  : <loc href="#content-value-expression">&lt;expression&gt;</loc>
-  | argument-list <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#content-value-expression">&lt;expression&gt;</loc>
+  : <loc href="#content-value-expression">&lt;expression&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#content-value-expression">&lt;expression&gt;</loc>)*
 </eg>
 </td>
 </tr>
@@ -6115,10 +6126,10 @@ argument-list
 <td>
 <eg xml:space="preserve">
 &lt;bound-parameter&gt;
-  : forced
-  | mediaAspectRatio
-  | mediaLanguage
-  | userLanguage
+  : "forced"
+  | "mediaAspectRatio"
+  | "mediaLanguage"
+  | "userLanguage"
 </eg>
 </td>
 </tr>
@@ -6285,10 +6296,10 @@ decimal-digits
   | decimal-digits decimal-digit
 
 decimal-digit
-  : "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8"
+  : "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 non-zero-digit
-  : "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8"
+  : "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 exponent-part
   : exponent-indicator signed-integer
@@ -6546,14 +6557,13 @@ zero or more elements in the <loc href="#element-vocab-group-animation"><code>An
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-audio">&lt;audio&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
   {<emph>any attribute in TT Metadata Namespace</emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
 &lt;/audio&gt;
@@ -6623,10 +6633,9 @@ If no <code>clipEnd</code> attribute is specified, then a value equal to the int
 <eg xml:space="preserve">
 &lt;chunk
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : base64
+  <loc href="#embedded-content-attribute-encoding">encoding</loc> = (<emph>"base16"</emph> | <emph>"base32"</emph> | <emph>"base32hex"</emph> | <emph>"base64"</emph> | <emph>"base64url"</emph>) : base64
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> #PCDATA
 &lt;/chunk&gt;
 </eg>
@@ -6720,15 +6729,14 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
 <eg xml:space="preserve">
 &lt;data
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <loc href="#embedded-content-attribute-encoding">encoding</loc> = (base16|base32|base32hex|base64|base64url) : <emph>see prose below</emph>
+  <loc href="#embedded-content-attribute-encoding">encoding</loc> = (<emph>"base16"</emph> | <emph>"base32"</emph> | <emph>"base32hex"</emph> | <emph>"base64"</emph> | <emph>"base64url"</emph>) : <emph>see prose below</emph>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
   length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> #PCDATA | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-chunk">chunk</loc>+) | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>+)
 &lt;/data&gt;
 </eg>
@@ -6854,14 +6862,13 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
   family = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
   range = <loc href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</loc>
-  style = (normal|italic|oblique)
+  style = (<emph>"normal"</emph> | <emph>"italic"</emph> | <emph>"oblique"</emph>) : <emph>see prose below</emph>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-font">&lt;font&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  weight = (normal|bold)
+  weight = (<emph>"normal"</emph> | <emph>"bold"</emph>) : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
 &lt;/font&gt;
 </eg>
@@ -6991,19 +6998,18 @@ zero or more <loc href="#embedded-content-vocabulary-source"><el>source</el></lo
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xlink-arcrole">xlink:arcrole</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
   <loc href="#content-attribute-xlink-href">xlink:href</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xlink-role">xlink:role</loc> = <loc href="#content-value-uri-list">&lt;uri-list&gt;</loc>
-  <loc href="#content-attribute-xlink-show">xlink:show</loc> = (<emph>new</emph>|<emph>replace</emph>|<emph>embed</emph>|<emph>other</emph>|<emph>none</emph>) : new
+  <loc href="#content-attribute-xlink-show">xlink:show</loc> = (<emph>"new"</emph> | <emph>"replace"</emph> | <emph>"embed"</emph> | <emph>"other"</emph> | <emph>"none"</emph>) : new
   <loc href="#content-attribute-xlink-title">xlink:title</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
   {<emph>any attribute in TT Metadata Namespace</emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>*
 &lt;/image&gt;
@@ -7165,8 +7171,7 @@ followed by zero or more elements in the
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, (<loc href="#element-vocab-group-data">Data.class</loc>|<loc href="#element-vocab-group-embedded">Embedded.class</loc>|<loc href="#element-vocab-group-font">Font.class</loc>)*
 &lt;/resources&gt;
 </eg>
@@ -7207,8 +7212,7 @@ a <loc href="#terms-nested-embedded-source">nested embedded source</loc>.</p>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-data">data</loc>?
 &lt;/source&gt;
 </eg>
@@ -7528,10 +7532,10 @@ of <loc href="#terms-font-resource">font resources</loc> due that lack a registe
 <td>
 <eg xml:space="preserve">
 &lt;font-format&gt;
-  : eot                                     // embedded opentype
-  | otf                                     // opentype
-  | ttf                                     // truetype
-  | woff                                    // web open font format
+  : "eot"                                   // embedded opentype
+  | "otf"                                   // opentype
+  | "ttf"                                   // truetype
+  | "woff"                                  // web open font format
   | <loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>
   | <loc href="#content-value-uri">&lt;uri&gt;</loc>
 </eg>
@@ -7679,9 +7683,8 @@ the specification defined initial value(s).</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*
 &lt;/initial&gt;
 </eg>
@@ -7728,9 +7731,8 @@ specified style set in accordance with
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*
 &lt;/style&gt;
 </eg>
@@ -7775,8 +7777,7 @@ followed by zero or more <el>style</el> elements.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#styling-vocabulary-initial">initial</loc>*, <loc href="#styling-vocabulary-style">style</loc>*
 &lt;/styling&gt;
 </eg>
@@ -7820,7 +7821,6 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-fontStyle"/></p></item>
 <item><p><specref ref="style-attribute-fontVariant"/></p></item>
 <item><p><specref ref="style-attribute-fontWeight"/></p></item>
-<item><p><specref ref="style-attribute-inlineAreaBreak"/></p></item>
 <item><p><specref ref="style-attribute-ipd"/></p></item>
 <item><p><specref ref="style-attribute-letterSpacing"/></p></item>
 <item><p><specref ref="style-attribute-lineHeight"/></p></item>
@@ -7923,9 +7923,9 @@ which the background is painted.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>border</code> |
-<code>content</code> |
-<code>padding</code>
+<code>"border"</code> |
+<code>"content"</code> |
+<code>"padding"</code>
 </td>
 </tr>
 <tr>
@@ -8201,7 +8201,7 @@ element in a block or inline context.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-none | <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
+<code>"none"</code> | <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -8313,9 +8313,9 @@ which the background is positioned.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>border</code> |
-<code>content</code> |
-<code>padding</code>
+<code>"border"</code> |
+<code>"content"</code> |
+<code>"padding"</code>
 </td>
 </tr>
 <tr>
@@ -8479,10 +8479,10 @@ defines whether and how a background image is repeated (tiled) into a region or 
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>repeat</code> |
-<code>repeatX</code> |
-<code>repeatY</code> |
-<code>noRepeat</code>
+<code>"repeat"</code> |
+<code>"repeatX"</code> |
+<code>"repeatY"</code> |
+<code>"noRepeat"</code>
 </td>
 </tr>
 <tr>
@@ -8865,8 +8865,8 @@ about which see <bibref ref="uax9"/>.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>ltr</code> |
-<code>rtl</code>
+<code>"ltr"</code> |
+<code>"rtl"</code>
 </td>
 </tr>
 <tr>
@@ -9009,7 +9009,7 @@ between disparity and perceived depth.</p>
 </tbody>
 </table>
 <p>When rendering a region on the right (left) image of a stereoscopic image pair, the center of the region is offset along the horizontal axis by a value equal to ½ (-½) the computed value of <att>tts:disparity</att>, where a positive offset is to the right, and a negative offset is to the left.</p>
-<p>Unless rendering onto a steroscopic image pair, the <att>tts:disparity</att> attribute is ignored for the purpose of presentation processing.</p>
+<p>Unless rendering onto a stereoscopic image pair, the <att>tts:disparity</att> attribute is ignored for the purpose of presentation processing.</p>
 <p>The author should ensure that the perceived depth of a region is positioned in front of any object in the scene during the entire time the region is visible. The stereoscopic effect will be broken if an object in the scene is perceived to be in front of the region.</p>
 <p>If applicable, inheritance of disparity occurs only by means of <specref ref="semantics-style-inheritance-root"/>, whether the inheriting region is
 an <loc href="#terms-out-of-line-region">out-of-line region</loc> or
@@ -9079,9 +9079,9 @@ in a region.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>auto</code> |
-<code>none</code> |
-<code>inlineBlock</code>
+<code>"auto"</code> |
+<code>"none"</code> |
+<code>"inlineBlock"</code>
 </td>
 </tr>
 <tr>
@@ -9213,10 +9213,10 @@ defines the alignment of block areas in the block progression direction.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>before</code> |
-<code>center</code> |
-<code>after</code> |
-<code>justify</code>
+<code>"before"</code> |
+<code>"center"</code> |
+<code>"after"</code> |
+<code>"justify"</code>
 </td>
 </tr>
 <tr>
@@ -9601,8 +9601,8 @@ determines whether font kerning is applied when positioning <loc href="#terms-gl
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>none</code> |
-<code>normal</code>
+<code>"none"</code> |
+<code>"normal"</code>
 </td>
 </tr>
 <tr>
@@ -9850,10 +9850,10 @@ then relative to nearest ancestor <loc href="#terms-styled-element">styled eleme
 </tr>
 </tbody>
 </table>
-<p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length applies
-equally to the horizontal and vertical size of a glyph's EM square;
-if two <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first expresses the horizontal
-size and the second expresses vertical size.</p>
+<p>If a single <loc href="#style-value-length">&lt;length&gt;</loc> value is specified, then this length 
+equally determines the horizontal and vertical size of a glyph's EM square;
+if two <loc href="#style-value-length">&lt;length&gt;</loc> values are specified, then the first determines the horizontal
+size and the second determines the vertical size.</p>
 <p>If horizontal and vertical sizes are expressed independently, then the
 units of the <loc href="#style-value-length">&lt;length&gt;</loc> values must be the same.</p>
 <note role="clarification">
@@ -9993,9 +9993,9 @@ by this specification.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>normal</code> |
-<code>italic</code> |
-<code>oblique</code>
+<code>"normal"</code> |
+<code>"italic"</code> |
+<code>"oblique"</code>
 </td>
 </tr>
 <tr>
@@ -10168,8 +10168,8 @@ by this specification.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>normal</code> |
-<code>bold</code>
+<code>"normal"</code> |
+<code>"bold"</code>
 </td>
 </tr>
 <tr>
@@ -10242,98 +10242,6 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
-</div3>
-<div3 id="style-attribute-inlineAreaBreak">
-<head>tts:inlineAreaBreak</head>
-<p>The <att>tts:inlineAreaBreak</att> attribute is used to specify a style property that
-defines whether border and padding apply at the start and end edges of an inline area 
-in the context of a fragmentation (break) boundary, for example, at line breaks.</p>
-<table id="style-property-details-inlineAreaBreak" role="common">
-<col css="width: 25%;"/>
-<col/>
-<tbody>
-<tr>
-<td><emph>Values:</emph></td>
-<td>
-<code>clone</code> |
-<code>cloneMostNested</code> |
-<code>slice</code>
-</td>
-</tr>
-<tr>
-<td><emph>Initial:</emph></td>
-<td><code>cloneMostNested</code></td>
-</tr>
-<tr>
-<td><emph>Applies to:</emph></td>
-<td>
-<loc href="#content-vocabulary-span"><el>span</el></loc>
-</td>
-</tr>
-<tr>
-<td><emph>Inherited:</emph></td>
-<td>no</td>
-</tr>
-<tr>
-<td><emph>Percentages:</emph></td>
-<td>N/A</td>
-</tr>
-<tr>
-<td><emph>Animatable:</emph></td>
-<td>discrete</td>
-</tr>
-<tr>
-<td><emph>Semantic basis:</emph></td>
-<td><loc href="#derivation-inlineAreaBreak">inlineAreaBreak derivation</loc></td>
-</tr>
-</tbody>
-</table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
-<p>If the value of this attribute is <code>clone</code>, then the border and padding of
-the inline areas generated by the current element are cloned on both sides of a fragmentation (break) boundary.
-Furthermore, any background and padding that applies to ancestor, nesting inline areas at this boundary are also applied.</p>
-<p>If the value of this attribute is <code>cloneMostNested</code>, then the border and padding of
-the inline areas generated by the current element are cloned on both sides of a fragmentation (break) boundary.
-However, any background and padding that would apply to ancestor, nesting inline areas at this boundary are ignored;
-that is, all outer nesting inline areas are treated as if <code>slice</code> applied at this boundary regardless
-of the computed value of this style property that applies to such ancestors.</p>
-<p>If the value of this attribute is <code>slice</code>, then the border and padding of
-the inline areas generated by the current element are not cloned at this fragmentation (break) boundary.</p>
-<p>The <att>tts:inlineAreaBreak</att> style is illustrated by the following example.</p>
-<table id="style-attribute-inlineAreaBreak-example-1" role="example">
-<caption>Example Fragment &ndash; Inline Area Break</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;p&gt;
-  &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;
-    AB
-    &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;CD&lt;br/&gt;EF&lt;/span&gt;
-    GH
-  &lt;/span&gt;
-&lt;/p&gt;
-...
-&lt;p&gt;
-  &lt;span <phrase role="strong">tts:inlineAreaBreak="clone"</phrase>&gt;
-    AB
-    &lt;span <phrase role="strong">tts:inlineAreaBreak="cloneMostNested"</phrase>&gt;CD&lt;br/&gt;EF&lt;/span&gt;
-    GH
-  &lt;/span&gt;
-&lt;/p&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<issue id="issue-ttml2-359-12">
-<head>Inline Area Break Example</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/359">https://github.com/w3c/ttml2/issues/359</loc></source>
-<p>Insert example fragment and image of tts:inlineAreaBreak.</p>
-</issue>
 </div3>
 <div3 id="style-attribute-ipd">
 <head>tts:ipd</head>
@@ -10422,7 +10330,7 @@ justification may be applied in addition to letter spacing.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>normal</code> |
+<code>"normal"</code> |
 <loc href="#style-value-length">&lt;length&gt;</loc>
 </td>
 </tr>
@@ -10515,7 +10423,7 @@ horizontal writing modes, but is the horizontal axis in vertical writing modes.<
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>normal</code> |
+<code>"normal"</code> |
 <loc href="#style-value-length">&lt;length&gt;</loc>
 </td>
 </tr>
@@ -10958,8 +10866,8 @@ its extent.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>visible</code> |
-<code>hidden</code>
+<code>"visible"</code> |
+<code>"hidden"</code>
 </td>
 </tr>
 <tr>
@@ -11095,6 +11003,13 @@ before edge, the second applies to the start and end edges, and the third applie
 to the after edge.
 If four <loc href="#style-value-length">&lt;length&gt;</loc> specifications are provided, then they apply to before, end,
 after, and start edges, respectively.</p>
+<note role="clarification">
+<p>Percentage values are relative to the dimension of the region to which they apply. For example, if the before and after edges correspond 
+to the top and bottom edges of the region, as is the case for Latin text where <att>tts:writingMode</att> is equal to <code>"lrtb"</code>, 
+then percentage values that apply to either of the two edges are relative to the height of the region. Conversely, if the before and after 
+edges correspond to the right and left edges of the region, as is the case for Japanese text where <att>tts:writingMode</att> is equal to 
+<code>"tbrl"</code>, then percentage values that apply to either of the two edges are relative to the width of the region.</p>
+</note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express padding must be non-negative.</p>
 <p>If padding is applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element, and content from that element
 is divided across multiple line areas, then the specified padding must be applied at each line break boundary. In contrast,
@@ -11232,7 +11147,7 @@ then the <att>tts:origin</att> attribute must be ignored for the purpose of pres
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
-<td><code>center</code></td>
+<td><code>top left</code></td>
 </tr>
 <tr>
 <td><emph>Applies to:</emph></td>
@@ -11279,22 +11194,7 @@ a vertical line located at 50% of the width of the posititoning area.</p>
 </tr>
 </tbody>
 </table>
-<p>If specified on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then, if a
-<loc href="#terms-related-media-object">related media object</loc> exists, the positioning rectangle corresponds with
-the <loc href="#terms-related-media-object-region">related media object region</loc>, or, if no
-<loc href="#terms-related-media-object">related media object</loc> exists, the positioning rectangle corresponds with
-an unspecified presentation region determined by the <loc href="#terms-document-processing-context">document processing context</loc>.
-For other applicable element types, the positioning rectangle corresponds with the content rectangle (content box)
-of the <loc href="#terms-root-container-region">root container region</loc>.</p>
-<note role="elaboration">
-<p>The <loc href="#terms-root-container-region">root container region</loc> has no border or padding; consequently, its border, padding, and
-content rectangles (boxes) are coterminous.</p>
-</note>
-<p>If a horizontal or vertical position offset is specified by a <att>tts:position</att> attribute in the form of a scalar value
-on a <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then that value must be expressed using pixel (<code>px</code>) units,
-in which case a pixel must be interpreted as a pixel in the
-<loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>
-(and not a pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>).</p>
+<p>If specified on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element, then, the positioning rectangle corresponds with the content rectangle of the <loc href="#terms-root-container-region">root container region</loc>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
 <note role="elaboration">
@@ -11358,13 +11258,13 @@ styling.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>none</code> |
-<code>container</code> |
-<code>base</code> |
-<code>baseContainer</code> |
-<code>text</code> |
-<code>textContainer</code> |
-<code>delimiter</code>
+<code>"none"</code> |
+<code>"container"</code> |
+<code>"base"</code> |
+<code>"baseContainer"</code> |
+<code>"text"</code> |
+<code>"textContainer"</code> |
+<code>"delimiter"</code>
 </td>
 </tr>
 <tr>
@@ -11712,13 +11612,13 @@ further information.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>auto</code> |
-<code>start</code> |
-<code>center</code> |
-<code>end</code> |
-<code>spaceAround</code> |
-<code>spaceBetween</code> |
-<code>withBase</code>
+<code>"auto"</code> |
+<code>"start"</code> |
+<code>"center"</code> |
+<code>"end"</code> |
+<code>"spaceAround"</code> |
+<code>"spaceBetween"</code> |
+<code>"withBase"</code>
 </td>
 </tr>
 <tr>
@@ -12236,8 +12136,8 @@ if either apply to the region.</p></note>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>always</code> |
-<code>whenActive</code>
+<code>"always"</code> |
+<code>"whenActive"</code>
 </td>
 </tr>
 <tr>
@@ -12321,12 +12221,12 @@ direction.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>left</code> |
-<code>center</code> |
-<code>right</code> |
-<code>start</code> |
-<code>end</code> |
-<code>justify</code>
+<code>"left"</code> |
+<code>"center"</code> |
+<code>"right"</code> |
+<code>"start"</code> |
+<code>"end"</code> |
+<code>"justify"</code>
 </td>
 </tr>
 <tr>
@@ -12703,11 +12603,11 @@ by content flowed into a region to which a vertical writing mode applies.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>mixed</code> |
-<code>sideways</code> |
-<code>sidewaysLeft</code> |
-<code>sidewaysRight</code> |
-<code>upright</code>
+<code>"mixed"</code> |
+<code>"sideways"</code> |
+<code>"sidewaysLeft"</code> |
+<code>"sidewaysRight"</code> |
+<code>"upright"</code>
 </td>
 </tr>
 <tr>
@@ -13006,10 +12906,10 @@ the Unicode bidirectional algorithm.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>normal</code> |
-<code>embed</code> |
-<code>bidiOverride</code> |
-<code>isolate</code>
+<code>"normal"</code> |
+<code>"embed"</code> |
+<code>"bidiOverride"</code> |
+<code>"isolate"</code>
 </td>
 </tr>
 <tr>
@@ -13098,8 +12998,8 @@ presentation medium.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>visible</code> |
-<code>hidden</code>
+<code>"visible"</code> |
+<code>"hidden"</code>
 </td>
 </tr>
 <tr>
@@ -13220,8 +13120,8 @@ the affected element.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>wrap</code> |
-<code>noWrap</code>
+<code>"wrap"</code> |
+<code>"noWrap"</code>
 </td>
 </tr>
 <tr>
@@ -13306,13 +13206,13 @@ stacking block and inline areas within a region area.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>lrtb</code> |
-<code>rltb</code> |
-<code>tbrl</code> |
-<code>tblr</code> |
-<code>lr</code> |
-<code>rl</code> |
-<code>tb</code>
+<code>"lrtb"</code> |
+<code>"rltb"</code> |
+<code>"tbrl"</code> |
+<code>"tblr"</code> |
+<code>"lr"</code> |
+<code>"rl"</code> |
+<code>"tb"</code>
 </td>
 </tr>
 <tr>
@@ -13401,7 +13301,7 @@ defines the front-to-back ordering of region areas in the case that they overlap
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>auto</code> |
+<code>"auto"</code> |
 <loc href="#style-value-integer">&lt;integer&gt;</loc>
 </td>
 </tr>
@@ -13793,10 +13693,10 @@ determines whether speech synthesis is enabled for the affected content, and, if
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code>none</code> |
-<code>normal</code> |
-<code>fast</code> |
-<code>slow</code>
+<code>"none"</code> |
+<code>"normal"</code> |
+<code>"fast"</code> |
+<code>"slow"</code>
 </td>
 </tr>
 <tr>
@@ -13942,7 +13842,7 @@ annotation marks, such as ruby or emphasis marks.</p>
 <td>
 <eg xml:space="preserve">
 &lt;annotation-color&gt;
-  : current
+  : "current"
   | <loc href="#style-value-color">&lt;color&gt;</loc>
 </eg>
 </td>
@@ -13978,9 +13878,9 @@ annotation marks, such as ruby or emphasis marks.</p>
 <td>
 <eg xml:space="preserve">
 &lt;annotation-position&gt;
-  : before
-  | after
-  | outside
+  : "before"
+  | "after"
+  | "outside"
 </eg>
 </td>
 </tr>
@@ -14090,11 +13990,11 @@ or more borders.</p>
 <td>
 <eg xml:space="preserve">
 &lt;border-style&gt;
-  : none
-  | dotted
-  | dashed
-  | solid
-  | double
+  : "none"
+  | "dotted"
+  | "dashed"
+  | "solid"
+  | "double"
 </eg>
 </td>
 </tr>
@@ -14117,9 +14017,9 @@ or more borders.</p>
 <td>
 <eg xml:space="preserve">
 &lt;border-thickness&gt;
-  : thin
-  | medium
-  | thick
+  : "thin"
+  | "medium"
+  | "thick"
   | <loc href="#style-value-length">&lt;length&gt;</loc>
 </eg>
 </td>
@@ -14255,9 +14155,9 @@ emphasis marks.</p>
 <td>
 <eg xml:space="preserve">
 &lt;emphasis-style&gt;
-  : none
-  | auto 
-  | ( filled | open ) || ( circle | dot | sesame )
+  : "none"
+  | "auto" 
+  | ( "filled" | "open" ) || ( "circle" | "dot" | "sesame" )
   | <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
 </eg>
 </td>
@@ -14333,9 +14233,9 @@ supports text emphasis marks must minimally support the <code>auto</code> value.
 <td>
 <eg xml:space="preserve">
 &lt;extent&gt;
-  : auto
-  | contain
-  | cover
+  : "auto"
+  | "contain"
+  | "cover"
   | <loc href="#style-value-measure">&lt;measure&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-measure">&lt;measure&gt;</loc>
 </eg>
 </td>
@@ -14474,7 +14374,7 @@ to glyph mapping process, and, specifically, whether and which type of variant g
 <eg xml:space="preserve">
 &lt;font-variant&gt;
   : "normal"
-  | ("super" | "sub") || ("full" | "half") || ruby
+  | ("super" | "sub") || ("full" | "half") || "ruby"
 </eg>
 </td>
 </tr>
@@ -14672,11 +14572,11 @@ interpretation of the specified measure as specified below.</p>
 <td>
 <eg xml:space="preserve">
 &lt;measure&gt;
-  : auto
-  | available
-  | fitContent
-  | maxContent
-  | minContent
+  : "auto"
+  | "available"
+  | "fitContent"
+  | "maxContent"
+  | "minContent"
   | <loc href="#style-value-length">&lt;length&gt;</loc>
 </eg>
 </td>
@@ -14688,10 +14588,14 @@ interpretation of the specified measure as specified below.</p>
 <gitem>
 <label><code>auto</code></label>
 <def>
-<p>For <emph>ipd</emph>, either (1) the intrinsic size in the <loc href="#terms-inline-progression-direction">inline progression direction</loc>
-when applied to an image, or (2) the numeric value that would be obtained if the <code>available</code> value were specified.
-For <emph>bpd</emph>, either (1) the intrinsic size in the <loc href="#terms-block-progression-direction">block progression direction</loc>
-when applied to an image, or (2) the numeric value that would be obtained if the <code>available</code> value were specified.</p>
+<p>For <emph>ipd</emph>,
+(1) when applied to a <loc href="#terms-region">region</loc>, the numeric value that would be obtained if a value of <code>100%</code> were specified;
+(2) when applied to an image, the intrinsic size in the <loc href="#terms-inline-progression-direction">inline progression direction</loc>; otherwise,
+(3) the numeric value that would be obtained if the <code>available</code> value were specified.</p>
+<p>For <emph>bpd</emph>,
+(1) when applied to a <loc href="#terms-region">region</loc>, the numeric value that would be obtained if a value of <code>100%</code> were specified;
+(2) when applied to an image, the intrinsic size in the <loc href="#terms-block-progression-direction">block progression direction</loc>; otherwise,
+(3) the numeric value that would be obtained if the <code>available</code> value were specified.</p>
 </def>
 </gitem>
 <gitem>
@@ -14845,7 +14749,7 @@ sign
 <td>
 <eg xml:space="preserve">
 &lt;origin&gt;
-  : auto
+  : "auto"
   | <loc href="#style-value-length">&lt;length&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc
     href="#style-value-length">&lt;length&gt;</loc>
 </eg>
@@ -14905,10 +14809,10 @@ sign
   | sign? <loc href="#style-value-number">&lt;number&gt;</loc> pitch-units?
 
 sign
-  : '+' | '-'
+  : "+" | "-"
 
 pitch-units
-  : 'hz' | 'st'
+  : "hz" | "st"
 </eg>
 </td>
 </tr>
@@ -14959,20 +14863,20 @@ edge-offset-v
   : edge-keyword-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>
 
 position-keyword-h
-  : center
+  : "center"
   | edge-keyword-h
 
 position-keyword-v
-  : center
+  : "center"
   | edge-keyword-v
 
 edge-keyword-h
-  : left
-  | right
+  : "left"
+  | "right"
 
 edge-keyword-v
-  : top
-  | bottom
+  : "top"
+  | "bottom"
 </eg>
 </td>
 </tr>
@@ -15335,8 +15239,8 @@ In both cases, the resulting difference may be a negative percentage.</p>
 <td>
 <eg xml:space="preserve">
 &lt;ruby-reserve&gt;
-  : none
-  | (auto | before | after | both | outside | around | between) (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
+  : "none"
+  | ("auto" | "before" | "after" | "both" | "outside" | "around" | "between") (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
 </eg>
 </td>
 </tr>
@@ -15394,9 +15298,9 @@ without taking into account rasterization effects.</p>
 <td>
 <eg xml:space="preserve">
 &lt;text-combine&gt;
-  : none
-  | auto
-  | digits (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>)?
+  : "none"
+  | "auto"
+  | "digits" (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>)?
 </eg>
 </td>
 </tr>
@@ -15413,8 +15317,8 @@ without taking into account rasterization effects.</p>
 <td>
 <eg xml:space="preserve">
 &lt;text-decoration&gt;
-  : none
-  | ((underline | noUnderline) || (lineThrough | noLineThrough) || (overline | noOverline))
+  : "none"
+  | (("underline" | "noUnderline") || ("lineThrough" | "noLineThrough") || ("overline" | "noOverline"))
 </eg>
 </td>
 </tr>
@@ -15448,7 +15352,7 @@ without taking into account rasterization effects.</p>
 <td>
 <eg xml:space="preserve">
 &lt;text-outline&gt;
-  : none
+  : "none"
   | (<loc href="#style-value-color">&lt;color&gt;</loc> <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>)? <loc href="#style-value-length">&lt;length&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
 </eg>
 </td>
@@ -15466,7 +15370,7 @@ without taking into account rasterization effects.</p>
 <td>
 <eg xml:space="preserve">
 &lt;text-shadow&gt;
-  : none
+  : "none"
   | <loc href="#style-value-shadow">&lt;shadow&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-shadow">&lt;shadow&gt;</loc>)*
 </eg>
 </td>
@@ -16312,8 +16216,7 @@ zero or more <el>region</el> elements.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#layout-vocabulary-region">region</loc>*
 &lt;/layout&gt;
 </eg>
@@ -16366,13 +16269,12 @@ style inheritance).</p>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
-  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>par</emph>|<emph>seq</emph>)
+  <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
   <loc href="#metadata-attribute-role">ttm:role</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#element-vocab-group-animation">Animation.class</loc>*, <loc href="#styling-vocabulary-style">style</loc>*
 &lt;/region&gt;
 </eg>
@@ -16513,7 +16415,6 @@ element types:</p>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 </ulist>
 <note role="elaboration">
@@ -16624,8 +16525,9 @@ which generates out-of-line regions that correspond with the
 explicit inline regions. This latter procedure additionally binds <loc href="#terms-content-element">content elements</loc> associated with inline regions
 to the corresponding generated out-of-line regions.</p>
 <note role="elaboration">
-<p>A <loc href="#terms-content-element">content element</loc> can only be associated with a single
-<loc href="#terms-region">region</loc>. Consequently, if a <loc href="#terms-content-element">content element</loc>
+<p>A <loc href="#terms-content-element">content element</loc> can be explicitly associated with only a single
+<loc href="#terms-region">region</loc>, either by an attribute specification or via a child 
+<loc href="#layout-vocabulary-region"><el>region</el></loc> element. Consequently, if a <loc href="#terms-content-element">content element</loc>
 specifies a <loc href="#layout-attribute-region"><att>region</att></loc> attribute, then any 
 <emph>explicit inline region specification</emph> is ignored.</p>
 </note>
@@ -16792,11 +16694,6 @@ synchronic document form,
 <label>[construct intermediate document]</label>
 <def>
 <p></p>
-<issue id="issue-ttml1-197">
-<head>ISD Construction Prunes &lt;br/&gt; Erroneously</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/197">https://github.com/w3c/ttml1/issues/197</loc></source>
-<p>Should not prune empty break &lt;br/&gt; elements, or should previously convert to LINE SEPARATOR.</p>
-</issue>
 <olist>
 <item>
 <p>perform procedure <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>;</p>
@@ -16808,10 +16705,16 @@ sub-tree
 headed by the <el>body</el> element;</p>
 </item>
 <item>
-<p>evaluating this sub-tree in a postorder traversal, prune elements if they
-are not a <loc href="#terms-presentation-related-element">presentation related element</loc>, if they are temporally inactive,
-or if they aren't associated with region <emph>R</emph> according to the
-<phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure;</p>
+<p>evaluating this sub-tree in a postorder traversal, prune elements if any of the following conditions is true:
+<olist>
+<item><p>they are not a <loc href="#terms-presentation-related-element">presentation related element</loc>
+<!-- ttml1 uses "neither a <loc href="#element-vocab-type-content">Content</loc> nor <loc href="#element-vocab-type-animation">Animation</loc> elements" -->; or</p></item>
+<item><p>they are temporally inactive; or</p></item>
+<item><p>they are empty and neither <loc href="#element-vocab-type-animation">Animation</loc> elements nor <loc href="#content-vocabulary-br">br</loc> elements; or</p></item>
+<item><p>they <!-- ttml1 "are <loc href="#element-vocab-type-content">Content</loc> elements and" -->aren't associated with region <emph>R</emph>
+ according to the <phrase role="strong"><loc href="#procedure-associate-region">[associate region]</loc></phrase> procedure.</p></item>
+</olist>
+</p>
 </item>
 <item>
 <p>if the pruned sub-tree is non-empty, then reparent it to the <emph>R</emph>
@@ -17326,7 +17229,6 @@ has time container semantics, then <code>par</code> time container semantics mus
 <ulist>
 <item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
@@ -17705,9 +17607,8 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*
 &lt;/animate&gt;
 </eg>
@@ -17832,8 +17733,7 @@ zero or more elements in the <loc href="#element-vocab-group-animation"><code>An
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#element-vocab-group-animation">Animation.class</loc>*
 &lt;/animation&gt;
 </eg>
@@ -17875,9 +17775,8 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*
 &lt;/set&gt;
 </eg>
@@ -18004,7 +17903,6 @@ element types:</p>
 <ulist>
 <item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
 <item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
@@ -18254,6 +18152,13 @@ information.</p>
 (2) one or more metadata item or foreign namespace child elements,
 (3) one or more <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> child elements, or
 (4) a combination of the preceding.</p>
+<note role="clarification"><p>This specification defines the
+formal validity of a <loc href="#terms-document-instance">document instance</loc> to be based on an
+<loc href="#terms-abstract-document-instance">abstract document instance</loc> from
+which all foreign namespace elements and attributes have been removed. Therefore, the
+following XML Representation does not formally include foreign namespace attributes or foreign namespace child elements in its content model;
+nevertheless, such foreign namespace child elements may appear in a concrete encoding of TTML
+<loc href="#terms-document-instance">document instance</loc>.</p></note>
 <table id="elt-syntax-metadata" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: metadata</caption>
 <tbody>
@@ -18264,10 +18169,9 @@ information.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
-  <emph>Content:</emph> (<loc href="#element-vocab-group-data"><code>Data.class</code></loc>|{<emph>any element in TT Metadata Namespace</emph>}|{<emph>any element not in any TT Namespace</emph>})*
+  <emph>Content:</emph> (<loc href="#element-vocab-group-data"><code>Data.class</code></loc>|{<emph>any element in TT Metadata Namespace</emph>})*
 &lt;/metadata&gt;
 </eg>
 </td>
@@ -18350,7 +18254,10 @@ however, in this case the author wishes to segregate certain metadata
 attributes by expressing them indirectly on <el>metadata</el>
 elements.</p>
 </note>
-<p></p>
+<note role="clarification"><p>The presence of foreign namespace attributes in a concrete encoding of a TTML
+<loc href="#terms-document-instance">document instance</loc> does not affect the formal validity of that
+<loc href="#terms-document-instance">document instance</loc> with respect to the applicable
+<loc href="#terms-abstract-document-type">abstract document type</loc> selected by <specref ref="doctypes"/>.</p></note>
 <p>The use of foreign element metadata is illustrated by the following example.</p>
 <table id="metadata-vocabulary-metadata-example-4" role="example">
 <caption>Example Fragment &ndash; Foreign Element Metadata</caption>
@@ -18377,7 +18284,10 @@ elements.</p>
 <p>In the above example, a number of elements defined by the Dublin
 Core metadata vocabulary are used to express document level metadata.</p>
 </note>
-<p></p>
+<note role="clarification"><p>The presence of foreign namespace elements in a concrete encoding of a TTML
+<loc href="#terms-document-instance">document instance</loc> does not affect the formal validity of that
+<loc href="#terms-document-instance">document instance</loc> with respect to the applicable
+<loc href="#terms-abstract-document-type">abstract document type</loc> selected by <specref ref="doctypes"/>.</p></note>
 </div3>
 <div3 id="metadata-vocabulary-actor">
 <head>ttm:actor</head>
@@ -18394,8 +18304,7 @@ agent with another agent that portrays the character.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> EMPTY
 &lt;/ttm:actor&gt;
 </eg>
@@ -18406,6 +18315,24 @@ agent with another agent that portrays the character.</p>
 <p>The <att>agent</att> attribute of a <el>ttm:actor</el> element must
 reference a <emph>significant</emph> <el>ttm:agent</el> element that denotes the agent
 acting the part of a character.</p>
+<p>The use of <phrase role="deprecated">a reference from the
+<att>agent</att> attribute of a <el>ttm:actor</el> element to its
+parent <el>ttm:agent</el> element is deprecated</phrase>, and,
+furthermore, the semantics of such a circular chain of references is
+not defined by this specification.</p>
+<note role="clarification"><p>If an implementation follows such a
+circular chain of agent references, then it is recommended that this
+condition be detected and further dereferencing of agent references be
+terminated in order to avoid an infinite loop.</p></note>
+<note role="example"><p>In the case of an actor playing themselves,
+for example, Steve Coogan in <emph>The Trip</emph> playing Steve Coogan, the
+expected practice is to use two <el>ttm:agent</el> elements. The first
+element (corresponding to Steve Coogan the person) uses a
+<att>type</att> attribute with value <code>person</code>, while the
+second element (corresponding to Steve Coogan the character) uses (i)
+a <att>type</att> attribute with value <code>character</code> and (ii)
+a child <el>ttm:actor</el> element that references the first
+<el>ttm:agent</el> element.</p></note>
 <p>An example of the <el>ttm:actor</el> element is shown above in
 <specref ref="metadata-vocabulary-agent-example-1"/>.</p>
 </div3>
@@ -18425,11 +18352,10 @@ agent, whether it be the name of a person, character, group, or organization.</p
 <eg xml:space="preserve">
 &lt;ttm:agent
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <phrase role="reqattr">type</phrase> = (<emph>person</emph>|<emph>character</emph>|<emph>group</emph>|<emph>organization</emph>|<emph>other</emph>)
+  <phrase role="reqattr">type</phrase> = (<emph>"person"</emph> | <emph>"character"</emph> | <emph>"group"</emph> | <emph>"organization"</emph> | <emph>"other"</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> <loc href="#metadata-vocabulary-name">ttm:name</loc>*, <loc href="#metadata-vocabulary-actor">ttm:actor</loc>?
 &lt;/ttm:agent&gt;
 </eg>
@@ -18524,8 +18450,7 @@ child of the <el>head</el> element.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:copyright&gt;
 </eg>
@@ -18551,8 +18476,7 @@ a specific element instance.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:desc&gt;
 </eg>
@@ -18584,8 +18508,7 @@ a specific element instance.</p>
   <phrase role="reqattr">name</phrase> = <loc href="#metadata-value-item-name">&lt;item-name&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> #PCDATA | <loc href="#metadata-vocabulary-item">ttm:item</loc>*
 &lt;/ttm:item&gt;
 </eg>
@@ -18661,11 +18584,10 @@ group, or organization.</p>
 <eg xml:space="preserve">
 &lt;ttm:name
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
-  <phrase role="reqattr">type</phrase> = (<emph>full</emph>|<emph>family</emph>|<emph>given</emph>|<emph>alias</emph>|<emph>other</emph>)
+  <phrase role="reqattr">type</phrase> = (<emph>"full"</emph> | <emph>"family"</emph> | <emph>"given"</emph> | <emph>"alias"</emph> | <emph>"other"</emph>)
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:name&gt;
 </eg>
@@ -18701,8 +18623,7 @@ a specific element instance.</p>
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>default</emph>|<emph>preserve</emph>)
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
+  <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   <emph>Content:</emph> #PCDATA
 &lt;/ttm:title&gt;
 </eg>
@@ -18859,8 +18780,8 @@ a <loc href="#metadata-vocabulary-item"><el>ttm:item</el></loc> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;named-item&gt;
-  : altText
-  | usesForced
+  : "altText"
+  | "usesForced"
 </eg>
 </td>
 </tr>
@@ -18873,7 +18794,12 @@ a <loc href="#metadata-vocabulary-item"><el>ttm:item</el></loc> element.</p>
 <def>
 <p>A string that expresses alternate text content, where the value
 adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>. Typically used to
-provide a textual equivalent or summary for some related image content.</p>
+provide a text equivalent or summary for some related image content.</p>
+<note role="elaboration"><p>This text equivalent may be used to support indexing of the content and also facilitate
+quality checking of a document during authoring.</p></note>
+<note role="elaboration"><p>In contrast to <bibref ref="html52"/>, the text content of this named
+metadata item is not intended to be presented in place of a referring element if the element's primary (as opposed to alternate)
+content cannot be presented; however, this alternate text content can be used by assistive technologies.</p></note>
 </def>
 </gitem>
 <gitem id="named-item-usesForced">
@@ -19336,7 +19262,6 @@ supports the following features:</p>
 <item><p><loc href="#feature-border-block"><code>#border-block</code></loc></p></item>
 <item><p><loc href="#feature-border-inline"><code>#border-inline</code></loc></p></item>
 <item><p><loc href="#feature-border-region"><code>#border-region</code></loc></p></item>
-<item><p><loc href="#feature-inlineAreaBreak-cloneMostNested"><code>#inlineAreaBreak-cloneMostNested</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-border-block">
@@ -20180,24 +20105,6 @@ vocabulary defined by <specref ref="styling"/>:</p>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
 </div3>
-<div3 id="feature-inlineAreaBreak">
-<head>#inlineAreaBreak</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#inlineAreaBreak</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#inlineAreaBreak</code> feature if it implements presentation semantic support for the
-<loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-</div3>
-<div3 id="feature-inlineAreaBreak-cloneMostNested">
-<head>#inlineAreaBreak-cloneMostNested</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#inlineAreaBreak-cloneMostNested</code> feature if it recognizes and is capable of
-transforming the <code>cloneMostNested</code> value of the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#inlineAreaBreak-cloneMostNested</code> feature if it implements presentation semantic support for
-the <code>cloneMostNested</code> value of the <loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc> attribute.</p>
-</div3>
 <div3 id="feature-ipd">
 <head>#ipd</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -20742,7 +20649,6 @@ supports the following features:</p>
 <item><p><loc href="#feature-padding-block"><code>#padding-block</code></loc></p></item>
 <item><p><loc href="#feature-padding-inline"><code>#padding-inline</code></loc></p></item>
 <item><p><loc href="#feature-padding-region"><code>#padding-region</code></loc></p></item>
-<item><p><loc href="#feature-inlineAreaBreak-cloneMostNested"><code>#inlineAreaBreak-cloneMostNested</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-pan">
@@ -23340,12 +23246,15 @@ the rate of playback (or interpretation) of time may artificially dilated or nar
 playback of a <loc href="#terms-related-media-object">related media object</loc>. Without loss of generality, the following discussion assumes a fixed play(back) rate. In the case of
 variable play rates, appropriate adjustments may need to be made to the resulting computations.</p>
 </note>
+<p>The <loc href="#terms-document-processing-context">document processing context</loc> defines the applicable epoch and any epoch-related offsets 
+to be used when establishing the <loc href="#terms-synthetic-document-syncbase">synthetic document syncbase</loc>.</p>
 <div2 id="time-expression-semantics-clock">
 <head>Clock Time Base</head>
 <p>When operating with the <code>clock</code> time base, the following semantics apply for interpreting time expressions,
 as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
 <p>The clock time base <phrase role="strong"><code>C</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
-expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase>
+expressed in the epoch <phrase role="strong"><code>E</code></phrase> (defined by the 
+<loc href="#terms-document-processing-context">document processing context</loc>)
 as follows:</p>
 <table id="clock-time-and-real-time" role="semantics">
 <caption>TTML Semantics &ndash; Clock Time and Real Time Relationship</caption>
@@ -23475,7 +23384,8 @@ during playback, presentation timing is not affected.
 <p>When operating with the <code>media</code> time base, the following semantics apply for interpreting time expressions,
 as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
 <p>The media time base <phrase role="strong"><code>M</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
-expressed in an arbitrary (implementation defined) epoch <phrase role="strong"><code>E</code></phrase> as follows:</p>
+expressed in the epoch <phrase role="strong"><code>E</code></phrase> (defined by the 
+<loc href="#terms-document-processing-context">document processing context</loc>) as follows:</p>
 <table id="media-time-and-real-time" role="semantics">
 <caption>TTML Semantics &ndash; Media Time and Real Time Relationship</caption>
 <tbody>
@@ -23778,7 +23688,6 @@ begin time; furthermore, the temporal intervals of any two child <loc href="#isd
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   {<emph>any attribute in the <loc href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</loc></emph>}&gt;
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc>*, <loc href="#profile-vocabulary-profile">ttp:profile</loc>?, <loc href="#isd-vocabulary-isd">isd:isd</loc>*
 &lt;/isd:sequence&gt;
 </eg>
@@ -23851,11 +23760,10 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
 <eg xml:space="preserve">
 &lt;isd:isd
   <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> | indefinite
+  <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> | <emph>"indefinite"</emph>
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   {<emph>any attribute in the <loc href="#isd-parameter-attribute-set">ISD Parameter Attribute Set</loc></emph>}&gt;
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc>*, <loc href="#profile-vocabulary-profile">ttp:profile</loc>?, <loc href="#isd-vocabulary-css">isd:css</loc>*, <loc href="#isd-vocabulary-region">isd:region</loc>*
 &lt;/isd:isd&gt;
 </eg>
@@ -23917,7 +23825,6 @@ by an existing <el>isd:css</el> element, then it is assigned a unique identifier
 &lt;isd:css
   <loc href="#content-attribute-xml-id"><phrase role="reqattr">xml:id</phrase></loc> = ID
   {<emph>any attribute in <termref def="tt-style-namespaces">TT Style Namespaces</termref></emph>}
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc>*
 &lt;/isd:css&gt;
 </eg>
@@ -23952,7 +23859,6 @@ followed by exactly one <loc href="#document-structure-vocabulary-body"><el>body
   <loc href="#style-attribute-style">style</loc> = IDREF
   <loc href="#metadata-attribute-role">ttm:role</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id"><phrase role="reqattr">xml:id</phrase></loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
   <emph>Content:</emph> <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc>*, <loc href="#animation-vocabulary-animate">animate</loc>*, <loc href="#document-structure-vocabulary-body">body</loc>
 &lt;/isd:region&gt;
 </eg>
@@ -24962,7 +24868,7 @@ followed by optional layout child</td>
 <td><code>svg:metadata</code></td>
 <td><bibref ref="svg11"/></td>
 <td>-@xml:base; +@ttm:*, +@xml:lang, +@xml:space; content model
-subsetted to foreign namespace element content only (no #PCDATA)</td>
+is not mixed (no #PCDATA)</td>
 <td>3,5</td>
 </tr>
 <tr>
@@ -26198,31 +26104,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 <tr>
 <td><phrase role="strong">Notes</phrase></td>
 <td>None</td>
-<td>None</td>
-</tr>
-</tbody>
-</table>
-</div4>
-<div4 id="derivation-inlineAreaBreak">
-<head><loc href="#style-attribute-inlineAreaBreak">tts:inlineAreaBreak</loc></head>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td><bibref ref="css3-frag"/>, &sect; 5</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td><code>box-decoration-break</code></td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>-<code>inherit</code>, +<code>cloneMostNested</code></td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
 <td>None</td>
 </tr>
 </tbody>
@@ -27843,7 +27724,12 @@ whilst not introducing unexpected line breaks.</p>
 <head>Changes to Vocabulary from TTML1</head>
 <p>This section provides a high level summary of vocabulary changes between Timed Text Markup Language (TTML) Version 1 (TTML1)
 and Version 2 (TTML2). It is not the intent of this summary to be exhaustive. For more details about changes,
-see <loc  href="https://w3c.github.io/ttml2/spec/ttml2-changes.html">Changes from TTML1 (2nd Ed.) to TTML2 Working Draft (Latest Revision)</loc>.</p>
+see <loc href="ttml2-changes.html">Changes from TTML1 (2nd Ed.) to TTML2 Editor's Draft (Latest Revision)</loc>.</p>
+<ednote>
+<name>Update Changes Document Reference</name>
+<date>2018-02-01</date>
+<edtext>Update the above link to changes document as needed prior to CR.</edtext>
+</ednote>
 <div2>
 <head>New Element Vocabulary</head>
 <p>New element vocabulary was added in the following sections of this specification as further described below:</p>
@@ -28012,7 +27898,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>
 <item><p><loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc></p></item>
-<item><p><loc href="#style-attribute-inlineAreaBreak"><att>tts:inlineAreaBreak</att></loc></p></item>
 <item><p><loc href="#style-attribute-ipd"><att>tts:ipd</att></loc></p></item>
 <item><p><loc href="#style-attribute-letterSpacing"><att>tts:letterSpacing</att></loc></p></item>
 <item><p><loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc></p></item>

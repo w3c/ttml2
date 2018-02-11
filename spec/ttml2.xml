@@ -985,12 +985,16 @@ as determined by the <loc href="#semantics-procedure-construct-effective-validat
 validation profile</phrase></loc> procedure.</p>
 </def>
 </gitem>
-<gitem id="terms-effective-validation-schema">
-<label>[effective validation schema]</label>
+<gitem id="terms-effective-validation-schemas">
+<label>[effective validation schemas]</label>
 <def>
-<p>A schema used during <loc href="#semantics-validation-processing">validation processing</loc>,
+<p>A set of schemas used during <loc href="#semantics-validation-processing">validation processing</loc>,
 as determined by the <loc href="#semantics-procedure-construct-effective-validation-schema"><phrase role="strong">construct effective
 validation schema</phrase></loc> procedure.</p>
+<note role="elaboration">
+<p>Since no schema language captures all constraints on TTML content as defined by this specification, it is expected that additional
+built-in, programmatic (code-based) schemas will be employed by a <loc href="#terms-validating-content-processor">validating content processor</loc>.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-element-information-item">
@@ -3117,16 +3121,22 @@ that causes a warning to be treated as an error, or vice-versa.</p></note>
 </olist>
 </def>
 </gitem>
-<gitem id="semantics-procedure-construct-effective-validation-schema">
-<label>[construct effective validation schema]</label>
+<gitem id="semantics-procedure-construct-effective-validation-schemas">
+<label>[construct effective validation schemas]</label>
 <def>
 <olist>
 <item><p>if a document's <loc href="#terms-effective-validation-profile">effective validation profile</loc> is associated with one or more
-schemas, then select the <loc href="#terms-effective-validation-schema">effective validation schema</loc> from this set based upon the
-requirements of the <loc href="#terms-document-processing-context">document processing context</loc>;</p></item>
-<item><p>otherwise, a default <loc href="#terms-effective-validation-schema">effective validation schema</loc> is selected by the
+schemas, then the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is an appropriate subset of these associated schemas
+based upon the requirements of the <loc href="#terms-document-processing-context">document processing context</loc>;</p></item>
+<item><p>otherwise, the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is a default set of schemas selected by the
 <loc href="#terms-document-processing-context">document processing context</loc>.</p></item>
 </olist>
+<note role="elaboration">
+<p>The determination of what constitutes an <emph>appropriate</emph> schema is not formally defined by this specification; nevertheless,
+it is expected that the selection process will make use of (1) the types of schemas available to the implementation, either as referenced by a
+<loc href="#profile-vocabulary-schema"><el>ttp:schema</el></loc> element or as inferred and supplied by the implementation and
+(2) the types of schema systems supported by the implementation.</p>
+</note>
 </def>
 </gitem>
 <gitem id="semantics-procedure-validate-document">
@@ -3134,13 +3144,13 @@ requirements of the <loc href="#terms-document-processing-context">document proc
 <def>
 <olist>
 <item><p>if validation is disabled by a <loc href="#terms-higher-level-protocol">higher level protocol</loc>
-or if the computed value of the <att>ttp:validation</att> parameter is <code>prohibited</code>, then exit this procedure;</p></item>
-<item><p>if the computed value of the <att>ttp:validation</att> parameter is <code>optional</code> and the
+or if the computed value of the <loc href="#profile-attribute-validation"><att>ttp:validation</att></loc> parameter is <code>prohibited</code>,
+then exit this procedure unless the end-user or application overrides this prohibition;</p></item>
+<item><p>if the computed value of the <loc href="#profile-attribute-validation"><att>ttp:validation</att></loc> parameter is <code>optional</code> and the
 <loc href="#terms-document-processing-context">document processing context</loc> determines that optional validation is not to be performed,
 then exit this procedure;</p></item>
-<item><p>using the <loc href="#terms-effective-validation-schema">effective validation schema</loc>, validate document conformance with
-the <loc href="#terms-abstract-document-type">abstract document type</loc> associated with the
-<loc href="#terms-effective-validation-profile">effective validation profile</loc>, such that</p>
+<item><p>otherwise, using the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc>, validate document conformance
+such that</p>
 <ulist>
 <item><p>if a <termref def="defs-validation-error">validation error</termref> condition is detected, then perform the semantics that apply
 to the computed value of the <loc href="#profile-attribute-validationAction"><att>ttp:validationAction</att></loc> parameter property;</p></item>
@@ -3843,7 +3853,6 @@ creating an additive derived profile) by requiring support for
 <code>#text-outline</code> feature.</p>
 </note>
 </div3>
-
 <div3 id="profile-vocabulary-schemas">
 <head>ttp:schemas</head>
 <p>The <el>ttp:schemas</el> element is a container element used to group
@@ -3876,7 +3885,6 @@ adheres to <bibref ref="xmlbase"/> . If not specified, the
 value applies, which is the <loc href="#content-value-uri">&lt;uri&gt;</loc> from which the
 current <loc href="#terms-document-instance">document instance</loc> was fetched.</p>
 </div3>
-
 <div3 id="profile-vocabulary-schema">
 <head>ttp:schema</head>
 <p>The <el>ttp:schema</el> element is used to specify
@@ -3937,8 +3945,12 @@ sniffing.</p>
 </tr>
 </tbody>
 </table>
+<note role="elaboration">
+<p>Since no schema language captures all constraints on TTML content as defined by this specification, it is expected that
+any schemas referenced by a profile designer will be augmented by built-in, programmatic (code-based) schemas
+employed by a given <loc href="#terms-validating-content-processor">validating content processor</loc>.</p>
+</note>
 </div3>
-
 <div3 id="profile-vocabulary-features">
 <head>ttp:features</head>
 <p>The <el>ttp:features</el> element is a container element used to group
@@ -22018,13 +22030,6 @@ feature if it:</p>
     <p>is a <loc href="#terms-validating-content-processor">validating content processor</loc>;</p>
   </item>
   <item>
-    <p>recognizes and is capable of transforming the following element vocabulary defined by <specref ref="profile-element-vocabulary"/>:</p>
-    <ulist>
-      <item><p><loc href="#profile-vocabulary-schemas"><el>ttp:schemas</el></loc></p></item>
-      <item><p><loc href="#profile-vocabulary-schema"><el>ttp:schema</el></loc>;</p></item>
-    </ulist>
-  </item>
-  <item>
     <p>recognizes and is cable of transforming the following attribute vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
     <ulist>
       <item><p><loc href="#profile-attribute-validation"><att>ttp:validation</att></loc></p></item>
@@ -22035,6 +22040,31 @@ feature if it:</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#validation</code>
 feature if it is a <loc href="#terms-validating-content-processor">validating content processor</loc> and
 implements presentation semantic support for the same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-validation-schema">
+<head>#validation-schema</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#validation-schema</code>
+feature if it recognizes and is capable of transforming the following element vocabulary defined by <specref ref="profile-element-vocabulary"/>:</p>
+<ulist>
+  <item><p><loc href="#profile-vocabulary-schemas"><el>ttp:schemas</el></loc></p></item>
+  <item><p><loc href="#profile-vocabulary-schema"><el>ttp:schema</el></loc></p></item>
+</ulist>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#validation-schema</code>
+feature if it implements presentation semantic support for the same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-validation-schema-rnc">
+<head>#validation-schema-rnc</head>
+<p>A TTML processor supports the <code>#validation-schema-rnc</code> feature if it supports the
+<code>#validation-schema</code> feature and supports the dereferencing and use of schemas
+identified as using the Media Type <code>application/relax-ng-compact-syntax</code>
+and expressed with the Relax NG Compact Syntax (RNC) as defined by <bibref ref="rng"/>.</p>
+</div3>
+<div3 id="feature-validation-schema-xsd">
+<head>#validation-schema-xsd</head>
+<p>A TTML processor supports the <code>#validation-schema-xsd</code> feature if it supports the
+<code>#validation-schema</code> feature and supports the dereferencing and use of schemas
+identified as using the Media Type <code>application/xml</code>
+and expressed with the XML Schema syntax as defined by <bibref ref="xsd-1"/> and <bibref ref="xsd-2"/>.</p>
 </div3>
 <div3 id="feature-version">
 <head>#version</head>
@@ -23182,6 +23212,21 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-validation"><code>#validation</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-validation-schema"><code>#validation-schema</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-validation-schema-rnc"><code>#validation-schema-rnc</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-validation-schema-xsd"><code>#validation-schema-xsd</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>

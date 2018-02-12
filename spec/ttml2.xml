@@ -917,7 +917,7 @@ a <loc href="#layout-vocabulary-layout"><el>layout</el></loc> element.</p>
 <gitem id="terms-designated-profile">
 <label>[designated profile]</label>
 <def>
-<p>A <loc href="#terms-profile">profile</loc> that is associated with a <loc href="#terms-profile-designator">profile designator</loc> by
+<p>A <loc href="#terms-profile">profile</loc> that is associated with a <loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc> by
 means of a <att>designator</att> attribute or prose text in a specification of profile.</p>
 </def>
 </gitem>
@@ -1474,13 +1474,6 @@ a content processor.</p>
 <loc href="#terms-timed-text-profile-document-instance">timed text profile document instance</loc>, according to the context of use.</p>
 </def>
 </gitem>
-<gitem id="terms-profile-designator">
-<label>[profile designator]</label>
-<def>
-<p>An absolute URI used to label or reference an externally defined <loc href="#terms-profile">profile</loc>, where
-external refers to being external to a <loc href="#terms-document-instance">document instance</loc>.</p>
-</def>
-</gitem>
 <gitem id="terms-profile-fragment-identifier">
 <label>[profile fragment identifier]</label>
 <def>
@@ -1767,8 +1760,8 @@ no further transformation semantics are defined by this specification.</p>
 <gitem id="terms-undesignated-profile">
 <label>[undesignated profile]</label>
 <def>
-<p>A <loc href="#terms-profile">profile</loc> that is not associated with a <loc href="#terms-profile-designator">profile designator</loc>, and which is
-referred to implicitly in the context of the profile's definition. Also referred to as an <emph>anonymous profile</emph>.</p>
+<p>A <loc href="#terms-profile">profile</loc> that is not associated with a <loc href="#content-value-profile-designator">profile designator</loc>,
+and which is referred to implicitly in the context of the profile's definition. Also referred to as an <emph>anonymous profile</emph>.</p>
 </def>
 </gitem>
 <gitem id="terms-valid-abstract-document-instance">
@@ -1995,11 +1988,8 @@ satisfied:</p>
 Media Type <bibref ref="media-types"/> identifies the content type of the interchanged <loc href="#terms-document-instance">document instance</loc>, then the specified media type is
 <code>application/ttml+xml</code> in conformance with <bibref
 ref="xml-media"/> &sect; 7, with which an optional
-<code>profile</code> parameter may appear, the value of which
-conforms to
-a profile designator as
-defined by
-<specref ref="vocabulary-profiling"/>.</p>
+<code>profile</code> parameter may appear, the value of which conforms to a
+<loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc> expression.</p>
 </item>
 <item>
 <p>The <loc href="#terms-document-instance">document instance</loc> is or can be represented as a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc>
@@ -2509,7 +2499,7 @@ by an external specification.</p>
 the author wishes to reference one (or more) of the standard, predefined processor profiles of
 TTML Content, and does not wish to modify (by supersetting or subsetting)
 that profile. This attribute may also be used by an author to indicate the use
-of a non-standard profile, in which case the specified profile designator expresses
+of a non-standard profile, in which case the specified <loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc> expresses
 a URI that denotes an externally defined <loc href="#terms-profile-definition-document">profile definition document</loc>.
 However, it is not required that a conformant TTML <loc href="#terms-content-processor">content processor</loc> be able
 to dereference such an externally specified profile definition.</p>
@@ -2578,30 +2568,16 @@ default XMLNS binding on the <el>profile</el> element to the TT Parameter Namesp
 </div3>
 <div3 id="vocabulary-profile-designators">
 <head>Profile Designators</head>
-<issue id="issue-ttml2-365">
-<head>Reference by designator to internally defined profile.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/365">https://github.com/w3c/ttml2/issues/365</loc></source>
-<p>Handle case where a designator refers to an internally defined profile.</p>
-</issue>
 <p>A profile is referenced in one of two ways according to whether the profile is defined externally to the referring document or
-is defined inline within the referring document. When defined externally, a profile is referenced by means of a
-<loc href="#terms-profile-designator">profile designator</loc>. When defined internally (inline), a profile is referenced either implicitly
-or by means of <loc href="#terms-profile-fragment-identifier">profile fragment identifier</loc>.</p>
-<issue id="issue-ttml2-366">
-<head>Account for profile fragment identifiers.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/366">https://github.com/w3c/ttml2/issues/366</loc></source>
-<p>Account for use of profile fragment identifier as a profile designator.</p>
-</issue>
+is defined inline within the referring document. When defined externally, a profile is referenced by means of an
+<loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> or
+<loc href="#content-value-relative-profile-designator">&lt;relative-profile-designator&gt;</loc> expression.
+When defined internally (inline), a profile is referenced either implicitly
+or by means of a <loc href="#content-value-fragment-profile-designator">&lt;fragment-profile-designator&gt;</loc> expression.</p>
 <p>A profile designator must adhere to the <loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax.
 If the profile designator is expressed as a relative URI,
 then it must be absolutized by using the TT Profile Namespace value as
 the base URI.</p>
-<note role="example">
-<p>For example, if a profile designator is expressed as
-<code>ttml2-presentation</code>, then the absolutized profile designator
-would be
-<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p>
-</note>
 <p>All profile designators which have the TT Profile Namespace as a prefix but are otherwise not listed in
 <specref ref="profile-vocab-table"/> are reserved for future standardization, and must not appear in a conformant
 <loc href="#terms-document-instance">document instance</loc>. Nothwithstanding this constraint, a profile designator is not restricted to the set of designators enumerated
@@ -2627,7 +2603,7 @@ or in another TTWG specification.</p>
 <tbody>
 <tr>
 <th>Name</th>
-<th>Designator</th>
+<th>Absolute Designator</th>
 </tr>
 <tr>
 <td>DFXP Full</td>
@@ -2712,8 +2688,8 @@ profiles from which these specifications were obtained (or derived)</p>
 <gitem id="semantics-profile-state-combined-profile-specification-set-constituents">
 <label>constituents</label>
 <def>
-<p>ordered list of absolute profile designators, where each designator denotes a constituent profile, i.e.,
-a profile from which this combined profile specification set is composed</p>
+<p>ordered list of <loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> expressions,
+where each designator denotes a constituent profile, i.e., a profile from which this combined profile specification set is composed</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-combined-profile-specification-set-specifications">
@@ -2742,7 +2718,8 @@ that corresponds with a <loc href="#profile-vocabulary-profile"><el>ttp:profile<
 <gitem id="semantics-profile-state-profile-designator">
 <label>designator</label>
 <def>
-<p>an absolute profile designator that is associated with (and uniquely labels) this profile</p>
+<p>an <loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> expression
+that is associated with (and uniquely labels) this profile</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-type">
@@ -2760,13 +2737,15 @@ that corresponds with a <loc href="#profile-vocabulary-profile"><el>ttp:profile<
 <gitem id="semantics-profile-state-profile-use">
 <label>use</label>
 <def>
-<p>either <code>null</code> or an absolute profile designator denoting a profile that serves as the baseline profile for this profile</p>
+<p>either <code>null</code> or an <loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc> expression
+denoting a profile that serves as the baseline profile for this profile</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-constituents">
 <label>constituents</label>
 <def>
-<p>if profile is a <loc href="#terms-nesting-profile">nesting profile</loc>, then an ordered list of absolute profile designators, where each designator denotes a
+<p>if profile is a <loc href="#terms-nesting-profile">nesting profile</loc>, then an ordered list of
+<loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc> expressions, where each designator denotes a
 constituent <loc href="#terms-nested-profile">nested profile</loc>; otherwise, <code>null</code></p>
 </def>
 </gitem>
@@ -3400,9 +3379,9 @@ Profile Attributes
 <loc href="#profile-attribute-inferProcessorProfileSource">ttp:inferProcessorProfileSource</loc>,
 <loc href="#profile-attribute-permitFeatureNarrowing">ttp:permitFeatureNarrowing</loc>,
 <loc href="#profile-attribute-permitFeatureWidening">ttp:permitFeatureWidening</loc>,
-<loc href="#profile-attribute-profile">ttp:profile</loc>,
 <loc href="#profile-attribute-processorProfiles">ttp:processorProfiles</loc>,
 <loc href="#profile-attribute-processorProfileCombination">ttp:processorProfileCombination</loc>,
+<loc href="#profile-attribute-profile">ttp:profile</loc>,
 <loc href="#profile-attribute-validation">ttp:validation</loc>,
 <loc href="#profile-attribute-validationAction">ttp:validationAction</loc>
 </td>
@@ -3633,10 +3612,9 @@ if the value is <code>mostRestrictive</code>, then the most restrictive specific
 applies. The order of restrictiveness is as follows (from least to most):
 <emph>optional</emph>, <emph>required</emph>, <emph>prohibited</emph>.</p>
 <p>If the <att>combine</att> attribute is not specified, then replacement semantics apply.</p>
-<p>If specified, the <att>designator</att> attribute must (1) adhere to the
-<loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax
-and (2) express an absolute URI that denotes a profile designator in
-accordance with <specref ref="vocabulary-profiling"/>. A <att>designator</att> attribute may
+<p>If specified, the <att>designator</att> attribute must adhere to the
+<loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> value syntax.
+A <att>designator</att> attribute may
 be specified on a <el>ttp:profile</el> element that appears in a TTML
 <loc href="#terms-document-instance">document instance</loc>, and, if not specified,
 the defined profile is considered to be an undesignated profile.
@@ -4131,9 +4109,9 @@ must also support and enable an extension defined by a third party.</p>
 <item><p><specref ref="profile-attribute-inferProcessorProfileSource"/></p></item>
 <item><p><specref ref="profile-attribute-permitFeatureNarrowing"/></p></item>
 <item><p><specref ref="profile-attribute-permitFeatureWidening"/></p></item>
-<item><p><specref ref="profile-attribute-profile"/></p></item>
 <item><p><specref ref="profile-attribute-processorProfiles"/></p></item>
 <item><p><specref ref="profile-attribute-processorProfileCombination"/></p></item>
+<item><p><specref ref="profile-attribute-profile"/></p></item>
 <item><p><specref ref="profile-attribute-validation"/></p></item>
 <item><p><specref ref="profile-attribute-validationAction"/></p></item>
 </ulist>
@@ -4163,7 +4141,7 @@ designators
   : designator (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> designator)*
 
 designator
-  : <loc href="#content-value-uri">&lt;uri&gt;</loc>
+  : <loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc>
 </eg>
 </td>
 </tr>
@@ -4461,7 +4439,7 @@ ttp:profile
   : designator
 
 designator
-  : <loc href="#content-value-uri">&lt;uri&gt;</loc>
+  : <loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc>
 </eg>
 </td>
 </tr>
@@ -4507,7 +4485,7 @@ designators
   : designator (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> designator)*
 
 designator
-  : <loc href="#content-value-uri">&lt;uri&gt;</loc>
+  : <loc href="#content-value-profile-designator">&lt;profile-designator&gt;</loc>
 </eg>
 </td>
 </tr>
@@ -5990,17 +5968,62 @@ by <bibref ref="xsl11"/>, &sect; 7.17.3, 7.16.7, 7.16.12, and 7.16.8, respective
 <head>Content Value Expressions</head>
 <p>Core vocabulary may make use of the following expressions:</p>
 <ulist>
+<item><p><specref ref="content-value-absolute-profile-designator"/></p></item>
 <item><p><specref ref="content-value-arguments"/></p></item>
 <item><p><specref ref="content-value-bound-parameter"/></p></item>
 <item><p><specref ref="content-value-condition"/></p></item>
 <item><p><specref ref="content-value-condition-function"/></p></item>
 <item><p><specref ref="content-value-expression"/></p></item>
+<item><p><specref ref="content-value-fragment-profile-designator"/></p></item>
 <item><p><specref ref="content-value-media-function"/></p></item>
 <item><p><specref ref="content-value-parameter-function"/></p></item>
+<item><p><specref ref="content-value-profile-designator"/></p></item>
 <item><p><specref ref="content-value-quoted-string"/></p></item>
+<item><p><specref ref="content-value-relative-profile-designator"/></p></item>
 <item><p><specref ref="content-value-supports-function"/></p></item>
 <item><p><specref ref="content-value-uri"/></p></item>
 </ulist>
+<div3 id="content-value-absolute-profile-designator">
+<head>&lt;absolute-profile-designator&gt;</head>
+<p>An &lt;absolute-profile-designator&gt; value expression is used to either (1) define the absolute designator associated with
+a locally defined profile or (2) refer to a remotely defined profile.</p>
+<table id="absolute-profile-designator-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;absolute-profile-designator&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;absolute-profile-designator&gt;
+  : <loc href="#content-value-absolute-uri">&lt;absolute-uri&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="elaboration">
+<p>In the present context, <emph>locally defined</emph> means defined in the current document, while <emph>remotely defined</emph>
+means defined in another document.</p>
+</note>
+</div3>
+<div3 id="content-value-absolute-uri">
+<head>&lt;absolute-uri&gt;</head>
+<p>An &lt;absolute-uri&gt; value expression is used to specify an absolute URI <bibref ref="uri"/>.</p>
+<table id="absolute-uri-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;absolute-uri&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;absolute-uri&gt;
+  : <loc href="#content-value-uri">&lt;uri&gt;</loc>                                     // absolute form only
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the context of an &lt;absolute-uri&gt; value expression, the value syntax of the <loc href="#content-value-uri">&lt;uri&gt;</loc> expression
+must adhere to the absolute form of a URI as defined by <bibref ref="uri"/>, &sect;4.3.</p>
+</div3>
 <div3 id="content-value-arguments">
 <head>&lt;arguments&gt;</head>
 <p>A &lt;arguments&gt; value is a sub-expression used with a <code>function-expression</code> non-terminal of an
@@ -6233,6 +6256,43 @@ parenthesis '<code>(</code>' character of the following <loc href="#content-valu
 <code>function-expression</code>.</p>
 </note>
 </div3>
+<div3 id="content-value-fragment-profile-designator">
+<head>&lt;fragment-profile-designator&gt;</head>
+<p>A &lt;fragment-profile-designator&gt; value expression is used to designate a local profile by reference.</p>
+<table id="fragment-profile-designator-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;fragment-profile-designator&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;fragment-profile-designator&gt;
+  : <loc href="#content-value-fragment-uri">&lt;fragment-uri&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="content-value-fragment-uri">
+<head>&lt;fragment-uri&gt;</head>
+<p>A &lt;fragment-uri&gt; value expression is used to specify a fragment URI <bibref ref="uri"/>.</p>
+<table id="fragment-uri-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;fragment-uri&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;fragment-uri&gt;
+  : <loc href="#content-value-uri">&lt;uri&gt;</loc>                                     // fragment component only
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the context of a &lt;fragment-uri&gt; value expression, the value syntax of the <loc href="#content-value-uri">&lt;uri&gt;</loc> expression
+must adhere to the fragment component of a URI as defined by <bibref ref="uri"/>, &sect;3 and &sect;3.5,
+i.e., the scheme, authority, path, and query components are empty (not specified), and only the fragment component is non-empty (specified).</p>
+</div3>
 <div3 id="content-value-media-function">
 <head>&lt;media-function&gt;</head>
 <p>A &lt;media-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression
@@ -6258,6 +6318,52 @@ media-query
 the syntax of the <code>media_query_list</code> defined by <bibref ref="media-queries"/>, &sect; 3.</p>
 <p>A &lt;media-function&gt; value expression evaluates to <code>true</code> if the specified media query
 evaluates to <code>true</code>, otherwise, the value expression evaluates to <code>false</code>.</p>
+</div3>
+<div3 id="content-value-profile-designator">
+<head>&lt;profile-designator&gt;</head>
+<p>A &lt;profile-designator&gt; value expression is used to designate a profile, either for the purpose of defining a profile
+or for the purpose of referencing a defined profile.</p>
+<table id="profile-designator-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;profile-designator&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;profile-designator&gt;
+  : <loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc>
+  | <loc href="#content-value-relative-profile-designator">&lt;relative-profile-designator&gt;</loc>
+  | <loc href="#content-value-fragment-profile-designator">&lt;fragment-profile-designator&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div3>
+<div3 id="content-value-parameter-function">
+<head>&lt;parameter-function&gt;</head>
+<p>A &lt;parameter-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression
+in order to obtain a named parameter of the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
+<table id="parameter-function-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;parameter-function&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;parameter-function&gt;
+  : "parameter(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? parameter-name <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
+
+parameter-name
+  : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>When de-quoted, the <code>parameter-name</code> argument of a &lt;parameter-function&gt; value expression must adhere to an
+<loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>, which must, in turn, be one of the values enumerated
+by <loc href="#content-value-bound-parameter">&lt;bound-parameter&gt;</loc>.</p>
+<p>A &lt;parameter-function&gt; value expression evaluates to the value associated with (bound to) the
+specified paramater name.</p>
 </div3>
 <div3 id="content-value-quoted-string">
 <head>&lt;quoted-string&gt;</head>
@@ -6293,31 +6399,49 @@ when constructing a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</
 <loc href="#terms-timed-text-content-document-instance">timed text document instance</loc>.</p>
 </note>
 </div3>
-<div3 id="content-value-parameter-function">
-<head>&lt;parameter-function&gt;</head>
-<p>A &lt;parameter-function&gt; value is a sub-expression that may be used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression
-in order to obtain a named parameter of the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
-<table id="parameter-function-value-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;parameter-function&gt;</caption>
+<div3 id="content-value-relative-profile-designator">
+<head>&lt;relative-profile-designator&gt;</head>
+<p>A &lt;relative-profile-designator&gt; value expression is used to refer to a standardized profile with respect to
+the TT Profile Namespace, which serves as the base URI with which relative profile designators are absolutized.</p>
+<table id="relative-profile-designator-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;relative-profile-designator&gt;</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;parameter-function&gt;
-  : "parameter(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? parameter-name <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
-
-parameter-name
-  : <loc href="#content-value-quoted-string">&lt;quoted-string&gt;</loc>
+&lt;relative-profile-designator&gt;
+  : <loc href="#content-value-relative-uri">&lt;relative-uri&gt;</loc>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>When de-quoted, the <code>parameter-name</code> argument of a &lt;parameter-function&gt; value expression must adhere to an
-<loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>, which must, in turn, be one of the values enumerated
-by <loc href="#content-value-bound-parameter">&lt;bound-parameter&gt;</loc>.</p>
-<p>A &lt;parameter-function&gt; value expression evaluates to the value associated with (bound to) the
-specified paramater name.</p>
+<note role="example">
+<p>For example, if a relative profile designator is expressed as
+<code>ttml2-presentation</code>, then the absolutized profile designator
+would be
+<code>http://www.w3.org/ns/ttml/profile/ttml2-presentation</code>.</p>
+</note>
+</div3>
+<div3 id="content-value-relative-uri">
+<head>&lt;relative-uri&gt;</head>
+<p>A &lt;relative-uri&gt; value expression is used to specify a relative URI <bibref ref="uri"/>.</p>
+<table id="relative-uri-value-expression-syntax" role="syntax">
+<caption>Syntax Representation &ndash; &lt;relative-uri&gt;</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;relative-uri&gt;
+  : <loc href="#content-value-uri">&lt;uri&gt;</loc>                                     // no scheme component present
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the context of a &lt;relative-uri&gt; value expression, the value syntax of the <loc href="#content-value-uri">&lt;uri&gt;</loc> expression
+must adhere to the relative form of a URI as defined by <bibref ref="uri"/>, &sect;3,
+i.e., the scheme and authority components are empty (not specified), but the path, and, optionally, the query and fragment components are specified.</p>
 </div3>
 <div3 id="content-value-supports-function">
 <head>&lt;supports-function&gt;</head>
@@ -22905,7 +23029,7 @@ Extension Namespace, then all values of the following
 standardization.</p>
 <p>If the extension namespace of an extension designation is not the
 TT Extension Namespace, i.e., is an <emph>Other Extension Namespace</emph>,
-then the extension namespace must be expressed as an absolute URI
+then the extension namespace must be expressed as an absolute URI1
 capable of serving as a base URI used in combination with a
 <code>designation</code> token that takes the form of a fragment
 identifier.</p>

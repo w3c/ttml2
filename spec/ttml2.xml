@@ -6462,7 +6462,6 @@ zero or more elements in the <loc href="#element-vocab-group-animation"><code>An
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-audio">&lt;audio&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
   <loc href="#timing-attribute-timeContainer">timeContainer</loc> = (<emph>"par"</emph> | <emph>"seq"</emph>)
@@ -6494,12 +6493,6 @@ child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elem
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
 of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
-<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced <loc href="#terms-audio-resource">audio resource</loc>, then a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute should be specified as a hint to the
-content processor.</p>
-<p>If an <el>audio</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
-the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-audio-format">&lt;audio-format&gt;</loc>
-value expression.</p>
 <p>If specified, the value of the <att>clipBegin</att> attribute must adhere to the <emph>offset-time</emph> form of a
 <specref ref="timing-value-time-expression"/>, in which case, the value of this expression denotes a normal play time offset relative to the
 beginning of the referenced audio content, and designates the point where audio presentation commences.
@@ -6672,8 +6665,9 @@ and must correspond with the media (content) type of the data resource. In these
 should be used. In the case of sourced data embedding, the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
 is used as the type.</p>
 <p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
-such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource,
-then a <loc href="#embedded-content-attribute-format">format</loc> attribute should be specified as a hint to the content processor.</p>
+such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource that cannot be
+expressed in a Media Type <bibref ref="media-types"/> parameter,
+then a <loc href="#embedded-content-attribute-format">format</loc> attribute may be specified as a hint to the content processor.</p>
 <p>The use of simple data embedding is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-data-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Data Embedding in Data Defining Context</caption>
@@ -6768,7 +6762,6 @@ zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Met
 &lt;font
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   family = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
   range = <loc href="#embedded-content-value-unicode-range">&lt;unicode-range&gt;</loc>
   style = (<emph>"normal"</emph> | <emph>"italic"</emph> | <emph>"oblique"</emph>) : <emph>see prose below</emph>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-font">&lt;font&gt;</loc>
@@ -6798,15 +6791,6 @@ child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elem
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
 of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
-<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced <loc href="#terms-font-resource">font resource</loc>, then a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute should be specified as a hint to the
-content processor.</p>
-<note role="elaboration">
-<p>A font format hint might be useful to a content processor to avoid accessing a <loc href="#terms-font-resource">font resource</loc> it knows it cannot decode.</p>
-</note>
-<p>If a <el>font</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
-the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-font-format">&lt;font-format&gt;</loc>
-value expression.</p>
 <p>If any of the <att>family</att>, <att>range</att>, <att>style</att>, or <att>weight</att> attributes are specified, then
 they override the family name, supported character ranges, style, and weight of the actual <loc href="#terms-font-resource">font resource</loc>. In particular,
 if the specified attribute value(s) differ from the value(s) of these font characteristics as encoded in the <loc href="#terms-font-resource">font resource</loc>, then
@@ -6838,7 +6822,7 @@ based on the actual character content of that document.</p>
       ... <emph>base64 encoded data</emph> ...
     &lt;/data&gt;
     &lt;font family="MyFont" range="u+20-7f,u+90-9f"&gt;
-      &lt;source src="http://example.com/fonts/myfont.otf" format="opentype"/&gt;
+      &lt;source src="http://example.com/fonts/myfont.otf" type="font/otf"/&gt;
       &lt;source src="#lastResortFont"/&gt;
     &lt;/font&gt;
   &lt;/resources&gt;
@@ -6902,7 +6886,6 @@ zero or more <loc href="#embedded-content-vocabulary-source"><el>source</el></lo
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#timing-attribute-dur">dur</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#timing-attribute-end">end</loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
-  <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
   <loc href="#layout-attribute-region">region</loc> = IDREF
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-image">&lt;image&gt;</loc>
   <loc href="#style-attribute-style">style</loc> = IDREFS
@@ -6940,12 +6923,6 @@ child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elem
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
 of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
-<p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or is specified as a generic type, such as <code>application/octet-stream</code>,
-and additional format information is known about a referenced <loc href="#terms-image-resource">image resource</loc>, then a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute should be specified as a hint to the
-content processor.</p>
-<p>If an <el>image</el> element includes a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element, then
-the <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute of the <el>source</el> child, if specified, must adhere to the <loc href="#embedded-content-value-image-format">&lt;image-format&gt;</loc>
-value expression.</p>
 <p>An <el>image</el> element may specify an <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
 style attribute in order to specify the presentation width or height of the image
 when intrinsic width or height information is not available or is intended to be overridden. If this attribute is specified on both an
@@ -7129,7 +7106,8 @@ a <loc href="#terms-nested-embedded-source">nested embedded source</loc>.</p>
 </tbody>
 </table>
 <p>If a <loc href="#embedded-content-attribute-format"><att>format</att></loc> attribute is specified, then it provides additional hint information about the format (i.e., formal syntax) of the
-embedded content. Such information may be useful in cases where no standard media (content) type label has been defined. Depending on the
+embedded content. Such information may be useful in cases where no standard media (content) type label has been defined or the information cannot be
+expressed in a Media Type parameter <bibref ref="media-types"/>. Depending on the
 context of use of a <el>source</el> element, the values of this attribute may be further constrained.</p>
 <p>If a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute is specified and its value refers to a fragment of the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>,
 then there must be a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element child of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc>
@@ -7248,10 +7226,7 @@ e.g., when no media (content) type is available or a generic type is used, such 
 <p>The <att>format</att> attribute may be specified by an instance of the following
 element types:</p>
 <ulist>
-<item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-data"><el>data</el></loc></p></item>
-<item><p><loc href="#embedded-content-vocabulary-font"><el>font</el></loc></p></item>
-<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#embedded-content-vocabulary-source"><el>source</el></loc></p></item>
 </ulist>
 <p>The value of a <att>format</att> attribute must adhere to a
@@ -7300,13 +7275,10 @@ sniffing.</p>
 <p>Embedded content elements as well as certain style property values make use of the following expressions:</p>
 <ulist>
 <item><p><specref ref="embedded-content-value-audio"/></p></item>
-<item><p><specref ref="embedded-content-value-audio-format"/></p></item>
 <item><p><specref ref="embedded-content-value-data"/></p></item>
 <item><p><specref ref="embedded-content-value-data-format"/></p></item>
 <item><p><specref ref="embedded-content-value-font"/></p></item>
-<item><p><specref ref="embedded-content-value-font-format"/></p></item>
 <item><p><specref ref="embedded-content-value-image"/></p></item>
-<item><p><specref ref="embedded-content-value-image-format"/></p></item>
 <item><p><specref ref="embedded-content-value-unicode-range"/></p></item>
 </ulist>
 <div3 id="embedded-content-value-audio">
@@ -7338,31 +7310,6 @@ referenced <loc href="#terms-audio-resource">audio resource</loc> is the
 otherwise (if a <loc href="#terms-speech-synthesis-processor">speech synthesis processor</loc> is not supported or is supported but disabled),
 then the referenced <loc href="#terms-audio-resource">audio resource</loc> is the
 <loc href="#terms-empty-data-resource">empty data resource</loc>.</p>
-</div3>
-<div3 id="embedded-content-value-audio-format">
-<head>&lt;audio-format&gt;</head>
-<p>An &lt;audio-format&gt; expression is used to specify the format of a <loc href="#terms-audio-resource">audio resource</loc>. Additional format information is useful in the case
-of <loc href="#terms-audio-resource">audio resources</loc> that lack a registered media (content) type.</p>
-<table id="audio-format-value-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;audio-format&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;audio-format&gt;
-  : <loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>
-  | <loc href="#content-value-uri">&lt;uri&gt;</loc>
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If a format expression takes the form of a <loc href="#content-value-uri">&lt;uri&gt;</loc> value,
-then it must express an absolute URI.</p>
-<note role="elaboration">
-<p>This specification does not standardize the set of format tokens for use with audio content. Authors are encouraged to
-use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p>
-</note>
 </div3>
 <div3 id="embedded-content-value-data">
 <head>&lt;data&gt;</head>
@@ -7429,36 +7376,6 @@ use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to f
 then that fragment identifier must reference a <loc href="#embedded-content-vocabulary-font"><el>font</el></loc> element that is a child of a
 <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element in the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>.</p>
 </div3>
-<div3 id="embedded-content-value-font-format">
-<head>&lt;font-format&gt;</head>
-<p>A &lt;font-format&gt; expression is used to specify the format of a <loc href="#terms-font-resource">font resource</loc>. Additional format information is useful in the case
-of <loc href="#terms-font-resource">font resources</loc> due that lack a registered media (content) type.</p>
-<table id="font-format-value-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;font-format&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;font-format&gt;
-  : "eot"                                   // embedded opentype
-  | "otf"                                   // opentype
-  | "ttf"                                   // truetype
-  | "woff"                                  // web open font format
-  | <loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>
-  | <loc href="#content-value-uri">&lt;uri&gt;</loc>
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If a format expression takes the form of a <loc href="#content-value-uri">&lt;uri&gt;</loc> value,
-then it must express an absolute URI.</p>
-<note role="elaboration">
-<p>This specification standardizes a limited set of format tokens for use with font content. In case none of
-these tokens are appropriate, authors are encouraged to use tokens in common use, or absent that, to add a
-prefix <code>"x-"</code> to form a private use token.</p>
-</note>
-</div3>
 <div3 id="embedded-content-value-image">
 <head>&lt;image&gt;</head>
 <p>An &lt;image&gt; expression is used to specify an <loc href="#terms-image-resource">image resource</loc> by reference.</p>
@@ -7478,31 +7395,6 @@ prefix <code>"x-"</code> to form a private use token.</p>
 <p>If an &lt;image&gt; expression takes the form of a <loc href="#terms-fragment-identifier">fragment identifier</loc>,
 then that fragment identifier must reference an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element that is a child of a
 <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element in the <loc href="#terms-enclosing-document-instance">enclosing document instance</loc>.</p>
-</div3>
-<div3 id="embedded-content-value-image-format">
-<head>&lt;image-format&gt;</head>
-<p>An &lt;image-format&gt; expression is used to specify the format of a <loc href="#terms-image-resource">image resource</loc>. Additional format information is useful in the case
-of <loc href="#terms-image-resource">image resources</loc> that lack a registered media (content) type.</p>
-<table id="image-format-value-expression-syntax" role="syntax">
-<caption>Syntax Representation &ndash; &lt;image-format&gt;</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;image-format&gt;
-  : <loc href="http://www.w3.org/TR/xmlschema-2/#NCName">xsd:NCName</loc>
-  | <loc href="#content-value-uri">&lt;uri&gt;</loc>
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If a format expression takes the form of a <loc href="#content-value-uri">&lt;uri&gt;</loc> value,
-then it must express an absolute URI.</p>
-<note role="elaboration">
-<p>This specification does not standardize the set of format tokens for use with image content. Authors are encouraged to
-use tokens in common use, or absent that, to add a prefix <code>"x-"</code> to form a private use token.</p>
-</note>
 </div3>
 <div3 id="embedded-content-value-unicode-range">
 <head>&lt;unicode-range&gt;</head>

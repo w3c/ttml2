@@ -9706,12 +9706,15 @@ presentation processing.</p>
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
-<p>In addition to the font selection critera specified by <bibref ref="xsl11"/>, &sect; 7.9.3, the
-following criteria also apply:</p>
+<p>The presentation semantics of this property are those defined by <bibref ref="xsl11"/>, &sect;7.9.3,
+where the set of selection criteria are extended to include the following properties:</p>
 <ulist>
-  <item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc>; and</p></item>
-  <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc>.</p></item>
+  <item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc></p></item>
+  <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>
 </ulist>
+<p>When selecting among font resources that satisfy the font selection criteria, font resources that are referenced
+by a <loc href="#embedded-content-vocabulary-font"><el>font</el></loc> element have priority over application or system supplied
+font resources.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>auto</code>.</p>
 <p>The <att>tts:fontSelectionStrategy</att> style is illustrated by the following
@@ -9722,7 +9725,7 @@ example.</p>
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;p tts:fontFamily="myfont,unicode"&gt;
+&lt;p tts:fontFamily="font1,font2"&gt;
   &lt;span <phrase role="strong">tts:fontSelectionStrategy="character"</phrase>&gt;&amp;#xE000;&amp;#x20DD;&lt;/span&gt;
 &lt;/p&gt;
 </eg>
@@ -9747,6 +9750,17 @@ example.</p>
 </table>
 <p></p>
 -->
+<note role="explanation">
+<p>In the above example, consider that the font resource associated with the <code>font1</code> font family contains a glyph that
+maps the single character <code>&amp;#xE000;</code>, but does not contain a glyph that maps either the entire contextual character sequence
+<code>&amp;#xE000;&amp;#x20DD;</code> or the single character <code>&amp;#x20DD;</code>. Consider further that the font resource associated with
+the <code>font2</code> font family contains a mapping for the complete contextual character sequence and a mapping for the single character
+<code>&amp;#x20DD;</code>.</p>
+<p>If the author is willing to accept the mapping for the complete contextual character sequence via <code>font2</code>, then the value
+<code>auto</code> would be used (either explicitly or by initial value defaulting). However, if the author wishes that <code>&amp;#xE000;</code>
+be mapped via <code>font1</code> and <code>&amp;#x20DD;</code> be mapped via <code>font2</code>, then the value <code>character</code> would
+be specified. In this example, the author wishes the latter behavior, so specifies the value <code>character</code>.</p>
+</note>
 </div3>
 <div3 id="style-attribute-fontShear">
 <head>tts:fontShear</head>

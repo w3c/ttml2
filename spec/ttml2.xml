@@ -11242,35 +11242,30 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tbody>
 </table>
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
-<issue id="issue-ttml2-372">
-<head>Further constrain ruby container content.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/372">https://github.com/w3c/ttml2/issues/372</loc></source>
-<p>Proscribe the following from appearing in a ruby container:</p>
-<ulist>
-<item><p>use of span children of container that do not specify a ruby style, i.e., that
-do not play a role in ruby structure; if present, then such span is ignored for presentation purposes;</p></item>
-<item><p>use of #PCDATA children of container, baseContainer, and textContainer; i.e., permit #PCDATAA only
-in base, text, and delimiter; if used, then ignore for presentaion purposes;</p></item>
-<item><p>use of <el>br</el> element in ruby or its descendants, and, if used, treat as normal
-(collapsible) whitespace;</p></item>
-<item><p>use of U+2028 (LINE SEPARATOR) and U+2029 (PARAGRAPH SEPARATOR) in ruby or its descendants, and, if used, they are
-interpreted as normal (collapsible) whitespace.</p></item>
-</ulist>
-</issue>
 <ulist>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
 computed value of <att>tts:ruby</att> of all ancestor elements is <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
 or <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then its
 preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
@@ -11278,6 +11273,8 @@ computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseCont
 <code>textContainer</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of no more than one sibling is <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>baseContainer</code>;</p></item>
@@ -11289,6 +11286,10 @@ computed value of <att>tts:ruby</att> of its parent element is <code>container</
 then the computed value of <att>tts:ruby</att> of no sibling is <code>base</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then each of its text fragment
+descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>textContainer</code>;</p></item>
@@ -11302,6 +11303,10 @@ then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then each of its text fragment
+descendats does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
 <code>text</code>;</p></item>
@@ -11309,10 +11314,16 @@ computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</co
 computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then each of its text fragment
+descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR).</p></item>
 </ulist>
 <p>A validating processor must treat a violation of any of the above constraints as an error.
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
-presentation of ruby text annotations.</p>
+presentation of ruby text annotations, and, for content that violates some constraint, if that content is
+a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
+then it should be mapped to a U+0020 (SPACE) character, of, if some other content, then ignored (not presented).</p>
 <p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
 inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
 must generate normal inline areas.</p>
@@ -11414,7 +11425,7 @@ base delimiter text delimiter =
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+&lt;span <phrase role="strong">tts:ruby="container"</phrase> tts:rubyAlign="spaceAround"&gt;
   &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x5229;&#x7528;&#x8A31;&#x8AFE;&lt;/span&gt;
   &lt;span <phrase role="strong">tts:ruby="text"</phrase>&gt;&#x30E9;&#x30A4;&#x30BB;&#x30F3;&#x30B9;&lt;/span&gt;
 &lt;/span&gt;
@@ -11440,7 +11451,7 @@ base delimiter text delimiter =
 <td>
 <eg xml:space="preserve">
 &lt;span&gt;
-  &lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+  &lt;span <phrase role="strong">tts:ruby="container"</phrase> tts:rubyAlign="spaceAround"&gt;
     &lt;span <phrase role="strong">tts:ruby="baseContainer"</phrase>&gt;
       &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x6771;&#x5357;&lt;/span&gt;
     &lt;/span&gt;
@@ -11471,6 +11482,33 @@ base delimiter text delimiter =
 <p>The inter-character positioning mode for ruby annotations, such as used with <emph>bopomofo</emph> characters,
 is not supported by this version of TTML due to lack of market requirements.</p>
 </note>
+
+<p>The <att>tts:ruby</att> attribute can also be used when the annotation uses Latin characters, e.g. for pinyin as described by <bibref ref="clreq"/> and
+ illustrated by the following example.</p>
+<table id="style-attribute-ruby-example-3" role="example">
+<caption>Example Fragment &ndash; Ruby with Pinyin Annotation</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p&gt;
+&lt;span tts:ruby="container" tts:rubyAlign="center"&gt;
+  &lt;span tts:ruby="base"&gt;周杰伦&lt;/span&gt;&lt;span tts:ruby="text"&gt;Jay Chou&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-ruby-example-3-images" role="example-images">
+<caption>Example Rendition &ndash; Ruby using Pinyin Annotation</caption>
+<tbody>
+<tr>
+<td><graphic source="images/ruby-pinyin.png" alt="TTML ruby style property with pinyin"/></td>
+</tr>
+</tbody>
+</table>
 <div4>
 <head>Special Semantics</head>
 <p>In the absence of implementation specific requirements, constraints on alignment between ruby annotation text and ruby base text that would potentially
@@ -11568,6 +11606,13 @@ have no impact on ruby alignment.</p>
 </note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>center</code>.</p>
+<note role="elaboration">
+<p>In this specification, ruby annotations in timed text applications are assumed to be narrow, since presentation space and available time are 
+often constrained. As a consequence, this version of TTML does not enable authors to control how spacing is distributed when the 
+ruby annotation is wider than its base text. This might be problematic for wide ruby annotations at the start or end edge of the line. In order 
+to avoid issues, authors are encouraged to use an appropriate value of <att>tts:rubyAlign</att> and/or to split events containing wide 
+ruby annotations into multiple lines or even multiple events.</p>
+</note>
 <p>The <att>tts:rubyAlign</att> style is illustrated by the following example.</p>
 <table id="ruby-align-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Align</caption>
@@ -16508,12 +16553,6 @@ and the resulting generated out-of-line region is shown by the following example
 </div4>
 <div4 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
-<issue id="issue-ttml2-376">
-<head>Revise as needed to synchronize with formal ISD syntax.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/376">https://github.com/w3c/ttml2/issues/376</loc></source>
-<p>Review and revise 11.3.1.3 Intermediate Synchronic Document Construction as needed to correlate and synchronize with
-<loc href="#terms-intermediate-document-syntax">Intermediate Synchronic Document Syntax</loc>.</p>
-</issue>
 <p>For the purposes of performing presentation processing, the active time
 duration of a <loc href="#terms-document-instance">document instance</loc> is divided into a sequence of time coordinates where at
 each time coordinate, some element becomes temporally active or inactive,
@@ -17778,28 +17817,25 @@ or ending (final) of the attribute targeted by the animation.</p>
 <td>
 <eg xml:space="preserve">
 &lt;animation-value&gt;
-  : string
+  : ([^;] | escape)+
+
+escape
+  : '\\' <emph>char</emph>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
 <p>The syntax of an &lt;animation-value&gt; expression must satisfy all syntax
-requirements that apply to the attribute targeted by the animation.</p>
-<issue id="issue-ttml2-383">
-<head>Improve animation value syntax.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/383">https://github.com/w3c/ttml2/issues/383</loc></source>
-<p>Enhance detail of syntax of &lt;animation-value&gt; in order to prevent appearance of an unquoted or unescaped semicolon,
-which is used as a delimiter between animation values in &lt;animation-value-list&gt;.</p>
-</issue>
+requirements that apply to the attribute targeted by the animation, and, furthermore, must not contain
+an unescaped semicolon.</p>
 <p>The semantics of an &lt;animation-value&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </div3>
 <div3 id="animation-value-animation-value-list">
 <head>&lt;animation-value-list&gt;</head>
 <p>An &lt;animation-value-list&gt; expression is used to specify a list of animation values that sequentially
-apply to the attribute targeted by the animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
-optionally surrounded by linear white-space (LWSP) characters.</p>
+apply to the attribute targeted by the animation.</p>
 <table id="animation-value-list-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;animation-value-list&gt;</caption>
 <tbody>
@@ -19622,16 +19658,56 @@ supports the following features:</p>
 </div3>
 <div3 id="feature-extent">
 <head>#extent</head>
+<p>A TTML processor supports the <code>#extent</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-extent-region"><code>#extent-region</code></loc></p></item>
+<item><p><loc href="#feature-extent-root"><code>#extent-root</code></loc></p></item>
+</ulist>
+</div3>
+<div3 id="feature-extent-block">
+<head>#extent-block</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#extent</code> feature if it recognizes and is capable of
+<code>#extent-block</code> feature if it recognizes and is capable of
 transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a 
+<loc href="#terms-content-element">content element</loc> that would generate a
+block area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#extent-block</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a 
+<loc href="#terms-content-element">content element</loc> that would generate a
+block area during presentation processing.</p>
+</div3>
+<div3 id="feature-extent-image">
+<head>#extent-image</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#extent-image</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to an 
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#extent-image</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to an 
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+</div3>
+<div3 id="feature-extent-measure">
+<head>#extent-measure</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#extent-measure</code> feature if it recognizes and is capable of
+transforming <loc href="#style-value-measure">&lt;measure&gt;</loc> values when used with the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#extent</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute.</p>
+<code>#extent-measure</code> feature if it implements presentation semantic support for
+<loc href="#style-value-measure">&lt;measure&gt;</loc> values when used with the
+ <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-extent-region">
 <head>#extent-region</head>
@@ -19652,8 +19728,7 @@ href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
 <head>#extent-root</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#extent-root</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
+transforming the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to the <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -19662,6 +19737,29 @@ the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to a <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
+</div3>
+<div3 id="feature-extent-version-2">
+<head>#extent-version-2</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> processor
+supports the <code>#extent-version-2</code> feature if it supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-extent"><code>#extent</code></loc></p></item>
+<item><p><loc href="#feature-extent-block"><code>#extent-block</code></loc></p></item>
+<item><p><loc href="#feature-extent-image"><code>#extent-image</code></loc></p></item>
+<item><p><loc href="#feature-extent-measure"><code>#extent-measure</code></loc></p></item>
+</ulist>
+<p>and if it recognizes and is capable of transforming the following values of
+the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute:</p>
+<ulist>
+<item><p><code>contain</code></p></item>
+<item><p><code>cover</code></p></item>
+</ulist>
+<p>and if it recognizes and is capable of transforming the extended semantics of the
+the <code>auto</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute
+defined in this version of the TTML specification.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#extent-version-2</code>
+feature if it implements presentation semantic support for the same syntactic and semantic features enumerated above.</p>
+<p>The <code>#extent-version-2</code> feature is a syntactic and semantic extension of the <code>#extent</code> feature.</p>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -21979,6 +22077,21 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-extent-block"><code>#extent-block</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-image"><code>#extent-image</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-measure"><code>#extent-measure</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-extent-region"><code>#extent-region</code></loc></td>
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
@@ -21989,6 +22102,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-version-2"><code>#extent-version-2</code></loc></td>
+<td>O</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-font"><code>#font</code></loc></td>
@@ -23536,11 +23654,6 @@ that accounts for the difference may be introduced when computing media time <co
 <head>SMPTE Time Base</head>
 <p>When operating with the <code>smpte</code> time base, the following semantics apply for interpreting time expressions,
 as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
-<issue id="issue-ttml1-191">
-<head>Incorrect Expression for NTSC Drop Mode</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/191">https://github.com/w3c/ttml1/issues/191</loc></source>
-<p>Correct formula for NTSC drop mode calculation.</p>
-</issue>
 <p>If the computed value of the <att>ttp:markerMode</att> parameter is <code>discontinuous</code>, then there is no direct relationship between
 time expressions and media time <phrase role="strong"><code>M</code></phrase> or local real time <phrase role="strong"><code>R</code></phrase>. In
 this case, time expressions refer to synchronization events (markers) emitted by the <loc href="#terms-document-processing-context">document processing context</loc>
@@ -24145,6 +24258,11 @@ href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vo
 Requirements for Analog Television Receivers</titleref>,
 United States Code of Federal Regulations, Title 47, Volume 1, Part 79, &sect; 79.101. (See
 <xspecref href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf">http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf</xspecref>.)
+</bibl>
+<bibl id="clreq" key="CLREQ">Bobby Tung et al.,
+<titleref href="https://www.w3.org/TR/2017/WD-clreq-20171229/">Requirements for Chinese Text Layout</titleref>
+W3C Working Draft, 29 December 2017.
+(See <xspecref href="https://www.w3.org/TR/2017/WD-clreq-20171229/">https://www.w3.org/TR/2017/WD-clreq-20171229/</xspecref>.)
 </bibl>
 <bibl id="css2" key="CSS2">Bert Bos et al.,
 <titleref

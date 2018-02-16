@@ -3456,7 +3456,6 @@ Styling Attributes
 <loc href="#style-attribute-position">tts:position</loc>,
 <loc href="#style-attribute-ruby">tts:ruby</loc>,
 <loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
-<loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc>,
 <loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-rubyReserve">tts:rubyReserve</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
@@ -7634,7 +7633,6 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-position"/></p></item>
 <item><p><specref ref="style-attribute-ruby"/></p></item>
 <item><p><specref ref="style-attribute-rubyAlign"/></p></item>
-<item><p><specref ref="style-attribute-rubyOffset"/></p></item>
 <item><p><specref ref="style-attribute-rubyPosition"/></p></item>
 <item><p><specref ref="style-attribute-rubyReserve"/></p></item>
 <item><p><specref ref="style-attribute-showBackground"/></p></item>
@@ -9771,6 +9769,13 @@ is expected to be used in a number of contexts, such as
 when an author desires to synthesize a narrow or wide font face,
 when an author desires to employ font sizes based on non-square cell units, etc.</p>
 </note>
+<note role="clarification">
+<p><loc href="#terms-presentation-processor">Presentation processors</loc> are expected to scale glyphs so that the height of the EM square 
+as defined in the font resource matches the computed font size height, using an appropriate algorithm for the font. If anamorphic font scaling
+is used, i.e. the computed font size width differs from the computed font size height, then presentation processors additionally are expected
+to scale the EM square anamorphically by the ratio of the width to the height, and by extension, ensure that the presented glyphs are also 
+scaled by the same ratio.</p>
+</note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
 <p>If the value of this attribute specifies a <code>c</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
 then it is resolved in terms of the height (only) or (both) the width and height of a
@@ -11188,7 +11193,7 @@ styling.</p>
 <p></p>
 <p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
 <specref ref="ruby-semantics-mapping-table"/> apply.</p>
-<p>If a computed value of the property associated with this attribute is not supported,
+<p>If a computed value of the property associated with this attribute is not supported,   
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="ruby-semantics-mapping-table" role="common">
 <caption>Table 8-1 &ndash; Ruby Semantics Mapping</caption>
@@ -11241,6 +11246,12 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p>For the purpose of presentation processing, the <loc href="#terms-document-processing-context">document processing context</loc> determines the 
+mode of presentation: normal or fallback. 
+When performing normal presentation processing of ruby text annotations, delimiter content must not generate any inline areas. 
+When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content must generate normal inline areas.
+If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentation.</p>
+
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
 <ulist>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
@@ -11324,10 +11335,6 @@ For the purpose of presentation processing, the violation of any of these constr
 presentation of ruby text annotations, and, for content that violates some constraint, if that content is
 a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
 then it should be mapped to a U+0020 (SPACE) character, of, if some other content, then ignored (not presented).</p>
-<p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
-inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
-must generate normal inline areas.</p>
-<p>If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentaton.</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">
@@ -11418,6 +11425,12 @@ base delimiter text delimiter =
 &lt;/span&gt;
 </eg>
 </note>
+<note role="clarification">
+<p>The syntax of TTML allows using multiple Ruby Base Content within a Ruby Base Container and multiple Ruby Text Content within 
+a Ruby Text Container all within the same Ruby Container. This version of TTML leaves the mapping between Ruby Base Content and 
+Ruby Text Content undefined when the number of Ruby Text Content does not equal the number of Ruby Base Content in 
+the same Ruby Container.</p> 
+</note>
 <p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Ruby</caption>
@@ -11443,9 +11456,9 @@ base delimiter text delimiter =
 </tr>
 </tbody>
 </table>
-<p>Use of <att>tts:ruby</att> to specify complex ruby annotation is illustrated by the following example.</p>
+<p>Use of <att>tts:ruby</att> to specify double-sided ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-2" role="example">
-<caption>Example Fragment &ndash; Complex Ruby</caption>
+<caption>Example Fragment &ndash; Double-sided Ruby</caption>
 <tbody>
 <tr>
 <td>
@@ -11471,7 +11484,7 @@ base delimiter text delimiter =
 </table>
 <p></p>
 <table id="style-attribute-ruby-example-2-images" role="example-images">
-<caption>Example Rendition &ndash; Complex Ruby</caption>
+<caption>Example Rendition &ndash; Double-sided Ruby</caption>
 <tbody>
 <tr>
 <td><graphic source="images/ruby_2.png" alt="TTML ruby style property"/></td>
@@ -11650,124 +11663,6 @@ ruby annotations into multiple lines or even multiple events.</p>
 </tbody>
 </table>
 </div3>
-<div3 id="style-attribute-rubyOffset">
-<head>tts:rubyOffset</head>
-<p>The <att>tts:rubyOffset</att> attribute is used to specify the offset (distance) of ruby text with respect to its associated ruby base
-in the block progression dimension.</p>
-<issue id="issue-ttml2-373">
-<head>Auto-sizing ruby offset.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/373">https://github.com/w3c/ttml2/issues/373</loc></source>
-<p>Add <code>auto</code> value to denote automatic offset determination. Change initial value to <code>auto</code>.</p>
-</issue>
-<table id="style-property-details-rubyOffset" role="common">
-<col css="width: 25%;"/>
-<col/>
-<tbody>
-<tr>
-<td><emph>Values:</emph></td>
-<td>
-<loc href="#style-value-length">&lt;length&gt;</loc>
-</td>
-</tr>
-<tr>
-<td><emph>Initial:</emph></td>
-<td><code>0px</code></td>
-</tr>
-<tr>
-<td><emph>Applies to:</emph></td>
-<td>
-<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
-</td>
-</tr>
-<tr>
-<td><emph>Inherited:</emph></td>
-<td>yes</td>
-</tr>
-<tr>
-<td><emph>Percentages:</emph></td>
-<td>relative to this element's font size</td>
-</tr>
-<tr>
-<td><emph>Animatable:</emph></td>
-<td>continuous</td>
-</tr>
-<tr>
-<td><emph>Semantic basis:</emph></td>
-<td><loc href="#derivation-rubyOffset">rubyOffset derivation</loc></td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<p>If specified, the value of <att>tts:rubyOffset</att> expresses the offset (distance) between padding edge <emph>E<sub>1</sub></emph> of the inline area
-generated by a ruby text container (explicit or implied) and padding edge <emph>E<sub>2</sub></emph>  of the inline area generated by a ruby base container (explicit or implied), where
-<emph>E<sub>1</sub></emph> and <emph>E<sub>2</sub></emph> are perpendicular to the block progression direction and are (or would be) adjacent in the absence of
-such an offset.</p>
-<p>Negative length expressions are permitted.</p>
-<p>The <att>tts:rubyOffset</att> style is illustrated by the following example.</p>
-<table id="ruby-offset-example" role="example">
-<caption>Example Fragment &ndash; Ruby Offset</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;p region="left"&gt;
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;一&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;人&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;二&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;三&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;色&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;四&lt;/span&gt;
-  &lt;/span>
-&lt;/p&gt;
-&lt;p region="right"&gt;
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;一&lt;/span&gt;
-  &lt;/span>
-    &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="10px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;人&lt;/span&gt;
-  &lt;span tts:ruby="text"&gt;二&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="20px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;三&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;色&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;四&lt;/span&gt;
-  &lt;/span>
-&lt;/p&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<table id="ruby-offset-example-images" role="example-images">
-<caption>Example Rendition &ndash; Ruby Offset</caption>
-<tbody>
-<tr>
-<td><graphic source="images/rubyOffset.png" alt="TTML rubyOffset style property"/></td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-  <p>In the above example, whitespace has been introduced into and around <code>span</code> elements as an aid to formatting;
-  in order to produce the example rendition as shown, it is necessary to remove that extra whitespace lest
-  it appear in the rendered output. In addition, an author would normally not need to specify a <code>tts:rubyOffset</code>
-  value equal to <code>0px</code>, since that is the default value of the offset; however, here we specify <code>0px</code>
-  for emphasis.</p>
-</note>
-</div3>
 <div3 id="style-attribute-rubyPosition">
 <head>tts:rubyPosition</head>
 <p>The <att>tts:rubyPosition</att> attribute is used to specify the position of ruby text in the block progression dimension
@@ -11859,7 +11754,7 @@ this case, an author may redefine the default initial value for this attribute b
 <code>&lt;initial tts:rubyPosition="after"/&gt;</code> in a document's <code>styling</code> element.</p>
 </note>
 <p>The <att>tts:rubyPosition</att> style is illustrated by the following example, which illustrates
-how the resolution of ruby position depends upon writing mode.</p>
+how the resolution of ruby position depends upon writing mode. Note that the example uses "mono ruby” as defined in <bibref ref="jlreq"/>.</p>
 <table id="ruby-position-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Position</caption>
 <tbody>
@@ -11872,32 +11767,56 @@ how the resolution of ruby position depends upon writing mode.</p>
 ...
 &lt;p region="left"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="middle"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="right"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 </eg>
@@ -12238,8 +12157,8 @@ follows the semantics of the <code>text-align-last</code> property with a value 
 <div3 id="style-attribute-textCombine">
 <head>tts:textCombine</head>
 <p>When a vertical writing mode applies, the <att>tts:textCombine</att> attribute is used to specify a style property that
-determines whether and how multiple nominally non-combining characters are combined so that their <loc href="#terms-glyph-area">glyph areas</loc>
-consume the nominal bounding box of a single em square of the surrounding vertical text.
+determines whether and how multiple characters, such as digits, are combined horizontally so that their 
+<loc href="#terms-glyph-area">glyph areas</loc> fit within the width of a single line of the surrounding vertical text.
 If a horizontal writing mode applies, then this property is ignored
 for the purpose of presentation processing.</p>
 <p>Combination processing may make use of one or more techniques to obtain the goal of visual combination into an em square of the surrounding vertical text.
@@ -12290,9 +12209,8 @@ span.</p>
 If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
 If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
 equal to or less than a specified count, or two (2) if no count is specified.</p>
+<p>Combination applies after all affected characters have been processed as if a horizontal writing mode applied. In particular, bidirectional processing, ligatures, glyph subtitutions or combination of Unicode combining characters if used is applied before the combination process specified by the <att>tts:textCombine</att> attribute.</p>
 <p>Combination must not cross an element boundary, a bidirectional boundary, or a <loc href="#terms-glyph-area">non-glyph area</loc> boundary.</p>
-<p>This attribute has no impact on or interaction with the nominal layout of
-<loc href="#terms-glyph-area">glyph areas</loc> that constitute a Unicode combining character sequence.</p>
 <p>The <att>tts:textCombine</att> style is illustrated by the following example.</p>
 <table id="text-combine-example" role="example">
 <caption>Example Fragment &ndash; Text Combine</caption>
@@ -12323,6 +12241,12 @@ equal to or less than a specified count, or two (2) if no count is specified.</p
 </tr>
 </tbody>
 </table>
+<p></p>
+<note role="elaboration">
+<p>In the above example, for the value <code>all</code> of <att>tts:textCombine</att>, the presentation processor selected half-width variants of the
+ affected characters, but the resulting width is larger than the em square of the surrounding vertical text, to avoid readability issues and as 
+ permitted by TTML.</p>
+</note>
 </div3>
 <div3 id="style-attribute-textDecoration">
 <head>tts:textDecoration</head>
@@ -12520,7 +12444,7 @@ this case, an author may redefine the default initial value for this attribute b
 <div3 id="style-attribute-textOrientation">
 <head>tts:textOrientation</head>
 <p>The <att>tts:textOrientation</att> attribute is used to specify a style property that
-defines a text orientation to apply to glyphs that are selected for <loc href="#terms-glyph-area">glyph areas</loc> generated
+defines a text orientation to apply to <loc href="#terms-glyph-area">glyph areas</loc> generated
 by content flowed into a region to which a vertical writing mode applies.</p>
 <table id="style-property-details-textOrientation" role="common">
 <col css="width: 25%;"/>
@@ -12570,32 +12494,36 @@ span.</p>
 <p>The presentation semantics of this style property apply only when a vertical
 writing mode applies; therefore, if a horizontal writing mode applies, this style
 property has no effect.</p>
-<p>In the following, glyphs associated with content characters are described in terms of whether
-they are rotated or not rotated in vertical writing modes, where this determination is made in accordance with
-the <code>Vertical_Orientation</code> of each content character as determined by <bibref ref="utr50"/>.</p>
-<p>If the value of this attribute is <code>mixed</code>, then rotated glyphs are set sideways
-and non-rotated glyphs are set upright, where <emph>sideways</emph> means rotated either 90&deg; clockwise or 90&deg; count-clockwise,
-respectively, in accordance with whether the applicable block progression direction is right-to-left or left-to-right, and where <emph>upright</emph>
-means not rotated.</p>
+<p>In the following, <loc href="#terms-glyph-area">glyph areas</loc> associated with content characters are described in terms of whether
+they are rotated or not rotated in vertical writing modes, where this determination is made in accordance with the <code>Vertical_Orientation</code> 
+of each content character as determined by <bibref ref="utr50"/>.</p>
+<p>If the value of this attribute is <code>mixed</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc> are set sideways
+and non-rotated <loc href="#terms-glyph-area">glyph areas</loc> are set upright, where <emph>sideways</emph> means rotated either 90&deg; clockwise 
+or 90&deg; count-clockwise, respectively, in accordance with whether the applicable block progression direction is right-to-left or left-to-right, 
+and where <emph>upright</emph> means not rotated.</p>
 <note role="clarification">
-<p>According to <bibref ref="utr50"/>, visual rotation of a glyph may occur through either the substitution of
-a rotated glyph or by performing an affine rotation transformation on the glyph's outline (or raster image),
+<p>According to <bibref ref="utr50"/>, visual rotation of a <loc href="#terms-glyph-area">glyph areas</loc> may occur through either the substitution
+ of a rotated <loc href="#terms-glyph-area">glyph areas</loc> or by performing an affine rotation transformation on the 
+ <loc href="#terms-glyph-area">glyph areas</loc>'s outline (or raster image),
 where the determination of which of these applies depends on the specific font used during presentation processing.</p>
 </note>
-<p>If the value of this attribute is <code>sidewaysLeft</code>, then rotated glyphs
+<p>If the value of this attribute is <code>sidewaysLeft</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc>
 are rotated 90&deg; counter-clockwise.</p>
-<p>If the value of this attribute is <code>sidewaysRight</code>, then rotated glyphs
+<p>If the value of this attribute is <code>sidewaysRight</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc>
 are rotated 90&deg; clockwise.</p>
-<p>If the value of this attribute is <code>sideways</code>, then rotated glyphs
+<p>If the value of this attribute is <code>sideways</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc>
 are rotated either 90&deg; clockwise or 90&deg; count-clockwise, respectively,
 in accordance with whether the applicable block progression direction is right-to-left or left-to-right.</p>
 <p>If the value of this attribute is <code>upright</code>, then all characters are considered
-to have a vertical orientation of <code>U</code>, in which case no glyphs are rotated. In this case the
-(potential) substitution of rotated glyphs and the application of an affine rotation transformation
-are disabled, and the glyph rendered is the non-rotated form.
+to have a vertical orientation of <code>U</code>, in which case no 
+<loc href="#terms-glyph-area">glyph areas</loc> are rotated. In this case the
+(potential) substitution of rotated <loc href="#terms-glyph-area">glyph areas</loc> 
+and the application of an affine rotation transformation
+are disabled, and the <loc href="#terms-glyph-area">glyph area</loc> rendered 
+is the non-rotated form.
 In addition, for purposes of bidirectional processing, this value causes all
 affected characters to be treated as strong left-to-right, i.e., to be treated as if
-a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeOverride</att> of
+a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeBidi</att> of
 <code>override</code> were applied.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>mixed</code>.</p>
@@ -20850,7 +20778,6 @@ supports the following features:</p>
 <ulist>
 <item><p><loc href="#feature-ruby"><code>#ruby</code></loc></p></item>
 <item><p><loc href="#feature-rubyAlign"><code>#rubyAlign</code></loc></p></item>
-<item><p><loc href="#feature-rubyOffset"><code>#rubyOffset</code></loc></p></item>
 <item><p><loc href="#feature-rubyPosition"><code>#rubyPosition</code></loc></p></item>
 <item><p><loc href="#feature-rubyReserve"><code>#rubyReserve</code></loc></p></item>
 </ulist>
@@ -20863,15 +20790,6 @@ transforming the <loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#rubyAlign</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute.</p>
-</div3>
-<div3 id="feature-rubyOffset">
-<head>#rubyOffset</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#rubyOffset</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#rubyOffset</code> feature if it implements presentation semantic support for the
-<loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-rubyPosition">
 <head>#rubyPosition</head>
@@ -22572,12 +22490,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-rubyAlign"><code>#rubyAlign</code></loc></td>
-<td css="text-align:center;">2</td>
-<td css="text-align:center;">O</td>
-<td css="text-align:center;">O</td>
-</tr>
-<tr>
-<td><loc href="#feature-rubyOffset"><code>#rubyOffset</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
@@ -26582,34 +26494,6 @@ The semantics of this style attribute are extended by this specification.</td>
 </tbody>
 </table>
 </div4>
-<div4 id="derivation-rubyOffset">
-<head><loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc></head>
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
-</div4>
 <div4 id="derivation-rubyPosition">
 <head><loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc></head>
 <ednote>
@@ -28035,7 +27919,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
 <item><p><loc href="#style-attribute-ruby"><att>tts:ruby</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyPosition"><att>tts:rubyPosition</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</att></loc></p></item>
 <item><p><loc href="#style-attribute-textCombine"><att>tts:textCombine</att></loc></p></item>

@@ -4,7 +4,7 @@
 
 This is the official repository for the W3C Timed Text Markup Language 2 (TTML2) specification.
 
-The latest editor's draft of TTML2 may be viewed at http://w3c.github.io/ttml2/spec/ttml2.html.
+The latest editor's draft of TTML2 may be viewed at http://w3c.github.io/ttml2/
 
 Additional information can be found at:
 

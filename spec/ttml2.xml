@@ -16649,15 +16649,21 @@ nodes;</p></item>
 ref="semantics-region-layout-step-1"/> is mapped 
 to an XSL FO document instance, <emph>F</emph>, as follows:</p>
 <olist>
-<item><p>perform procedure <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase>;</p></item>
+<item>
+  <p>perform procedure <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase>;</p>
+<note role="clarification">
+  <p>A compliant presentation processor is permitted to perform this step at an earlier processing stage, in which case this step is not
+  repeated here. Note that if anonymous span construction occurs before intermediate synchronic document construction as defined by
+  <specref ref="semantics-region-layout-step-1"/>, then the intermediate synchronic document will contain anonymous spans.</p>
+</note>
+</item>
 <item>
 <p>resolve styles according to <specref ref="semantics-style-resolution-process-overall"/>;</p>
 <note role="clarification">
-  <p>A compliant presentation processor is permitted to perform the previous step (anonymous span generation) and this step (style resolution)
-  as post-processing steps while performing the <loc href="#procedure-construct-intermediate-document">[construct intermediate document]</loc> procedure,
-  in which case each intermediate synchronic document produced by <specref ref="semantics-region-layout-step-1"/> will contain anonymously
-  generated spans and <loc href="#terms-computed-style-set">computed style sets</loc>, and therefore, these steps would not be performed during
-  synchronic flow processing.</p>
+  <p>A compliant presentation processor is permitted to perform this step
+  as a post-processing step while performing the <loc href="#procedure-construct-intermediate-document">[construct intermediate document]</loc> procedure,
+  in which case each intermediate synchronic document produced by <specref ref="semantics-region-layout-step-1"/> will contain
+  <loc href="#terms-computed-style-set">computed style sets</loc>, and therefore, this step would not be repeated here.</p>
 </note>
 </item>
 <item>
@@ -17224,11 +17230,11 @@ parent time container is a sequential time container, then the implicit duration
 is equivalent to zero.</p>
 </item>
 <item>
-<p>The implicit duration of an <el>audio</el>, <el>br</el> and <el>image</el> element is defined to be the same as
-if the <el>br</el> element were treated as an anonymous span.</p>
+<p>The implicit duration of an <el>audio</el>, <el>br</el> or <el>image</el> element is defined to be the same as
+if that element were treated as an anonymous span.</p>
 </item>
 <item>
-<p>The implicit duration of an <el>animate</el> and <code>set</code> element is defined to be the same as
+<p>The implicit duration of an <el>animate</el> or <code>set</code> element is defined to be the same as
 the implicit duration of its most immediate ancestor that is a time comtainer.</p>
 </item>
 <item>

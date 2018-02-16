@@ -9678,6 +9678,13 @@ is expected to be used in a number of contexts, such as
 when an author desires to synthesize a narrow or wide font face,
 when an author desires to employ font sizes based on non-square cell units, etc.</p>
 </note>
+<note role="clarification">
+<p><loc href="#terms-presentation-processor">Presentation processors</loc> are expected to scale glyphs so that the height of the EM square 
+as defined in the font resource matches the computed font size height, using an appropriate algorithm for the font. If anamorphic font scaling
+is used, i.e. the computed font size width differs from the computed font size height, then presentation processors additionally are expected
+to scale the EM square anamorphically by the ratio of the width to the height, and by extension, ensure that the presented glyphs are also 
+scaled by the same ratio.</p>
+</note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
 <p>If the value of this attribute specifies a <code>c</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
 then it is resolved in terms of the height (only) or (both) the width and height of a
@@ -11095,7 +11102,7 @@ styling.</p>
 <p></p>
 <p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
 <specref ref="ruby-semantics-mapping-table"/> apply.</p>
-<p>If a computed value of the property associated with this attribute is not supported,
+<p>If a computed value of the property associated with this attribute is not supported,   
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="ruby-semantics-mapping-table" role="common">
 <caption>Table 8-1 &ndash; Ruby Semantics Mapping</caption>
@@ -11148,6 +11155,12 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p>For the purpose of presentation processing, the <loc href="#terms-document-processing-context">document processing context</loc> determines the 
+mode of presentation: normal or fallback. 
+When performing normal presentation processing of ruby text annotations, delimiter content must not generate any inline areas. 
+When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content must generate normal inline areas.
+If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentation.</p>
+
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
 <ulist>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
@@ -11231,10 +11244,6 @@ For the purpose of presentation processing, the violation of any of these constr
 presentation of ruby text annotations, and, for content that violates some constraint, if that content is
 a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
 then it should be mapped to a U+0020 (SPACE) character, of, if some other content, then ignored (not presented).</p>
-<p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
-inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
-must generate normal inline areas.</p>
-<p>If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentaton.</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">
@@ -11325,6 +11334,12 @@ base delimiter text delimiter =
 &lt;/span&gt;
 </eg>
 </note>
+<note role="clarification">
+<p>The syntax of TTML allows using multiple Ruby Base Content within a Ruby Base Container and multiple Ruby Text Content within 
+a Ruby Text Container all within the same Ruby Container. This version of TTML leaves the mapping between Ruby Base Content and 
+Ruby Text Content undefined when the number of Ruby Text Content does not equal the number of Ruby Base Content in 
+the same Ruby Container.</p> 
+</note>
 <p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Ruby</caption>
@@ -11332,7 +11347,7 @@ base delimiter text delimiter =
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+&lt;span <phrase role="strong">tts:ruby="container"</phrase> tts:rubyAlign="spaceAround"&gt;
   &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x5229;&#x7528;&#x8A31;&#x8AFE;&lt;/span&gt;
   &lt;span <phrase role="strong">tts:ruby="text"</phrase>&gt;&#x30E9;&#x30A4;&#x30BB;&#x30F3;&#x30B9;&lt;/span&gt;
 &lt;/span&gt;
@@ -11350,15 +11365,15 @@ base delimiter text delimiter =
 </tr>
 </tbody>
 </table>
-<p>Use of <att>tts:ruby</att> to specify complex ruby annotation is illustrated by the following example.</p>
+<p>Use of <att>tts:ruby</att> to specify double-sided ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-2" role="example">
-<caption>Example Fragment &ndash; Complex Ruby</caption>
+<caption>Example Fragment &ndash; Double-sided Ruby</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
 &lt;span&gt;
-  &lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+  &lt;span <phrase role="strong">tts:ruby="container"</phrase> tts:rubyAlign="spaceAround"&gt;
     &lt;span <phrase role="strong">tts:ruby="baseContainer"</phrase>&gt;
       &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x6771;&#x5357;&lt;/span&gt;
     &lt;/span&gt;
@@ -11378,7 +11393,7 @@ base delimiter text delimiter =
 </table>
 <p></p>
 <table id="style-attribute-ruby-example-2-images" role="example-images">
-<caption>Example Rendition &ndash; Complex Ruby</caption>
+<caption>Example Rendition &ndash; Double-sided Ruby</caption>
 <tbody>
 <tr>
 <td><graphic source="images/ruby_2.png" alt="TTML ruby style property"/></td>
@@ -11389,6 +11404,33 @@ base delimiter text delimiter =
 <p>The inter-character positioning mode for ruby annotations, such as used with <emph>bopomofo</emph> characters,
 is not supported by this version of TTML due to lack of market requirements.</p>
 </note>
+
+<p>The <att>tts:ruby</att> attribute can also be used when the annotation uses Latin characters, e.g. for pinyin as described by <bibref ref="clreq"/> and
+ illustrated by the following example.</p>
+<table id="style-attribute-ruby-example-3" role="example">
+<caption>Example Fragment &ndash; Ruby with Pinyin Annotation</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p&gt;
+&lt;span tts:ruby="container" tts:rubyAlign="center"&gt;
+  &lt;span tts:ruby="base"&gt;周杰伦&lt;/span&gt;&lt;span tts:ruby="text"&gt;Jay Chou&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-ruby-example-3-images" role="example-images">
+<caption>Example Rendition &ndash; Ruby using Pinyin Annotation</caption>
+<tbody>
+<tr>
+<td><graphic source="images/ruby-pinyin.png" alt="TTML ruby style property with pinyin"/></td>
+</tr>
+</tbody>
+</table>
 <div4>
 <head>Special Semantics</head>
 <p>In the absence of implementation specific requirements, constraints on alignment between ruby annotation text and ruby base text that would potentially
@@ -11486,6 +11528,13 @@ have no impact on ruby alignment.</p>
 </note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>center</code>.</p>
+<note role="elaboration">
+<p>In this specification, ruby annotations in timed text applications are assumed to be narrow, since presentation space and available time are 
+often constrained. As a consequence, this version of TTML does not enable authors to control how spacing is distributed when the 
+ruby annotation is wider than its base text. This might be problematic for wide ruby annotations at the start or end edge of the line. In order 
+to avoid issues, authors are encouraged to use an appropriate value of <att>tts:rubyAlign</att> and/or to split events containing wide 
+ruby annotations into multiple lines or even multiple events.</p>
+</note>
 <p>The <att>tts:rubyAlign</att> style is illustrated by the following example.</p>
 <table id="ruby-align-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Align</caption>
@@ -11614,7 +11663,7 @@ this case, an author may redefine the default initial value for this attribute b
 <code>&lt;initial tts:rubyPosition="after"/&gt;</code> in a document's <code>styling</code> element.</p>
 </note>
 <p>The <att>tts:rubyPosition</att> style is illustrated by the following example, which illustrates
-how the resolution of ruby position depends upon writing mode.</p>
+how the resolution of ruby position depends upon writing mode. Note that the example uses "mono ruby” as defined in <bibref ref="jlreq"/>.</p>
 <table id="ruby-position-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Position</caption>
 <tbody>
@@ -11627,32 +11676,56 @@ how the resolution of ruby position depends upon writing mode.</p>
 ...
 &lt;p region="left"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="middle"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="right"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 </eg>
@@ -11993,8 +12066,8 @@ follows the semantics of the <code>text-align-last</code> property with a value 
 <div3 id="style-attribute-textCombine">
 <head>tts:textCombine</head>
 <p>When a vertical writing mode applies, the <att>tts:textCombine</att> attribute is used to specify a style property that
-determines whether and how multiple nominally non-combining characters are combined so that their <loc href="#terms-glyph-area">glyph areas</loc>
-consume the nominal bounding box of a single em square of the surrounding vertical text.
+determines whether and how multiple characters, such as digits, are combined horizontally so that their 
+<loc href="#terms-glyph-area">glyph areas</loc> fit within the width of a single line of the surrounding vertical text.
 If a horizontal writing mode applies, then this property is ignored
 for the purpose of presentation processing.</p>
 <p>Combination processing may make use of one or more techniques to obtain the goal of visual combination into an em square of the surrounding vertical text.
@@ -12045,9 +12118,8 @@ span.</p>
 If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
 If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
 equal to or less than a specified count, or two (2) if no count is specified.</p>
+<p>Combination applies after all affected characters have been processed as if a horizontal writing mode applied. In particular, bidirectional processing, ligatures, glyph subtitutions or combination of Unicode combining characters if used is applied before the combination process specified by the <att>tts:textCombine</att> attribute.</p>
 <p>Combination must not cross an element boundary, a bidirectional boundary, or a <loc href="#terms-glyph-area">non-glyph area</loc> boundary.</p>
-<p>This attribute has no impact on or interaction with the nominal layout of
-<loc href="#terms-glyph-area">glyph areas</loc> that constitute a Unicode combining character sequence.</p>
 <p>The <att>tts:textCombine</att> style is illustrated by the following example.</p>
 <table id="text-combine-example" role="example">
 <caption>Example Fragment &ndash; Text Combine</caption>
@@ -12078,6 +12150,12 @@ equal to or less than a specified count, or two (2) if no count is specified.</p
 </tr>
 </tbody>
 </table>
+<p></p>
+<note role="elaboration">
+<p>In the above example, for the value <code>all</code> of <att>tts:textCombine</att>, the presentation processor selected half-width variants of the
+ affected characters, but the resulting width is larger than the em square of the surrounding vertical text, to avoid readability issues and as 
+ permitted by TTML.</p>
+</note>
 </div3>
 <div3 id="style-attribute-textDecoration">
 <head>tts:textDecoration</head>
@@ -16308,12 +16386,6 @@ and the resulting generated out-of-line region is shown by the following example
 </div4>
 <div4 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
-<issue id="issue-ttml2-376">
-<head>Revise as needed to synchronize with formal ISD syntax.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/376">https://github.com/w3c/ttml2/issues/376</loc></source>
-<p>Review and revise 11.3.1.3 Intermediate Synchronic Document Construction as needed to correlate and synchronize with
-<loc href="#terms-intermediate-document-syntax">Intermediate Synchronic Document Syntax</loc>.</p>
-</issue>
 <p>For the purposes of performing presentation processing, the active time
 duration of a <loc href="#terms-document-instance">document instance</loc> is divided into a sequence of time coordinates where at
 each time coordinate, some element becomes temporally active or inactive,
@@ -23382,11 +23454,6 @@ that accounts for the difference may be introduced when computing media time <co
 <head>SMPTE Time Base</head>
 <p>When operating with the <code>smpte</code> time base, the following semantics apply for interpreting time expressions,
 as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
-<issue id="issue-ttml1-191">
-<head>Incorrect Expression for NTSC Drop Mode</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/191">https://github.com/w3c/ttml1/issues/191</loc></source>
-<p>Correct formula for NTSC drop mode calculation.</p>
-</issue>
 <p>If the computed value of the <att>ttp:markerMode</att> parameter is <code>discontinuous</code>, then there is no direct relationship between
 time expressions and media time <phrase role="strong"><code>M</code></phrase> or local real time <phrase role="strong"><code>R</code></phrase>. In
 this case, time expressions refer to synchronization events (markers) emitted by the <loc href="#terms-document-processing-context">document processing context</loc>
@@ -23991,6 +24058,11 @@ href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vo
 Requirements for Analog Television Receivers</titleref>,
 United States Code of Federal Regulations, Title 47, Volume 1, Part 79, &sect; 79.101. (See
 <xspecref href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf">http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf</xspecref>.)
+</bibl>
+<bibl id="clreq" key="CLREQ">Bobby Tung et al.,
+<titleref href="https://www.w3.org/TR/2017/WD-clreq-20171229/">Requirements for Chinese Text Layout</titleref>
+W3C Working Draft, 29 December 2017.
+(See <xspecref href="https://www.w3.org/TR/2017/WD-clreq-20171229/">https://www.w3.org/TR/2017/WD-clreq-20171229/</xspecref>.)
 </bibl>
 <bibl id="css2" key="CSS2">Bert Bos et al.,
 <titleref

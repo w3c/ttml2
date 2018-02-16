@@ -3126,16 +3126,16 @@ that causes a warning to be treated as an error, or vice-versa.</p></note>
 <def>
 <olist>
 <item><p>if a document's <loc href="#terms-effective-validation-profile">effective validation profile</loc> is associated with one or more
-schemas, then the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is an appropriate subset of these associated schemas
-based upon the requirements of the <loc href="#terms-document-processing-context">document processing context</loc>;</p></item>
+schemas, then the set of <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is an appropriate subset
+of these associated schemas based upon the requirements of the <loc href="#terms-document-processing-context">document processing context</loc>;</p></item>
 <item><p>otherwise, the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is a default set of schemas selected by the
 <loc href="#terms-document-processing-context">document processing context</loc>.</p></item>
 </olist>
 <note role="elaboration">
-<p>The determination of what constitutes an <emph>appropriate</emph> schema is not formally defined by this specification; nevertheless,
-it is expected that the selection process will make use of (1) the types of schemas available to the implementation, either as referenced by a
-<loc href="#profile-vocabulary-schema"><el>ttp:schema</el></loc> element or as inferred and supplied by the implementation and
-(2) the types of schema systems supported by the implementation.</p>
+<p>The determination of what constitutes an <emph>appropriate</emph> set of schemas is not formally defined by this specification; nevertheless,
+it is expected that the selection process will make use of (1) the types of schemas available to and supported by the implementation and
+(2) as a heuristic, the maximum version number associated with a required or optional feature as determined by the
+<loc href="#terms-effective-validation-profile">effective validation profile</loc>.</p>
 </note>
 </def>
 </gitem>
@@ -3317,8 +3317,6 @@ Metadata Items
 <loc href="#profile-vocabulary-extensions">ttp:extensions</loc>,
 <loc href="#profile-vocabulary-extension">ttp:extension</loc>,
 <loc href="#profile-vocabulary-profile">ttp:profile</loc>
-<loc href="#profile-vocabulary-features">ttp:schemas</loc>,
-<loc href="#profile-vocabulary-feature">ttp:schema</loc>,
 </td>
 </tr>
 <tr id="element-vocab-type-styling">
@@ -3719,7 +3717,6 @@ This specification defines a number of standard <emph>Profile Definition Documen
 <specref ref="standard-profiles"/>.</p>
 <p>The <el>ttp:profile</el> element accepts as its children zero or more
 elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group, followed by either (1)
-zero or more <el>ttp:schemas</el> elements followed by
 zero or more <el>ttp:features</el> elements followed by
 zero or more <el>ttp:extensions</el> elements or (2)
 zero or more <el>ttp:profile</el> elements.
@@ -3739,7 +3736,7 @@ otherwise it is referred to as a <loc href="#terms-non-nesting-profile">non-nest
   use = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
-  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, ((<loc href="#profile-vocabulary-schemas">ttp:schemas</loc>*, <loc href="#profile-vocabulary-features">ttp:features</loc>*, <loc href="#profile-vocabulary-extensions">ttp:extensions</loc>*)|<loc href="#profile-vocabulary-profile">ttp:profile</loc>*)
+  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, ((<loc href="#profile-vocabulary-features">ttp:features</loc>*, <loc href="#profile-vocabulary-extensions">ttp:extensions</loc>*)|<loc href="#profile-vocabulary-profile">ttp:profile</loc>*)
 &lt;/ttp:profile&gt;
 </eg>
 </td>
@@ -3851,104 +3848,6 @@ or entail the intervention of an end-user.</p>
 baseline profile. This baseline profile is then supersetted (thus
 creating an additive derived profile) by requiring support for
 <code>#text-outline</code> feature.</p>
-</note>
-</div3>
-<div3 id="profile-vocabulary-schemas">
-<head>ttp:schemas</head>
-<p>The <el>ttp:schemas</el> element is a container element used to group
-information about schema associations.</p>
-<p>The <el>ttp:schemas</el> element accepts as its children zero or more
-elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group, followed by
-zero or more <el>ttp:schema</el> elements.</p>
-<table id="elt-syntax-schemas" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttp:schemas</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttp:schemas
-  xml:base = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
-  <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#profile-vocabulary-schema">ttp:schema</loc>*
-&lt;/ttp:schemas&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>If specified, the <att>xml:base</att>
-attribute must (1) adhere to the
-<loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax and (2) express an absolute URI that
-adheres to <bibref ref="xmlbase"/> . If not specified, the
-<att>xml:base</att> attribute's default
-value applies, which is the <loc href="#content-value-uri">&lt;uri&gt;</loc> from which the
-current <loc href="#terms-document-instance">document instance</loc> was fetched.</p>
-</div3>
-<div3 id="profile-vocabulary-schema">
-<head>ttp:schema</head>
-<p>The <el>ttp:schema</el> element is used to specify
-information about schema association.</p>
-<table id="elt-syntax-schema" role="syntax">
-<caption>XML Representation &ndash; Element Information Item: ttp:schema</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttp:schema
-  type = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  <loc href="#content-attribute-xml-id">xml:id</loc> = ID
-  {<emph>any attribute not in default or any TT Namespace</emph>}&gt;
-  <emph>Content:</emph> #PCDATA
-&lt;/ttp:schema&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The children of the <el>ttp:schema</el> element must express a non-empty
-sequence of <loc href="#terms-character-information-item">character information items</loc> the concatenation of which adheres to the
-<loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax.</p>
-<p>If the URI expressed by the content of the <el>ttp:schema</el>
-is a relative URI, then, when combined with the
-value expressed by the
-<att>xml:base</att> attribute of the
-nearest ancestor <el>ttp:schemas</el> element, it must express an
-absolute URI.  In either case (original absolute URI or resulting
-absolutized URI), the URI expressed by the <el>ttp:schema</el>
-element must further adhere to the syntax of an schema designation as
-defined by <loc href="#content-value-uri">&lt;uri&gt;</loc>.</p>
-<p>If the URI expressed by the content of the <el>ttp:schema</el> element
-is a relative URI, then an <att>xml:base</att> attribute should be
-specified on the nearest ancestor <el>ttp:schemas</el> element.</p>
-<p>If specified, the value of a <att>type</att> attribute must adhere to the value syntax of the <code>Content-Type</code>
-MIME header defined by <bibref ref="mime"/>, &sect;5.1.</p>
-<p>If not specified, then the schema content type is unknown or deliberately unspecified.</p>
-<p>When decoding a schema for which a <att>type</att> attribute is specified, then content processing
-must respect the specified type whether it is correct or not. That is, if a <att>type</att> attribute mis-specifies the
-type of a schema, then content processing must not attempt to override that type by performing content
-sniffing.</p>
-<p>The <el>ttp:schema</el> element is illustrated by the following example.</p>
-<table id="profile-vocabulary-schema-example-1" role="example">
-<caption>Example Fragment &ndash; ttp:schema</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/ttml2-transformation"&gt;
-  &lt;ttp:schemas xml:base="http://example.org/ttml/myschema/"&gt;
-    <phrase role="strong">&lt;ttp:schema type="application/relax-ng-compact-syntax"&gt;myschema.rnc&lt;/ttp:schema&gt;</phrase>
-  &lt;/ttp:schemas&gt;
-&lt;/ttp:profile&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-<p>Since no schema language captures all constraints on TTML content as defined by this specification, it is expected that
-any schemas referenced by a profile designer will be augmented by built-in, programmatic (code-based) schemas
-employed by a given <loc href="#terms-validating-content-processor">validating content processor</loc>.</p>
 </note>
 </div3>
 <div3 id="profile-vocabulary-features">
@@ -22041,31 +21940,6 @@ feature if it:</p>
 feature if it is a <loc href="#terms-validating-content-processor">validating content processor</loc> and
 implements presentation semantic support for the same vocabulary enumerated above.</p>
 </div3>
-<div3 id="feature-validation-schema">
-<head>#validation-schema</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#validation-schema</code>
-feature if it recognizes and is capable of transforming the following element vocabulary defined by <specref ref="profile-element-vocabulary"/>:</p>
-<ulist>
-  <item><p><loc href="#profile-vocabulary-schemas"><el>ttp:schemas</el></loc></p></item>
-  <item><p><loc href="#profile-vocabulary-schema"><el>ttp:schema</el></loc></p></item>
-</ulist>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#validation-schema</code>
-feature if it implements presentation semantic support for the same vocabulary enumerated above.</p>
-</div3>
-<div3 id="feature-validation-schema-rnc">
-<head>#validation-schema-rnc</head>
-<p>A TTML processor supports the <code>#validation-schema-rnc</code> feature if it supports the
-<code>#validation-schema</code> feature and supports the dereferencing and use of schemas
-identified as using the Media Type <code>application/relax-ng-compact-syntax</code>
-and expressed with the Relax NG Compact Syntax (RNC) as defined by <bibref ref="rng"/>.</p>
-</div3>
-<div3 id="feature-validation-schema-xsd">
-<head>#validation-schema-xsd</head>
-<p>A TTML processor supports the <code>#validation-schema-xsd</code> feature if it supports the
-<code>#validation-schema</code> feature and supports the dereferencing and use of schemas
-identified as using the Media Type <code>application/xml</code>
-and expressed with the XML Schema syntax as defined by <bibref ref="xsd-1"/> and <bibref ref="xsd-2"/>.</p>
-</div3>
 <div3 id="feature-version">
 <head>#version</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -23212,21 +23086,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-validation"><code>#validation</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-validation-schema"><code>#validation-schema</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-validation-schema-rnc"><code>#validation-schema-rnc</code></loc></td>
-<td>O</td>
-<td>O</td>
-</tr>
-<tr>
-<td><loc href="#feature-validation-schema-xsd"><code>#validation-schema-xsd</code></loc></td>
 <td>O</td>
 <td>O</td>
 </tr>

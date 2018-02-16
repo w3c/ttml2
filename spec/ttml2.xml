@@ -12180,8 +12180,8 @@ follows the semantics of the <code>text-align-last</code> property with a value 
 <div3 id="style-attribute-textCombine">
 <head>tts:textCombine</head>
 <p>When a vertical writing mode applies, the <att>tts:textCombine</att> attribute is used to specify a style property that
-determines whether and how multiple nominally non-combining characters are combined so that their <loc href="#terms-glyph-area">glyph areas</loc>
-consume the nominal bounding box of a single em square of the surrounding vertical text.
+determines whether and how multiple characters, such as digits, are combined horizontally so that their 
+<loc href="#terms-glyph-area">glyph areas</loc> fit within the width of a single line of the surrounding vertical text.
 If a horizontal writing mode applies, then this property is ignored
 for the purpose of presentation processing.</p>
 <p>Combination processing may make use of one or more techniques to obtain the goal of visual combination into an em square of the surrounding vertical text.
@@ -12232,9 +12232,8 @@ span.</p>
 If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
 If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
 equal to or less than a specified count, or two (2) if no count is specified.</p>
+<p>Combination applies after all affected characters have been processed as if a horizontal writing mode applied. In particular, bidirectional processing, ligatures, glyph subtitutions or combination of Unicode combining characters if used is applied before the combination process specified by the <att>tts:textCombine</att> attribute.</p>
 <p>Combination must not cross an element boundary, a bidirectional boundary, or a <loc href="#terms-glyph-area">non-glyph area</loc> boundary.</p>
-<p>This attribute has no impact on or interaction with the nominal layout of
-<loc href="#terms-glyph-area">glyph areas</loc> that constitute a Unicode combining character sequence.</p>
 <p>The <att>tts:textCombine</att> style is illustrated by the following example.</p>
 <table id="text-combine-example" role="example">
 <caption>Example Fragment &ndash; Text Combine</caption>
@@ -12265,6 +12264,12 @@ equal to or less than a specified count, or two (2) if no count is specified.</p
 </tr>
 </tbody>
 </table>
+<p></p>
+<note role="elaboration">
+<p>In the above example, for the value <code>all</code> of <att>tts:textCombine</att>, the presentation processor selected half-width variants of the
+ affected characters, but the resulting width is larger than the em square of the surrounding vertical text, to avoid readability issues and as 
+ permitted by TTML.</p>
+</note>
 </div3>
 <div3 id="style-attribute-textDecoration">
 <head>tts:textDecoration</head>

@@ -4,7 +4,7 @@
 <!ENTITY % entities SYSTEM "entities.dtd">
 %entities;
 <!ENTITY status SYSTEM "status.xml">
-<!ENTITY document.status "W3C Editors' Draft">
+<!ENTITY document.status "W3C Candidate Recommendation">
 <!ENTITY title "&title;">
 <!ENTITY prevloc "https://www.w3.org/TR/2017/WD-ttml2-20170106/">
 <!ENTITY latestedloc "https://w3c.github.io/ttml2/index.html">
@@ -959,7 +959,14 @@ may define certain behavioral defaults, such as the establishment or creation of
 <loc href="#terms-synthetic-document-syncbase">synthetic document syncbase</loc>.</p>
 </def>
 </gitem>
-<gitem id="terms-effective-content-profile">
+<gitem id="terms-document-temporal-coordinate-space">
+<label>[document temporal coordinate space]</label>
+<def>
+<p>The temporal coordinate system relative to which computed time expressions are interpreted in a 
+<loc href="#terms-document-instance">document instance</loc>, more about which see
+<specref ref="parameter-attribute-timeBase"/>.</p>
+</def>
+</gitem><gitem id="terms-effective-content-profile">
 <label>[effective content profile]</label>
 <def>
 <p>The <loc href="#terms-content-profile">content profile</loc> computed from the set of all <loc href="#terms-content-profile">content profiles</loc>
@@ -3456,7 +3463,6 @@ Styling Attributes
 <loc href="#style-attribute-position">tts:position</loc>,
 <loc href="#style-attribute-ruby">tts:ruby</loc>,
 <loc href="#style-attribute-rubyAlign">tts:rubyAlign</loc>,
-<loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc>,
 <loc href="#style-attribute-rubyPosition">tts:rubyPosition</loc>,
 <loc href="#style-attribute-rubyReserve">tts:rubyReserve</loc>,
 <loc href="#style-attribute-showBackground">tts:showBackground</loc>,
@@ -5234,8 +5240,7 @@ when specified on the <el>tt</el> element.</p>
 <div3 id="parameter-attribute-timeBase">
 <head>ttp:timeBase</head>
 <p>The <att>ttp:timeBase</att> attribute is used to specify the
-temporal coordinate system by means of which time expressions are
-interpreted in a <loc href="#terms-document-instance">document instance</loc>.</p>
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
 <table id="parameter-attribute-timeBase-syntax" role="syntax">
 <caption>Syntax Representation &ndash; ttp:timeBase</caption>
@@ -5482,8 +5487,10 @@ element group apply semantically to the <el>body</el> element.</p>
 </table>
 <p>An author may specify a temporal interval for a <el>body</el> element using
 the <att>begin</att>, <att>dur</att>, and <att>end</att> attributes. If the begin point
-of this interval remains unspecified, then the begin point is interpreted as the beginning
-point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>. Similarly, if the end point of this interval remains unspecified, then the
+of this interval remains unspecified, then the begin point is interpreted as the later of the beginning
+point of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
+and the beginning point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.
+If the end point of this interval remains unspecified, then the
 end point is interpreted as the ending point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
 <note role="explanation">
 <p>A <loc href="#terms-document-instance">document instance</loc> referenced from a SMIL presentation
@@ -5491,8 +5498,8 @@ is expected to follow the same timing rules as apply to other SMIL media
 objects.</p>
 </note>
 <p>If relative begin or end times are specified on the <el>body</el>
-element, then these times are resolved by reference to the beginning and
-ending time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
+element, then these times are resolved by reference to the beginning 
+of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>.</p>
 <p>If the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is shorter than the computed duration of the
 <el>body</el> element, then the active time interval of a <el>body</el> element is
 truncated to the active end point of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>.</p>
@@ -6260,6 +6267,8 @@ media-query
 the syntax of the <code>media_query_list</code> defined by <bibref ref="media-queries"/>, &sect; 3.</p>
 <p>A &lt;media-function&gt; value expression evaluates to <code>true</code> if the specified media query
 evaluates to <code>true</code>, otherwise, the value expression evaluates to <code>false</code>.</p>
+<p>If the semantics of a &lt;media-function&gt; expression is not supported, then that expression must
+evaluate to <code>false</code>.</p>
 </div3>
 <div3 id="content-value-quoted-string">
 <head>&lt;quoted-string&gt;</head>
@@ -7634,7 +7643,6 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-position"/></p></item>
 <item><p><specref ref="style-attribute-ruby"/></p></item>
 <item><p><specref ref="style-attribute-rubyAlign"/></p></item>
-<item><p><specref ref="style-attribute-rubyOffset"/></p></item>
 <item><p><specref ref="style-attribute-rubyPosition"/></p></item>
 <item><p><specref ref="style-attribute-rubyReserve"/></p></item>
 <item><p><specref ref="style-attribute-showBackground"/></p></item>
@@ -8559,18 +8567,43 @@ where horizontal and vertical are always interpreted in an absolute sense.</p>
 and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>,
 then the semantics of <att>tts:bpd</att> only apply when computing the block progression dimension of any applicable background color or image;
 however, the dimensions of the content rectangles of the generated areas are not changed.</p>
+<p>If a percentage value is used in a <loc href="#style-value-length">&lt;length&gt;</loc> expression of this attribute,
+it is resolved with respect to the applicable <loc href="#terms-absolute-dimension">absolute dimension</loc> of the generated area's containing area
+(the nearest ancestor area).</p>
+<note role="clarification">
+  <p>A <loc href="#style-value-length">&lt;length&gt;</loc> expression used with this attribute is associated with
+  a specific, writing mode relative dimension, which is then resolved to an <loc href="#terms-absolute-dimension">absolute dimension</loc>
+  in accordance with the applicable writing mode. If that <loc href="#terms-absolute-dimension">absolute dimension</loc> is vertical (horizontal),
+  then a percentage value is resolved in terms of the same vertical (horizontal) <loc href="#terms-absolute-dimension">absolute dimension</loc> of
+  the reference area (the nearest ancestor area).</p>
+</note>
 <p>The <att>tts:bpd</att> style is illustrated by the following example.</p>
-<issue id="issue-ttml2-369-1">
-<head>Specify block and inline progression dimension percentages.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/369">https://github.com/w3c/ttml2/issues/369</loc></source>
-<p>Specify resolution of percentage values.</p>
-</issue>
+<table id="style-attribute-bpd-example-1" role="example">
+<caption>Example Fragment &ndash; Block Progression Dimension</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p tts:fontSize="24px" tts:lineHeight="48px" <phrase role="strong">tts:bpd="96px"</phrase>&gt;
+  the woods are &lt;span tts:display="inlineBlock" <phrase role="strong">tts:bpd="36px"</phrase>&gt;getting green&lt;/span&gt; ...
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<issue id="issue-ttml2-359-8">
-<head>Block Progression Dimension Example</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/359">https://github.com/w3c/ttml2/issues/359</loc></source>
-<p>Insert example fragment and image of tts:bpd.</p>
-</issue>
+<ednote>
+<name>Example Image - Block Progression Dimension</name>
+<date>2018-02-11</date>
+<edtext>Add example image of above fragment.</edtext>
+</ednote>
+<note role="explanation">
+<p>In the above example, the <att>tts:bpd</att> attribute on the <loc href="#content-vocabulary-p"><el>p</el></loc> element
+assigns a fixed dimension to the height of the content rectangle of the block area generated by the paragraph, while
+the <att>tts:bpd</att> attribute on the <loc href="#content-vocabulary-span"><el>span</el></loc> element assigns a fixed
+dimension to the height of the content rectangle of the inline block area generated by the span.</p>
+</note>
 </div3>
 <div3 id="style-attribute-color">
 <head>tts:color</head>
@@ -9470,15 +9503,106 @@ example.</p>
 </div3>
 <div3 id="style-attribute-fontSelectionStrategy">
 <head>tts:fontSelectionStrategy</head>
-<issue id="issue-ttml2-371">
-<head>Define tts:fontSelectionStrategy</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/371">https://github.com/w3c/ttml2/issues/371</loc></source>
-<p>Define <code>tts:fontSelectionStrategy</code> style property based on
-the XSL 1.1 <xspecref href="http://www.w3.org/TR/xsl/#font-selection-strategy">font-selection-strategy</xspecref> and
-recent <loc href="http://lists.w3.org/Archives/Public/public-tt/2014Nov/0051.html">TTWG ML thread</loc>.</p>
-<p>Specify font selection semantics, including how multiple author defined <loc href="#terms-font-resource">font resources</loc> combine
-with (local) platform defined <loc href="#terms-font-resource">font resources</loc> to obtain an ordered list of <loc href="#terms-font-resource">font resources</loc> for performing character to glyph mapping.</p>
-</issue>
+<p>The <att>tts:fontSelectionStrategy</att> attribute is used to specify a style property that
+determines the strategy to be applied when selecting a font from a list of possible fonts during
+presentation processing.</p>
+<table id="style-property-details-fontSelectionStrategy" role="common">
+<col css="width: 25%;"/>
+<col/>
+<tbody>
+<tr>
+<td><emph>Values:</emph></td>
+<td>
+<code>"auto"</code> |
+<code>"character"</code>
+</td>
+</tr>
+<tr>
+<td><emph>Initial:</emph></td>
+<td><code>auto</code></td>
+</tr>
+<tr>
+<td><emph>Applies to:</emph></td>
+<td>
+<loc href="#content-vocabulary-span"><el>span</el></loc>
+</td>
+</tr>
+<tr>
+<td><emph>Inherited:</emph></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><emph>Percentages:</emph></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><emph>Animatable:</emph></td>
+<td>discrete</td>
+</tr>
+<tr>
+<td><emph>Semantic basis:</emph></td>
+<td><loc href="#derivation-fontSelectionStrategy">fontSelectionStrategy derivation</loc></td>
+</tr>
+</tbody>
+</table>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
+<p>The presentation semantics of this property are those defined by <bibref ref="xsl11"/>, &sect;7.9.3,
+where the set of selection criteria are extended to include the following properties:</p>
+<ulist>
+  <item><p><loc href="#style-attribute-fontKerning"><att>tts:fontKerning</att></loc></p></item>
+  <item><p><loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc></p></item>
+</ulist>
+<p>When selecting among font resources that satisfy the font selection criteria, font resources that are referenced
+by a <loc href="#embedded-content-vocabulary-font"><el>font</el></loc> element have priority over application or system supplied
+font resources.</p>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>auto</code>.</p>
+<p>The <att>tts:fontSelectionStrategy</att> style is illustrated by the following
+example.</p>
+<table id="style-attribute-fontSelectionStrategy-example-1" role="example">
+<caption>Example Fragment &ndash; Font Selection Strategy</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p tts:fontFamily="font1,font2"&gt;
+  &lt;span <phrase role="strong">tts:fontSelectionStrategy="character"</phrase>&gt;&amp;#xE000;&amp;#x20DD;&lt;/span&gt;
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<ednote>
+<name>Font Selection Strategy Example Image</name>
+<date>2018-02-04</date>
+<edtext>Insert example image of font selection strategy based on above example code.</edtext>
+</ednote>
+<!--
+<table id="style-attribute-fontSelectionStrategy-example-1-images" role="example-images">
+<caption>Example Rendition &ndash; Font Selection Strategy</caption>
+<tbody>
+<tr>
+<td><graphic source="images/fontSelectionStrategy.png" alt="TTML fontSelectionStrategy style property"/></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+-->
+<note role="explanation">
+<p>In the above example, consider that the font resource associated with the <code>font1</code> font family contains a glyph that
+maps the single character <code>&amp;#xE000;</code>, but does not contain a glyph that maps either the entire contextual character sequence
+<code>&amp;#xE000;&amp;#x20DD;</code> or the single character <code>&amp;#x20DD;</code>. Consider further that the font resource associated with
+the <code>font2</code> font family contains a mapping for the complete contextual character sequence and a mapping for the single character
+<code>&amp;#x20DD;</code>.</p>
+<p>If the author is willing to accept the mapping for the complete contextual character sequence via <code>font2</code>, then the value
+<code>auto</code> would be used (either explicitly or by initial value defaulting). However, if the author wishes that <code>&amp;#xE000;</code>
+be mapped via <code>font1</code> and <code>&amp;#x20DD;</code> be mapped via <code>font2</code>, then the value <code>character</code> would
+be specified. In this example, the author wishes the latter behavior, so specifies the value <code>character</code>.</p>
+</note>
 </div3>
 <div3 id="style-attribute-fontShear">
 <head>tts:fontShear</head>
@@ -9679,6 +9803,13 @@ the second <loc href="#style-value-length">&lt;length&gt;</loc> is resolved in t
 is expected to be used in a number of contexts, such as
 when an author desires to synthesize a narrow or wide font face,
 when an author desires to employ font sizes based on non-square cell units, etc.</p>
+</note>
+<note role="clarification">
+<p><loc href="#terms-presentation-processor">Presentation processors</loc> are expected to scale glyphs so that the height of the EM square 
+as defined in the font resource matches the computed font size height, using an appropriate algorithm for the font. If anamorphic font scaling
+is used, i.e. the computed font size width differs from the computed font size height, then presentation processors additionally are expected
+to scale the EM square anamorphically by the ratio of the width to the height, and by extension, ensure that the presented glyphs are also 
+scaled by the same ratio.</p>
 </note>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express font size must be non-negative.</p>
 <p>If the value of this attribute specifies a <code>c</code> unit on a <loc href="#style-value-length">&lt;length&gt;</loc> component,
@@ -10099,18 +10230,43 @@ where horizontal and vertical are always interpreted in an absolute sense.</p>
 and the computed value of the <att>tts:display</att> property that applies to that element is not <code>inlineBlock</code>,
 then the semantics of <att>tts:ipd</att> only apply when computing the inline progression dimension of any applicable background color or image;
 however, the dimensions of the content rectangles of the generated areas are not changed.</p>
+<p>If a percentage value is used in a <loc href="#style-value-length">&lt;length&gt;</loc> expression of this attribute,
+it is resolved with respect to the applicable <loc href="#terms-absolute-dimension">absolute dimension</loc> of the generated area's containing area
+(the nearest ancestor area).</p>
+<note role="clarification">
+  <p>A <loc href="#style-value-length">&lt;length&gt;</loc> expression used with this attribute is associated with
+  a specific, writing mode relative dimension, which is then resolved to an <loc href="#terms-absolute-dimension">absolute dimension</loc>
+  in accordance with the applicable writing mode. If that <loc href="#terms-absolute-dimension">absolute dimension</loc> is horizontal (vertical),
+  then a percentage value is resolved in terms of the same horizontal (vertical) <loc href="#terms-absolute-dimension">absolute dimension</loc> of
+  the reference area (the nearest ancestor area).</p>
+</note>
 <p>The <att>tts:ipd</att> style is illustrated by the following example.</p>
-<issue id="issue-ttml2-369-2">
-<head>Specify block and inline progression dimension percentages.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/369">https://github.com/w3c/ttml2/issues/369</loc></source>
-<p>Specify resolution of percentage values.</p>
-</issue>
+<table id="style-attribute-ipd-example-1" role="example">
+<caption>Example Fragment &ndash; Inline Progression Dimension</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p tts:fontSize="24px" tts:lineHeight="48px" <phrase role="strong">tts:ipd="300px"</phrase>&gt;
+  the woods are &lt;span tts:display="inlineBlock" <phrase role="strong">tts:ipd="150px"</phrase>&gt;getting green&lt;/span&gt; ...
+&lt;/p&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 <p></p>
-<issue id="issue-ttml2-359-13">
-<head>Inline Progression Dimension Example</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/359">https://github.com/w3c/ttml2/issues/359</loc></source>
-<p>Insert example fragment and image of tts:ipd.</p>
-</issue>
+<ednote>
+<name>Example Image - Inline Progression Dimension</name>
+<date>2018-02-11</date>
+<edtext>Add example image of above fragment.</edtext>
+</ednote>
+<note role="explanation">
+<p>In the above example, the <att>tts:ipd</att> attribute on the <loc href="#content-vocabulary-p"><el>p</el></loc> element
+assigns a fixed dimension to the width of the content rectangle of the block area generated by the paragraph, while
+the <att>tts:ipd</att> attribute on the <loc href="#content-vocabulary-span"><el>span</el></loc> element assigns a fixed
+dimension to the width of the content rectangle of the inline block area generated by the span.</p>
+</note>
 </div3>
 <div3 id="style-attribute-letterSpacing">
 <head>tts:letterSpacing</head>
@@ -11097,7 +11253,7 @@ styling.</p>
 <p></p>
 <p>If the value of this attribute is <code>none</code>, then no ruby semantics apply; otherwise, the ruby semantics enumerated by
 <specref ref="ruby-semantics-mapping-table"/> apply.</p>
-<p>If a computed value of the property associated with this attribute is not supported,
+<p>If a computed value of the property associated with this attribute is not supported,   
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="ruby-semantics-mapping-table" role="common">
 <caption>Table 8-1 &ndash; Ruby Semantics Mapping</caption>
@@ -11150,36 +11306,37 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
+<p>For the purpose of presentation processing, the <loc href="#terms-document-processing-context">document processing context</loc> determines the 
+mode of presentation: normal or fallback. 
+When performing normal presentation processing of ruby text annotations, delimiter content must not generate any inline areas. 
+When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content must generate normal inline areas.
+If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentation.</p>
+
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
-<issue id="issue-ttml2-372">
-<head>Further constrain ruby container content.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/372">https://github.com/w3c/ttml2/issues/372</loc></source>
-<p>Proscribe the following from appearing in a ruby container:</p>
-<ulist>
-<item><p>use of span children of container that do not specify a ruby style, i.e., that
-do not play a role in ruby structure; if present, then such span is ignored for presentation purposes;</p></item>
-<item><p>use of #PCDATA children of container, baseContainer, and textContainer; i.e., permit #PCDATAA only
-in base, text, and delimiter; if used, then ignore for presentaion purposes;</p></item>
-<item><p>use of <el>br</el> element in ruby or its descendants, and, if used, treat as normal
-(collapsible) whitespace;</p></item>
-<item><p>use of U+2028 (LINE SEPARATOR) and U+2029 (PARAGRAPH SEPARATOR) in ruby or its descendants, and, if used, they are
-interpreted as normal (collapsible) whitespace.</p></item>
-</ulist>
-</issue>
 <ulist>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
 computed value of <att>tts:ruby</att> of all ancestor elements is <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
 or <code>base</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then its
 preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
+computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
@@ -11187,6 +11344,8 @@ computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseCont
 <code>textContainer</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
 computed value of <att>tts:ruby</att> of no more than one sibling is <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then each of its text fragment
+children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>baseContainer</code>;</p></item>
@@ -11198,6 +11357,10 @@ computed value of <att>tts:ruby</att> of its parent element is <code>container</
 then the computed value of <att>tts:ruby</att> of no sibling is <code>base</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then each of its text fragment
+descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>textContainer</code>;</p></item>
@@ -11211,6 +11374,10 @@ then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then each of its text fragment
+descendats does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
 <code>text</code>;</p></item>
@@ -11218,14 +11385,16 @@ computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</co
 computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then none of its
+descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then each of its text fragment
+descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR).</p></item>
 </ulist>
 <p>A validating processor must treat a violation of any of the above constraints as an error.
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
-presentation of ruby text annotations.</p>
-<p>When performing normal presentation processing of ruby text annotations, delimiter content must not generate any
-inline areas. When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content
-must generate normal inline areas.</p>
-<p>If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentaton.</p>
+presentation of ruby text annotations, and, for content that violates some constraint, if that content is
+a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
+then it should be mapped to a U+0020 (SPACE) character, of, if some other content, then ignored (not presented).</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">
@@ -11316,6 +11485,12 @@ base delimiter text delimiter =
 &lt;/span&gt;
 </eg>
 </note>
+<note role="clarification">
+<p>The syntax of TTML allows using multiple Ruby Base Content within a Ruby Base Container and multiple Ruby Text Content within 
+a Ruby Text Container all within the same Ruby Container. This version of TTML leaves the mapping between Ruby Base Content and 
+Ruby Text Content undefined when the number of Ruby Text Content does not equal the number of Ruby Base Content in 
+the same Ruby Container.</p> 
+</note>
 <p>Use of <att>tts:ruby</att> to specify simple ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Ruby</caption>
@@ -11323,7 +11498,7 @@ base delimiter text delimiter =
 <tr>
 <td>
 <eg xml:space="preserve">
-&lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+&lt;span <phrase role="strong">tts:ruby="container"</phrase> tts:rubyAlign="spaceAround"&gt;
   &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x5229;&#x7528;&#x8A31;&#x8AFE;&lt;/span&gt;
   &lt;span <phrase role="strong">tts:ruby="text"</phrase>&gt;&#x30E9;&#x30A4;&#x30BB;&#x30F3;&#x30B9;&lt;/span&gt;
 &lt;/span&gt;
@@ -11341,15 +11516,15 @@ base delimiter text delimiter =
 </tr>
 </tbody>
 </table>
-<p>Use of <att>tts:ruby</att> to specify complex ruby annotation is illustrated by the following example.</p>
+<p>Use of <att>tts:ruby</att> to specify double-sided ruby annotation is illustrated by the following example.</p>
 <table id="style-attribute-ruby-example-2" role="example">
-<caption>Example Fragment &ndash; Complex Ruby</caption>
+<caption>Example Fragment &ndash; Double-sided Ruby</caption>
 <tbody>
 <tr>
 <td>
 <eg xml:space="preserve">
 &lt;span&gt;
-  &lt;span <phrase role="strong">tts:ruby="container"</phrase>&gt;
+  &lt;span <phrase role="strong">tts:ruby="container"</phrase> tts:rubyAlign="spaceAround"&gt;
     &lt;span <phrase role="strong">tts:ruby="baseContainer"</phrase>&gt;
       &lt;span <phrase role="strong">tts:ruby="base"</phrase>&gt;&#x6771;&#x5357;&lt;/span&gt;
     &lt;/span&gt;
@@ -11369,7 +11544,7 @@ base delimiter text delimiter =
 </table>
 <p></p>
 <table id="style-attribute-ruby-example-2-images" role="example-images">
-<caption>Example Rendition &ndash; Complex Ruby</caption>
+<caption>Example Rendition &ndash; Double-sided Ruby</caption>
 <tbody>
 <tr>
 <td><graphic source="images/ruby_2.png" alt="TTML ruby style property"/></td>
@@ -11380,6 +11555,33 @@ base delimiter text delimiter =
 <p>The inter-character positioning mode for ruby annotations, such as used with <emph>bopomofo</emph> characters,
 is not supported by this version of TTML due to lack of market requirements.</p>
 </note>
+
+<p>The <att>tts:ruby</att> attribute can also be used when the annotation uses Latin characters, e.g. for pinyin as described by <bibref ref="clreq"/> and
+ illustrated by the following example.</p>
+<table id="style-attribute-ruby-example-3" role="example">
+<caption>Example Fragment &ndash; Ruby with Pinyin Annotation</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;p&gt;
+&lt;span tts:ruby="container" tts:rubyAlign="center"&gt;
+  &lt;span tts:ruby="base"&gt;周杰伦&lt;/span&gt;&lt;span tts:ruby="text"&gt;Jay Chou&lt;/span&gt;
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table id="style-attribute-ruby-example-3-images" role="example-images">
+<caption>Example Rendition &ndash; Ruby using Pinyin Annotation</caption>
+<tbody>
+<tr>
+<td><graphic source="images/ruby-pinyin.png" alt="TTML ruby style property with pinyin"/></td>
+</tr>
+</tbody>
+</table>
 <div4>
 <head>Special Semantics</head>
 <p>In the absence of implementation specific requirements, constraints on alignment between ruby annotation text and ruby base text that would potentially
@@ -11477,6 +11679,13 @@ have no impact on ruby alignment.</p>
 </note>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>center</code>.</p>
+<note role="elaboration">
+<p>In this specification, ruby annotations in timed text applications are assumed to be narrow, since presentation space and available time are 
+often constrained. As a consequence, this version of TTML does not enable authors to control how spacing is distributed when the 
+ruby annotation is wider than its base text. This might be problematic for wide ruby annotations at the start or end edge of the line. In order 
+to avoid issues, authors are encouraged to use an appropriate value of <att>tts:rubyAlign</att> and/or to split events containing wide 
+ruby annotations into multiple lines or even multiple events.</p>
+</note>
 <p>The <att>tts:rubyAlign</att> style is illustrated by the following example.</p>
 <table id="ruby-align-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Align</caption>
@@ -11513,124 +11722,6 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 </tr>
 </tbody>
 </table>
-</div3>
-<div3 id="style-attribute-rubyOffset">
-<head>tts:rubyOffset</head>
-<p>The <att>tts:rubyOffset</att> attribute is used to specify the offset (distance) of ruby text with respect to its associated ruby base
-in the block progression dimension.</p>
-<issue id="issue-ttml2-373">
-<head>Auto-sizing ruby offset.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/373">https://github.com/w3c/ttml2/issues/373</loc></source>
-<p>Add <code>auto</code> value to denote automatic offset determination. Change initial value to <code>auto</code>.</p>
-</issue>
-<table id="style-property-details-rubyOffset" role="common">
-<col css="width: 25%;"/>
-<col/>
-<tbody>
-<tr>
-<td><emph>Values:</emph></td>
-<td>
-<loc href="#style-value-length">&lt;length&gt;</loc>
-</td>
-</tr>
-<tr>
-<td><emph>Initial:</emph></td>
-<td><code>0px</code></td>
-</tr>
-<tr>
-<td><emph>Applies to:</emph></td>
-<td>
-<loc href="#content-vocabulary-span"><el>span</el></loc> only if the computed value of <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>container</code>
-</td>
-</tr>
-<tr>
-<td><emph>Inherited:</emph></td>
-<td>yes</td>
-</tr>
-<tr>
-<td><emph>Percentages:</emph></td>
-<td>relative to this element's font size</td>
-</tr>
-<tr>
-<td><emph>Animatable:</emph></td>
-<td>continuous</td>
-</tr>
-<tr>
-<td><emph>Semantic basis:</emph></td>
-<td><loc href="#derivation-rubyOffset">rubyOffset derivation</loc></td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<p>If specified, the value of <att>tts:rubyOffset</att> expresses the offset (distance) between padding edge <emph>E<sub>1</sub></emph> of the inline area
-generated by a ruby text container (explicit or implied) and padding edge <emph>E<sub>2</sub></emph>  of the inline area generated by a ruby base container (explicit or implied), where
-<emph>E<sub>1</sub></emph> and <emph>E<sub>2</sub></emph> are perpendicular to the block progression direction and are (or would be) adjacent in the absence of
-such an offset.</p>
-<p>Negative length expressions are permitted.</p>
-<p>The <att>tts:rubyOffset</att> style is illustrated by the following example.</p>
-<table id="ruby-offset-example" role="example">
-<caption>Example Fragment &ndash; Ruby Offset</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;p region="left"&gt;
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;一&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;人&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;二&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;三&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;色&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;四&lt;/span&gt;
-  &lt;/span>
-&lt;/p&gt;
-&lt;p region="right"&gt;
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;一&lt;/span&gt;
-  &lt;/span>
-    &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="10px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;人&lt;/span&gt;
-  &lt;span tts:ruby="text"&gt;二&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="20px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;十&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;三&lt;/span&gt;
-  &lt;/span>
-  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyOffset="0px"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;色&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;四&lt;/span&gt;
-  &lt;/span>
-&lt;/p&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p></p>
-<table id="ruby-offset-example-images" role="example-images">
-<caption>Example Rendition &ndash; Ruby Offset</caption>
-<tbody>
-<tr>
-<td><graphic source="images/rubyOffset.png" alt="TTML rubyOffset style property"/></td>
-</tr>
-</tbody>
-</table>
-<note role="elaboration">
-  <p>In the above example, whitespace has been introduced into and around <code>span</code> elements as an aid to formatting;
-  in order to produce the example rendition as shown, it is necessary to remove that extra whitespace lest
-  it appear in the rendered output. In addition, an author would normally not need to specify a <code>tts:rubyOffset</code>
-  value equal to <code>0px</code>, since that is the default value of the offset; however, here we specify <code>0px</code>
-  for emphasis.</p>
-</note>
 </div3>
 <div3 id="style-attribute-rubyPosition">
 <head>tts:rubyPosition</head>
@@ -11723,7 +11814,7 @@ this case, an author may redefine the default initial value for this attribute b
 <code>&lt;initial tts:rubyPosition="after"/&gt;</code> in a document's <code>styling</code> element.</p>
 </note>
 <p>The <att>tts:rubyPosition</att> style is illustrated by the following example, which illustrates
-how the resolution of ruby position depends upon writing mode.</p>
+how the resolution of ruby position depends upon writing mode. Note that the example uses "mono ruby” as defined in <bibref ref="jlreq"/>.</p>
 <table id="ruby-position-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Position</caption>
 <tbody>
@@ -11736,32 +11827,56 @@ how the resolution of ruby position depends upon writing mode.</p>
 ...
 &lt;p region="left"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="middle"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;p region="right"&gt;
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
-    &lt;span tts:ruby="base">一二&lt;/span&gt;
-    &lt;span tts:ruby="text">一二&lt;/span&gt;
+    &lt;span tts:ruby="base">一&lt;/span&gt;
+    &lt;span tts:ruby="text">一&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="before"</phrase>&gt;
+    &lt;span tts:ruby="base">二&lt;/span&gt;
+    &lt;span tts:ruby="text">二&lt;/span&gt;
   &lt;/span&gt;三四&lt;br/&gt;五六
   &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
-    &lt;span tts:ruby="base"&gt;七八&lt;/span&gt;
-    &lt;span tts:ruby="text"&gt;七八&lt;/span&gt;
+    &lt;span tts:ruby="base"&gt;七&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;七&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span tts:ruby="container" <phrase role="strong">tts:rubyPosition="after"</phrase>&gt;
+    &lt;span tts:ruby="base"&gt;八&lt;/span&gt;
+    &lt;span tts:ruby="text"&gt;八&lt;/span&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 </eg>
@@ -12102,8 +12217,8 @@ follows the semantics of the <code>text-align-last</code> property with a value 
 <div3 id="style-attribute-textCombine">
 <head>tts:textCombine</head>
 <p>When a vertical writing mode applies, the <att>tts:textCombine</att> attribute is used to specify a style property that
-determines whether and how multiple nominally non-combining characters are combined so that their <loc href="#terms-glyph-area">glyph areas</loc>
-consume the nominal bounding box of a single em square of the surrounding vertical text.
+determines whether and how multiple characters, such as digits, are combined horizontally so that their 
+<loc href="#terms-glyph-area">glyph areas</loc> fit within the width of a single line of the surrounding vertical text.
 If a horizontal writing mode applies, then this property is ignored
 for the purpose of presentation processing.</p>
 <p>Combination processing may make use of one or more techniques to obtain the goal of visual combination into an em square of the surrounding vertical text.
@@ -12154,9 +12269,8 @@ span.</p>
 If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
 If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
 equal to or less than a specified count, or two (2) if no count is specified.</p>
+<p>Combination applies after all affected characters have been processed as if a horizontal writing mode applied. In particular, bidirectional processing, ligatures, glyph subtitutions or combination of Unicode combining characters if used is applied before the combination process specified by the <att>tts:textCombine</att> attribute.</p>
 <p>Combination must not cross an element boundary, a bidirectional boundary, or a <loc href="#terms-glyph-area">non-glyph area</loc> boundary.</p>
-<p>This attribute has no impact on or interaction with the nominal layout of
-<loc href="#terms-glyph-area">glyph areas</loc> that constitute a Unicode combining character sequence.</p>
 <p>The <att>tts:textCombine</att> style is illustrated by the following example.</p>
 <table id="text-combine-example" role="example">
 <caption>Example Fragment &ndash; Text Combine</caption>
@@ -12187,6 +12301,12 @@ equal to or less than a specified count, or two (2) if no count is specified.</p
 </tr>
 </tbody>
 </table>
+<p></p>
+<note role="elaboration">
+<p>In the above example, for the value <code>all</code> of <att>tts:textCombine</att>, the presentation processor selected half-width variants of the
+ affected characters, but the resulting width is larger than the em square of the surrounding vertical text, to avoid readability issues and as 
+ permitted by TTML.</p>
+</note>
 </div3>
 <div3 id="style-attribute-textDecoration">
 <head>tts:textDecoration</head>
@@ -12384,7 +12504,7 @@ this case, an author may redefine the default initial value for this attribute b
 <div3 id="style-attribute-textOrientation">
 <head>tts:textOrientation</head>
 <p>The <att>tts:textOrientation</att> attribute is used to specify a style property that
-defines a text orientation to apply to glyphs that are selected for <loc href="#terms-glyph-area">glyph areas</loc> generated
+defines a text orientation to apply to <loc href="#terms-glyph-area">glyph areas</loc> generated
 by content flowed into a region to which a vertical writing mode applies.</p>
 <table id="style-property-details-textOrientation" role="common">
 <col css="width: 25%;"/>
@@ -12434,32 +12554,36 @@ span.</p>
 <p>The presentation semantics of this style property apply only when a vertical
 writing mode applies; therefore, if a horizontal writing mode applies, this style
 property has no effect.</p>
-<p>In the following, glyphs associated with content characters are described in terms of whether
-they are rotated or not rotated in vertical writing modes, where this determination is made in accordance with
-the <code>Vertical_Orientation</code> of each content character as determined by <bibref ref="utr50"/>.</p>
-<p>If the value of this attribute is <code>mixed</code>, then rotated glyphs are set sideways
-and non-rotated glyphs are set upright, where <emph>sideways</emph> means rotated either 90&deg; clockwise or 90&deg; count-clockwise,
-respectively, in accordance with whether the applicable block progression direction is right-to-left or left-to-right, and where <emph>upright</emph>
-means not rotated.</p>
+<p>In the following, <loc href="#terms-glyph-area">glyph areas</loc> associated with content characters are described in terms of whether
+they are rotated or not rotated in vertical writing modes, where this determination is made in accordance with the <code>Vertical_Orientation</code> 
+of each content character as determined by <bibref ref="utr50"/>.</p>
+<p>If the value of this attribute is <code>mixed</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc> are set sideways
+and non-rotated <loc href="#terms-glyph-area">glyph areas</loc> are set upright, where <emph>sideways</emph> means rotated either 90&deg; clockwise 
+or 90&deg; count-clockwise, respectively, in accordance with whether the applicable block progression direction is right-to-left or left-to-right, 
+and where <emph>upright</emph> means not rotated.</p>
 <note role="clarification">
-<p>According to <bibref ref="utr50"/>, visual rotation of a glyph may occur through either the substitution of
-a rotated glyph or by performing an affine rotation transformation on the glyph's outline (or raster image),
+<p>According to <bibref ref="utr50"/>, visual rotation of a <loc href="#terms-glyph-area">glyph areas</loc> may occur through either the substitution
+ of a rotated <loc href="#terms-glyph-area">glyph areas</loc> or by performing an affine rotation transformation on the 
+ <loc href="#terms-glyph-area">glyph areas</loc>'s outline (or raster image),
 where the determination of which of these applies depends on the specific font used during presentation processing.</p>
 </note>
-<p>If the value of this attribute is <code>sidewaysLeft</code>, then rotated glyphs
+<p>If the value of this attribute is <code>sidewaysLeft</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc>
 are rotated 90&deg; counter-clockwise.</p>
-<p>If the value of this attribute is <code>sidewaysRight</code>, then rotated glyphs
+<p>If the value of this attribute is <code>sidewaysRight</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc>
 are rotated 90&deg; clockwise.</p>
-<p>If the value of this attribute is <code>sideways</code>, then rotated glyphs
+<p>If the value of this attribute is <code>sideways</code>, then rotated <loc href="#terms-glyph-area">glyph areas</loc>
 are rotated either 90&deg; clockwise or 90&deg; count-clockwise, respectively,
 in accordance with whether the applicable block progression direction is right-to-left or left-to-right.</p>
 <p>If the value of this attribute is <code>upright</code>, then all characters are considered
-to have a vertical orientation of <code>U</code>, in which case no glyphs are rotated. In this case the
-(potential) substitution of rotated glyphs and the application of an affine rotation transformation
-are disabled, and the glyph rendered is the non-rotated form.
+to have a vertical orientation of <code>U</code>, in which case no 
+<loc href="#terms-glyph-area">glyph areas</loc> are rotated. In this case the
+(potential) substitution of rotated <loc href="#terms-glyph-area">glyph areas</loc> 
+and the application of an affine rotation transformation
+are disabled, and the <loc href="#terms-glyph-area">glyph area</loc> rendered 
+is the non-rotated form.
 In addition, for purposes of bidirectional processing, this value causes all
 affected characters to be treated as strong left-to-right, i.e., to be treated as if
-a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeOverride</att> of
+a <att>tts:direction</att> of <code>ltr</code> and <att>tts:unicodeBidi</att> of
 <code>override</code> were applied.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>mixed</code>.</p>
@@ -16417,12 +16541,6 @@ and the resulting generated out-of-line region is shown by the following example
 </div4>
 <div4 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
-<issue id="issue-ttml2-376">
-<head>Revise as needed to synchronize with formal ISD syntax.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/376">https://github.com/w3c/ttml2/issues/376</loc></source>
-<p>Review and revise 11.3.1.3 Intermediate Synchronic Document Construction as needed to correlate and synchronize with
-<loc href="#terms-intermediate-document-syntax">Intermediate Synchronic Document Syntax</loc>.</p>
-</issue>
 <p>For the purposes of performing presentation processing, the active time
 duration of a <loc href="#terms-document-instance">document instance</loc> is divided into a sequence of time coordinates where at
 each time coordinate, some element becomes temporally active or inactive,
@@ -16933,12 +17051,6 @@ while taking into account any overriding semantics defined by this specification
 <head>timeContainer</head>
 <p>The <att>timeContainer</att> attribute is used to specify a local temporal
 context by means of which timed child elements are temporally situated.</p>
-<issue id="issue-ttml2-377-1">
-<head>Time containment semantics for smpte time base.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/377">https://github.com/w3c/ttml2/issues/377</loc></source>
-<p>Indicate that parallel time container semantics always apply in smpte discontinuous mode, and, as such, sequential containment must not be specified,
-i.e., parallel containment always applies.</p>
-</issue>
 <p>If specified, the value of a <att>timeContainer</att> attribute must be one
 of the following:</p>
 <ulist>
@@ -16964,6 +17076,10 @@ the time interval of each child element is considered to be relative to the temp
 interval of its sibling elements, unless it is the first child element, in which case
 it is considered to be relative to the temporal interval of the container
 element instance.</p>
+<p>If the computed value of the <loc href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc> parameter is <code>smpte</code>
+and the computed value of the <loc href="#parameter-attribute-markerMode"><att>ttp:markerMode</att></loc> parameter is <code>discontinuous</code>,
+then <phrase role="deprecated">the value <code>seq</code>, designating sequential time containment, is deprecated</phrase>,
+and, if specified, must be ignored (i.e., treated as if the default value of <code>par</code> applies).</p>
 <p>Each time container is considered to constitute an independent time base, i.e.,
 time coordinate system.</p>
 <p>If a <att>timeContainer</att> attribute is not specified on an element that
@@ -17132,13 +17248,6 @@ constraints:</p>
 <source><loc href="https://github.com/w3c/ttml1/issues/193">https://github.com/w3c/ttml1/issues/193</loc></source>
 <p>Refine definition implicit duration of singleton span in a sequential container.</p>
 </issue>
-<p></p>
-<issue id="issue-ttml2-377-2">
-<head>Time containment semantics for smpte time base.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/377">https://github.com/w3c/ttml2/issues/377</loc></source>
-<p>Indicate that parallel time container semantics always apply in smpte discontinuous mode, and, as such, sequential containment must not be specified,
-i.e., parallel containment always applies.</p>
-</issue>
 <ulist>
 <item>
 <p>The implicit duration of an anonymous span is defined as follows: if
@@ -17180,112 +17289,6 @@ based timing or event based timing in <bibref ref="smil3"/>, where the specific 
 <specref ref="time-expression-semantics-smpte"/> apply.</p>
 </item>
 </ulist>
-<div3 id="semantics-media-timing">
-<head>Media Timing</head>
-<p><emph>This sub-section is non-normative.</emph></p>
-<issue id="issue-ttml2-378-1">
-<head>Merge informative media timing material into Appendix I</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/378">https://github.com/w3c/ttml2/issues/378</loc></source>
-<p>Generalize and rename <specref ref="time-expression-semantics"/> to Root Container Region Semantics, merging informative material from
-<specref ref="semantics-media-timing"/> while updating this material as needed.</p>
-</issue>
-<p>When <code>ttp:timeBase="media"</code> the computed document times
-are used as the equivalent media times with no offset.</p>
-<note role="clarification"><p>Any additional media time processing
-imposed by e.g. a wrapper format is out of scope of the TTML
-specification.</p>
-<p>For example, <bibref ref="isobmff"/> provides a mechanism for wrapping TTML documents
-as samples in segmented and non-segmented files, <bibref ref="dash"/> provides
-further segmentation semantics for fragmented delivery over HTTP and
-MPEG-2 TS.</p>
-</note>
-<p>The following document fragments are equivalent in timing:</p>
-<table id="example-fragment-media-timing-1" role="example">
-<caption>Example Fragment &ndash; Media Timing 1</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;tt ttp:timeBase="media" ...&gt;
-...
-&lt;body&gt;
-   &lt;div xml:id="d1" begin="1s"&gt;
-      &lt;p xml:id="p1" begin="0s" end="1s"&gt;First paragraph&lt;/p&gt;
-      &lt;p xml:id="p2" begin="2s" end="3s"&gt;Second paragraph&lt;/p&gt;
-   &lt;/div&gt;
-&lt;/body&gt;
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p/>
-<table id="example-fragment-media-timing-2" role="example">
-<caption>Example Fragment &ndash; Media Timing 2</caption>
-<tbody>
-<tr>
-<td>
-<eg xml:space="preserve">
-&lt;tt ttp:timeBase="media" ...&gt;
-...
-&lt;body&gt;
-   &lt;div xml:id="d1"&gt;
-      &lt;p xml:id="p1" begin="1s" end="2s"&gt;First paragraph&lt;/p&gt;
-      &lt;p xml:id="p2" begin="3s" end="4s"&gt;Second paragraph&lt;/p&gt;
-   &lt;/div&gt;
-&lt;/body&gt;
-&lt;/tt&gt;
-</eg>
-</td>
-</tr>
-</tbody>
-</table>
-<p/>    
-<table id="media-timing-fragment-graphic-1" role="example-images">
-<caption>Timing diagram showing the mapping of document times to media
-times in the absence of other external information.</caption>
-<col/>
-<tbody>
-<tr>
-<td><graphic id="media-timing-fragment-1-img" source="images/timing_media_1.svg" alt="Media time"/></td>
-</tr>
-</tbody>
-</table>
-<p>In this example, using the terminology of
-<bibref ref="smil3"/>, the implicit duration of the <el>body</el>
-element is identical to its computed duration which is also
-the <loc href="#terms-root-temporal-extent">Root Temporal
-Extent</loc>.  However if
-the <loc href="#terms-document-processing-context">document processing
-context</loc> specifies a range of applicable media times, those limit
-the resolved begin and end times and therefore
-the <loc href="#terms-root-temporal-extent">Root Temporal
-Extent</loc>.</p>
-<p>In the following example the processing context defines that the
-media time range over which the document is active is from 1.5s to
-3.5s, and this defines the Root Temporal Extent since timed content is
-present at both of those times.</p>
-<table id="media-timing-fragment-graphic-2" role="example-images">
-<caption>Timing diagram showing the mapping of document times to media
-times when the media time range is constrained by the processing
-context.</caption>
-<col/>
-<tbody>
-<tr>
-<td><graphic id="media-timing-fragment-2-img" source="images/timing_media_2.svg" alt="Media time"/></td>
-</tr>
-</tbody>
-</table>
-<p>The gray background indicates the periods when
-the <loc href="#terms-document-processing-context">document processing
-context</loc> defines the document to be inactive.</p>
-<p>If the document processing context were to define that the media
-time range is 0-3s then
-the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>
-would be from 1s to 2s as defined by p1 and p2 would never be
-shown.</p>
-</div3> <!-- semantics-media-timing -->
 </div2> <!-- semantics-timing -->
 </div1> <!-- timing -->
 <div1 id="animation">
@@ -17528,12 +17531,7 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 </table>
 <p>Style property attributes targeted by an <el>set</el> element are specified directly using
 attributes in the TT Style namespace or in a namespace that is not some TT Namespace, where the single target animation (key) value
-adheres to the <loc href="#animation-value-animation-value-list">&lt;animation-value-list&gt;</loc> syntax, where each
-constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> adheres to the syntax of the specified
-attribute, and where exactly one constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> is specified.</p>
-<p>If more than one constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> is specified, then all
-constituents other than the first must be ignored for the purpose of presentation processing, and must be considered an error for the
-purpose of validation processing.</p>
+adheres to the <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> syntax.</p>
 <note role="elaboration">
 <p>In contrast with <bibref ref="svg11"/>, &sect;19.2.13, a single <el>set</el> element, as defined here, may be used to
 perform discrete animations on a set of targeted style property attributes instead of being limited to targeting a single style property attribute.
@@ -17687,28 +17685,25 @@ or ending (final) of the attribute targeted by the animation.</p>
 <td>
 <eg xml:space="preserve">
 &lt;animation-value&gt;
-  : string
+  : ([^;] | escape)+
+
+escape
+  : '\\' <emph>char</emph>
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
 <p>The syntax of an &lt;animation-value&gt; expression must satisfy all syntax
-requirements that apply to the attribute targeted by the animation.</p>
-<issue id="issue-ttml2-383">
-<head>Improve animation value syntax.</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/383">https://github.com/w3c/ttml2/issues/383</loc></source>
-<p>Enhance detail of syntax of &lt;animation-value&gt; in order to prevent appearance of an unquoted or unescaped semicolon,
-which is used as a delimiter between animation values in &lt;animation-value-list&gt;.</p>
-</issue>
+requirements that apply to the attribute targeted by the animation, and, furthermore, must not contain
+an unescaped semicolon.</p>
 <p>The semantics of an &lt;animation-value&gt; expression are those defined by
 <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </div3>
 <div3 id="animation-value-animation-value-list">
 <head>&lt;animation-value-list&gt;</head>
 <p>An &lt;animation-value-list&gt; expression is used to specify a list of animation values that sequentially
-apply to the attribute targeted by the animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
-optionally surrounded by linear white-space (LWSP) characters.</p>
+apply to the attribute targeted by the animation.</p>
 <table id="animation-value-list-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;animation-value-list&gt;</caption>
 <tbody>
@@ -18060,7 +18055,7 @@ acting the part of a character.</p>
 <p>The use of <phrase role="deprecated">a reference from the
 <att>agent</att> attribute of a <el>ttm:actor</el> element to its
 parent <el>ttm:agent</el> element is deprecated</phrase>, and,
-furthermore, the semantics of such a circular chain of references is
+furthermore, the semantics of such a circular chain of references are
 not defined by this specification.</p>
 <note role="clarification"><p>If an implementation follows such a
 circular chain of agent references, then it is recommended that this
@@ -19218,14 +19213,20 @@ including all primary and secondary colors of the SRGB color space.</p>
 </div3>
 <div3 id="feature-condition">
 <head>#condition</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#condition</code>
-feature if it recognizes and is capable of transforming the following attribute defined by <specref ref="content-attribute-vocabulary"/>:</p>
+<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition</code>
+feature if it recognizes and is capable of processing the defined syntax and semantics of
+the <loc href="#content-attribute-condition"><att>condition</att></loc> attribute.</p>
+<p>Notwithstanding the above, support for the <code>#condition</code> feature does not require support for the following feature:</p>
 <ulist>
-<item><p><loc href="#content-attribute-condition"><att>condition</att></loc></p></item>
+<item><p><loc href="#feature-condition-media"><code>#condition-media</code></loc></p></item>
 </ulist>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#condition</code>
-feature if it implements presentation semantic support for the
-same vocabulary and features enumerated above.</p>
+</div3>
+<div3 id="feature-condition-media">
+<head>#condition-media</head>
+<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-media</code> feature if
+it supports the <code>#condition</code> feature and it supports the semantics of the <loc href="#content-value-media-function">&lt;media-function&gt;</loc>
+sub-expression when used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression.</p>
+<p>The <code>#condition-media</code> feature is a semantic extension of the <code>#condition</code> feature.</p>
 </div3>
 <div3 id="feature-content">
 <head>#content</head>
@@ -19325,6 +19326,10 @@ attribute.</p>
 for all defined values of the <loc
 href="#style-attribute-display"><att>tts:display</att></loc>
 attribute.</p>
+<p>Notwithstanding the above, support for the <code>#display</code> feature does not require support for the following feature:</p>
+<ulist>
+<item><p><loc href="#feature-display-inlineBlock"><code>#display-inlineBlock</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-display-block">
 <head>#display-block</head>
@@ -19355,6 +19360,24 @@ support for all defined values of the <loc
 href="#style-attribute-display"><att>tts:display</att></loc>
 attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
 inline area.</p>
+<p>Notwithstanding the above, support for the <code>#display-inline</code> feature does not require support for the following feature:</p>
+<ulist>
+<item><p><loc href="#feature-display-inlineBlock"><code>#display-inlineBlock</code></loc></p></item>
+</ulist>
+</div3>
+<div3 id="feature-display-inlineBlock">
+<head>#display-inlineBlock</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#display-inlineBlock</code> feature if it recognizes and is capable of transforming the <code>inlineBlock</code>
+value of the <loc href="#style-attribute-display"><att>tts:display</att></loc> attribute
+when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
+inline area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#display-inlineBlock</code> feature if it supports the presentation semantics of the <code>inlineBlock</code>
+value of the <loc href="#style-attribute-display"><att>tts:display</att></loc> attribute
+when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
+inline area during presentation processing.</p>
+<p>The <code>#display-inlineBlock</code> feature is a semantic extension of the <code>#display-inline</code> feature.</p>
 </div3>
 <div3 id="feature-display-region">
 <head>#display-region</head>
@@ -19554,16 +19577,56 @@ supports the following features:</p>
 </div3>
 <div3 id="feature-extent">
 <head>#extent</head>
+<p>A TTML processor supports the <code>#extent</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-extent-region"><code>#extent-region</code></loc></p></item>
+<item><p><loc href="#feature-extent-root"><code>#extent-root</code></loc></p></item>
+</ulist>
+</div3>
+<div3 id="feature-extent-block">
+<head>#extent-block</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#extent</code> feature if it recognizes and is capable of
+<code>#extent-block</code> feature if it recognizes and is capable of
 transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a 
+<loc href="#terms-content-element">content element</loc> that would generate a
+block area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#extent-block</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to a 
+<loc href="#terms-content-element">content element</loc> that would generate a
+block area during presentation processing.</p>
+</div3>
+<div3 id="feature-extent-image">
+<head>#extent-image</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#extent-image</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to an 
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#extent-image</code> feature if it implements presentation semantic support for
+the <loc
+href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute when applied to an 
+<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+</div3>
+<div3 id="feature-extent-measure">
+<head>#extent-measure</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#extent-measure</code> feature if it recognizes and is capable of
+transforming <loc href="#style-value-measure">&lt;measure&gt;</loc> values when used with the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#extent</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute.</p>
+<code>#extent-measure</code> feature if it implements presentation semantic support for
+<loc href="#style-value-measure">&lt;measure&gt;</loc> values when used with the
+ <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-extent-region">
 <head>#extent-region</head>
@@ -19584,8 +19647,7 @@ href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
 <head>#extent-root</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#extent-root</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
+transforming the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to the <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
@@ -19594,6 +19656,29 @@ the <loc
 href="#style-attribute-extent"><att>tts:extent</att></loc>
 attribute when applied to a <loc
 href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
+</div3>
+<div3 id="feature-extent-version-2">
+<head>#extent-version-2</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> processor
+supports the <code>#extent-version-2</code> feature if it supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-extent"><code>#extent</code></loc></p></item>
+<item><p><loc href="#feature-extent-block"><code>#extent-block</code></loc></p></item>
+<item><p><loc href="#feature-extent-image"><code>#extent-image</code></loc></p></item>
+<item><p><loc href="#feature-extent-measure"><code>#extent-measure</code></loc></p></item>
+</ulist>
+<p>and if it recognizes and is capable of transforming the following values of
+the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute:</p>
+<ulist>
+<item><p><code>contain</code></p></item>
+<item><p><code>cover</code></p></item>
+</ulist>
+<p>and if it recognizes and is capable of transforming the extended semantics of the
+the <code>auto</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute
+defined in this version of the TTML specification.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#extent-version-2</code>
+feature if it implements presentation semantic support for the same syntactic and semantic features enumerated above.</p>
+<p>The <code>#extent-version-2</code> feature is a syntactic and semantic extension of the <code>#extent</code> feature.</p>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -19619,6 +19704,10 @@ attribute.</p>
 for the <loc
 href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
 attribute.</p>
+<p>Notwithstanding the above, support for the <code>#fontFamily</code> feature does not require support for the following feature:</p>
+<ulist>
+<item><p><loc href="#feature-fontFamily-p"><code>#fontFamily-p</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-fontFamily-generic">
 <head>#fontFamily-generic</head>
@@ -19654,6 +19743,20 @@ values when used with the <loc
 href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-fontFamily-p">
+<head>#fontFamily-p</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#fontFamily-p</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#fontFamily-p</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>The <code>#fontFamily-p</code> feature is a semantic extension of the <code>#fontFamily</code> feature.</p>
+</div3>
 <div3 id="feature-fontKerning">
 <head>#fontKerning</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -19667,9 +19770,20 @@ transforming the <loc href="#style-attribute-fontKerning"><att>tts:fontKerning</
 <head>#fontSelectionStrategy</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#fontSelectionStrategy</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc> attribute.</p>
+transforming the <code>auto</code> value of the <loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc>
+attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#fontSelectionStrategy</code> feature if it implements presentation semantic support for the
+<code>#fontSelectionStrategy</code> feature if it implements presentation semantic support for the <code>auto</code> value of the
+<loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc> attribute.</p>
+</div3>
+<div3 id="feature-fontSelectionStrategy-character">
+<head>#fontSelectionStrategy-character</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#fontSelectionStrategy-character</code> feature if it recognizes and is capable of
+transforming the <code>character</code> value of the <loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#fontSelectionStrategy-character</code> feature if it implements presentation semantic support for the <code>character</code> value of the
 <loc href="#style-attribute-fontSelectionStrategy"><att>tts:fontSelectionStrategy</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-fontShear">
@@ -19693,6 +19807,10 @@ attribute.</p>
 for the <loc
 href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
 attribute.</p>
+<p>Notwithstanding the above, support for the <code>#fontSize</code> feature does not require support for the following feature:</p>
+<ulist>
+<item><p><loc href="#feature-fontSize-p"><code>#fontSize-p</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-fontSize-anamorphic">
 <head>#fontSize-anamorphic</head>
@@ -19724,6 +19842,20 @@ href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
 attribute that consist of a single <loc
 href="#style-value-length">&lt;length&gt;</loc> specification.</p>
 </div3>
+<div3 id="feature-fontSize-p">
+<head>#fontSize-p</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#fontSize-p</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#fontSize-p</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-fontSize"><att>tts:fontSize</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>The <code>#fontSize-p</code> feature is a semantic extension of the <code>#fontSize</code> feature.</p>
+</div3>
 <div3 id="feature-fontStyle">
 <head>#fontStyle</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -19736,6 +19868,10 @@ attribute.</p>
 for all defined values of the <loc
 href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
 attribute.</p>
+<p>Notwithstanding the above, support for the <code>#fontStyle</code> feature does not require support for the following feature:</p>
+<ulist>
+<item><p><loc href="#feature-fontStyle-p"><code>#fontStyle-p</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-fontStyle-italic">
 <head>#fontStyle-italic</head>
@@ -19763,6 +19899,20 @@ support for the <code>oblique</code> of the <loc
 href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
 attribute.</p>
 </div3>
+<div3 id="feature-fontStyle-p">
+<head>#fontStyle-p</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#fontStyle-p</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#fontStyle-p</code> feature if it implements presentation semantic support
+for the <loc
+href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>The <code>#fontStyle-p</code> feature is a semantic extension of the <code>#fontStyle</code> feature.</p>
+</div3>
 <div3 id="feature-fontVariant">
 <head>#fontVariant</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -19784,6 +19934,10 @@ attribute.</p>
 for all defined values of the <loc
 href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>
 attribute.</p>
+<p>Notwithstanding the above, support for the <code>#fontWeight</code> feature does not require support for the following feature:</p>
+<ulist>
+<item><p><loc href="#feature-fontWeight-p"><code>#fontWeight-p</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-fontWeight-bold">
 <head>#fontWeight-bold</head>
@@ -19797,6 +19951,20 @@ attribute.</p>
 support for the <code>bold</code> of the <loc
 href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>
 attribute.</p>
+</div3>
+<div3 id="feature-fontWeight-p">
+<head>#fontWeight-p</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#fontWeight-p</code> feature if it recognizes and is capable of
+transforming the <loc
+href="#weight-attribute-fontWeight"><att>tts:fontWeight</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#fontWeight-p</code> feature if it implements presentation semantic support
+for the <loc
+href="#weight-attribute-fontWeight"><att>tts:fontWeight</att></loc>
+attribute when applied to a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>The <code>#fontWeight-p</code> feature is a semantic extension of the <code>#fontWeight</code> feature.</p>
 </div3>
 <div3 id="feature-frameRate">
 <head>#frameRate</head>
@@ -20673,7 +20841,6 @@ supports the following features:</p>
 <ulist>
 <item><p><loc href="#feature-ruby"><code>#ruby</code></loc></p></item>
 <item><p><loc href="#feature-rubyAlign"><code>#rubyAlign</code></loc></p></item>
-<item><p><loc href="#feature-rubyOffset"><code>#rubyOffset</code></loc></p></item>
 <item><p><loc href="#feature-rubyPosition"><code>#rubyPosition</code></loc></p></item>
 <item><p><loc href="#feature-rubyReserve"><code>#rubyReserve</code></loc></p></item>
 </ulist>
@@ -20686,15 +20853,6 @@ transforming the <loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#rubyAlign</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute.</p>
-</div3>
-<div3 id="feature-rubyOffset">
-<head>#rubyOffset</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#rubyOffset</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc> attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#rubyOffset</code> feature if it implements presentation semantic support for the
-<loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc> attribute.</p>
 </div3>
 <div3 id="feature-rubyPosition">
 <head>#rubyPosition</head>
@@ -21824,6 +21982,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-condition-media"><code>#condition-media</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-content"><code>#content</code></loc></td>
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">M</td>
@@ -21880,6 +22044,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <tr>
 <td><loc href="#feature-display-inline"><code>#display-inline</code></loc></td>
 <td css="text-align:center;">1</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-display-inlineBlock"><code>#display-inlineBlock</code></loc></td>
+<td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
@@ -21962,6 +22132,21 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-extent-block"><code>#extent-block</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-image"><code>#extent-image</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-measure"><code>#extent-measure</code></loc></td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
 <td><loc href="#feature-extent-region"><code>#extent-region</code></loc></td>
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
@@ -21972,6 +22157,11 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-version-2"><code>#extent-version-2</code></loc></td>
+<td>O</td>
+<td>O</td>
 </tr>
 <tr>
 <td><loc href="#feature-font"><code>#font</code></loc></td>
@@ -21998,6 +22188,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-fontFamily-p"><code>#fontFamily-p</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-fontKerning"><code>#fontKerning</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
@@ -22005,6 +22201,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-fontSelectionStrategy"><code>#fontSelectionStrategy</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontSelectionStrategy-character"><code>#fontSelectionStrategy-character</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
@@ -22034,6 +22236,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-fontFamily-p"><code>#fontSize-p</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-fontStyle"><code>#fontStyle</code></loc></td>
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
@@ -22052,6 +22260,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-fontStyle-p"><code>#fontStyle-p</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-fontVariant"><code>#fontVariant</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
@@ -22066,6 +22280,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <tr>
 <td><loc href="#feature-fontWeight-bold"><code>#fontWeight-bold</code></loc></td>
 <td css="text-align:center;">1</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-fontWeight-p"><code>#fontWeight-p</code></loc></td>
+<td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
@@ -22431,12 +22651,6 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </tr>
 <tr>
 <td><loc href="#feature-rubyAlign"><code>#rubyAlign</code></loc></td>
-<td css="text-align:center;">2</td>
-<td css="text-align:center;">O</td>
-<td css="text-align:center;">O</td>
-</tr>
-<tr>
-<td><loc href="#feature-rubyOffset"><code>#rubyOffset</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
@@ -23409,7 +23623,9 @@ during playback, presentation timing is not affected.
 <div2 id="time-expression-semantics-media">
 <head>Media Time Base</head>
 <p>When operating with the <code>media</code> time base, the following semantics apply for interpreting time expressions,
-as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
+as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time, document time, and local real time.</p>
+<div3 id="semantics-media-timing-local-time">
+<head>Relationship to Local Real Time</head>
 <p>The media time base <phrase role="strong"><code>M</code></phrase> is related to local real time <phrase role="strong"><code>R</code></phrase>
 expressed in the epoch <phrase role="strong"><code>E</code></phrase> (defined by the 
 <loc href="#terms-document-processing-context">document processing context</loc>) as follows:</p>
@@ -23425,7 +23641,8 @@ expressed in the epoch <phrase role="strong"><code>E</code></phrase> (defined by
 </sitem>
 <sitem/>
 <sitem>
-where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M</code> in seconds, with 0 corresponding to the beginning of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>;
+where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M</code> in seconds, with 0 corresponding to the beginning of the
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>;
 </sitem>
 <sitem/>
 <sitem>
@@ -23436,7 +23653,7 @@ where <code>M &isin; &real;</code>, <code>0 &le; M &lt; &infin;</code>, <code>M<
 <sitem>
 and <code>epochOffset &isin; &real;</code>, <code>0 &le; epochOffset &lt; &infin;</code>, <code>epochOffset</code> in seconds, with 0 corresponding to the beginning of
 an epoch <code>E</code>, and where the value of <code>epochOffset</code> is the difference between the local real time at the beginning of the
-<loc href="#terms-root-temporal-extent">root temporal extent</loc> and the local real time at the beginning of epoch <code>E</code>, expressed in seconds.
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc> and the local real time at the beginning of epoch <code>E</code>, expressed in seconds.
 </sitem>
 </slist>
 </td>
@@ -23449,6 +23666,9 @@ i.e., it is not set to the default value of <code>1.0</code>, then that value ma
 presentation, in which case values of <code>R</code> for given values of <code>M</code> are expected to be re-evaluated based on new
 values of <code>playRate</code>.</p>
 </note>
+</div3> <!-- semantics-media-timing-local-time -->
+<div3 id="semantics-media-timing">
+<head>Relationship to Media Time</head>
 <p>Time value expressions, as denoted by a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, are related to
 media time <phrase role="strong"><code>M</code></phrase> in accordance to the
 <code>ttp:frameRate</code>, <code>ttp:subFrameRate</code>, and <code>ttp:frameRateMultiplier</code> parameters as follows:</p>
@@ -23528,20 +23748,118 @@ and <code>tickRate</code> is the computed value of the <att>ttp:tickRate</att> p
 <p>If the computed <code>frameRateMultiplier</code> ratio is not integral, then <code>effectiveFrameRate</code> will be a non-integral rational.</p>
 </note>
 <note role="clarification">
-<p>The above formalisms assume that the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc> is related to the
+<p>The above formalisms assume that the begin time of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc> is related to the
 begin time of a <loc href="#terms-related-media-object">related media object</loc>. If this assumption doesn't hold, then an additional offset
 that accounts for the difference may be introduced when computing media time <code>M</code>.</p>
 </note>
+</div3> <!-- semantics-media-timing -->
+<div3 id="semantics-media-document-timing">
+<head>Relationship to Document Time</head>
+<p><emph>This sub-section is non-normative.</emph></p>
+<p>When <code>ttp:timeBase="media"</code> the computed document times
+are used as the equivalent media times with no offset.</p>
+<note role="clarification"><p>Any additional media time processing
+imposed by e.g. a wrapper format is out of scope of the TTML
+specification.</p>
+<p>For example, <bibref ref="isobmff"/> provides a mechanism for wrapping TTML documents
+as samples in segmented and non-segmented files, <bibref ref="dash"/> provides
+further segmentation semantics for fragmented delivery over HTTP and
+MPEG-2 TS.</p>
+</note>
+<p>The following document fragments are equivalent in timing:</p>
+<table id="example-fragment-media-timing-1" role="example">
+<caption>Example Fragment &ndash; Media Timing 1</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ttp:timeBase="media" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1" begin="1s"&gt;
+      &lt;p xml:id="p1" begin="0s" end="1s"&gt;First paragraph&lt;/p&gt;
+      &lt;p xml:id="p2" begin="2s" end="3s"&gt;Second paragraph&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>
+<table id="example-fragment-media-timing-2" role="example">
+<caption>Example Fragment &ndash; Media Timing 2</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt ttp:timeBase="media" ...&gt;
+...
+&lt;body&gt;
+   &lt;div xml:id="d1"&gt;
+      &lt;p xml:id="p1" begin="1s" end="2s"&gt;First paragraph&lt;/p&gt;
+      &lt;p xml:id="p2" begin="3s" end="4s"&gt;Second paragraph&lt;/p&gt;
+   &lt;/div&gt;
+&lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p/>    
+<table id="media-timing-fragment-graphic-1" role="example-images">
+<caption>Timing diagram showing the mapping of document times to media
+times in the absence of other external information.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="media-timing-fragment-1-img" source="images/timing_media_1.svg" alt="Media time"/></td>
+</tr>
+</tbody>
+</table>
+<p>In this example, using the terminology of
+<bibref ref="smil3"/>, the implicit duration of the <el>body</el>
+element is identical to its computed duration which is also
+the <loc href="#terms-root-temporal-extent">Root Temporal
+Extent</loc>.  However if
+the <loc href="#terms-document-processing-context">document processing
+context</loc> specifies a range of applicable media times, those limit
+the resolved begin and end times and therefore
+the <loc href="#terms-root-temporal-extent">Root Temporal
+Extent</loc>.</p>
+<p>In the following example the processing context defines that the
+media time range over which the document is active is from 1.5s to
+3.5s, and this defines the Root Temporal Extent since timed content is
+present at both of those times.</p>
+<table id="media-timing-fragment-graphic-2" role="example-images">
+<caption>Timing diagram showing the mapping of document times to media
+times when the media time range is constrained by the processing
+context.</caption>
+<col/>
+<tbody>
+<tr>
+<td><graphic id="media-timing-fragment-2-img" source="images/timing_media_2.svg" alt="Media time"/></td>
+</tr>
+</tbody>
+</table>
+<p>The gray background indicates the periods when
+the <loc href="#terms-document-processing-context">document processing
+context</loc> defines the document to be inactive. The 
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
+is unaffected by this transformation.</p>
+<p>If the document processing context were to define that the media
+time range is 0-3s then
+the <loc href="#terms-root-temporal-extent">Root Temporal Extent</loc>
+would be from 1s to 2s as defined by p1 and p2 would never be
+shown.</p>
+</div3> <!-- semantics-media-document-timing -->
 </div2>
 <div2 id="time-expression-semantics-smpte">
 <head>SMPTE Time Base</head>
 <p>When operating with the <code>smpte</code> time base, the following semantics apply for interpreting time expressions,
 as defined by <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and their relationship to media time and local real time.</p>
-<issue id="issue-ttml1-191">
-<head>Incorrect Expression for NTSC Drop Mode</head>
-<source><loc href="https://github.com/w3c/ttml1/issues/191">https://github.com/w3c/ttml1/issues/191</loc></source>
-<p>Correct formula for NTSC drop mode calculation.</p>
-</issue>
 <p>If the computed value of the <att>ttp:markerMode</att> parameter is <code>discontinuous</code>, then there is no direct relationship between
 time expressions and media time <phrase role="strong"><code>M</code></phrase> or local real time <phrase role="strong"><code>R</code></phrase>. In
 this case, time expressions refer to synchronization events (markers) emitted by the <loc href="#terms-document-processing-context">document processing context</loc>
@@ -23803,11 +24121,12 @@ a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>, and, 
 <code>s</code> (seconds),
 <code>f</code> (frames),
 <code>t</code> (ticks), or may omit the metric, in which case <code>s</code> seconds is implied. This
-begin time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+begin time is expressed as an offset from the begin time of the 
+<loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
 of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived.</p>
-<p>An <att>end</att> attribute must be similarlly specified, where the same constraints apply.
+<p>An <att>end</att> attribute must be similarly specified, where the same constraints apply.
 If the value of the <att>end</att> attribute takes the form of a <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>,
-this end time is expressed as an offset from the begin time of the <loc href="#terms-root-temporal-extent">root temporal extent</loc>
+this end time is expressed as an offset from the begin time of the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>
 of the source TTML document from which this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element was derived;
 otherwise (the value is <code>indefinite</code>), the temporal extent is not known at the time this attribute is encoded
 or there is no temporal end point.</p>
@@ -24146,6 +24465,11 @@ href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vo
 Requirements for Analog Television Receivers</titleref>,
 United States Code of Federal Regulations, Title 47, Volume 1, Part 79, &sect; 79.101. (See
 <xspecref href="http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf">http://www.gpo.gov/fdsys/pkg/CFR-2012-title47-vol4/pdf/CFR-2012-title47-vol4-sec79-101.pdf</xspecref>.)
+</bibl>
+<bibl id="clreq" key="CLREQ">Bobby Tung et al.,
+<titleref href="https://www.w3.org/TR/2017/WD-clreq-20171229/">Requirements for Chinese Text Layout</titleref>
+W3C Working Draft, 29 December 2017.
+(See <xspecref href="https://www.w3.org/TR/2017/WD-clreq-20171229/">https://www.w3.org/TR/2017/WD-clreq-20171229/</xspecref>.)
 </bibl>
 <bibl id="css2" key="CSS2">Bert Bos et al.,
 <titleref
@@ -25914,11 +26238,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontSelectionStrategy">
 <head><loc href="#style-attribute-fontSelectionStrategy">tts:fontSelectionStrategy</loc></head>
-<issue id="derivation-issue-ttml2-371">
-<head>Define tts:fontSelectionStrategy</head>
-<source><loc href="https://github.com/w3c/ttml2/issues/371">https://github.com/w3c/ttml2/issues/371</loc></source>
-<p>Complete details of this derivation when this style property has been defined.</p>
-</issue>
 <p></p>
 <table role="common">
 <col css="width: 20%;"/>
@@ -25934,11 +26253,11 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </tr>
 <tr>
 <td><phrase role="strong">Values</phrase></td>
-<td>-<code>inherit</code></td>
+<td>-<code>inherit</code>, <code>character</code> maps to <code>character-by-character</code></td>
 </tr>
 <tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>None</td>
+<td><phrase role="strong">Selection criteria is expanded.</phrase></td>
+<td>None.</td>
 </tr>
 </tbody>
 </table>
@@ -26466,34 +26785,6 @@ The semantics of this style attribute are extended by this specification.</td>
 <tr>
 <td><phrase role="strong">Notes</phrase></td>
 <td>The examples and example renderings shown in the reference apply.</td>
-</tr>
-</tbody>
-</table>
-</div4>
-<div4 id="derivation-rubyOffset">
-<head><loc href="#style-attribute-rubyOffset">tts:rubyOffset</loc></head>
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
 </tr>
 </tbody>
 </table>
@@ -27923,7 +28214,6 @@ where <emph>chunking</emph> refers to the subdivision of resource content into c
 <item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
 <item><p><loc href="#style-attribute-ruby"><att>tts:ruby</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc></p></item>
-<item><p><loc href="#style-attribute-rubyOffset"><att>tts:rubyOffset</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyPosition"><att>tts:rubyPosition</att></loc></p></item>
 <item><p><loc href="#style-attribute-rubyReserve"><att>tts:rubyReserve</att></loc></p></item>
 <item><p><loc href="#style-attribute-textCombine"><att>tts:textCombine</att></loc></p></item>

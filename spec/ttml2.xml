@@ -3136,11 +3136,6 @@ it is expected that the selection process will make use of (1) the types of sche
 (2) as a heuristic, the maximum version number associated with a required or optional feature as determined by the
 <loc href="#terms-effective-validation-profile">effective validation profile</loc>.</p>
 </note>
-<note role="clarification">
-<p>In the present context, the term <emph>schema</emph> means any mechanism that is used during validation processing for the purpose
-validating or verifying content syntax and semantics, whether it be one or more files expressed in a formal schema definition language, e.g.,
-<bibref ref="xsd-1"/> or <bibref ref="rng"/>, or programmatic source code.</p>
-</note>
 </def>
 </gitem>
 <gitem id="semantics-procedure-validate-document">
@@ -3153,8 +3148,8 @@ then exit this procedure unless the end-user or application overrides this prohi
 <item><p>if the computed value of the <loc href="#profile-attribute-validation"><att>ttp:validation</att></loc> parameter is <code>optional</code> and the
 <loc href="#terms-document-processing-context">document processing context</loc> determines that optional validation is not to be performed,
 then exit this procedure;</p></item>
-<item><p>otherwise, using the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc>, validate document conformance
-such that</p>
+<item><p>otherwise, using the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> and other
+validation tools as required, validate document conformance such that</p>
 <ulist>
 <item><p>if a <termref def="defs-validation-error">validation error</termref> condition is detected, then perform the semantics that apply
 to the computed value of the <loc href="#profile-attribute-validationAction"><att>ttp:validationAction</att></loc> parameter property;</p></item>
@@ -3163,10 +3158,24 @@ to the computed value of the <loc href="#profile-attribute-validationAction"><at
 </ulist>
 </item>
 </olist>
-<note role="clarification">
-<p>In the present context, the term <emph>schema</emph> is not intended to be limited to formal schema definition languages,
-but to also include any mechanism that is employed in the validation or verification of content syntax and semantics.</p>
-</note>
+<p>When validation processing is performed, the following semantics apply:</p>
+<ulist>
+<item><p>if the input document takes the form of a concrete XML representation, e.g., the concrete form defined by
+Appendix <specref ref="concrete-encoding"/>, then verify that</p>
+<ulist>
+<item><p>the encoded characters of the input document are well-formed according to the document's resolved character encoding; and,</p></item>
+<item><p>the input document is a well-formed XML document; and</p></item>
+</ulist>
+</item>
+<item><p>verify the input document is valid with respect to the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc>;
+and,</p></item>
+<item><p>verify the input document adheres to all other syntactic and semantic constraints defined by this specification that are not directly expressed
+by the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc>.</p></item>
+</ulist>
+<p>If any of the above verification steps detect a state of non-conformance with respect to a prescription (must) or proscription (must not), then a
+<termref def="defs-validation-error">validation error</termref> condition applies. If any of the above verification steps detect a state of
+non-conformance with respect to a recommendation (should) or disrecommendation (should not), then a
+<termref def="defs-validation-warning">validation warning</termref> condition applies.</p>
 </def>
 </gitem>
 </glist>

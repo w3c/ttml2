@@ -446,6 +446,11 @@ width: 100%;
 
 <!-- additional header content -->
 <xsl:template name="additional-head">
+  <link rel="canonical">
+    <xsl:attribute name="href">
+      <xsl:value-of select="/spec/@canonical-url"/>
+    </xsl:attribute>
+  </link>
 </xsl:template>
 
 <!-- header: metadata about the spec -->

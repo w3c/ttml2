@@ -75,7 +75,7 @@
 
 <!-- css: styling of spec -->
 <xsl:template name="css">
-  <style type="text/css">
+  <style>
     <xsl:text>
 code
 {

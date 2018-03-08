@@ -1111,28 +1111,28 @@
             <xsl:text>&#xa0;&#xa9;&#xa0;</xsl:text>
             <xsl:apply-templates select="pubdate/year"/>
             <xsl:text>&#xa0;</xsl:text>
-            <a href="http://www.w3.org/">
+            <a href="https://www.w3.org/">
               <acronym title="World Wide Web Consortium">W3C</acronym>
             </a>
             <sup>&#xae;</sup>
             <xsl:text> (</xsl:text>
-            <a href="http://www.csail.mit.edu/">
+            <a href="https://www.csail.mit.edu/">
               <acronym title="Massachusetts Institute of Technology">MIT</acronym>
             </a>
             <xsl:text>, </xsl:text>
-            <a href="http://www.ercim.eu/">
+            <a href="https://www.ercim.eu/">
               <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
             </a>
             <xsl:text>, </xsl:text>
-            <a href="http://www.keio.ac.jp/">Keio</a>
+            <a href="https://www.keio.ac.jp/">Keio</a>
             <xsl:text>, </xsl:text>
-            <a href="http://ev.buaa.edu.cn/">Beihang</a>
+            <a href="https://ev.buaa.edu.cn/">Beihang</a>
             <xsl:text>). W3C </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
+            <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>
+            <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>
             <xsl:text> and </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+            <a href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
             <xsl:text> rules apply.</xsl:text>
           </p>
         </xsl:otherwise>

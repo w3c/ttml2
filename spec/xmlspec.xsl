@@ -1126,7 +1126,7 @@
             <xsl:text>, </xsl:text>
             <a href="https://www.keio.ac.jp/">Keio</a>
             <xsl:text>, </xsl:text>
-            <a href="https://ev.buaa.edu.cn/">Beihang</a>
+            <a href="http://ev.buaa.edu.cn/">Beihang</a>
             <xsl:text>). W3C </xsl:text>
             <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>

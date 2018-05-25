@@ -9760,7 +9760,6 @@ determines whether font kerning is applied when positioning <loc href="#terms-gl
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-p"><el>p</el></loc>
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -9943,7 +9942,6 @@ determines whether and how a shear transformation is applied to <loc href="#term
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-p"><el>p</el></loc>
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -9965,6 +9963,9 @@ determines whether and how a shear transformation is applied to <loc href="#term
 </tr>
 </tbody>
 </table>
+<p>For the purpose of determining applicability of this style property,
+each character child of a <el>p</el> element is considered to be enclosed in an anonymous
+span.</p>
 <p>If the value of this attribute is <code>0%</code>, then no shear transformation is applied; if the value is <code>100%</code>, then a 2D shear transformation
 of 90 degrees is applied in the axis associated with the inline progression direction; if the value is <code>-100%</code>, then a shear transformation
 of -90 degrees is applied. If the absolute value of the specified percentage is greater than 100%, then it must be interpreted as if 100% were specified with
@@ -9982,9 +9983,9 @@ the appropriate sign.</p>
 | <emph>a</emph> 1 0 |
 | 0 0 1 |
 </eg>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
+<p>In addition to applying to <loc href="#content-vocabulary-span"><el>span</el></loc>, the computed value of this property
+is used to resolve the value of the <code>normal</code> value of the style property associated with the
+<loc href="#style-attribute-lineHeight">tts:lineHeight</loc> attribute as applied to a <loc href="#content-vocabulary-span"><el>p</el></loc> element.</p>
 <p>The <att>tts:fontShear</att> style is illustrated by the following example.</p>
 <table id="font-shear-example-1" role="example">
 <caption>Example Fragment &ndash; Font Shear</caption>
@@ -10344,7 +10345,6 @@ of typographic glyph variants.</p>
 <tr>
 <td><emph>Applies to:</emph></td>
 <td>
-<loc href="#content-vocabulary-p"><el>p</el></loc>,
 <loc href="#content-vocabulary-span"><el>span</el></loc>
 </td>
 </tr>
@@ -10369,6 +10369,9 @@ of typographic glyph variants.</p>
 <p>For the purpose of determining applicability of this style property,
 each character child of a <el>p</el> element is considered to be enclosed in an anonymous
 span.</p>
+<p>In addition to applying to <loc href="#content-vocabulary-span"><el>span</el></loc>, the computed value of this property
+is used to resolve the value of the <code>normal</code> value of the style property associated with the
+<loc href="#style-attribute-lineHeight">tts:lineHeight</loc> attribute as applied to a <loc href="#content-vocabulary-span"><el>p</el></loc> element.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>normal</code>.</p>
 <p>The <att>tts:fontVariant</att> style is illustrated by the following example.</p>
@@ -10740,18 +10743,24 @@ horizontal writing modes, but is the horizontal axis in vertical writing modes.<
 computed value of this style property is determined as follows:</p>
 <olist>
 <item><p>
-Let <emph>P</emph> be the <el>p</el> element to which this style property applies.
+Let <emph>P</emph> be the <loc href="#content-vocabulary-p"><el>p</el></loc> element to which this style property applies.
 </p></item>
 <item><p>
-Let <emph>FF</emph> be the computed value of the <att>tts:fontFamily</att> style property that applies to <emph>P</emph>.
+Let <emph>FF</emph> be the computed value of the <loc href="#style-attribute-fontFamily"><att>tts:fontFamily</att></loc>
+style property of <emph>P</emph>.
 </p></item>
 <item><p>
-Let <emph>FS</emph> be the computed value of the <att>tts:fontSize</att> style property that applies to <emph>P</emph>.
+Let <emph>FS</emph> be the computed value of the <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> style property of <emph>P</emph>
+adjusted as required to satisfy the computed value of the <loc href="#style-attribute-fontShear"><att>tts:fontShear</att></loc>
+style property of <emph>P</emph>.
 </p></item>
 <item><p>
 Let <emph>F0</emph> be the first font obtained when sequentially mapping each font family in <emph>FF</emph> to a set of available fonts,
-where this set of available fonts is constrained as needed to satisfy the computed values of the <att>tts:fontStyle</att> and <att>tts:fontWeight</att>
-style properties that apply to <emph>P</emph>.
+where this set of available fonts is constrained as needed to satisfy the computed values of the
+<loc href="#style-attribute-fontStyle"><att>tts:fontStyle</att></loc>,
+<loc href="#style-attribute-fontWeight"><att>tts:fontWeight</att></loc>, and
+<loc href="#style-attribute-fontVariant"><att>tts:fontVariant</att></loc>
+style properties of <emph>P</emph>.
 </p></item>
 <item><p>
 If <emph>F0</emph> is associated with font metrics that specify altitude <emph>A</emph>, descent <emph>D</emph>, and line gap <emph>G</emph>,

@@ -1814,6 +1814,10 @@ and found to be valid as defined by <specref ref="doctypes"/>.</p>
     <p>A validating content processor may have the sole function of validating (or verifying) a document instance,
     or it may have multiple functions, the first of which is validating (or verifying) a document instance.</p>
   </note>
+  <note role="elaboration">
+    <p>When validation processing is performed, a conforming validating content processor is permitted to interleave validation
+    processing and content processing, provided that the latter does not temporally precede the former for a give unit of content.</p>
+  </note>
 </def>
 </gitem>
 <gitem id="terms-vertical-axis">
@@ -1908,6 +1912,11 @@ there is a default value, it is shown following a colon. Where an
 defined in <bibref ref="xsd-2"/>, a hyperlink to its definition
 therein is given.</p>
 <p>Unqualified attributes are not permitted unless explicitly defined in this specification.</p>
+<note role="elaboration"><p>With the exception of <specref ref="element-derivation"/>, the (possibly namespace qualified) name of an attribute
+is prefixed with an '<code>@</code>' (COMMERICAL AT) character in order to disambiguate between the attribute and a like-named element type, in which case
+the '<code>@</code>' character is not intended to be part of the literal name of the attribute. For example, <code>@ttm:agent</code>
+refers to the <loc href="#metadata-attribute-agent">ttm:agent</loc> attribute, while <code>ttm:agent</code> refers to
+<loc href="#metadata-vocabulary-agent">ttm:agent</loc> element.</p></note>
 <p>An information item depicted with a <phrase role="deprecated">light yellow orange</phrase> background color is deprecated (e.g.,
 the <phrase role="deprecated">tiny</phrase> value of the <code>size</code> attribute shown above).
 An information item that is <phrase role="deprecated">deprecated</phrase> may but should not appear in a TTML document instance,
@@ -3425,10 +3434,10 @@ Metadata.class
 </td>
 <td>
 <loc href="#metadata-vocabulary-metadata">metadata</loc> |
-<loc href="#metadata-vocabulary-copyright">ttm:agent</loc> |
+<loc href="#metadata-vocabulary-agent">ttm:agent</loc> |
 <loc href="#metadata-vocabulary-copyright">ttm:copyright</loc> |
 <loc href="#metadata-vocabulary-desc">ttm:desc</loc> |
-<loc href="#metadata-vocabulary-desc">ttm:item</loc> |
+<loc href="#metadata-vocabulary-item">ttm:item</loc> |
 <loc href="#metadata-vocabulary-title">ttm:title</loc>
 </td>
 </tr>
@@ -7938,6 +7947,25 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-writingMode"/></p></item>
 <item><p><specref ref="style-attribute-zIndex"/></p></item>
 </ulist>
+<p>In addition to the above visual styling attribues, this section specifies the following audio styling attributes in the TT Audio Style Namespace
+for use with style definition elements and <loc href="#terms-content-element">content elements</loc>
+that support inline style specifications:</p>
+<ulist>
+<!--
+<item><p><specref ref="audio-style-attribute-duration"/></p></item>
+<item><p><specref ref="audio-style-attribute-emphasis"/></p></item>
+-->
+<item><p><specref ref="audio-style-attribute-gain"/></p></item>
+<item><p><specref ref="audio-style-attribute-pan"/></p></item>
+<item><p><specref ref="audio-style-attribute-pitch"/></p></item>
+<!--
+<item><p><specref ref="audio-style-attribute-range"/></p></item>
+-->
+<item><p><specref ref="audio-style-attribute-speak"/></p></item>
+<!--
+<item><p><specref ref="audio-style-attribute-voice"/></p></item>
+-->
+</ulist>
 <note role="explanation">
 <p>This specification makes use of <emph>lowerCamelCased</emph> local
 names for style attributes that
@@ -9508,6 +9536,11 @@ of the associated <loc href="#terms-content-region">content region</loc>.</p>
   <item><p>if the property applies to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element, then <code>auto</code>
   is interpreted as if a value equal to the image's intrinsic extent were specified using two pixel-based <loc href="#style-value-length">&lt;length&gt;</loc> components, for example, "<code>200px</code> <code>100px</code>".</p></item>
 </olist>
+<note role="clarification"><p>This attribute permits a value consisting of a single keyword <code>"auto"</code> and
+another value consisting of two keywords <code>"auto auto"</code>. These two different values have distinct meanings and are not equivalent.
+In particular, the single keyword value <code>"auto"</code> has the semantics described immediately above; however, the two keywords value
+<code>"auto auto"</code> consists of two <loc href="#style-value-measure">&lt;measure&gt;</loc> expressions, each using the
+<loc href="#style-value-measure">&lt;measure&gt;</loc> keyword <code>auto</code> as defined in <specref ref="style-value-measure"/>.</p></note>
 <p>If the value of this attribute is <code>contain</code>, then the computed value of its associated property is determined as follows:</p>
 <olist>
   <item><p>if the property applies to the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then <code>contain</code> is interpreted as specified in
@@ -11443,7 +11476,8 @@ the computed position and the supported position is minimized. If there are mult
 the computed value, then the value least distant from [0,0], i.e., closest to the coordinate space position, is used.</p>
 </note>
 <p>The <att>tts:position</att> style is illustrated by the following example, which positions a region so that it is
-centered in the horizontal dimension and has a bottom edge 10% above the bottom of the positioning rectangle in the vertical dimension.</p>
+centered in the horizontal dimension and has a bottom edge offset at 10% above the bottom of the positioning rectangle in the vertical dimension,
+where this offset is equal to 10% of the difference between the height of the positioning rectangle and the height of the region.</p>
 <table id="style-attribute-position-example-1" role="example">
 <caption>Example Fragment &ndash; Position</caption>
 <tbody>
@@ -12961,6 +12995,8 @@ term, if present, indicates the blur radius.</p>
 <p>When a relative <loc href="#style-value-length">&lt;length&gt;</loc> value is specified for outline thickness or blur radius,
 then it is resolved in terms of the height component of the referenced font size or <loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express thickness and blur radius must be non-negative.</p>
+<p>If no blur radius is specified, i.e., only one <loc href="#style-value-length">&lt;length&gt;</loc> term is present,
+then the computed value of <code>0px</code> applies.</p>
 <note role="elaboration">
 <p>When a <loc href="#style-value-length">&lt;length&gt;</loc> expressed in
 cells is used in a <att>tts:textOutline</att> value,
@@ -13624,28 +13660,6 @@ the computed value, then the value least distant from 0, i.e., closest to the ba
 </tbody>
 </table>
 </div3>
-</div2> <!-- styling-attribute-vocabulary -->
-<div2 id="audio-styling-attribute-vocabulary">
-<head>Audio Styling Attribute Vocabulary</head>
-<p>This section specifies the following attributes in the TT Audio Style Namespace
-for use with style definition elements and <loc href="#terms-content-element">content elements</loc>
-that support inline style specifications:</p>
-<ulist>
-<!--
-<item><p><specref ref="audio-style-attribute-duration"/></p></item>
-<item><p><specref ref="audio-style-attribute-emphasis"/></p></item>
--->
-<item><p><specref ref="audio-style-attribute-gain"/></p></item>
-<item><p><specref ref="audio-style-attribute-pan"/></p></item>
-<item><p><specref ref="audio-style-attribute-pitch"/></p></item>
-<!--
-<item><p><specref ref="audio-style-attribute-range"/></p></item>
--->
-<item><p><specref ref="audio-style-attribute-speak"/></p></item>
-<!--
-<item><p><specref ref="audio-style-attribute-voice"/></p></item>
--->
-</ulist>
 <div3 id="audio-style-attribute-gain">
 <head>tta:gain</head>
 <p>The <att>tta:gain</att> attribute is used to specify an audio style property that
@@ -13951,7 +13965,7 @@ element with a <code>rate</code> attribute equal to the computed value is applie
 character content.</p>
 </note>
 </div3>
-</div2> <!-- audio-styling-attribute-vocabulary -->
+</div2> <!-- styling-attribute-vocabulary -->
 <div2 id="styling-style-value-expressions">
 <head>Styling Value Expressions</head>
 <p>Style property values include the use of the following expressions:</p>
@@ -14111,8 +14125,8 @@ bottom of the <loc href="#terms-glyph-area">glyph areas</loc>. If a vertical wri
 <gitem>
 <label><code>outside</code></label>
 <def>
-<p>Equivalent to <code>before</code> for all but the last affected line area; otherwise, equivalent to <code>after</code>
-for the last affected line area.</p>
+<p>Equivalent to <code>before</code> for all but the last line area of the last block area generated by
+a <loc href="#content-vocabulary-p"><el>p</el></loc> element which contains annotated text; otherwise, equivalent to <code>after</code>.</p>
 </def>
 </gitem>
 </glist>
@@ -15477,6 +15491,8 @@ where positive denotes towards the end edge and negative towards the start edge,
 the second <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the block progression direction of the associated area,
 where positive denotes towards the after edge and negative towards the before edge.
 The third <loc href="#style-value-length">&lt;length&gt;</loc> term, if present, denotes the blur radius, and must be non-negative.</p>
+<p>If no blur radius is specified, i.e., only two <loc href="#style-value-length">&lt;length&gt;</loc> terms are present,
+then the computed value of <code>0px</code> applies.</p>
 <p>If no <loc href="#style-value-color">&lt;color&gt;</loc> term is
 present, then the computed value of the <att>tts:color</att> property applies.</p>
 <note role="elaboration">
@@ -15500,7 +15516,7 @@ without taking into account rasterization effects.</p>
 <eg xml:space="preserve">
 &lt;text-combine&gt;
   : "none"
-  | "auto"
+  | "all"
   | "digits" (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>)?
 </eg>
 </td>
@@ -17674,7 +17690,7 @@ styling of content.</p>
 <p>Support ability for author to declare whether a referenced
 out-of-line animation's timing is relative to its animation container
 element's timing or relative to the referring element's timing. For
-example, add an <code>@animateTimeContainer</code> attribute optionally used
+example, add an <code>animateTimeContainer</code> attribute optionally used
 with the newly defined <code>@animate</code> attribute, where value can be
 <code>normal</code> (the default value) or <code>self</code>, and where <code>normal</code> means
 timing is with respect to the out-of-line animation element's ancestor
@@ -20732,7 +20748,7 @@ vocabulary defined by <specref ref="metadata"/>:</p>
 <item><p><loc href="#metadata-vocabulary-name"><el>ttm:name</el></loc></p></item>
 <item><p><loc href="#metadata-vocabulary-actor"><el>ttm:actor</el></loc></p></item>
 <item><p><loc href="#metadata-attribute-agent">@<att>ttm:agent</att></loc></p></item>
-<item><p><loc href="#metadata-attribute-role">@<att>ttm:role</att></loc></p></item>
+<item><p><loc href="#metadata-attribute-role"><att>ttm:role</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#metadata</code>
 feature if it recognizes and is capable of presenting the information
@@ -20792,17 +20808,66 @@ feature if it implements presentation semantic support for nested
 </div3>
 <div3 id="feature-opacity">
 <head>#opacity</head>
+<p>A TTML processor supports the <code>#opacity</code> feature if it
+supports the <loc href="#feature-opacity-region"><code>#opacity-region</code></loc> feature.</p>
+</div3>
+<div3 id="feature-opacity-block">
+<head>#opacity-block</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#opacity</code> feature if it recognizes and is capable of
-transforming the <loc
+<code>#opacity-block</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
 href="#style-attribute-opacity"><att>tts:opacity</att></loc>
-attribute.</p>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
+block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#opacity</code> feature if it (1) implements presentation semantic support for
-the <loc
+<code>#opacity-block</code> feature if it (1) implements presentation semantic
+support for the <loc
 href="#style-attribute-opacity"><att>tts:opacity</att></loc>
-attribute and (2) is capable of displaying or generating an output display
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
+block area and (2) is capable of displaying or generating an output display
 signal that distinguishes between at least eight (8) values of opacity.</p>
+</div3>
+<div3 id="feature-opacity-inline">
+<head>#opacity-inline</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#opacity-inline</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
+inline area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#opacity-inline</code> feature if it (1) implements presentation semantic
+support for the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
+inline area and (2) is capable of displaying or generating an output display
+signal that distinguishes between at least eight (8) values of opacity.</p>
+</div3>
+<div3 id="feature-opacity-region">
+<head>#opacity-region</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#opacity-region</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#opacity-region</code> feature if it (1) implements presentation semantic
+support for the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element and (2) is capable of displaying or generating an output display
+signal that distinguishes between at least eight (8) values of opacity.</p>
+</div3>
+<div3 id="feature-opacity-version-2">
+<head>#opacity-version-2</head>
+<p>A TTML processor supports the <code>#opacity-version-2</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-opacity-block"><code>#opacity-block</code></loc></p></item>
+<item><p><loc href="#feature-opacity-inline"><code>#opacity-inline</code></loc></p></item>
+<item><p><loc href="#feature-opacity-region"><code>#opacity-region</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-origin">
 <head>#origin</head>
@@ -21115,12 +21180,12 @@ for the same vocabulary specified above.</p>
     <p>supports the following vocabulary:</p>
     <ulist>
       <item>
-        <p>attributes <code>@combine</code>, <code>@designator</code> and <code>@type</code> on
+        <p>attributes <code>combine</code>, <code>designator</code> and <code>type</code> on
         <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc>, and</p>
       </item>
       <item>
-        <p>attributes <code>@extends</code> and <code>@restricts</code> and attribute value <code>prohibited</code>
-        on attribute <code>@value</code> on
+        <p>attributes <code>extends</code> and <code>restricts</code> and attribute value <code>prohibited</code>
+        on attribute <code>value</code> on
         <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> and
         <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc>.</p>
       </item>
@@ -21908,7 +21973,7 @@ same vocabulary enumerated above.</p>
 <item><p><loc href="#feature-profile"><code>#profile</code></loc></p></item>
 <item><p><loc href="#feature-structure"><code>#structure</code></loc></p></item>
 <item><p><loc href="#feature-time-offset"><code>#time-offset</code></loc></p></item>
-<item><p><loc href="#timing"><code>#timing</code></loc></p></item>
+<item><p><loc href="#feature-timing"><code>#timing</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-transformation-version-2">
@@ -22918,6 +22983,30 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-opacity-block"><code>#opacity-block</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-inline"><code>#opacity-inline</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-region"><code>#opacity-region</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-version-2"><code>#opacity-version-2</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-origin"><code>#origin</code></loc></td>
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
@@ -23076,8 +23165,8 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <tr>
 <td><loc href="#feature-region-timing"><code>#region-timing</code></loc></td>
 <td css="text-align:center;">2</td>
-<td css="text-align:center;">M</td>
-<td css="text-align:center;">M</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
 </tr>
 <tr>
 <td><loc href="#feature-resources"><code>#resources</code></loc></td>
@@ -25053,6 +25142,9 @@ European Broadcasting Union (EBU), March 2015.
 <bibl id="ebuttlive" key="EBU-TT-Live">EBU Tech 3370,
 <titleref href="https://tech.ebu.ch/publications/tech3370">EBU-TT Part 3 Live Subtitling Applications, Version 1.0</titleref>, European Broadcasting Union (EBU), May 2017.
 (See <xspecref href="https://tech.ebu.ch/publications/tech3370">https://tech.ebu.ch/publications/tech3370</xspecref>.)</bibl>
+<bibl id="DVBSS" key="DVBSS">ETSI EN 300 743,
+<titleref href="http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf">Digital Video Broadcasting (DVB); Subtitling systems, Version 1.5.1</titleref>, ETSI, January 2014.
+(See <xspecref href="http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf">http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf (PDF)</xspecref>.)</bibl>
 <bibl id="html52" key="HTML 5.2">Steve Faulkner, Arron Eicholz, Travis Leithead, Alex Danilo, and Sangwhan Moon, Eds.,
 <titleref href="http://www.w3.org/TR/2017/REC-html52-20171214/">HTML 5.2</titleref>,
 W3C Recommendation, 14 December 2017. (See
@@ -26239,7 +26331,6 @@ is mapped to an equivalent <bibref ref="html52"/> DOM structure whose elements a
 </div4>
 <div4 id="derivation-backgroundColor">
 <head><loc href="#style-attribute-backgroundColor">tts:backgroundColor</loc></head>
-<p>The <code>tts:backgroundColor</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26305,7 +26396,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.
 </div4>
 <div4 id="derivation-backgroundImage">
 <head><loc href="#style-attribute-backgroundImage">tts:backgroundImage</loc></head>
-<p>The <code>tts:backgroundImage</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26391,7 +26481,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.
 </div4>
 <div4 id="derivation-backgroundRepeat">
 <head><loc href="#style-attribute-backgroundRepeat">tts:backgroundRepeat</loc></head>
-<p>The <code>tts:backgroundRepeat</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26495,7 +26584,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.
 </div4>
 <div4 id="derivation-color">
 <head><loc href="#style-attribute-color">tts:color</loc></head>
-<p>The <code>tts:color</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26535,7 +26623,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-direction">
 <head><loc href="#style-attribute-direction">tts:direction</loc></head>
-<p>The <code>tts:direction</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26571,33 +26658,9 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-disparity">
 <head><loc href="#style-attribute-disparity">tts:disparity</loc></head>
-<!--
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote>
---><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
+<p>No derivation, i.e., introduced in this specification.</p>
+<note role="elaboration"><p>The computed value of <code>tts:disparity</code> is equivalent to half the
+disparity shift value defined in <bibref ref="DVBSS"/>.</p></note>
 </div4>
 <div4 id="derivation-display">
 <head><loc href="#style-attribute-display">tts:display</loc></head>
@@ -26626,7 +26689,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-displayAlign">
 <head><loc href="#style-attribute-displayAlign">tts:displayAlign</loc></head>
-<p>The <code>tts:displayAlign</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26699,7 +26761,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontFamily">
 <head><loc href="#style-attribute-fontFamily">tts:fontFamily</loc></head>
-<p>The <code>tts:fontFamily</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26786,7 +26847,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontShear">
 <head><loc href="#style-attribute-fontShear">tts:fontShear</loc></head>
-<p>The <code>tts:fontShear</code> attribute may be derived from CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 80%;"/>
@@ -26816,7 +26876,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontSize">
 <head><loc href="#style-attribute-fontSize">tts:fontSize</loc></head>
-<p>The <code>tts:fontSize</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26874,7 +26933,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </div4>
 <div4 id="derivation-fontStyle">
 <head><loc href="#style-attribute-fontStyle">tts:fontStyle</loc></head>
-<p>The <code>tts:fontStyle</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26940,7 +26998,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </div4>
 <div4 id="derivation-fontWeight">
 <head><loc href="#style-attribute-fontWeight">tts:fontWeight</loc></head>
-<p>The <code>tts:fontWeight</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27028,7 +27085,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </div4>
 <div4 id="derivation-lineHeight">
 <head><loc href="#style-attribute-lineHeight">tts:lineHeight</loc></head>
-<p>The <code>tts:lineHeight</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <p>The line stacking semantic is intended to match the CSS line box stacking strategy.</p>
 <table role="common">
 <col css="width: 20%;"/>
@@ -27072,32 +27128,7 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </div4>
 <div4 id="derivation-luminanceGain">
 <head><loc href="#style-attribute-luminanceGain">tts:luminanceGain</loc></head>
-<!--
-    <ednote><edtext>Complete when/if a derivation is available, or specify "none"</edtext></ednote>
-    -->
-<p></p>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
+<p>No derivation, i.e., introduced in this specification.</p>
 </div4>
 <div4 id="derivation-opacity">
 <head><loc href="#style-attribute-opacity">tts:opacity</loc></head>
@@ -27151,7 +27182,6 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </div4>
 <div4 id="derivation-overflow">
 <head><loc href="#style-attribute-overflow">tts:overflow</loc></head>
-<p>The <code>tts:overflow</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27188,7 +27218,6 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </div4>
 <div4 id="derivation-padding">
 <head><loc href="#style-attribute-padding">tts:padding</loc></head>
-<p>The <code>tts:padding</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27348,33 +27377,7 @@ defined in this specification.</td>
 </div4>
 <div4 id="derivation-rubyReserve">
 <head><loc href="#style-attribute-rubyReserve">tts:rubyReserve</loc></head>
-<!--
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote>
---><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
+<p>No derivation, i.e., introduced in this specification.</p>
 </div4>
 <div4 id="derivation-showBackground">
 <head><loc href="#style-attribute-showBackground">tts:showBackground</loc></head>
@@ -27403,7 +27406,6 @@ defined in this specification.</td>
 </div4>
 <div4 id="derivation-textAlign">
 <head><loc href="#style-attribute-textAlign">tts:textAlign</loc></head>
-<p>The <code>tts:textAlign</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27468,7 +27470,6 @@ details.</td>
 </div4>
 <div4 id="derivation-textDecoration">
 <head><loc href="#style-attribute-textDecoration">tts:textDecoration</loc></head>
-<p>The <code>tts:textDecoration</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27534,7 +27535,7 @@ determining the position of underlines applies.</td>
 </tr>
 <tr>
 <td><phrase role="strong">Values</phrase></td>
-<td>Values map directly</td>
+<td>Except for <code>auto</code>, values map directly. The semantics of <code>auto</code> are writing mode dependent.</td>
 </tr>
 <tr>
 <td><phrase role="strong">Notes</phrase></td>
@@ -27655,7 +27656,6 @@ contours and inside of inner closed contours.</td>
 </div4>
 <div4 id="derivation-visibility">
 <head><loc href="#style-attribute-visibility">tts:visibility</loc></head>
-<p>The <code>tts:visibility</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27752,7 +27752,6 @@ contours and inside of inner closed contours.</td>
 </div4>
 <div4 id="derivation-zIndex">
 <head><loc href="#style-attribute-zIndex">tts:zIndex</loc></head>
-<p>The <code>tts:zIndex</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>

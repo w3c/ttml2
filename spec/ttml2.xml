@@ -995,7 +995,7 @@ by making use of a document's <loc href="#terms-effective-processor-profile">eff
 <gitem id="terms-effective-validation-profile">
 <label>[effective validation profile]</label>
 <def>
-<p>A profile used to select a schema (or set of schemas) to be used during <loc href="#semantics-validation-processing">validation processing</loc>,
+<p>A profile used to select a schema (or set of schemas) to be used during <loc href="#terms-validation-processing">validation processing</loc>,
 as determined by the <loc href="#semantics-procedure-construct-effective-validation-profile"><phrase role="strong">construct effective
 validation profile</phrase></loc> procedure.</p>
 </def>
@@ -1003,7 +1003,7 @@ validation profile</phrase></loc> procedure.</p>
 <gitem id="terms-effective-validation-schemas">
 <label>[effective validation schemas]</label>
 <def>
-<p>A set of schemas used during <loc href="#semantics-validation-processing">validation processing</loc>,
+<p>A set of schemas used during <loc href="#terms-validation-processing">validation processing</loc>,
 as determined by the <loc href="#semantics-procedure-construct-effective-validation-schemas"><phrase role="strong">construct effective
 validation schemas</phrase></loc> procedure.</p>
 <note role="elaboration">
@@ -1207,7 +1207,7 @@ a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element 
 <p>A <loc href="#terms-processor-profile">processor profile</loc> determined by the
 <loc href="#semantics-procedure-construct-inferred-processor-profile">construct inferred processor profile</loc> procedure which may
 serve as the <loc href="#terms-effective-processor-profile">effective processor profile</loc> used to perform
-validation processing.</p>
+<loc href="#terms-validation-processing">validation processing</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-inline-animation">
@@ -1805,15 +1805,38 @@ and which is referred to implicitly in the context of the profile's definition. 
 and found to be valid as defined by <specref ref="doctypes"/>.</p>
 </def>
 </gitem>
+<gitem id="terms-validation-processing">
+<label>[validation processing]</label>
+<def>
+<p>The function(s) performed by a <loc href="#terms-validation-processor">validation processor</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-validation-processor">
+<label>[validation processor]</label>
+<def>
+<p>An optional component of a <loc href="#terms-content-processor">content processor</loc>, the function of which is to perform validation processing on a
+candidate <loc href="#terms-document-instance">document instance</loc> prior to performing certain other type of processing,
+and where that validation processing consists of performing the
+<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure
+as defined by <specref ref="vocabulary-validation"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-validating-content-processor">
 <label>[validating content processor]</label>
 <def>
-  <p>A <loc href="#terms-content-processor">content processor</loc> which does or can perform validation of a
-  candidate <loc href="#terms-document-instance">document instance</loc> prior to performing certain other type of processing.</p>
-  <note role="elaboration">
-    <p>A validating content processor may have the sole function of validating (or verifying) a document instance,
-    or it may have multiple functions, the first of which is validating (or verifying) a document instance.</p>
-  </note>
+<p>A <loc href="#terms-content-processor">content processor</loc> that implements a <loc href="#terms-validation-processor">validation processor</loc>
+component as a pre-processing step prior to performing its primary function as a <loc href="#terms-content-processor">content processor</loc>.</p>
+<note role="elaboration">
+<p>A validating content processor may have (1) the sole function of validating (or verifying) a document instance,
+in which case it may be considered a validating <loc href="#terms-transformation-processor">transformation processor</loc> the
+output of which indicates  validity (or not), or (2) multiple functions, the first of which is validating (or verifying) a document instance
+and then performing its primary function as a <loc href="#terms-transformation-processor">transformation processor</loc> or
+<loc href="#terms-presentation-processor">presentation processor</loc>.</p>
+</note>
+<note role="elaboration">
+<p>When validation processing is performed, a conforming validating content processor is permitted to interleave validation
+processing and content processing, provided that the latter does not temporally precede the former for a give unit of content.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-vertical-axis">
@@ -1908,14 +1931,19 @@ there is a default value, it is shown following a colon. Where an
 defined in <bibref ref="xsd-2"/>, a hyperlink to its definition
 therein is given.</p>
 <p>Unqualified attributes are not permitted unless explicitly defined in this specification.</p>
+<note role="elaboration"><p>With the exception of <specref ref="element-derivation"/>, the (possibly namespace qualified) name of an attribute
+is prefixed with an '<code>@</code>' (COMMERICAL AT) character in order to disambiguate between the attribute and a like-named element type, in which case
+the '<code>@</code>' character is not intended to be part of the literal name of the attribute. For example, <code>@ttm:agent</code>
+refers to the <loc href="#metadata-attribute-agent">ttm:agent</loc> attribute, while <code>ttm:agent</code> refers to
+<loc href="#metadata-vocabulary-agent">ttm:agent</loc> element.</p></note>
 <p>An information item depicted with a <phrase role="deprecated">light yellow orange</phrase> background color is deprecated (e.g.,
 the <phrase role="deprecated">tiny</phrase> value of the <code>size</code> attribute shown above).
 An information item that is <phrase role="deprecated">deprecated</phrase> may but should not appear in a TTML document instance,
-and a validating processor should report a warning if it does appear.
+and a <loc href="#terms-validating-content-processor">validating content processor</loc> should report a warning if it does appear.
 An information item depicted with a <phrase role="obsoleted">light magenta red</phrase> background color is obsoleted (e.g.,
 the <phrase role="obsoleted">micro</phrase> value of the <code>size</code> attribute shown above).
 An information item that is <phrase role="obsoleted">obsoleted</phrase> must not appear in a TTML document instance,
-and a validating processor should report an error if it does appear.
+and a <loc href="#terms-validating-content-processor">validating content processor</loc> should report an error if it does appear.
 These designations of an item
 are also explicitly called out in specification text.</p>
 <p>The allowed content of the information item is shown as a grammar
@@ -2090,8 +2118,12 @@ declared to apply to the <loc href="#terms-document-instance">document instance<
 <note role="clarification">
 <p>The phrase <emph>mandatory semantics</emph> refers to all explicit use of the conformance
 key phrases <phrase role ="strong">must</phrase> and <phrase role="strong">must not</phrase> as well as any
-declarative statement that can be reasonably inferred from such key phrases. For example, these
-mandatory semantics include support for all features marked as mandatory in <specref ref="feature-support"/>.</p>
+declarative statement that can be reasonably inferred from such key phrases.</p>
+</note>
+<note role="clarification">
+<p>Support for the <emph>mandatory semantics</emph> of a <loc href="#terms-feature">feature</loc> or
+<loc href="#terms-extension">extension</loc> applies only when the <loc href="#terms-feature">feature</loc> or
+<loc href="#terms-extension">extension</loc> is supported by a TTML <loc href="#terms-content-processor">content processor</loc>.</p>
 </note>
 </item>
 <item>
@@ -2101,8 +2133,7 @@ then it does so in a manner consistent with the defined semantics.</p>
 <p>The phrase <emph>optional semantics</emph> refers to all explicit use of the conformance
 key phrases <phrase role ="strong">should</phrase>, <phrase role="strong">should not</phrase>,
 <phrase role ="strong">may</phrase>, and <phrase role="strong">may not</phrase>,
-as well as any declarative statement that can be reasonably inferred from such key phrases. For example, these
-optional semantics include support for all features marked as optional in <specref ref="feature-support"/>.</p>
+as well as any declarative statement that can be reasonably inferred from such key phrases.</p>
 </note>
 </item>
 </olist>
@@ -2817,7 +2848,7 @@ a <loc href="#terms-content-processor">content processor</loc> to perform any (o
 <p>infer an effective processor profile;</p>
 </item>
 <item>
-<p>perform validation processing on the <loc href="#terms-document-instance">document instance</loc>;</p>
+<p>perform <loc href="#terms-validation-processing">validation processing</loc> on the <loc href="#terms-document-instance">document instance</loc>;</p>
 </item>
 <item>
 <p>constrain transformation processing on the <loc href="#terms-document-instance">document instance</loc>
@@ -3045,17 +3076,18 @@ a future version of a TTML presentation or transformation profile.</p>
 <div2 id="vocabulary-validation">
 <head>Validation</head>
 <p>This section describes the TTML validation sub-system and high level requirements that apply to this sub-system.</p>
-<p>Validation is an optional process that may occur when a candidate <loc href="#terms-document-instance">document instance</loc> is
+<p>Validation is an optional function performed by a <loc href="#terms-validation-processor">validation processor</loc>
+that may occur when a candidate <loc href="#terms-document-instance">document instance</loc> is
 consumed or otherwise processed by a <loc href="#terms-validating-content-processor">validating content processor</loc>. If such processing
 takes place and an exceptional condition occurs, then processing may be aborted, as described in further detail below.</p>
-<p>If processing is aborted during validation processing, then the consequences include:</p>
+<p>If processing is aborted during <loc href="#terms-validation-processing">validation processing</loc>, then the consequences include:</p>
 <ulist>
 <item><p>only part of a non-conformant document may be transformed by a <loc href="#terms-transformation-processor">transformation processor</loc>,
 resulting in an incomplete transformation;</p></item>
 <item><p>only part of a non-conformant document may be presented by a <loc href="#terms-presentation-processor">presentation processor</loc>,
 resulting in an incomplete presentation.</p></item>
 </ulist>
-<p>If abort processing does occur as a side effect of validation processing, then the location in
+<p>If abort processing does occur as a consequence of <loc href="#terms-validation-processing">validation processing</loc>, then the location in
 the <loc href="#terms-document-instance">document instance</loc> after which no further content is processed is not defined by this specification. In
 particular, an implementation may abort processing upon encountering the first <termref def="defs-validation-error">validation error</termref> or
 may abort processing after encountering any number of <termref def="defs-validation-error">validation errors</termref>. As a consequence, the amount
@@ -3072,7 +3104,7 @@ that represents equivalent information.</p>
 <label>[validation exception]</label>
 <def>
 <p>A <loc href="#semantics-validation-state-validation-exception"><phrase role="strong">validation exception</phrase></loc>
-represents the following internal state information that corresponds to an exception condition that occurs during validation processing</p>
+represents the following internal state information that corresponds to an exception condition that occurs during <loc href="#terms-validation-processing">validation processing</loc></p>
 <glist>
 <gitem id="semantics-validation-state-validation-exception-message">
 <label>message</label>
@@ -3156,7 +3188,7 @@ to the computed value of the <loc href="#profile-attribute-validationAction"><at
 </ulist>
 </item>
 </olist>
-<p>When validation processing is performed, the following semantics apply:</p>
+<p>When <loc href="#terms-validation-processing">validation processing</loc> is performed, the following semantics apply:</p>
 <ulist>
 <item><p>if the input document takes the form of a concrete XML representation, e.g., the concrete form defined by
 Appendix <specref ref="concrete-encoding"/>, then verify that</p>
@@ -3425,10 +3457,10 @@ Metadata.class
 </td>
 <td>
 <loc href="#metadata-vocabulary-metadata">metadata</loc> |
-<loc href="#metadata-vocabulary-copyright">ttm:agent</loc> |
+<loc href="#metadata-vocabulary-agent">ttm:agent</loc> |
 <loc href="#metadata-vocabulary-copyright">ttm:copyright</loc> |
 <loc href="#metadata-vocabulary-desc">ttm:desc</loc> |
-<loc href="#metadata-vocabulary-desc">ttm:item</loc> |
+<loc href="#metadata-vocabulary-item">ttm:item</loc> |
 <loc href="#metadata-vocabulary-title">ttm:title</loc>
 </td>
 </tr>
@@ -4743,7 +4775,7 @@ when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="profile-attribute-validation">
 <head>ttp:validation</head>
-<p>The <att>ttp:validation</att> attribute is used to specify whether validation processing
+<p>The <att>ttp:validation</att> attribute is used to specify whether <loc href="#terms-validation-processing">validation processing</loc>
 may or must be performed on a <loc href="#terms-document-instance">document instance</loc> by a
 <loc href="#terms-validating-content-processor">validating content processor</loc>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
@@ -4763,15 +4795,15 @@ ttp:validation
 </tbody>
 </table>
 <p>If this parameter's value is <code>required</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-must perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+must perform <loc href="#terms-validation-processing">validation processing</loc> on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing.</p>
 <p>If this parameter's value is <code>optional</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-may, but need not, perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+may, but need not, perform <loc href="#terms-validation-processing">validation processing</loc> on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing.</p>
 <p>If this parameter's value is <code>prohibited</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-must not perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+must not perform <loc href="#terms-validation-processing">validation processing</loc> on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing, unless the end-user or application overrides this prohibition.</p>
-<p>If validation processing is performed on a TTML <loc href="#terms-document-instance">document instance</loc> and validation fails, then the computed value of
+<p>If <loc href="#terms-validation-processing">validation processing</loc> is performed on a TTML <loc href="#terms-document-instance">document instance</loc> and validation fails, then the computed value of
 the <att>ttp:validationAction</att> property is used to determine what action to take before performing further processing.</p>
 <p>If not specified, the value of this parameter must be considered
 to be <code>optional</code>.</p>
@@ -4799,12 +4831,13 @@ ttp:validationAction
 </tr>
 </tbody>
 </table>
-<p>If this parameter's value is <code>abort</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
+<p>If this parameter's value is <code>abort</code>, then, unless abort processing is overridden by the end-user or application,
+a <loc href="#terms-validating-content-processor">validating content processor</loc>
 must abort processing of a TTML <loc href="#terms-document-instance">document instance</loc> when a
 <termref def="defs-validation-error">validation error</termref> exception occurs.</p>
 <p>If this parameter's value is <code>warn</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
 should warn the end-user when a <termref def="defs-validation-error">validation error</termref> or
-<termref def="defs-validation-warning">validation warning</termref> exception occurs.
+<termref def="defs-validation-warning">validation warning</termref> exception occurs
 and give the end-user the option to continue or abort processing.</p>
 <p>If this parameter's value is <code>ignore</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
 should not abort and should not warn the end-user when a <loc href="#semantics-validation-state-validation-exception">validation exception</loc>
@@ -5489,7 +5522,6 @@ zero or one <el>body</el> element.</p>
 <td>
 <eg xml:space="preserve">
 &lt;tt
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#style-attribute-extent">tts:extent</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -5566,7 +5598,6 @@ or <loc href="#element-vocab-type-layout">Layout</loc> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;head
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
@@ -5615,6 +5646,7 @@ element group apply semantically to the <el>body</el> element.</p>
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
   {<emph>any attribute in TT Metadata Namespace</emph>}
+  {<emph>any attribute in <termref def="defs-tt-style-namespaces">TT Style Namespaces</termref></emph>}
   <emph>Content:</emph> <loc
   href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc
   href="#element-vocab-group-animation">Animation.class</loc>*, <loc
@@ -7347,7 +7379,6 @@ followed by zero or more elements in the
 <td>
 <eg xml:space="preserve">
 &lt;resources
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
@@ -7751,7 +7782,7 @@ as style properties only to those element types indicated by the definition of e
 unless explicitly permitted by an element type definition, an attribute in the <termref def="defs-tt-style-namespaces">TT Style Namespaces</termref>
 should not be specified on an element unless it either applies to that element or denotes an inheritable style property.
 If it does not apply to that element and does not denote an inheritable style property, then it must be ignored for the purpose
-of non-validation processing. In the case of validation processing, such usage should be reported as a warning.</p>
+of non-validation processing. In the case of <loc href="#terms-validation-processing">validation processing</loc>, such usage should be reported as a warning.</p>
 <div2 id="styling-element-vocabulary">
 <head>Styling Element Vocabulary</head>
 <p>The following elements specify the structure and principal styling aspects of a
@@ -7785,6 +7816,8 @@ the specification defined initial value(s).</p>
 </tr>
 </tbody>
 </table>
+<p>If more than one <el>initial</el> element specifies an initial value for the same style property, then
+the last value specified (in pre-traversal order) applies.</p>
 <p>The <el>initial</el> element is illustrated by the following example, wherein
 the initial value of the <att>tts:color</att> property is defined to be <code>yellow</code>.</p>
 <table id="style-vocabulary-initial-example-1" role="example">
@@ -7867,7 +7900,6 @@ followed by zero or more <el>style</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;styling
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
@@ -7940,6 +7972,25 @@ that support inline style specifications:</p>
 <item><p><specref ref="style-attribute-wrapOption"/></p></item>
 <item><p><specref ref="style-attribute-writingMode"/></p></item>
 <item><p><specref ref="style-attribute-zIndex"/></p></item>
+</ulist>
+<p>In addition to the above visual styling attribues, this section specifies the following audio styling attributes in the TT Audio Style Namespace
+for use with style definition elements and <loc href="#terms-content-element">content elements</loc>
+that support inline style specifications:</p>
+<ulist>
+<!--
+<item><p><specref ref="audio-style-attribute-duration"/></p></item>
+<item><p><specref ref="audio-style-attribute-emphasis"/></p></item>
+-->
+<item><p><specref ref="audio-style-attribute-gain"/></p></item>
+<item><p><specref ref="audio-style-attribute-pan"/></p></item>
+<item><p><specref ref="audio-style-attribute-pitch"/></p></item>
+<!--
+<item><p><specref ref="audio-style-attribute-range"/></p></item>
+-->
+<item><p><specref ref="audio-style-attribute-speak"/></p></item>
+<!--
+<item><p><specref ref="audio-style-attribute-voice"/></p></item>
+-->
 </ulist>
 <note role="explanation">
 <p>This specification makes use of <emph>lowerCamelCased</emph> local
@@ -8373,7 +8424,7 @@ and not a <loc href="#style-attribute-backgroundImage"><att>tts:backgroundImage<
   &lt;style tts:extent="306px 114px"/&gt;
   &lt;style tts:backgroundColor="red"/&gt;
   &lt;style tts:backgroundClip="padding"/&gt;
-  &lt;style tts:backgroundRepeat="noRepeat/&gt;
+  &lt;style tts:backgroundRepeat="noRepeat"/&gt;
   &lt;style <phrase role="strong">tts:backgroundImage="#blue102px57px"</phrase>/&gt;
   &lt;style tts:padding="27px 72px"/&gt;
 &lt;/region&gt;
@@ -8456,7 +8507,7 @@ span.</p>
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="306px 114px"/&gt;
   &lt;style tts:backgroundColor="red"/&gt;
-  &lt;style tts:backgroundRepeat="noRepeat/&gt;
+  &lt;style tts:backgroundRepeat="noRepeat"/&gt;
   &lt;style <phrase role="strong">tts:backgroundImage="#blue102px57px"</phrase>/&gt;
   &lt;style <phrase role="strong">tts:backgroundOrigin="content"</phrase>/&gt;
 &lt;/region&gt;
@@ -8540,7 +8591,7 @@ A percentage value component for a vertical position offset is relative to the h
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="306px 114px"/&gt;
   &lt;style tts:backgroundColor="red"/&gt;
-  &lt;style tts:backgroundRepeat="noRepeat/&gt;
+  &lt;style tts:backgroundRepeat="noRepeat"/&gt;
   &lt;style <phrase role="strong">tts:backgroundImage="#blue102px57px"</phrase>/&gt;
   &lt;style <phrase role="strong">tts:backgroundPosition="center"</phrase>/&gt;
 &lt;/region&gt;
@@ -9494,7 +9545,7 @@ then the specified value is restricted to one of the following:
 (3) two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
 where these specifications are expressed as non-percentage, definite lengths using pixel units.
 All other syntactically legal values must not be used in this context, and,
-if used, must be considered an error for the purpose of validation processing and must be ignored
+if used, must be considered an error for the purpose of <loc href="#terms-validation-processing">validation processing</loc> and must be ignored
 for the purpose of presentation processing, in which case the initial value (<code>auto</code>) applies.</p>
 <p>If a <att>tts:extent</att> attribute is specified on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
 then its computed value determines the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc>
@@ -9511,6 +9562,11 @@ of the associated <loc href="#terms-content-region">content region</loc>.</p>
   <item><p>if the property applies to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element, then <code>auto</code>
   is interpreted as if a value equal to the image's intrinsic extent were specified using two pixel-based <loc href="#style-value-length">&lt;length&gt;</loc> components, for example, "<code>200px</code> <code>100px</code>".</p></item>
 </olist>
+<note role="clarification"><p>This attribute permits a value consisting of a single keyword <code>"auto"</code> and
+another value consisting of two keywords <code>"auto auto"</code>. These two different values have distinct meanings and are not equivalent.
+In particular, the single keyword value <code>"auto"</code> has the semantics described immediately above; however, the two keywords value
+<code>"auto auto"</code> consists of two <loc href="#style-value-measure">&lt;measure&gt;</loc> expressions, each using the
+<loc href="#style-value-measure">&lt;measure&gt;</loc> keyword <code>auto</code> as defined in <specref ref="style-value-measure"/>.</p></note>
 <p>If the value of this attribute is <code>contain</code>, then the computed value of its associated property is determined as follows:</p>
 <olist>
   <item><p>if the property applies to the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element, then <code>contain</code> is interpreted as specified in
@@ -9901,7 +9957,7 @@ determines whether and how a shear transformation is applied to <loc href="#term
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<loc href="#style-value-length">&lt;percentage&gt;</loc>
+<loc href="#style-value-percentage">&lt;percentage&gt;</loc>
 </td>
 </tr>
 <tr>
@@ -10811,7 +10867,7 @@ luminance, such as 10,000 cd∙m<sup>-2</sup>.</p>
 <tr>
 <td><emph>Values:</emph></td>
 <td>
-<code><loc href="#style-value-number">&lt;non-negative-number&gt;</loc></code>
+<code><loc href="#style-value-non-negative-number">&lt;non-negative-number&gt;</loc></code>
 </td>
 </tr>
 <tr>
@@ -10826,7 +10882,7 @@ luminance, such as 10,000 cd∙m<sup>-2</sup>.</p>
 </tr>
 <tr>
 <td><emph>Inherited:</emph></td>
-<td>yes</td>
+<td>no</td>
 </tr>
 <tr>
 <td><emph>Percentages:</emph></td>
@@ -11446,7 +11502,8 @@ the computed position and the supported position is minimized. If there are mult
 the computed value, then the value least distant from [0,0], i.e., closest to the coordinate space position, is used.</p>
 </note>
 <p>The <att>tts:position</att> style is illustrated by the following example, which positions a region so that it is
-centered in the horizontal dimension and has a bottom edge 10% above the bottom of the positioning rectangle in the vertical dimension.</p>
+centered in the horizontal dimension and has a bottom edge offset at 10% above the bottom of the positioning rectangle in the vertical dimension,
+where this offset is equal to 10% of the difference between the height of the positioning rectangle and the height of the region.</p>
 <table id="style-attribute-position-example-1" role="example">
 <caption>Example Fragment &ndash; Position</caption>
 <tbody>
@@ -11599,86 +11656,76 @@ mode of presentation: normal or fallback.
 When performing normal presentation processing of ruby text annotations, delimiter content must not generate any inline areas. 
 When performing fallback presentation of ruby, both delimiter and non-delimiter ruby (base and text) content must generate normal inline areas.
 If a presentation processor does not support ruby presentation, then it must perform fallback ruby presentation.</p>
-
-<p>When using <att>tts:ruby</att>, the following nesting constraints apply:</p>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply to a <emph>ruby container</emph>, that is,
+if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>container</code>, then:</p>
 <ulist>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
-computed value of <att>tts:ruby</att> of all ancestor elements is <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
-computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then the
-computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
+<item><p>the computed value of <att>tts:ruby</att> of all of its ancestor elements is <code>none</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
 or <code>base</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>container</code>, then each of its text node
-children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
-computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
-computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then the
-computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then its
-preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>baseContainer</code>, then each of its text node
-children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
-computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
-computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
-computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
-computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseContainer</code> or
+<item><p>each of its text node children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
+</ulist>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply to a <emph>ruby base container</emph>, that is,
+if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>baseContainer</code>, then:</p>
+<ulist>
+<item><p>the computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
+<item><p>its preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
+<item><p>each of its text node children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
+</ulist>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply to a <emph>ruby text container</emph>, that is,
+if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>textContainer</code>, then:</p>
+<ulist>
+<item><p>the computed value of <att>tts:ruby</att> of its parent element is <code>container</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of its first child element is either <code>text</code> or <code>delimiter</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseContainer</code> or
 <code>textContainer</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then the
-computed value of <att>tts:ruby</att> of no more than one sibling is <code>textContainer</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>textContainer</code>, then each of its text node
-children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
-computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
+<item><p>the computed value of <att>tts:ruby</att> of no more than one of its siblings is <code>textContainer</code>;</p></item>
+<item><p>each of its text node children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
+</ulist>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply to <emph>ruby base content</emph>, that is,
+if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>base</code>, then:</p>
+<ulist>
+<item><p>the computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>baseContainer</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then its
-preceding sibling is either <code>null</code> (i.e., no preceding sibling) or the
+<item><p>its preceding sibling is either <code>null</code> (i.e., no preceding sibling) or the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code> and the
-computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
+<item><p>if the computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
 then the computed value of <att>tts:ruby</att> of no sibling is <code>base</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then the
-computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then none of its
-descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>base</code>, then each of its text node
-descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
-computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
+<item><p>the computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>none of its descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>each of its text node descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
+</ulist>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply to <emph>ruby text content</emph>, that is,
+if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>text</code>, then:</p>
+<ulist>
+<item><p>the computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or
 <code>textContainer</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
+<item><p>its preceding sibling is either <code>null</code> (i.e., no preceding sibling) or the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code>,
 <code>text</code>, or <code>delimiter</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code> and the
-computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
+<item><p>if the computed value of <att>tts:ruby</att> of its parent element is <code>container</code>,
 then the computed value of <att>tts:ruby</att> of no sibling is <code>text</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then the
-computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
-computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then none of its
-descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>text</code>, then each of its text node
-descendats does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
+<item><p>the computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
+<item><p>none of its descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>each of its text node descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR);</p></item>
+</ulist>
+<p>When using <att>tts:ruby</att>, the following nesting constraints apply to a <emph>ruby fallback delimiter</emph>, that is,
+if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>delimiter</code>, then:</p>
+<ulist>
+<item><p>the computed value of <att>tts:ruby</att> of its parent element is either <code>container</code> or <code>textContainer</code>;</p></item>
+<item><p>its preceding sibling is either <code>null</code> (i.e., no preceding sibling) or the
 computed value of <att>tts:ruby</att> of its preceding sibling is <code>base</code> or
 <code>text</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
-computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
+<item><p>the computed value of <att>tts:ruby</att> of exactly one sibling is <code>delimiter</code>;</p></item>
 <item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then the
 computed value of <att>tts:ruby</att> of no descendant element is not <code>none</code>;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then none of its
-descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
-<item><p>if the computed value of <att>tts:ruby</att> is <code>delimiter</code>, then each of its text node
-descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR).</p></item>
+<item><p>none of its descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
+<item><p>each of its text node descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR).</p></item>
 </ulist>
-<p>A validating processor must treat a violation of any of the above constraints as an error.
+<p>A <loc href="#terms-validating-content-processor">validating content processor</loc> must treat a violation of any of the above constraints as an error.
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
 presentation of ruby text annotations, and, for content that violates some constraint, if that content is
 a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
@@ -12102,7 +12149,7 @@ this case, an author may redefine the default initial value for this attribute b
 <code>&lt;initial tts:rubyPosition="after"/&gt;</code> in a document's <code>styling</code> element.</p>
 </note>
 <p>The <att>tts:rubyPosition</att> style is illustrated by the following example, which illustrates
-how the resolution of ruby position depends upon writing mode. Note that the example uses "mono ruby” as defined in <bibref ref="jlreq"/>.</p>
+how the resolution of ruby position depends upon writing mode. Note that the example uses <emph>mono ruby</emph> as defined in <bibref ref="jlreq"/>.</p>
 <table id="ruby-position-example-1" role="example">
 <caption>Example Fragment &ndash; Ruby Position</caption>
 <tbody>
@@ -12559,6 +12606,12 @@ If the specified value of this attribute is <code>digits</code>, then all affect
 equal to or less than a specified count, or two (2) if no count is specified.</p>
 <p>Combination applies after all affected characters have been processed as if a horizontal writing mode applied. In particular, bidirectional processing, ligatures, glyph subtitutions or combination of Unicode combining characters if used is applied before the combination process specified by the <att>tts:textCombine</att> attribute.</p>
 <p>Combination must not cross an element boundary, a bidirectional boundary, or a <loc href="#terms-glyph-area">non-glyph area</loc> boundary.</p>
+<p>If a computed value of the property associated with this attribute is not supported, then the following semantics apply:</p>
+<olist>
+<item><p>if the computed value is <code>digits</code> and the semantics of the <code>all</code> value are supported, then
+use the value <code>all</code>;</p></item>
+<item><p>otherwise, use the value <code>none</code>.</p></item>
+</olist>
 <p>The <att>tts:textCombine</att> style is illustrated by the following example.</p>
 <table id="text-combine-example" role="example">
 <caption>Example Fragment &ndash; Text Combine</caption>
@@ -12707,7 +12760,8 @@ is then inherited by children of the <code>p</code> element.</p>
 <div3 id="style-attribute-textEmphasis">
 <head>tts:textEmphasis</head>
 <p>The <att>tts:textEmphasis</att> attribute is used to specify a style property that
-determines whether and how text emphasis marks are presented on affected content.</p>
+defines a text emphasis effect to apply to <loc href="#terms-glyph-area">glyph areas</loc> or other inline
+areas that are generated by content flowed into a region.</p>
 <table id="style-property-details-textEmphasis" role="common">
 <col css="width: 25%;"/>
 <col/>
@@ -12773,6 +12827,13 @@ this case, an author may redefine the default initial value for this attribute b
   &lt;span <phrase role="strong">tts:textEmphasis="open circle before"</phrase>&gt;だ&lt;/span&gt;
   &lt;span <phrase role="strong">tts:textEmphasis="open dot before"</phrase>&gt;ん&lt;/span&gt;
   &lt;span <phrase role="strong">tts:textEmphasis="open sesame before"</phrase>&gt;ご&lt;/span&gt;
+  &lt;br/&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="filled circle after"</phrase>&gt;花&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="filled dot after"</phrase>&gt;よ&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="filled sesame after"</phrase>&gt;り&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="open circle after"</phrase>&gt;だ&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="open dot after"</phrase>&gt;ん&lt;/span&gt;
+  &lt;span <phrase role="strong">tts:textEmphasis="open sesame after"</phrase>&gt;ご&lt;/span&gt;
 &lt;/p&gt;
 </eg>
 </td>
@@ -12958,6 +13019,8 @@ term, if present, indicates the blur radius.</p>
 <p>When a relative <loc href="#style-value-length">&lt;length&gt;</loc> value is specified for outline thickness or blur radius,
 then it is resolved in terms of the height component of the referenced font size or <loc href="#terms-computed-cell-size">computed cell size</loc>.</p>
 <p>The <loc href="#style-value-length">&lt;length&gt;</loc> value(s) used to express thickness and blur radius must be non-negative.</p>
+<p>If no blur radius is specified, i.e., only one <loc href="#style-value-length">&lt;length&gt;</loc> term is present,
+then the computed value of <code>0px</code> applies.</p>
 <note role="elaboration">
 <p>When a <loc href="#style-value-length">&lt;length&gt;</loc> expressed in
 cells is used in a <att>tts:textOutline</att> value,
@@ -13621,28 +13684,6 @@ the computed value, then the value least distant from 0, i.e., closest to the ba
 </tbody>
 </table>
 </div3>
-</div2> <!-- styling-attribute-vocabulary -->
-<div2 id="audio-styling-attribute-vocabulary">
-<head>Audio Styling Attribute Vocabulary</head>
-<p>This section specifies the following attributes in the TT Audio Style Namespace
-for use with style definition elements and <loc href="#terms-content-element">content elements</loc>
-that support inline style specifications:</p>
-<ulist>
-<!--
-<item><p><specref ref="audio-style-attribute-duration"/></p></item>
-<item><p><specref ref="audio-style-attribute-emphasis"/></p></item>
--->
-<item><p><specref ref="audio-style-attribute-gain"/></p></item>
-<item><p><specref ref="audio-style-attribute-pan"/></p></item>
-<item><p><specref ref="audio-style-attribute-pitch"/></p></item>
-<!--
-<item><p><specref ref="audio-style-attribute-range"/></p></item>
--->
-<item><p><specref ref="audio-style-attribute-speak"/></p></item>
-<!--
-<item><p><specref ref="audio-style-attribute-voice"/></p></item>
--->
-</ulist>
 <div3 id="audio-style-attribute-gain">
 <head>tta:gain</head>
 <p>The <att>tta:gain</att> attribute is used to specify an audio style property that
@@ -13948,7 +13989,7 @@ element with a <code>rate</code> attribute equal to the computed value is applie
 character content.</p>
 </note>
 </div3>
-</div2> <!-- audio-styling-attribute-vocabulary -->
+</div2> <!-- styling-attribute-vocabulary -->
 <div2 id="styling-style-value-expressions">
 <head>Styling Value Expressions</head>
 <p>Style property values include the use of the following expressions:</p>
@@ -14108,8 +14149,8 @@ bottom of the <loc href="#terms-glyph-area">glyph areas</loc>. If a vertical wri
 <gitem>
 <label><code>outside</code></label>
 <def>
-<p>Equivalent to <code>before</code> for all but the last affected line area; otherwise, equivalent to <code>after</code>
-for the last affected line area.</p>
+<p>Equivalent to <code>before</code> for all but the last line area of the last block area generated by
+a <loc href="#content-vocabulary-p"><el>p</el></loc> element which contains annotated text; otherwise, equivalent to <code>after</code>.</p>
 </def>
 </gitem>
 </glist>
@@ -15438,7 +15479,7 @@ In both cases, the resulting difference may be a negative percentage.</p>
 <eg xml:space="preserve">
 &lt;ruby-reserve&gt;
   : "none"
-  | ("auto" | "before" | "after" | "both" | "outside" | "around" | "between") (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
+  | ("auto" | "before" | "after" | "both" | "outside") (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-length">&lt;length&gt;</loc>)?
 </eg>
 </td>
 </tr>
@@ -15469,11 +15510,15 @@ then it applies to the border rectangle of the area.</p>
 two to three <loc href="#style-value-length">&lt;length&gt;</loc> terms and
 an optional <loc href="#style-value-color">&lt;color&gt;</loc> term,
 where terms are separated from one another by linear white space (LWSP).</p>
-<p>The first <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the inline progression direction of the associated area,
-where positive denotes towards the end edge and negative towards the start edge,
-the second <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset in the block progression direction of the associated area,
-where positive denotes towards the after edge and negative towards the before edge.
+<p>The first <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset
+along the <loc href="#terms-horizontal-axis">horizontal axis</loc> dimension of the associated area,
+where positive denotes towards the right edge and negative towards the left edge,
+the second <loc href="#style-value-length">&lt;length&gt;</loc> term denotes the offset
+along the <loc href="#terms-vertical-axis">vertical axis</loc> dimension of the associated area,
+where positive denotes towards the bottom edge and negative towards the top edge.
 The third <loc href="#style-value-length">&lt;length&gt;</loc> term, if present, denotes the blur radius, and must be non-negative.</p>
+<p>If no blur radius is specified, i.e., only two <loc href="#style-value-length">&lt;length&gt;</loc> terms are present,
+then the computed value of <code>0px</code> applies.</p>
 <p>If no <loc href="#style-value-color">&lt;color&gt;</loc> term is
 present, then the computed value of the <att>tts:color</att> property applies.</p>
 <note role="elaboration">
@@ -15497,7 +15542,7 @@ without taking into account rasterization effects.</p>
 <eg xml:space="preserve">
 &lt;text-combine&gt;
   : "none"
-  | "auto"
+  | "all"
   | "digits" (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>)?
 </eg>
 </td>
@@ -15569,7 +15614,7 @@ without taking into account rasterization effects.</p>
 <eg xml:space="preserve">
 &lt;text-shadow&gt;
   : "none"
-  | <loc href="#style-value-shadow">&lt;shadow&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-shadow">&lt;shadow&gt;</loc>)*
+  | <loc href="#style-value-shadow">&lt;shadow&gt;</loc> (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? "," <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? <loc href="#style-value-shadow">&lt;shadow&gt;</loc>)*
 </eg>
 </td>
 </tr>
@@ -16369,7 +16414,6 @@ zero or more <el>region</el> elements.</p>
 <td>
 <eg xml:space="preserve">
 &lt;layout
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
@@ -17457,7 +17501,7 @@ clock-time
   : hours ":" minutes ":" seconds ( fraction | ":" frames ( "." sub-frames )? )?
 
 offset-time
-  : time-count fraction? metric?
+  : time-count fraction? metric
 
 wallclock-time
   : "wallclock(" <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ( date-time | wall-time | date ) <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>? ")"
@@ -17544,9 +17588,6 @@ sub-frame rate determined by the <att>ttp:subFrameRate</att> parameter as define
 ref="parameter-attribute-subFrameRate"/>.
 It is considered an error if a <emph>sub-frames</emph> term is specified
 when the <code>clock</code> time base applies.</p>
-<p>If a &lt;time-expression&gt; is expressed in terms of an
-<emph>offset-time</emph> and no <emph>metric</emph> is specified, then it is to be treated as
-if a metric of <code>s</code> (seconds) were specified.</p>
 <p>It is considered an error if the <emph>wallclock-time</emph> form of a &lt;time-expression&gt;
 is used in a <loc href="#terms-document-instance">document instance</loc> and the government time base is not <code>clock</code>.</p>
 <p>If the computed value of the governing time base is <code>smpte</code>, then
@@ -17672,7 +17713,7 @@ styling of content.</p>
 <p>Support ability for author to declare whether a referenced
 out-of-line animation's timing is relative to its animation container
 element's timing or relative to the referring element's timing. For
-example, add an <code>@animateTimeContainer</code> attribute optionally used
+example, add an <code>animateTimeContainer</code> attribute optionally used
 with the newly defined <code>@animate</code> attribute, where value can be
 <code>normal</code> (the default value) or <code>self</code>, and where <code>normal</code> means
 timing is with respect to the out-of-line animation element's ancestor
@@ -17845,7 +17886,6 @@ zero or more elements in the <loc href="#element-vocab-group-animation"><code>An
 <td>
 <eg xml:space="preserve">
 &lt;animation
-  <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
@@ -18105,6 +18145,7 @@ requirements that apply to the attribute targeted by the animation.</p>
 &lt;calculation-mode&gt;
   : "discrete"
   | "linear"
+  | "paced"
   | "spline"
 </eg>
 </td>
@@ -19031,8 +19072,9 @@ is defined by <specref ref="conformance-content"/>.</p>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies (1) a set of feature designations, each of which
 labels one or more syntactic and/or semantic features defined by this
-specification, and (2) for each designated feature, whether the feature is mandatory
-or optional for a transformation or <loc href="#terms-presentation-processor">presentation processor</loc>.</p>
+specification, and (2) for each designated feature, whether the feature is mandatory or optional for a
+TTML <loc href="#terms-content-processor">content processor</loc> that complies with the requirements of
+<specref ref="conformance-transformation-processor"/> or <specref ref="conformance-presentation-processor"/>.</p>
 <note>
 <p>A TTML processor is said to <emph>implement the transformation semantics</emph> or
 <emph>implement the presentation semantics</emph> of feature designation <emph>F</emph>
@@ -19383,7 +19425,7 @@ href="#feature-writingMode-horizontal"><code>#writingMode-horizontal</code></loc
 supports the following features:</p>
 <ulist>
 <item><p><loc href="#feature-bidi"><code>#bidi</code></loc></p></item>
-<item><p><loc href="#feature-unicodeBidi-isolate"><code>#unicodeBidi-isolate</code></loc></p></item>
+<item><p><loc href="#feature-unicodeBidi-version-2"><code>#unicodeBidi-version-2</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-border">
@@ -19441,13 +19483,13 @@ supports the following features:</p>
 <code>#border-radii-1</code> feature if it recognizes and is capable of transforming
 one component values of a
 <loc href="#style-value-border-radii">&lt;border-radii&gt;</loc> value expression specified in a
-<loc href="#style-attribute-backgroundClip"><att>tts:border</att></loc>
+<loc href="#style-attribute-border"><att>tts:border</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#backgroundClip</code> feature if it implements presentation semantic support for
 one component values of a
 <loc href="#style-value-border-radii">&lt;border-radii&gt;</loc> value expression specified in a
-<loc href="#style-attribute-backgroundClip"><att>tts:border</att></loc>
+<loc href="#style-attribute-border"><att>tts:border</att></loc>
 attribute.</p>
 </div3>
 <div3 id="feature-border-radii-2">
@@ -19627,12 +19669,25 @@ supports the following features:</p>
 <div3 id="feature-contentProfiles">
 <head>#contentProfiles</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#contentProfiles</code>
-feature if it recognizes and is capable of transforming the following
-core attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
-<ulist>
-<item><p><loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc></p></item>
-<item><p><loc href="#profile-attribute-contentProfileCombination"><att>ttp:contentProfileCombination</att></loc></p></item>
-</ulist>
+feature if it recognizes and is capable of transforming:</p>
+<olist>
+  <item>
+    <p>the following profile attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
+    <ulist>
+      <item><p><loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc></p></item>
+      <item><p><loc href="#profile-attribute-contentProfileCombination"><att>ttp:contentProfileCombination</att></loc>,</p></item>
+    </ulist>
+  </item>
+  <item>
+    <p>the <code>combine</code>, <code>designator</code> and <code>type</code> attributes on
+       the <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> element, and</p>
+  </item>
+  <item>
+    <p>the <code>prohibited</code> value of the <code>value</code> attribute on 
+       <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> and
+       <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc> elements.</p>
+  </item>
+</olist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#contentProfiles</code>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
@@ -19644,8 +19699,8 @@ feature if it recognizes and is capable of transforming the following
 core attributes vocabulary defined by <specref ref="content"/>:</p>
 <ulist>
 <item><p><loc href="#content-attribute-xml-id"><att>xml:id</att></loc></p></item>
-<item><p><loc href="#content-attribute-xml-id"><att>xml:lang</att></loc></p></item>
-<item><p><loc href="#content-attribute-xml-id"><att>xml:space</att></loc></p></item>
+<item><p><loc href="#content-attribute-xml-lang"><att>xml:lang</att></loc></p></item>
+<item><p><loc href="#content-attribute-xml-space"><att>xml:space</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#core</code>
 feature if it implements presentation semantic support for the
@@ -19948,44 +20003,85 @@ supports the following features:</p>
 </div3>
 <div3 id="feature-extent">
 <head>#extent</head>
-<p>A TTML processor supports the <code>#extent</code> feature if it
-supports the following features:</p>
-<ulist>
-<item><p><loc href="#feature-extent-region"><code>#extent-region</code></loc></p></item>
-<item><p><loc href="#feature-extent-root"><code>#extent-root</code></loc></p></item>
-</ulist>
+<p>A TTML processor supports the <code>#extent</code> feature if it supports the
+<code>#extent</code> feature as defined by <bibref ref="ttml1"/>, &sect; D.1.25.</p>
+<note role="clarification">
+<p>Support for the <code>#extent</code> feature is intended to be syntactically and semantically equivalent to support for both the
+<loc href="#feature-extent-region"><code>#extent-region</code></loc> and
+<loc href="#feature-extent-root"><code>#extent-root</code></loc> features.</p>
+</note>
 </div3>
-<div3 id="feature-extent-block">
-<head>#extent-block</head>
+<div3 id="feature-extent-auto">
+<head>#extent-auto</head>
+<p>A TTML content processor supports the <code>#extent-auto</code> feature if it supports the
+syntax and semantics of the <code>auto</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute as defined by <bibref ref="ttml1"/>, &sect;8.2.7.</p>
+</div3>
+<div3 id="feature-extent-auto-version-2">
+<head>#extent-auto-version-2</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#extent-block</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to a 
-<loc href="#terms-content-element">content element</loc> that would generate a
-block area during presentation processing.</p>
+<code>#extent-auto-version-2</code> feature if it recognizes and is capable of
+transforming the syntax and semantics of the <code>auto</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute as defined by this specification.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#extent-auto-version-2</code>
+feature if it implements presentation semantic support for the semantic extensions to the <code>auto</code> value of the
+<loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute as described above.</p>
+<p>The <code>#extent-auto-version-2</code> feature is a semantic extension of the <code>#extent-auto</code> feature.</p>
+</div3>
+<div3 id="feature-extent-contain">
+<head>#extent-contain</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#extent-contain</code> feature if it recognizes and is capable of
+transforming the <code>contain</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#extent-block</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to a 
-<loc href="#terms-content-element">content element</loc> that would generate a
-block area during presentation processing.</p>
+<code>#extent-contain</code> feature if it implements presentation semantic support for the <code>contain</code> value of the
+<loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute.</p>
+</div3>
+<div3 id="feature-extent-cover">
+<head>#extent-cover</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#extent-cover</code> feature if it recognizes and is capable of
+transforming the <code>cover</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
+attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#extent-cover</code> feature if it implements presentation semantic support for the <code>cover</code> value of the
+<loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute.</p>
+</div3>
+<div3 id="feature-extent-full-version-2">
+<head>#extent-full-version-2</head>
+<p>A TTML processor supports the <code>#extent-full-version-2</code> feature if it supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-extent-auto-version-2"><code>#extent-auto-version-2</code></loc></p></item>
+<item><p><loc href="#feature-extent-contain"><code>#extent-contain</code></loc></p></item>
+<item><p><loc href="#feature-extent-cover"><code>#extent-cover</code></loc></p></item>
+<item><p><loc href="#feature-extent-measure"><code>#extent-measure</code></loc></p></item>
+<item><p><loc href="#feature-extent-version-2"><code>#extent-version-2</code></loc></p></item>
+</ulist>
+<p>The <code>#extent-full-version-2</code> feature is a syntactic and semantic extension of the <code>#extent-version-2</code> feature.</p>
+<note role="clarification">
+<p>Support for the <code>#extent-full-version-2</code> feature does not imply support for the
+<loc href="#feature-region-inline-implicit"><code>#region-inline-implicit</code></loc> feature; that is,
+it does not imply support for the <loc href="#style-attribute-extent-special-usage">special usage</loc> for
+<loc href="#content-vocabulary-div"><el>div</el></loc> and
+<loc href="#content-vocabulary-p"><el>p</el></loc>.</p>
+</note>
 </div3>
 <div3 id="feature-extent-image">
 <head>#extent-image</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#extent-image</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to an 
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#extent-image</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to an 
-<loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<code>#extent-image</code> feature if it supports the attribute values
+of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute supported by the
+<loc href="#feature-extent-auto"><code>#extent-auto</code></loc> and <loc href="#feature-extent-length"><code>#extent-length</code></loc> features
+but applied to an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#extent-image</code>
+feature if it implements presentation semantic support for the same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-extent-length">
+<head>#extent-length</head>
+<p>A TTML content processor supports the <code>#extent-length</code> feature if it supports
+<loc href="#style-value-length">&lt;length&gt;</loc> component values
+of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute as defined by <bibref ref="ttml1"/>, &sect;8.2.7.</p>
 </div3>
 <div3 id="feature-extent-measure">
 <head>#extent-measure</head>
@@ -19997,59 +20093,45 @@ attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#extent-measure</code> feature if it implements presentation semantic support for
 <loc href="#style-value-measure">&lt;measure&gt;</loc> values when used with the
- <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute.</p>
+<loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute.</p>
+<p>The <code>#extent-measure</code> feature is a syntactic and semantic extension of the <code>#extent-length</code> feature.</p>
 </div3>
 <div3 id="feature-extent-region">
 <head>#extent-region</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#extent-region</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to a <loc
-href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#extent-region</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to a <loc
-href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TTML content processor supports the <code>#extent-region</code>
+feature if it supports the <code>#extent-region</code> feature as defined by <bibref ref="ttml1"/>, &sect; D.1.26.</p>
+<note role="clarification">
+<p>Support for the <code>#extent-region</code> feature implies support for the
+<loc href="#feature-extent-auto"><code>#extent-auto</code></loc> and
+<loc href="#feature-extent-length"><code>#extent-length</code></loc> features.</p>
+</note>
 </div3>
 <div3 id="feature-extent-root">
 <head>#extent-root</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#extent-root</code> feature if it recognizes and is capable of
-transforming the <loc href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to the <loc
-href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#extent-root</code> feature if it implements presentation semantic support for
-the <loc
-href="#style-attribute-extent"><att>tts:extent</att></loc>
-attribute when applied to a <loc
-href="#document-structure-vocabulary-tt"><el>tt</el></loc> element.</p>
+<p>A TTML content processor supports the <code>#extent-root</code>
+feature if it supports the <code>#extent-root</code> feature as defined by <bibref ref="ttml1"/>, &sect; D.1.26.</p>
+<note role="clarification">
+<p>Support for the <code>#extent-root</code> feature implies support for the
+<loc href="#feature-extent-auto"><code>#extent-auto</code></loc> and
+<loc href="#feature-extent-length"><code>#extent-length</code></loc> features.</p>
+</note>
 </div3>
 <div3 id="feature-extent-version-2">
 <head>#extent-version-2</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> processor
-supports the <code>#extent-version-2</code> feature if it supports the following features:</p>
+<p>A TTML processor supports the <code>#extent-version-2</code> feature if it supports the following features:</p>
 <ulist>
-<item><p><loc href="#feature-extent"><code>#extent</code></loc></p></item>
-<item><p><loc href="#feature-extent-block"><code>#extent-block</code></loc></p></item>
 <item><p><loc href="#feature-extent-image"><code>#extent-image</code></loc></p></item>
-<item><p><loc href="#feature-extent-measure"><code>#extent-measure</code></loc></p></item>
+<item><p><loc href="#feature-extent-region"><code>#extent-region</code></loc></p></item>
+<item><p><loc href="#feature-extent-root"><code>#extent-root</code></loc></p></item>
 </ulist>
-<p>and if it recognizes and is capable of transforming the following values of
-the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute:</p>
-<ulist>
-<item><p><code>contain</code></p></item>
-<item><p><code>cover</code></p></item>
-</ulist>
-<p>and if it recognizes and is capable of transforming the extended semantics of the
-the <code>auto</code> value of the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute
-defined in this version of the TTML specification.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#extent-version-2</code>
-feature if it implements presentation semantic support for the same syntactic and semantic features enumerated above.</p>
 <p>The <code>#extent-version-2</code> feature is a syntactic and semantic extension of the <code>#extent</code> feature.</p>
+<note role="clarification">
+<p>Support for the <code>#extent-version-2</code> feature does not imply support for the
+<loc href="#feature-region-inline-implicit"><code>#region-inline-implicit</code></loc> feature; that is,
+it does not imply support for the <loc href="#style-attribute-extent-special-usage">special usage</loc> for
+<loc href="#content-vocabulary-div"><el>div</el></loc> and
+<loc href="#content-vocabulary-p"><el>p</el></loc>.</p>
+</note>
 </div3>
 <div3 id="feature-font">
 <head>#font</head>
@@ -20728,7 +20810,7 @@ vocabulary defined by <specref ref="metadata"/>:</p>
 <item><p><loc href="#metadata-vocabulary-name"><el>ttm:name</el></loc></p></item>
 <item><p><loc href="#metadata-vocabulary-actor"><el>ttm:actor</el></loc></p></item>
 <item><p><loc href="#metadata-attribute-agent">@<att>ttm:agent</att></loc></p></item>
-<item><p><loc href="#metadata-attribute-role">@<att>ttm:role</att></loc></p></item>
+<item><p><loc href="#metadata-attribute-role"><att>ttm:role</att></loc></p></item>
 </ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#metadata</code>
 feature if it recognizes and is capable of presenting the information
@@ -20788,17 +20870,66 @@ feature if it implements presentation semantic support for nested
 </div3>
 <div3 id="feature-opacity">
 <head>#opacity</head>
+<p>A TTML processor supports the <code>#opacity</code> feature if it
+supports the <loc href="#feature-opacity-region"><code>#opacity-region</code></loc> feature.</p>
+</div3>
+<div3 id="feature-opacity-block">
+<head>#opacity-block</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#opacity</code> feature if it recognizes and is capable of
-transforming the <loc
+<code>#opacity-block</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
 href="#style-attribute-opacity"><att>tts:opacity</att></loc>
-attribute.</p>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate a
+block area during presentation processing.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#opacity</code> feature if it (1) implements presentation semantic support for
-the <loc
+<code>#opacity-block</code> feature if it (1) implements presentation semantic
+support for the <loc
 href="#style-attribute-opacity"><att>tts:opacity</att></loc>
-attribute and (2) is capable of displaying or generating an output display
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates a
+block area and (2) is capable of displaying or generating an output display
 signal that distinguishes between at least eight (8) values of opacity.</p>
+</div3>
+<div3 id="feature-opacity-inline">
+<head>#opacity-inline</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#opacity-inline</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that would generate an
+inline area during presentation processing.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#opacity-inline</code> feature if it (1) implements presentation semantic
+support for the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc href="#terms-content-element">content element</loc> that generates an
+inline area and (2) is capable of displaying or generating an output display
+signal that distinguishes between at least eight (8) values of opacity.</p>
+</div3>
+<div3 id="feature-opacity-region">
+<head>#opacity-region</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#opacity-region</code> feature if it recognizes and is
+capable of transforming all defined values of the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#opacity-region</code> feature if it (1) implements presentation semantic
+support for the <loc
+href="#style-attribute-opacity"><att>tts:opacity</att></loc>
+attribute when applied to a <loc
+href="#layout-vocabulary-region"><el>region</el></loc> element and (2) is capable of displaying or generating an output display
+signal that distinguishes between at least eight (8) values of opacity.</p>
+</div3>
+<div3 id="feature-opacity-version-2">
+<head>#opacity-version-2</head>
+<p>A TTML processor supports the <code>#opacity-version-2</code> feature if it
+supports the following features:</p>
+<ulist>
+<item><p><loc href="#feature-opacity-block"><code>#opacity-block</code></loc></p></item>
+<item><p><loc href="#feature-opacity-inline"><code>#opacity-inline</code></loc></p></item>
+<item><p><loc href="#feature-opacity-region"><code>#opacity-region</code></loc></p></item>
+</ulist>
 </div3>
 <div3 id="feature-origin">
 <head>#origin</head>
@@ -20968,27 +21099,25 @@ transforming the <loc href="#audio-style-attribute-pan"><att>tta:pan</att></loc>
 <head>#permitFeatureNarrowing</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#permitFeatureNarrowing</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#permitFeatureNarrowing</code> feature if it implements presentation semantic support
-for the <loc
-href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
-attribute.</p>
+transforming (1) the <loc href="#profile-attribute-permitFeatureNarrowing"><att>ttp:permitFeatureNarrowing</att></loc>
+attribute and (2) the <code>restricts</code> attribute on the
+<loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> and
+<loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc> elements.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#permitFeatureNarrowing</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
 </div3>
 <div3 id="feature-permitFeatureWidening">
 <head>#permitFeatureWidening</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
 <code>#permitFeatureWidening</code> feature if it recognizes and is capable of
-transforming the <loc
-href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#permitFeatureWidening</code> feature if it implements presentation semantic support
-for the <loc
-href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
-attribute.</p>
+transforming (1) the <loc href="#profile-attribute-permitFeatureWidening"><att>ttp:permitFeatureWidening</att></loc>
+attribute and (2) the <code>extends</code> attribute on the
+<loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> and
+<loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc> elements.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#permitFeatureWidening</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
 </div3>
 <div3 id="feature-pitch">
 <head>#pitch</head>
@@ -21057,75 +21186,52 @@ supports the following features:</p>
 <div3 id="feature-processorProfiles">
 <head>#processorProfiles</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#processorProfiles</code>
-feature if it recognizes and is capable of transforming the following
-core attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
-<ulist>
-<item><p><loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc></p></item>
-<item><p><loc href="#profile-attribute-processorProfileCombination"><att>ttp:processorProfileCombination</att></loc></p></item>
-</ulist>
+feature if it recognizes and is capable of transforming:</p>
+<olist>
+  <item>
+    <p>the following profile attributes vocabulary defined by <specref ref="profile-attribute-vocabulary"/>:</p>
+    <ulist>
+      <item><p><loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc></p></item>
+      <item><p><loc href="#profile-attribute-contentProfileCombination"><att>ttp:contentProfileCombination</att></loc>, and</p></item>
+    </ulist>
+  </item>
+  <item>
+    <p>the <code>combine</code>, <code>designator</code> and <code>type</code> attributes on
+       the <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> element.</p>
+  </item>
+</olist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#processorProfiles</code>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
 </div3>
 <div3 id="feature-profile">
 <head>#profile</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#profile</code>
-feature if it recognizes and is capable of transforming the
-<loc href="#profile-attribute-profile"><att>ttp:profile</att></loc>
-attribute on the <loc
-href="#document-structure-vocabulary-tt"><el>tt</el></loc> element and
-transforming the following vocabulary defined by
-<specref ref="parameter-element-vocabulary"/>:</p>
+<p>A TTML content processor supports the <code>#profile</code>
+feature if it supports the <code>#profile</code> feature as defined by <bibref ref="ttml1"/>, &sect; D.1.70.</p>
+<note role="clarification">
+<p>Support for the <code>#profile</code> feature does not imply support for the
+following features:</p>
 <ulist>
-<item><p><loc
-href="#profile-vocabulary-profile"><el>ttp:profile</el></loc></p></item>
-<item><p><loc
-href="#profile-vocabulary-features"><el>ttp:features</el></loc></p></item>
-<item><p><loc
-href="#profile-vocabulary-feature"><el>ttp:feature</el></loc></p></item>
-<item><p><loc
-href="#profile-vocabulary-extensions"><el>ttp:extensions</el></loc></p></item>
-<item><p><loc
-href="#profile-vocabulary-extension"><el>ttp:extension</el></loc></p></item>
+  <item><p><loc href="#feature-contentProfiles"><code>#contentProfiles</code></loc></p></item>
+  <item><p><loc href="#feature-inferProcessorProfile"><code>#inferProcessorProfile</code></loc></p></item>
+  <item><p><loc href="#feature-permitFeatureNarrowing"><code>#permitFeatureNarrowing</code></loc></p></item>
+  <item><p><loc href="#feature-permitFeatureWidening"><code>#permitFeatureWidening</code></loc></p></item>
+  <item><p><loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc></p></item>
 </ulist>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#profile</code> feature if it implements presentation semantic support
-for the same vocabulary specified above.</p>
+</note>
 </div3>
 <div3 id="feature-profile-version-2">
 <head>#profile-version-2</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#profile-version-2</code> feature if it</p>
-<olist>
-  <item>
-    <p>supports the following features:</p>
-    <ulist>
-      <item><p><loc href="#feature-contentProfiles"><code>#contentProfiles</code></loc>,</p></item>
-      <item><p><loc href="#feature-inferProcessorProfile"><code>#inferProcessorProfile</code></loc>,</p></item>
-      <item><p><loc href="#feature-permitFeatureNarrowing"><code>#permitFeatureNarrowing</code></loc>,</p></item>
-      <item><p><loc href="#feature-permitFeatureWidening"><code>#permitFeatureWidening</code></loc>,</p></item>
-      <item><p><loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc>,</p></item>
-      <item><p><loc href="#feature-profile"><code>#profile</code></loc>, and</p></item>
-    </ulist>
-  </item>
-  <item>
-    <p>supports the following vocabulary:</p>
-    <ulist>
-      <item>
-        <p>attributes <code>@combine</code>, <code>@designator</code> and <code>@type</code> on
-        <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc>, and</p>
-      </item>
-      <item>
-        <p>attributes <code>@extends</code> and <code>@restricts</code> and attribute value <code>prohibited</code>
-        on attribute <code>@value</code> on
-        <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> and
-        <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc>.</p>
-      </item>
-    </ulist>
-  </item>
-</olist>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#profile-version-2</code> feature if it implements presentation semantic support
-for the same vocabulary specified above.</p>
+<p>A TTML content processor supports the <code>#profile-version-2</code> feature if it
+supports the following features:</p>
+<ulist>
+  <item><p><loc href="#feature-contentProfiles"><code>#contentProfiles</code></loc></p></item>
+  <item><p><loc href="#feature-inferProcessorProfile"><code>#inferProcessorProfile</code></loc></p></item>
+  <item><p><loc href="#feature-permitFeatureNarrowing"><code>#permitFeatureNarrowing</code></loc></p></item>
+  <item><p><loc href="#feature-permitFeatureWidening"><code>#permitFeatureWidening</code></loc></p></item>
+  <item><p><loc href="#feature-processorProfiles"><code>#processorProfiles</code></loc></p></item>
+  <item><p><loc href="#feature-profile"><code>#profile</code></loc></p></item>
+</ulist>
 <p>The <code>#profile-version-2</code> feature is a syntactic and semantic extension of the <code>#profile</code> feature.</p>
 </div3>
 <div3 id="feature-region-inline">
@@ -21904,7 +22010,7 @@ same vocabulary enumerated above.</p>
 <item><p><loc href="#feature-profile"><code>#profile</code></loc></p></item>
 <item><p><loc href="#feature-structure"><code>#structure</code></loc></p></item>
 <item><p><loc href="#feature-time-offset"><code>#time-offset</code></loc></p></item>
-<item><p><loc href="#timing"><code>#timing</code></loc></p></item>
+<item><p><loc href="#feature-timing"><code>#timing</code></loc></p></item>
 </ulist>
 </div3>
 <div3 id="feature-transformation-version-2">
@@ -21919,29 +22025,34 @@ supports the following features:</p>
 </div3>
 <div3 id="feature-unicodeBidi">
 <head>#unicodeBidi</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#unicodeBidi</code> feature if it recognizes and is capable of
-transforming the <code>normal</code>, <code>bidiOverride</code> and <code>embed</code> values of the <loc
-href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
-attribute.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#unicodeBidi</code> feature if it implements presentation semantic support
-for the <code>normal</code>, <code>bidiOverride</code> and <code>embed</code> values of the <loc
-href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
-attribute.</p>
+<p>A TTML content processor supports the <code>#unicodeBidi</code>
+feature if it supports the <code>#unicodeBidi</code> feature as defined by <bibref ref="ttml1"/>, &sect; D.1.103.</p>
+<note role="clarification">
+<p>Support for the <code>#unicodeBidi</code> feature does not imply support for the <code>#unicodeBidi-isolate</code> feature.</p>
+</note>
 </div3>
 <div3 id="feature-unicodeBidi-isolate">
 <head>#unicodeBidi-isolate</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#unicodeBidi</code> feature if it recognizes and is capable of
+<code>#unicodeBidi-isolate</code> feature if it recognizes and is capable of
 transforming the <code>isolate</code> value of the <loc
 href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
 attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#unicodeBidi</code> feature if it implements presentation semantic support
+<code>#unicodeBidi-isolate</code> feature if it implements presentation semantic support
 for the <code>isolate</code> value of the <loc
 href="#style-attribute-unicodeBidi"><att>tts:unicodeBidi</att></loc>
 attribute.</p>
+</div3>
+<div3 id="feature-unicodeBidi-version-2">
+<head>#unicodeBidi-version-2</head>
+<p>A TTML content processor supports the <code>#unicodeBidi-version-2</code> feature if it
+supports the following features:</p>
+<ulist>
+  <item><p><loc href="#feature-unicodeBidi"><code>#unicodeBidi</code></loc></p></item>
+  <item><p><loc href="#feature-unicodeBidi-isolate"><code>#unicodeBidi-isolate</code></loc></p></item>
+</ulist>
+<p>The <code>#unicodeBidi-version-2</code> feature is a syntactic and semantic extension of the <code>#unicodeBidi</code> feature.</p>
 </div3>
 <div3 id="feature-validation">
 <head>#validation</head>
@@ -22118,7 +22229,8 @@ enumerates every defined feature designation (expressed without the TT
 Feature Namespace), and, for each designated feature, specifies
 (1) the version of TTML in which the feature designation is first defined, and (2)
 whether the designated feature must be implemented, i.e., is mandatory (M), or may be implemented, i.e.,
-is optional (O), for transformation and <loc href="#terms-presentation-processor">presentation processor</loc>s.</p>
+is optional (O), for a TTML <loc href="#terms-content-processor">content processor</loc> that complies with the requirements of
+<specref ref="conformance-transformation-processor"/> or <specref ref="conformance-presentation-processor"/>.</p>
 <note role="clarification">
   <p>In some cases, a new feature designation is defined in this (or a later) version of this specification that wasn't previously defined, and yet
   the underlying functional feature so designated was previously defined by an earlier version. For example, the <code>#padding-region</code>
@@ -22572,13 +22684,43 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-extent-block"><code>#extent-block</code></loc></td>
+<td><loc href="#feature-extent-auto"><code>#extent-auto</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-auto-version-2"><code>#extent-auto-version-2</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-contain"><code>#extent-contain</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-cover"><code>#extent-cover</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-full-version-2"><code>#extent-full-version-2</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
 <td><loc href="#feature-extent-image"><code>#extent-image</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-extent-length"><code>#extent-length</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
@@ -22914,6 +23056,30 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-opacity-block"><code>#opacity-block</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-inline"><code>#opacity-inline</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-region"><code>#opacity-region</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-version-2"><code>#opacity-version-2</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-origin"><code>#origin</code></loc></td>
 <td css="text-align:center;">1</td>
 <td css="text-align:center;">O</td>
@@ -23072,8 +23238,8 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <tr>
 <td><loc href="#feature-region-timing"><code>#region-timing</code></loc></td>
 <td css="text-align:center;">2</td>
-<td css="text-align:center;">M</td>
-<td css="text-align:center;">M</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
 </tr>
 <tr>
 <td><loc href="#feature-resources"><code>#resources</code></loc></td>
@@ -23436,6 +23602,12 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
+<td><loc href="#feature-unicodeBidi-version-2"><code>#unicodeBidi-version-2</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
 <td><loc href="#feature-validation"><code>#validation</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
@@ -23511,7 +23683,8 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 </table>
 <p>For the sake of convenience, the following table,
 <specref ref="feature-transformation-mandatory-table"/>, enumerates all
-mandatory features for a TTML <loc href="#terms-transformation-processor">transformation processor</loc>, providing additional
+mandatory features for a TTML <loc href="#terms-content-processor">content processor</loc> that complies with the requirements of
+<specref ref="conformance-transformation-processor"/>, providing additional
 comments to summarize the context of usage or the nature of the feature.
 The <loc href="#terms-profile-definition-document">profile definition document</loc> that defines the corresponding
 TTML Transformation Profile is specified in
@@ -23603,7 +23776,8 @@ TTML Transformation Profile is specified in
 </table>
 <p>For the sake of convenience, the following table,
 <specref ref="feature-presentation-mandatory-table"/>, enumerates all
-mandatory features for a TTML <loc href="#terms-presentation-processor">presentation processor</loc>, providing additional
+mandatory features for a TTML <loc href="#terms-content-processor">content processor</loc> that complies with the requirements of
+<specref ref="conformance-presentation-processor"/>, providing additional
 comments to summarize the context of usage or the nature of the feature.
 The <loc href="#terms-profile-definition-document">profile definition document</loc> that defines the corresponding
 TTML Presentation Profile is specified in
@@ -23925,7 +24099,7 @@ then the resolved value of the third aspect ratio is determined using the equati
 <head>Three Aspect Ratios</head>
 <p>If all three aspect ratios are specified and if their values satisfy the equation <code>DAR = SAR &times; PAR</code>,
 then they are considered the resolved aspect ratios. However, if the equation is not satisfied, then, when performing
-validation processing, an error should be reported (subject to validation processor configuration), and, when performing
+<loc href="#terms-validation-processing">validation processing</loc>, an error should be reported (subject to validation processor configuration), and, when performing
 presentation processing, the specified <code>PAR</code> value is ignored and the resolved value of <code>PAR</code> is
 determined by <specref ref="root-container-region-semantics-2-aspect-ratio"/> above.</p>
 </div3>
@@ -25049,6 +25223,9 @@ European Broadcasting Union (EBU), March 2015.
 <bibl id="ebuttlive" key="EBU-TT-Live">EBU Tech 3370,
 <titleref href="https://tech.ebu.ch/publications/tech3370">EBU-TT Part 3 Live Subtitling Applications, Version 1.0</titleref>, European Broadcasting Union (EBU), May 2017.
 (See <xspecref href="https://tech.ebu.ch/publications/tech3370">https://tech.ebu.ch/publications/tech3370</xspecref>.)</bibl>
+<bibl id="DVBSS" key="DVBSS">ETSI EN 300 743,
+<titleref href="http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf">Digital Video Broadcasting (DVB); Subtitling systems, Version 1.5.1</titleref>, ETSI, January 2014.
+(See <xspecref href="http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf">http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf (PDF)</xspecref>.)</bibl>
 <bibl id="html52" key="HTML 5.2">Steve Faulkner, Arron Eicholz, Travis Leithead, Alex Danilo, and Sangwhan Moon, Eds.,
 <titleref href="http://www.w3.org/TR/2017/REC-html52-20171214/">HTML 5.2</titleref>,
 W3C Recommendation, 14 December 2017. (See
@@ -26235,7 +26412,6 @@ is mapped to an equivalent <bibref ref="html52"/> DOM structure whose elements a
 </div4>
 <div4 id="derivation-backgroundColor">
 <head><loc href="#style-attribute-backgroundColor">tts:backgroundColor</loc></head>
-<p>The <code>tts:backgroundColor</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26301,7 +26477,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.
 </div4>
 <div4 id="derivation-backgroundImage">
 <head><loc href="#style-attribute-backgroundImage">tts:backgroundImage</loc></head>
-<p>The <code>tts:backgroundImage</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26387,7 +26562,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.
 </div4>
 <div4 id="derivation-backgroundRepeat">
 <head><loc href="#style-attribute-backgroundRepeat">tts:backgroundRepeat</loc></head>
-<p>The <code>tts:backgroundRepeat</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26491,7 +26665,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.
 </div4>
 <div4 id="derivation-color">
 <head><loc href="#style-attribute-color">tts:color</loc></head>
-<p>The <code>tts:color</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26531,7 +26704,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-direction">
 <head><loc href="#style-attribute-direction">tts:direction</loc></head>
-<p>The <code>tts:direction</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26567,33 +26739,9 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-disparity">
 <head><loc href="#style-attribute-disparity">tts:disparity</loc></head>
-<!--
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote>
---><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
+<p>No derivation, i.e., introduced in this specification.</p>
+<note role="elaboration"><p>The computed value of <code>tts:disparity</code> is equivalent to half the
+disparity shift value defined in <bibref ref="DVBSS"/>.</p></note>
 </div4>
 <div4 id="derivation-display">
 <head><loc href="#style-attribute-display">tts:display</loc></head>
@@ -26622,7 +26770,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-displayAlign">
 <head><loc href="#style-attribute-displayAlign">tts:displayAlign</loc></head>
-<p>The <code>tts:displayAlign</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26695,7 +26842,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontFamily">
 <head><loc href="#style-attribute-fontFamily">tts:fontFamily</loc></head>
-<p>The <code>tts:fontFamily</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26782,7 +26928,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontShear">
 <head><loc href="#style-attribute-fontShear">tts:fontShear</loc></head>
-<p>The <code>tts:fontShear</code> attribute may be derived from CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 80%;"/>
@@ -26812,7 +26957,6 @@ as <code>aqua</code>. The named color <code>orange</code> is not supported.</td>
 </div4>
 <div4 id="derivation-fontSize">
 <head><loc href="#style-attribute-fontSize">tts:fontSize</loc></head>
-<p>The <code>tts:fontSize</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26870,7 +27014,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </div4>
 <div4 id="derivation-fontStyle">
 <head><loc href="#style-attribute-fontStyle">tts:fontStyle</loc></head>
-<p>The <code>tts:fontStyle</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -26936,7 +27079,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </div4>
 <div4 id="derivation-fontWeight">
 <head><loc href="#style-attribute-fontWeight">tts:fontWeight</loc></head>
-<p>The <code>tts:fontWeight</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27024,7 +27166,6 @@ width and height independently is an extension introduced by TTML.</p></item>
 </div4>
 <div4 id="derivation-lineHeight">
 <head><loc href="#style-attribute-lineHeight">tts:lineHeight</loc></head>
-<p>The <code>tts:lineHeight</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <p>The line stacking semantic is intended to match the CSS line box stacking strategy.</p>
 <table role="common">
 <col css="width: 20%;"/>
@@ -27068,32 +27209,7 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </div4>
 <div4 id="derivation-luminanceGain">
 <head><loc href="#style-attribute-luminanceGain">tts:luminanceGain</loc></head>
-<!--
-    <ednote><edtext>Complete when/if a derivation is available, or specify "none"</edtext></ednote>
-    -->
-<p></p>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
+<p>No derivation, i.e., introduced in this specification.</p>
 </div4>
 <div4 id="derivation-opacity">
 <head><loc href="#style-attribute-opacity">tts:opacity</loc></head>
@@ -27147,7 +27263,6 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </div4>
 <div4 id="derivation-overflow">
 <head><loc href="#style-attribute-overflow">tts:overflow</loc></head>
-<p>The <code>tts:overflow</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27184,7 +27299,6 @@ as defined by <bibref ref="xsl11"/>, &sect; 4.5, i.e., that a CSS-style line box
 </div4>
 <div4 id="derivation-padding">
 <head><loc href="#style-attribute-padding">tts:padding</loc></head>
-<p>The <code>tts:padding</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27344,33 +27458,7 @@ defined in this specification.</td>
 </div4>
 <div4 id="derivation-rubyReserve">
 <head><loc href="#style-attribute-rubyReserve">tts:rubyReserve</loc></head>
-<!--
-<ednote>
-<edtext>Complete when/if a derivation is available, or specify "none"</edtext>
-</ednote>
---><p/>
-<table role="common">
-<col css="width: 20%;"/>
-<col css="width: 80%;"/>
-<tbody>
-<tr>
-<td><phrase role="strong">Reference</phrase></td>
-<td>insert ref</td>
-</tr>
-<tr>
-<td><phrase role="strong">Model</phrase></td>
-<td>insert model</td>
-</tr>
-<tr>
-<td><phrase role="strong">Values</phrase></td>
-<td>insert values</td>
-</tr>
-<tr>
-<td><phrase role="strong">Notes</phrase></td>
-<td>insert notes</td>
-</tr>
-</tbody>
-</table>
+<p>No derivation, i.e., introduced in this specification.</p>
 </div4>
 <div4 id="derivation-showBackground">
 <head><loc href="#style-attribute-showBackground">tts:showBackground</loc></head>
@@ -27399,7 +27487,6 @@ defined in this specification.</td>
 </div4>
 <div4 id="derivation-textAlign">
 <head><loc href="#style-attribute-textAlign">tts:textAlign</loc></head>
-<p>The <code>tts:textAlign</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27464,7 +27551,6 @@ details.</td>
 </div4>
 <div4 id="derivation-textDecoration">
 <head><loc href="#style-attribute-textDecoration">tts:textDecoration</loc></head>
-<p>The <code>tts:textDecoration</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27530,7 +27616,7 @@ determining the position of underlines applies.</td>
 </tr>
 <tr>
 <td><phrase role="strong">Values</phrase></td>
-<td>Values map directly</td>
+<td>Except for <code>auto</code>, values map directly. The semantics of <code>auto</code> are writing mode dependent.</td>
 </tr>
 <tr>
 <td><phrase role="strong">Notes</phrase></td>
@@ -27651,7 +27737,6 @@ contours and inside of inner closed contours.</td>
 </div4>
 <div4 id="derivation-visibility">
 <head><loc href="#style-attribute-visibility">tts:visibility</loc></head>
-<p>The <code>tts:visibility</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>
@@ -27748,7 +27833,6 @@ contours and inside of inner closed contours.</td>
 </div4>
 <div4 id="derivation-zIndex">
 <head><loc href="#style-attribute-zIndex">tts:zIndex</loc></head>
-<p>The <code>tts:zIndex</code> attribute may equivalently be derived either from XSL or CSS.</p>
 <table role="common">
 <col css="width: 20%;"/>
 <col css="width: 40%;"/>

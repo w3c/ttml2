@@ -995,7 +995,7 @@ by making use of a document's <loc href="#terms-effective-processor-profile">eff
 <gitem id="terms-effective-validation-profile">
 <label>[effective validation profile]</label>
 <def>
-<p>A profile used to select a schema (or set of schemas) to be used during <loc href="#semantics-validation-processing">validation processing</loc>,
+<p>A profile used to select a schema (or set of schemas) to be used during <loc href="#terms-validation-processing">validation processing</loc>,
 as determined by the <loc href="#semantics-procedure-construct-effective-validation-profile"><phrase role="strong">construct effective
 validation profile</phrase></loc> procedure.</p>
 </def>
@@ -1003,7 +1003,7 @@ validation profile</phrase></loc> procedure.</p>
 <gitem id="terms-effective-validation-schemas">
 <label>[effective validation schemas]</label>
 <def>
-<p>A set of schemas used during <loc href="#semantics-validation-processing">validation processing</loc>,
+<p>A set of schemas used during <loc href="#terms-validation-processing">validation processing</loc>,
 as determined by the <loc href="#semantics-procedure-construct-effective-validation-schemas"><phrase role="strong">construct effective
 validation schemas</phrase></loc> procedure.</p>
 <note role="elaboration">
@@ -1207,7 +1207,7 @@ a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element 
 <p>A <loc href="#terms-processor-profile">processor profile</loc> determined by the
 <loc href="#semantics-procedure-construct-inferred-processor-profile">construct inferred processor profile</loc> procedure which may
 serve as the <loc href="#terms-effective-processor-profile">effective processor profile</loc> used to perform
-validation processing.</p>
+<loc href="#terms-validation-processing">validation processing</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-inline-animation">
@@ -1805,19 +1805,38 @@ and which is referred to implicitly in the context of the profile's definition. 
 and found to be valid as defined by <specref ref="doctypes"/>.</p>
 </def>
 </gitem>
+<gitem id="terms-validation-processing">
+<label>[validation processing]</label>
+<def>
+<p>The function(s) performed by a <loc href="#terms-validation-processor">validation processor</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-validation-processor">
+<label>[validation processor]</label>
+<def>
+<p>An optional component of a <loc href="#terms-content-processor">content processor</loc>, the function of which is to perform validation processing on a
+candidate <loc href="#terms-document-instance">document instance</loc> prior to performing certain other type of processing,
+and where that validation processing consists of performing the
+<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure
+as defined by <specref ref="vocabulary-validation"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-validating-content-processor">
 <label>[validating content processor]</label>
 <def>
-  <p>A <loc href="#terms-content-processor">content processor</loc> which does or can perform validation of a
-  candidate <loc href="#terms-document-instance">document instance</loc> prior to performing certain other type of processing.</p>
-  <note role="elaboration">
-    <p>A validating content processor may have the sole function of validating (or verifying) a document instance,
-    or it may have multiple functions, the first of which is validating (or verifying) a document instance.</p>
-  </note>
-  <note role="elaboration">
-    <p>When validation processing is performed, a conforming validating content processor is permitted to interleave validation
-    processing and content processing, provided that the latter does not temporally precede the former for a give unit of content.</p>
-  </note>
+<p>A <loc href="#terms-content-processor">content processor</loc> that implements a <loc href="#terms-validation-processor">validation processor</loc>
+component as a pre-processing step prior to performing its primary function as a <loc href="#terms-content-processor">content processor</loc>.</p>
+<note role="elaboration">
+<p>A validating content processor may have (1) the sole function of validating (or verifying) a document instance,
+in which case it may be considered a validating <loc href="#terms-transformation-processor">transformation processor</loc> the
+output of which indicates  validity (or not), or (2) multiple functions, the first of which is validating (or verifying) a document instance
+and then performing its primary function as a <loc href="#terms-transformation-processor">transformation processor</loc> or
+<loc href="#terms-presentation-processor">presentation processor</loc>.</p>
+</note>
+<note role="elaboration">
+<p>When validation processing is performed, a conforming validating content processor is permitted to interleave validation
+processing and content processing, provided that the latter does not temporally precede the former for a give unit of content.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-vertical-axis">
@@ -1920,11 +1939,11 @@ refers to the <loc href="#metadata-attribute-agent">ttm:agent</loc> attribute, w
 <p>An information item depicted with a <phrase role="deprecated">light yellow orange</phrase> background color is deprecated (e.g.,
 the <phrase role="deprecated">tiny</phrase> value of the <code>size</code> attribute shown above).
 An information item that is <phrase role="deprecated">deprecated</phrase> may but should not appear in a TTML document instance,
-and a validating processor should report a warning if it does appear.
+and a <loc href="#terms-validating-content-processor">validating content processor</loc> should report a warning if it does appear.
 An information item depicted with a <phrase role="obsoleted">light magenta red</phrase> background color is obsoleted (e.g.,
 the <phrase role="obsoleted">micro</phrase> value of the <code>size</code> attribute shown above).
 An information item that is <phrase role="obsoleted">obsoleted</phrase> must not appear in a TTML document instance,
-and a validating processor should report an error if it does appear.
+and a <loc href="#terms-validating-content-processor">validating content processor</loc> should report an error if it does appear.
 These designations of an item
 are also explicitly called out in specification text.</p>
 <p>The allowed content of the information item is shown as a grammar
@@ -2829,7 +2848,7 @@ a <loc href="#terms-content-processor">content processor</loc> to perform any (o
 <p>infer an effective processor profile;</p>
 </item>
 <item>
-<p>perform validation processing on the <loc href="#terms-document-instance">document instance</loc>;</p>
+<p>perform <loc href="#terms-validation-processing">validation processing</loc> on the <loc href="#terms-document-instance">document instance</loc>;</p>
 </item>
 <item>
 <p>constrain transformation processing on the <loc href="#terms-document-instance">document instance</loc>
@@ -3057,17 +3076,18 @@ a future version of a TTML presentation or transformation profile.</p>
 <div2 id="vocabulary-validation">
 <head>Validation</head>
 <p>This section describes the TTML validation sub-system and high level requirements that apply to this sub-system.</p>
-<p>Validation is an optional process that may occur when a candidate <loc href="#terms-document-instance">document instance</loc> is
+<p>Validation is an optional function performed by a <loc href="#terms-validation-processor">validation processor</loc>
+that may occur when a candidate <loc href="#terms-document-instance">document instance</loc> is
 consumed or otherwise processed by a <loc href="#terms-validating-content-processor">validating content processor</loc>. If such processing
 takes place and an exceptional condition occurs, then processing may be aborted, as described in further detail below.</p>
-<p>If processing is aborted during validation processing, then the consequences include:</p>
+<p>If processing is aborted during <loc href="#terms-validation-processing">validation processing</loc>, then the consequences include:</p>
 <ulist>
 <item><p>only part of a non-conformant document may be transformed by a <loc href="#terms-transformation-processor">transformation processor</loc>,
 resulting in an incomplete transformation;</p></item>
 <item><p>only part of a non-conformant document may be presented by a <loc href="#terms-presentation-processor">presentation processor</loc>,
 resulting in an incomplete presentation.</p></item>
 </ulist>
-<p>If abort processing does occur as a side effect of validation processing, then the location in
+<p>If abort processing does occur as a consequence of <loc href="#terms-validation-processing">validation processing</loc>, then the location in
 the <loc href="#terms-document-instance">document instance</loc> after which no further content is processed is not defined by this specification. In
 particular, an implementation may abort processing upon encountering the first <termref def="defs-validation-error">validation error</termref> or
 may abort processing after encountering any number of <termref def="defs-validation-error">validation errors</termref>. As a consequence, the amount
@@ -3084,7 +3104,7 @@ that represents equivalent information.</p>
 <label>[validation exception]</label>
 <def>
 <p>A <loc href="#semantics-validation-state-validation-exception"><phrase role="strong">validation exception</phrase></loc>
-represents the following internal state information that corresponds to an exception condition that occurs during validation processing</p>
+represents the following internal state information that corresponds to an exception condition that occurs during <loc href="#terms-validation-processing">validation processing</loc></p>
 <glist>
 <gitem id="semantics-validation-state-validation-exception-message">
 <label>message</label>
@@ -3168,7 +3188,7 @@ to the computed value of the <loc href="#profile-attribute-validationAction"><at
 </ulist>
 </item>
 </olist>
-<p>When validation processing is performed, the following semantics apply:</p>
+<p>When <loc href="#terms-validation-processing">validation processing</loc> is performed, the following semantics apply:</p>
 <ulist>
 <item><p>if the input document takes the form of a concrete XML representation, e.g., the concrete form defined by
 Appendix <specref ref="concrete-encoding"/>, then verify that</p>
@@ -4755,7 +4775,7 @@ when specified on the <el>tt</el> element.</p>
 </div3>
 <div3 id="profile-attribute-validation">
 <head>ttp:validation</head>
-<p>The <att>ttp:validation</att> attribute is used to specify whether validation processing
+<p>The <att>ttp:validation</att> attribute is used to specify whether <loc href="#terms-validation-processing">validation processing</loc>
 may or must be performed on a <loc href="#terms-document-instance">document instance</loc> by a
 <loc href="#terms-validating-content-processor">validating content processor</loc>.</p>
 <p>If specified, the value of this attribute must adhere to the following syntax:</p>
@@ -4775,15 +4795,15 @@ ttp:validation
 </tbody>
 </table>
 <p>If this parameter's value is <code>required</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-must perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+must perform <loc href="#terms-validation-processing">validation processing</loc> on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing.</p>
 <p>If this parameter's value is <code>optional</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-may, but need not, perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+may, but need not, perform <loc href="#terms-validation-processing">validation processing</loc> on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing.</p>
 <p>If this parameter's value is <code>prohibited</code>, then, a <loc href="#terms-validating-content-processor">validating content processor</loc>
-must not perform validation processing on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
+must not perform <loc href="#terms-validation-processing">validation processing</loc> on a TTML <loc href="#terms-document-instance">document instance</loc> prior to performing
 other types of processing, e.g., presentation or transformation processing, unless the end-user or application overrides this prohibition.</p>
-<p>If validation processing is performed on a TTML <loc href="#terms-document-instance">document instance</loc> and validation fails, then the computed value of
+<p>If <loc href="#terms-validation-processing">validation processing</loc> is performed on a TTML <loc href="#terms-document-instance">document instance</loc> and validation fails, then the computed value of
 the <att>ttp:validationAction</att> property is used to determine what action to take before performing further processing.</p>
 <p>If not specified, the value of this parameter must be considered
 to be <code>optional</code>.</p>
@@ -7762,7 +7782,7 @@ as style properties only to those element types indicated by the definition of e
 unless explicitly permitted by an element type definition, an attribute in the <termref def="defs-tt-style-namespaces">TT Style Namespaces</termref>
 should not be specified on an element unless it either applies to that element or denotes an inheritable style property.
 If it does not apply to that element and does not denote an inheritable style property, then it must be ignored for the purpose
-of non-validation processing. In the case of validation processing, such usage should be reported as a warning.</p>
+of non-validation processing. In the case of <loc href="#terms-validation-processing">validation processing</loc>, such usage should be reported as a warning.</p>
 <div2 id="styling-element-vocabulary">
 <head>Styling Element Vocabulary</head>
 <p>The following elements specify the structure and principal styling aspects of a
@@ -9525,7 +9545,7 @@ then the specified value is restricted to one of the following:
 (3) two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
 where these specifications are expressed as non-percentage, definite lengths using pixel units.
 All other syntactically legal values must not be used in this context, and,
-if used, must be considered an error for the purpose of validation processing and must be ignored
+if used, must be considered an error for the purpose of <loc href="#terms-validation-processing">validation processing</loc> and must be ignored
 for the purpose of presentation processing, in which case the initial value (<code>auto</code>) applies.</p>
 <p>If a <att>tts:extent</att> attribute is specified on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
 then its computed value determines the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc>
@@ -11705,7 +11725,7 @@ computed value of <att>tts:ruby</att> of no descendant element is not <code>none
 <item><p>none of its descendant elements is a <loc href="#content-vocabulary-br"><el>br</el></loc> element;</p></item>
 <item><p>each of its text node descendants does not contain U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR).</p></item>
 </ulist>
-<p>A validating processor must treat a violation of any of the above constraints as an error.
+<p>A <loc href="#terms-validating-content-processor">validating content processor</loc> must treat a violation of any of the above constraints as an error.
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
 presentation of ruby text annotations, and, for content that violates some constraint, if that content is
 a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
@@ -24070,7 +24090,7 @@ then the resolved value of the third aspect ratio is determined using the equati
 <head>Three Aspect Ratios</head>
 <p>If all three aspect ratios are specified and if their values satisfy the equation <code>DAR = SAR &times; PAR</code>,
 then they are considered the resolved aspect ratios. However, if the equation is not satisfied, then, when performing
-validation processing, an error should be reported (subject to validation processor configuration), and, when performing
+<loc href="#terms-validation-processing">validation processing</loc>, an error should be reported (subject to validation processor configuration), and, when performing
 presentation processing, the specified <code>PAR</code> value is ignored and the resolved value of <code>PAR</code> is
 determined by <specref ref="root-container-region-semantics-2-aspect-ratio"/> above.</p>
 </div3>

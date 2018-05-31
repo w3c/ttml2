@@ -18148,7 +18148,7 @@ requirements that apply to the attribute targeted by the animation.</p>
 </div3>
 <div3 id="animation-value-key-splines">
 <head>&lt;key-splines&gt;</head>
-<p>An &lt;key-splines&gt; expression is used to specify a list of Bezier control points that control the pacing of an
+<p>A &lt;key-splines&gt; expression is used to specify a list of Bezier control points that control the pacing of an
 animation, wherein each pair of values is separated by a SEMICOLON (U+003B) character
 optionally surrounded by linear white-space (LWSP) characters.</p>
 <table id="key-splines-syntax" role="syntax">
@@ -19082,26 +19082,46 @@ directly below, then those values consist of all values defined in this specific
 <p>Feature designations in this section that have the suffix <code>-version-2</code> are newly defined by
 this (second) version of the TTML specification, i.e., TTML2.</p>
 </note>
+
 <div3 id="feature-animate">
 <head>#animate</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate</code>
-feature if it recognizes and is capable of transforming the following
-vocabulary defined by <specref ref="animation"/>:</p>
+<p>A TTML processor supports the <code>#animate</code> feature if it supports the following features:</p>
 <ulist>
-<item><p><loc href="#animation-vocabulary-animate"><el>animate</el></loc></p></item>
+<item><p><loc href="#feature-animate-fill"><code>#animate-fill</code></loc></p></item>
+<item><p><loc href="#feature-animate-minimal"><code>#animate-minimal</code></loc></p></item>
+<item><p><loc href="#feature-animate-paced"><code>#animate-paced</code></loc></p></item>
+<item><p><loc href="#feature-animate-repeat"><code>#animate-repeat</code></loc></p></item>
+<item><p><loc href="#feature-animate-spline"><code>#animate-spline</code></loc></p></item>
 </ulist>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate</code>
+<p>The <code>#animate</code> feature is a syntactic and semantic extension of the
+<loc href="#feature-animation"><code>#animate-minimal</code></loc> feature.</p>
+<p>It is an error for a content profile to require or permit use of the <code>#animate</code> feature but prohibit use of any of the following
+features:
+<loc href="#feature-animate-fill"><code>#animate-fill</code></loc>,
+<loc href="#feature-animate-minimal"><code>#animate-minimal</code></loc>,
+<loc href="#feature-animate-paced"><code>#animate-paced</code></loc>,
+<loc href="#feature-animate-repeat"><code>#animate-repeat</code></loc>, or
+<loc href="#feature-animate-spline"><code>#animate-spline</code></loc>.</p>
+</div3>
+<div3 id="feature-animate-minimal">
+<head>#animate-minimal</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate-minimal</code>
+feature if it recognizes and is capable of transforming the semantics of the <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element
+when used with the <code>discrete</code> and <code>linear</code> values of the <att>calcMode</att> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-minimal</code>
 feature if it implements presentation semantic support for the
 same vocabulary enumerated above.</p>
-</div3>
-<div3 id="feature-animate-calculation-mode">
-<head>#animate-calculation-mode</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate-calculation-mode</code>
-feature if it recognizes and is capable of transforming the semantics of the <att>calcMode</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-calculation-mode</code>
-feature if it implements presentation semantic support for the <att>calcMode</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
+<note role="elaboration">
+<p>Support for the <code>discrete</code> and <code>linear</code> values of the <att>calcMode</att> attribute implies support for
+the <att>keyTimes</att> attribute as well.</p>
+</note>
+<note role="elaboration">
+<p>Support for the <code>#animate-minimal</code> feature does not imply support for any of the following features:
+<loc href="#feature-animate-fill"><code>#animate-fill</code></loc>,
+<loc href="#feature-animate-paced"><code>#animate-paced</code></loc>,
+<loc href="#feature-animate-repeat"><code>#animate-repeat</code></loc>, or
+<loc href="#feature-animate-spline"><code>#animate-spline</code></loc>.</p>
+</note>
 </div3>
 <div3 id="feature-animate-fill">
 <head>#animate-fill</head>
@@ -19109,26 +19129,16 @@ feature if it implements presentation semantic support for the <att>calcMode</at
 feature if it recognizes and is capable of transforming the semantics of the <att>fill</att> attribute of the
 <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-fill</code>
-feature if it implements presentation semantic support for the <att>fill</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
+feature if it implements presentation semantic support for the same vocabulary enumerated above.</p>
 </div3>
-<div3 id="feature-animate-key-splines">
-<head>#animate-key-splines</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate-key-splines</code>
-feature if it recognizes and is capable of transforming the semantics of the <att>keySplines</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-key-splines</code>
-feature if it implements presentation semantic support for the <att>keySplines</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
-</div3>
-<div3 id="feature-animate-key-times">
-<head>#animate-key-times</head>
-<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate-key-times</code>
-feature if it recognizes and is capable of transforming the semantics of the <att>keyTimes</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
-<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-key-times</code>
-feature if it implements presentation semantic support for the <att>keyTimes</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
+<div3 id="feature-animate-paced">
+<head>#animate-paced</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate-paced</code>
+feature if it recognizes and is capable of transforming the semantics of the <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element
+when used with the <code>paced</code> value of the <att>calcMode</att> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-paced</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
 </div3>
 <div3 id="feature-animate-repeat">
 <head>#animate-repeat</head>
@@ -19136,8 +19146,20 @@ feature if it implements presentation semantic support for the <att>keyTimes</at
 feature if it recognizes and is capable of transforming the semantics of the <att>repeatCount</att> attribute of the
 <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-repeat</code>
-feature if it implements presentation semantic support for the <att>repeatCount</att> attribute of the
-<loc href="#animation-vocabulary-animate"><el>animate</el></loc> element.</p>
+feature if it implements presentation semantic support for the same vocabulary enumerated above.</p>
+</div3>
+<div3 id="feature-animate-spline">
+<head>#animate-spline</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#animate-spline</code>
+feature if it recognizes and is capable of transforming the semantics of the <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element
+when used with the <code>spline</code> value of the <att>calcMode</att> attribute.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#animate-spline</code>
+feature if it implements presentation semantic support for the
+same vocabulary enumerated above.</p>
+<note role="elaboration">
+<p>Support for the <code>spline</code> value of the <att>calcMode</att> attribute implies support for
+the <att>keySplines</att> attribute as well.</p>
+</note>
 </div3>
 <div3 id="feature-animation">
 <head>#animation</head>
@@ -19556,25 +19578,41 @@ feature if it supports the <code>#color</code> feature as defined by <bibref ref
 <head>#condition</head>
 <p>A TTML processor supports the <code>#condition</code> feature if it supports the following features:</p>
 <ulist>
-<item><p><loc href="#feature-condition-media"><code>#condition-media</code></loc></p></item>
-<item><p><loc href="#feature-condition-no-media"><code>#condition-no-media</code></loc></p></item>
+<item><p><loc href="#feature-condition-fn-media"><code>#condition-fn-media</code></loc></p></item>
+<item><p><loc href="#feature-condition-fn-parameter"><code>#condition-fn-parameter</code></loc></p></item>
+<item><p><loc href="#feature-condition-fn-supports"><code>#condition-fn-supports</code></loc></p></item>
+<item><p><loc href="#feature-condition-primary"><code>#condition-primary</code></loc></p></item>
 </ulist>
 <p>It is an error for a content profile to require or permit use of the <code>#condition</code> feature but prohibit use of any of the following
 features:
-<loc href="#feature-condition-media"><code>#condition-media</code></loc> or
-<loc href="#feature-condition-no-media"><code>#condition-no-media</code></loc>.</p>
+<loc href="#feature-condition-fn-media"><code>#condition-fn-media</code></loc>,
+<loc href="#feature-condition-fn-parameter"><code>#condition-fn-parameter</code></loc>,
+<loc href="#feature-condition-fn-supports"><code>#condition-fn-supports</code></loc>,
+<loc href="#feature-condition-primary"><code>#condition-primary</code></loc>.</p>
 </div3>
-<div3 id="feature-condition-media">
-<head>#condition-media</head>
-<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-media</code> feature if
+<div3 id="feature-condition-fn-media">
+<head>#condition-fn-media</head>
+<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-fn-media</code> feature if
 it supports the <loc href="#content-value-media-function">&lt;media-function&gt;</loc>
 sub-expression when used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression.</p>
 </div3>
-<div3 id="feature-condition-no-media">
-<head>#condition-no-media</head>
-<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-no-media</code> feature if
-it supports all defined values of a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression that do not contain
-a <loc href="#content-value-media-function">&lt;media-function&gt;</loc> sub-expression.</p>
+<div3 id="feature-condition-fn-parameter">
+<head>#condition-fn-parameter</head>
+<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-fn-parameter</code> feature if
+it supports the <loc href="#content-value-parameter-function">&lt;parameter-function&gt;</loc>
+sub-expression when used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression.</p>
+</div3>
+<div3 id="feature-condition-fn-supports">
+<head>#condition-fn-supports</head>
+<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-fn-supports</code> feature if
+it supports the <loc href="#content-value-supports-function">&lt;supports-function&gt;</loc>
+sub-expression when used in a <loc href="#content-value-condition">&lt;condition&gt;</loc> value expression.</p>
+</div3>
+<div3 id="feature-condition-primary">
+<head>#condition-primary</head>
+<p>A TTML <loc href="#terms-content-processor">content processor</loc> supports the <code>#condition-primary</code> feature if
+it supports <loc href="#content-value-condition">&lt;condition&gt;</loc> value expressions that do not contain
+a <loc href="#content-value-condition-function">&lt;condition-function&gt;</loc> sub-expression.</p>
 </div3>
 <div3 id="feature-content">
 <head>#content</head>
@@ -20755,22 +20793,30 @@ but prohibit use of any of the following features:
 <head>#rubyAlign</head>
 <p>A TTML processor supports the <code>#rubyAlign</code> feature if it supports the following features:</p>
 <ulist>
+<item><p><loc href="#feature-rubyAlign-minimal"><code>#rubyAlign-minimal</code></loc></p></item>
 <item><p><loc href="#feature-rubyAlign-withBase"><code>#rubyAlign-withBase</code></loc></p></item>
-<item><p><loc href="#feature-rubyAlign-no-withBase"><code>#rubyAlign-no-withBase</code></loc></p></item>
 </ulist>
 <p>It is an error for a content profile to require or permit use of the <code>#rubyAlign</code> feature but prohibit use of any of the following
 features:
-<loc href="#feature-rubyAlign-withBase"><code>#rubyAlign-withBase</code></loc> or
-<loc href="#feature-rubyAlign-no-withBase"><code>#rubyAlign-no-withBase</code></loc>.</p>
+<loc href="#feature-rubyAlign-minimal"><code>#rubyAlign-minimal</code></loc> or
+<loc href="#feature-rubyAlign-withBase"><code>#rubyAlign-withBase</code></loc>.</p>
 </div3>
-<div3 id="feature-rubyAlign-no-withBase">
-<head>#rubyAlign-no-withBase</head>
+<div3 id="feature-rubyAlign-minimal">
+<head>#rubyAlign-minimal</head>
+
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
-<code>#rubyAlign-no-withBase</code> feature if it recognizes and is capable of transforming all defined values of the
-<loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute with the exception of the <code>withBase</code> value.</p>
+<code>#rubyAlign-minimal</code> feature if it recognizes and is capable of transforming the following values of the
+<loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute.</p>
+<ulist>
+<item><p><code>start</code></p></item>
+<item><p><code>center</code></p></item>
+<item><p><code>end</code></p></item>
+<item><p><code>spaceAround</code></p></item>
+<item><p><code>spaceBetween</code></p></item>
+</ulist>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#rubyAlign-no-withBase</code> feature if it implements presentation semantic support for all defined values of the
-<loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute with the exception of the <code>withBase</code> value.</p>
+<code>#rubyAlign-minimal</code> feature if it implements presentation semantic support for the same values
+vocabulary enumerated above.</p>
 </div3>
 <div3 id="feature-rubyAlign-withBase">
 <head>#rubyAlign-withBase</head>
@@ -20778,8 +20824,8 @@ features:
 <code>#rubyAlign-withBase</code> feature if it recognizes and is capable of transforming the
 <code>withBase</code> value of the <loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
-<code>#rubyAlign-withBase</code> feature if it implements presentation semantic support for the
-<code>withBase</code> value of the <loc href="#style-attribute-rubyAlign"><att>tts:rubyAlign</att></loc> attribute.</p>
+<code>#rubyAlign-withBase</code> feature if it implements presentation semantic support for the same value
+enumerated above.</p>
 </div3>
 <div3 id="feature-rubyPosition">
 <head>#rubyPosition</head>
@@ -21369,25 +21415,25 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-animate-calculation-mode"><code>#animate-calculation-mode</code></loc></td>
-<td css="text-align:center;">2</td>
-<td css="text-align:center;">O</td>
-<td css="text-align:center;">O</td>
-</tr>
-<tr>
 <td><loc href="#feature-animate-fill"><code>#animate-fill</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-animate-key-splines"><code>#animate-key-splines</code></loc></td>
+<td><loc href="#feature-animate-minimal"><code>#animate-minimal</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-animate-key-times"><code>#animate-key-times</code></loc></td>
+<td><loc href="#feature-animate-paced"><code>#animate-paced</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-animate-spline"><code>#animate-spline</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
@@ -21615,13 +21661,25 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-condition-media"><code>#condition-media</code></loc></td>
+<td><loc href="#feature-condition-fn-media"><code>#condition-fn-media</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-condition-no-media"><code>#condition-no-media</code></loc></td>
+<td><loc href="#feature-condition-fn-parameter"><code>#condition-fn-parameter</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-condition-fn-supports"><code>#condition-fn-supports</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-condition-primary"><code>#condition-primary</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
@@ -21699,8 +21757,8 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-version-2"><code>#display-version-2</code></loc></td>
-<td css="text-align:center;">1</td>
+<td><loc href="#feature-display-version-2"><code>#display-version-2</code></loc></td>
+<td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>
@@ -22311,7 +22369,7 @@ is optional (O), for transformation and <loc href="#terms-presentation-processor
 <td css="text-align:center;">O</td>
 </tr>
 <tr>
-<td><loc href="#feature-rubyAlign-no-withBase"><code>#rubyAlign-no-withBase</code></loc></td>
+<td><loc href="#feature-rubyAlign-minimal"><code>#rubyAlign-minimal</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>

@@ -629,6 +629,16 @@ Sets</emph> <bibref ref="infoset"/>.</p>
 <p>See <loc href="#terms-undesignated-profile">undesignated profile</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-anonymous-span">
+<label>[anonymous span]</label>
+<def>
+<p>A <loc href="#content-vocabulary-span"><el>span</el></loc> element that is not present in a
+<loc href="#terms">document instance</loc>, but is synthesized and inserted into the corresponding
+<loc href="#terms-abstract-document-instance">abstract document instance</loc> by the
+<phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> procedure
+during the <specref ref="semantics-region-layout-step-1"/> or <specref ref="semantics-region-layout-step-2"/> steps.</p>
+</def>
+</gitem>
 <gitem id="terms-attribute-information-item">
 <label>[attribute information item]</label>
 <def>
@@ -5831,8 +5841,9 @@ a <el>p</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
 <p>If a sequence of children of a <el>p</el> element
 consists solely of <loc href="#terms-character-information-item">character information items</loc>, then that sequence must
-be considered to be an <emph>anonymous span</emph> for the purpose of
-applying style properties that apply to <el>span</el> elements.</p>
+be considered to be an <loc href="#terms-anonymous-span">anonymous span</loc> for the purpose of
+applying style properties that apply to <el>span</el> elements, for details about which, see the
+<phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> procedure.</p>
 <note role="elaboration"><p>The presentation semantics of TTML effectively
 implies that a <el>p</el> element constitutes a line break. In particular,
 it is associated with a block-stacking constraint both before the first
@@ -5910,6 +5921,11 @@ specified location (<code>href</code>), roles, and title. The behavior of link a
 the precise meaning of which is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 <p>If a <el>span</el> element specifies an <att>xlink:href</att> attribute, then a nested <el>span</el> element descendant must not specify
 an <att>xlink:href</att> attribute, and, if it does, then the latter must be ignored for the purpose of presentation or activation processing.</p>
+<p>If a sequence of children of a <el>span</el> element
+consists solely of <loc href="#terms-character-information-item">character information items</loc>, then that sequence must
+be considered to be an <loc href="#terms-anonymous-span">anonymous span</loc> for the purpose of
+applying style properties that apply to <el>span</el> elements, for details about which, see the
+<phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> procedure.</p>
 </div3>
 <div3 id="content-vocabulary-br">
 <head>br</head>
@@ -7782,7 +7798,11 @@ as style properties only to those element types indicated by the definition of e
 unless explicitly permitted by an element type definition, an attribute in the <termref def="defs-tt-style-namespaces">TT Style Namespaces</termref>
 should not be specified on an element unless it either applies to that element or denotes an inheritable style property.
 If it does not apply to that element and does not denote an inheritable style property, then it must be ignored for the purpose
-of non-validation processing. In the case of <loc href="#terms-validation-processing">validation processing</loc>, such usage should be reported as a warning.</p>
+of non-validation processing. In the case of <loc href="#terms-validation-processing">validation processing</loc>,
+such usage should be reported as a warning.</p>
+<p>For the purpose of determining the applicability of a style property, if the style property is defined so as to apply to a
+<loc href="#content-vocabulary-span"><el>span</el></loc> element, then it also applies to
+<loc href="#terms-anonymous-span">anonymous span</loc> elements.</p>
 <div2 id="styling-element-vocabulary">
 <head>Styling Element Vocabulary</head>
 <p>The following elements specify the structure and principal styling aspects of a
@@ -8104,9 +8124,6 @@ which the background is painted.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tts:backgroundClip</att> style is illustrated by the following example.</p>
 <table id="style-attribute-backgroundClip-example-1" role="example">
 <caption>Example Fragment &ndash; Background Clip</caption>
@@ -8119,7 +8136,7 @@ span.</p>
   &lt;style tts:backgroundColor="red"/&gt;
   &lt;style tts:backgroundOrigin="padding"/&gt;
   &lt;style tts:padding="27px 72px"/&gt;
-  &lt;style tts:backgroundRepeat="noRepeat/&gt;
+  &lt;style tts:backgroundRepeat="noRepeat"/&gt;
   &lt;style <phrase role="strong">tts:backgroundImage="#blue102px57px"</phrase>/&gt;
   &lt;style <phrase role="strong">tts:backgroundClip="content"</phrase>/&gt;
 &lt;/region&gt;
@@ -8187,9 +8204,6 @@ defines the background color of a region or an area generated by content flowed 
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tts:backgroundColor</att> style is illustrated by the following example.</p>
 <table id="style-attribute-backgroundColor-example-1" role="example">
 <caption>Example Fragment &ndash; Background Color</caption>
@@ -8307,7 +8321,7 @@ the computed value, then the value most distant from [0,0], i.e., of greatest ex
 &lt;region xml:id="r1"&gt;
   &lt;style tts:extent="306px 114px"/&gt;
   &lt;style tts:backgroundColor="red"/&gt;
-  &lt;style tts:backgroundRepeat="noRepeat/&gt;
+  &lt;style tts:backgroundRepeat="noRepeat"/&gt;
   &lt;style <phrase role="strong">tts:backgroundImage="#blue102px57px"</phrase>/&gt;
   &lt;style <phrase role="strong">tts:backgroundExtent="cover"</phrase>/&gt;
 &lt;/region&gt;
@@ -8380,9 +8394,6 @@ element in a block or inline context.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>An <loc href="#embedded-content-value-image">&lt;image&gt;</loc> expression used with this style property may directly reference an external <loc href="#terms-image-resource">image resource</loc>;
 however, authors should refrain from doing so, and instead, constrain their usage to refer only to <loc href="#embedded-content-vocabulary-image"><el>image</el></loc>
 children of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element.</p>
@@ -8494,9 +8505,6 @@ which the background is positioned.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tts:backgroundOrigin</att> style is illustrated by the following example.</p>
 <table id="style-attribute-backgroundOrigin-example-1" role="example">
 <caption>Example Fragment &ndash; Background Origin</caption>
@@ -8574,9 +8582,6 @@ defines whether and how a background image is positioned in a region or an area 
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>A percentage value component for a horizontal position offset is relative to the width of the
 <loc href="#terms-background-positioning-rectangle">background positioning rectangle</loc> minus the width of the background image.
 A percentage value component for a vertical position offset is relative to the height of the
@@ -8661,9 +8666,6 @@ defines whether and how a background image is repeated (tiled) into a region or 
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tts:backgroundRepeat</att> style is illustrated by the following example.</p>
 <table id="style-attribute-backgroundRepeat-example-1" role="example">
 <caption>Example Fragment &ndash; Background Repeat</caption>
@@ -8744,9 +8746,6 @@ the presence of a border applied to the region.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If no border thickness is specified in the value of the <att>tts:border</att> property,
 then the border thickness must be interpreted as if a thickness of
 <code>medium</code> were specified.</p>
@@ -8982,9 +8981,6 @@ defines the foreground color of marks associated with an area generated by conte
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The initial value of the <att>tts:color</att> property
 is considered to be implementation dependent. In the absence of
 end-user preference information, a conformant <loc href="#terms-presentation-processor">presentation processor</loc>
@@ -9070,12 +9066,9 @@ about which see <bibref ref="uax9"/>.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>When applied to a <el>p</el> element, the computed value of this property explicitly establishes the
 <emph>paragraph level</emph> as specified by <bibref ref="uax9"/>, &sect; 4.3, Higher Level Protocol <phrase role="strong">HL1</phrase>.</p>
-<p>When applied to a <el>span</el> element (or anonymous span), the computed value of this property, in combination with the computed value
+<p>When applied to a <el>span</el> element (or <loc href="#terms-anonymous-span">anonymous span</loc>), the computed value of this property, in combination with the computed value
 of the <att>tts:unicodeBidi</att> style property, determines the directionality of a bidirectional embedding or override as specified by
 <bibref ref="uax9"/>, &sect; 4.3, Higher Level Protocol <phrase role="strong">HL3</phrase>.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
@@ -9286,9 +9279,6 @@ in a region.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If the value of this attribute is <code>auto</code>,
 then the affected element is a candidate for region layout and
 presentation; however, if the value is <code>none</code>, then the
@@ -9709,9 +9699,6 @@ by content flowed into a region.</p>
 <p>The initial value, <code>default</code>, is a generic font family name, and is
 further described in <specref ref="style-value-generic-family-name"/> below.</p>
 </note>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a computed value of the property associated with this attribute is not supported, then a
 <loc href="#terms-presentation-processor">presentation processor</loc> must attempt to map the computed font family
 to a supported font family that has similar typographic
@@ -9806,9 +9793,6 @@ determines whether font kerning is applied when positioning <loc href="#terms-gl
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If the value of this attribute is <code>normal</code>, then kerning should be applied if kerning data is available.
 If the value of this attribute is <code>none</code>, then kerning should not be applied whether or not kerning data is available.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
@@ -9885,9 +9869,6 @@ presentation processing.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The presentation semantics of this property are those defined by <bibref ref="xsl11"/>, &sect;7.9.3,
 where the set of selection criteria are extended to include the following properties:</p>
 <ulist>
@@ -10006,9 +9987,6 @@ the appropriate sign.</p>
 | <emph>a</emph> 1 0 |
 | 0 0 1 |
 </eg>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tts:fontShear</att> style is illustrated by the following example.</p>
 <table id="font-shear-example-1" role="example">
 <caption>Example Fragment &ndash; Font Shear</caption>
@@ -10299,9 +10277,6 @@ by this specification.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>Use of the value <code>oblique</code>
 denotes a shear transformation (at an unspecified
 angle) in the inline progression direction.</p>
@@ -10386,9 +10361,6 @@ of typographic glyph variants.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>normal</code>.</p>
 <p>The <att>tts:fontVariant</att> style is illustrated by the following example.</p>
@@ -10473,9 +10445,6 @@ by this specification.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>normal</code>.</p>
 <p>The <att>tts:fontWeight</att> style is illustrated by the following example.</p>
@@ -10661,9 +10630,6 @@ justification may be applied in addition to letter spacing.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The value <code>normal</code> corresponds to specifying a <loc href="#style-value-length">&lt;length&gt;</loc> value of zero (0),
 i.e., neither expand nor compress adjacent glyph spacing.</p>
 <p>If a <loc href="#style-value-length">&lt;length&gt;</loc> value is expressed as a positive scalar,
@@ -12597,9 +12563,6 @@ permitted by the line stacking strategy in effect.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If the specified value of this attribute is <code>none</code>, then no combination processing applies.
 If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
 If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
@@ -12689,9 +12652,6 @@ href="#content-vocabulary-span"><el>span</el></loc></td>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this
-style property, each character child of a <el>p</el> element is
-considered to be enclosed in an anonymous span.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <note role="clarification">
@@ -12798,9 +12758,6 @@ areas that are generated by content flowed into a region.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If no emphasis style is specified,
 then the emphasis style must be interpreted as if a style of <code>auto</code> were specified.
 If no emphasis color is specified,
@@ -12897,9 +12854,6 @@ by content flowed into a region to which a vertical writing mode applies.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The presentation semantics of this style property apply only when a vertical
 writing mode applies; therefore, if a horizontal writing mode applies, this style
 property has no effect.</p>
@@ -13007,9 +12961,6 @@ by content flowed into a region.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The value of this attribute consists of an optional <loc href="#style-value-color">&lt;color&gt;</loc> term
 followed by one or two <loc href="#style-value-length">&lt;length&gt;</loc> terms.  If a <emph>color</emph> term is
 present, then it denotes the outline color; if no <emph>color</emph> term is
@@ -13116,9 +13067,6 @@ by content flowed into a region.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <table id="style-attribute-textShadow-example-1" role="example">
@@ -13205,9 +13153,6 @@ the Unicode bidirectional algorithm.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>normal</code>.</p>
 <p>The <att>tts:unicodeBidi</att> style is illustrated by the following example.</p>
@@ -13299,9 +13244,6 @@ presentation medium.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tts:visibility</att> style has no affect on content layout or
 composition, but merely determines whether composed content is visible or not.</p>
 <p>If the computed value of the property associated with this attribute is <code>visible</code>, then areas generated by
@@ -13414,9 +13356,6 @@ the affected element.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>wrap</code>.</p>
 <p>The <att>tts:wrapOption</att> style is illustrated by the following example.</p>
@@ -13727,9 +13666,6 @@ the active duration of the element on which this attribute is specified.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this audio style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If the specified value of this attribute is not contained in the interval <code>[-1,1]</code>,
 then the computed value of the property associated with this attribute is clamped to this bounded interval.</p>
 <p>If the computed value of the property associated with this attribute is negative, then gain is set to
@@ -13816,9 +13752,6 @@ the active duration of the element on which this attribute is specified.</p>
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this audio style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If the specified value of this attribute is not contained in the interval <code>[-1,1]</code>,
 then the computed value of the property associated with this attribute is clamped to this bounded interval.</p>
 <p>If the computed value of the property associated with this attribute is negative, then the pan direction is to the left of center.
@@ -13899,9 +13832,6 @@ determines speech pitch when  speech synthesis is enabled for the affected conte
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this audio style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>The <att>tta:pitch</att> style is illustrated by the following example.</p>
 <table id="audio-style-attribute-pitch-example-1" role="example">
 <caption>Example Fragment &ndash; Pitch</caption>
@@ -13963,9 +13893,6 @@ determines whether speech synthesis is enabled for the affected content, and, if
 </tr>
 </tbody>
 </table>
-<p>For the purpose of determining applicability of this audio style property,
-each character child of a <el>p</el> element is considered to be enclosed in an anonymous
-span.</p>
 <p>If the value of this attribute is <code>none</code>, then speech synthesis is disabled for the affected content. Otherwise,
 if the value of this attribute is <code>normal</code>, <code>fast</code>, or <code>slow</code>, then speech synthesis is enabled at a
 normal, fast, or slow speech rate, respectively.</p>
@@ -15695,7 +15622,7 @@ forms of style association.</p>
 </table>
 <note role="explanation">
 <p>In the above example, the two text nodes <code>"White 1 "</code> and
-<code>" White 2"</code>, which are interpreted as anonymous spans, are not
+<code>" White 2"</code>, which are interpreted as <loc href="#terms-anonymous-span">anonymous spans</loc>, are not
 associated with a color style property; rather, they inherit their color style
 from their parent <el>p</el> element as described in <specref
 ref="semantics-style-inheritance-content"/> below.  </p>
@@ -15739,7 +15666,7 @@ by <specref ref="semantics-style-association-inline"/>.</p>
 </table>
 <note role="explanation">
 <p>In the above example, the two text nodes <code>"White 1 "</code> and
-<code>" White 2"</code>, which are interpreted as anonymous spans, are not
+<code>" White 2"</code>, which are interpreted as <loc href="#terms-anonymous-span">anonymous spans</loc>, are not
 associated with a color style property; rather, they inherit their color style
 from their parent <el>p</el> element as described in <specref
 ref="semantics-style-inheritance-content"/> below.</p>
@@ -15843,7 +15770,7 @@ processing.</p>
 <p>Style properties are inherited from ancestor <loc href="#terms-content-element">content elements</loc>
 within an intermediate synchronic document
 if a style property is not associated with a <loc href="#terms-content-element">content element</loc> (or
-an anonymous span) and the style property is designated as
+an <loc href="#terms-anonymous-span">anonymous span</loc>) and the style property is designated as
 inheritable.</p>
 <p>If a style property is determined to require inheritance, then the inherited value must
 be the value of the same named style property in the computed
@@ -15883,7 +15810,7 @@ set of the <el>span</el> element.</p>
 <olist>
 <item><p>if an inheritable style property <emph>P</emph> is not associated with
 a <loc href="#terms-content-element">content element</loc>
-or an anonymous span <emph>E</emph>, and</p></item>
+or an <loc href="#terms-anonymous-span">anonymous span</loc> <emph>E</emph>, and</p></item>
 <item><p>if that style property <emph>P</emph> is in the computed style
 set of region <emph>R</emph>, and</p></item>
 <item><p>if that element <emph>E</emph> is flowed into (presented within) region
@@ -15907,7 +15834,7 @@ set of region <emph>R</emph>, and</p></item>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the anonymous span that encloses the character
+<p>In the above example, the <loc href="#terms-anonymous-span">anonymous span</loc> that encloses the character
 items <code>Yellow Monospace</code> effectively inherits the <att>tts:color</att>
 and <att>tts:fontFamily</att> styles specified on the <el>region</el>
 element into which the <el>p</el> element is flowed (presented).</p>
@@ -15927,7 +15854,7 @@ follows:</p>
 <div4 id="semantics-style-resolved-value-category-specified">
 <head>Specified Values</head>
 <p>Values of style properties that are associated with or inherited
-by an element or anonymous span are referred to as <emph>specified values</emph>. The
+by an element or <loc href="#terms-anonymous-span">anonymous span</loc> are referred to as <emph>specified values</emph>. The
 set of all specified style properties of a given element is referred to
 as the <emph>specified style set</emph> of that element.</p>
 </div4>
@@ -16126,7 +16053,7 @@ follows: for each style property <emph>P<sub>new</sub></emph> in
 <div4 id="semantics-style-resolution-processing-sss">
 <head>Specified Style Set Processing</head>
 <p>The specified style set <emph>SSS</emph> of an element or
-anonymous span <emph>E</emph>,
+<loc href="#terms-anonymous-span">anonymous span</loc> <emph>E</emph>,
 <emph>SSS(E)</emph>, is determined according to the following ordered
 rules:</p>
 <olist>
@@ -16226,7 +16153,7 @@ in <specref ref="styling-attribute-vocabulary"/>;</p></item>
 <div4 id="semantics-style-resolution-processing-css">
 <head>Computed Style Set Processing</head>
 <p>The computed style set <emph>CSS</emph> of an element or
-anonymous span <emph>E</emph>,
+<loc href="#terms-anonymous-span">anonymous span</loc> <emph>E</emph>,
 <emph>CSS(E)</emph>, is determined according to the following ordered
 rules:</p>
 <olist>
@@ -16268,7 +16195,7 @@ of an <el>animate</el>, <el>set</el>, or referable <el>style</el> element.</p>
 <div4 id="semantics-style-resolution-process-overall">
 <head>Style Resolution Process</head>
 <p>The top-level style resolution process is defined as follows: using
-a preorder traversal of each element and <emph>anonymous span</emph>,
+a preorder traversal of each element and <loc href="#terms-anonymous-span">anonymous span</loc>,
 <emph>E</emph>, of an intermediate synchronic document,
 <emph>DOC<sub>inter</sub></emph>, perform the following ordered
 sub-steps:</p>
@@ -16286,7 +16213,7 @@ do not perform the subsequent step below on <emph>E</emph>:</p>
 <item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
 <item><p><loc href="#animation-vocabulary-animate"><el>animate</el></loc></p></item>
 <item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
-<item><p><emph>anonymous span</emph></p></item>
+<item><p><loc href="#terms-anonymous-span">anonymous span</loc></p></item>
 </ulist>
 </item>
 <item><p> <phrase role="strong">[resolve computed styles]</phrase>
@@ -16899,15 +16826,15 @@ some element becomes temporally active or inactive.</p>
 <def>
 <olist>
 <item><p>for each significant text node in a <loc href="#terms-content-element">content element</loc>,
-synthesize an anonymous span to enclose the text node, substituting
-the new anonymous span for the original text node child in its sibling
+synthesize an <loc href="#terms-anonymous-span">anonymous span</loc> to enclose the text node, substituting
+the new <loc href="#terms-anonymous-span">anonymous span</loc> for the original text node child in its sibling
 and parent hierarchy;</p></item>
-<item><p>for each contiguous sequence of anonymous spans, replace the
-sequence with a single anonymous span which contains a sequence of
+<item><p>for each contiguous sequence of <loc href="#terms-anonymous-span">anonymous spans</loc>, replace the
+sequence with a single <loc href="#terms-anonymous-span">anonymous span</loc> which contains a sequence of
 text nodes representing the individual text node children of the
-original sequence of anonymous spans;</p></item>
-<item><p>for each span element whose child is a single anonymous span,
-replace the anonymous span with its sequence of child text
+original sequence of <loc href="#terms-anonymous-span">anonymous spans</loc>;</p></item>
+<item><p>for each span element whose child is a single <loc href="#terms-anonymous-span">anonymous span</loc>,
+replace the <loc href="#terms-anonymous-span">anonymous span</loc> with its sequence of child text
 nodes.</p></item>
 </olist>
 </def>
@@ -17057,8 +16984,8 @@ to an XSL FO document instance, <emph>F</emph>, as follows:</p>
 <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase>;</p>
 <note role="clarification">
 <p>A compliant presentation processor is permitted to perform this step at an earlier processing stage, in which case this step is not
-repeated here. Note that if anonymous span construction occurs before intermediate synchronic document construction as defined by
-<specref ref="semantics-region-layout-step-1"/>, then the intermediate synchronic document will contain anonymous spans.</p>
+repeated here. Note that if <loc href="#terms-anonymous-span">anonymous span</loc> construction occurs before intermediate synchronic document construction as defined by
+<specref ref="semantics-region-layout-step-1"/>, then the intermediate synchronic document will contain <loc href="#terms-anonymous-span">anonymous spans</loc>.</p>
 </note>
 </item>
 <item>
@@ -17160,13 +17087,13 @@ the background color associated with the <el>body</el> element, if not <code>tra
 <item>
 <p>for each <el>span</el> element that is not
 associated with a <att>tts:display</att> style property with the value
-<code>none</code> and for each anonymous
-span that is a child of a <el>p</el> or <el>span</el> element,
+<code>none</code> and for each <loc href="#terms-anonymous-span">anonymous span</loc>
+that is a child of a <el>p</el> or <el>span</el> element,
 map the element or
 sequence of character items to a distinct <el>fo:inline</el> element,
 populating the style properties of <el>fo:inline</el> by using the computed
 style set associated with each original TTML <loc href="#terms-content-element">content element</loc>
-or anonymous span;</p>
+or <loc href="#terms-anonymous-span">anonymous span</loc>;</p>
 </item>
 <item>
 <p>for each <el>br</el> element that is not
@@ -17616,20 +17543,20 @@ constraints:</p>
 -->
 <ulist>
 <item>
-<p>The implicit duration of an anonymous span is defined as follows: if
-the anonymous span's parent time container is a parallel time container, then
+<p>The implicit duration of an <loc href="#terms-anonymous-span">anonymous span</loc> is defined as follows: if
+the <loc href="#terms-anonymous-span">anonymous span's</loc> parent time container is a parallel time container, then
 the implicit duration is equivalent to the <code>indefinite</code>
-duration value as defined by <bibref ref="smil3"/>; if the anonymous span's
+duration value as defined by <bibref ref="smil3"/>; if the <loc href="#terms-anonymous-span">anonymous span's</loc>
 parent time container is a sequential time container, then the implicit duration
 is equivalent to zero.</p>
 </item>
 <item>
 <p>The implicit duration of an <el>animate</el>, <el>audio</el>, <el>br</el>, <el>image</el>, or <el>set</el> element is defined to be the same as
-if that element were treated as an anonymous span.</p>
+if that element were treated as an <loc href="#terms-anonymous-span">anonymous span</loc>.</p>
 </item>
 <item>
 <p>The implicit duration of a <el>span</el> element with non-mixed content, i.e., only <code>#PCDATA</code> text nodes,
-is defined to be the same as if the <el>span</el> element were treated as an anonymous span.</p>
+is defined to be the same as if the <el>span</el> element were treated as an <loc href="#terms-anonymous-span">anonymous span</loc>.</p>
 </item>
 <item>
 <p>The implicit duration of a <el>body</el>, <el>div</el>, <el>p</el>,
@@ -17666,13 +17593,13 @@ based timing or event based timing in <bibref ref="smil3"/>, where the specific 
 <div3 id="semantics-anonymous-span-timing">
 <head>Anonymous Span Timing</head>
 <p><emph>This sub-section is non-normative.</emph></p>
-<p>The following example illustrates the timing semantics of anonymous spans that are children of sequential and parallel time containers. 
-The words <emph>Hello</emph> and <emph>Allo</emph> are both contained in anonymous spans that are children of a sequential 
+<p>The following example illustrates the timing semantics of <loc href="#terms-anonymous-span">anonymous spans</loc> that are children of sequential and parallel time containers. 
+The words <emph>Hello</emph> and <emph>Allo</emph> are both contained in <loc href="#terms-anonymous-span">anonymous spans</loc> that are children of a sequential 
 time container (the <code>p</code> element). As such, neither <emph>Hello</emph> nor <emph>Allo</emph> will be displayed 
-since the implicit duration of the anonymous spans is 0. In contrast, the anonymous span that contains the word <emph>Guten</emph> 
+since the implicit duration of the <loc href="#terms-anonymous-span">anonymous spans</loc> is 0. In contrast, the <loc href="#terms-anonymous-span">anonymous span</loc> that contains the word <emph>Guten</emph> 
 and the innermost <code>span</code> that contains the word <emph>Tag</emph> are children of an element with parallel time container 
 semantics (the outermost <code>span</code> element).
-As a result, both <emph>Guten</emph> and <emph>Tag</emph> will be displayed since the implicit duration of their respective parent anonymous span 
+As a result, both <emph>Guten</emph> and <emph>Tag</emph> will be displayed since the implicit duration of their respective parent <loc href="#terms-anonymous-span">anonymous span</loc> 
 and <code>span</code> element are indefinite, resulting in the implicit duration of 
 its <code>span</code>, <code>p</code>, <code>div</code> and <code>body</code> ancestors to also be indefinite.</p>
 <table id="timing-intervals-example-1" role="example">

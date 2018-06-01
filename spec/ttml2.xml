@@ -10848,14 +10848,14 @@ luminance, such as 10,000 cd∙m<sup>-2</sup>.</p>
 </tr>
 </tbody>
 </table>
-<p>The <att>tts:luminanceGain</att> shall be applied if and only if the presentation requires adjustment of
-sRGB color values to an absolute luminance value. When applied all marks rendered by the
-<loc href="#terms-presentation-processor">presentation processor</loc> within the region are
-affected including both text and images.</p>
+<p>The <att>tts:luminanceGain</att> shall be applied to all pixels within the applicable 
+<loc href="#layout-vocabulary-region"><el>region</el></loc> that require conversion from an
+sRGB color value to an absolute luminance value. Any requirement to generate absolute luminance
+pixel values is derived from the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 <note role="usage"><p>If an image whose processing generates absolute luminance pixel values, for example
-one conforming to <bibref ref="png-hdr-pq"/>, is placed in a region whose computed 
-<att>tts:luminanceGain</att> is not 1.0, those pixels are nevertheless processed again, giving
-potentially unexpected results.</p></note>
+one conforming to <bibref ref="png-hdr-pq"/>, is placed in a region that also contains text or
+images whose processing generates sRGB pixel values, and an absolute luminance output is required,
+only the sRGB pixel values are transformed.</p></note>
 <p>When applying <att>tts:luminanceGain</att>, the linear optical output values
 (C<sub>r</sub>, C<sub>g</sub>, C<sub>b</sub>) of the components of a pixel of a region are defined as
 80 ∙ <att>tts:luminanceGain</att> ∙ (r, g, b), where (r, g, b) are the normalized linear sRGB components of the pixel.
@@ -10911,7 +10911,7 @@ where the exponent of 2.4 is the gamma correction applied by the sRGB EOTF.
 </table>
 <note role="elaboration">
 <p>A detailed example of compositing sRGB pixels onto HDR pixels using <att>tts:luminanceGain</att>
-is provided in Appendix <specref ref="hdr-compositing"/>.</p>
+is provided in Appendix <specref ref="pq-hdr"/>.</p>
 </note>
 <note role="clarification">
 <p>

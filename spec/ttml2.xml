@@ -10843,19 +10843,19 @@ the computed value, then the value most distant from 0, i.e., the largest line h
 <div3 id="style-attribute-luminanceGain">
 <head>tts:luminanceGain</head>
 <p>The <att>tts:luminanceGain</att> attribute is used to specify the absolute luminance of a region when
-its presentation requires a greater dynamic range than that provided by the sRGB color space <bibref ref="srgb"/>, 
+its presentation requires a greater dynamic range than that provided by the <bibref ref="srgb"/> color space <bibref ref="srgb"/>, 
 and when that presentation requires an absolute luminance value.</p>
 <note role="clarification">
-<p>The sRGB color space specifies an absolute reference white point luminance of 80 cd∙m<sup>-2</sup>. 
-As a result, elements presented in a color specified in the sRGB space (sRGB elements) cannot be
+<p>The <bibref ref="srgb"/> color space specifies an absolute reference white point luminance of 80 cd∙m<sup>-2</sup>. 
+As a result, colors specified in the <bibref ref="srgb"/> space cannot be
 reliably composited with high-dynamic range (HDR) content intended for display with significantly
 greater peak luminance, such as content that uses the perceptual quantizer electro-optical transfer function (PQ EOTF)
 specified in <bibref ref="bt2100_1"/>. Specifically,</p>
 <ulist>
-<item><p>sRGB elements may appear too dim if they remain unscaled and the average luminance of the scene
+<item><p><bibref ref="srgb"/> colors may appear too dim if they remain unscaled and the average luminance of the scene
 exceeds 80 cd∙m<sup>-2</sup>; and
 </p></item>
-<item><p>sRGB elements may appear too bright if they are uniformly scaled to an arbitrary large
+<item><p><bibref ref="srgb"/> colors may appear too bright if they are uniformly scaled to an arbitrary large
 luminance, such as 10,000 cd∙m<sup>-2</sup>.</p>
 </item>
 </ulist>
@@ -10898,17 +10898,17 @@ luminance, such as 10,000 cd∙m<sup>-2</sup>.</p>
 </tr>
 </tbody>
 </table>
-<p>The <att>tts:luminanceGain</att> shall be applied to all pixels within the applicable 
+<p>The computed value associated with the <att>tts:luminanceGain</att> attribute applies to all pixels within the associated 
 <loc href="#layout-vocabulary-region"><el>region</el></loc> that require conversion from an
-sRGB color value to an absolute luminance value. Any requirement to generate absolute luminance
+<bibref ref="srgb"/> color value to an absolute luminance value. Any requirement to generate absolute luminance
 pixel values is derived from the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 <note role="usage"><p>If an image whose processing generates absolute luminance pixel values, for example
 one conforming to <bibref ref="png-hdr-pq"/>, is placed in a region that also contains text or
-images whose processing generates sRGB pixel values, and an absolute luminance output is required,
-only the sRGB pixel values are transformed.</p></note>
+images whose processing generates <bibref ref="srgb"/> pixel values, and an absolute luminance output is required,
+only the <bibref ref="srgb"/> pixel values are transformed.</p></note>
 <p>When applying <att>tts:luminanceGain</att>, the linear optical output values
 (C<sub>r</sub>, C<sub>g</sub>, C<sub>b</sub>) of the components of a pixel of a region are defined as
-80 ∙ <att>tts:luminanceGain</att> ∙ (r, g, b), where (r, g, b) are the normalized linear sRGB components of the pixel.
+80 ∙ <att>tts:luminanceGain</att> ∙ (r, g, b), where (r, g, b) are the normalized linear <bibref ref="srgb"/> components of the pixel.
 </p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the closest supported value.</p>
@@ -10954,13 +10954,13 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <td>
 Given <code>tts:luminanceGain="1.5"</code>, the absolute linear optical output of the components of a rendered pixel with color <code>rgb(218,165,32)</code>
 is (82.37, 42.21, 0.82) ≈ 80 ∙ 1.5 ∙((218/255)<sup>2.4</sup>, (165/255)<sup>2.4</sup>, (32/255)<sup>2.4</sup>),
-where the exponent of 2.4 is the gamma correction applied by the sRGB EOTF.
+where the exponent of 2.4 is the gamma correction applied by the <bibref ref="srgb"/> EOTF.
 </td>
 </tr>
 </tbody>
 </table>
 <note role="elaboration">
-<p>A detailed example of compositing sRGB pixels onto HDR pixels using <att>tts:luminanceGain</att>
+<p>A detailed example of compositing <bibref ref="srgb"/> pixels onto HDR pixels using <att>tts:luminanceGain</att>
 is provided in Appendix <specref ref="pq-hdr"/>.</p>
 </note>
 <note role="clarification">
@@ -28294,17 +28294,17 @@ application based on <bibref ref="html52"/>), rather than of the Document Instan
 </inform-div1>
 <inform-div1 id="hdr-compositing">
 <head>High Dynamic Range Compositing</head>
-<p>This appendix illustrates how sRGB pixels can be composited onto high dynamic range (HDR) pixels.</p>
+<p>This appendix illustrates how <bibref ref="srgb"/> pixels can be composited onto high dynamic range (HDR) pixels.</p>
 <div2 id="pq-hdr">
 <head>Perceptual Quantizer</head>
 <p>
-The following illustrates the use of <loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc> to composite sRGB pixels onto HDR pixels
+The following illustrates the use of <loc href="#style-attribute-luminanceGain"><att>tts:luminanceGain</att></loc> to composite <bibref ref="srgb"/> pixels onto HDR pixels
 that conform to the system colorimetry specified in <bibref ref="bt2100_1"/> using perceptual quantizer (PQ) EOTF and full-range quantization.
 </p>
 <olist>
 <item>
 <p>
-Let <code>(r, g, b)</code> be a full-range 8-bit sRGB pixel with opacity between 0 and 1.
+Let <code>(r, g, b)</code> be a full-range 8-bit <bibref ref="srgb"/> pixel with opacity between 0 and 1.
 </p>
 </item>
 <item>
@@ -28321,21 +28321,21 @@ Invert the 8-bit full-range quantization:
 </item>
 <item>
 <p>
-Linearize using the sRGB EOTF:
+Linearize using the <bibref ref="srgb"/> EOTF:
 </p><p>
 <code>(r<sup>2.4</sup>, g<sup>2.4</sup>, b<sup>2.4</sup>) → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
-Compute HDR absolute luminance using the <att>tts:luminanceGain</att> attribute and the sRGB illuminant:
+Compute HDR absolute luminance using the <att>tts:luminanceGain</att> attribute and the <bibref ref="srgb"/> illuminant:
 </p><p>
 <code>80 ∙ </code><att>tts:luminanceGain</att><code> ∙ (r, g, b) → (r, g, b)</code>
 </p>
 </item>
 <item>
 <p>
-Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:
+Convert from <bibref ref="srgb"/> color space to <bibref ref="bt2100_1"/> color space:
 </p><p>
 <code> [(0.62740389593470, 0.32928303837789, 0.04331306568741),
  (0.06909728935823, 0.91954039507545, 0.01136231556630),
@@ -28393,18 +28393,18 @@ Apply composition to yield <code>(R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)</
 </div2>
 <div2 id="hlg-hdr">
 <head>Hybrid Log-Gamma HDR</head>
-<p>The following illustrates compositing of sRGB pixels onto Hybrid Log-Gamma (HLG) HDR pixels.
+<p>The following illustrates compositing of <bibref ref="srgb"/> pixels onto Hybrid Log-Gamma (HLG) HDR pixels.
 </p>
 <olist>
-<item><p>Let <code>(r, g, b)</code> be a full-range 8-bit sRGB pixel with opacity of A between 0 and 255.</p></item>
+<item><p>Let <code>(r, g, b)</code> be a full-range 8-bit <bibref ref="srgb"/> pixel with opacity of A between 0 and 255.</p></item>
 <item><p>Let <code>(R,G,B)</code> and <code>(R<sub>c</sub>,G<sub>c</sub>,B<sub>c</sub>)</code> be narrow-range 10-bit pixels in the system colorimetry specified in <bibref ref="bt2100_1"/> using HLG EOTF and narrow-range quantization. Subscript <sub>c</sub> denoting the video signal post-compositing.</p></item>
 <item><p>Let <code>(X,Y,Z)</code> be pixels in the system colorimetry specified in the CIE 1931 XYZ colour space <bibref ref="cie-xyz"/> .</p></item>
 <item><p>Invert the 8-bit full-range quantization:</p>
 <p><code>(r, g, b)/255 → (r, g, b)</code></p>
 <p><code>A/255 → A</code></p></item>
-<item><p>Linearize using the sRGB EOTF:</p>
+<item><p>Linearize using the <bibref ref="srgb"/> EOTF:</p>
 <p><code>(r<sup>2.0</sup>,g<sup>2.0</sup>,b<sup>2.0</sup>) → (r,g,b)</code></p></item>
-<item><p>Convert from sRGB color space to <bibref ref="bt2100_1"/> color space:</p>
+<item><p>Convert from <bibref ref="srgb"/> color space to <bibref ref="bt2100_1"/> color space:</p>
 <p><code>[(0.4124, 0.3576, 0.1805),
 (0.2126, 0.7152, 0.0722), (0.0193,0.1192,0.9505)]•(r,g,b)→(X,Y,Z)</code></p>
 <p><code>[(1.7167, −0.3557, −0.2534),
@@ -28433,7 +28433,7 @@ Apply composition to yield <code>(R<sub>c</sub>, G<sub>c</sub>, B<sub>c</sub>)</
 </olist>
 <note><p>The above algorithm does not use the <loc href="#style-attribute-luminanceGain">
 <att>tts:luminanceGain</att></loc> attribute since no absolute gain level is needed for HLG HDR. Rather, 
-this algorithm maps peak sRGB white to "graphics white" in HLG which is defined as 75% of the narrow range
+this algorithm maps peak <bibref ref="srgb"/> white to "graphics white" in HLG which is defined as 75% of the narrow range
 signal defined in <bibref ref="bt2100_1"/>.</p></note>
 <note><p>The gamma index 2.0 is intentionally different from gamma 2.2 specified in <bibref ref="srgb"/>. 
 The value 2.2 from that specification is specific to the viewing environment specified therein, and includes 

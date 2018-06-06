@@ -1700,6 +1700,12 @@ active time interval of the feature.</p>
 about which see also <specref ref="style-attribute-textOrientation"/>.</p>
 </def>
 </gitem>
+<gitem id="terms-timed-element">
+<label>[timed element]</label>
+<def>
+<p>Any element of a type that permits the specification of a <loc href="#timing-attribute-begin"><att>begin</att></loc> attribute.</p>
+</def>
+</gitem>
 <gitem id="terms-timed-text">
 <label>[timed text]</label>
 <def>
@@ -6042,6 +6048,16 @@ attribute that evaluates to <code>false</code>, then the content of that element
 <p>In certain cases, ignoring (excluding) the semantics of an element by means of a <att>condition</att> attribute consists
 of partially rather than wholly ignoring the semantics of the element, about which see specific element definitions.</p>
 </note>
+
+<p>Unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies, the following exceptions apply for the
+purpose of determining which semantics are to be ignored when a <loc href="#content-value-condition">&lt;condition&gt;</loc> expression
+value evaluates to <code>false</code>:</p>
+<ulist>
+<item><p>the <loc href="#semantics-timing">timing semantics</loc> of a <loc href="#terms-timed-element">timed element</loc> are not ignored;</p></item>
+<item><p>the <loc href="#semantics-style-association-chained-referential">chained referential semantics</loc> of a
+  <loc href="#styling-vocabulary-style"><el>style</el></loc> element are not ignored;</p></item>
+</ulist>
+
 </div3>
 <div3 id="content-attribute-xlink-arcrole">
 <head>xlink:arcrole</head>
@@ -6966,7 +6982,7 @@ by a fragment identifier used in a <loc href="#terms-data-binding-context">data 
 </note>
 <p>When a <el>data</el> element appears in a <loc href="#terms-data-binding-context">data binding context</loc>, it
 serves as a non-sharable definition of a data resource that implies binding semantics, i.e., that it is intended to bound to (associated with) its immediate context
-of reference. In this case, the active time interval of the <el>data</el> element is the same as the active time interval of its closest ancestor timed element.
+of reference. In this case, the active time interval of the <el>data</el> element is the same as the active time interval of its closest ancestor <loc href="#terms-timed-element">timed element</loc>.
 </p>
 <note role="elaboration">
 <p>A non-sharable definition of a data resource may or may not specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute, but this
@@ -17311,19 +17327,19 @@ vocabulary catalog.</p>
 </div2> <!-- timing-element-vocabulary -->
 <div2 id="timing-attribute-vocabulary">
 <head>Timing Attribute Vocabulary</head>
-<p>This section defines the following basic timing attributes for use with timed elements:</p>
+<p>This section defines the following basic timing attributes for use with <loc href="#terms-timed-element">timed elements</loc>:</p>
 <ulist>
 <item><p><specref ref="timing-attribute-begin"/></p></item>
 <item><p><specref ref="timing-attribute-dur"/></p></item>
 <item><p><specref ref="timing-attribute-end"/></p></item>
 </ulist>
 <p>In addition, this section defines the <specref
-ref="timing-attribute-timeContainer"/> attribute for use with timed elements
+ref="timing-attribute-timeContainer"/> attribute for use with <loc href="#terms-timed-element">timed elements</loc>
 that serve simultaneously as timing containers.</p>
 <div3 id="timing-attribute-begin">
 <head>begin</head>
 <p>The <att>begin</att> attribute is used to specify the begin
-point of a temporal interval associated with a timed element. If
+point of a temporal interval associated with a <loc href="#terms-timed-element">timed element</loc>. If
 specified, the value of a <att>begin</att> attribute must adhere to
 a &lt;time-expression&gt; specification as defined by <specref
 ref="timing-value-time-expression"/>.</p>
@@ -17334,7 +17350,7 @@ by <bibref ref="smil3"/>, &sect;5.4.3,
 while taking into account any overriding semantics defined by this specification.</p>
 <note role="clarification">
 <p>As defined by <bibref ref="smil3"/>, &sect;5.4.3,
-if no <att>begin</att> attribute is explicitly specified on a timed element, then a default (implicit) value
+if no <att>begin</att> attribute is explicitly specified on a <loc href="#terms-timed-element">timed element</loc>, then a default (implicit) value
 is determined by the nearest time container ancestor; however, in TTML, that ancestor is either
 a parallel time container or a sequential time container, both of which apply a default value of <code>0</code>.</p>
 </note>
@@ -17342,7 +17358,7 @@ a parallel time container or a sequential time container, both of which apply a 
 <div3 id="timing-attribute-dur">
 <head>dur</head>
 <p>The <att>dur</att> attribute is used to specify the duration of a
-temporal interval associated with a timed element. If specified,
+temporal interval associated with a <loc href="#terms-timed-element">timed element</loc>. If specified,
 the value of a <att>dur</att> attribute must adhere to a
 &lt;time-expression&gt; specification as defined by <specref
 ref="timing-value-time-expression"/>.</p>
@@ -17371,7 +17387,7 @@ the <att>dur</att> attribute and the difference between the value of the
 <div3 id="timing-attribute-end">
 <head>end</head>
 <p>The <att>end</att> attribute is used to specify the ending point
-of a temporal interval associated with a timed element. If
+of a temporal interval associated with a <loc href="#terms-timed-element">timed element</loc>. If
 specified, the value of an <att>end</att> attribute must adhere to a
 &lt;time-expression&gt; specification as defined by <specref
 ref="timing-value-time-expression"/>.</p>
@@ -17582,7 +17598,7 @@ use of the <code>utc</code> clock mode, about which see <specref ref="parameter-
 <div2 id="semantics-timing">
 <head>Timing Semantics</head>
 <p>The semantics of time containment, durations, and intervals defined by
-<bibref ref="smil3"/> apply to the interpretation of like-named timed elements and timing
+<bibref ref="smil3"/> apply to the interpretation of like-named <loc href="#terms-timed-element">timed elements</loc> and timing
 vocabulary defined by this specification, given the following
 constraints:</p>
 <!--
@@ -19696,6 +19712,10 @@ transforming the <loc href="#style-attribute-disparity"><att>tts:disparity</att>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#disparity</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-disparity"><att>tts:disparity</att></loc> attribute.</p>
+<note role="clarification">
+<p>Support for the <code>#disparity</code> feature does not imply support for the
+<loc href="#feature-region-implied-animation"><code>#region-implied-animation</code></loc> feature.</p>
+</note>
 </div3>
 <div3 id="feature-display">
 <head>#display</head>
@@ -19970,6 +19990,10 @@ feature if it supports the <code>#extent</code> feature as defined by <bibref re
 <p>It is an error for a content profile to require or permit use of the <code>#extent</code> feature but prohibit use of any of the following
 features: <loc href="#feature-extent-region"><code>#extent-region</code></loc> or
 <loc href="#feature-extent-root"><code>#extent-root</code></loc>.</p>
+<note role="clarification">
+<p>Support for the <code>#extent</code> feature does not imply support for the
+<loc href="#feature-region-implied-animation"><code>#region-implied-animation</code></loc> feature.</p>
+</note>
 </div3>
 <div3 id="feature-extent-auto">
 <head>#extent-auto</head>
@@ -20100,7 +20124,7 @@ features:
 <loc href="#feature-extent-image"><code>#extent-image</code></loc>.</p>
 <note role="clarification">
 <p>Support for the <code>#extent-version-2</code> feature does not imply support for the
-<loc href="#feature-region-inline-implicit"><code>#region-inline-implicit</code></loc> feature.</p>
+<loc href="#feature-region-implied-animation"><code>#region-implied-animation</code></loc> feature.</p>
 </note>
 </div3>
 <div3 id="feature-font">
@@ -20542,6 +20566,10 @@ supports the following features:</p>
 <head>#origin</head>
 <p>A TTML content processor supports the <code>#opacity</code>
 feature if it supports the <code>#opacity</code> feature as defined by <bibref ref="ttml1"/>, &sect;D.1.60.</p>
+<note role="clarification">
+<p>Support for the <code>#origin</code> feature does not imply support for the
+<loc href="#feature-region-implied-animation"><code>#region-implied-animation</code></loc> feature.</p>
+</note>
 </div3>
 <div3 id="feature-overflow">
 <head>#overflow</head>
@@ -20736,6 +20764,10 @@ transforming the <loc href="#style-attribute-position"><att>tts:position</att></
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#position</code> feature if it implements presentation semantic support for the
 <loc href="#style-attribute-position"><att>tts:position</att></loc> attribute.</p>
+<note role="clarification">
+<p>Support for the <code>#position</code> feature does not imply support for the
+<loc href="#feature-region-implied-animation"><code>#region-implied-animation</code></loc> feature.</p>
+</note>
 </div3>
 <div3 id="feature-presentation">
 <head>#presentation</head>
@@ -20829,6 +20861,18 @@ in accordance with <specref ref="layout-vocabulary-region-special-inline-animati
 <code>#region-implied-animation</code> feature if it implements presentation semantic support for the style attributes on a
 <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element that apply to an implied region
 in accordance with <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/>.</p>
+<note role="clarification">
+<p>Support for the <code>#region-implied-animation</code> feature does not imply support for the
+following features:</p>
+<ulist>
+  <item><p><loc href="#feature-disparity"><code>#disparity</code></loc></p></item>
+  <item><p><loc href="#feature-extent"><code>#extent</code></loc></p></item>
+  <item><p><loc href="#feature-origin"><code>#origin</code></loc></p></item>
+  <item><p><loc href="#feature-position"><code>#position</code></loc></p></item>
+</ulist>
+<p>However, if any of these features is supported, then support for the <code>#region-implied-animation</code> feature
+does imply that <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> is supported with respect to that feature.</p>
+</note>
 </div3>
 <div3 id="feature-region-inline">
 <head>#region-inline</head>
@@ -23661,11 +23705,11 @@ M = referenceBegin + 3600 * hours + 60 * minutes + seconds + ((frames + (subFram
 <sitem>
 where <code>referenceBegin</code> is determined according to whether the nearest ancestor time container employs
 parallel (<code>par</code>) or sequential (<code>seq</code>) semantics: if parallel or if sequential and no prior sibling
-timed element exists, then <code>referenceBegin</code>
+<loc href="#terms-timed-element">timed element</loc> exists, then <code>referenceBegin</code>
 is the media time that corresponds to the beginning of the nearest ancestor time container or
 zero (0) if this time container is the <loc href="#terms-root-temporal-extent">root temporal extent</loc>; otherwise, if sequential and a prior sibling
-timed element exists, then <code>referenceBegin</code> is the media time that corresponds to the active end of the
-immediately prior sibling timed element;
+<loc href="#terms-timed-element">timed element</loc> exists, then <code>referenceBegin</code> is the media time that corresponds to the active end of the
+immediately prior sibling <loc href="#terms-timed-element">timed element</loc>;
 </sitem>
 <sitem/>
 <sitem>
@@ -23929,11 +23973,11 @@ must be considered to be invalid for purposes of validation assessment.
 <sitem>
 where <code>referenceBegin</code> is determined according to whether the nearest ancestor time container employs
 parallel (<code>par</code>) or sequential (<code>seq</code>) semantics: if parallel or if sequential and no prior sibling
-timed element exists, then <code>referenceBegin</code>
+<loc href="#terms-timed-element">timed element</loc> exists, then <code>referenceBegin</code>
 is the SMPTE time that corresponds to the beginning of the nearest ancestor time container or
 zero (0) if this time container is the <loc href="#terms-root-temporal-extent">root temporal extent</loc>; otherwise, if sequential and a prior sibling
-timed element exists, then <code>referenceBegin</code> is the SMPTE time that corresponds to the active end of the
-immediately prior sibling timed element;
+<loc href="#terms-timed-element">timed element</loc> exists, then <code>referenceBegin</code> is the SMPTE time that corresponds to the active end of the
+immediately prior sibling <loc href="#terms-timed-element">timed element</loc>;
 </sitem>
 <sitem/>
 </slist>

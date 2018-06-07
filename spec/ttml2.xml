@@ -12835,7 +12835,7 @@ follows the semantics of the <code>text-align-last</code> property with a value 
 <div3 id="style-attribute-textCombine">
 <head>tts:textCombine</head>
 <p>When a vertical writing mode applies, the <att>tts:textCombine</att> attribute is used to specify a style property that
-determines whether and how multiple characters, such as digits, are combined horizontally so that their 
+determines whether and how multiple characters are combined horizontally so that their 
 <loc href="#terms-glyph-area">glyph areas</loc> fit within the width of a single line of the surrounding vertical text.
 If a horizontal writing mode applies, then this property is ignored
 for the purpose of presentation processing.</p>
@@ -12881,17 +12881,11 @@ permitted by the line stacking strategy in effect.</p>
 </tbody>
 </table>
 <p>If the specified value of this attribute is <code>none</code>, then no combination processing applies.
-If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.
-If the specified value of this attribute is <code>digits</code>, then all affected characters should be combined if they are a sequence of a digits which length is
-equal to or less than a specified count, or two (2) if no count is specified.</p>
+If the specified value of this attribute is <code>all</code>, then all affected characters should be combined.</p>
 <p>Combination applies after all affected characters have been processed as if a horizontal writing mode applied. In particular, bidirectional processing, ligatures, glyph subtitutions or combination of Unicode combining characters if used is applied before the combination process specified by the <att>tts:textCombine</att> attribute.</p>
 <p>Combination must not cross an element boundary, a bidirectional boundary, or a <loc href="#terms-glyph-area">non-glyph area</loc> boundary.</p>
-<p>If a computed value of the property associated with this attribute is not supported, then the following semantics apply:</p>
-<olist>
-<item><p>if the computed value is <code>digits</code> and the semantics of the <code>all</code> value are supported, then
-use the value <code>all</code>;</p></item>
-<item><p>otherwise, use the value <code>none</code>.</p></item>
-</olist>
+<p>If a computed value of the property associated with this attribute is not supported,
+then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>none</code>.</p>
 <p>The <att>tts:textCombine</att> style is illustrated by the following example.</p>
 <table id="text-combine-example" role="example">
 <caption>Example Fragment &ndash; Text Combine</caption>
@@ -12904,9 +12898,6 @@ use the value <code>all</code>;</p></item>
 &lt;/p&gt;
 &lt;p region="tbrlCenter"&gt;あい
   &lt;span <phrase role="strong">tts:textCombine="all"</phrase>&gt;AB34&lt;/span&gt;三四
-&lt;/p&gt;
-&lt;p region="tbrlRight"&gt;あい
-  &lt;span <phrase role="strong">tts:textCombine="digits"</phrase>&gt;AB34&lt;/span&gt;三四
 &lt;/p&gt;
 </eg>
 </td>
@@ -15780,7 +15771,6 @@ without taking into account rasterization effects.</p>
 &lt;text-combine&gt;
   : "none"
   | "all"
-  | "digits" (<loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>)?
 </eg>
 </td>
 </tr>

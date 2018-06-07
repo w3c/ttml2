@@ -18123,7 +18123,6 @@ presentation processing.</p>
 </item>
 <item>
 <p>If no <att>repeatCount</att> attribute is specified, then a <emph>repeatCount</emph> value of <code>1</code> applies.</p>
-<note role="elaboration"><p>This version of TTML does not support non-integral (fractional) values of <att>repeatCount</att>.</p></note>
 </item>
 <item>
 <p>The <att>additive</att> attribute defined by <bibref ref="svg11"/>, &sect;19.2.10, is not supported by this
@@ -18580,7 +18579,7 @@ whole, fraction
 </div3>
 <div3 id="animation-value-repeat-count">
 <head>&lt;repeat-count&gt;</head>
-<p>A &lt;repeat-count&gt; expression is used to determine the number of iterations of a repeated animation.</p>
+<p>A &lt;repeat-count&gt; expression is used to determine the (possibly fractional) number of iterations of a repeated animation.</p>
 <table id="repeat-count-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;repeat-count&gt;</caption>
 <tbody>
@@ -18588,11 +18587,16 @@ whole, fraction
 <td>
 <eg xml:space="preserve">
 &lt;repeat-count&gt;
-  : count
+  : count                           // <emph>value</emph> > 0
   | "indefinite"
 
 count:
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+                       // <emph>value</emph> > 0
+  : whole
+  | whole "." fraction
+  | "." fraction
+
+whole, fraction
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
 </eg>
 </td>
 </tr>

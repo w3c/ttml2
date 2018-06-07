@@ -61,7 +61,7 @@
     <xs:restriction base="xs:token">
       <xs:enumeration value="discrete"/>
       <xs:enumeration value="linear"/>
-      <xs:enumeration value="displaced"/>
+      <xs:enumeration value="paced"/>
       <xs:enumeration value="spline"/>
     </xs:restriction>
   </xs:simpleType>
@@ -138,6 +138,14 @@
       <xs:enumeration value="justify"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="displayAspectRatio">
+    <xs:annotation>
+      <xs:documentation>positiveInteger positiveInteger</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="dropMode">
     <xs:restriction base="xs:token">
       <xs:enumeration value="dropNTSC"/>
@@ -193,6 +201,12 @@
   </xs:simpleType>
   <xs:simpleType name="fontRange">
     <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="fontSelectionStrategy">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="auto"/>
+      <xs:enumeration value="character"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="fontShear">
     <xs:annotation>
@@ -367,10 +381,13 @@
   <xs:simpleType name="metadataItemName">
     <xs:union>
       <xs:simpleType>
-        <xs:restriction base="xs:token"/>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="altText"/>
+          <xs:enumeration value="usesForced"/>
+        </xs:restriction>
       </xs:simpleType>
       <xs:simpleType>
-        <xs:restriction base="xs:anyURI"/>
+        <xs:restriction base="xs:QName"/>
       </xs:simpleType>
     </xs:union>
   </xs:simpleType>
@@ -523,12 +540,6 @@
       <xs:enumeration value="withBase"/>
     </xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="rubyOffset">
-    <xs:annotation>
-      <xs:documentation>length</xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string"/>
-  </xs:simpleType>
   <xs:simpleType name="rubyPosition">
     <xs:restriction base="ttd:annotationPosition"/>
   </xs:simpleType>
@@ -542,14 +553,6 @@
     <xs:restriction base="xs:token">
       <xs:enumeration value="always"/>
       <xs:enumeration value="whenActive"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="storageAspectRatio">
-    <xs:annotation>
-      <xs:documentation>positiveInteger:positiveInteger</xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="subFrameRate">

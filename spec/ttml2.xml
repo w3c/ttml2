@@ -2215,17 +2215,6 @@ identify the utilized or supported TTML vocabulary profile(s) as
 defined by <specref ref="vocabulary-profiling"/>, and, if a subset or
 superset profile is used or supported, then what features are excluded
 or included in the subset or superset profile.</p>
-<p>A <loc href="#terms-document-instance">document instance</loc> for which a compliance claim is made
-must specify
-either (1)
-a <att>ttp:profile</att> attribute on its root
-<el>tt</el>
-element
-as defined by <specref ref="profile-attribute-profile"/>
-or (2)
-a <el>ttp:profile</el> element as a child of the
-<el>head</el> element as defined by
-<specref ref="profile-vocabulary-profile"/>.</p>
 <note role="clarification"><p>The definitions of
 <loc href="conformance-transformation-processor">Transformation Processor Conformance</loc> and
 <loc href="conformance-presentation-processor">Presentation Processor Conformance</loc> specified above require
@@ -2243,6 +2232,16 @@ TTML <loc href="#terms-transformation-processor">transformation processor</loc> 
 TTML <loc href="#terms-presentation-processor">presentation processor</loc>,
 but may not claim compliance with <loc href="conformance-transformation-processor">Transformation Processor Conformance</loc> or
 <loc href="conformance-presentation-processor">Presentation Processor Conformance</loc>.</p></note>
+<p>A <loc href="#terms-document-instance">document instance</loc> for which a compliance claim is made must be associated with</p>
+<olist>
+<item><p>a non-null <loc href="#terms-effective-content-profile">effective content profile</loc>
+derived from an explicitly specified <loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc> attribute
+or one or more <loc href="#terms-top-level-profile">top-level</loc> <loc href="#terms-content-profile">content profiles</loc>; or</p></item>
+<item><p>a non-null <loc href="#terms-effective-processor-profile">effective processor profile</loc>
+derived from an explicitly specified <loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc> or
+<loc href="#profile-attribute-profile"><att>ttp:profile</att></loc> attribute
+or one or more <loc href="#terms-top-level-profile">top-level</loc> <loc href="#terms-processor-profile">processor profiles</loc>.</p></item>
+</olist>
 </div2> <!-- claims -->
 <div2 id="compatibility">
   <head>Compatibility</head>
@@ -15071,15 +15070,15 @@ If no <emph>units</emph> component is specified, then Hertz is implied.</p>
 <eg xml:space="preserve">
 &lt;position&gt;
   : offset-position-h                             // single component value
-  | offset-position-v                             // single component value
-  | offset-position-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> offset-position-v    // two component values
-  | offset-position-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> offset-position-h    // two component values
-  | position-keyword-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-v       // three component values
-  | position-keyword-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-h       // three component values
-  | edge-offset-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-v       // three component values
-  | edge-offset-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-h       // three component values
-  | edge-offset-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-v            // four component values
-  | edge-offset-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-h            // four component values
+  | edge-keyword-v                                // single component value
+  | offset-position-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> offset-position-v    // two component value
+  | position-keyword-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-h  // two component value
+  | position-keyword-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-v       // three component value
+  | position-keyword-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-h       // three component value
+  | edge-offset-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-v       // three component value
+  | edge-offset-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> position-keyword-h       // three component value
+  | edge-offset-h <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-v            // four component value
+  | edge-offset-v <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc> edge-offset-h            // four component value
 
 offset-position-h
   : position-keyword-h
@@ -15115,30 +15114,31 @@ edge-keyword-v
 </tr>
 </tbody>
 </table>
-<p>A &lt;position&gt; expression may consist of one to four component values as follows:</p>
+<p>A &lt;position&gt; expression may consist of one to four component values as follows, formally defined by the above syntax:</p>
 <glist>
 <gitem>
 <label>one component</label>
 <def>
-<p>either a horizontal offset (<code>offset-position-h</code>) or a vertical offset (<code>offset-position-v</code>)</p>
+<p>either a horizontal offset position or a vertical edge keyword</p>
 </def>
 </gitem>
 <gitem>
 <label>two components</label>
 <def>
-<p>a horizontal offset (<code>offset-position-h</code>) and a vertical offset (<code>offset-position-v</code>), in any order</p>
+<p>a horizontal position offset followed by a vertical position offset or
+a vertical position keyword followed by a horizontal position keyword</p>
 </def>
 </gitem>
 <gitem>
 <label>three components</label>
 <def>
-<p>a horizontal edge offset (<code>edge-offset-position-h</code>) and a vertical edge offset (<code>edge-offset-position-v</code>), in any order, where one offset is a keyword and the other offset is a keyword <loc href="#style-value-length">&lt;length&gt;</loc> pair</p>
+<p>an horizontal edge offset and a vertical position keyword or a horizontal position keyword and a vertical edge offset, in any order</p>
 </def>
 </gitem>
 <gitem>
 <label>four components</label>
 <def>
-<p>a horizontal edge offset (<code>edge-offset-position-h</code>) and a vertical edge offset (<code>edge-offset-position-v</code>), in any order, where both offsets are keyword <loc href="#style-value-length">&lt;length&gt;</loc> pairs</p>
+<p>an horizontal edge offset and a vertical edge offset, in any order</p>
 </def>
 </gitem>
 </glist>
@@ -15201,10 +15201,6 @@ equivalence tables:</p>
 <tr>
 <td><code>bottom right</code></td>
 <td><code>left 100% top 100%</code></td>
-</tr>
-<tr>
-<td><code>bottom <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
-<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 100%</code></td>
 </tr>
 <tr>
 <td><code>center center</code></td>
@@ -15273,10 +15269,6 @@ equivalence tables:</p>
 <tr>
 <td><code>top right</code></td>
 <td><code>left 100% top 0%</code></td>
-</tr>
-<tr>
-<td><code>top <loc href="#style-value-length">&lt;length&gt;</loc></code></td>
-<td><code>left <loc href="#style-value-length">&lt;length&gt;</loc> top 0%</code></td>
 </tr>
 <tr>
 <td><code><loc href="#style-value-length">&lt;length&gt;</loc> center</code></td>
@@ -17350,9 +17342,9 @@ by <bibref ref="smil3"/>, &sect;5.4.3,
 while taking into account any overriding semantics defined by this specification.</p>
 <note role="clarification">
 <p>As defined by <bibref ref="smil3"/>, &sect;5.4.3,
-if no <att>begin</att> attribute is explicitly specified on a <loc href="#terms-timed-element">timed element</loc>, then a default (implicit) value
-is determined by the nearest time container ancestor; however, in TTML, that ancestor is either
-a parallel time container or a sequential time container, both of which apply a default value of <code>0</code>.</p>
+if no <att>begin</att> attribute is explicitly specified on a <loc href="#terms-timed-element">timed element</loc>,
+then the default value of the attribute is determined by the nearest time container ancestor; however, in TTML, that ancestor is either
+a parallel time container or a sequential time container, both of which apply a default value of <code>0s</code>.</p>
 </note>
 </div3>
 <div3 id="timing-attribute-dur">
@@ -18269,6 +18261,13 @@ represented by metadata takes one of two forms: (1) metadata defined by this
 specification for standardized use in a <loc href="#terms-document-instance">document instance</loc>, and (2) arbitrary
 metadata defined outside of the scope of this specification, whose use and
 semantics depend entirely upon an application's use of TTML Content.</p>
+<p>This specification does not define any presentation semantics for metadata; therefore, a conformant
+<loc href="#terms-presentation-processor">presentation processor</loc> may ignore all metadata matter.</p>
+<note role="clarification">
+<p>Although this specification does not ascribe any presentation semantics to metadata, a superset profile of
+this specification may do so, in which case any metadata dependent presentation semantics defined by such a profile is
+considered outside the scope of this specification.</p>
+</note>
 <div2 id="metadata-element-vocabulary">
 <head>Metadata Element Vocabulary</head>
 <p>The <specref ref="metadata-vocabulary-metadata"/> element serves as

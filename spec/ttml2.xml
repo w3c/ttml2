@@ -15004,7 +15004,8 @@ applies to the element in which context the <code>em</code> unit is resolved.</p
 <p>The semantics of the unit of measure <code>c</code> (cell) are
 defined by the parameter <specref
 ref="parameter-attribute-cellResolution"/>.</p>
-<p>The units of measure <code>rw</code> and <code>rh</code> are defined as
+<p>The <termdef id="defs-root-container-relative" term="root container relative"><term>root container relative</term></termdef>
+units of measure <code>rw</code> and <code>rh</code> are defined as
 one percent (1%) of the width and height of the <loc href="#terms-root-container-region">root container region</loc>, respectively.
 For example, the length <code>25rw</code> is interpreted as 25% of the width of
 the <loc href="#terms-root-container-region">root container region</loc>.</p>
@@ -18023,7 +18024,7 @@ elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</
 <p>An <loc href="#terms-out-of-line-animation">out-of-line</loc> <el>animate</el> element
 must specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute.</p>
 <p>Style property attributes targeted by an <el>animate</el> element are specified directly using
-attributes in the TT Style namespace or in a namespace that is not a TT Namespace, where the list (sequence) of animation (key) values
+attributes in the TT Style namespace or in a namespace that is not a TT Namespace, where the list (sequence) of animation values
 adhere to the <loc href="#animation-value-animation-value-list">&lt;animation-value-list&gt;</loc> syntax, and where each
 constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> adheres to the syntax of the specified
 attribute.</p>
@@ -18034,19 +18035,104 @@ In <bibref ref="svg11"/>, this would require the use of multiple <el>animate</el
 <p>Furthermore, by using direct specification of animated style property and key values, it is not necessary to employ the <att>from</att>,
 <att>to</att>, <att>by</att>, or <att>values</att> animation value attributes defined by <bibref ref="svg11"/>, &sect;19.2.9.</p>
 </note>
-<p>Except for the constraints or variations enumerated below, the semantics of the <el>animate</el> element and its attributes
-enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2.12:</p>
+<p>The semantics of the <el>animate</el> element and its attributes
+enumerated above are defined to be those specified by <bibref ref="svg11"/>, &sect;19.2, as constrained or further clarified below:</p>
 <olist>
-<item><p>The attributes targeted by an <el>animate</el> element and the key values to be applied to these attributes are
-specified by direct use of attributes in the TT Style namespace or a namespace that is not a TT Namespace (as opposed to using
-SVG's <att>attributeName</att> and <att>from</att>,  <att>to</att>, <att>by</att>, or <att>values</att> attributes).</p>
+<item><p>The attributes targeted by an <el>animate</el> element and the values to be applied to these attributes are
+specified by direct use of attributes in the TT Style namespace or a namespace that is not a TT Namespace;
+therefore, the <att>attributeName</att>, <att>from</att>,  <att>to</att>, <att>by</att>, and <att>values</att> attributes defined by
+<bibref ref="svg11"/> are not supported by this version of TTML.</p>
+<note role="clarification">
+<p>The effect of using directly named style attributes is equivalent to specifying multiple <bibref ref="svg11"/> <el>animate</el> elements
+where each such element specifies an <att>attributeName</att> and <att>values</att> attribute.</p>
+</note>
 <note role="example">
 <p>For example, specifying <code>tts:color="red;green;blue"</code> is
 considered equivalent to specifying <code>attributeName="tts:color"</code> and <code>values="red;green;blue"</code> in <bibref ref="svg11"/>.</p>
 </note>
 </item>
-<item><p>If no <att>calcMode</att> attribute is specified, then a <emph>calcMode</emph> value of <code>linear</code> applies.</p></item>
-<item><p>If no <att>fill</att> attribute is specified, then a <emph>fill</emph> value of <code>remove</code> applies.</p></item>
+<item>
+<p>If no <att>calcMode</att> attribute is specified, then a <emph>calcMode</emph> value of <code>linear</code> applies.</p>
+<note role="clarification"><p>This implied value corresponds to the default value specified by <bibref ref="svg11"/>, &sect;19.2.9.</p></note>
+</item>
+<item>
+<p>If no <att>fill</att> attribute is specified, then a <emph>fill</emph> value of <code>remove</code> applies.</p>
+<note role="clarification"><p>This implied value corresponds to the default value specified by <bibref ref="svg11"/>, &sect;19.2.9.</p></note>
+</item>
+<item>
+<p>If a <att>keyTimes</att> attribute is specified and the computed value of <emph>calcMode</emph> is <attval>paced</attval>,
+then this usage must be considered an error for the purpose of validation processing and the animation must be ignored for the purpose of
+presentation processing.</p>
+</item>
+<item>
+<p>If a <att>keyTimes</att> attribute is specified and the computed value of <emph>calcMode</emph> is not <attval>paced</attval>,
+then the number of time components specified in the <att>keyTimes</att> attribute must match the number of animation values specified
+by each animated attribute.</p>
+<note role="clarification">
+<p>This constraint applies regardless of whether a single or multiple attributes are targeted by the same
+<el>animate</el> element, which, in turn, implies that when multiple attributes are targeted, the value of each animated attribute must
+specify the same number of values in its <loc href="#animation-value-animation-value-list">&lt;animation-value-list&gt;</loc>.</p>
+</note>
+<note role="example">
+<p>For example, the first <el>animate</el> element shown below is valid: the animated attribute has 3 values,
+while the second and third are not valid: for the second case, the animated attribute has 2 values, but 3 key times are specified;
+for the third case, the first animated attribute has 2 values and the second animated attribute has 4 values, but 3 key times are specified:</p>
+<table role="example">
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;!-- valid animation of single attribute with matching key times --&gt;
+&lt;animate xml:id="a1" keyTimes="0;0.2;1" tts:color="red;green;blue"/&gt;
+
+&lt;!-- invalid animation of single attribute with non-matching key times --&gt;
+&lt;animate xml:id="a2" keyTimes="0;0.2;1" tts:color="red;green"/&gt;
+
+&lt;!-- invalid animation of multiple attributes with non-matching key times --&gt;
+&lt;animate xml:id="a3" keyTimes="0;0.2;1"
+  tts:color="red;green" tts:backgroundColor="cyan;magenta;yellow;black"/&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</note>
+</item>
+<item>
+<p>If no <att>keyTimes</att> attribute is specified and the computed value of <emph>calcMode</emph> is not <attval>paced</attval>,
+then a <emph>keyTimes</emph> value applies that corresponds to an even (linear) spacing of specified animation values over the simple duration of
+the animation.</p>
+<note role="example">
+<p>For example, if the animated style is specified as <code>tts:color="red;green;blue"</code>, then the implied value of <att>keyTimes</att>
+is <attval>0;0.5;1</attval>.</p>
+</note>
+</item>
+<item>
+<p>If a <att>keySplines</att> attribute is specified and the computed value of <emph>calcMode</emph> is not <attval>spline</attval>,
+then this usage must be considered an error for the purpose of validation processing and the animation must be ignored for the purpose of
+presentation processing.</p>
+</item>
+<item>
+<p>If a <att>keySplines</att> attribute is specified and the computed value of <emph>calcMode</emph> is <attval>spline</attval>,
+then the number of control components specified in the <att>keySplines</att> attribute must be one less than the number
+of time components in the computed value of the <emph>keyTimes</emph> attribute.</p>
+</item>
+<item>
+<p>If no <att>keySplines</att> attribute is specified and the computed value of <emph>calcMode</emph> is <attval>spline</attval>,
+then this usage must be considered an error for the purpose of validation processing and the animation must be ignored for the purpose of
+presentation processing.</p>
+</item>
+<item>
+<p>If no <att>repeatCount</att> attribute is specified, then a <emph>repeatCount</emph> value of <code>1</code> applies.</p>
+</item>
+<item>
+<p>The <att>additive</att> attribute defined by <bibref ref="svg11"/>, &sect;19.2.10, is not supported by this
+version of TTML; therefore, in its absence, the semantics of the <attval>replace</attval> value of this attribute apply.</p>
+</item>
+<item>
+<p>The <att>accumulate</att> attribute defined by <bibref ref="svg11"/>, &sect;19.2.10, is not supported by this
+version of TTML; therefore, in its absence, the semantics of the <attval>none</attval> value of this attribute apply.</p>
+</item>
 </olist>
 <p>An example of using the <el>animate</el> element to animate content
 styling is illustrated below:</p>
@@ -18070,7 +18156,8 @@ Text with Continuously Varying Colors!
 <note role="explanation">
 <p>In the above example, the foreground color of the content "Text
 with Continuously Varying Colors!" is continuously animated from yellow, to red, to green, to
-red, then back to yellow over a 5 second period.</p>
+red, then back to yellow over a 5 second period, after which the animation effect is removed
+and the original color restored (since <att>fill</att> defaults to <attval>remove</attval>).</p>
 </note>
 <p>An example of using the <el>animate</el> element to animate region
 styling is illustrated below:</p>
@@ -18493,7 +18580,7 @@ whole, fraction
 </div3>
 <div3 id="animation-value-repeat-count">
 <head>&lt;repeat-count&gt;</head>
-<p>A &lt;repeat-count&gt; expression is used to determine the number of iterations of a repeated animation.</p>
+<p>A &lt;repeat-count&gt; expression is used to determine the (possibly fractional) number of iterations of a repeated animation.</p>
 <table id="repeat-count-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;repeat-count&gt;</caption>
 <tbody>
@@ -18501,11 +18588,16 @@ whole, fraction
 <td>
 <eg xml:space="preserve">
 &lt;repeat-count&gt;
-  : count
+  : count                           // <emph>value</emph> > 0
   | "indefinite"
 
 count:
-  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+                       // <emph>value</emph> > 0
+  : whole
+  | whole "." fraction
+  | "." fraction
+
+whole, fraction
+  : <loc href="#style-value-digit">&lt;digit&gt;</loc>+
 </eg>
 </td>
 </tr>
@@ -20752,6 +20844,20 @@ feature if it supports the <code>#length-positive</code> feature as defined by <
 <p>A TTML content processor supports the <code>#length-real</code>
 feature if it supports the <code>#length-real</code> feature as defined by <bibref ref="ttml1"/>, &sect;D.1.50.</p>
 </div3>
+<div3 id="feature-length-root-container-relative">
+<head>#length-root-container-relative</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#length-root-container-relative</code> feature if it recognizes and is
+capable of transforming <termref def="defs-root-container-relative">root container relative</termref> values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
+<code>#length-root-container-relative</code> feature if it implements presentation semantic
+support for <termref def="defs-root-container-relative">root container relative</termref> values of the <loc
+href="#style-value-length">&lt;length&gt;</loc> style value
+expression.
+</p>
+</div3>
 <div3 id="feature-letterSpacing">
 <head>#letterSpacing</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -22717,6 +22823,12 @@ is optional (O), for a TTML <loc href="#terms-content-processor">content process
 <tr>
 <td><loc href="#feature-length-real"><code>#length-real</code></loc></td>
 <td css="text-align:center;">1</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-length-root-container-relative"><code>#length-root-container-relative</code></loc></td>
+<td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>
 </tr>

@@ -1583,6 +1583,15 @@ A profile is typed as a <loc href="#terms-content-profile">content profile</loc>
 internal refers to being internal to a <loc href="#terms-document-instance">document instance</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-profile-processing">
+<label>[profile processing]</label>
+<def>
+<p>The process of performing the <loc href="#semantics-procedure-abort-if-unsupported-processor-profile"><phrase role="strong">[abort if
+unsupported processor profile]</phrase></loc> procedure, which, as a side effect, determines the
+<loc href="#terms-effective-content-profile">effective content profile</loc> and
+the <loc href="#terms-effective-processor-profile">effective processor profile</loc> of a <loc href="#terms-document-instance">document instance</loc>.</p>
+</def>
+</gitem>
 <gitem id="terms-profile-specification">
 <label>[profile specification]</label>
 <def>
@@ -2173,13 +2182,30 @@ of a candidate <loc href="#terms-document-instance">document instance</loc> with
 <item><p>performs the <loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure.</p></item>
 </olist>
 </item>
-<item><p>The processor performs the <loc href="#semantics-procedure-abort-if-unsupported-processor-profile"><phrase role="strong">[abort if
-unsupported processor profile]</phrase></loc> procedure.</p>
+<item><p>The processor performs <loc href="#terms-profile-processing">profile processing</loc>.</p>
 <note role="clarification">
-<p>This specification does not define a strict order between the performance of <loc href="#validation-processing">validation processing</loc>
-and satisfying this requirement to perform the <loc href="#semantics-procedure-abort-if-unsupported-processor-profile"><phrase role="strong">[abort if
-unsupported processor profile]</phrase></loc> procedure. In particular, these two processing steps may be interleaved (or repeated) such that both are
-completed prior to performing further (transformation or presentation) processiing on a <loc href="#terms-document-instance">document instance</loc>.</p>
+<p>This specification does not define a strict order between the performance of <loc href="#terms-validation-processing">validation processing</loc>
+and the performance of <loc href="#terms-profile-processing">profile processing</loc>. In particular, these two processing steps may be interleaved
+(or repeated) such that both are completed prior to performing further (transformation or presentation) processing
+on a <loc href="#terms-document-instance">document instance</loc>.</p>
+</note>
+<note role="example">
+<p>For an example of interleaving <loc href="#terms-validation-processing">validation processing</loc> and
+<loc href="#terms-profile-processing">profile processing</loc>, consider the following scenario (in the given order):</p>
+<ulist>
+<item><p>verify well-formedness of input document source (<emph>validation processing</emph>);</p></item>
+<item><p>instantiate input document source as potentially valid abstract document instance (<emph>general processing</emph>);</p></item>
+<item><p>initialize validation state using built-in application semantics (<emph>validation processing</emph>);</p></item>
+<item><p>initialize profile state using built-in application semantics (<emph>profile processing</emph>);</p></item>
+<item><p>validate validation related vocabulary (<emph>validation processing</emph>);</p></item>
+<item><p>update validation state using valid validation related vocabulary (<emph>validation processing</emph>);</p></item>
+<item><p>validate profile related vocabulary (<emph>validation processing</emph>);</p></item>
+<item><p>update profile state using valid profile related vocabulary (<emph>profile processing</emph>);</p></item>
+<item><p>perform abort steps of <loc href="#semantics-procedure-abort-if-unsupported-processor-profile"><phrase role="strong">[abort if
+unsupported processor profile]</phrase></loc> procedure (<emph>profile processing</emph>);</p></item>
+<item><p>validate entire document, re-validating validation and profile vocabulary as required based on new profile state (<emph>validation processing</emph>);</p></item>
+<item><p>if processing not aborted, continue with transformation or presentation processing (general processing).</p></item>
+</ulist>
 </note>
 </item>
 <item>

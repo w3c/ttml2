@@ -9295,7 +9295,7 @@ The title of the book is
 </tbody>
 </table>
 <div4 id="style-attribute-direction-special-semantics">
-<head>Special Semantics</head>
+<head>Special Semantics of Direction</head>
 <p>When performing style resolution processing (see <specref ref="semantics-style-resolution-processing"/>),
 the resolution of the computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
 <emph><code>R</code></emph> is determined according to the following ordered rules, where the first applicable rule applies:</p>
@@ -9416,7 +9416,7 @@ its associated text.</p>
 </tbody>
 </table>
 <div4 id="style-attribute-disparity-special-usage">
-<head>Special Usage</head>
+<head>Special Usage of Disparity</head>
 <p>When <att>tts:disparity</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
 <loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
@@ -9842,7 +9842,7 @@ while use of a smaller extent makes region overflow more likely.</p>
 </tbody>
 </table>
 <div4 id="style-attribute-extent-special-usage">
-<head>Special Usage</head>
+<head>Special Usage of Extent</head>
 <p>When <att>tts:extent</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
 <loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
@@ -10381,7 +10381,7 @@ i.e., the largest font size, is used.</p>
 </tbody>
 </table>
 <div4 id="style-attribute-fontSize-special-semantics">
-<head>Special Semantics</head>
+<head>Special Semantics of Font Size</head>
 <p>The computed value of the property associated with this attribute consists of a 2-tuple
 the entries of which denote the computed values of the width and height components of the font size respectively.</p>
 <p>When applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element
@@ -11419,7 +11419,7 @@ the computed value, then the value least distant from [0,0], i.e., closest to th
 </tbody>
 </table>
 <div4 id="style-attribute-origin-special-usage">
-<head>Special Usage</head>
+<head>Special Usage of Origin</head>
 <p>When <att>tts:origin</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
 <loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
@@ -11813,7 +11813,7 @@ where this offset is equal to 10% of the difference between the height of the po
 </table>
 <p></p>
 <div4 id="style-attribute-position-special-usage">
-<head>Special Usage</head>
+<head>Special Usage of Position</head>
 <p>When <att>tts:position</att> is specified exceptionally on <loc href="#content-vocabulary-div"><el>div</el></loc> or
 <loc href="#content-vocabulary-p"><el>p</el></loc>, <specref ref="layout-vocabulary-region-special-inline-animation-semantics"/> applies.</p>
 </div4>
@@ -12193,8 +12193,8 @@ is not supported by this version of TTML due to lack of market requirements.</p>
 </tr>
 </tbody>
 </table>
-<div4>
-<head>Special Semantics</head>
+<div4 id="style-attribute-ruby-special-semantics">
+<head>Special Semantics of Ruby Annotations</head>
 <p>In the absence of implementation specific requirements, constraints on alignment between ruby annotation text and ruby base text that would potentially
 give rise to overflowing a line area should be resolved by shifting ruby annotation text away from the start or end edge of the line area.</p>
 <note role="seealso">
@@ -12596,11 +12596,19 @@ to each affected line area.</p>
 <p>If the position component is <code>outside</code>, then, if the current block area contains exactly one line area, the <code>both</code> position
 applies, otherwise the semantics of the <code>before</code> position applies to the first line area of the current block area
 and the semantics of the <code>after</code> position apply to all other line areas of the current block area.</p>  
-<p>If the length component is specified, then its <emph>used value</emph> determines an amount by which the before or (and) after leading(s) of an
-affected line area are increased. If no length component is specified, then it must be considered as if the length component were specified
-with a value equal to one half of the <emph>used value</emph> of the <code>tts:lineHeight</code> style property that applies to the current
-<loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>The length component is used to indirectly determine an amount by which the before and after leading of
+affected line areas are increased. The computed value of the length component is considered to express the computed value of the style property associated
+with the <loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute of hypothetical <emph>ruby text content</emph> were such content
+actually present in a <loc href="#content-vocabulary-p"><el>p</el></loc> element.</p>
+<p>If no length component is specified, then it must be considered to be equal to the value of the style property associated with the
+<loc href="#style-attribute-fontSize"><att>tts:fontSize</att></loc> attribute that would be inherited by
+a hypothetical <emph>ruby text container</emph> or <emph>ruby text content</emph>, where such content actually present
+in a <loc href="#content-vocabulary-p"><el>p</el></loc> element, where the semantics of
+<specref ref="style-attribute-fontSize-special-semantics"/> apply for the purpose of computing this inherited value.</p>
 <p>If the <loc href="#style-value-length">&lt;length&gt;</loc> component is specified, it must be non-negative.</p>
+<p>If the <att>tts:rubyReserve</att> is specified on a <loc href="#content-vocabulary-p"><el>p</el></loc> element which contains
+<emph>ruby text content</emph>, then the reserved leadings are applied to line areas as indicated above and then additional adjustments are
+made to these leadings as needed to accommodate the presence of actual <emph>ruby text content</emph>.</p>
 <p></p>
 <table id="style-attribute-rubyReserve-images" role="example-images-bordered" css="width: 630px">
 <caption>Example Renditions &ndash; Ruby Reserve</caption>
@@ -13104,7 +13112,7 @@ value in any order, such as <code>"noUnderline overline lineThrough"</code>.</p>
 </tbody>
 </table>
 <div4 id="style-attribute-textDecoration-special-semantics">
-<head>Special Semantics</head>
+<head>Special Semantics of Text Decoration</head>
 <p>The computed value of the property associated with this attribute consists of a 3-tuple,
 where each entry denotes, respectively, whether an underline, line through, or overline
 decoration is to be applied to the affected text.
@@ -16885,7 +16893,7 @@ by this attribute express the semantic roles of the region
 independently from the semantic roles of any content targeted to
 (associated with) the region.</p>
 <div4 id="layout-vocabulary-region-special-inline-animation-semantics">
-<head>Special Inline Animation Semantics</head>
+<head>Special Semantics of Inline Animation</head>
 <p>When specified on a <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element <emph>E</emph>,
 the following style attributes apply exceptionally to the <el>region</el> <emph>R</emph> associated with <emph>E</emph> as further specified below:</p>
 <ulist>

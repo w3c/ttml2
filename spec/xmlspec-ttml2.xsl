@@ -1176,6 +1176,167 @@ width: 100%;
   <xsl:apply-templates/>
 </xsl:template>
 
+<!-- div[n]: structural divisions -->
+<!-- make an HTML div -->
+<!-- see also div[n]/head -->
+<xsl:template match="div1">
+  <div class="div1">
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
+
+<xsl:template match="div2">
+  <div class="div2">
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
+
+<xsl:template match="div3">
+  <div class="div3">
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
+
+<xsl:template match="div4">
+  <div class="div4">
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
+
+<xsl:template match="div5">
+  <div class="div5">
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
+
+<xsl:template match="div1/head">
+  <xsl:text>&#10;</xsl:text>
+  <h2>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor">
+    <xsl:with-param name="conditional" select="0"/>
+    <xsl:with-param name="node" select=".."/>
+    </xsl:call-template>
+    <xsl:apply-templates select=".." mode="divnum"/>
+    <xsl:apply-templates/>
+  </h2>
+</xsl:template>
+
+<xsl:template match="div2/head">
+  <xsl:text>&#10;</xsl:text>
+  <h3>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor">
+    <xsl:with-param name="conditional" select="0"/>
+    <xsl:with-param name="node" select=".."/>
+    </xsl:call-template>
+    <xsl:apply-templates select=".." mode="divnum"/>
+    <xsl:apply-templates/>
+  </h3>
+</xsl:template>
+
+<xsl:template match="div3/head">
+  <xsl:text>&#10;</xsl:text>
+  <h4>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor">
+    <xsl:with-param name="conditional" select="0"/>
+    <xsl:with-param name="node" select=".."/>
+    </xsl:call-template>
+    <xsl:apply-templates select=".." mode="divnum"/>
+    <xsl:apply-templates/>
+  </h4>
+</xsl:template>
+
+<xsl:template match="div4/head">
+  <xsl:text>&#10;</xsl:text>
+  <h5>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor">
+    <xsl:with-param name="conditional" select="0"/>
+    <xsl:with-param name="node" select=".."/>
+    </xsl:call-template>
+    <xsl:apply-templates select=".." mode="divnum"/>
+    <xsl:apply-templates/>
+  </h5>
+</xsl:template>
+
+<xsl:template match="div5/head">
+  <xsl:text>&#10;</xsl:text>
+  <h6>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor">
+    <xsl:with-param name="conditional" select="0"/>
+    <xsl:with-param name="node" select=".."/>
+    </xsl:call-template>
+    <xsl:apply-templates select=".." mode="divnum"/>
+    <xsl:apply-templates/>
+  </h6>
+</xsl:template>
+
+<xsl:template match="inform-div1/head">
+  <xsl:text>&#10;</xsl:text>
+  <h2>
+    <xsl:if test="@css">
+      <xsl:attribute name="style">
+        <xsl:value-of select="@css"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor">
+    <xsl:with-param name="conditional" select="0"/>
+    <xsl:with-param name="node" select=".."/>
+    </xsl:call-template>
+    <xsl:apply-templates select=".." mode="divnum"/>
+    <xsl:apply-templates/>
+    <xsl:text> (Non-Normative)</xsl:text>
+  </h2>
+</xsl:template>
+
 <!-- graphic -->
 <xsl:template match="graphic">
   <img src="{@source}">
@@ -1215,6 +1376,28 @@ width: 100%;
     </xsl:for-each>
     <xsl:apply-templates/>
   </xsl:element>
+</xsl:template>
+
+<!-- p: a standard paragraph -->
+<xsl:template match="p">
+<p>
+  <xsl:if test="@id">
+    <xsl:attribute name="id">
+      <xsl:value-of select="@id"/>
+    </xsl:attribute>
+  </xsl:if>
+  <xsl:if test="@role">
+    <xsl:attribute name="class">
+      <xsl:value-of select="@role"/>
+    </xsl:attribute>
+  </xsl:if>
+  <xsl:if test="@css">
+    <xsl:attribute name="style">
+      <xsl:value-of select="@css"/>
+    </xsl:attribute>
+  </xsl:if>
+  <xsl:apply-templates/>
+</p>
 </xsl:template>
 
 <!-- term: the actual mention of a term within a termdef -->

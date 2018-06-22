@@ -1189,6 +1189,10 @@ glyph metrics, and other data used in the character to glyph mapping and renderi
 <label>[height]</label>
 <def>
 <p>An <loc href="#terms-absolute-dimension">absolute dimension</loc> on the <loc href="#terms-vertical-axis">vertical axis</loc>.</p>
+<note role="exception">
+<p>In some exceptional cases, the term <emph>height</emph> may refer to the  <loc href="#terms-horizontal-axis">horizontal axis</loc>,
+more about which see <specref ref="style-attribute-lineHeight"/>.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-fragment-identifier">
@@ -16932,13 +16936,22 @@ the following style attributes apply exceptionally to the <el>region</el> <emph>
   <item><p><loc href="#style-attribute-origin"><att>tts:origin</att></loc></p></item>
   <item><p><loc href="#style-attribute-position"><att>tts:position</att></loc></p></item>
 </ulist>
-<p>In such cases, the application of these style attributes are considered to be
+<p>In such cases, the application of each of these style attributes is considered to be
 equivalent to an anonymous <loc href="#terms-inline-animation">inline animation</loc> taking
 the form of a <loc href="#animation-vocabulary-set"><el>set</el></loc> animation element <emph>A</emph>, where the
 animation applies to <emph>R</emph> over an active time interval equivalent to the active time
 interval of <emph>E</emph>, and where, if multiple animation elements
 (<emph>A<sub>i</sub></emph>, ..., <emph>A<sub>j</sub></emph>) already apply to <emph>R</emph>,
-then <emph>A</emph> applies subsequent to these the last of these existing animations, namely, immediately after <emph>A<sub>j</sub></emph>.</p>
+then <emph>A</emph> applies subsequent to the last of these existing animations, namely, immediately after <emph>A<sub>j</sub></emph>.</p>
+<note role="clarification">
+<p>In the event that multiple anonymous <loc href="#terms-inline-animation">inline animations</loc> of the same style attribute are
+applied to some region <emph>R</emph>, then the corresponding
+<loc href="#animation-vocabulary-set"><el>set</el></loc> animation elements, <emph>A<sub>j</sub></emph>, ..., <emph>A<sub>k</sub></emph>, 
+are added to <emph>R</emph> according to the pre-order traversal order of elements <emph>E<sub>j</sub></emph>, ..., <emph>E<sub>k</sub></emph> that
+produced these animations.</p>
+<p>Note also that the semantics of applying multiple animations to a specific style attribute for a given element are
+governed by step (5), <phrase role="strong">[animation styling]</phrase>, of <specref ref="semantics-style-resolution-processing-sss"/>.</p>
+</note>
 <p>These special semantics are depicted by the following model example using a <att>tts:extent</att> style attribute,
 but which model applies generally to all the above listed style attributes:</p>
 <table id="anonymous-inline-set-example-extent-input" role="example">

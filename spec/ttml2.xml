@@ -823,8 +823,13 @@ attribute, the semantics of the element always apply.
 <label>[conditionally excluded (or included)]</label>
 <def>
 <p>If the condition expression of a <loc href="#terms-conditionalized-element">conditionalized element</loc> evaluates
-to <code>false</code>, then the element is said to be <emph>conditionally excluded</emph>; in contrast, 
-if the condition does not evaluate to <code>false</code>, then the element is said to be <emph>conditionally included</emph>.</p>
+to <code>false</code>, then the element and its descendant elements are said to be <emph>conditionally excluded</emph>.
+If an element is not <emph>conditionally excluded</emph>, then it is said to be <emph>conditionally included</emph>.</p>
+<note role="elaboration">
+<p>An element that is conditionally included but does not permit the use of or does not specify a
+<loc href="#content-attribute-condition"><att>condition</att></loc> attribute may be referred to as
+an <emph>unconditionally included</emph> element.</p>
+</note>
 <p>When an element is conditionally excluded, then, unless specified otherwise, all of its semantics are ignored.</p>
 <note role="elaboration">
 <p>In the case of certain elements, for example the <loc href="#styling-vocabulary-style"><el>style</el></loc> element,
@@ -6179,7 +6184,7 @@ in the core vocabulary catalog:</p>
 <p>The <att>condition</att> attribute is used to conditionally include or exclude an element from semantic processing,
 in which case the element is referred to as a <loc href="#terms-conditionalized-element">conditionalized element</loc>.</p>
 <note role="clarification">
-<p>The use of a <att>condition</att> attribute by an element does not prevent either the parsing of that element (and its descendant) or
+<p>The use of a <att>condition</att> attribute by an element does not prevent either the parsing of that element (and its descendants) or
 the insertion of the parsed representation of that element (and its descendants) into the
 <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> associated with the containing
 <loc href="#terms-document-instance">document instance</loc>.</p>
@@ -6200,22 +6205,20 @@ its <loc href="#content-value-condition">&lt;condition&gt;</loc> expression valu
 then the semantics of the element and its descendant elements must be ignored unless explicitly specified otherwise.</p>
 <note role="elaboration">
 <p>For example, if a <loc href="#content-vocabulary-p"><el>p</el></loc> element specifies a <att>condition</att>
-attribute that evaluates to <code>false</code>, then the content of that element is ignored for presentation purposes.</p>
+attribute that evaluates to <code>false</code>, then the content of that element and its descendants are ignored for presentation purposes.</p>
 </note>
 <note role="clarification">
 <p>In certain cases, ignoring (excluding) the semantics of an element by means of a <att>condition</att> attribute consists
-of partially rather than wholly ignoring the semantics of the element, about which see specific element definitions.</p>
+of partially rather than wholly ignoring the semantics of the element, about which see the following text as well as specific element definitions.</p>
 </note>
-
 <p>Unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies, the following exceptions apply for the
 purpose of determining which semantics are to be ignored when a <loc href="#content-value-condition">&lt;condition&gt;</loc> expression
 value evaluates to <code>false</code>:</p>
 <ulist>
 <item><p>the <loc href="#semantics-timing">timing semantics</loc> of a <loc href="#terms-timed-element">timed element</loc> are not ignored;</p></item>
 <item><p>the <loc href="#semantics-style-association-chained-referential">chained referential semantics</loc> of a
-  <loc href="#styling-vocabulary-style"><el>style</el></loc> element are not ignored;</p></item>
+<loc href="#styling-vocabulary-style"><el>style</el></loc> element are not ignored;</p></item>
 </ulist>
-
 </div3>
 <div3 id="content-attribute-xlink-arcrole">
 <head>xlink:arcrole</head>

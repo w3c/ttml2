@@ -25022,7 +25022,7 @@ Synchronic Document Sequence</loc>  document.</p>
 <p>The <el>isd:sequence</el> element accepts as its children zero or more <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc> elements,
 followed by zero or one <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> element,
 followed by zero or more <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> elements.</p>
-<p>Child <el>isd:isd</el> elements must be ordered in accordance to the media time equivalent of their
+<p>Children <el>isd:isd</el> elements must be ordered in accordance to the media time equivalent of their
 begin time; furthermore, the temporal intervals of any two child <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> elements must not overlap (in time).</p>
 <table id="elt-syntax-isd-sequence" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: isd:sequence</caption>
@@ -25031,6 +25031,7 @@ begin time; furthermore, the temporal intervals of any two child <loc href="#isd
 <td>
 <eg xml:space="preserve">
 &lt;isd:sequence
+  extent = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   size = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
@@ -25044,6 +25045,11 @@ begin time; furthermore, the temporal intervals of any two child <loc href="#isd
 </tr>
 </tbody>
 </table>
+<p>If the <att>extent</att> attribute is specified, then it must adhere to the subset of the <loc href="#style-value-extent">&lt;extent&gt;</loc> value
+syntax that consists of two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, in which case, the specified value
+expresses the <emph>collective resolution</emph> of the root container region as defined by <specref ref="root-container-region-semantics-resolution"/>,
+where this <emph>collective resolution</emph> applies globally to each each constituent
+<loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc> represented by a child <el>isd:isd</el> element.</p>
 <p>If the <att>size</att> attribute is specified, then it must be a non-negative integer corresponding to the number of
 <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> child elements.
 If not specified, then the size must be considered to be <emph>indefinite</emph>, unless and until the
@@ -25110,6 +25116,7 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
 &lt;isd:isd
   <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> | <emph>"indefinite"</emph>
+  extent = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
@@ -25140,6 +25147,17 @@ or there is no temporal end point.</p>
 <p>Expressed in the terminology of <bibref ref="smil3"/>, the values of these <att>begin</att> and <att>end</att> attributes
 correspond to the resolved begin and end times of the <emph>active duration</emph> with respect to the <emph>document begin</emph>.</p>
 </note>
+<p>If the <att>extent</att> attribute is specified, then it must adhere to the subset of the <loc href="#style-value-extent">&lt;extent&gt;</loc> value
+syntax that consists of two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, in which case, the specified value
+expresses the <emph>collective resolution</emph> of the root container region as defined by <specref ref="root-container-region-semantics-resolution"/>,
+where this <emph>collective resolution</emph> applies to the <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>
+represented by this <el>isd:isd</el> element. Furthermore,
+if this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element is contained in an
+<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> document, then
+if the container <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element specifies an
+<att>extent</att> attribute, then this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element
+should not specify an <att>extent</att> attribute, and, if specified, must be equal to the value of the 
+<att>extent</att> attribute specified on the container <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element.</p>
 <p>An <loc href="#content-attribute-xml-lang"><att>xml:lang</att></loc> attribute must be specified on the
 <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element if it is a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate
 Synchronic Document</loc> document; otherwise, it may be specified, and should be specified if the default language of the 

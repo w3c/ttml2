@@ -2185,6 +2185,19 @@ satisfied:</p>
 instantiating a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc>
 representation of a conformant <loc href="#terms-document-instance">document instance</loc>.</p>
 </item>
+
+<item><p>The processor performs <loc href="#terms-profile-processing">profile processing</loc>.</p>
+<note role="clarification">
+<p>The performance of <loc href="#terms-profile-processing">profile processing</loc> implies a certain degree of partial validation,
+short of performing the <loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure
+described in the next item below. In particular, the syntactic expression of profile related vocabulary and any essential syntactic or
+semantic constraint that applies to the usage of this vocabulary are expected to be nominally verified by an implementation prior to making
+use of this vocabulary. If <loc href="#terms-profile-processing">profile processing</loc> is completed without detecting a significant violation
+of a syntactic or semantic constraint, then more complete validation may be performed by the
+<loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure.</p>
+</note>
+</item>
+
 <item>
 <p>If a processor is a <loc href="#terms-validating-content-processor">validating content processor</loc>, then it</p>
 <olist>
@@ -2194,13 +2207,18 @@ of a candidate <loc href="#terms-document-instance">document instance</loc> with
 <emph>Abstract Document Types</emph> defined by <specref ref="doctypes"/>; and</p></item>
 <item><p>performs the <loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure.</p></item>
 </olist>
-</item>
-<item><p>The processor performs <loc href="#terms-profile-processing">profile processing</loc>.</p>
 <note role="clarification">
 <p>This specification does not define a strict order between the performance of <loc href="#terms-validation-processing">validation processing</loc>
-and the performance of <loc href="#terms-profile-processing">profile processing</loc>. In particular, these two processing steps may be interleaved
-(or repeated) such that both are completed prior to performing further (transformation or presentation) processing
+and the performance of <loc href="#terms-profile-processing">profile processing</loc> described in the previous item above. In particular, these two
+processing steps may be interleaved (or repeated) such that both are completed prior to performing further (transformation or presentation) processing
 on a <loc href="#terms-document-instance">document instance</loc>.</p>
+<p>Notwithstanding the above, there is an implied order relationship between <loc href="#terms-validation-processing">validation processing</loc>
+and <loc href="#terms-profile-processing">profile processing</loc>; specificlly, in order to perform
+<loc href="#terms-validation-processing">validation processing</loc>, it is necessary to resolve the value of the
+<loc href="#terms-effective-validation-profile">effective validation profile</loc>, for which value it is necessary to resolve the value of the
+<loc href="#terms-effective-content-profile">effective content profile</loc>, or if that value is <code>null</code>, then resolve the value of the
+<loc href="#terms-effective-processor-profile">effective processor profile</loc>, the latter two values of which are obtained during
+<loc href="#terms-profile-processing">profile processing</loc>.</p>
 </note>
 <note role="example">
 <p>For an example of interleaving <loc href="#terms-validation-processing">validation processing</loc> and
@@ -2221,6 +2239,7 @@ unsupported processor profile]</phrase></loc> procedure (<emph>profile processin
 </ulist>
 </note>
 </item>
+
 <item>
 <p>The processor does not <emph>a priori</emph> reject or abort the
 processing of a conformant <loc href="#terms-document-instance">document instance</loc>
@@ -3029,7 +3048,6 @@ attribute on the root <el>tt</el> element applies;
 <p>otherwise, the <loc href="#terms-effective-content-profile">effective content profile</loc> is <code>null</code>.</p>
 </item>
 </olist>
-<note role="clarification">
 <p>For the purpose of complying with <loc href="#conformance-generic-processor">Generic Processor Conformance</loc>,
 when processing a given <loc href="#terms-document-instance">document instance</loc>,
 the <loc href="#terms-effective-content-profile">effective content profile</loc>, once set to a non-null reference to a
@@ -3037,7 +3055,6 @@ the <loc href="#terms-effective-content-profile">effective content profile</loc>
 remains a constant reference to a constant <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>
 for the duration of that processing. Likewise, if set to a <code>null</code> reference, it remains a constant <code>null</code> reference for the
 duration of that processing.</p>
-</note>
 </def>
 </gitem>
 </glist>
@@ -3124,14 +3141,12 @@ result of performing the <loc href="#semantics-procedure-construct-inferred-proc
 procedure;</p>
 </item>
 </olist>
-<note role="clarification">
 <p>For the purpose of complying with <loc href="#conformance-generic-processor">Generic Processor Conformance</loc>,
 when processing a given <loc href="#terms-document-instance">document instance</loc>,
 the <loc href="#terms-effective-processor-profile">effective processor profile</loc>, once set to a reference to a
 <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>,
 remains a constant reference to a constant <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>
 for the duration of that processing.</p>
-</note>
 </def>
 </gitem>
 <gitem id="semantics-procedure-construct-inferred-processor-profile">
@@ -3306,6 +3321,12 @@ that causes a warning to be treated as an error, or vice-versa.</p></note>
 <item><p>otherwise, the <loc href="#terms-effective-validation-profile">effective validation profile</loc> is the
 <loc href="#terms-effective-processor-profile">effective processor profile</loc>.</p></item>
 </olist>
+<p>For the purpose of complying with <loc href="#conformance-generic-processor">Generic Processor Conformance</loc>,
+when processing a given <loc href="#terms-document-instance">document instance</loc>,
+the <loc href="#terms-effective-validation-profile">effective validation profile</loc>, once set to a reference to a
+<loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>,
+remains a constant reference to a constant <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>
+for the duration of that processing.</p>
 </def>
 </gitem>
 <gitem id="semantics-procedure-construct-effective-validation-schemas">

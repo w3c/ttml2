@@ -2322,6 +2322,9 @@ by <specref ref="profile-ttml2-presentation"/>.</p>
 <p>The processor supports the DFXP Presentation profile as specified
 by <specref ref="profile-dfxp-presentation"/>.</p>
 </item>
+<item>
+<p>The processor performs <specref ref="semantics-region-layout-step-1"/> and <specref ref="semantics-region-layout-step-2"/>.</p>
+</item>
 </olist>
 <note role="elaboration">
 <p>Two conforming presentation processors are not required to produce the same presentation when processing the same conforming document.
@@ -5940,9 +5943,7 @@ attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
 <p>Style properties that are associated with a <el>body</el> element
 in a <loc href="#terms-document-instance">document instance</loc> are available for style inheritance by
-descendant <loc href="#terms-content-element">content elements</loc> such as <el>div</el>, <el>p</el>,
-<el>span</el>
-and <el>br</el>.</p>
+descendant <loc href="#terms-content-element">content elements</loc>.</p>
 </note>
 <p>If no <att>timeContainer</att> attribute is specified on a
 <el>body</el> element, then it must be interpreted as having
@@ -6016,14 +6017,9 @@ element group apply semantically to the <el>div</el> element.</p>
 <p>An author may associate a set of style properties with a <el>div</el> element by means of either
 the <att>style</att> attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
-<p>Style properties that are associated
-with
+<p>Style properties that are associated with
 a <el>div</el> element in a <loc href="#terms-document-instance">document instance</loc>
-are available for style inheritance by descendant <loc href="#terms-content-element">content elements</loc> such as
-<el>div</el>, 
-<el>p</el>,
-<el>span</el>, and
-<el>br</el>.</p>
+are available for style inheritance by descendant <loc href="#terms-content-element">content elements</loc>.</p>
 </note>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>div</el> element, then it must be interpreted as having
@@ -6084,8 +6080,7 @@ attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
 <p>Style properties that are associated with a <el>p</el> element
 in a <loc href="#terms-document-instance">document instance</loc> are available for style inheritance by
-descendant <loc href="#terms-content-element">content elements</loc> such as <el>span</el> and
-<el>br</el>.</p>
+descendant <loc href="#terms-content-element">content elements</loc>.</p>
 </note>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>p</el> element, then it must be interpreted as having
@@ -6162,8 +6157,7 @@ attribute or inline style attributes or a combination thereof.</p>
 <note role="explanation">
 <p>Style properties that are associated with a <el>span</el> element
 in a <loc href="#terms-document-instance">document instance</loc> are available for style inheritance by
-descendant <loc href="#terms-content-element">content elements</loc> such as <el>span</el> and
-<el>br</el>.</p>
+descendant <loc href="#terms-content-element">content elements</loc>.</p>
 </note>
 <p>If no <att>timeContainer</att> attribute is specified on
 a <el>span</el> element, then it must be interpreted as having
@@ -7086,6 +7080,10 @@ identifier is not referenced by other <el>audio</el> elements, or, if it is, the
 zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group, followed by
 zero or more elements in the <loc href="#element-vocab-group-animation"><code>Animation.class</code></loc> element group, followed by zero or more
 <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
+<note role="clarification">
+<p>No text node descendant of an <el>audio</el> element is a significant text node for the purpose of performing the
+<loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc> procedure.</p>
+</note>
 <table id="elt-syntax-audio" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: audio</caption>
 <tbody>
@@ -7513,6 +7511,10 @@ value of <code>block</code> or <code>inline</code>, respectively.</p>
 zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group, followed by
 zero or more elements in the <loc href="#element-vocab-group-animation"><code>Animation.class</code></loc> element group, followed by
 zero or more <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
+<note role="clarification">
+<p>No text node descendant of an <el>image</el> element is a significant text node for the purpose of performing the
+<loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc> procedure.</p>
+</note>
 <table id="elt-syntax-image" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: image</caption>
 <tbody>
@@ -11036,7 +11038,7 @@ descendants of a <loc href="#content-vocabulary-p"><el>p</el></loc> element is u
 <loc href="#terms-inline-area">inline areas</loc>, about which see <bibref ref="xslfo11"/>, &sect;4.5, and <bibref ref="css2"/>, &sect;10.8.1.</p>
 </note>
 <p>If the value of this attribute is <code>normal</code>, then the
-resolved computed value of this style property is determined as follows:</p>
+<termref def="defs-resolved-computed-value">resolved computed value</termref> of this style property is determined as follows:</p>
 <olist>
 <item><p>
 Let <emph>P</emph> be the <loc href="#content-vocabulary-p"><el>p</el></loc> element to which this style property applies.
@@ -11065,14 +11067,14 @@ where scaled(<emph>X</emph>) denotes font metric <emph>X</emph> scaled according
 <emph>LH</emph> is recommended to be set to 125% of <emph>FS</emph>.
 </p></item>
 <item><p>
-Set the resolved computed value of this style property to <emph>LH</emph>.
+Set the <termref def="defs-resolved-computed-value">resolved computed value</termref> of this style property to <emph>LH</emph>.
 </p></item>
 </olist>
 <note role="clarification">
 <p>When the specified value of this attribute is <code>normal</code>, the computed value is the specified value; therefore,
 when applying inheritance semantics, the value <code>normal</code> is the inherited value.
-However, when this computed value is to be used to perform paragraph layout, it is further processed to obtain a resolved computed value (also called a
-<xspecref href="https://www.w3.org/TR/2011/REC-CSS2-20110607/cascade.html#used-value"><phrase><emph>used value</emph></phrase></xspecref>)
+However, when this computed value is to be used to perform paragraph layout, it is further processed to obtain a
+<termref def="defs-resolved-computed-value">resolved computed value</termref>
 as described above.</p>
 </note>
 <note role="elaboration">
@@ -12724,9 +12726,9 @@ placement regardless of the presence or absence of ruby text annotations.</p>
 <p>If the value of this attribute is <code>none</code>, then no ruby space reservation applies; otherwise, the value of this attribute specifies a
 position component followed by an optional length component.</p>
 <p>If the position component is <code>before</code>, then the before leading of affected line areas is increased by the amount determined by the
-<emph>used value</emph> of the length component.</p>
+<termref def="defs-resolved-computed-value">resolved computed value</termref> of the length component.</p>
 <p>If the position component is <code>after</code>, then the after leading of affected line areas is increased by the amount determined by the
-<emph>used value</emph> of the length component.</p>
+<termref def="defs-resolved-computed-value">resolved computed value</termref> of the length component.</p>
 <p>If the position component is <code>both</code>, then the semantics of both the <code>before</code> and <code>after</code> positions apply
 to each affected line area.</p>
 <p>If the position component is <code>outside</code>, then, if the current block area contains exactly one line area, the <code>both</code> position
@@ -16330,7 +16332,7 @@ within the applicable intermediate synchronic document.</p>
 </table>
 <note role="explanation">
 <p>In the above example, the <el>span</el> element that encloses the character items
-<code>Yellow Monospace</code> is not associated with a <att>tts:fontFamily</att> style
+<code>Yellow Monospace</code> does not specify a <att>tts:fontFamily</att> style
 property and this property is inheritable; therefore, the value of the
 <att>tts:fontFamily</att> style
 is inherited from the computed style
@@ -16390,10 +16392,11 @@ follows:</p>
 </ulist>
 <div4 id="semantics-style-resolved-value-category-specified">
 <head>Specified Values</head>
-<p>Values of style properties that are associated with or inherited
-by an element or <loc href="#terms-anonymous-span">anonymous span</loc> are referred to as <emph>specified values</emph>. The
-set of all specified style properties of a given element is referred to
-as the <emph>specified style set</emph> of that element.</p>
+<p>The value of a style property that is associated with or inherited
+by an element or <loc href="#terms-anonymous-span">anonymous span</loc>
+is referred to as a <termdef id="defs-specified-value" term=""><term>specified value</term></termdef>.
+The set of all specified style properties of a given element is referred to
+as the <termdef id="defs-specified-style-set" term=""><term>specified style set</term></termdef> of that element.</p>
 </div4>
 <div4 id="semantics-style-resolved-value-category-computed">
 <head>Computed Values</head>
@@ -16401,17 +16404,25 @@ as the <emph>specified style set</emph> of that element.</p>
 such as a named color, a relative unit (e.g., cell), or a percentage, then
 they need to be further resolved into absolute units, such as an RGB triple,
 pixels, etc.</p>
-<p>During the style resolution process, all specified style values are
-reinterpreted (or recalculated) in absolute terms, and then recorded as
-<emph>computed values</emph>. The
+<p>During the style resolution process, a specified style value may be
+reinterpreted (or recalculated) in absolute terms, and then recorded as a
+<termdef id="defs-computed-value" term=""><term>computed values</term></termdef>. The
 set of all computed style properties of a given element is referred to
-as the <emph>computed style set</emph> of that element.</p>
+as the <termdef id="defs-computed-style-set" term=""><term>computed style set</term></termdef> of that element.</p>
 <p>When a style value is inherited, either explicitly or implicitly, it
 is the computed value of the style that is inherited from an ancestor
 element. This is required since the resolution of certain relative units,
 such as percentage, require evaluating the expression in the immediate
 (local) context of reference, and not in a distant (remote) context of
 reference where the related (resolving) expression is not available.</p>
+<p>Subsequent to style inheritance, a computed value may require further resolution at layout or presentation time
+when such resolution is required by the semantics of a specific property or the
+information required to perform the resolution is not available until layout or
+presentation processing occurs. Such a value is referred to as a
+<termdef id="defs-resolved-computed-value" term=""><term>resolved computed value</term></termdef>, also called a
+<xspecref href="https://www.w3.org/TR/2011/REC-CSS2-20110607/cascade.html#used-value"><phrase><emph>used value</emph></phrase></xspecref>,
+which need not be the same value as the final <termref def="defs-actual-value">actual value</termref>
+described below.</p>
 </div4>
 <div4 id="semantics-style-resolved-value-category-actual">
 <head>Actual Values</head>
@@ -16424,8 +16435,8 @@ pixels in computed style values are considered to express logical rather than
 physical (device) pixels. Consequently, these logical pixels are subject to
 being further transformed or mapped to physical (device) pixels during
 presentation.</p>
-<p>The final values that result from the logical to device mapping
-process are referred to as <emph>actual values</emph>.  The set of all
+<p>The final value that results from the logical to device mapping
+process is referred to as an <termdef id="defs-actual-value" term=""><term>actual value</term></termdef>.  The set of all
 actual style properties of a given element is referred to as the
 <emph>actual style set</emph> of that element.</p>
 <note role="elaboration">
@@ -16465,6 +16476,7 @@ model specified below, the following conceptual definitions apply:</p>
 <gitem id="semantics-style-property">
 <label>[style property]</label>
 <def>
+<p></p>
 <p>a style property, <emph>P</emph>, is considered to consist of a
 tuple <code>[name, value]</code>, where the name of the
 property is a tuple <code>[namespace value,
@@ -16491,6 +16503,7 @@ tuple <code>[category, type, value expression]</code></p>
 <gitem id="semantics-style-property-set">
 <label>[style (property) set]</label>
 <def>
+<p></p>
 <p>a style (property) set consists of an unordered collection of style
 properties, where no two style properties within the set have an
 identical name, where by "identical name" is meant equality of
@@ -16565,6 +16578,7 @@ property is either "specified" or "computed"; a computed style (property) set of
 <gitem>
 <label>[style (property) merging]</label>
 <def>
+<p></p>
 <p>a style property <emph>P<sub>new</sub></emph> is merged into a
 style (property) set, <emph>SS</emph>, as follows: if a style property
 <emph>P<sub>old</sub></emph> is already present in <emph>SS</emph>
@@ -16578,6 +16592,7 @@ name of <emph>P<sub>old</sub></emph>, then replace
 <gitem>
 <label>[style (property) set merging]</label>
 <def>
+<p></p>
 <p>a style (property) set <emph>SS<sub>new</sub></emph> is merged into
 an existing style (property) set <emph>SS<sub>old</sub></emph> as
 follows: for each style property <emph>P<sub>new</sub></emph> in
@@ -16612,7 +16627,7 @@ the specified style set of <emph>E</emph>,
 <!-- 3. [nested styling] -->
 <item><p><phrase role="strong">[nested styling]</phrase>
 if <emph>E</emph> is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>, then
-for each nested <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
+for each nested <loc href="#terms-conditionally-excluded">conditionally included</loc> <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
 <emph>E</emph>, and in the specified order of child elements, merge
 the specified style set of <emph>S<sub>NEST</sub></emph>,
 <emph>SSS(S<sub>NEST</sub>)</emph>, into the specified style set of
@@ -16626,9 +16641,9 @@ merge <emph>P</emph> into the specified style
 set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <!-- 5. [animation styling] -->
 <item><p><phrase role="strong">[animation styling]</phrase> if the
-element type of <emph>E</emph> is not the animation element type
-<el>set</el>, then for each
-immediate animation (<el>set</el>) element child <emph>A</emph> of element <emph>E</emph>,
+element type of <emph>E</emph> is not an <loc href="#terms-inline-animation">inline animation</loc> element,
+then for each <loc href="#terms-conditionally-excluded">conditionally included</loc>
+<loc href="#terms-inline-animation">inline animation</loc> element child <emph>A</emph> of element <emph>E</emph>,
 merge the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <!-- step 6 -->
@@ -16712,7 +16727,7 @@ style property <emph>P</emph> in <emph>CSS(E)</emph>, where the value
 type of <emph>P</emph> is relative, perform the following ordered
 sub-steps:</p>
 <olist>
-<item><p>replace the relative value of <emph>P</emph> with an
+<item><p>if possible, replace the relative value of <emph>P</emph> with an
 equivalent, non-relative (computed) value;</p></item>
 <item><p>set the category of <emph>P</emph> to "computed";</p></item>
 </olist>
@@ -16728,6 +16743,12 @@ context of a layout or <loc href="#terms-content-element">content element</loc> 
 context, and not in the non-presentation, declaration context
 of an <el>animate</el>, <el>set</el>, or referable <el>style</el> element.</p>
 </note>
+<note role="clarification">
+<p>Since the relative value resolution rule above may not resolve a relative value, for example,
+when resolution cannot occur until layout or presentation time, further resolution of a
+<termref def="defs-computed-value">computed value</termref>  may be required to obtain a
+<termref def="defs-resolved-computed-value">resolved computed value</termref>.</p>
+</note>
 </div4>
 <div4 id="semantics-style-resolution-process-overall">
 <head>Style Resolution Process</head>
@@ -16741,17 +16762,17 @@ sub-steps:</p>
 is not one of the following, then continue to the next element in the preorder traversal, i.e.,
 do not perform the subsequent step below on <emph>E</emph>:</p>
 <ulist>
-<item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
-<item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
-<item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
-<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
-<item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
-<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
 <item><p><loc href="#animation-vocabulary-animate"><el>animate</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc></p></item>
+<item><p><loc href="#document-structure-vocabulary-body"><el>body</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-br"><el>br</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-div"><el>div</el></loc></p></item>
+<item><p><loc href="#embedded-content-vocabulary-image"><el>image</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-p"><el>p</el></loc></p></item>
+<item><p><loc href="#layout-vocabulary-region"><el>region</el></loc></p></item>
+<item><p><loc href="#content-vocabulary-span"><el>span</el></loc></p></item>
 <item><p><loc href="#animation-vocabulary-set"><el>set</el></loc></p></item>
+<item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
 <item><p><loc href="#terms-anonymous-span">anonymous span</loc></p></item>
 </ulist>
 </item>
@@ -16844,8 +16865,9 @@ of 90 degrees is applied in the axis associated with the inline progression dire
 of -90 degrees is applied. If the absolute value of the specified percentage is greater than 100%, then it must be interpreted as if 100% were specified with
 the appropriate sign.</p>
 <note role="clarification">
-<p>If the absolute value of the resulting shear angle is 90 degrees, then the <emph>used value</emph> of the shear angle is reduced by some small epsilon
-so that the tangent of the <emph>used value</emph> is defined.</p>
+<p>If the absolute value of the resulting shear angle is 90 degrees, then the
+<termref def="defs-resolved-computed-value">resolved computed value</termref> of the shear angle is reduced by some small epsilon
+so that the tangent of the <termref def="defs-resolved-computed-value">resolved computed value</termref> is defined.</p>
 </note>
 <p>If the inline progression direction corresponds to the X axis, then the 2D shear transformation is described by the following matrix:</p>
 <eg xml:space="preserve">
@@ -17234,6 +17256,7 @@ if a <loc href="#terms-content-element">content element</loc> specifies a <loc h
 <gitem id="procedure-process-inline-regions">
 <label>[process inline regions]</label>
 <def>
+<p></p>
 <p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
 in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
 perform the following ordered steps:</p>
@@ -17472,6 +17495,7 @@ more about which see step (2) of the <loc href="#procedure-flow-transformation">
 <gitem id="procedure-associate-region">
 <label>[associate region]</label>
 <def>
+<p></p>
 <p>A <loc href="#terms-content-element">content element</loc> is associated with a region according
 to the following ordered rules, where the first rule satisfied
 is used and remaining rules are skipped:</p>
@@ -17539,14 +17563,16 @@ since such would not necessarily be sufficient to satisfy the full presentation 
 defined by this specification, and would contain a large number of features not needed to
 implement the presentation semantics of TTML.</p>
 </note>
+<p>For the purpose of performing presentation processing, for each intermediate synchronic document produced by
+<specref ref="semantics-region-layout-step-1"/>, <emph>DOC<sub><phrase>inter<sub>i</sub></phrase></sub></emph>, (1) invoke the following
+<phrase role="strong"><loc href="#procedure-flow-transformation">[flow transformation]</loc></phrase> procedure
+to obtain an XSL FO document instance, <emph>F<sub>i</sub></emph>, and then (2) if processing requires presentation on a
+visual medium, apply to <emph>F<sub>i</sub></emph> all relevant formatting and rendering semantics consistent with that prescribed
+by <bibref ref="xslfo11"/> and this specification.</p>
 <glist>
 <gitem id="procedure-flow-transformation">
 <label>[flow transformation]</label>
 <def>
-<p></p>
-<p>Each intermediate synchronic document produced by <specref
-ref="semantics-region-layout-step-1"/> is mapped 
-to an XSL FO document instance, <emph>F</emph>, as follows:</p>
 <olist>
 <item>
 <p>if not previously invoked, perform procedure
@@ -17607,11 +17633,26 @@ XSL-FO properties in case the region extends outside of its containing block.</p
 </note>
 </item>
 <item>
-<p>for each <el>body</el>, <el>div</el>, and <el>p</el> element that is not
-associated with a <att>tts:display</att> style property with the value
-<code>none</code>, map the element to a distinct <el>fo:block</el> element,
+<p>for each (1) <el>body</el>, <el>div</el>, and <el>p</el> element or (2) <el>image</el> element
+in a block level context, i.e., an <el>image</el> child of an element
+in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
+then, if the element is not associated with a <att>tts:display</att> style property with the value
+<code>none</code>:</p>
+<olist>
+<item>
+<p>if the element is not an <el>image</el> element, then map the element to a distinct <el>fo:block</el> element,
 populating the style properties of <el>fo:block</el> by using the computed
 style set associated with each original TTML <loc href="#terms-content-element">content element</loc>;</p>
+</item>
+<item>
+<p>otherwise (the element is an <el>image</el> element), map the element to a distinct <el>fo:block</el> element
+containing a single <el>fo:external-graphic</el> child element, 
+populating the style properties of <el>fo:block</el> and <el>fo:external-graphic</el> by using the computed
+style set associated with each original TTML <loc href="#terms-content-element">content element</loc>
+and populating the <att>src</att> property of the <el>fo:external-graphic</el> element by using an appropriate
+reference to the related <loc href="#terms-image-resource">image resource</loc>;</p>
+</item>
+</olist>
 </item>
 <item>
 <p>for the resulting <el>fo:block</el> formatting object
@@ -17655,15 +17696,32 @@ the background color associated with the <el>body</el> element, if not <code>tra
 </note>
 </item>
 <item>
-<p>for each <el>span</el> element that is not
-associated with a <att>tts:display</att> style property with the value
-<code>none</code> and for each <loc href="#terms-anonymous-span">anonymous span</loc>
-that is a child of a <el>p</el> or <el>span</el> element,
-map the element or
-sequence of character items to a distinct <el>fo:inline</el> element,
+<p>for each (1) <el>span</el> element and <loc href="#terms-anonymous-span">anonymous span</loc>
+ or (2) <el>image</el> element in an inline level context,
+i.e., an <el>image</el> child of a <el>p</el> or <el>span</el> element, then,
+if the element or the <loc href="#terms-anonymous-span">anonymous span</loc> is not associated
+with a <att>tts:display</att> style property with the value <code>none</code>:</p>
+<olist>
+<item>
+<p>if the object is an <loc href="#terms-anonymous-span">anonymous span</loc>, then map the sequence of character items
+of the <loc href="#terms-anonymous-span">anonymous span</loc> to a distinct <el>fo:inline</el> element,
 populating the style properties of <el>fo:inline</el> by using the computed
-style set associated with each original TTML <loc href="#terms-content-element">content element</loc>
-or <loc href="#terms-anonymous-span">anonymous span</loc>;</p>
+style set associated with the <loc href="#terms-anonymous-span">anonymous span</loc>;</p>
+</item>
+<item>
+<p>if the object is a <el>span</el> element, then map the element
+to a distinct <el>fo:inline</el> element, populating the style properties of <el>fo:inline</el> by using the computed
+style set associated with the <el>span</el>;</p>
+</item>
+<item>
+<p>otherwise (the object is an <el>image</el> element), map the element to a distinct <el>fo:inline</el> element
+containing a single <el>fo:external-graphic</el> child element, 
+populating the style properties of <el>fo:inline</el> and <el>fo:external-graphic</el> by using the computed
+style set associated with the <el>image</el> element
+and populating the <att>src</att> property of the <el>fo:external-graphic</el> element by using an appropriate
+reference to the related <loc href="#terms-image-resource">image resource</loc>;</p>
+</item>
+</olist>
 </item>
 <item>
 <p>for each <el>br</el> element that is not
@@ -17693,9 +17751,6 @@ formatting object element that relates that element to the input element that
 resulted in that formatting object element;</p>
 </item>
 </olist>
-<p>For each resulting document instance F, if processing requires presentation on a 
-visual medium, then apply formatting and rendering semantics consistent with that 
-prescribed by <bibref ref="xslfo11"/>.</p>
 </def>
 </gitem>
 </glist>
@@ -17792,7 +17847,7 @@ a model based upon the formatting model defined by <bibref ref="xslfo11"/>, part
 <div4 id="semantics-line-breaking">
 <head>Line Breaking</head>
 <p>If a profile that applies to a <loc href="#terms-document-instance">document instance</loc>
-requires use of the <loc
+requires support or use of the <loc
 href="#feature-lineBreak-uax14">#lineBreak-uax14</loc> feature, then
 the recommendations defined by <loc
 href="http://www.unicode.org/reports/tr14/#Algorithm">Line

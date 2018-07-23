@@ -1324,8 +1324,7 @@ abbreviated as <emph>ipd</emph> or <emph>IPD</emph>.</p>
 <p>A <loc href="#terms-region">region</loc> that is defined in an inline manner with respect to some
 <loc href="#terms-content-element">content element</loc>  to be selected into (targeted to) the region.
 An inline region is specified either explicitly by a <loc href="#layout-vocabulary-region"><el>region</el></loc> element child of
-a <loc href="#terms-content-element">content element</loc> or implicitly by specifying a <loc href="#style-attribute-extent">tts:extent</loc>
-or <loc href="#style-attribute-origin">tts:origin</loc> style attribute on a <loc href="#terms-content-element">content element</loc>.
+certain <loc href="#terms-content-element">content elements</loc>.
 There is a one-to-one relation between an inline <loc href="#layout-vocabulary-region"><el>region</el></loc> element and its
 parent <loc href="#terms-content-element">content element</loc>. An inline region is assigned its parent element's time interval as its active
 time interval. No <att>region</att> attribute makes reference to an inline region.</p>
@@ -2176,6 +2175,14 @@ should satisfy the web content accessibility guidelines specified by
 and two types of specialized processor conformance,
 <loc href="#conformance-transformation-processor">Transformation Processor Conformance</loc> and
 <loc href="#conformance-presentation-processor">Presentation Processor Conformance</loc>.</p>
+<note role="clarificatiion">
+<p>The conformance requirements defined by this section are scoped to processors that operate on static
+representations of a TTML <loc href="#terms-document-instance">document instance</loc>. In particular,
+processors that modify a TTML <loc href="#terms-document-instance">document instance</loc>, such as an
+authoring or editing tool, are not governed by this specification except to the extent that the final
+result of performing a series of modifications to a TTML <loc href="#terms-document-instance">document instance</loc>
+satisfies the formal validity of TTML Content as defined by <specref ref="conformance-content"/>.</p>
+</note>
 <div3 id="conformance-generic-processor">
 <head>Generic Processor Conformance</head>
 <p>A TTML2 <loc href="#terms-content-processor">content processor</loc> conforms to this specification if the following
@@ -2187,6 +2194,19 @@ satisfied:</p>
 instantiating a <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc>
 representation of a conformant <loc href="#terms-document-instance">document instance</loc>.</p>
 </item>
+
+<item><p>The processor performs <loc href="#terms-profile-processing">profile processing</loc>.</p>
+<note role="clarification">
+<p>The performance of <loc href="#terms-profile-processing">profile processing</loc> implies a certain degree of partial validation,
+short of performing the <loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure
+described in the next item below. In particular, the syntactic expression of profile related vocabulary and any essential syntactic or
+semantic constraint that applies to the usage of this vocabulary are expected to be nominally verified by an implementation prior to making
+use of this vocabulary. If <loc href="#terms-profile-processing">profile processing</loc> is completed without detecting a significant violation
+of a syntactic or semantic constraint, then more complete validation may be performed by the
+<loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure.</p>
+</note>
+</item>
+
 <item>
 <p>If a processor is a <loc href="#terms-validating-content-processor">validating content processor</loc>, then it</p>
 <olist>
@@ -2196,13 +2216,18 @@ of a candidate <loc href="#terms-document-instance">document instance</loc> with
 <emph>Abstract Document Types</emph> defined by <specref ref="doctypes"/>; and</p></item>
 <item><p>performs the <loc href="#semantics-procedure-validate-document"><phrase role="strong">[validate document]</phrase></loc> procedure.</p></item>
 </olist>
-</item>
-<item><p>The processor performs <loc href="#terms-profile-processing">profile processing</loc>.</p>
 <note role="clarification">
 <p>This specification does not define a strict order between the performance of <loc href="#terms-validation-processing">validation processing</loc>
-and the performance of <loc href="#terms-profile-processing">profile processing</loc>. In particular, these two processing steps may be interleaved
-(or repeated) such that both are completed prior to performing further (transformation or presentation) processing
+and the performance of <loc href="#terms-profile-processing">profile processing</loc> described in the previous item above. In particular, these two
+processing steps may be interleaved (or repeated) such that both are completed prior to performing further (transformation or presentation) processing
 on a <loc href="#terms-document-instance">document instance</loc>.</p>
+<p>Notwithstanding the above, there is an implied order relationship between <loc href="#terms-validation-processing">validation processing</loc>
+and <loc href="#terms-profile-processing">profile processing</loc>; specificlly, in order to perform
+<loc href="#terms-validation-processing">validation processing</loc>, it is necessary to resolve the value of the
+<loc href="#terms-effective-validation-profile">effective validation profile</loc>, for which value it is necessary to resolve the value of the
+<loc href="#terms-effective-content-profile">effective content profile</loc>, or if that value is <code>null</code>, then resolve the value of the
+<loc href="#terms-effective-processor-profile">effective processor profile</loc>, the latter two values of which are obtained during
+<loc href="#terms-profile-processing">profile processing</loc>.</p>
 </note>
 <note role="example">
 <p>For an example of interleaving <loc href="#terms-validation-processing">validation processing</loc> and
@@ -2223,6 +2248,7 @@ unsupported processor profile]</phrase></loc> procedure (<emph>profile processin
 </ulist>
 </note>
 </item>
+
 <item>
 <p>The processor does not <emph>a priori</emph> reject or abort the
 processing of a conformant <loc href="#terms-document-instance">document instance</loc>
@@ -3025,6 +3051,13 @@ attribute on the root <el>tt</el> element applies;
 <p>otherwise, the <loc href="#terms-effective-content-profile">effective content profile</loc> is <code>null</code>.</p>
 </item>
 </olist>
+<p>For the purpose of complying with <loc href="#conformance-generic-processor">Generic Processor Conformance</loc>,
+when processing a given <loc href="#terms-document-instance">document instance</loc>,
+the <loc href="#terms-effective-content-profile">effective content profile</loc>, once set to a non-null reference to a
+<loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>,
+remains a constant reference to a constant <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>
+for the duration of that processing. Likewise, if set to a <code>null</code> reference, it remains a constant <code>null</code> reference for the
+duration of that processing.</p>
 </def>
 </gitem>
 </glist>
@@ -3111,6 +3144,12 @@ result of performing the <loc href="#semantics-procedure-construct-inferred-proc
 procedure;</p>
 </item>
 </olist>
+<p>For the purpose of complying with <loc href="#conformance-generic-processor">Generic Processor Conformance</loc>,
+when processing a given <loc href="#terms-document-instance">document instance</loc>,
+the <loc href="#terms-effective-processor-profile">effective processor profile</loc>, once set to a reference to a
+<loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>,
+remains a constant reference to a constant <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>
+for the duration of that processing.</p>
 </def>
 </gitem>
 <gitem id="semantics-procedure-construct-inferred-processor-profile">
@@ -3285,6 +3324,12 @@ that causes a warning to be treated as an error, or vice-versa.</p></note>
 <item><p>otherwise, the <loc href="#terms-effective-validation-profile">effective validation profile</loc> is the
 <loc href="#terms-effective-processor-profile">effective processor profile</loc>.</p></item>
 </olist>
+<p>For the purpose of complying with <loc href="#conformance-generic-processor">Generic Processor Conformance</loc>,
+when processing a given <loc href="#terms-document-instance">document instance</loc>,
+the <loc href="#terms-effective-validation-profile">effective validation profile</loc>, once set to a reference to a
+<loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>,
+remains a constant reference to a constant <loc href="#semantics-profile-state-profile-instance"><phrase role="strong">profile instance</phrase></loc>
+for the duration of that processing.</p>
 </def>
 </gitem>
 <gitem id="semantics-procedure-construct-effective-validation-schemas">
@@ -3343,6 +3388,24 @@ by the <loc href="#terms-effective-validation-schemas">effective validation sche
 <termref def="defs-validation-error">validation error</termref> condition applies. If any of the above verification steps detect a state of
 non-conformance with respect to a recommendation (should) or disrecommendation (should not), then a
 <termref def="defs-validation-warning">validation warning</termref> condition applies.</p>
+<note role="elaboration">
+<p>Since the determination of <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is implementation
+dependent, and since there is no requirement that the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> detect
+every possible <termref def="defs-validation-error">validation error</termref>, then performing the
+<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure need not produce a
+<loc href="#semantics-validation-state-validation-exception">validation exception</loc>, in which case,
+the results of <loc href="#terms-validation-processing">validation processing</loc> may be considered a <emph>false positive</emph>.</p>
+<p>As an example, a <loc href="#terms-content-profile">content profile</loc> may prohibit the use of a feature by means of the
+<code>prohibited</code> value of the <code>value</code> attribute of a <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc>
+or <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc> element; however, a particular implementation of the
+<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure may fail to detect such prohibited usage in
+a <loc href="#terms-document-instance">document instance</loc>, and, therefore, produce <emph>false positive</emph> validation results.</p>
+<p>As a consequence of these limitations, the specification language of the <loc href="#semantics-procedure-validate-document">[validate document]</loc>
+procedure is predicated upon whether a potential <termref def="defs-validation-error">validation error</termref> or
+<termref def="defs-validation-warning">validation warning</termref> is detected or not, but does not mandate that all possible
+<termref def="defs-validation-error">validation errors</termref> and <termref def="defs-validation-warning">validation warnings</termref> be detected.</p>
+<p>See also the first note under <specref ref="ttml-content-doctype"/> for more information on <emph>false positives</emph>.</p>
+</note>
 </def>
 </gitem>
 </glist>
@@ -5732,10 +5795,10 @@ zero or one <el>body</el> element.</p>
 implicit duration of the <el>body</el> element of the document, if the <el>body</el> element is present, or zero, if the <el>body</el> element is absent.</p>
 <p>If the <loc href="#style-attribute-extent"><att>tts:extent</att></loc> attribute is specified on the <el>tt</el>
 element, then it must adhere to <specref ref="style-attribute-extent"/>, in which case it
-specifies the spatial extent of the <loc href="#terms-root-container-region">root container region</loc> in
+specifies the <termref def="defs-spatial-extent">spatial extent</termref> of the <loc href="#terms-root-container-region">root container region</loc> in
 which <loc href="#terms-content-region">content regions</loc> are located and presented. If no <att>tts:extent</att>
-attribute is specified, then the spatial extent of the <loc href="#terms-root-container-region">root container region</loc> is
-determined by rules specified in <specref ref="root-container-region-semantics"/>.
+attribute is specified, then the <termref def="defs-spatial-extent">spatial extent</termref> of the
+<loc href="#terms-root-container-region">root container region</loc> is determined by rules specified in <specref ref="root-container-region-semantics"/>.
 The origin of the <loc href="#terms-root-container-region">root container region</loc> is determined by the <loc href="#terms-document-processing-context">document processing context</loc>.</p>
 <note role="clarification">
 <p>In the absence of other requirements, and if a <loc href="#terms-related-media-object">related media object</loc> exists, then it is recommended
@@ -8963,7 +9026,7 @@ the presence of a border applied to the region.</p>
 </tr>
 <tr>
 <td><emph>Animatable:</emph></td>
-<td>discrete</td>
+<td>discrete; continuous (color only)</td>
 </tr>
 <tr>
 <td><emph>Semantic basis:</emph></td>
@@ -12464,6 +12527,10 @@ and must be ignored for the purpose of presentation processing.</p>
 in accordance to the computed value of the <code>tts:writingMode</code> style property of the region into which the affected content is placed;
 in particular, the mappings defined enumerated by <specref ref="rubyPosition-semantics-mapping-table"/> apply as further defined
 by <bibref ref="cssruby"/>, &sect;4.1.</p>
+<p>If two ruby text containers apply to the same ruby base container, then it is considered an error if
+the resolved computed value of the property associated with this attribute would result in
+both ruby text containers being placed on the same relative side of the ruby base container, in which case, the presentation semantics of
+this property are not defined by this specification.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
 then a <loc href="#terms-presentation-processor">presentation processor</loc> must use the value <code>before</code>.</p>
 <table id="rubyPosition-semantics-mapping-table" role="common">
@@ -16096,7 +16163,7 @@ element that is a descendant of a <el>layout</el> element.</p>
 sacrificing locality of reference.</p>
 </note>
 <note role="explanation">
-<p>A single <loc href="#terms-content-element">content element</loc> may be associated with style properties by a hybrid mixture of
+<p>A <loc href="#terms-content-element">content element</loc> may be associated with style properties by a hybrid mixture of
 inline and referential styling, in which case inline styling is given priority as described above
 by <specref ref="semantics-style-association-inline"/>.</p>
 </note>
@@ -16139,7 +16206,7 @@ element that is a descendant of a <el>layout</el> element.</p>
 into general and specific sets, which further aids in style specification reuse.</p>
 </note>
 <note role="explanation">
-<p>A single <loc href="#terms-content-element">content element</loc> may be associated with style properties by a hybrid mixture of
+<p>A <loc href="#terms-content-element">content element</loc> may be associated with style properties by a hybrid mixture of
 inline, referential styling, and chained referential styling, in which case inline styling is
 given priority as described above by <specref ref="semantics-style-association-inline"/>.</p>
 </note>
@@ -16838,8 +16905,7 @@ defined to be coterminous with the <loc href="#terms-root-temporal-extent">root 
 <p>The <el>region</el> element is used to define a rectangular space or area into which content is
 to be flowed for the purpose of presentation.</p>
 <p>A <el>region</el> element may appear as either (1) a child of a
-<loc href="#layout-vocabulary-layout">layout</loc> element or (2) a child of block level
-<loc href="#terms-content-element">content element</loc>, specifically, of elements
+<loc href="#layout-vocabulary-layout">layout</loc> element or (2) a child of elements
 in the <loc href="#element-vocab-group-block">Block.class</loc> element group.
 In the former case, the region is referred to as an <loc href="#terms-out-of-line-region">out-of-line region</loc>, while in the latter
 case, it is referred to as an <loc href="#terms-inline-region">inline region</loc>.</p>
@@ -19350,20 +19416,16 @@ a specific element instance.</p>
 <div2 id="metadata-attribute-vocabulary">
 <head>Metadata Attribute Vocabulary</head>
 <p>This section specifies the following attributes in the TT Metadata Namespace
-for use with the <el>metadata</el> element and with certain
-<loc href="#terms-content-element">content element</loc> types:</p>
+for use with the <el>metadata</el> element and with
+<loc href="#terms-content-element">content elements</loc>:</p>
 <ulist>
 <item><p><specref ref="metadata-attribute-agent"/></p></item>
 <item><p><specref ref="metadata-attribute-role"/></p></item>
 </ulist>
-<note role="explanation">
-<p>Only certain metadata item attributes may be used with <loc href="#terms-content-element">content element</loc>. See
-the definitions of <loc href="#terms-content-element">content elements</loc> to determine permissible usage.</p>
-</note>
 <div3 id="metadata-attribute-agent">
 <head>ttm:agent</head>
 <p>The <att>ttm:agent</att> attribute takes an <code>IDREFS</code>
-value, and is used with certain <loc href="#terms-content-element">content elements</loc> to designate the
+value, and is used with <loc href="#terms-content-element">content elements</loc> to designate the
 agents that perform or are
 involved in the performance of the content.</p>
 <p>If specified, a <att>ttm:agent</att> attribute must reference <emph>significant</emph>
@@ -19380,7 +19442,7 @@ involved in the performance of the content.</p>
 <p>The <att>ttm:role</att> attribute may be used by a content author
 to express
 the roles, functions, or characteristics
-of some <loc href="#terms-content-element">content element</loc> that is so labeled.</p>
+of <loc href="#terms-content-element">content elements</loc> so labeled.</p>
 <p>If specified, the value of this attribute must adhere to the following
 syntax:</p>
 <table id="metadata-attribute-role-syntax" role="syntax">
@@ -19682,7 +19744,6 @@ directly below, then those values consist of all values defined in this specific
 <p>Feature designations in this section that have the suffix <code>-version-2</code> are newly defined by
 this (second) version of the TTML specification, i.e., TTML2.</p>
 </note>
-
 <div3 id="feature-animate">
 <head>#animate</head>
 <p>A TTML processor supports the <code>#animate</code> feature if it supports the following features:</p>
@@ -24311,7 +24372,7 @@ express minimum compliance for transformation processing.</p>
 <p>This appendix specifies the semantics for determining essential characteristics of the root container region and its use, including:</p>
 <ulist>
 <item><p>aspect ratios (display, storage, pixel);</p></item>
-<item><p>resolution (spatial extent); and</p></item>
+<item><p>resolution (<termref def="defs-spatial-extent">spatial extent</termref>); and</p></item>
 <item><p>coordinate space.</p></item>
 </ulist>
 <div2 id="root-container-region-semantics-aspect-ratios">
@@ -24447,13 +24508,15 @@ the number of rows signifies the resolution of the root container region on the 
 former is defined to be the <loc href="#terms-width">width</loc> and the
 latter is defined to be the <loc href="#terms-height">height</loc> of the root container region, respectively,
 and where the collection of (these two) resolutions along both axes is referred to as the
-<emph>collective resolution</emph> (or <emph>spatial extent</emph>) of the root container region.</p>
+<termdef id="defs-collective-resolution" term=""><term>collective resolution</term></termdef>, also called the
+<termdef id="defs-spatial-extent" term=""><term>spatial extent</term></termdef>, of the root container region.</p>
 <p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute
 is specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element and consists of
 two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, then these two expressions denote
 the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc> of the root container region, and,
-consequently, determine its collective resolution;
-otherwise, the collective resolution of the root container region is determined (arbitrarily) by the <loc href="#terms-document-processing-context">document
+consequently, determine its <termref def="defs-collective-resolution">collective resolution</termref>;
+otherwise, the <termref def="defs-collective-resolution">collective resolution</termref> of the root container region is determined (arbitrarily)
+by the <loc href="#terms-document-processing-context">document
 processing context</loc> in a manner that respects the resolved values of <code>SAR</code> as determined by
 <specref ref="root-container-region-semantics-aspect-ratios"/> above.</p>
 <note role="elaboration">
@@ -25029,7 +25092,7 @@ Synchronic Document Sequence</loc>  document.</p>
 <p>The <el>isd:sequence</el> element accepts as its children zero or more <loc href="#metadata-vocabulary-metadata"><el>ttm:metadata</el></loc> elements,
 followed by zero or one <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> element,
 followed by zero or more <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> elements.</p>
-<p>Child <el>isd:isd</el> elements must be ordered in accordance to the media time equivalent of their
+<p>Children <el>isd:isd</el> elements must be ordered in accordance to the media time equivalent of their
 begin time; furthermore, the temporal intervals of any two child <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> elements must not overlap (in time).</p>
 <table id="elt-syntax-isd-sequence" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: isd:sequence</caption>
@@ -25038,6 +25101,7 @@ begin time; furthermore, the temporal intervals of any two child <loc href="#isd
 <td>
 <eg xml:space="preserve">
 &lt;isd:sequence
+  extent = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   size = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
@@ -25051,6 +25115,12 @@ begin time; furthermore, the temporal intervals of any two child <loc href="#isd
 </tr>
 </tbody>
 </table>
+<p>If the <att>extent</att> attribute is specified, then it must adhere to the subset of the <loc href="#style-value-extent">&lt;extent&gt;</loc> value
+syntax that consists of two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, in which case, the specified value
+expresses the <termref def="defs-spatial-extent">spatial extent</termref> of the root container region as defined by
+<specref ref="root-container-region-semantics-resolution"/>,
+where this <termref def="defs-spatial-extent">spatial extent</termref> applies globally to each each constituent
+<loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc> represented by a child <el>isd:isd</el> element.</p>
 <p>If the <att>size</att> attribute is specified, then it must be a non-negative integer corresponding to the number of
 <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> child elements.
 If not specified, then the size must be considered to be <emph>indefinite</emph>, unless and until the
@@ -25117,6 +25187,7 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
 &lt;isd:isd
   <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> | <emph>"indefinite"</emph>
+  extent = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
@@ -25147,6 +25218,18 @@ or there is no temporal end point.</p>
 <p>Expressed in the terminology of <bibref ref="smil3"/>, the values of these <att>begin</att> and <att>end</att> attributes
 correspond to the resolved begin and end times of the <emph>active duration</emph> with respect to the <emph>document begin</emph>.</p>
 </note>
+<p>If the <att>extent</att> attribute is specified, then it must adhere to the subset of the <loc href="#style-value-extent">&lt;extent&gt;</loc> value
+syntax that consists of two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, in which case, the specified value
+expresses the <termref def="defs-spatial-extent">spatial extent</termref> of the root container region as defined by
+<specref ref="root-container-region-semantics-resolution"/>, where this <termref def="defs-spatial-extent">spatial extent</termref>
+applies to the <loc href="#terms-intermediate-synchronic-document">Intermediate Synchronic Document</loc>
+represented by this <el>isd:isd</el> element. Furthermore,
+if this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element is contained in an
+<loc href="#terms-intermediate-synchronic-document-sequence">Intermediate Synchronic Document Sequence</loc> document, then
+if the container <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element specifies an
+<att>extent</att> attribute, then this <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element
+should not specify an <att>extent</att> attribute, and, if specified, must be equal to the value of the 
+<att>extent</att> attribute specified on the container <loc href="#isd-vocabulary-sequence"><el>isd:sequence</el></loc> element.</p>
 <p>An <loc href="#content-attribute-xml-lang"><att>xml:lang</att></loc> attribute must be specified on the
 <loc href="#isd-vocabulary-isd"><el>isd:isd</el></loc> element if it is a standalone <loc href="#terms-intermediate-synchronic-document">Intermediate
 Synchronic Document</loc> document; otherwise, it may be specified, and should be specified if the default language of the 
@@ -26557,8 +26640,8 @@ attributes defined in the TT Style Namespace.</p>
 <p>The <att>xml:id</att> attribute is defined for use on all element types.</p>
 </item>
 <item>
-<p>The <att>style</att> attribute is supported only on
-<loc href="#terms-content-element">content element</loc>.</p>
+<p>The <att>style</att> attribute is supported on the
+element types enumerated in <specref ref="style-attribute-style"/>.</p>
 </item>
 <item>
 <p>Derived from the use of <code>@requiredExtensions</code>

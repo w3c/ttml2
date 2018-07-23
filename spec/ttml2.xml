@@ -17195,21 +17195,21 @@ specification and the content that references that region. Semantically, each
 <loc href="#terms-content-element">content element</loc> in whose context the
 <loc href="#terms-inline-region">inline region</loc> is specified (or implied).</p>
 <p>An <loc href="#terms-inline-region">inline region</loc> is declared
-by specifying an explicit  <loc href="#layout-vocabulary-region"><el>region</el></loc> element
+by specifying a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
 child of a <loc href="#terms-content-element">content element</loc>
 in the <loc href="#element-vocab-group-block">Block.class</loc> element group, which is
-referred to as an <emph>explicit inline region specification</emph>.</p>
+referred to as an <termdef id="defs-inline-region-specification" term=""><term>inline region specification</term></termdef>.</p>
 <p>Inline regions are processed in accordance with the procedure
 <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>
-which generates out-of-line regions that correspond with the
-explicit inline regions. This latter procedure additionally binds <loc href="#terms-content-element">content elements</loc> associated with inline regions
+which generates out-of-line regions that correspond with
+inline regions. This procedure additionally binds <loc href="#terms-content-element">content elements</loc> associated with inline regions
 to the corresponding generated out-of-line regions.</p>
 <note role="elaboration">
-<p>A <loc href="#terms-content-element">content element</loc> can be explicitly associated with only a single
-<loc href="#terms-region">region</loc>, either by an attribute specification or via a child 
-<loc href="#layout-vocabulary-region"><el>region</el></loc> element. Consequently, if a <loc href="#terms-content-element">content element</loc>
-specifies a <loc href="#layout-attribute-region"><att>region</att></loc> attribute, then any 
-<emph>explicit inline region specification</emph> is ignored.</p>
+<p>A <loc href="#terms-content-element">content element</loc> can be associated with only a single
+<loc href="#terms-region">region</loc> (within a given <loc href="#terms-intermediate-synchronic-document">intermediate synchronic document</loc>),
+either by an attribute specification or via a child <loc href="#layout-vocabulary-region"><el>region</el></loc> element. Consequently,
+if a <loc href="#terms-content-element">content element</loc> specifies a <loc href="#layout-attribute-region"><att>region</att></loc> attribute, then any 
+<termref def="defs-inline-region-specification">inline region specification</termref> is ignored.</p>
 </note>
 <glist>
 <gitem id="procedure-process-inline-regions">
@@ -17255,24 +17255,13 @@ otherwise, let <emph>ID</emph> be the value of the <att>xml:id</att> attribute o
   as follows:</p>
   <olist>
     <item><p>if not operating in smpte time base and discontinuous marker mode, then set the values of these <att>begin</att> and <att>end</att>
-    attributes to values equivalent to the respective computed begin and end times of <emph>B</emph> within the root temporal extent;</p></item>
+    attributes to values equivalent to the respective active begin and end times of <emph>B</emph> within the 
+    <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>;</p></item>
     <item><p>otherwise (smpte discontinuous mode), set the values of these <att>begin</att> and <att>end</att>
     attributes to values that correspond to the labeled synchronization events (markers) that apply to the respective begin and end times of
-    <emph>B</emph> within the root temporal extent;</p></item>
+    <emph>B</emph> within the <loc href="#terms-document-temporal-coordinate-space">document temporal coordinate space</loc>;</p></item>
   </olist>
 </item>
-<!--
-<item>
-<p>add a <att>begin</att> attribute to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> with
-a value equivalent to the computed begin time of <emph>B</emph> within the root temporal extent;</p>
-</item>
-<item>
-<p>if not operating in smpte time base and discontinuous marker mode, add a <att>dur</att> attribute to the <code>[attributes]</code>
-information item property of <emph>R'&nbsp;</emph> with value equivalent to the computed simple duration of <emph>B</emph>; otherwise,
-add an <att>end</att> attribute to the <code>[attributes]</code> information item property of <emph>R'&nbsp;</emph> with
-a value equivalent to the computed end time of <emph>B</emph> within the root temporal extent;</p>
-</item>
--->
 </ulist>
 </item>
 <item>
@@ -17305,10 +17294,10 @@ item property of <emph>B</emph>;</p>
 </def>
 </gitem>
 </glist>
-<p>The use of an <emph>explicit inline region specification</emph>
-and the resulting generated out-of-line region is shown by the following example document.</p>
-<table id="semantics-inline-region-input-example-2-explicit" role="example">
-<caption>Example &ndash; Explicit Inline Region Specification</caption>
+<p>The use of an <termref def="defs-inline-region-specification">inline region specification</termref>
+and the resulting generated out-of-line region is shown by the following examples.</p>
+<table id="semantics-inline-region-input-example" role="example">
+<caption>Example &ndash; Inline Region Specification</caption>
 <tbody>
 <tr>
 <td>
@@ -17328,7 +17317,7 @@ and the resulting generated out-of-line region is shown by the following example
 </tbody>
 </table>
 <p></p>
-<table id="semantics-generated-out-of-line-region-example-2-explicit" role="example">
+<table id="semantics-generated-out-of-line-region-example" role="example">
 <caption>Example &ndash; Generated Out-of-line Region</caption>
 <tbody>
 <tr>
@@ -17337,7 +17326,8 @@ and the resulting generated out-of-line region is shown by the following example
 &lt;tt xml:lang="" xmlns="http://www.w3.org/ns/ttml"&gt;
   &lt;head&gt;
     <phrase role="strong">&lt;layout&gt;
-      &lt;region xml:id="region3451" begin="5s" dur="10s" tts:extent="540px 100px" tts:origin="50px 339px"/&gt;
+      &lt;region xml:id="region3451" begin="5s" end="15s"
+        tts:extent="540px 100px" tts:origin="50px 339px"/&gt;
     &lt;/layout&gt;</phrase>
   &lt;/head&gt;
   &lt;body&gt;
@@ -17351,6 +17341,17 @@ and the resulting generated out-of-line region is shown by the following example
 </tr>
 </tbody>
 </table>
+<note role="elaboration">
+<p>Take note that, in the above pair of examples, the timing attributes on the generated out-of-line region
+make use of an <code>end</code> attribute rather than the original <code>dur</code> attribute of the
+<loc href="#content-vocabulary-div"><el>div</el></loc> parent element of the inline <loc href="#layout-vocabulary-region"><el>region</el></loc>
+element. This translation from <code>dur</code> to <code>end</code> is required by the above procedure in order to specify the
+active time interval of the generated out-of-line region within the root temporal extent.</p>
+</note>
+<note role="elaboration">
+<p>The region ID generated in this example, <code>region3451</code>, is implementation dependent, with the only requirement being that it be a valid value
+of the <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute, which includes being unique within the scope of the document instance.</p>
+</note>
 </div4>
 <div4 id="semantics-region-layout-step-1">
 <head>Intermediate Synchronic Document Construction</head>
@@ -21815,7 +21816,7 @@ of transforming inline region element children of a <loc href="#terms-content-el
 <loc href="#layout-vocabulary-region"><code>region</code></loc>.</p>
 <p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the
 <code>#region-inline</code> feature if it implements presentation semantic support
-for explicit inline region element children of a <loc href="#terms-content-element">content element</loc>, as further defined by
+for inline region element children of a <loc href="#terms-content-element">content element</loc>, as further defined by
 <loc href="#layout-vocabulary-region"><code>region</code></loc>.</p>
 </div3>
 <div3 id="feature-region-timing">

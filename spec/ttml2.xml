@@ -2322,6 +2322,9 @@ by <specref ref="profile-ttml2-presentation"/>.</p>
 <p>The processor supports the DFXP Presentation profile as specified
 by <specref ref="profile-dfxp-presentation"/>.</p>
 </item>
+<item>
+<p>The processor performs <specref ref="semantics-region-layout-step-1"/> and <specref ref="semantics-region-layout-step-2"/>.</p>
+</item>
 </olist>
 <note role="elaboration">
 <p>Two conforming presentation processors are not required to produce the same presentation when processing the same conforming document.
@@ -16454,6 +16457,7 @@ model specified below, the following conceptual definitions apply:</p>
 <gitem id="semantics-style-property">
 <label>[style property]</label>
 <def>
+<p></p>
 <p>a style property, <emph>P</emph>, is considered to consist of a
 tuple <code>[name, value]</code>, where the name of the
 property is a tuple <code>[namespace value,
@@ -16480,6 +16484,7 @@ tuple <code>[category, type, value expression]</code></p>
 <gitem id="semantics-style-property-set">
 <label>[style (property) set]</label>
 <def>
+<p></p>
 <p>a style (property) set consists of an unordered collection of style
 properties, where no two style properties within the set have an
 identical name, where by "identical name" is meant equality of
@@ -16554,6 +16559,7 @@ property is either "specified" or "computed"; a computed style (property) set of
 <gitem>
 <label>[style (property) merging]</label>
 <def>
+<p></p>
 <p>a style property <emph>P<sub>new</sub></emph> is merged into a
 style (property) set, <emph>SS</emph>, as follows: if a style property
 <emph>P<sub>old</sub></emph> is already present in <emph>SS</emph>
@@ -16567,6 +16573,7 @@ name of <emph>P<sub>old</sub></emph>, then replace
 <gitem>
 <label>[style (property) set merging]</label>
 <def>
+<p></p>
 <p>a style (property) set <emph>SS<sub>new</sub></emph> is merged into
 an existing style (property) set <emph>SS<sub>old</sub></emph> as
 follows: for each style property <emph>P<sub>new</sub></emph> in
@@ -17230,6 +17237,7 @@ if a <loc href="#terms-content-element">content element</loc> specifies a <loc h
 <gitem id="procedure-process-inline-regions">
 <label>[process inline regions]</label>
 <def>
+<p></p>
 <p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
 in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
 perform the following ordered steps:</p>
@@ -17468,6 +17476,7 @@ more about which see step (2) of the <loc href="#procedure-flow-transformation">
 <gitem id="procedure-associate-region">
 <label>[associate region]</label>
 <def>
+<p></p>
 <p>A <loc href="#terms-content-element">content element</loc> is associated with a region according
 to the following ordered rules, where the first rule satisfied
 is used and remaining rules are skipped:</p>
@@ -17535,14 +17544,16 @@ since such would not necessarily be sufficient to satisfy the full presentation 
 defined by this specification, and would contain a large number of features not needed to
 implement the presentation semantics of TTML.</p>
 </note>
+<p>For the purpose of performing presentation processing, for each intermediate synchronic document produced by
+<specref ref="semantics-region-layout-step-1"/>, <emph>DOC<sub><phrase>inter<sub>i</sub></phrase></sub></emph>, (1) invoke the following
+<phrase role="strong"><loc href="#procedure-flow-transformation">[flow transformation]</loc></phrase> procedure
+to obtain an XSL FO document instance, <emph>F<sub>i</sub></emph>, and then (2) if processing requires presentation on a
+visual medium, apply to <emph>F<sub>i</sub></emph> all relevant formatting and rendering semantics consistent with that prescribed
+by <bibref ref="xslfo11"/> and this specification.</p>
 <glist>
 <gitem id="procedure-flow-transformation">
 <label>[flow transformation]</label>
 <def>
-<p></p>
-<p>Each intermediate synchronic document produced by <specref
-ref="semantics-region-layout-step-1"/> is mapped 
-to an XSL FO document instance, <emph>F</emph>, as follows:</p>
 <olist>
 <item>
 <p>if not previously invoked, perform procedure
@@ -17603,11 +17614,26 @@ XSL-FO properties in case the region extends outside of its containing block.</p
 </note>
 </item>
 <item>
-<p>for each <el>body</el>, <el>div</el>, and <el>p</el> element that is not
-associated with a <att>tts:display</att> style property with the value
-<code>none</code>, map the element to a distinct <el>fo:block</el> element,
+<p>for each (1) <el>body</el>, <el>div</el>, and <el>p</el> element or (2) <el>image</el> element
+in a block level context, i.e., an <el>image</el> child of an element
+in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
+then, if the element is not associated with a <att>tts:display</att> style property with the value
+<code>none</code>:</p>
+<olist>
+<item>
+<p>if the element is not an <el>image</el> element, then map the element to a distinct <el>fo:block</el> element,
 populating the style properties of <el>fo:block</el> by using the computed
 style set associated with each original TTML <loc href="#terms-content-element">content element</loc>;</p>
+</item>
+<item>
+<p>otherwise (the element is an <el>image</el> element), map the element to a distinct <el>fo:block</el> element
+containing a single <el>fo:external-graphic</el> child element, 
+populating the style properties of <el>fo:block</el> and <el>fo:external-graphic</el> by using the computed
+style set associated with each original TTML <loc href="#terms-content-element">content element</loc>
+and populating the <att>src</att> property of the <el>fo:external-graphic</el> element by using an appropriate
+reference to the related <loc href="#terms-image-resource">image resource</loc>;</p>
+</item>
+</olist>
 </item>
 <item>
 <p>for the resulting <el>fo:block</el> formatting object
@@ -17651,15 +17677,32 @@ the background color associated with the <el>body</el> element, if not <code>tra
 </note>
 </item>
 <item>
-<p>for each <el>span</el> element that is not
-associated with a <att>tts:display</att> style property with the value
-<code>none</code> and for each <loc href="#terms-anonymous-span">anonymous span</loc>
-that is a child of a <el>p</el> or <el>span</el> element,
-map the element or
-sequence of character items to a distinct <el>fo:inline</el> element,
+<p>for each (1) <el>span</el> element and <loc href="#terms-anonymous-span">anonymous span</loc>
+ or (2) <el>image</el> element in an inline level context,
+i.e., an <el>image</el> child of a <el>p</el> or <el>span</el> element, then,
+if the element or the <loc href="#terms-anonymous-span">anonymous span</loc> is not associated
+with a <att>tts:display</att> style property with the value <code>none</code>:</p>
+<olist>
+<item>
+<p>if the object is an <loc href="#terms-anonymous-span">anonymous span</loc>, then map the sequence of character items
+of the <loc href="#terms-anonymous-span">anonymous span</loc> to a distinct <el>fo:inline</el> element,
 populating the style properties of <el>fo:inline</el> by using the computed
-style set associated with each original TTML <loc href="#terms-content-element">content element</loc>
-or <loc href="#terms-anonymous-span">anonymous span</loc>;</p>
+style set associated with the <loc href="#terms-anonymous-span">anonymous span</loc>;</p>
+</item>
+<item>
+<p>if the object is a <el>span</el> element, then map the element
+to a distinct <el>fo:inline</el> element, populating the style properties of <el>fo:inline</el> by using the computed
+style set associated with the <el>span</el>;</p>
+</item>
+<item>
+<p>otherwise (the object is an <el>image</el> element), map the element to a distinct <el>fo:inline</el> element
+containing a single <el>fo:external-graphic</el> child element, 
+populating the style properties of <el>fo:inline</el> and <el>fo:external-graphic</el> by using the computed
+style set associated with the <el>image</el> element
+and populating the <att>src</att> property of the <el>fo:external-graphic</el> element by using an appropriate
+reference to the related <loc href="#terms-image-resource">image resource</loc>;</p>
+</item>
+</olist>
 </item>
 <item>
 <p>for each <el>br</el> element that is not
@@ -17689,9 +17732,6 @@ formatting object element that relates that element to the input element that
 resulted in that formatting object element;</p>
 </item>
 </olist>
-<p>For each resulting document instance F, if processing requires presentation on a 
-visual medium, then apply formatting and rendering semantics consistent with that 
-prescribed by <bibref ref="xslfo11"/>.</p>
 </def>
 </gitem>
 </glist>

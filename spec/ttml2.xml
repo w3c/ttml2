@@ -644,7 +644,7 @@ during the <specref ref="semantics-region-layout-step-1"/> or <specref ref="sema
 <gitem id="terms-area">
 <label>[area]</label>
 <def>
-<p>A collection of addressable <emph>logical pixels</emph> that represent the visual content of a bounded, rectangular region of a plane
+<p>A collection of addressable <termref def="defs-logical-pixel">logical pixels</termref> that represent the visual content of a bounded, rectangular region of a plane
 on some output medium, as defined by <bibref ref="xslfo11"/>, <emph>Rectangular Areas</emph>, &sect;4.2.
 Also referred to as a <emph>box</emph>, particularly in the context of <bibref ref="css2"/> and <bibref ref="html52"/>.</p>
 </def>
@@ -797,9 +797,14 @@ associated <loc href="#semantics-profile-state-profile-instance">profile instanc
 <label>[computed cell size]</label>
 <def>
 <p>The size (extent) of a cell computed by dividing the width of the <loc href="#terms-root-container-region">root container region</loc>
-by the column count, i.e., the number of cells in the <loc href="#terms-horizontal-axis">horizontal axis</loc>, and by dividing
-the height of the <loc href="#terms-root-container-region">root container region</loc> by the row count, i.e., the number of cells in the vertical
-axis, where the column and row counts are determined by the <att>ttp:cellResolution</att> parameter attribute.</p>
+by the cell column count, i.e., the number of cells in the <loc href="#terms-horizontal-axis">horizontal axis</loc>, and by dividing
+the height of the <loc href="#terms-root-container-region">root container region</loc> by the cell row count, i.e., the number of cells in the vertical
+axis, where the cell column and row counts are determined by the <att>ttp:cellResolution</att> parameter attribute.</p>
+<note role="clarification">
+<p>The width and height of the <loc href="#terms-root-container-region">root container region</loc> correspond to the
+width and height of the spatial extent of the <loc href="#terms-root-container-region">root container region</loc> as specified
+by <specref ref="root-container-region-semantics-resolution"/>; consequently, the computed cell size is expressed in <termref def="defs-logical-pixel">logical pixels</termref>.</p>
+</note>     
 </def>
 </gitem>
 <gitem id="terms-computed-style-set">
@@ -1528,16 +1533,17 @@ possible determinations of a <loc href="#terms-processor-profile">processor prof
 <gitem id="terms-presentation-context-coordinate-space">
 <label>[presentation context coordinate space]</label>
 <def>
-  <p>The coordinate space associated with the <loc href="#terms-presentation-context">presentation context</loc>.</p>
-  <note role="clarification">
-    <p>For a given implementation of a <loc href="#terms-presentation-processor">presentation processor</loc>,
-    it is possible that <emph>display pixels</emph> associated with <emph>logical pixels</emph> in the
-    <loc href="#terms-document-coordinate-space">document coordinate space</loc> correspond exactly with
-    <emph>presentation pixels</emph> in the <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>;
-    however, such an exact correspondence need not apply, and, in particular, the (implementation defined) mapping between these coordinate spaces
-    may be subject to a transformation of pixel aspect ratios, resolutions, color spaces, color sample depths,
-    and other implementation specific properties.</p>
-  </note>
+<p>The coordinate space associated with the <loc href="#terms-presentation-context">presentation context</loc>.</p>
+<note role="clarification">
+<p>For a given implementation of a <loc href="#terms-presentation-processor">presentation processor</loc>, it is possible that
+<termref def="defs-display-pixel">display pixels</termref> associated with <termref def="defs-logical-pixel">logical pixels</termref> in the
+<loc href="#terms-document-coordinate-space">document coordinate space</loc> correspond exactly with
+<termdef id="defs-presentation-pixel" term=""><term>presentation pixels</term></termdef> in
+the <loc href="#terms-presentation-context-coordinate-space">presentation context coordinate space</loc>;
+however, such an exact correspondence need not apply, and, in particular, the (implementation defined) mapping between these coordinate spaces
+may be subject to a transformation of pixel aspect ratios, resolutions, color spaces, color sample depths,
+and other implementation specific properties.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-presentation-related-element">
@@ -6237,7 +6243,8 @@ in the core vocabulary catalog:</p>
 </ulist>
 <div3 id="content-attribute-condition">
 <head>condition</head>
-<p>The <att>condition</att> attribute is used to conditionally exclude or include an element from semantic processing,
+<p>The <att>condition</att> attribute is used to <loc href="#terms-conditionally-excluded">conditionally exclude</loc> an element 
+(and its descendants) from semantic processing,
 in which case the element is referred to as a <loc href="#terms-conditionalized-element">conditionalized element</loc>.</p>
 <note role="clarification">
 <p>The use of a <att>condition</att> attribute by an element does not prevent either the parsing of that element (and its descendants) or
@@ -6256,12 +6263,25 @@ from evaluation cannot change or is known to not change during presentation proc
 <p>For example, if a condition expression depends on the value of a <loc href="#content-value-condition-function">condition function</loc>,
 then the condition expression's value may change during presentation processing, in which case eager evaluation cannot be used.</p>
 </note>
-<p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and the
+<p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and 
 its <loc href="#content-value-condition">&lt;condition&gt;</loc> expression value evaluates to <code>false</code>,
-then the semantics of the element and its descendant elements must be ignored unless explicitly specified otherwise.</p>
+then the semantics of the element and its descendant elements
+must be ignored unless those semantics are explicitly excepted,
+which is to say, the element and its descendant elements are
+<loc href="#terms-conditionally-excluded">conditionally excluded</loc>
+regardless of the evaluation of any <loc href="#content-value-condition">&lt;condition&gt;</loc> expressions
+specified on those descendant elements.</p>
 <note role="elaboration">
 <p>For example, if a <loc href="#content-vocabulary-p"><el>p</el></loc> element specifies a <att>condition</att>
 attribute that evaluates to <code>false</code>, then the content of that element and its descendants are ignored for presentation purposes.</p>
+</note>
+<note role="elaboration">
+<p>Evaluation of the <att>condition</att> attribute is not required (and not relevant)
+on an element that is <loc href="#terms-conditionally-excluded">conditionally excluded</loc>
+due to one of its ancestor elements being <loc href="#terms-conditionally-excluded">conditionally excluded</loc>.
+That is, an element cannot become <loc href="#terms-conditionally-excluded">conditionally included</loc>
+by the evaluation of its <att>condition</att> attribute
+in the case that an ancestor is <loc href="#terms-conditionally-excluded">conditionally excluded</loc>.</p>
 </note>
 <note role="clarification">
 <p>In certain cases, ignoring (excluding) the semantics of an element by means of a <att>condition</att> attribute consists
@@ -6276,7 +6296,7 @@ value evaluates to <code>false</code>:</p>
 <loc href="#styling-vocabulary-style"><el>style</el></loc> element are not ignored;</p></item>
 </ulist>
 <note role="clarification">
-<p>The exceptions noted above also apply to <loc href="#terms-conditionally-excluded">conditionally excluded</loc> descendants of a
+<p>The exceptions noted above also apply to descendants of a
 <loc href="#terms-conditionally-excluded">conditionally excluded</loc> element.</p>
 </note>
 </div3>
@@ -15211,7 +15231,7 @@ units
 </tbody>
 </table>
 <p>It is an error to omit the units component of a scalar length value.</p>
-<p>The unit <code>px</code> (pixel) corresponds to a logical pixel of
+<p>The unit <code>px</code> (pixel) corresponds to a <termref def="defs-logical-pixel">logical pixel</termref> of
 the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
 as defined by <specref ref="root-container-region-semantics-coordinate-space"/>; however,
 the <code>px</code> (pixel) unit should not be used in a <loc href="#style-value-length">&lt;length&gt;</loc> expression
@@ -16424,7 +16444,7 @@ the colors of computed style values are further subjected to closest color
 approximation and gamma correction
 during the display process. In addition, length value expressions that use
 pixels in computed style values are considered to express logical rather than
-physical (device) pixels. Consequently, these logical pixels are subject to
+physical (device) pixels. Consequently, these <termref def="defs-logical-pixel">logical pixels</termref> are subject to
 being further transformed or mapped to physical (device) pixels during
 presentation.</p>
 <p>The final value that results from the logical to device mapping
@@ -24466,7 +24486,7 @@ express minimum compliance for transformation processing.</p>
   <def>
     <p></p>
     <p>The <emph>display aspect ratio</emph> of the root container corresponds with the aspect ratio of the root container
-    in terms of <emph>display pixels</emph> intended to be presented on a hypothetical display device.
+    in terms of <termdef id="defs-display-pixel" term=""><term>display pixels</term></termdef> intended to be presented on a hypothetical display device.
     This <emph>display</emph> aspect ratio is specified explicitly by means of the
     <loc href="#parameter-attribute-displayAspectRatio">ttp:displayAspectRatio</loc> attribute on the
     <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element or is inferred using other information as described below.</p>
@@ -24482,8 +24502,10 @@ express minimum compliance for transformation processing.</p>
   <def>
     <p></p>
     <p>The <emph>storage aspect ratio</emph> of the root container corresponds with the aspect ratio of the root container
-    in terms of <emph>logical pixels</emph> in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
-    where a bijective (injective and surjective) mapping associates each logical pixel with a unique display pixel.
+    in terms of <termdef id="defs-logical-pixel" term=""><term>logical pixels</term></termdef>
+    in the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
+    where a bijective (injective and surjective) mapping associates each <termref def="defs-logical-pixel">logical pixel</termref> with
+    a unique <termref def="defs-display-pixel">display pixel</termref>.
     This <emph>storage</emph> aspect ratio is specified explicitly by means of the <loc href="#style-attribute-extent">tts:extent</loc> attribute on the
     <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element or is inferred using other information as described below.</p>
     <p>When the <loc href="#style-attribute-extent">tts:extent</loc> attribute is specified on the
@@ -24497,8 +24519,9 @@ express minimum compliance for transformation processing.</p>
       the storage aspect ratio is considered to be unspecified and is inferred using other information described below.</p></item>
     </olist>
     <note role="elaboration">
-      <p>On its own, a logical pixel has no intrinsic aspect ratio; however, when mapped to a display pixel, it assumes the fixed value
-      defined by the pixel aspect ratio of the root container as specified below.</p>
+    <p>On its own, a <termref def="defs-logical-pixel">logical pixel</termref> has no intrinsic aspect ratio; however, when mapped to
+    a <termref def="defs-display-pixel">display pixel</termref>, it assumes the fixed value
+    defined by the pixel aspect ratio of the root container as specified below.</p>
     </note>
   </def>
 </gitem>
@@ -24506,9 +24529,10 @@ express minimum compliance for transformation processing.</p>
   <label>pixel aspect ratio (PAR)</label>
   <def>
     <p></p>
-    <p>The <emph>pixel aspect ratio</emph> of the root container defines the aspect ratio of each display pixel of the root container,
-    whereby each logical pixel in the <loc href="#terms-document-coordinate-space">document coordinate space</loc> takes on the
-    fixed aspect ratio of an associated display pixel such that <code>DAR = SAR &times; PAR</code>.
+    <p>The <emph>pixel aspect ratio</emph> of the root container defines the aspect ratio of each <termref def="defs-display-pixel">display pixel</termref>
+    of the root container, whereby each <termref def="defs-logical-pixel">logical pixel</termref> in
+    the <loc href="#terms-document-coordinate-space">document coordinate space</loc> takes on the fixed aspect ratio of
+    an associated <termref def="defs-display-pixel">display pixel</termref> such that <code>DAR = SAR &times; PAR</code>.
     This <emph>pixel</emph> aspect ratio is specified explicitly by means of the
     <loc href="#parameter-attribute-pixelAspectRatio">ttp:pixelAspectRato</loc> attribute on the
     <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element or is inferred using other information as described below.</p>
@@ -24584,14 +24608,22 @@ determined by <specref ref="root-container-region-semantics-2-aspect-ratio"/> ab
 </div2>
 <div2 id="root-container-region-semantics-resolution">
 <head>Resolution</head>
-<p>The root container region is subdivided into a fixed number of rows and columns of equally sized (but possibly non-square) pixels where
-the number of columns signifies the resolution of the root container region on the <loc href="#terms-horizontal-axis">horizontal axis</loc> and
-the number of rows signifies the resolution of the root container region on the <loc href="#terms-vertical-axis">vertical axis</loc>, where the
-former is defined to be the <loc href="#terms-width">width</loc> and the
-latter is defined to be the <loc href="#terms-height">height</loc> of the root container region, respectively,
-and where the collection of (these two) resolutions along both axes is referred to as the
-<termdef id="defs-collective-resolution" term=""><term>collective resolution</term></termdef>, also called the
-<termdef id="defs-spatial-extent" term=""><term>spatial extent</term></termdef>, of the root container region.</p>
+<p>The root container region is subdivided into a grid of <termref def="defs-logical-pixel">logical pixels</termref> with a fixed number of row pixels
+and a fixed number of column pixels, where the number of column pixels signifies the resolution of the root container region on the
+<loc href="#terms-horizontal-axis">horizontal axis</loc> and the number of row pixels signifies the resolution of the root container region on the
+<loc href="#terms-vertical-axis">vertical axis</loc>, where the former is defined to be the <loc href="#terms-width">width</loc> and the latter is defined
+to be the <loc href="#terms-height">height</loc> of the root container region, respectively, and where the collection of (these two) resolutions along both
+axes is referred to as the <termdef id="defs-collective-resolution" term=""><term>collective resolution</term></termdef>
+or <termdef id="defs-spatial-extent" term=""><term>spatial extent</term></termdef> of the root container region.</p>
+<note role="warning">
+<p>As noted above under <loc href="#root-container-region-semantics-sar"><phrase role="strong">storage aspect ratio (SAR)</phrase></loc>,
+a <termref def="defs-logical-pixel">logical pixel</termref> has no intrinsic aspect ratio, which is to say,
+a <termref def="defs-logical-pixel">logical pixel</termref> has no defined shape, which, in turn, means it has no defined size.
+Only when a <termref def="defs-logical-pixel">logical pixel</termref> is mapped to
+a <termref def="defs-display-pixel">display pixel</termref> does it take on a fixed shape and size.
+Nevertheless, it is often convenient to think of a <termref def="defs-logical-pixel">logical pixel</termref> as being square and having
+a measurable, absolute size; however, the reader is cautioned against reaching this premature (and possibly incorrect) conclusion.</p>
+</note>
 <p>If the value of the <loc href="#style-attribute-extent">tts:extent</loc> attribute
 is specified on the <loc href="#document-structure-vocabulary-tt"><el>tt</el></loc> element and consists of
 two pixel-valued <loc href="#style-value-length">&lt;length&gt;</loc> expressions, then these two expressions denote
@@ -24613,7 +24645,7 @@ in order to assign a logical resolution that preserves that same precision.</p>
 <div2 id="root-container-region-semantics-coordinate-space">
 <head>Coordinate Space</head>
 <p>The coordinate space of the root container region, also known as the <loc href="#terms-document-coordinate-space">document coordinate space</loc>,
-is an unbounded, two-dimensional plane on which a closed set of logical pixels are defined that take the form of a rectangle <emph>R</emph> such that
+is an unbounded, two-dimensional plane on which a closed set of <termref def="defs-logical-pixel">logical pixels</termref> are defined that take the form of a rectangle <emph>R</emph> such that
 the said pixels are interior to (inside of) the boundary of <emph>R</emph>, and where the origin (position) of this coordinate space is coincident with the upper,
 left-hand corner of <emph>R</emph>, and where positive pixels on the vertical axis extend downwards and positive pixels on the horizontal axis
 extend rightwards.

@@ -6243,7 +6243,8 @@ in the core vocabulary catalog:</p>
 </ulist>
 <div3 id="content-attribute-condition">
 <head>condition</head>
-<p>The <att>condition</att> attribute is used to conditionally exclude or include an element from semantic processing,
+<p>The <att>condition</att> attribute is used to <loc href="#terms-conditionally-excluded">conditionally exclude</loc> an element 
+(and its descendants) from semantic processing,
 in which case the element is referred to as a <loc href="#terms-conditionalized-element">conditionalized element</loc>.</p>
 <note role="clarification">
 <p>The use of a <att>condition</att> attribute by an element does not prevent either the parsing of that element (and its descendants) or
@@ -6262,12 +6263,25 @@ from evaluation cannot change or is known to not change during presentation proc
 <p>For example, if a condition expression depends on the value of a <loc href="#content-value-condition-function">condition function</loc>,
 then the condition expression's value may change during presentation processing, in which case eager evaluation cannot be used.</p>
 </note>
-<p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and the
+<p>For the purpose of presentation processing, if an element specifies a <att>condition</att> attribute, and 
 its <loc href="#content-value-condition">&lt;condition&gt;</loc> expression value evaluates to <code>false</code>,
-then the semantics of the element and its descendant elements must be ignored unless explicitly specified otherwise.</p>
+then the semantics of the element and its descendant elements
+must be ignored unless those semantics are explicitly excepted,
+which is to say, the element and its descendant elements are
+<loc href="#terms-conditionally-excluded">conditionally excluded</loc>
+regardless of the evaluation of any <loc href="#content-value-condition">&lt;condition&gt;</loc> expressions
+specified on those descendant elements.</p>
 <note role="elaboration">
 <p>For example, if a <loc href="#content-vocabulary-p"><el>p</el></loc> element specifies a <att>condition</att>
 attribute that evaluates to <code>false</code>, then the content of that element and its descendants are ignored for presentation purposes.</p>
+</note>
+<note role="elaboration">
+<p>Evaluation of the <att>condition</att> attribute is not required (and not relevant)
+on an element that is <loc href="#terms-conditionally-excluded">conditionally excluded</loc>
+due to one of its ancestor elements being <loc href="#terms-conditionally-excluded">conditionally excluded</loc>.
+That is, an element cannot become <loc href="#terms-conditionally-excluded">conditionally included</loc>
+by the evaluation of its <att>condition</att> attribute
+in the case that an ancestor is <loc href="#terms-conditionally-excluded">conditionally excluded</loc>.</p>
 </note>
 <note role="clarification">
 <p>In certain cases, ignoring (excluding) the semantics of an element by means of a <att>condition</att> attribute consists
@@ -6282,7 +6296,7 @@ value evaluates to <code>false</code>:</p>
 <loc href="#styling-vocabulary-style"><el>style</el></loc> element are not ignored;</p></item>
 </ulist>
 <note role="clarification">
-<p>The exceptions noted above also apply to <loc href="#terms-conditionally-excluded">conditionally excluded</loc> descendants of a
+<p>The exceptions noted above also apply to descendants of a
 <loc href="#terms-conditionally-excluded">conditionally excluded</loc> element.</p>
 </note>
 </div3>

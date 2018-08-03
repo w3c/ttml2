@@ -11031,7 +11031,7 @@ descendants of a <loc href="#content-vocabulary-p"><el>p</el></loc> element is u
 <loc href="#terms-inline-area">inline areas</loc>, about which see <bibref ref="xslfo11"/>, &sect;4.5, and <bibref ref="css2"/>, &sect;10.8.1.</p>
 </note>
 <p>If the value of this attribute is <code>normal</code>, then the
-<termref def="defs-resolved-computed-value">resolved computed value</termref> of this style property is determined as follows:</p>
+<termref def="defs-used-value">used value</termref> of this style property is determined as follows:</p>
 <olist>
 <item><p>
 Let <emph>P</emph> be the <loc href="#content-vocabulary-p"><el>p</el></loc> element to which this style property applies.
@@ -11059,7 +11059,7 @@ where scaled(<emph>X</emph>) denotes font metric <emph>X</emph> scaled according
 <p>The altitude, depth, and line gap parameters referenced here are intended to correspond with the <code>sTypoAscender</code>,
 <code>-sTypoDescender</code>, i.e., minus one (-1) times <code>sTypoDescender</code>, and <code>sTypoLineGap</code> fields of the <code>OS/2</code> table
 of an OpenType <bibref ref="off"/> font (or their equivalent in other font formats). Moreover, in general, the expressions
-scaled(A) and scaled(D) are intended to correspond with the resolved computed values of the <code>text-altitude</code> and <code>text-depth</code>
+scaled(A) and scaled(D) are intended to correspond with the <code>text-altitude</code> and <code>text-depth</code>
 area traits employed by <bibref ref="xslfo11"/> when the value <code>use-font-metrics</code> is used with the associated properties
 <code>text-altitude</code> and <code>text-depth</code>, respectively.</p>
 </note>
@@ -11068,7 +11068,7 @@ area traits employed by <bibref ref="xslfo11"/> when the value <code>use-font-me
 <emph>LH</emph> is recommended to be set to 125% of <emph>FS</emph>.
 </p></item>
 <item><p>
-Set the <termref def="defs-resolved-computed-value">resolved computed value</termref> of this style property to <emph>LH</emph>.
+Set the <termref def="defs-used-value">used value</termref> of this style property to <emph>LH</emph>.
 </p></item>
 </olist>
 <note role="elaboration">
@@ -11133,7 +11133,7 @@ the computed value, then the value most distant from 0, i.e., the largest line h
 <p>When the specified value of this attribute is <code>normal</code>, the computed value is the specified value; therefore,
 when applying inheritance semantics, the value <code>normal</code> is the inherited value.
 However, when this computed value is to be used to perform paragraph layout, it is further processed to obtain a
-<termref def="defs-resolved-computed-value">resolved computed value</termref>
+<termref def="defs-used-value">used value</termref>
 as described above.</p>
 </div4>
 </div3>
@@ -12557,7 +12557,7 @@ in accordance to the computed value of the <code>tts:writingMode</code> style pr
 in particular, the mappings defined enumerated by <specref ref="rubyPosition-semantics-mapping-table"/> apply as further defined
 by <bibref ref="cssruby"/>, &sect;4.1.</p>
 <p>If two <termref def="defs-ruby-text-container">ruby text containers</termref> apply to the same <termref def="defs-ruby-base-container">ruby base container</termref>, then it is considered an error if
-the resolved computed value of the property associated with this attribute would result in
+the <termref def="defs-used-value">used value</termref> of the property associated with this attribute would result in
 both <termref def="defs-ruby-text-container">ruby text containers</termref> being placed on the same relative side of the <termref def="defs-ruby-base-container">ruby base container</termref>, in which case, the presentation semantics of
 this property are not defined by this specification.</p>
 <p>If a computed value of the property associated with this attribute is not supported,
@@ -12734,9 +12734,9 @@ placement regardless of the presence or absence of ruby text annotations.</p>
 <p>If the value of this attribute is <code>none</code>, then no ruby space reservation applies; otherwise, the value of this attribute specifies a
 position component followed by an optional length component.</p>
 <p>If the position component is <code>before</code>, then the before leading of affected line areas is increased by the amount determined by the
-<termref def="defs-resolved-computed-value">resolved computed value</termref> of the length component.</p>
+<termref def="defs-used-value">used value</termref> of the length component.</p>
 <p>If the position component is <code>after</code>, then the after leading of affected line areas is increased by the amount determined by the
-<termref def="defs-resolved-computed-value">resolved computed value</termref> of the length component.</p>
+<termref def="defs-used-value">used value</termref> of the length component.</p>
 <p>If the position component is <code>both</code>, then the semantics of both the <code>before</code> and <code>after</code> positions apply
 to each affected line area.</p>
 <p>If the position component is <code>outside</code>, then, if the current block area contains exactly one line area, the <code>both</code> position
@@ -16423,14 +16423,24 @@ element. This is required since the resolution of certain relative units,
 such as percentage, require evaluating the expression in the immediate
 (local) context of reference, and not in a distant (remote) context of
 reference where the related (resolving) expression is not available.</p>
+</div4>
+<div4 id="semantics-style-resolved-value-category-used">
+<head>Used Values</head>
 <p>Subsequent to style inheritance, a computed value may require further resolution at layout or presentation time
 when such resolution is required by the semantics of a specific property or the
 information required to perform the resolution is not available until layout or
 presentation processing occurs. Such a value is referred to as a
-<termdef id="defs-resolved-computed-value" term=""><term>resolved computed value</term></termdef>, also called a
-<xspecref href="https://www.w3.org/TR/2011/REC-CSS2-20110607/cascade.html#used-value"><phrase><emph>used value</emph></phrase></xspecref>,
+<termdef id="defs-used-value" term=""><term>used value</term></termdef>,
 which need not be the same value as the final <termref def="defs-actual-value">actual value</termref>
 described below.</p>
+<note role="elaboration">
+<p>The determination of a <termref def="defs-used-value">used value</termref> is always preceded by the
+inheritance of a computed value; that is to say, <termref def="defs-used-value">used value</termref>
+computation is nominally performed after the <specref ref="semantics-style-resolution-process-overall"/> completes.</p>
+</note>
+<note role="seealso">
+<p>See also <bibref ref="css2"/>, &sect;6.1.3.</p>
+</note>
 </div4>
 <div4 id="semantics-style-resolved-value-category-actual">
 <head>Actual Values</head>
@@ -16755,7 +16765,7 @@ of an <el>animate</el>, <el>set</el>, or referable <el>style</el> element.</p>
 <p>Since the relative value resolution rule above may not resolve a relative value, for example,
 when resolution cannot occur until layout or presentation time, further resolution of a
 <termref def="defs-computed-value">computed value</termref>  may be required to obtain a
-<termref def="defs-resolved-computed-value">resolved computed value</termref>.</p>
+<termref def="defs-used-value">used value</termref>.</p>
 </note>
 </div4>
 <div4 id="semantics-style-resolution-process-overall">
@@ -16874,8 +16884,8 @@ of -90 degrees is applied. If the absolute value of the specified percentage is 
 the appropriate sign.</p>
 <note role="clarification">
 <p>If the absolute value of the resulting shear angle is 90 degrees, then the
-<termref def="defs-resolved-computed-value">resolved computed value</termref> of the shear angle is reduced by some small epsilon
-so that the tangent of the <termref def="defs-resolved-computed-value">resolved computed value</termref> is defined.</p>
+<termref def="defs-used-value">used value</termref> of the shear angle is reduced by some small epsilon
+so that the tangent of the <termref def="defs-used-value">used value</termref> is defined.</p>
 </note>
 <p>If the inline progression direction corresponds to the X axis, then the 2D shear transformation is described by the following matrix:</p>
 <eg xml:space="preserve">

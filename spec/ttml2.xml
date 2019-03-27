@@ -2705,8 +2705,14 @@ transformation or editing of content in order to maintain adherence to an author
 downstream processor may use a content profile declaration to perform an early determination of its ability to process the features
 implied by the content profile.</p>
 <p>Content profiles are declared by using (1) the <loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc>
-attribute on the root <el>tt</el> element, (2) one or more top-level <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc>
-elements of type <code>content</code>, or (3) a combination of these two mechanisms. If not declared, no content profile is implied.</p>
+attribute on the root <el>tt</el> element or (2) one or more top-level <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc>
+elements of type <code>content</code>. If not declared, no content profile is implied.</p>
+<note role="elaboration">
+<p>When content profiles are declared using the <loc href="#profile-attribute-contentProfiles"><att>ttp:contentProfiles</att></loc> attribute,
+one or more specified profile designators may refer to top-level <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> elements, and,
+as such, can combine the function of the two above mentioned profile declaration mechanisms. For futher details, see the
+<loc href="#semantics-procedure-construct-effective-content-profile"><phrase role="strong">construct effective content profile</phrase></loc> procedure.</p>
+</note>
 <p>A <loc href="#terms-processor-profile">processor profile</loc> is used to allow an author to declare, at authoring time,
 what processing must be supported when processing a <loc href="#terms-document-instance">document instance</loc>, such that, if a
 processor is not able to perform the indicated processing, then processing should be aborted. Such a declaration permits downstream
@@ -2717,19 +2723,26 @@ elements of type <code>processor</code>, or (3) the <loc href="#profile-attribut
 on the root <el>tt</el> element. If not declared, a processor profile is inferred from a declared content profile or from a
 <loc href="#terms-default-processor-profile">default processor profile</loc>.</p>
 <note role="elaboration">
-<p>It is not a requirement on a conformant <loc href="#terms-document-instance">document instance</loc> that a processor profile be internally
-declared by use of a <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> element or internally referenced by a
-<loc href="#profile-attribute-profile"><att>ttp:profile</att></loc>  or
-<loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc> attribute. More specifically, it is
-permitted that the <loc href="#terms-document-interchange-context">document
-interchange context</loc> determines the applicable processor profile through private
+<p>When processor profiles are declared using the <loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc> attribute,
+one or more specified profile designators may refer to top-level <loc href="#profile-vocabulary-profile"><el>ttp:profile</el></loc> elements, and,
+as such, can combine the function of the first two of the above mentioned profile declaration mechanisms. For futher details, see the
+<loc href="#semantics-procedure-construct-effective-processor-profile"><phrase role="strong">construct effective processor profile</phrase></loc>
+procedure.</p>
+</note>
+<note role="elaboration">
+<p>It is not a requirement on a conformant <loc href="#terms-document-instance">document instance</loc> that a processor profile be
+declared in the document. More specifically, it is permitted that the <loc href="#terms-effective-processor-profile">effective processor profile</loc>
+be determined by means of a number of fallback mechanisms, including (1) inferring a processor profile from a content profile,
+(2) implying a processor profile from a default processor profile, or (3) allowing the <loc href="#terms-document-processing-context">document
+processing context</loc> to override the determination, for example, by using the <loc href="#terms-document-interchange-context">document
+interchange context</loc> to select the applicable processor profile through private
 agreement, out-of-band protocol, or common use (between sender and receiver) of a processor profile defined
 by an external specification.</p>
 </note>
 <note role="elaboration">
 <p>It is intended that the
-<loc href="#profile-attribute-profile"><att>ttp:profile</att></loc>  or
-<loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc> attribute be used when
+<loc href="#profile-attribute-processorProfiles"><att>ttp:processorProfiles</att></loc> or
+<loc href="#profile-attribute-profile"><att>ttp:profile</att></loc> attribute be used when
 the author wishes to reference one (or more) of the standard, predefined processor profiles of
 TTML Content, and does not wish to modify (by supersetting or subsetting)
 that profile. These attributes may also be used by an author to indicate the use

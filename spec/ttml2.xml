@@ -37,6 +37,8 @@
 <!ENTITY prop "&#x221d;">
 <!ENTITY not "&#x00ac;">
 <!ENTITY deg "&#x00b0;">
+<!ENTITY lor "&#x2228;">
+<!ENTITY xor "&#x2295;">
 <!ENTITY ttml-ex1 SYSTEM "./examples/ex1.xml.esc">
 <!ENTITY ttml-ex1-x-0 SYSTEM "./examples/ex1-x-0.xml.esc">
 <!ENTITY ttml-ex1-p-0 SYSTEM "./examples/ex1-p-0.xml.esc">
@@ -1329,7 +1331,7 @@ abbreviated as <emph>ipd</emph> or <emph>IPD</emph>.</p>
 <def>
 <p>A <loc href="#terms-region">region</loc> that is defined in an inline manner with respect to some
 <loc href="#terms-content-element">content element</loc>  to be selected into (targeted to) the region.
-An inline region is specified either explicitly by a <loc href="#layout-vocabulary-region"><el>region</el></loc> element child of
+An inline region is specified by a <loc href="#layout-vocabulary-region"><el>region</el></loc> element child of
 certain <loc href="#terms-content-element">content elements</loc>.
 There is a one-to-one relation between an inline <loc href="#layout-vocabulary-region"><el>region</el></loc> element and its
 parent <loc href="#terms-content-element">content element</loc>. An inline region is assigned its parent element's time interval as its active
@@ -1972,21 +1974,21 @@ defined as follows:</p>
 <gitem>
 <label>may</label>
 <def>
-<p>Conforming documents and/or TTML processors are permitted to,
+<p>Conforming documents and (or) TTML processors are permitted to,
 but need not behave as described. </p>
 </def>
 </gitem>
 <gitem>
 <label>should</label>
 <def>
-<p>Conforming documents and/or TTML processors are strongly
+<p>Conforming documents and (or) TTML processors are strongly
 recommended to, but need not behave as described.</p>
 </def>
 </gitem>
 <gitem>
 <label>must</label>
 <def>
-<p>Conforming documents and/or TTML processors are required
+<p>Conforming documents and (or) TTML processors are required
 to behave as described; otherwise, they are in error. </p>
 </def>
 </gitem>
@@ -2099,6 +2101,9 @@ value syntax, no whitespace is permitted unless explicitly marked in a value syn
 <p>Unless stated to the contrary, the terms <emph>horizontal</emph> and <emph>vertical</emph> are interpreted in an absolute sense, not relative to writing mode, while
 <emph>width</emph> refers to a dimension along the <emph>horizontal</emph> axis and
 <emph>height</emph> refers to a dimension along the <emph>vertical</emph> axis. All exceptions are explicitly noted in the text.</p>
+<p>The phrase &quot;and (or)&quot; denotes an <emph>inclusive disjunction</emph> (<emph>p&lor;q</emph>), while the syntax
+&quot;either&hellip;or&hellip;&quot; denotes an <emph>exclusive disjunction</emph> (<emph>p&xor;q</emph>). Otherwise, the sense of &quot;or&quot; is
+implied by its context of use.</p>
 <p>All content of this specification that is not explicitly marked as
 non-normative is considered to be normative. If a section or appendix
 header contains the expression "Non-Normative", then the entirety
@@ -2129,7 +2134,7 @@ the following:</p>
 <note role="clarification">
 <p>Although they are expressed in well-formed XML, example code fragments depicted herein are not intended to be complete, valid TTML documents;
 rather, they are generally abbreviated in order to focus on the intended example. In particular, fragments will typically need to be augmented
-with additional elements and/or attributes in order to satisfy TTML document conformance requirements.</p>
+with additional elements and (or) attributes in order to satisfy TTML document conformance requirements.</p>
 </note>
 <p>Unless specified otherwise, the vocabulary defining sections of this specification define vocabulary in alphabetical order rather than logical order.</p>
 </div2> <!-- conventions -->
@@ -2605,32 +2610,32 @@ normative URI that denotes each namespace.</p>
 </tr>
 <tr>
 <td>TT</td>
-<td><code>tt:</code></td>
+<td><code>tt</code></td>
 <td><code>http://www.w3.org/ns/ttml</code></td>
 </tr>
 <tr>
 <td>TT Parameter</td>
-<td><code>ttp:</code></td>
+<td><code>ttp</code></td>
 <td><code>http://www.w3.org/ns/ttml#parameter</code></td>
 </tr>
 <tr>
 <td>TT Style</td>
-<td><code>tts:</code></td>
+<td><code>tts</code></td>
 <td><code>http://www.w3.org/ns/ttml#styling</code></td>
 </tr>
 <tr>
 <td>TT Audio Style</td>
-<td><code>tta:</code></td>
+<td><code>tta</code></td>
 <td><code>http://www.w3.org/ns/ttml#audio</code></td>
 </tr>
 <tr>
 <td>TT Metadata</td>
-<td><code>ttm:</code></td>
+<td><code>ttm</code></td>
 <td><code>http://www.w3.org/ns/ttml#metadata</code></td>
 </tr>
 <tr>
 <td>TT Intermediate Synchronic Document</td>
-<td><code>isd:</code></td>
+<td><code>isd</code></td>
 <td><code>http://www.w3.org/ns/ttml#isd</code></td>
 </tr>
 <tr>
@@ -2738,6 +2743,8 @@ processing context</loc> to override the determination, for example, by using th
 interchange context</loc> to select the applicable processor profile through private
 agreement, out-of-band protocol, or common use (between sender and receiver) of a processor profile defined
 by an external specification.</p>
+<p>For example, the <code>profile</code> and <code>codecs</code> media type parameters defined by
+<bibref ref="ttmt"/> are two such out-of-band protocols for exchanging profile information.</p>
 </note>
 <note role="elaboration">
 <p>It is intended that the
@@ -2767,10 +2774,23 @@ It is also possible to define a derived profile that is simultaneously subtracti
 and additive.</p>
 </note>
 <p>A content author is not limited to using a single profile, but may make reference to multiple profiles of either type, i.e.,
-multiple content profiles and/or multiple processor profiles. When multiple profiles are referenced, their respective specifications
+multiple content profiles and (or) multiple processor profiles. When multiple profiles are referenced, their respective specifications
 are combined to form a single effective content profile that applies to the document and a single effective processor profile
 that applies to a processor when processing the document. In addition, an author is not limited to making reference to externally
 defined profiles, but may define one or more profiles inline within a document.</p>
+<note role="clarification">
+<p>Profile combination is itself an optional <loc href="#terms-feature">feature</loc> which is determined according to whether
+a <loc href="#terms-processor">processor</loc> supports the <specref ref="feature-contentProfiles-combined"/> or the
+<specref ref="feature-processorProfiles-combined"/> feature.</p>
+</note>
+<note role="elaboration">
+<p>Notwithstanding an author's declaration of their intention to use specific content or processor profiles, a <loc href="#terms-processor">processor</loc>
+is allowed to override the author's declaration of content and (or) processor profiles. This is expected to be typical behavior
+for <loc href="#terms-processor">processors</loc> that support only a single profile or a limited set of profiles, particularly when
+the <loc href="#terms-processor">processor</loc> is not able to dereference (download) and process a
+<loc href="#terms-profile-definition-document">profile definition document</loc> and does not support
+<loc href="#terms-top-level-profile">top-level profiles</loc>.</p>
+</note>
 </div3>
 <div3 id="semantics-profile-examples">
 <head>Profile Examples</head>
@@ -2896,12 +2916,12 @@ implementation create such objects in the form specified here, but may use any c
 <p>A <loc href="#semantics-profile-state-profile-specification"><phrase role="strong">profile specification</phrase></loc>
 represents the following internal state information that corresponds with
 a <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> or <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc>
-element</p>
+element.</p>
 <glist>
 <gitem id="semantics-profile-state-profile-specification-designator">
 <label>designator</label>
 <def>
-<p>A <loc href="#content-value-uri">&lt;uri&gt;</loc> value denoting a feature or extension designator depending upon the <emph><code>type</code></emph></p>
+<p>A <loc href="#content-value-uri">&lt;uri&gt;</loc> value denoting a feature or extension designator depending upon the <emph><code>type</code></emph>.</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-specification-type">
@@ -2951,7 +2971,7 @@ where each designator denotes a constituent profile, i.e., a profile from which 
 <p></p>
 <p>A <loc href="#semantics-profile-state-combined-profile-specification-set"><phrase role="strong">combined profile specification set</phrase></loc> which 
 <loc href="#semantics-profile-state-combined-profile-specification-set-constituents"><phrase role="strong">constituents</phrase></loc> and
-<loc href="#semantics-profile-state-combined-profile-specification-set-specifications"><phrase role="strong">specifications</phrase></loc> fields are empty sets</p>
+<loc href="#semantics-profile-state-combined-profile-specification-set-specifications"><phrase role="strong">specifications</phrase></loc> fields are empty sets.</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-instance">
@@ -3298,16 +3318,16 @@ that represents equivalent information.</p>
 <label>[validation exception]</label>
 <def>
 <p>A <loc href="#semantics-validation-state-validation-exception"><phrase role="strong">validation exception</phrase></loc>
-represents the following internal state information that corresponds to an exception condition that occurs during <loc href="#terms-validation-processing">validation processing</loc></p>
+represents the following internal state information that corresponds to an exception condition that occurs during <loc href="#terms-validation-processing">validation processing</loc>.</p>
 <glist>
 <gitem id="semantics-validation-state-validation-exception-message">
 <label>message</label>
-<def><p>An arbitrary (implementation defined) string that describes or characterizes the exception</p></def>
+<def><p>An arbitrary (implementation defined) string that describes or characterizes the exception.</p></def>
 </gitem>
 <gitem id="semantics-validation-state-validation-exception-type">
 <label>type</label>
 <def>
-<p><code>error|warning</code></p>
+<p><code>"error" | "warning"</code></p>
 </def>
 </gitem>
 </glist>
@@ -3410,7 +3430,7 @@ non-conformance with respect to a recommendation (should) or disrecommendation (
 <p>Since the determination of <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is implementation
 dependent, and since there is no requirement that the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> detect
 every possible <termref def="defs-validation-error">validation error</termref>, then performing the
-<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure need not produce a
+  <loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure on an invalid document instance need not produce a
 <loc href="#semantics-validation-state-validation-exception">validation exception</loc>, in which case,
 the results of <loc href="#terms-validation-processing">validation processing</loc> may be considered a <emph>false positive</emph>.</p>
 <p>As an example, a <loc href="#terms-content-profile">content profile</loc> may prohibit the use of a feature by means of the
@@ -4202,16 +4222,16 @@ information about support and usage requirements for a particular feature.</p>
 <p>The children of the <el>ttp:feature</el> element must express a non-empty
 sequence of <loc href="#terms-character-information-item">character information items</loc> the concatenation of which adheres to the
 <loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax.</p>
-<p>If specified, the <att>extends</att> attribute and/or the <att>restricts</att>
+<p>If specified, the <att>extends</att> attribute and (or) the <att>restricts</att>
 attribute must (1) adhere to the
 <loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax, and
 (2) express a feature designation as defined by
 <specref ref="feature-designations"/>.</p>
 <p>The <att>extends</att> attribute may be used to indicate that the feature being defined
-is, from either (or both) a syntactic or (and) semantic perspective, a proper superset of the
+is, from a syntactic and (or) semantic perspective, a proper superset of the
 feature referenced by the <att>extends</att> attribute.
 The <att>restricts</att> attribute may be used to indicate that the feature being defined
-is, from either (or both) a syntactic or (and) semantic perspective, a proper subset of the
+is, from a syntactic and (or) semantic perspective, a proper subset of the
 feature referenced by the <att>restricts</att> attribute.
 If an <att>extends</att> attribute is specified, then a <att>restricts</att> attribute must
 not be specified on a <el>ttp:feature</el> element; likewise, if a <att>restricts</att> attribute
@@ -4408,16 +4428,16 @@ information about support and usage requirements for a particular extension.</p>
 <p>The children of the <el>ttp:extension</el> element must express a non-empty
 sequence of <loc href="#terms-character-information-item">character information items</loc> the concatenation of which adheres to the
 <loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax.</p>
-<p>If specified, the <att>extends</att> attribute and/or the <att>restricts</att>
+<p>If specified, the <att>extends</att> attribute and (or) the <att>restricts</att>
 attribute must (1) adhere to the
 <loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax, and
 (2) express a feature designation or extension designation as defined by
 <specref ref="feature-designations"/> or <specref ref="extension-designations"/>, respectively.</p>
 <p>The <att>extends</att> attribute may be used to indicate that the extension being defined
-is, from either (or both) a syntactic or (and) semantic perspective, a proper superset of the
+is, from a syntactic and (or) semantic perspective, a proper superset of the
 feature or extension referenced by the <att>extends</att> attribute.
 The <att>restricts</att> attribute may be used to indicate that the extension being defined
-is, from either (or both) a syntactic or (and) semantic perspective, a proper subset of the
+is, from a syntactic and (or) semantic perspective, a proper subset of the
 feature or extension referenced by the <att>restricts</att> attribute.
 If an <att>extends</att> attribute is specified, then a <att>restricts</att> attribute must
 not be specified on a <el>ttp:extension</el> element; likewise, if a <att>restricts</att> attribute
@@ -4432,7 +4452,7 @@ absolute URI.  In either case (original absolute URI or resulting
 absolutized URI), the URI expressed by the <el>ttp:extension</el>
 element must further adhere to the syntax of an extension designation as
 defined by <specref ref="extension-designations"/>,
-while the URI expressed by the <att>extends</att> attribute and/or the
+while the URI expressed by the <att>extends</att> attribute and (or) the
 <att>restricts</att> attribute must adhere to the syntax of a feature designation
 or an extension designation as defined by <specref ref="feature-designations"/> or
 <specref ref="extension-designations"/>, respectively.</p>
@@ -4531,7 +4551,7 @@ in one of its declared or referenced profiles.</p>
 <eg xml:space="preserve">
 &lt;ttp:profile use="http://www.w3.org/ns/ttml/profile/ttml2-transformation"&gt;
   &lt;ttp:extensions xml:base="http://example.org/ttml/extension/"&gt;
-    <phrase role="strong">&lt;ttp:extension value="use"&gt;#prefilter-by-language&lt;/ttp:extension&gt;</phrase>
+    <phrase role="strong">&lt;ttp:extension value="required"&gt;#prefilter-by-language&lt;/ttp:extension&gt;</phrase>
   &lt;/ttp:extensions&gt;
 &lt;/ttp:profile&gt;
 </eg>
@@ -4542,11 +4562,11 @@ in one of its declared or referenced profiles.</p>
 <note role="explanation">
 <p>In the above example, the TTML transformation profile is used as
 the baseline profile. This baseline profile is then supersetted by
-specifying that support and use is required for a private extension
+specifying that support is required for a private extension
 defined in a third party namespace.</p>
 <p>The effect of this example is to express authorial intentions that
 a recipient processor must support the TTML transformation profile and
-must also support and enable an extension defined by a third party.</p>
+must also support an extension defined by a third party.</p>
 </note>
 </div3>
 </div2> <!-- profile-element-vocabulary -->
@@ -6320,6 +6340,15 @@ value evaluates to <code>false</code>:</p>
 <p>The <att>xlink:href</att> attribute is used as defined by <bibref ref="xlink11"/>.</p>
 <p>The <att>xlink:href</att> attribute may be used with any <loc href="#content-vocabulary-span"><el>span</el></loc> or
 <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<p>For the purpose of implementing <att>xlink:href</att> semantics, the semantics of
+<loc href="https://www.w3.org/TR/2010/REC-xlink11-20100506/#link-types"><code>xlink:type</code></loc>
+are fixed to those associated with the <code>simple</code> value and the semantics of
+<loc href="https://www.w3.org/TR/2010/REC-xlink11-20100506/#actuate-att"><code>xlink:actuate</code></loc>
+are fixed to those associated with the <code>onRequest</code> value as defined by <bibref ref="xlink11"/>.</p>
+<note role="clarification">
+<p>Neither <code>xlink:type</code> nor <code>xlink:actuate</code> attribute is defined for direct use in
+a <loc href="#terms-document-instance">document instance</loc>.</p>
+</note>
 </div3>
 <div3 id="content-attribute-xlink-role">
 <head>xlink:role</head>
@@ -7447,6 +7476,12 @@ if the specified attribute value(s) differ from the value(s) of these font chara
 the specified attribute value(s) are to be used instead of the font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
 <p>If any of the <att>family</att>, <att>range</att>, <att>style</att>, or <att>weight</att> attributes are not specified, then their values
 must be considered to be equal to the value(s) of the same named font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
+<p>If the computed value of the <code>family</code> attribute (whether explicitly specified or not) matches a
+<loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc> (by case-sensitive comparison),
+then it is considered an error, and the referenced font resource must be ignored for the purpose of presentation processing.</p>
+<note role="elaboration">
+<p>The effect of the previous paragraph is that a content author may not override a built-in font resource that corresponds to a generic font family.</p>
+</note>
 <note role="guideline">
 <p>Authors are advised to use subset fonts wherever possible. A subset font is a syntactically valid <loc href="#terms-font-resource">font resource</loc> that
 removes unreferenced glyphs and unreferenced glyph metrics. In general, a subset font is tied to a specific document, since it may have been generated
@@ -8375,8 +8410,8 @@ element types:</p>
 adhere to the <code>IDREFS</code> data type defined by <bibref ref="xsd-2"/>,
 &sect;3.3.10, and, furthermore, each IDREF must reference a <el>style</el> element
 which has a <el>styling</el> element as an ancestor.</p>
-<p>If the same IDREF, <emph>ID<sub>1</sub></emph>, appears more than one time in the value of a <att>style</att>
-attribute, then there should be an intervening IDREF, <emph>ID<sub>2</sub></emph>, where 
+<p>If the same IDREF, <emph>ID<sub>1</sub></emph>&thinsp;, appears more than one time in the value of a <att>style</att>
+attribute, then there should be an intervening IDREF, <emph>ID<sub>2</sub></emph>&thinsp;, where 
 <emph>ID<sub>2</sub></emph> is not equal to <emph>ID<sub>1</sub></emph>.</p>
 <note role="explanation">
 <p>This constraint is intended to discourage the use of redundant referential styling while still
@@ -9794,7 +9829,7 @@ of a <loc href="#terms-content-region">content region</loc>;</p></item>
 of an image, overriding its intrinsic extent.</p></item>
 </olist>
 <note role="clarification">
-<p>If either (or both) border or (and) padding are applied to a region, then the region's extent includes that border and padding,
+<p>If a border and (or) padding are applied to a region, then the region's extent includes that border and padding,
 i.e., border and padding are both applied as insets, and, therefore, are interior to the extent of the region.</p>
 </note>
 <table id="style-property-details-extent" role="common">
@@ -11696,7 +11731,7 @@ edges correspond to the right and left edges of the region, as is the case for J
 <p>If padding is applied to a <loc href="#content-vocabulary-span"><el>span</el></loc> element, and content from that element
 is divided across multiple line areas, then the specified padding must be applied at each line break boundary. In contrast,
 within a single line area, if multiple inline areas are generated by the element, then the specified padding must be applied at
-the first and/or last generated inline area within a line area the inline progression order of the containing block level element.</p>
+the first and (or) last generated inline area within a line area the inline progression order of the containing block level element.</p>
 <note role="clarification">
 <p>The behavior of padding on a <loc href="#content-vocabulary-span"><el>span</el></loc> element corresponds with the use of
 a CSS <code>box-decoration-break</code> property with the value <code>clone</code> at line breaks and the value <code>slice</code>
@@ -12395,7 +12430,7 @@ the container's constituent <termref def="defs-ruby-container">ruby containers</
 the container and its constituents is uniform (unvarying).</p></note>
 <p>Let <emph>I<sub>R</sub></emph> and <emph>I<sub>B</sub></emph> be, respectively, the inline areas generated by (1) a <termref def="defs-ruby-text-container">ruby text container</termref> or
 ruby text annotation and (2) an associated <termref def="defs-ruby-base-container">ruby base container</termref> or ruby base. Further, let <emph>N<sub>R</sub></emph>
-and <emph>N<sub>B</sub></emph>, be, respectively, the number of <loc href="#terms-glyph-area-descendant">glyph area descendants</loc> of these
+and <emph>N<sub>B</sub></emph>&thinsp;, be, respectively, the number of <loc href="#terms-glyph-area-descendant">glyph area descendants</loc> of these
 inline areas.</p>
 <p>If the value of this attribute is <code>start</code>, then the start edge of the first <loc href="#terms-glyph-area-descendant">glyph area descendant</loc>
 of <emph>I<sub>R</sub></emph>
@@ -12426,7 +12461,7 @@ then a <loc href="#terms-presentation-processor">presentation processor</loc> mu
 <p>In this specification, ruby annotations in timed text applications are assumed to be narrow, since presentation space and available time are 
 often constrained. As a consequence, this version of TTML does not enable authors to control how spacing is distributed when the 
 ruby annotation is wider than its base text. This might be problematic for wide ruby annotations at the start or end edge of the line. In order 
-to avoid issues, authors are encouraged to use an appropriate value of <att>tts:rubyAlign</att> and/or to split events containing wide 
+to avoid issues, authors are encouraged to use an appropriate value of <att>tts:rubyAlign</att> and (or) to split events containing wide 
 ruby annotations into multiple lines or even multiple events.</p>
 </note>
 <p>The <att>tts:rubyAlign</att> style is illustrated by the following example.</p>
@@ -12875,7 +12910,7 @@ shear angle, in order to fit the block area into the content rectangle of the im
 <p>The <att>tts:showBackground</att> attribute is used to specify
 constraints on when the background of a region is intended to be
 presented.</p>
-<note role="elaboration"><p>The background of a region includes marks produced by either (or both) (1) a background color or (2) a background image,
+<note role="elaboration"><p>The background of a region includes marks produced by (1) a background color and (or) (2) a background image,
 if either apply to the region.</p></note>
 <table id="style-property-details-showBackground" role="common">
 <col css="width: 25%;"/>
@@ -14989,9 +15024,9 @@ where <emph>content</emph> is the unquoted content of the quoted string, i.e., t
 <item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains an <code>identifier</code> that
 starts with two <code>-</code> HYPHEN-MINUS (U+002D) characters must be considered to be invalid;</p></item>
 <item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
-matches (by case sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
+matches (by case-sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
 <item><p>a &lt;family-name&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
-matches (by case sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
+matches (by case-sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
 the actual name of a non-generic font family.</p></item>
 <item><p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
 to the <code>Char</code> production defined by <bibref ref="xml10"/>, &sect;2.2.</p></item>
@@ -16451,11 +16486,11 @@ model specified below, the following conceptual definitions apply:</p>
 <label>[style property]</label>
 <def>
 <p></p>
-<p>a style property, <emph>P</emph>, is considered to consist of a
+<p>A style property, <emph>P</emph>, is considered to consist of a
 tuple <code>[name, value]</code>, where the name of the
 property is a tuple <code>[namespace value,
 unqualified name]</code> and the value of the property is a
-tuple <code>[category, type, value expression]</code></p>
+tuple <code>[category, type, value expression]</code>.</p>
 <table id="conceptual-definition-example-style-property" role="example">
 <caption>Example &ndash; conceptual style property</caption>
 <tbody>
@@ -16478,13 +16513,13 @@ tuple <code>[category, type, value expression]</code></p>
 <label>[style (property) set]</label>
 <def>
 <p></p>
-<p>a style (property) set consists of an unordered collection of style
+<p>A style (property) set consists of an unordered collection of style
 properties, where no two style properties within the set have an
 identical name, where by "identical name" is meant equality of
-namespace value of name tuple and unqualified name of name tuple;</p>
-<p>in a specified style (property) set, the category of each style
+namespace value of name tuple and unqualified name of name tuple.</p>
+<p>In a specified style (property) set, the category of each style
 property is "specified"; a specified style (property) set of an
-element <emph>E</emph> is referred to as <emph>SSS(E)</emph>;</p>
+element <emph>E</emph> is referred to as <emph>SSS(E)</emph>.</p>
 <table id="conceptual-definition-example-specified-style-set" role="example">
 <caption>Example &ndash; conceptual (specified) style (property) set</caption>
 <tbody>
@@ -16514,9 +16549,9 @@ element <emph>E</emph> is referred to as <emph>SSS(E)</emph>;</p>
 </tr>
 </tbody>
 </table>
-<p>in a computed style (property) set, the category of each style
+<p>In a computed style (property) set, the category of each style
 property is either "specified" or "computed"; a computed style (property) set of an element
-<emph>E</emph> is referred to as <emph>CSS(E)</emph>;</p>
+<emph>E</emph> is referred to as <emph>CSS(E)</emph>.</p>
 <table id="conceptual-definition-example-computed-style-set" role="example">
 <caption>Example &ndash; conceptual (computed) style (property) set</caption>
 <tbody>
@@ -16553,25 +16588,25 @@ property is either "specified" or "computed"; a computed style (property) set of
 <label>[style (property) merging]</label>
 <def>
 <p></p>
-<p>a style property <emph>P<sub>new</sub></emph> is merged into a
+<p>A style property <emph>P<sub>new</sub></emph> is merged into a
 style (property) set, <emph>SS</emph>, as follows: if a style property
 <emph>P<sub>old</sub></emph> is already present in <emph>SS</emph>
 where the name of <emph>P<sub>new</sub></emph> is identical to the
-name of <emph>P<sub>old</sub></emph>, then replace
+name of <emph>P<sub>old</sub></emph>&thinsp;, then replace
 <emph>P<sub>old</sub></emph> in <emph>SS</emph> with
-<emph>P<sub>new</sub></emph>; otherwise, add
-<emph>P<sub>new</sub></emph> to <emph>SS</emph>;</p>
+<emph>P<sub>new</sub></emph>&thinsp;; otherwise, add
+<emph>P<sub>new</sub></emph> to <emph>SS</emph>.</p>
 </def>
 </gitem>
 <gitem>
 <label>[style (property) set merging]</label>
 <def>
 <p></p>
-<p>a style (property) set <emph>SS<sub>new</sub></emph> is merged into
+<p>A style (property) set <emph>SS<sub>new</sub></emph> is merged into
 an existing style (property) set <emph>SS<sub>old</sub></emph> as
 follows: for each style property <emph>P<sub>new</sub></emph> in
-<emph>SS<sub>new</sub></emph>, merge <emph>P<sub>new</sub></emph> into
-<emph>SS<sub>old</sub></emph>;</p>
+<emph>SS<sub>new</sub></emph>&thinsp;, merge <emph>P<sub>new</sub></emph> into
+<emph>SS<sub>old</sub></emph>&thinsp;.</p>
 </def>
 </gitem>
 </glist>
@@ -16595,7 +16630,7 @@ referenced by a <att>style</att> attribute specified on
 attribute, then, if <emph>S<sub>REF</sub></emph> is a descendant
 of a <el>styling</el> element,
 merge the specified style set of
-<emph>S<sub>REF</sub></emph>, <emph>SSS(S<sub>REF</sub>)</emph>, into
+<emph>S<sub>REF</sub></emph>&thinsp;, <emph>SSS(S<sub>REF</sub>)</emph>, into
 the specified style set of <emph>E</emph>,
 <emph>SSS(E)</emph>;</p></item>
 <!-- 3. [nested styling] -->
@@ -16603,7 +16638,7 @@ the specified style set of <emph>E</emph>,
 if <emph>E</emph> is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>, then
 for each nested <loc href="#terms-conditionally-excluded">conditionally included</loc> <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
 <emph>E</emph>, and in the specified order of child elements, merge
-the specified style set of <emph>S<sub>NEST</sub></emph>,
+the specified style set of <emph>S<sub>NEST</sub></emph>&thinsp;,
 <emph>SSS(S<sub>NEST</sub>)</emph>, into the specified style set of
 <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <!-- 4. [inline styling] -->
@@ -16703,7 +16738,7 @@ sub-steps:</p>
 <olist>
 <item><p>if possible, replace the relative value of <emph>P</emph> with an
 equivalent, non-relative (computed) value;</p></item>
-<item><p>set the category of <emph>P</emph> to "computed";</p></item>
+<item><p>set the category of <emph>P</emph> to "computed".</p></item>
 </olist>
 </item>
 </olist>
@@ -16729,7 +16764,7 @@ when resolution cannot occur until layout or presentation time, further resoluti
 <p>The top-level style resolution process is defined as follows: using
 a preorder traversal of each element and <loc href="#terms-anonymous-span">anonymous span</loc>,
 <emph>E</emph>, of an intermediate synchronic document,
-<emph>DOC<sub>inter</sub></emph>, perform the following ordered
+<emph>DOC<sub>inter</sub></emph>&thinsp;, perform the following ordered
 sub-steps:</p>
 <olist>
 <item><p><phrase role="strong">[filter]</phrase> if <emph>E</emph>
@@ -16768,25 +16803,25 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <def>
 <olist>
   <item><p>If the units of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
-  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>, is zero, then set <emph>W<sub>t</sub></emph> to one;
-  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
+  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>&thinsp;, is zero, then set <emph>W<sub>t</sub></emph> to one;
+  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>&thinsp;, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
   <item><p>Let <emph>SAR<sub>r</sub></emph> be the storage aspect ratio of the reference rectangle <emph>RR</emph>.</p></item>
   <item><p>Let <emph>SAR<sub>t</sub></emph> be the storage aspect ratio of the target rectangle <emph>TR</emph>.</p></item>
   <item>
     <p>Determine scaling factor <emph>SF</emph> as follows:</p>
     <olist>
-      <item><p>If <emph>SAR<sub>r</sub></emph> is less than or equal to <emph>SAR<sub>t</sub></emph>, then <emph>SF</emph>
-      is <emph>W<sub>r</sub></emph> / <emph>W<sub>t</sub></emph>, where <emph>W<sub>r</sub></emph> and <emph>W<sub>t</sub></emph>
+      <item><p>If <emph>SAR<sub>r</sub></emph> is less than or equal to <emph>SAR<sub>t</sub></emph>&thinsp;, then <emph>SF</emph>
+      is <emph>W<sub>r</sub></emph> / <emph>W<sub>t</sub></emph>&thinsp;, where <emph>W<sub>r</sub></emph> and <emph>W<sub>t</sub></emph>
       are the widths of the reference and target rectangles, respectively.</p></item>
-      <item><p>Otherwise, <emph>SAR<sub>r</sub></emph> is greater than <emph>SAR<sub>t</sub></emph>, then <emph>SF</emph>
-      is <emph>H<sub>r</sub></emph> / <emph>H<sub>t</sub></emph>, where <emph>H<sub>r</sub></emph> and <emph>H<sub>t</sub></emph>
+      <item><p>Otherwise, <emph>SAR<sub>r</sub></emph> is greater than <emph>SAR<sub>t</sub></emph>&thinsp;, then <emph>SF</emph>
+      is <emph>H<sub>r</sub></emph> / <emph>H<sub>t</sub></emph>&thinsp;, where <emph>H<sub>r</sub></emph> and <emph>H<sub>t</sub></emph>
       are the heights of the reference and target rectangles, respectively.</p></item>
     </olist>
   </item>
   <item><p>
   If <emph>SF</emph> is not equal to <emph>1.0</emph>, then
   set <emph>W<sub>t</sub></emph> to <emph>SF</emph> * <emph>W<sub>t</sub></emph>
-  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>,
+  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>&thinsp;,
   i.e., scale target rectangle <emph>TR</emph> in place by scale factor <emph>SF</emph>.
   </p></item>
 </olist>
@@ -16806,8 +16841,8 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <def>
 <olist>
   <item><p>If the units of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
-  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>, is zero, then set <emph>W<sub>t</sub></emph> to one;
-  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
+  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>&thinsp;, is zero, then set <emph>W<sub>t</sub></emph> to one;
+  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>&thinsp;, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
   <item><p>Let <emph>SF<sub>W </sub> </emph> be <emph>W<sub>R</sub> </emph>/<emph>W<sub>T</sub> </emph>, where
   <emph>W<sub>R</sub> </emph> and <emph>W<sub>T</sub> </emph> are the widths of the reference rectangle RR
   and the target rectangle TR, respectively.</p></item>
@@ -16820,7 +16855,7 @@ determine (obtain) the computed style set <emph>CSS</emph> of
   <item><p>
   If <emph>SF</emph> is not equal to <emph>1.0</emph>, then
   set <emph>W<sub>t</sub></emph> to <emph>SF</emph> * <emph>W<sub>t</sub></emph>
-  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>,
+  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>&thinsp;,
   i.e., scale target rectangle <emph>TR</emph> in place by scale factor <emph>SF</emph>.
   </p></item>
 </olist>
@@ -17038,13 +17073,13 @@ equivalent to an anonymous <loc href="#terms-inline-animation">inline animation<
 the form of a <loc href="#animation-vocabulary-set"><el>set</el></loc> animation element <emph>A</emph>, where the
 animation applies to <emph>R</emph> over an active time interval equivalent to the active time
 interval of <emph>E</emph>, and where, if multiple animation elements
-(<emph>A<sub>i</sub></emph>, ..., <emph>A<sub>j</sub></emph>) already apply to <emph>R</emph>,
+(<emph>A<sub>i</sub></emph>&thinsp;, ..., <emph>A<sub>j</sub></emph>) already apply to <emph>R</emph>,
 then <emph>A</emph> applies subsequent to the last of these existing animations, namely, immediately after <emph>A<sub>j</sub></emph>.</p>
 <note role="clarification">
 <p>In the event that multiple anonymous <loc href="#terms-inline-animation">inline animations</loc> of the same style attribute are
 applied to some region <emph>R</emph>, then the corresponding
-<loc href="#animation-vocabulary-set"><el>set</el></loc> animation elements, <emph>A<sub>j</sub></emph>, ..., <emph>A<sub>k</sub></emph>, 
-are added to <emph>R</emph> according to the pre-order traversal order of elements <emph>E<sub>j</sub></emph>, ..., <emph>E<sub>k</sub></emph> that
+<loc href="#animation-vocabulary-set"><el>set</el></loc> animation elements, <emph>A<sub>j</sub></emph>&thinsp;, ..., <emph>A<sub>k</sub></emph>&thinsp;, 
+are added to <emph>R</emph> according to the pre-order traversal order of elements <emph>E<sub>j</sub></emph>&thinsp;, ..., <emph>E<sub>k</sub></emph> that
 produced these animations.</p>
 <p>Note also that the semantics of applying multiple animations to a specific style attribute for a given element are
 governed by step (5), <phrase role="strong">[animation styling]</phrase>, of <specref ref="semantics-style-resolution-processing-sss"/>.</p>
@@ -17507,7 +17542,7 @@ then the element is associated with the default region;</p></item>
 <p>Where an implementation is able to detect significant similarity between two
 adjacent synchronic <loc href="#terms-document-instance">document instances</loc>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
-<emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>,
+<emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>&thinsp;,
 then the implementation can apply processing to make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cta608e"/>, &sect;C.3, and <bibref ref="ccreq"/>.</p>
@@ -17538,9 +17573,9 @@ defined by this specification, and would contain a large number of features not 
 implement the presentation semantics of TTML.</p>
 </note>
 <p>For the purpose of performing presentation processing, for each intermediate synchronic document produced by
-<specref ref="semantics-region-layout-step-1"/>, <emph>DOC<sub><phrase>inter<sub>i</sub></phrase></sub></emph>, (1) invoke the following
+<specref ref="semantics-region-layout-step-1"/>, <emph>DOC<sub><phrase>inter<sub>i</sub></phrase></sub></emph>&thinsp;, (1) invoke the following
 <phrase role="strong"><loc href="#procedure-flow-transformation">[flow transformation]</loc></phrase> procedure
-to obtain an XSL FO document instance, <emph>F<sub>i</sub></emph>, and then (2) if processing requires presentation on a
+to obtain an XSL FO document instance, <emph>F<sub>i</sub></emph>&thinsp;, and then (2) if processing requires presentation on a
 visual medium, apply to <emph>F<sub>i</sub></emph> all relevant formatting and rendering semantics consistent with that prescribed
 by <bibref ref="xslfo11"/> and this specification.</p>
 <glist>
@@ -19742,7 +19777,7 @@ is defined by <specref ref="conformance-content"/>.</p>
 <head>Features</head>
 <p><emph>This appendix is normative.</emph></p>
 <p>This appendix specifies (1) a set of feature designations, each of which
-labels one or more syntactic and/or semantic features defined by this
+labels one or more syntactic and (or) semantic features defined by this
 specification, and (2) for each designated feature, whether the feature is mandatory or optional for a
 TTML <loc href="#terms-content-processor">content processor</loc> that complies with the requirements of
 <specref ref="conformance-transformation-processor"/> or <specref ref="conformance-presentation-processor"/>.</p>
@@ -25785,6 +25820,12 @@ W3C Working Group Note, 27 April 2006. (See
 <xspecref
 href="http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/">http://www.w3.org/TR/2006/NOTE-ttaf1-req-20060427/</xspecref>.)
 </bibl>
+<bibl id="ttmt" key="TT-MEDIA-TYPE">Mike Dolan, Ed.,
+<titleref href="https://www.w3.org/TR/2017/NOTE-ttml-profile-registry-20170117/">Timed Text Media Type Definition and Profile Registry</titleref>,
+W3C Working Group Note, 17 January 2017. (See
+<xspecref
+href="https://www.w3.org/TR/2017/NOTE-ttml-profile-registry-20170117/">https://www.w3.org/TR/2017/NOTE-ttml-profile-registry-20170117/</xspecref>.)
+</bibl>
 <bibl id="webaudio" key="WEBAUDIO">Paul Adenot, Raymond Toy, Eds.,
 <titleref href="https://www.w3.org/TR/2018/CR-webaudio-20180918/">Web
 Web Audio API</titleref>, W3C Candidate Recommendation, 18 September 2018. (See
@@ -26324,7 +26365,7 @@ attributes.</p>
 <head>Element Derivation</head>
 <p>The first column of <specref ref="element-vocab-derivation-table"/>
 specifies a TTML element vocabulary item; the second column specifies the
-syntactic and/or semantic model on which the vocabulary item is based;
+syntactic and (or) semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
 the model (if a model is indicated);
 the fourth column specifies details about the derivation; the last
@@ -26546,7 +26587,7 @@ represented by a style child element</td>
 <td><code>xhtml:html</code></td>
 <td><bibref ref="xhtml10"/></td>
 <td>-@dir, -@lang; +@id, +@ttp:*, +@xml:space; content model subsetted by
-permitting body and/or head to be optional</td>
+permitting body and (or) head to be optional</td>
 <td>1,8</td>
 </tr>
 <tr>
@@ -26698,7 +26739,7 @@ in defining animation specifications.</p>
 <head>Attribute Derivation</head>
 <p>The first column of <specref ref="attribute-vocab-derivation-table"/>
 specifies a TTML attribute vocabulary item; the second column specifies the
-syntactic and/or semantic model on which the vocabulary item is based;
+syntactic and (or) semantic model on which the vocabulary item is based;
 the third column specifies the reference that defines
 the model (if a model is indicated);
 the fourth column specifies details about the derivation; the last

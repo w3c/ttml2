@@ -2610,32 +2610,32 @@ normative URI that denotes each namespace.</p>
 </tr>
 <tr>
 <td>TT</td>
-<td><code>tt:</code></td>
+<td><code>tt</code></td>
 <td><code>http://www.w3.org/ns/ttml</code></td>
 </tr>
 <tr>
 <td>TT Parameter</td>
-<td><code>ttp:</code></td>
+<td><code>ttp</code></td>
 <td><code>http://www.w3.org/ns/ttml#parameter</code></td>
 </tr>
 <tr>
 <td>TT Style</td>
-<td><code>tts:</code></td>
+<td><code>tts</code></td>
 <td><code>http://www.w3.org/ns/ttml#styling</code></td>
 </tr>
 <tr>
 <td>TT Audio Style</td>
-<td><code>tta:</code></td>
+<td><code>tta</code></td>
 <td><code>http://www.w3.org/ns/ttml#audio</code></td>
 </tr>
 <tr>
 <td>TT Metadata</td>
-<td><code>ttm:</code></td>
+<td><code>ttm</code></td>
 <td><code>http://www.w3.org/ns/ttml#metadata</code></td>
 </tr>
 <tr>
 <td>TT Intermediate Synchronic Document</td>
-<td><code>isd:</code></td>
+<td><code>isd</code></td>
 <td><code>http://www.w3.org/ns/ttml#isd</code></td>
 </tr>
 <tr>
@@ -2762,7 +2762,12 @@ and additive.</p>
 multiple content profiles and (or) multiple processor profiles. When multiple profiles are referenced, their respective specifications
 are combined to form a single effective content profile that applies to the document and a single effective processor profile
 that applies to a processor when processing the document. In addition, an author is not limited to making reference to externally
-defined profiles, but may define one or more profiles inline within a document.</p>
+defined profiles, but may define one or more profiles defined inline within a document.</p>
+<note role="clarification">
+<p>Profile combination is itself an optional <loc href="#terms-feature">feature</loc> which is determined according to whether
+a <loc href="#terms-processor">processor</loc> supports the <specref ref="feature-contentProfiles-combined"/> or the
+<specref ref="feature-processorProfiles-combined"/> feature.</p>
+</note>
 </div3>
 <div3 id="semantics-profile-examples">
 <head>Profile Examples</head>
@@ -2888,12 +2893,12 @@ implementation create such objects in the form specified here, but may use any c
 <p>A <loc href="#semantics-profile-state-profile-specification"><phrase role="strong">profile specification</phrase></loc>
 represents the following internal state information that corresponds with
 a <loc href="#profile-vocabulary-feature"><el>ttp:feature</el></loc> or <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc>
-element</p>
+element.</p>
 <glist>
 <gitem id="semantics-profile-state-profile-specification-designator">
 <label>designator</label>
 <def>
-<p>A <loc href="#content-value-uri">&lt;uri&gt;</loc> value denoting a feature or extension designator depending upon the <emph><code>type</code></emph></p>
+<p>A <loc href="#content-value-uri">&lt;uri&gt;</loc> value denoting a feature or extension designator depending upon the <emph><code>type</code></emph>.</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-specification-type">
@@ -2943,7 +2948,7 @@ where each designator denotes a constituent profile, i.e., a profile from which 
 <p></p>
 <p>A <loc href="#semantics-profile-state-combined-profile-specification-set"><phrase role="strong">combined profile specification set</phrase></loc> which 
 <loc href="#semantics-profile-state-combined-profile-specification-set-constituents"><phrase role="strong">constituents</phrase></loc> and
-<loc href="#semantics-profile-state-combined-profile-specification-set-specifications"><phrase role="strong">specifications</phrase></loc> fields are empty sets</p>
+<loc href="#semantics-profile-state-combined-profile-specification-set-specifications"><phrase role="strong">specifications</phrase></loc> fields are empty sets.</p>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-instance">
@@ -3290,16 +3295,16 @@ that represents equivalent information.</p>
 <label>[validation exception]</label>
 <def>
 <p>A <loc href="#semantics-validation-state-validation-exception"><phrase role="strong">validation exception</phrase></loc>
-represents the following internal state information that corresponds to an exception condition that occurs during <loc href="#terms-validation-processing">validation processing</loc></p>
+represents the following internal state information that corresponds to an exception condition that occurs during <loc href="#terms-validation-processing">validation processing</loc>.</p>
 <glist>
 <gitem id="semantics-validation-state-validation-exception-message">
 <label>message</label>
-<def><p>An arbitrary (implementation defined) string that describes or characterizes the exception</p></def>
+<def><p>An arbitrary (implementation defined) string that describes or characterizes the exception.</p></def>
 </gitem>
 <gitem id="semantics-validation-state-validation-exception-type">
 <label>type</label>
 <def>
-<p><code>error|warning</code></p>
+<p><code>"error" | "warning"</code></p>
 </def>
 </gitem>
 </glist>
@@ -3402,7 +3407,7 @@ non-conformance with respect to a recommendation (should) or disrecommendation (
 <p>Since the determination of <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is implementation
 dependent, and since there is no requirement that the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> detect
 every possible <termref def="defs-validation-error">validation error</termref>, then performing the
-<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure need not produce a
+  <loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure on an invalid document instance need not produce a
 <loc href="#semantics-validation-state-validation-exception">validation exception</loc>, in which case,
 the results of <loc href="#terms-validation-processing">validation processing</loc> may be considered a <emph>false positive</emph>.</p>
 <p>As an example, a <loc href="#terms-content-profile">content profile</loc> may prohibit the use of a feature by means of the
@@ -7448,6 +7453,12 @@ if the specified attribute value(s) differ from the value(s) of these font chara
 the specified attribute value(s) are to be used instead of the font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
 <p>If any of the <att>family</att>, <att>range</att>, <att>style</att>, or <att>weight</att> attributes are not specified, then their values
 must be considered to be equal to the value(s) of the same named font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
+<p>If the computed value of the <code>family</code> attribute (whether explicitly specified or not) matches a
+<loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc> (by case-sensitive comparison),
+then it is considered an error, and the referenced font resource must be ignored for the purpose of presentation processing.</p>
+<note role="elaboration">
+<p>The effect of the previous paragraph is that a content author may not override a built-in font resource that corresponds to a generic font family.</p>
+</note>
 <note role="guideline">
 <p>Authors are advised to use subset fonts wherever possible. A subset font is a syntactically valid <loc href="#terms-font-resource">font resource</loc> that
 removes unreferenced glyphs and unreferenced glyph metrics. In general, a subset font is tied to a specific document, since it may have been generated
@@ -8376,8 +8387,8 @@ element types:</p>
 adhere to the <code>IDREFS</code> data type defined by <bibref ref="xsd-2"/>,
 &sect;3.3.10, and, furthermore, each IDREF must reference a <el>style</el> element
 which has a <el>styling</el> element as an ancestor.</p>
-<p>If the same IDREF, <emph>ID<sub>1</sub></emph>, appears more than one time in the value of a <att>style</att>
-attribute, then there should be an intervening IDREF, <emph>ID<sub>2</sub></emph>, where 
+<p>If the same IDREF, <emph>ID<sub>1</sub></emph>&thinsp;, appears more than one time in the value of a <att>style</att>
+attribute, then there should be an intervening IDREF, <emph>ID<sub>2</sub></emph>&thinsp;, where 
 <emph>ID<sub>2</sub></emph> is not equal to <emph>ID<sub>1</sub></emph>.</p>
 <note role="explanation">
 <p>This constraint is intended to discourage the use of redundant referential styling while still
@@ -12396,7 +12407,7 @@ the container's constituent <termref def="defs-ruby-container">ruby containers</
 the container and its constituents is uniform (unvarying).</p></note>
 <p>Let <emph>I<sub>R</sub></emph> and <emph>I<sub>B</sub></emph> be, respectively, the inline areas generated by (1) a <termref def="defs-ruby-text-container">ruby text container</termref> or
 ruby text annotation and (2) an associated <termref def="defs-ruby-base-container">ruby base container</termref> or ruby base. Further, let <emph>N<sub>R</sub></emph>
-and <emph>N<sub>B</sub></emph>, be, respectively, the number of <loc href="#terms-glyph-area-descendant">glyph area descendants</loc> of these
+and <emph>N<sub>B</sub></emph>&thinsp;, be, respectively, the number of <loc href="#terms-glyph-area-descendant">glyph area descendants</loc> of these
 inline areas.</p>
 <p>If the value of this attribute is <code>start</code>, then the start edge of the first <loc href="#terms-glyph-area-descendant">glyph area descendant</loc>
 of <emph>I<sub>R</sub></emph>
@@ -14990,9 +15001,9 @@ where <emph>content</emph> is the unquoted content of the quoted string, i.e., t
 <item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains an <code>identifier</code> that
 starts with two <code>-</code> HYPHEN-MINUS (U+002D) characters must be considered to be invalid;</p></item>
 <item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
-matches (by case sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
+matches (by case-sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
 <item><p>a &lt;family-name&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
-matches (by case sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
+matches (by case-sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
 the actual name of a non-generic font family.</p></item>
 <item><p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
 to the <code>Char</code> production defined by <bibref ref="xml10"/>, &sect;2.2.</p></item>
@@ -16452,11 +16463,11 @@ model specified below, the following conceptual definitions apply:</p>
 <label>[style property]</label>
 <def>
 <p></p>
-<p>a style property, <emph>P</emph>, is considered to consist of a
+<p>A style property, <emph>P</emph>, is considered to consist of a
 tuple <code>[name, value]</code>, where the name of the
 property is a tuple <code>[namespace value,
 unqualified name]</code> and the value of the property is a
-tuple <code>[category, type, value expression]</code></p>
+tuple <code>[category, type, value expression]</code>.</p>
 <table id="conceptual-definition-example-style-property" role="example">
 <caption>Example &ndash; conceptual style property</caption>
 <tbody>
@@ -16479,13 +16490,13 @@ tuple <code>[category, type, value expression]</code></p>
 <label>[style (property) set]</label>
 <def>
 <p></p>
-<p>a style (property) set consists of an unordered collection of style
+<p>A style (property) set consists of an unordered collection of style
 properties, where no two style properties within the set have an
 identical name, where by "identical name" is meant equality of
-namespace value of name tuple and unqualified name of name tuple;</p>
-<p>in a specified style (property) set, the category of each style
+namespace value of name tuple and unqualified name of name tuple.</p>
+<p>In a specified style (property) set, the category of each style
 property is "specified"; a specified style (property) set of an
-element <emph>E</emph> is referred to as <emph>SSS(E)</emph>;</p>
+element <emph>E</emph> is referred to as <emph>SSS(E)</emph>.</p>
 <table id="conceptual-definition-example-specified-style-set" role="example">
 <caption>Example &ndash; conceptual (specified) style (property) set</caption>
 <tbody>
@@ -16515,9 +16526,9 @@ element <emph>E</emph> is referred to as <emph>SSS(E)</emph>;</p>
 </tr>
 </tbody>
 </table>
-<p>in a computed style (property) set, the category of each style
+<p>In a computed style (property) set, the category of each style
 property is either "specified" or "computed"; a computed style (property) set of an element
-<emph>E</emph> is referred to as <emph>CSS(E)</emph>;</p>
+<emph>E</emph> is referred to as <emph>CSS(E)</emph>.</p>
 <table id="conceptual-definition-example-computed-style-set" role="example">
 <caption>Example &ndash; conceptual (computed) style (property) set</caption>
 <tbody>
@@ -16554,25 +16565,25 @@ property is either "specified" or "computed"; a computed style (property) set of
 <label>[style (property) merging]</label>
 <def>
 <p></p>
-<p>a style property <emph>P<sub>new</sub></emph> is merged into a
+<p>A style property <emph>P<sub>new</sub></emph> is merged into a
 style (property) set, <emph>SS</emph>, as follows: if a style property
 <emph>P<sub>old</sub></emph> is already present in <emph>SS</emph>
 where the name of <emph>P<sub>new</sub></emph> is identical to the
-name of <emph>P<sub>old</sub></emph>, then replace
+name of <emph>P<sub>old</sub></emph>&thinsp;, then replace
 <emph>P<sub>old</sub></emph> in <emph>SS</emph> with
-<emph>P<sub>new</sub></emph>; otherwise, add
-<emph>P<sub>new</sub></emph> to <emph>SS</emph>;</p>
+<emph>P<sub>new</sub></emph>&thinsp;; otherwise, add
+<emph>P<sub>new</sub></emph> to <emph>SS</emph>.</p>
 </def>
 </gitem>
 <gitem>
 <label>[style (property) set merging]</label>
 <def>
 <p></p>
-<p>a style (property) set <emph>SS<sub>new</sub></emph> is merged into
+<p>A style (property) set <emph>SS<sub>new</sub></emph> is merged into
 an existing style (property) set <emph>SS<sub>old</sub></emph> as
 follows: for each style property <emph>P<sub>new</sub></emph> in
-<emph>SS<sub>new</sub></emph>, merge <emph>P<sub>new</sub></emph> into
-<emph>SS<sub>old</sub></emph>;</p>
+<emph>SS<sub>new</sub></emph>&thinsp;, merge <emph>P<sub>new</sub></emph> into
+<emph>SS<sub>old</sub></emph>&thinsp;.</p>
 </def>
 </gitem>
 </glist>
@@ -16596,7 +16607,7 @@ referenced by a <att>style</att> attribute specified on
 attribute, then, if <emph>S<sub>REF</sub></emph> is a descendant
 of a <el>styling</el> element,
 merge the specified style set of
-<emph>S<sub>REF</sub></emph>, <emph>SSS(S<sub>REF</sub>)</emph>, into
+<emph>S<sub>REF</sub></emph>&thinsp;, <emph>SSS(S<sub>REF</sub>)</emph>, into
 the specified style set of <emph>E</emph>,
 <emph>SSS(E)</emph>;</p></item>
 <!-- 3. [nested styling] -->
@@ -16604,7 +16615,7 @@ the specified style set of <emph>E</emph>,
 if <emph>E</emph> is not <loc href="#terms-conditionally-excluded">conditionally excluded</loc>, then
 for each nested <loc href="#terms-conditionally-excluded">conditionally included</loc> <el>style</el> element child <emph>S<sub>NEST</sub></emph> of
 <emph>E</emph>, and in the specified order of child elements, merge
-the specified style set of <emph>S<sub>NEST</sub></emph>,
+the specified style set of <emph>S<sub>NEST</sub></emph>&thinsp;,
 <emph>SSS(S<sub>NEST</sub>)</emph>, into the specified style set of
 <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <!-- 4. [inline styling] -->
@@ -16704,7 +16715,7 @@ sub-steps:</p>
 <olist>
 <item><p>if possible, replace the relative value of <emph>P</emph> with an
 equivalent, non-relative (computed) value;</p></item>
-<item><p>set the category of <emph>P</emph> to "computed";</p></item>
+<item><p>set the category of <emph>P</emph> to "computed".</p></item>
 </olist>
 </item>
 </olist>
@@ -16730,7 +16741,7 @@ when resolution cannot occur until layout or presentation time, further resoluti
 <p>The top-level style resolution process is defined as follows: using
 a preorder traversal of each element and <loc href="#terms-anonymous-span">anonymous span</loc>,
 <emph>E</emph>, of an intermediate synchronic document,
-<emph>DOC<sub>inter</sub></emph>, perform the following ordered
+<emph>DOC<sub>inter</sub></emph>&thinsp;, perform the following ordered
 sub-steps:</p>
 <olist>
 <item><p><phrase role="strong">[filter]</phrase> if <emph>E</emph>
@@ -16769,25 +16780,25 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <def>
 <olist>
   <item><p>If the units of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
-  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>, is zero, then set <emph>W<sub>t</sub></emph> to one;
-  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
+  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>&thinsp;, is zero, then set <emph>W<sub>t</sub></emph> to one;
+  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>&thinsp;, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
   <item><p>Let <emph>SAR<sub>r</sub></emph> be the storage aspect ratio of the reference rectangle <emph>RR</emph>.</p></item>
   <item><p>Let <emph>SAR<sub>t</sub></emph> be the storage aspect ratio of the target rectangle <emph>TR</emph>.</p></item>
   <item>
     <p>Determine scaling factor <emph>SF</emph> as follows:</p>
     <olist>
-      <item><p>If <emph>SAR<sub>r</sub></emph> is less than or equal to <emph>SAR<sub>t</sub></emph>, then <emph>SF</emph>
-      is <emph>W<sub>r</sub></emph> / <emph>W<sub>t</sub></emph>, where <emph>W<sub>r</sub></emph> and <emph>W<sub>t</sub></emph>
+      <item><p>If <emph>SAR<sub>r</sub></emph> is less than or equal to <emph>SAR<sub>t</sub></emph>&thinsp;, then <emph>SF</emph>
+      is <emph>W<sub>r</sub></emph> / <emph>W<sub>t</sub></emph>&thinsp;, where <emph>W<sub>r</sub></emph> and <emph>W<sub>t</sub></emph>
       are the widths of the reference and target rectangles, respectively.</p></item>
-      <item><p>Otherwise, <emph>SAR<sub>r</sub></emph> is greater than <emph>SAR<sub>t</sub></emph>, then <emph>SF</emph>
-      is <emph>H<sub>r</sub></emph> / <emph>H<sub>t</sub></emph>, where <emph>H<sub>r</sub></emph> and <emph>H<sub>t</sub></emph>
+      <item><p>Otherwise, <emph>SAR<sub>r</sub></emph> is greater than <emph>SAR<sub>t</sub></emph>&thinsp;, then <emph>SF</emph>
+      is <emph>H<sub>r</sub></emph> / <emph>H<sub>t</sub></emph>&thinsp;, where <emph>H<sub>r</sub></emph> and <emph>H<sub>t</sub></emph>
       are the heights of the reference and target rectangles, respectively.</p></item>
     </olist>
   </item>
   <item><p>
   If <emph>SF</emph> is not equal to <emph>1.0</emph>, then
   set <emph>W<sub>t</sub></emph> to <emph>SF</emph> * <emph>W<sub>t</sub></emph>
-  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>,
+  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>&thinsp;,
   i.e., scale target rectangle <emph>TR</emph> in place by scale factor <emph>SF</emph>.
   </p></item>
 </olist>
@@ -16807,8 +16818,8 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <def>
 <olist>
   <item><p>If the units of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
-  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>, is zero, then set <emph>W<sub>t</sub></emph> to one;
-  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
+  <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>&thinsp;, is zero, then set <emph>W<sub>t</sub></emph> to one;
+  likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>&thinsp;, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
   <item><p>Let <emph>SF<sub>W </sub> </emph> be <emph>W<sub>R</sub> </emph>/<emph>W<sub>T</sub> </emph>, where
   <emph>W<sub>R</sub> </emph> and <emph>W<sub>T</sub> </emph> are the widths of the reference rectangle RR
   and the target rectangle TR, respectively.</p></item>
@@ -16821,7 +16832,7 @@ determine (obtain) the computed style set <emph>CSS</emph> of
   <item><p>
   If <emph>SF</emph> is not equal to <emph>1.0</emph>, then
   set <emph>W<sub>t</sub></emph> to <emph>SF</emph> * <emph>W<sub>t</sub></emph>
-  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>,
+  and <emph>H<sub>t</sub></emph> to <emph>SF</emph> * <emph>H<sub>t</sub></emph>&thinsp;,
   i.e., scale target rectangle <emph>TR</emph> in place by scale factor <emph>SF</emph>.
   </p></item>
 </olist>
@@ -17039,13 +17050,13 @@ equivalent to an anonymous <loc href="#terms-inline-animation">inline animation<
 the form of a <loc href="#animation-vocabulary-set"><el>set</el></loc> animation element <emph>A</emph>, where the
 animation applies to <emph>R</emph> over an active time interval equivalent to the active time
 interval of <emph>E</emph>, and where, if multiple animation elements
-(<emph>A<sub>i</sub></emph>, ..., <emph>A<sub>j</sub></emph>) already apply to <emph>R</emph>,
+(<emph>A<sub>i</sub></emph>&thinsp;, ..., <emph>A<sub>j</sub></emph>) already apply to <emph>R</emph>,
 then <emph>A</emph> applies subsequent to the last of these existing animations, namely, immediately after <emph>A<sub>j</sub></emph>.</p>
 <note role="clarification">
 <p>In the event that multiple anonymous <loc href="#terms-inline-animation">inline animations</loc> of the same style attribute are
 applied to some region <emph>R</emph>, then the corresponding
-<loc href="#animation-vocabulary-set"><el>set</el></loc> animation elements, <emph>A<sub>j</sub></emph>, ..., <emph>A<sub>k</sub></emph>, 
-are added to <emph>R</emph> according to the pre-order traversal order of elements <emph>E<sub>j</sub></emph>, ..., <emph>E<sub>k</sub></emph> that
+<loc href="#animation-vocabulary-set"><el>set</el></loc> animation elements, <emph>A<sub>j</sub></emph>&thinsp;, ..., <emph>A<sub>k</sub></emph>&thinsp;, 
+are added to <emph>R</emph> according to the pre-order traversal order of elements <emph>E<sub>j</sub></emph>&thinsp;, ..., <emph>E<sub>k</sub></emph> that
 produced these animations.</p>
 <p>Note also that the semantics of applying multiple animations to a specific style attribute for a given element are
 governed by step (5), <phrase role="strong">[animation styling]</phrase>, of <specref ref="semantics-style-resolution-processing-sss"/>.</p>
@@ -17508,7 +17519,7 @@ then the element is associated with the default region;</p></item>
 <p>Where an implementation is able to detect significant similarity between two
 adjacent synchronic <loc href="#terms-document-instance">document instances</loc>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
-<emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>,
+<emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>&thinsp;,
 then the implementation can apply processing to make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cta608e"/>, &sect;C.3, and <bibref ref="ccreq"/>.</p>
@@ -17539,9 +17550,9 @@ defined by this specification, and would contain a large number of features not 
 implement the presentation semantics of TTML.</p>
 </note>
 <p>For the purpose of performing presentation processing, for each intermediate synchronic document produced by
-<specref ref="semantics-region-layout-step-1"/>, <emph>DOC<sub><phrase>inter<sub>i</sub></phrase></sub></emph>, (1) invoke the following
+<specref ref="semantics-region-layout-step-1"/>, <emph>DOC<sub><phrase>inter<sub>i</sub></phrase></sub></emph>&thinsp;, (1) invoke the following
 <phrase role="strong"><loc href="#procedure-flow-transformation">[flow transformation]</loc></phrase> procedure
-to obtain an XSL FO document instance, <emph>F<sub>i</sub></emph>, and then (2) if processing requires presentation on a
+to obtain an XSL FO document instance, <emph>F<sub>i</sub></emph>&thinsp;, and then (2) if processing requires presentation on a
 visual medium, apply to <emph>F<sub>i</sub></emph> all relevant formatting and rendering semantics consistent with that prescribed
 by <bibref ref="xslfo11"/> and this specification.</p>
 <glist>

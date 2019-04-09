@@ -2605,32 +2605,32 @@ normative URI that denotes each namespace.</p>
 </tr>
 <tr>
 <td>TT</td>
-<td><code>tt:</code></td>
+<td><code>tt</code></td>
 <td><code>http://www.w3.org/ns/ttml</code></td>
 </tr>
 <tr>
 <td>TT Parameter</td>
-<td><code>ttp:</code></td>
+<td><code>ttp</code></td>
 <td><code>http://www.w3.org/ns/ttml#parameter</code></td>
 </tr>
 <tr>
 <td>TT Style</td>
-<td><code>tts:</code></td>
+<td><code>tts</code></td>
 <td><code>http://www.w3.org/ns/ttml#styling</code></td>
 </tr>
 <tr>
 <td>TT Audio Style</td>
-<td><code>tta:</code></td>
+<td><code>tta</code></td>
 <td><code>http://www.w3.org/ns/ttml#audio</code></td>
 </tr>
 <tr>
 <td>TT Metadata</td>
-<td><code>ttm:</code></td>
+<td><code>ttm</code></td>
 <td><code>http://www.w3.org/ns/ttml#metadata</code></td>
 </tr>
 <tr>
 <td>TT Intermediate Synchronic Document</td>
-<td><code>isd:</code></td>
+<td><code>isd</code></td>
 <td><code>http://www.w3.org/ns/ttml#isd</code></td>
 </tr>
 <tr>
@@ -3397,7 +3397,7 @@ non-conformance with respect to a recommendation (should) or disrecommendation (
 <p>Since the determination of <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> is implementation
 dependent, and since there is no requirement that the <loc href="#terms-effective-validation-schemas">effective validation schemas</loc> detect
 every possible <termref def="defs-validation-error">validation error</termref>, then performing the
-<loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure need not produce a
+  <loc href="#semantics-procedure-validate-document">[validate document]</loc> procedure on an invalid document instance need not produce a
 <loc href="#semantics-validation-state-validation-exception">validation exception</loc>, in which case,
 the results of <loc href="#terms-validation-processing">validation processing</loc> may be considered a <emph>false positive</emph>.</p>
 <p>As an example, a <loc href="#terms-content-profile">content profile</loc> may prohibit the use of a feature by means of the
@@ -6307,6 +6307,15 @@ value evaluates to <code>false</code>:</p>
 <p>The <att>xlink:href</att> attribute is used as defined by <bibref ref="xlink11"/>.</p>
 <p>The <att>xlink:href</att> attribute may be used with any <loc href="#content-vocabulary-span"><el>span</el></loc> or
 <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<p>For the purpose of implementing <att>xlink:href</att> semantics, the semantics of
+<loc href="https://www.w3.org/TR/2010/REC-xlink11-20100506/#link-types"><code>xlink:type</code></loc>
+are fixed to those associated with the <code>simple</code> value and the semantics of
+<loc href="https://www.w3.org/TR/2010/REC-xlink11-20100506/#actuate-att"><code>xlink:actuate</code></loc>
+are fixed to those associated with the <code>onRequest</code> value as defined by <bibref ref="xlink11"/>.</p>
+<note role="clarification">
+<p>Neither <code>xlink:type</code> nor <code>xlink:actuate</code> attribute is defined for direct use in
+a <loc href="#terms-document-instance">document instance</loc>.</p>
+</note>
 </div3>
 <div3 id="content-attribute-xlink-role">
 <head>xlink:role</head>
@@ -7434,6 +7443,12 @@ if the specified attribute value(s) differ from the value(s) of these font chara
 the specified attribute value(s) are to be used instead of the font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
 <p>If any of the <att>family</att>, <att>range</att>, <att>style</att>, or <att>weight</att> attributes are not specified, then their values
 must be considered to be equal to the value(s) of the same named font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
+<p>If the computed value of the <code>family</code> attribute (whether explicitly specified or not) matches a
+<loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc> (by case-sensitive comparison),
+then it is considered an error, and the referenced font resource must be ignored for the purpose of presentation processing.</p>
+<note role="elaboration">
+<p>The effect of the previous paragraph is that a content author may not override a built-in font resource that corresponds to a generic font family.</p>
+</note>
 <note role="guideline">
 <p>Authors are advised to use subset fonts wherever possible. A subset font is a syntactically valid <loc href="#terms-font-resource">font resource</loc> that
 removes unreferenced glyphs and unreferenced glyph metrics. In general, a subset font is tied to a specific document, since it may have been generated
@@ -14976,9 +14991,9 @@ where <emph>content</emph> is the unquoted content of the quoted string, i.e., t
 <item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains an <code>identifier</code> that
 starts with two <code>-</code> HYPHEN-MINUS (U+002D) characters must be considered to be invalid;</p></item>
 <item><p>a &lt;family-name&gt; that takes the form of an <code>unquoted-string</code> that contains a single <code>identifier</code> that
-matches (by case sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
+matches (by case-sensitive comparison) a &lt;generic-family-name&gt; must be interpreted as that &lt;generic-family-name&gt;;</p></item>
 <item><p>a &lt;family-name&gt; that takes the form of a <code>quoted-string</code> whose content (unquoted value)
-matches (by case sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
+matches (by case-sensitive comparison) a &lt;generic-family-name&gt; must not be interpreted as that &lt;generic-family-name&gt;, but as
 the actual name of a non-generic font family.</p></item>
 <item><p>The syntactic element <emph><code>char</code></emph> is to be interpreted according
 to the <code>Char</code> production defined by <bibref ref="xml10"/>, &sect;2.2.</p></item>

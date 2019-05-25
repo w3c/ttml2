@@ -869,6 +869,9 @@ and the <loc href="#element-vocab-type-image">Image Module</loc> when they occur
   <loc href="#element-vocab-type-document">Document</loc> and <loc href="#element-vocab-type-head">Head</loc> Modules in
   <specref ref="element-vocab-table"/>.</p>
 </note>
+<p>In addition to the element types cited above, element types designated as content element types by an
+<loc href="#terms-external-module">external module</loc> that is listed in the <loc href="#terms-module-registry">module registry</loc>
+are also considered to be content elements.</p>
 </def>
 </gitem>
 <gitem id="terms-content-image">
@@ -1155,6 +1158,16 @@ attribute of a <loc href="#embedded-content-vocabulary-source"><el>source</el></
 content element</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-external-module">
+<label>[external module]</label>
+<def>
+<p>A module defined externally to this specification in a separate module defining document. An external module
+is designated at the time of specification as either a W3C defined module, in which case any vocabulary or semantic
+behavior it defines is specified in the scope of one or more TTML Namespaces listed in <specref ref="namespace-vocab-table"/>,
+or as a non-W3C defined module, in which case any vocabulary or semantic behavior it defines is specified in the scope
+of one or more namespaces not listed in <specref ref="namespace-vocab-table"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-external-source">
 <label>[external source]</label>
 <def>
@@ -1371,6 +1384,13 @@ that effectively represent the content, styling, layout, and timing of a source 
 an <loc href="#terms-intermediate-synchronic-document">intermediate synchronic document</loc>.</p>
 </def>
 </gitem>
+<gitem id="terms-internal-module">
+<label>[internal module]</label>
+<def>
+<p>A module defined within the body of this specification, specifically, the modules defined by
+<specref ref="element-vocab-table"/> and <specref ref="attribute-vocab-table"/>.</p>
+</def>
+</gitem>
 <gitem id="terms-intrinsic-block-content-extent">
 <label>[intrinsic block content extent]</label>
 <def>
@@ -1416,6 +1436,32 @@ consist of one or more <loc href="#terms-inline-area">inline areas</loc>.</p>
 <label>[metadata element]</label>
 <def>
 <p>Any of the element types defined by the <loc href="#element-vocab-type-metadata">Metadata Module</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-module">
+<label>[module]</label>
+<def>
+<p>A collection of element types, attributes, features, or the specification(s) of such entities. Modules may be defined
+<loc href="#terms-internal-module">internally</loc> (within the specification of an edition or version of a TTML defining document)
+or <loc href="#terms-external-module">externally</loc> (in one or more separate documents).</p>
+<note role="clarification">
+<p>A module is distinct from (and orthogonal to) a <loc href="#terms-profile">profile</loc> in the sense that the former
+defines functionality (regardless of application of use) while the latter selects functionality (for support by a processor
+or use by a document). Note also that a single specification may define functionality (either explicitly or implicitly) associated
+with a module and also define a profile. For example, this specification defines a collection of <loc href="#terms-internal-module">internal modules</loc>
+and also defines three <loc href="#terms-profile">profiles</loc>, about which see <specref ref="core-vocabulary-overview"/> and
+<specref ref="standard-profiles"/>, respectively.</p>
+</note>
+<note role="elaboration">
+<p>Each module intended to be independently implemented is expected to be listed in the <loc href="#terms-module-registry">module registry</loc>.</p>
+</note>
+</def>
+</gitem>
+<gitem id="terms-module-registry">
+<label>[module registry]</label>
+<def>
+<p>A list of <loc href="#terms-module">modules</loc> associated with identifying information,
+as specified in the Timed Text Module Registry <bibref ref="ttmlmods"/>.</p>
 </def>
 </gitem>
 <gitem id="terms-nested-profile">
@@ -1593,7 +1639,7 @@ must or may be implemented (supported) by a content processor.</p>
 <gitem id="terms-profile">
 <label>[profile]</label>
 <def>
-<p>A collection of <loc href="#terms-feature">features</loc> and <loc href="#terms-extension">extensions</loc>, which, when
+<p>A collection of <loc href="#terms-feature-specification">feature</loc> and <loc href="#terms-extension-specification">extension</loc> specifications, which, when
 interned (instantiated), is represented by a <loc href="#semantics-profile-state-profile-instance">profile instance</loc> state object.
 A profile is typed as a <loc href="#terms-content-profile">content profile</loc> or a <loc href="#terms-processor-profile">processor profile</loc>.</p>
 </def>
@@ -2504,8 +2550,7 @@ namespace names are listed in <specref ref="namespace-vocab-table"/>.
 <div2 id="ttml-content-doctype">
 <head>TTML Content Document Type</head>
 <p>The TTML Content Document Type is an <loc href="#terms-abstract-document-type">abstract document type</loc> of a profile
-of the Timed Text Markup Language intended to be used for interchange among distribution systems. This document type
-is defined in terms of the element and attribute vocabulary specified in <specref ref="vocabulary"/>.</p>
+of the Timed Text Markup Language defined in terms of a collection of functional <loc href="#terms-module">modules</loc>.</p>
 <p>This specification references two types of schemas that may be used to validate a superset/subset
 of <loc href="#terms-timed-text-content-document-instance">timed text content document instances</loc>:</p>
 <ulist>
@@ -2542,6 +2587,17 @@ of <loc href="#terms-document-instance">document instance</loc> validity.</p>
 <p>A conforming <loc href="#conformance-generic-processor">Generic Processor</loc> is required to support the ingestion and processing
 of a <loc href="#terms-timed-text-content-document">timed text content document</loc>.</p>
 </note>
+<note role="clarification">
+<p>A <loc href="#terms-timed-text-content-document">timed text content document</loc> is not prohibited from using
+element or attribute vocabulary items defined by a private (unregistered) module.
+In such case, a <loc href="#terms-content-processor">content processor</loc>
+that supports the private module may employ one or more schemas associated with the
+private module in order to augment a validity assessment that would normally be performed using only schemas
+associated with public (registered) modules. However, a <loc href="#terms-content-processor">content processor</loc>
+that does not support the private module will prune unknown element and attribute vocabulary items
+according to the validity assessment rules described above, and, therefore, not report any potential invalidity that exists due to the
+use of such vocabulary items.</p>
+</note>
 </div2> <!-- ttml-content-doctype -->
 <div2 id="ttml-intermediate-doctype">
 <head>TTML Intermediate Document Type</head>
@@ -2550,8 +2606,7 @@ to be used to represent the content of a
 <loc href="#terms-timed-text-content-document">timed text content document</loc>
 in such a manner that timing information is denoted in a non-hierarchical (flat), temporally linear manner, and where
 certain information, such as styling matter, may be resolved or merged in order to simplify subsequent processing.
-This document type is defined in terms of the element and attribute vocabulary
-specified in <specref ref="isd"/> and <specref ref="vocabulary"/>.</p>
+This document type is defined in terms of a collection of functional <loc href="#terms-module">modules</loc>.</p>
 <p>This specification references two types of schemas that may be used to validate
 <loc href="#terms-timed-text-intermediate-document-instance">timed text intermediate document instances</loc>:</p>
 <ulist>
@@ -2569,7 +2624,7 @@ of a <loc href="#terms-timed-text-intermediate-document">timed text intermediate
 <head>TTML Profile Document Type</head>
 <p>The TTML Profile Document Type is an <loc href="#terms-abstract-document-type">abstract document type</loc> intended
 to be used for defining and communicating constraints on the support or use of TTML features or extensions. This document type
-is defined in terms of the element and attribute vocabulary specified in <specref ref="vocabulary"/>.</p>
+is defined in terms of a collection of functional <loc href="#terms-module">modules</loc>.</p>
 <p>This specification references two types of schemas that may be used to validate
 <loc href="#terms-timed-text-profile-document-instance">timed text profile document instances</loc>:</p>
 <ulist>
@@ -6294,8 +6349,11 @@ the insertion of the parsed representation of that element (and its descendants)
 <loc href="#terms-reduced-xml-infoset">reduced xml infoset</loc> associated with the containing
 <loc href="#terms-document-instance">document instance</loc>.</p>
 </note>
-<p>The <att>condition</att> attribute may be used with any element in the core vocabulary catalog
-except profile matter, i.e., elements of the <loc href="#element-vocab-type-profile">Profile Module</loc>.</p>
+<p>The <att>condition</att> attribute may be used with (1) any element in the core vocabulary catalog
+except profile matter, i.e., elements of the <loc href="#element-vocab-type-profile">Profile Module</loc>, and
+(2) any element defined by an <loc href="#terms-external-module">external module</loc> that is
+listed in the <loc href="#terms-module-registry">module registry</loc>, where that element's type
+permits the specification of a <loc href="#content-attribute-condition"><att>condition</att></loc> attribute.</p>
 <p>The value of a <att>condition</att> attribute must adhere to a
 <loc href="#content-value-condition">&lt;condition&gt;</loc> expression
 which is evaluated at the time of presentation processing (lazy evaluation)
@@ -16675,7 +16733,7 @@ element type of <emph>E</emph> is not animation element type <el>animate</el> or
 and is not styling element type <el>style</el>,
 then for each style property
 <emph>P</emph> in the set of style properties defined
-above in <specref ref="styling-attribute-vocabulary"/>, perform the
+in <specref ref="styling-attribute-vocabulary"/> or in a supported <loc href="#terms-external-module">external module</loc>, perform the
 following ordered sub-steps:</p>
 <olist>
 <!-- (a) -->
@@ -16797,6 +16855,7 @@ do not perform the subsequent step below on <emph>E</emph>:</p>
 <item><p><loc href="#styling-vocabulary-style"><el>style</el></loc></p></item>
 <item><p><loc href="#terms-anonymous-span">anonymous span</loc></p></item>
 </ulist>
+<p>or a <loc href="#terms-styled-element">styled element</loc> defined in a supported <loc href="#terms-external-module">external module</loc>;</p>
 </item>
 <item><p> <phrase role="strong">[resolve computed styles]</phrase>
 determine (obtain) the computed style set <emph>CSS</emph> of
@@ -25534,6 +25593,10 @@ href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable
 Vector Graphics (SVG) 1.1 Second Edition</titleref>, W3C Recommendation, 16
 August 2011. (See
 <xspecref href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</xspecref>.)
+</bibl>
+<bibl id="ttmlmods" key="TTML-MOD-REG">Glenn Adams, Ed.,
+<titleref href="https://w3c.github.io/tt-module-registry/">Timed Text Module Registry</titleref>,
+Editor's Draft. (See <xspecref href="https://w3c.github.io/tt-module-registry/">https://w3c.github.io/tt-module-registry/</xspecref>.)
 </bibl>
 <bibl id="ttml1" key="TTML1">Glenn Adams and Pierre-Anthony Lemieux, Eds.,
 <titleref href="https://www.w3.org/TR/2018/REC-ttml1-20181108/">Timed Text Markup Language 1 (TTML1) (Third Edition)</titleref>,

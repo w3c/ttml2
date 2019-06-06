@@ -3382,8 +3382,9 @@ while a <loc href="#semantics-validation-state-validation-exception">validation 
 of type <code>warning</code> is referred to as a
 <termdef id="defs-validation-warning" term="validation warning"><term>validation warning</term></termdef>.</p>
 <p>Unless a <loc href="#terms-higher-level-protocol">higher level protocol</loc> applies,
-(1) if a violation of a prescription or proscription of this specification is detected,
-then a <termref def="defs-validation-error">validation error</termref> exception applies; and
+(1) if a violation of a prescription or proscription of this specification by a <loc href="#terms-document-instance">document instance</loc> is detected,
+then it is <termdef id="defs-considered-an-error" term=""><term>considered an error</term></termdef>, in which case
+a <termref def="defs-validation-error">validation error</termref> exception applies; and
 (2) if a violation of a recommendation or disrecommendation of this specification is detected, then a
 <termref def="defs-validation-warning">validation warning</termref> applies.</p>
 <note role="example"><p>An example of a higher level protocol in this context is a system or end-user defined
@@ -7522,7 +7523,7 @@ the specified attribute value(s) are to be used instead of the font characterist
 must be considered to be equal to the value(s) of the same named font characteristics encoded in the <loc href="#terms-font-resource">font resource</loc>.</p>
 <p>If the computed value of the <code>family</code> attribute (whether explicitly specified or not) matches a
 <loc href="#style-value-generic-family-name">&lt;generic-family-name&gt;</loc> (by case-sensitive comparison),
-then it is considered an error, and the referenced font resource must be ignored for the purpose of presentation processing.</p>
+then it is <termref def="defs-considered-an-error">considered an error</termref> and the referenced font resource must be ignored for the purpose of presentation processing.</p>
 <note role="elaboration">
 <p>The effect of the previous paragraph is that a content author may not override a built-in font resource that corresponds to a generic font family.</p>
 </note>
@@ -9676,7 +9677,7 @@ layout and presentation.</p>
 <p>If the value of this attribute is <code>inlineBlock</code> and this attribute is applied
 to a <loc href="#content-vocabulary-span"><el>span</el></loc> element, then
 <loc href="#terms-inline-block-display">inline block display</loc> semantics apply and the element
-is a candidate for region layout and presentation. Furthermore, it is considered an error if the
+is a candidate for region layout and presentation. Furthermore, it is <termref def="defs-considered-an-error">considered an error</termref> if the
 <code>inlineBlock</code> value is applied to any element which is not a <loc href="#content-vocabulary-span"><el>span</el></loc> element.</p>
 <p>The <att>tts:display</att> style is illustrated by the following example.</p>
 <table id="style-attribute-display-example-1" role="example">
@@ -9924,7 +9925,7 @@ then the specified value is restricted to one of the following:
 (3) two <loc href="#style-value-length">&lt;length&gt;</loc> specifications,
 where these specifications are expressed as non-percentage, definite lengths using pixel units.
 All other syntactically legal values must not be used in this context, and,
-if used, must be considered an error for the purpose of <loc href="#terms-validation-processing">validation processing</loc> and must be ignored
+if used, must be <termref def="defs-considered-an-error">considered an error</termref> and must be ignored
 for the purpose of presentation processing, in which case the initial value (<code>auto</code>) applies.</p>
 <p>If a <att>tts:extent</att> attribute is specified on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
 then its computed value determines the <loc href="#terms-width">width</loc> and <loc href="#terms-height">height</loc>
@@ -12125,7 +12126,9 @@ if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary
 <item><p>the computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>the computed value of <att>tts:ruby</att> of its first child element is <code>baseContainer</code>
 or <code>base</code>;</p></item>
-<item><p>each of its <termref def="defs-text-node">text node</termref> children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
+<item><p>each of its <termref def="defs-text-node">text node</termref> children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>,
+which must be ignored for the purpose of presentation processing regardless of whether the computed value of the
+<loc href="#content-attribute-xml-space"><att>xml:space</att></loc> attribute is <code>preserve</code> or not;</p></item>
 </ulist>
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply to a <termref def="defs-ruby-base-container">ruby base container</termref>, that is,
 if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>baseContainer</code>, then:</p>
@@ -12134,7 +12137,9 @@ if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary
 <item><p>the computed value of <att>tts:ruby</att> of each of its child elements is not <code>none</code>;</p></item>
 <item><p>the computed value of <att>tts:ruby</att> of its first child element is <code>base</code>;</p></item>
 <item><p>its preceding sibling is <code>null</code> (i.e., no preceding sibling);</p></item>
-<item><p>each of its <termref def="defs-text-node">text node</termref> children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
+<item><p>each of its <termref def="defs-text-node">text node</termref> children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>,
+which must be ignored for the purpose of presentation processing regardless of whether the computed value of the
+<loc href="#content-attribute-xml-space"><att>xml:space</att></loc> attribute is <code>preserve</code> or not;</p></item>
 </ulist>
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply to a <termref def="defs-ruby-text-container">ruby text container</termref>, that is,
 if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>textContainer</code>, then:</p>
@@ -12145,7 +12150,9 @@ if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary
 <item><p>the computed value of <att>tts:ruby</att> of its preceding sibling is <code>baseContainer</code> or
 <code>textContainer</code>;</p></item>
 <item><p>the computed value of <att>tts:ruby</att> of no more than one of its siblings is <code>textContainer</code>;</p></item>
-<item><p>each of its <termref def="defs-text-node">text node</termref> children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>;</p></item>
+<item><p>each of its <termref def="defs-text-node">text node</termref> children contain only <loc href="#style-value-lwsp">&lt;lwsp&gt;</loc>,
+which must be ignored for the purpose of presentation processing regardless of whether the computed value of the
+<loc href="#content-attribute-xml-space"><att>xml:space</att></loc> attribute is <code>preserve</code> or not;</p></item>
 </ulist>
 <p>When using <att>tts:ruby</att>, the following nesting constraints apply to <termref def="defs-ruby-base-content">ruby base content</termref>, that is,
 if the computed value of <att>tts:ruby</att> of a <loc href="#content-vocabulary-span"><el>span</el></loc> element is <code>base</code>, then:</p>
@@ -12191,7 +12198,7 @@ computed value of <att>tts:ruby</att> of no descendant element is not <code>none
 For the purpose of presentation processing, the violation of any of these constraints should result in fallback (inline)
 presentation of ruby text annotations, and, for content that violates some constraint, if that content is
 a <loc href="#content-vocabulary-br"><el>br</el></loc> element or a U+2028 (LINE SEPARATOR) or U+2029 (PARAGRAPH SEPARATOR) character,
-then it should be mapped to a U+0020 (SPACE) character, of, if some other content, then ignored (not presented).</p>
+then it should be mapped to a U+0020 (SPACE) character, or, if some other content, then ignored (not presented).</p>
 <note role="elaboration">
 <p>The above listed constraints are intended to be interpreted as specifying the following nesting model:</p>
 <eg xml:space="preserve">
@@ -12606,13 +12613,13 @@ the <termref def="defs-explicit-ruby-text-container">explicit ruby text containe
 <code>text</code> when the parent of that <loc href="#content-vocabulary-span"><el>span</el></loc> element is a
 <loc href="#content-vocabulary-span"><el>span</el></loc> element for which the computed value of
 <loc href="#style-attribute-ruby">tts:ruby</loc> is <code>textContainer</code>.
-If specified (on the former <termref def="defs-ruby-text-content">ruby text content</termref>), then it is considered an error,
+If specified (on the former <termref def="defs-ruby-text-content">ruby text content</termref>), then it is <termref def="defs-considered-an-error">considered an error</termref>
 and must be ignored for the purpose of presentation processing.</p>
 <p>The absolute position of the <termref def="defs-ruby-text-container">ruby text container</termref> or ruby text annotation is determined
 in accordance to the computed value of the <code>tts:writingMode</code> style property of the region into which the affected content is placed;
 in particular, the mappings defined enumerated by <specref ref="rubyPosition-semantics-mapping-table"/> apply as further defined
 by <bibref ref="cssruby"/>, &sect;4.1.</p>
-<p>If two <termref def="defs-ruby-text-container">ruby text containers</termref> apply to the same <termref def="defs-ruby-base-container">ruby base container</termref>, then it is considered an error if
+<p>If two <termref def="defs-ruby-text-container">ruby text containers</termref> apply to the same <termref def="defs-ruby-base-container">ruby base container</termref>, then it is <termref def="defs-considered-an-error">considered an error</termref> if
 the <termref def="defs-used-value">used value</termref> of the property associated with this attribute would result in
 both <termref def="defs-ruby-text-container">ruby text containers</termref> being placed on the same relative side of the <termref def="defs-ruby-base-container">ruby base container</termref>, in which case, the presentation semantics of
 this property are not defined by this specification.</p>
@@ -16220,8 +16227,8 @@ evaluated in the specified order, and that order applies to resolution of the va
 style property in the case that it is specified along multiple reference paths.</p>
 <p>The use of referential styling is restricted to making
 reference to <el>style</el> element descendants of a <el>styling</el>
-element. It is considered an error to reference a <el>style</el>
-element that is a descendant of a <el>layout</el> element.</p>
+element. It is <termref def="defs-considered-an-error">considered an error</termref> to reference a <el>style</el>
+element that is a descendant of a <el>layout</el> element, in which case, the presentation semantics are not defined by this specification.</p>
 <note role="explanation">
 <p>The use of referential styling encourages the reuse of style specifications while
 sacrificing locality of reference.</p>
@@ -16260,11 +16267,11 @@ ref="semantics-style-inheritance-content"/> below.</p>
 other out-of-line style properties, thus creating a chain of references starting at the
 affected element. When expressed in this manner, the association of style information
 is referred to as <emph>chained referential styling</emph>.</p>
-<p>A loop in a sequence of chained style references must be considered an error.</p>
+<p>A loop in a sequence of chained style references must be <termref def="defs-considered-an-error">considered an error</termref>.</p>
 <p>The use of referential styling is restricted to making
 reference to <el>style</el> element descendants of a <el>styling</el>
-element. It is considered an error to reference a <el>style</el>
-element that is a descendant of a <el>layout</el> element.</p>
+element. It is <termref def="defs-considered-an-error">considered an error</termref> to reference a <el>style</el>
+element that is a descendant of a <el>layout</el> element, in which case, the presentation semantics are not defined by this specification.</p>
 <note role="explanation">
 <p>The use of chained referential styling encourages the grouping of style specifications
 into general and specific sets, which further aids in style specification reuse.</p>
@@ -16846,7 +16853,7 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <label>[compute containment scaling](<emph>inout</emph> target rectangle TR, <emph>in</emph> reference rectangle RR)</label>
 <def>
 <olist>
-  <item><p>If the units of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
+  <item><p>It is <termref def="defs-considered-an-error">considered an error</termref> if the units of target rectangle TR and reference rectangle RR are not the same, in which case exit this procedure without modifying the target rectangle.</p></item>
   <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>&thinsp;, is zero, then set <emph>W<sub>t</sub></emph> to one;
   likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>&thinsp;, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
   <item><p>Let <emph>SAR<sub>r</sub></emph> be the storage aspect ratio of the reference rectangle <emph>RR</emph>.</p></item>
@@ -16884,7 +16891,7 @@ determine (obtain) the computed style set <emph>CSS</emph> of
 <label>[compute cover scaling](<emph>inout</emph> target rectangle TR, <emph>in</emph> reference rectangle RR)</label>
 <def>
 <olist>
-  <item><p>If the units of target rectangle TR and reference rectangle RR are not the same, then raise an error condition.</p></item>
+  <item><p>It is <termref def="defs-considered-an-error">considered an error</termref> if the units of target rectangle TR and reference rectangle RR are not the same, in which case exit this procedure without modifying the target rectangle.</p></item>
   <item><p>If the width of the target rectangle TR, <emph>W<sub>t</sub></emph>&thinsp;, is zero, then set <emph>W<sub>t</sub></emph> to one;
   likewise, if the height of the target rectangle TR, <emph>H<sub>t</sub></emph>&thinsp;, is zero, then set <emph>H<sub>t</sub></emph> to one.</p></item>
   <item><p>Let <emph>SF<sub>W </sub> </emph> be <emph>W<sub>R</sub> </emph>/<emph>W<sub>T</sub> </emph>, where
@@ -18243,7 +18250,7 @@ then the value of this term must be constrained to the interval
 [0&hellip;<emph>F-1</emph>], where <emph>F</emph> is the frame rate
 determined by the <att>ttp:frameRate</att> parameter as defined
 by <specref ref="parameter-attribute-frameRate"/>.
-It is considered an error if a <emph>frames</emph> term or
+It is <termref def="defs-considered-an-error">considered an error</termref> if a <emph>frames</emph> term or
 <code>f</code> (frames) metric is specified when the <code>clock</code> time base applies.</p>
 <p>If a &lt;time-expression&gt; is expressed in terms of a
 <emph>clock-time</emph> and a <emph>sub-frames</emph> term is
@@ -18251,9 +18258,9 @@ specified, then the value of this term must be constrained to the
 interval [0&hellip;<emph>S-1</emph>], where <emph>S</emph> is the
 sub-frame rate determined by the <att>ttp:subFrameRate</att> parameter as defined by <specref
 ref="parameter-attribute-subFrameRate"/>.
-It is considered an error if a <emph>sub-frames</emph> term is specified
+It is <termref def="defs-considered-an-error">considered an error</termref> if a <emph>sub-frames</emph> term is specified
 when the <code>clock</code> time base applies.</p>
-<p>It is considered an error if the <emph>wallclock-time</emph> form of a &lt;time-expression&gt;
+<p>It is <termref def="defs-considered-an-error">considered an error</termref> if the <emph>wallclock-time</emph> form of a &lt;time-expression&gt;
 is used in a <loc href="#terms-document-instance">document instance</loc> and the government time base is not <code>clock</code>.</p>
 <p>If the computed value of the governing time base is <code>smpte</code>, then
 (1) <phrase role="deprecated">use of an <emph>offset-time</emph> form of &lt;time-expression&gt; is deprecated</phrase>, and
@@ -18454,7 +18461,7 @@ considered equivalent to specifying <code>attributeName="tts:color"</code> and <
 </item>
 <item>
 <p>If a <att>keyTimes</att> attribute is specified and the computed value of <emph>calcMode</emph> is <attval>paced</attval>,
-then this usage must be considered an error for the purpose of validation processing and the animation must be ignored for the purpose of
+then this usage must be <termref def="defs-considered-an-error">considered an error</termref> and the animation must be ignored for the purpose of
 presentation processing.</p>
 </item>
 <item>
@@ -18502,7 +18509,7 @@ is <attval>0;0.5;1</attval>.</p>
 </item>
 <item>
 <p>If a <att>keySplines</att> attribute is specified and the computed value of <emph>calcMode</emph> is not <attval>spline</attval>,
-then this usage must be considered an error for the purpose of validation processing and the animation must be ignored for the purpose of
+then this usage must be <termref def="defs-considered-an-error">considered an error</termref> and the animation must be ignored for the purpose of
 presentation processing.</p>
 </item>
 <item>
@@ -18512,7 +18519,7 @@ of time <loc href="#terms-component">components</loc> in the computed value of t
 </item>
 <item>
 <p>If no <att>keySplines</att> attribute is specified and the computed value of <emph>calcMode</emph> is <attval>spline</attval>,
-then this usage must be considered an error for the purpose of validation processing and the animation must be ignored for the purpose of
+then this usage must be <termref def="defs-considered-an-error">considered an error</termref> and the animation must be ignored for the purpose of
 presentation processing.</p>
 </item>
 <item>
@@ -21775,7 +21782,6 @@ following features:
 <loc href="#feature-presentation"><code>#presentation</code></loc> or
 <loc href="#feature-profile-version-2"><code>#profile-version-2</code></loc>.</p>
 </div3>
-
 <div3 id="feature-processorProfiles">
 <head>#processorProfiles</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the <code>#processorProfiles</code>

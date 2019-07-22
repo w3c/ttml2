@@ -7354,9 +7354,10 @@ When <loc href="#terms-reference-data-embedding">reference data embedding</loc> 
 referenced by the <att>src</att> attribute.  
 When <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
 child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.
-When <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used, the data resource is obtained from the first resolvable
-child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Furthermore,
-a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element must not
+When <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used, the data resource is obtained from the first
+child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element that can be resolved to a
+<loc href="#terms-data-resource">data resource</loc>, or if none can be resolved, then the <loc href="#terms-empty-data-resource">empty data resource</loc>.
+Furthermore, a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element must not
 contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, but may refer to a
 <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element in a <loc href="#terms-data-defining-context">data defining context</loc>.</p>
 <table id="elt-syntax-data" role="syntax">
@@ -7383,34 +7384,33 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
 </tr>
 </tbody>
 </table>
-<p>If simple data embedding is used, i.e., the content of the <el>data</el> element is one or more <termref def="defs-text-node">text node</termref>s, then an
+<p>If <loc href="#terms-simple-data-embedding">simple data embedding</loc> is used, then an
 <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute
 may be specified, and, if not specified, must be considered to be <code>base64</code>.
-If chunked or sourced data embedding is used, i.e., the content of the <el>data</el> element contains any child
-<loc href="#embedded-content-vocabulary-chunk">chunk</loc> or <loc href="#embedded-content-vocabulary-source">source</loc> element, then
+If <loc href="#terms-reference-data-embedding">reference data embedding</loc>, <loc href="#terms-chunked-data-embedding">chunked data embedding</loc>, or <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used, then
 an <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute must not be specified, and, if specified, must be ignored
 for the purpose of content processing.</p>
 <p>If a <att>length</att> attribute is specified, then it must denote the number of decoded bytes in the byte sequence represented by the
 <el>data</el> element. When decoding, if a specified length value does not match the number of decoded bytes, then a zero length byte sequence must be returned.
 If no <att>length</att> attribute is specified, then the data resource is considered to have a length equal to the actual number of decoded bytes.
-A <att>length</att> attribute must not be specified when using reference or sourced data embedding.</p>
+A <att>length</att> attribute must not be specified when using <loc href="#terms-reference-data-embedding">reference data embedding</loc> or <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>.</p>
 <note role="elaboration">
 <p>The intention of the <att>length</att> attribute is to provide a means to perform a simple integrity check on decoded data. Note that this check does not guarantee
 data integrity during transport, i.e., the data could be modified without modifying the length.</p>
 </note>
-<p>If reference data embedding is used, a <att>src</att> attribute must be specified; otherwise (for all other types of data embedding), a
+<p>If <loc href="#terms-reference-data-embedding">reference data embedding</loc> is used, a <att>src</att> attribute must be specified; otherwise (for all other types of data embedding), a
 <att>src</att> attribute must not be specified.</p>
-<p>If simple or chunked data embedding is used, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must be specified,
+<p>If <loc href="#terms-simple-data-embedding">simple data embedding</loc> or <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is used, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must be specified,
 and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code> should be used.
-In the case of reference data embedding, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute may be specified, and, if
+In the case of <loc href="#terms-reference-data-embedding">reference data embedding</loc>, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute may be specified, and, if
 specified, must correspond with the media (content) type of the referenced data resource.
-In the case of sourced data embedding, the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
+In the case of <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified, in which case the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
 is used as the type.</p>
 <p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
 such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource that cannot be
 expressed in a Media Type <bibref ref="media-types"/> parameter,
 then a <loc href="#embedded-content-attribute-format">format</loc> attribute may be specified as a hint to the content processor.</p>
-<p>The use of simple data embedding is illustrated by the following examples.</p>
+<p>The use of <loc href="#terms-simple-data-embedding">simple data embedding</loc> is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-data-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Data Embedding in Data Defining Context</caption>
 <tbody>
@@ -7428,7 +7428,6 @@ then a <loc href="#embedded-content-attribute-format">format</loc> attribute may
     &lt;/image&gt;
   &lt;/resources&gt;
 &lt;/head&gt;
-...
 &lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
   &lt;div tts:backgroundImage="#sharedImage"/&gt;
   &lt;div tts:backgroundImage="#sharedImage"/&gt;
@@ -7448,7 +7447,7 @@ then a <loc href="#embedded-content-attribute-format">format</loc> attribute may
 &lt;div&gt;
   &lt;metadata xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;
     &lt;ttm:desc&gt;caption with metadata containing tunneled data&lt;/ttm:desc&gt;
-    &lt;data encoding="base64"&gt;
+    &lt;data encoding="base64" type="application/octet-stream"&gt;
       TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz
       IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg
       dGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGlu
@@ -7485,7 +7484,85 @@ then a <loc href="#embedded-content-attribute-format">format</loc> attribute may
 </tr>
 </tbody>
 </table>
-<p></p>
+<p>The use of <loc href="#terms-reference-data-embedding">reference data embedding</loc> is illustrated by the following example.</p>
+<table id="embedded-content-vocabulary-data-example-4" role="example">
+<caption>Example Fragment &ndash; Reference Data Embedding in Data Defining Context</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData" src="test.png" type="image/png"/&gt;
+    &lt;image xml:id="sharedImage1" src="#sharedImageData"/&gt;
+    &lt;image xml:id="sharedImage2" src="#sharedImageData"/&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage1"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage2"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The use of <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is illustrated by the following example.</p>
+<table id="embedded-content-vocabulary-data-example-5" role="example">
+<caption>Example Fragment &ndash; Chunked Data Embedding in Data Defining Context</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData" type="image/png" length="119"&gt;
+      &lt;chunk length="60"&gt;
+        iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+      &lt;/chunk&gt;
+      &lt;chunk length="59"&gt;
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+      &lt;/chunk&gt;
+    &lt;/data&gt;
+    &lt;image xml:id="sharedImage1" src="#sharedImageData"/&gt;
+    &lt;image xml:id="sharedImage2" src="#sharedImageData"/&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage1"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage2"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The use of <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is illustrated by the following example.</p>
+<table id="embedded-content-vocabulary-data-example-6" role="example">
+<caption>Example Fragment &ndash; Sourced Data Embedding in Data Defining Context</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData"&gt;
+      &lt;source src="test.svg" type="image/svg+xml"/&gt;
+      &lt;source src="test.png" type="image/png"/&gt;
+    &lt;/data&gt;
+    &lt;image xml:id="sharedImage1" src="#sharedImageData"/&gt;
+    &lt;image xml:id="sharedImage2" src="#sharedImageData"/&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage1"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage2"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3> <!-- embedded-content-vocabulary-data -->
 <div3 id="embedded-content-vocabulary-font">
 <head>font</head>

@@ -2067,7 +2067,7 @@ as in the following:</p>
 <td>
 <eg xml:space="preserve">
 &lt;example
-  <phrase role="reqattr">count</phrase> = <loc href="http://www.w3.org/TR/xmlschema-2/#integer">xsd:integer</loc>
+  <phrase role="reqattr">count</phrase> = <loc href="#style-value-integer">&lt;integer&gt;</loc>
   size = (<emph>"large"</emph> | <emph>"medium"</emph> | <emph>"small"</emph> | <emph><phrase role="deprecated">"tiny"</phrase></emph> | <emph><phrase role="obsoleted">"micro"</phrase></emph>) : medium&gt;
   <emph>Content:</emph> (all | any*)
 &lt;/example&gt;
@@ -7266,7 +7266,7 @@ If no <code>clipEnd</code> attribute is specified, then a value equal to the int
 &lt;chunk
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-encoding">encoding</loc> = (<emph>"base16"</emph> | <emph>"base32"</emph> | <emph>"base32hex"</emph> | <emph>"base64"</emph> | <emph>"base64url"</emph>) : base64
-  length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
+  length = <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <emph>Content:</emph> #PCDATA
@@ -7364,7 +7364,7 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
   <loc href="#content-attribute-condition">condition</loc> = <loc href="#content-value-condition">&lt;condition&gt;</loc>
   <loc href="#embedded-content-attribute-encoding">encoding</loc> = (<emph>"base16"</emph> | <emph>"base32"</emph> | <emph>"base32hex"</emph> | <emph>"base64"</emph> | <emph>"base64url"</emph>) : <emph>see prose below</emph>
   <loc href="#embedded-content-attribute-format">format</loc> = <loc href="#embedded-content-value-data-format">&lt;data-format&gt;</loc>
-  length = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
+  length = <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
   <loc href="#embedded-content-attribute-src">src</loc> = <loc href="#embedded-content-value-data">&lt;data&gt;</loc>
   <loc href="#embedded-content-attribute-type">type</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc> : <emph>see prose below</emph>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
@@ -15282,7 +15282,7 @@ that employ base 16 arithmetic.</p>
 </div3>
 <div3 id="style-value-integer">
 <head>&lt;integer&gt;</head>
-<p>An &lt;integer&gt; expression is used to express an arbitrary, signed integral value.</p>
+<p>An &lt;integer&gt; expression is used to express an arbitrary, signed integer value.</p>
 <table id="integer-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;integer&gt;</caption>
 <tbody>
@@ -15290,12 +15290,19 @@ that employ base 16 arithmetic.</p>
 <td>
 <eg xml:space="preserve">
 &lt;integer&gt;
-  : ( "+" | "-" )? <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
+  : sign? <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
+
+sign
+  : "+" | "-"
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
+<note role="clarification">
+<p>The values of the lexical representations <attval>-0</attval>, <attval>0</attval>, and <attval>+0</attval>,
+regardless of the presence of additional leading or trailing <attval>0</attval> digits, are considered to be equal to the integer value zero (0).</p>
+</note>
 </div3>
 <div3 id="style-value-length">
 <head>&lt;length&gt;</head>
@@ -15546,6 +15553,14 @@ sign
 </tr>
 </tbody>
 </table>
+<note role="clarification">
+<p>The values of the lexical representations
+<attval>-0</attval>, <attval>-0.</attval>, <attval>-.0</attval>, <attval>-0.0</attval>,
+<attval>0</attval>, <attval>0.</attval>, <attval>.0</attval>, <attval>0.0</attval>,
+<attval>+0</attval>, <attval>+0.</attval>, <attval>+.0</attval>, and <attval>+0.0</attval>,
+regardless of the presence of additional leading or trailing <attval>0</attval> digits,
+are considered to be equal to the numeric value zero (0).</p>
+</note>
 </div3>
 <div3 id="style-value-origin">
 <head>&lt;origin&gt;</head>
@@ -15588,7 +15603,7 @@ sign
 </div3>
 <div3 id="style-value-percentage">
 <head>&lt;percentage&gt;</head>
-<p>An &lt;percentage&gt; expression is used to express an arbitrary, signed integral or real valued percentage.</p>
+<p>An &lt;percentage&gt; expression is used to express an arbitrary, signed integer or real valued percentage.</p>
 <table id="percentage-style-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;percentage&gt;</caption>
 <tbody>
@@ -19745,7 +19760,7 @@ a <loc href="#metadata-vocabulary-item"><el>ttm:item</el></loc> element.</p>
 <label><code>altText</code></label>
 <def>
 <p>A string that expresses alternate text content, where the value
-adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>. Typically used to
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#string"><code>xsd:string</code></loc>. Typically used to
 provide a text equivalent or summary for some related image content.</p>
 <note role="elaboration"><p>This text equivalent may be used to support indexing of the content and also facilitate
 quality checking of a document during authoring.</p></note>
@@ -19759,7 +19774,7 @@ content cannot be presented; however, this alternate text content can be used by
 <def>
 <p>A boolean that expresses whether some <loc href="#content-value-condition">&lt;condition&gt;</loc> expression
 makes use of the <loc href="#bound-parameter-forced"><code>forced</code></loc> bound parameter, where the value
-adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#boolean">xsd:boolean</loc>. If this named metadata item
+adheres to <loc href="http://www.w3.org/TR/xmlschema-2/#boolean"><code>xsd:boolean</code></loc>. If this named metadata item
 is present in a <loc href="#terms-document-instance">document instance</loc>, then it must be specified as a child
 of the <loc href="#document-structure-vocabulary-head"><el>head</el></loc> element.</p>
 </def>
@@ -25295,8 +25310,8 @@ begin time; furthermore, the temporal intervals of any two child <loc href="#isd
 <eg xml:space="preserve">
 &lt;isd:sequence
   extent = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  size = <loc href="http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">xsd:nonNegativeInteger</loc>
-  version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
+  size = <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
+  version = <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang"><phrase role="reqattr">xml:lang</phrase></loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
@@ -25322,7 +25337,7 @@ may be determined by inspection.</p>
 <note role="elaboration">
 <p>The <att>size</att> attribute would normally be omitted in the case of real time captioning.</p>
 </note>
-<p>If the <att>version</att> attribute is specified, then it must be a positive integer corresponding to the version of this
+<p>If the <att>version</att> attribute is specified, then it must be a positive integer (greater than zero) corresponding to the version of this
 <loc href="#terms-intermediate-document-syntax">Intermediate Synchronic Document Syntax</loc> specification used in authoring
 the ISD sequence document. If specified, the numeric value must be greater than or equal to two (2). If not specified, then the version must be
 consider to be equal to two (2). The version associated with this
@@ -25381,7 +25396,7 @@ followed by zero or more <loc href="#isd-vocabulary-region"><el>isd:region</el><
   <loc href="#timing-attribute-begin"><phrase role="reqattr">begin</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc>
   <loc href="#timing-attribute-end"><phrase role="reqattr">end</phrase></loc> = <loc href="#timing-value-time-expression">&lt;time-expression&gt;</loc> | <emph>"indefinite"</emph>
   extent = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
-  version = <loc href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</loc>
+  version = <loc href="#style-value-non-negative-integer">&lt;non-negative-integer&gt;</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>

@@ -1650,6 +1650,14 @@ or the internal state representation thereof.</p>
 constraints specify by <specref ref="reduced-infoset"/>.</p>
 </def>
 </gitem>
+<gitem id="terms-reference-data-embedding">
+<label>[reference data embedding]</label>
+<def>
+<p>A <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element that indirectly references the content
+of an <loc href="#terms-embedded-data-resource">embedded data resource</loc> by making use of a
+<att>src</att> attribute that references a data source.</p>
+</def>
+</gitem>
 <gitem id="terms-region">
 <label>[region]</label>
 <def>
@@ -7337,21 +7345,27 @@ of reference. In this case, the active time interval of the <el>data</el> elemen
 <p>A non-sharable definition of a data resource may or may not specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute, but this
 identifier is not referenced in other <loc href="#terms-data-binding-context">data binding contexts</loc>, or, if it is, has no binding semantics.</p>
 </note>
-<p>The <el>data</el> element accepts one of the following three content models:
-(1) one or more <termref def="defs-text-node">text node</termref>s (i.e., <code>#PCDATA</code>),
-(2) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by one or more
-<loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elements, or
+<p>The <el>data</el> element accepts one of the following four content models:
+(1) one or more <termref def="defs-text-node">text nodes</termref> (i.e., <code>#PCDATA</code>),
+(2) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group when a <att>src</att>
+attribute is specified;
 (3) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by one or more
+<loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> elements, or
+(4) zero or more elements in the <loc href="#element-vocab-group-metadata"><code>Metadata.class</code></loc> element group followed by one or more
 <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements, where
 the first is referred to as <loc href="#terms-simple-data-embedding">simple data embedding</loc>,
-the second as <loc href="#terms-chunked-data-embedding">chunked data embedding</loc>, and
-the third as <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>.</p>
+the second as <loc href="#terms-reference-data-embedding">reference data embedding</loc>,
+the third as <loc href="#terms-chunked-data-embedding">chunked data embedding</loc>, and
+the fourth as <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>.</p>
 <p>When <loc href="#terms-simple-data-embedding">simple data embedding</loc> is used, the data resource is obtained by decoding the <code>#PCDATA</code> content.
+When <loc href="#terms-reference-data-embedding">reference data embedding</loc> is used, the data resource is obtained by dereferencing the data resource
+referenced by the <att>src</att> attribute.  
 When <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is used, the data resource is obtained by concatenating the byte sequences obtained by decoding each
 child <loc href="#embedded-content-vocabulary-chunk"><el>chunk</el></loc> element.
-When <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used, the data resource is obtained from the first resolvable
-child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Furthermore,
-a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element must not
+When <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used, the data resource is obtained from the first
+child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element that can be resolved to a
+<loc href="#terms-data-resource">data resource</loc>, or if none can be resolved, then the <loc href="#terms-empty-data-resource">empty data resource</loc>.
+Furthermore, a child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element must not
 contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element, but may refer to a
 <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> element in a <loc href="#terms-data-defining-context">data defining context</loc>.</p>
 <table id="elt-syntax-data" role="syntax">
@@ -7371,37 +7385,40 @@ contain a <loc href="#embedded-content-vocabulary-data"><el>data</el></loc> elem
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <loc href="#content-attribute-xml-lang">xml:lang</loc> = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   <loc href="#content-attribute-xml-space">xml:space</loc> = (<emph>"default"</emph> | <emph>"preserve"</emph>)
-  <emph>Content:</emph> #PCDATA | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-chunk">chunk</loc>+) | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, <loc href="#embedded-content-vocabulary-source">source</loc>+)
+  <emph>Content:</emph> #PCDATA | (<loc href="#element-vocab-group-metadata">Metadata.class</loc>*, (<loc href="#embedded-content-vocabulary-chunk">chunk</loc>+ | <loc href="#embedded-content-vocabulary-source">source</loc>+)? )
 &lt;/data&gt;
 </eg>
 </td>
 </tr>
 </tbody>
 </table>
-<p>If simple data embedding is used, i.e., the content of the <el>data</el> element is one or more <termref def="defs-text-node">text node</termref>s, then an
+<p>If <loc href="#terms-simple-data-embedding">simple data embedding</loc> is used, then an
 <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute
 may be specified, and, if not specified, must be considered to be <code>base64</code>.
-If chunked or sourced data embedding is used, i.e., the content of the <el>data</el> element contains any child
-<loc href="#embedded-content-vocabulary-chunk">chunk</loc> or <loc href="#embedded-content-vocabulary-source">source</loc> element, then
+If <loc href="#terms-reference-data-embedding">reference data embedding</loc>, <loc href="#terms-chunked-data-embedding">chunked data embedding</loc>, or <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used, then
 an <loc href="#embedded-content-attribute-encoding"><att>encoding</att></loc> attribute must not be specified, and, if specified, must be ignored
 for the purpose of content processing.</p>
 <p>If a <att>length</att> attribute is specified, then it must denote the number of decoded bytes in the byte sequence represented by the
 <el>data</el> element. When decoding, if a specified length value does not match the number of decoded bytes, then a zero length byte sequence must be returned.
 If no <att>length</att> attribute is specified, then the data resource is considered to have a length equal to the actual number of decoded bytes.
-A <att>length</att> attribute must not be specified when using sourced data embedding.</p>
+A <att>length</att> attribute must not be specified when using <loc href="#terms-reference-data-embedding">reference data embedding</loc> or <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>.</p>
 <note role="elaboration">
 <p>The intention of the <att>length</att> attribute is to provide a means to perform a simple integrity check on decoded data. Note that this check does not guarantee
 data integrity during transport, i.e., the data could be modified without modifying the length.</p>
 </note>
-<p>If simple or chunked data embedding is used, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must be specified,
-and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code>
-should be used. In the case of sourced data embedding, the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
+<p>If <loc href="#terms-reference-data-embedding">reference data embedding</loc> is used, a <att>src</att> attribute must be specified; otherwise (for all other types of data embedding), a
+<att>src</att> attribute must not be specified.</p>
+<p>If <loc href="#terms-simple-data-embedding">simple data embedding</loc> or <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is used, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must be specified,
+and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code> should be used.
+In the case of <loc href="#terms-reference-data-embedding">reference data embedding</loc>, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute may be specified, and, if
+specified, must correspond with the media (content) type of the referenced data resource.
+In the case of <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified, in which case the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
 is used as the type.</p>
 <p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
 such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource that cannot be
 expressed in a Media Type <bibref ref="media-types"/> parameter,
 then a <loc href="#embedded-content-attribute-format">format</loc> attribute may be specified as a hint to the content processor.</p>
-<p>The use of simple data embedding is illustrated by the following examples.</p>
+<p>The use of <loc href="#terms-simple-data-embedding">simple data embedding</loc> is illustrated by the following examples.</p>
 <table id="embedded-content-vocabulary-data-example-1" role="example">
 <caption>Example Fragment &ndash; Simple Data Embedding in Data Defining Context</caption>
 <tbody>
@@ -7419,7 +7436,6 @@ then a <loc href="#embedded-content-attribute-format">format</loc> attribute may
     &lt;/image&gt;
   &lt;/resources&gt;
 &lt;/head&gt;
-...
 &lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
   &lt;div tts:backgroundImage="#sharedImage"/&gt;
   &lt;div tts:backgroundImage="#sharedImage"/&gt;
@@ -7439,7 +7455,7 @@ then a <loc href="#embedded-content-attribute-format">format</loc> attribute may
 &lt;div&gt;
   &lt;metadata xmlns:ttm="http://www.w3.org/ns/ttml#metadata"&gt;
     &lt;ttm:desc&gt;caption with metadata containing tunneled data&lt;/ttm:desc&gt;
-    &lt;data encoding="base64"&gt;
+    &lt;data encoding="base64" type="application/octet-stream"&gt;
       TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz
       IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg
       dGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGlu
@@ -7476,7 +7492,85 @@ then a <loc href="#embedded-content-attribute-format">format</loc> attribute may
 </tr>
 </tbody>
 </table>
-<p></p>
+<p>The use of <loc href="#terms-reference-data-embedding">reference data embedding</loc> is illustrated by the following example.</p>
+<table id="embedded-content-vocabulary-data-example-4" role="example">
+<caption>Example Fragment &ndash; Reference Data Embedding in Data Defining Context</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData" src="test.png" type="image/png"/&gt;
+    &lt;image xml:id="sharedImage1" src="#sharedImageData"/&gt;
+    &lt;image xml:id="sharedImage2" src="#sharedImageData"/&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage1"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage2"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The use of <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is illustrated by the following example.</p>
+<table id="embedded-content-vocabulary-data-example-5" role="example">
+<caption>Example Fragment &ndash; Chunked Data Embedding in Data Defining Context</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData" type="image/png" length="119"&gt;
+      &lt;chunk length="60"&gt;
+        iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+      &lt;/chunk&gt;
+      &lt;chunk length="59"&gt;
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=
+      &lt;/chunk&gt;
+    &lt;/data&gt;
+    &lt;image xml:id="sharedImage1" src="#sharedImageData"/&gt;
+    &lt;image xml:id="sharedImage2" src="#sharedImageData"/&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage1"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage2"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The use of <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is illustrated by the following example.</p>
+<table id="embedded-content-vocabulary-data-example-6" role="example">
+<caption>Example Fragment &ndash; Sourced Data Embedding in Data Defining Context</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;head&gt;
+  &lt;resources&gt;
+    &lt;data xml:id="sharedImageData"&gt;
+      &lt;source src="test.svg" type="image/svg+xml"/&gt;
+      &lt;source src="test.png" type="image/png"/&gt;
+    &lt;/data&gt;
+    &lt;image xml:id="sharedImage1" src="#sharedImageData"/&gt;
+    &lt;image xml:id="sharedImage2" src="#sharedImageData"/&gt;
+  &lt;/resources&gt;
+&lt;/head&gt;
+&lt;body xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;div tts:backgroundImage="#sharedImage1"/&gt;
+  &lt;div tts:backgroundImage="#sharedImage2"/&gt;
+&lt;/body&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
 </div3> <!-- embedded-content-vocabulary-data -->
 <div3 id="embedded-content-vocabulary-font">
 <head>font</head>
@@ -16252,7 +16346,7 @@ forms of style association.</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the two <termref def="defs-text-node">text node</termref>s <code>"White 1 "</code> and
+<p>In the above example, the two <termref def="defs-text-node">text nodes</termref> <code>"White 1 "</code> and
 <code>" White 2"</code>, which are interpreted as <loc href="#terms-anonymous-span">anonymous spans</loc>, are not
 associated with a color style property; rather, they inherit their color style
 from their parent <el>p</el> element as described in <specref
@@ -16296,7 +16390,7 @@ by <specref ref="semantics-style-association-inline"/>.</p>
 </tbody>
 </table>
 <note role="explanation">
-<p>In the above example, the two <termref def="defs-text-node">text node</termref>s <code>"White 1 "</code> and
+<p>In the above example, the two <termref def="defs-text-node">text nodes</termref> <code>"White 1 "</code> and
 <code>" White 2"</code>, which are interpreted as <loc href="#terms-anonymous-span">anonymous spans</loc>, are not
 associated with a color style property; rather, they inherit their color style
 from their parent <el>p</el> element as described in <specref
@@ -17535,7 +17629,7 @@ the new <loc href="#terms-anonymous-span">anonymous span</loc> for the original 
 and parent hierarchy;</p></item>
 <item><p>for each contiguous sequence of <loc href="#terms-anonymous-span">anonymous spans</loc>, replace the
 sequence with a single <loc href="#terms-anonymous-span">anonymous span</loc> which contains a sequence of
-<termref def="defs-text-node">text node</termref>s representing the individual <termref def="defs-text-node">text node</termref> children of the
+<termref def="defs-text-node">text nodes</termref> representing the individual <termref def="defs-text-node">text node</termref> children of the
 original sequence of <loc href="#terms-anonymous-span">anonymous spans</loc>;</p></item>
 <item><p>for each span element whose child is a single <loc href="#terms-anonymous-span">anonymous span</loc>,
 replace the <loc href="#terms-anonymous-span">anonymous span</loc> with its sequence of child <termref def="defs-text-node">text nodes</termref>.</p></item>
@@ -19448,7 +19542,7 @@ a specific element instance.</p>
 <head>ttm:item</head>
 <p>The <el>ttm:item</el> element is used to express arbitrary named metadata items.</p>
 <p>The <el>ttm:item</el> element accepts one of the following two content models:
-(1) one or more <termref def="defs-text-node">text node</termref>s (i.e., <code>#PCDATA</code>) or
+(1) one or more <termref def="defs-text-node">text nodes</termref> (i.e., <code>#PCDATA</code>) or
 (2) zero or more nested <loc href="#metadata-vocabulary-item">ttm:item</loc> elements.</p>
 <table id="elt-syntax-metadata-item" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: ttm:item</caption>

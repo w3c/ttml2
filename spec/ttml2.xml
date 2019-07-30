@@ -7160,7 +7160,7 @@ express the source of embedded content.</p>
 <head>audio</head>
 <p>The <el>audio</el> element is used to define or refer to an <loc href="#terms-audio-resource">audio resource</loc>.</p>
 <p>An <el>audio</el> element may appear in two contexts: (1) as a child of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element and
-(2) as a child of a <loc href="#content-vocabulary-body"><el>body</el></loc> element,
+(2) as a child of a <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element,
 an element in the <loc href="#element-vocab-group-block">Block.class</loc> element group, namely, as a child of a
 <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, or
 as a child of a <loc href="#content-vocabulary-span"><el>span</el></loc> element. The former is referred to as an
@@ -7672,10 +7672,10 @@ may defer the downloading process until such time that the content of the font r
 <head>image</head>
 <p>The <el>image</el> element is used to define or refer to an <loc href="#terms-image-resource">image resource</loc>.</p>
 <p>An <el>image</el> element may appear in two contexts: (1) as a child of a <loc href="#embedded-content-vocabulary-resources"><el>resources</el></loc> element and
-(2) as a child of a <loc href="#content-vocabulary-body"><el>body</el></loc> element,
-an element in the <loc href="#element-vocab-group-block">Block.class</loc> element group, namely, as a child of a
+(2) as a child of (i) a <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element,
+(ii) an element in the <loc href="#element-vocab-group-block">Block.class</loc> element group, namely, as a child of a
 <loc href="#content-vocabulary-div"><el>div</el></loc> or <loc href="#content-vocabulary-p"><el>p</el></loc> element, or
-as a child of a <loc href="#content-vocabulary-span"><el>span</el></loc> element. The former is referred to as an
+(iii) a <loc href="#content-vocabulary-span"><el>span</el></loc> element. The former is referred to as an
 <loc href="#terms-image-defining-context">image defining context</loc>, the latter as an <loc href="#terms-image-presentation-context">image presentation context</loc>.</p>
 <p>When an <el>image</el> element appears in an <loc href="#terms-image-defining-context">image defining context</loc>, it
 serves as a sharable definition of an <loc href="#terms-image-resource">image resource</loc> that may be referenced by another <el>image</el> element or by
@@ -7692,7 +7692,8 @@ serves as a non-sharable definition of an <loc href="#terms-image-resource">imag
 <p>A non-sharable definition of an <loc href="#terms-image-resource">image resource</loc> may or may not specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute, but this
 identifier is not referenced by other <el>image</el> elements, or, if it is, the reference is ignored.</p>
 </note>
-<p>When an <el>image</el> element appears as a child of a <loc href="#content-vocabulary-div"><el>div</el></loc> element, then its presentation
+<p>When an <el>image</el> element appears as a child of the <loc href="#document-structure-vocabulary-body"><el>body</el></loc> element or
+a <loc href="#content-vocabulary-div"><el>div</el></loc> element, then its presentation
 produces a block area in which the image is rendered; i.e., a block boundary is implied before and after the <el>image</el> element. In contrast,
 when an <el>image</el> element appears as a child of a <loc href="#content-vocabulary-p"><el>p</el></loc> or <loc href="#content-vocabulary-span"><el>span</el></loc>
 element, then its presentation produces an inline area in which the image is rendered; i.e., no block boundary is implied before and after the <el>image</el> element.</p>
@@ -21635,6 +21636,20 @@ attribute when applied to a <loc href="#terms-content-element">content element</
 block area and (2) is capable of displaying or generating an output display
 signal that distinguishes between at least eight (8) values of opacity.</p>
 </div3>
+<div3 id="feature-opacity-image">
+<head>#opacity-image</head>
+<p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
+<code>#opacity-image</code> feature if it supports all defined values
+of the <loc href="#style-attribute-opacity"><att>tts:opacity</att></loc> attribute when applied to
+an <loc href="#embedded-content-vocabulary-image"><el>image</el></loc> element.</p>
+<p>A TTML <loc href="#terms-presentation-processor">presentation processor</loc> supports the <code>#opacity-image</code>
+feature if it implements presentation semantic support for the same vocabulary enumerated above.</p>
+<note role="clarification">
+<p>Support for the <code>#opacity-image</code> feature does not imply support for the
+<loc href="#feature-image"><code>#image</code></loc> feature; however, without support for the latter, support for
+the former serves no purpose.</p>
+</note>
+</div3>
 <div3 id="feature-opacity-inline">
 <head>#opacity-inline</head>
 <p>A TTML <loc href="#terms-transformation-processor">transformation processor</loc> supports the
@@ -21678,6 +21693,7 @@ supports the following features:</p>
 <ulist>
 <item><p><loc href="#feature-opacity"><code>#opacity</code></loc></p></item>
 <item><p><loc href="#feature-opacity-block"><code>#opacity-block</code></loc></p></item>
+<item><p><loc href="#feature-opacity-image"><code>#opacity-image</code></loc></p></item>
 <item><p><loc href="#feature-opacity-inline"><code>#opacity-inline</code></loc></p></item>
 </ulist>
 <p>The <code>#opacity-version-2</code> feature is a syntactic and semantic extension of the
@@ -21686,6 +21702,7 @@ supports the following features:</p>
 but prohibit use of any of the following features:
 <loc href="#feature-opacity"><code>#opacity</code></loc>,
 <loc href="#feature-opacity-block"><code>#opacity-block</code></loc>,
+<loc href="#feature-opacity-image"><code>#opacity-image</code></loc>,
 <loc href="#feature-opacity-inline"><code>#opacity-inline</code></loc>, or
 <loc href="#feature-opacity-region"><code>#opacity-region</code></loc>.</p>
 </div3>
@@ -23717,6 +23734,12 @@ is optional (O), for a TTML <loc href="#terms-content-processor">content process
 </tr>
 <tr>
 <td><loc href="#feature-opacity-block"><code>#opacity-block</code></loc></td>
+<td css="text-align:center;">2</td>
+<td css="text-align:center;">O</td>
+<td css="text-align:center;">O</td>
+</tr>
+<tr>
+<td><loc href="#feature-opacity-image"><code>#opacity-image</code></loc></td>
 <td css="text-align:center;">2</td>
 <td css="text-align:center;">O</td>
 <td css="text-align:center;">O</td>

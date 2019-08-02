@@ -1434,6 +1434,10 @@ consist of one or more <loc href="#terms-inline-area">inline areas</loc>.</p>
 <p>A constituent <loc href="#terms-profile">profile</loc> of a <loc href="#terms-nesting-profile">nesting profile</loc>, i.e., one of the
 descendant <el>ttp:profile</el> element(s) of a higher level (ancestor) <el>ttp:profile</el> element. A given <el>ttp:profile</el> may serve
 as both a <loc href="#terms-nested-profile">nested profile</loc> and a <loc href="#terms-nesting-profile">nesting profile</loc>.</p>
+<note role="elaboration">
+<p>A nested profile may appear in a <loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc> or
+a <loc href="#terms-timed-text-profile-document-instance">timed text profile document instance</loc>.</p>
+</note>
 </def>
 </gitem>
 <gitem id="terms-nesting-profile">
@@ -1939,7 +1943,7 @@ about which see <specref ref="concrete-encoding"/>.</p>
 <label>[top-level profile]</label>
 <def>
 <p>A <loc href="#terms-profile">profile</loc> defined by a <el>ttp:profile</el> element that appears as a child
-of the <el>head</el> element.</p>
+of the <el>head</el> element of a <loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-transformation-processor">
@@ -4071,7 +4075,7 @@ otherwise it is referred to as a <loc href="#terms-non-nesting-profile">non-nest
   combine = (<emph>"leastRestrictive"</emph> | <emph>"mostRestrictive"</emph> | <emph>"replace"</emph>) : replace
   designator = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
   type = (<emph>"processor"</emph> | <emph>"content"</emph>) : processor
-  use = <loc href="http://www.w3.org/TR/xmlschema-2/#string">xsd:string</loc>
+  use = <loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> | <loc href="#content-value-relative-profile-designator">&lt;relative-profile-designator&gt;</loc>
   <loc href="#content-attribute-xml-base">xml:base</loc> = <loc href="#content-value-uri">&lt;uri&gt;</loc>
   <loc href="#content-attribute-xml-id">xml:id</loc> = ID
   <emph>Content:</emph> <loc href="#element-vocab-group-metadata">Metadata.class</loc>*, ((<loc href="#profile-vocabulary-features">ttp:features</loc>*, <loc href="#profile-vocabulary-extensions">ttp:extensions</loc>*)|<loc href="#profile-vocabulary-profile">ttp:profile</loc>*)
@@ -4119,14 +4123,25 @@ be specified on a <el>ttp:profile</el> element that appears in a TTML
 <loc href="#terms-profile-definition-document">profile definition document</loc> instance,
 and, if not specified, the defining context (e.g., an external specification) must specify
 a designator in its accompanying definition text.</p>
+
+
 <p>If specified, the <att>use</att> attribute must adhere to the
-<loc href="#content-value-uri">&lt;uri&gt;</loc> value syntax, and, furthermore, must denote a profile designator in
-accordance with <specref ref="vocabulary-profiling"/>. In this case,
-the profile designator must refer to (1) a standard, predefined
-<loc href="#terms-profile-definition-document">profile definition document</loc> as defined by <specref ref="profile"/>,
-or (2) a feasibly dereferenceable resource representing a valid <emph>Profile Definition
-Document</emph> instance. In either case, the referenced profile serves as the
+<loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> or
+<loc href="#content-value-relative-profile-designator">&lt;relative-profile-designator&gt;</loc>
+value syntax and must refer to either (1) a standard, predefined
+<loc href="#terms-profile">profile</loc> as defined by <specref ref="vocabulary-profile-standard-designators"/>
+or (2) a feasibly dereferenceable resource representing a valid
+<loc href="#terms-profile-definition-document">profile definition document</loc> instance.
+In either case, the referenced profile serves as the
 <loc href="#terms-baseline-profile">baseline profile</loc> of the specifying <el>ttp:profile</el> element.</p>
+
+<note role="clarification">
+<p>Since the <att>use</att> attribute must refer to an entire (whole) <loc href="#terms-profile-definition-document">profile definition document</loc>,
+it cannot be used to refer to a <loc href="#terms-top-level-profile">top level profile</loc> or a <loc href="#terms-nested-profile">nested profile</loc>.
+This rules out using a <att>use</att> attribute which <loc href="#content-value-uri">&lt;uri&gt;</loc> value contains a
+fragment <loc href="#terms-component">component</loc>.</p>
+</note>
+
 <p>If the <att>use</att> attribute is not specified, then the <loc href="#terms-baseline-profile">baseline profile</loc>
 of the <el>ttp:profile</el> element must be considered to be
 the empty (null) profile, i.e., an undesignated profile definition containing no

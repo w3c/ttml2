@@ -8366,8 +8366,12 @@ such usage should be reported as a warning.</p>
 </ulist>
 <div3 id="styling-vocabulary-initial">
 <head>initial</head>
-<p>The <el>initial</el> element is used to modify the initial value of one or more style properties, i.e, to specify use of different value(s) than
+<p>The <el>initial</el> element is used to alter the initial value of one or more style properties, i.e, to specify use of different value(s) than
 the specification defined initial value(s).</p>
+<p>The initial value of a style property is referred to as an
+<termdef id="defs-initial-value-alterable" term=""><term>alterable initial value</term></termdef> unless the definition of that
+style property specifies that it is <termref def="defs-initial-value-unalterable">unalterable</termref>, in which case it is referred to as an
+<termdef id="defs-initial-value-unalterable" term=""><term>unalterable initial value</term></termdef>.</p>
 <p>The <el>initial</el> element accepts as its children zero or more <el>metadata</el> elements.</p>
 <table id="elt-syntax-initial" role="syntax">
 <caption>XML Representation &ndash; Element Information Item: initial</caption>
@@ -8391,6 +8395,10 @@ the specification defined initial value(s).</p>
 </table>
 <p>If more than one <el>initial</el> element specifies an initial value for the same style property, then
 the last value specified (in pre-traversal order) applies.</p>
+<p>If an <el>initial</el> element specifies an initial value for a style property which is
+<termref def="defs-initial-value-unalterable">unalterable</termref>,
+then it is <termref def="defs-considered-an-error">considered an error</termref> and must be ignored for the purpose of
+presentation processing.</p>
 <p>The <el>initial</el> element is illustrated by the following example, wherein
 the initial value of the <att>tts:color</att> property is defined to be <code>yellow</code>.</p>
 <table id="style-vocabulary-initial-example-1" role="example">
@@ -12203,7 +12211,7 @@ styling.</p>
 </tr>
 <tr>
 <td><emph>Initial:</emph></td>
-<td><code>none</code></td>
+<td><code>none</code>, which is <termref def="defs-initial-value-unalterable">unalterable</termref></td>
 </tr>
 <tr>
 <td><emph>Applies to:</emph></td>
@@ -16945,7 +16953,8 @@ property <emph>P</emph>, where the initial value of a property is
 determined as follows:</p>
 <olist>
 <item><p>if an <loc href="#styling-vocabulary-initial"><el>initial</el></loc>
-element defines the initial value for <emph>P</emph>, then use that value;</p></item>
+element defines the initial value for <emph>P</emph>
+and the initial value for <emph>P</emph> is <termref def="defs-initial-value-alterable">alterable</termref>, then use that value;</p></item>
 <item><p>otherwise, use the initial value specified by the property definition of <emph>P</emph>;</p></item>
 </olist>
 </item>

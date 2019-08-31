@@ -1173,9 +1173,9 @@ a <loc href="#profile-vocabulary-extension"><el>ttp:extension</el></loc> element
 <gitem id="terms-external-data-resource">
 <label>[external data resource]</label>
 <def>
-<p>A <loc href="#terms-data-resource">data resource</loc> external to a
+<p>A <loc href="#terms-data-resource">data resource</loc> the representation of which is external to (not contained within) a
 <loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc>, referenced by means
-of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or a <loc href="#embedded-content-attribute-src"><att>src</att></loc>
+of a <loc href="#embedded-content-attribute-src"><att>src</att></loc>
 attribute of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or <loc href="#terms-embedded-content-element">embedded
 content element</loc>.</p>
 </def>
@@ -1394,6 +1394,16 @@ that effectively represent the content, styling, layout, and timing of a source 
 <def>
 <p>A formalism for use in the concrete representation of an <loc href="#terms-intermediate-synchronic-document-sequence">intermediate synchronic document sequence</loc> or
 an <loc href="#terms-intermediate-synchronic-document">intermediate synchronic document</loc>.</p>
+</def>
+</gitem>
+<gitem id="terms-internal-data-resource">
+<label>[internal data resource]</label>
+<def>
+<p>A <loc href="#terms-data-resource">data resource</loc> the representation of which is internal to (contained within) a
+<loc href="#terms-timed-text-content-document-instance">timed text content document instance</loc>, referenced by means
+of a <loc href="#embedded-content-attribute-src"><att>src</att></loc>
+attribute of a <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element or <loc href="#terms-embedded-content-element">embedded
+content element</loc>.</p>
 </def>
 </gitem>
 <gitem id="terms-intrinsic-block-content-extent">
@@ -7272,8 +7282,8 @@ where the <loc href="#terms-data-resource">data resource</loc> contains audio co
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Conversely,
 if an <el>audio</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify one or more
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
-<p>If an <el>audio</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to a fragment of the
-<loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then it should specify a
+<p>If an <el>audio</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to
+an <loc href="#terms-internal-data-resource">internal data resource</loc>, then it should specify a
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
 of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
@@ -7457,10 +7467,15 @@ data integrity during transport, i.e., the data could be modified without modify
 <att>src</att> attribute must not be specified.</p>
 <p>If <loc href="#terms-simple-data-embedding">simple data embedding</loc> or <loc href="#terms-chunked-data-embedding">chunked data embedding</loc> is used, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must be specified,
 and must correspond with the media (content) type of the data resource. In these cases, if there is no defined type, the type <code>application/octet-stream</code> should be used.
-In the case of <loc href="#terms-reference-data-embedding">reference data embedding</loc>, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute may be specified, and, if
-specified, must correspond with the media (content) type of the referenced data resource.
-In the case of <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified, in which case the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element
-is used as the type.</p>
+If <loc href="#terms-reference-data-embedding">reference data embedding</loc> is used, then, if it refers to an
+<loc href="#terms-external-data-resource">external data resource</loc>,
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute should be specified, and,
+if specified, must correspond with the media (content) type of the referenced data resource;
+otherwise (an <loc href="#terms-internal-data-resource">internal data resource</loc> is referenced),
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.
+If <loc href="#terms-sourced-data-embedding">sourced data embedding</loc> is used,
+a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified,
+in which case the media (content) type of the resolved <loc href="#embedded-content-vocabulary-source">source</loc> element is used as the type.</p>
 <p>If a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute is not specified or resolved or is specified as a generic type,
 such as <code>application/octet-stream</code>, and additional format information is known about a referenced data resource that cannot be
 expressed in a Media Type <bibref ref="media-types"/> parameter,
@@ -7661,8 +7676,8 @@ where the <loc href="#terms-data-resource">data resource</loc> contains font con
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Conversely,
 if a <el>font</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify one or more
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
-<p>If a <el>font</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to a fragment of the
-<loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then it should specify a
+<p>If a <el>font</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to
+an <loc href="#terms-internal-data-resource">internal data resource</loc>, then it should specify a
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
 of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>
@@ -7803,8 +7818,8 @@ where the <loc href="#terms-data-resource">data resource</loc> contains image co
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> element. Conversely,
 if an <el>image</el> element does not specify a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute, then it must specify one or more
 child <loc href="#embedded-content-vocabulary-source"><el>source</el></loc> elements.</p>
-<p>If an <el>image</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to a fragment of the
-<loc href="#terms-enclosing-document-instance">enclosing document instance</loc>, then it should specify a
+<p>If an <el>image</el> element specifies a <loc href="#embedded-content-attribute-src"><att>src</att></loc> attribute and its value does not refer to
+an <loc href="#terms-internal-data-resource">internal data resource</loc>, then it should specify a
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute, in which case the value of the
 <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must correspond with the media (content) type
 of the referenced resource. Otherwise, a <loc href="#embedded-content-attribute-type"><att>type</att></loc> attribute must not be specified.</p>

@@ -628,6 +628,17 @@ and may specify inline overrides to styling.</p>
 Sets</emph> <bibref ref="infoset"/>.</p>
 </def>
 </gitem>
+<gitem id="terms-animatable-style">
+<label>[animatable style]</label>
+<def>
+<p>A <loc href="#terms-styling-attribute">styling attribute</loc> or its interned representation
+as a <loc href="#semantics-style-property">style property</loc>
+the definition of which specifies it to be animatable by <termref def="defs-discrete">discrete</termref>
+or <termref def="defs-continuous">continuous</termref> animation.
+A <loc href="#terms-styling-attribute">styling attribute</loc> the definition of which (1) specifies its animatability as <emph>none</emph> or
+(2) does not specify its animatability is referred to as a <termdef id="defs-non-animatable-style" term=""><term>non-animatable style</term></termdef>.</p>
+</def>
+</gitem>
 <gitem id="terms-anonymous-profile">
 <label>[anonymous profile]</label>
 <def>
@@ -8587,9 +8598,9 @@ whether (and how) style is animatable, and semantic basis (derivation).</p>
 <termref def="defs-style-property-definition-table">style property definition table</termref>, the definition of <emph>applies to</emph>
 specified by <bibref ref="css2"/>, &sect;1.4.2.3, applies to this specification.</p>
 </note>
-<p>For animatable styles, the term <emph>discrete</emph> refers to the use of either a <loc href="#animation-vocabulary-set"><el>set</el></loc>
+<p>For <loc href="#terms-animatable-style">animatable styles</loc>, the term <termdef id="defs-discrete" term=""><term>discrete</term></termdef> refers to the use of either a <loc href="#animation-vocabulary-set"><el>set</el></loc>
 element or an <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element with the <code>discrete</code> value for its
-<loc href="#animation-value-calculation-mode">&lt;calculation-mode&gt;</loc>. The term <emph>continuous</emph> refers to
+<loc href="#animation-value-calculation-mode">&lt;calculation-mode&gt;</loc>. The term <termdef id="defs-continuous" term=""><term>continuous</term></termdef> refers to
 the use of an <loc href="#animation-vocabulary-animate"><el>animate</el></loc> element with a <code>linear</code>, <code>paced</code>, or <code>spline</code>
 value for its <loc href="#animation-value-calculation-mode">&lt;calculation-mode&gt;</loc>. The term <emph>none</emph> indicates the style
 is not animatable.</p>
@@ -16924,7 +16935,7 @@ set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 element type of <emph>E</emph> is not an <loc href="#terms-inline-animation">inline animation</loc> element,
 then for each <loc href="#terms-conditionally-excluded">conditionally included</loc>
 <loc href="#terms-inline-animation">inline animation</loc> element child <emph>A</emph> of element <emph>E</emph>,
-merge the specified style set of <emph>A</emph>,
+merge the <loc href="#terms-animatable-style">animatable styles</loc> of the specified style set of <emph>A</emph>,
 <emph>SSS(A)</emph>, into the specified style set of <emph>E</emph>, <emph>SSS(E)</emph>;</p></item>
 <!-- step 6 -->
 <item>
@@ -18605,7 +18616,8 @@ styling of content.</p>
 </ulist>
 <div3 id="animation-vocabulary-animate">
 <head>animate</head>
-<p>The <el>animate</el> element expresses a series of changes (animations) to be applied (targeted) to one or more <loc href="#terms-styling-attribute">styling attributes</loc> of associated elements.</p>
+<p>The <el>animate</el> element expresses a series of changes (animations) to be applied (targeted)
+to one or more <loc href="#terms-animatable-style">animatable styles</loc> of associated elements.</p>
 <p>An <el>animate</el> element may appear as either (1) a child of a
 <loc href="#terms-content-element">content element</loc> or a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
 referred to as <loc href="#terms-inline-animation">inline animation</loc>, or
@@ -18651,6 +18663,8 @@ where the list (sequence) of animation values
 adhere to the <loc href="#animation-value-animation-value-list">&lt;animation-value-list&gt;</loc> syntax, and where each
 constituent <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> adheres to the syntax of the specified
 attribute.</p>
+<p>Targeting a <termref def="defs-non-animatable-style">non-animatable style</termref> is
+<termref def="defs-considered-an-error">considered an error</termref> and must be ignored for the purpose of presentation processing.</p>
 <note role="elaboration">
 <p>In contrast with <bibref ref="svg11"/>, &sect;19.2.12, a single <el>animate</el> element, as defined here, may be used to
 perform continuous animations on a set of targeted <loc href="#terms-styling-attribute">style attributes</loc> instead of being limited to targeting a
@@ -18678,6 +18692,12 @@ considered equivalent to specifying <code>attributeName="tts:color"</code> and <
 <item>
 <p>If no <att>calcMode</att> attribute is specified, then a <emph>calcMode</emph> value of <code>linear</code> applies.</p>
 <note role="clarification"><p>This implied value corresponds to the default value specified by <bibref ref="svg11"/>, &sect;19.2.9.</p></note>
+</item>
+<item>
+<p>If a targeted <loc href="#terms-animatable-style">animatable style</loc> is <termref def="defs-discrete">discretely</termref> animatable
+but not <termref def="defs-continuous">continuously</termref> animatable, then it is <termref def="defs-considered-an-error">considered an error</termref>
+if the applied value of the <att>calcMode</att> attribute is not <code>discrete</code>, in which case
+the targeted <loc href="#terms-animatable-style">animatable style</loc> must be ignored for the purpose of presentation processing.</p>
 </item>
 <item>
 <p>If no <att>fill</att> attribute is specified, then a <emph>fill</emph> value of <code>remove</code> applies.</p>
@@ -18857,8 +18877,8 @@ defined to be coterminous with the <loc href="#terms-root-temporal-extent">root 
 </div3>
 <div3 id="animation-vocabulary-set">
 <head>set</head>
-<p>The <el>set</el> element expresses one or more a discrete changes (animations) to be applied (targeted) to <loc href="#terms-styling-attribute">styling attributes</loc>
-of associated elements.</p>
+<p>The <el>set</el> element expresses one or more discrete changes (animations) to be applied (targeted)
+to one or more <loc href="#terms-animatable-style">animatable styles</loc> of associated elements.</p>
 <p>A <el>set</el> element may appear as either (1) a child of a
 <loc href="#terms-content-element">content element</loc> or a <loc href="#layout-vocabulary-region"><el>region</el></loc> element,
 referred to as <loc href="#terms-inline-animation">inline animation</loc>, or
@@ -18899,6 +18919,8 @@ must specify an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> at
 <p><loc href="#terms-styling-attribute">Style attributes</loc> targeted by a <el>set</el> element are specified directly using
 attributes in the TT Style Namespaces or in a namespace that is not some TT Namespace, where the single target animation (key) value
 adheres to the <loc href="#animation-value-animation-value">&lt;animation-value&gt;</loc> syntax.</p>
+<p>Targeting a <termref def="defs-non-animatable-style">non-animatable style</termref> is
+<termref def="defs-considered-an-error">considered an error</termref> and must be ignored for the purpose of presentation processing.</p>
 <note role="elaboration">
 <p>In contrast with <bibref ref="svg11"/>, &sect;19.2.13, a single <el>set</el> element, as defined here, may be used to
 perform discrete animations on a set of targeted <loc href="#terms-styling-attribute">styling attributes</loc> instead of being limited to targeting a

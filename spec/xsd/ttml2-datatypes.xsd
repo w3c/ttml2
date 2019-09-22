@@ -67,9 +67,11 @@
   </xs:simpleType>
   <xs:simpleType name="cellResolution">
     <xs:annotation>
-      <xs:documentation>positiveInteger positiveInteger</xs:documentation>
+      <xs:documentation>non-negative-integer non-negative-integer</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string"/>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="clockMode">
     <xs:restriction base="xs:token">
@@ -104,7 +106,12 @@
     </xs:union>
   </xs:simpleType>
   <xs:simpleType name="dataLength">
-    <xs:restriction base="xs:nonNegativeInteger"/>
+    <xs:annotation>
+      <xs:documentation>non-negative-integer</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="dataSource">
     <xs:restriction base="xs:anyURI"/>
@@ -141,7 +148,7 @@
   </xs:simpleType>
   <xs:simpleType name="displayAspectRatio">
     <xs:annotation>
-      <xs:documentation>positiveInteger positiveInteger</xs:documentation>
+      <xs:documentation>non-negative-integer non-negative-integer</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
@@ -266,15 +273,26 @@
     <xs:restriction base="xs:anyURI"/>
   </xs:simpleType>
   <xs:simpleType name="frameRate">
-    <xs:restriction base="xs:positiveInteger"/>
+    <xs:annotation>
+      <xs:documentation>non-negative-integer</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="frameRateMultiplier">
     <xs:annotation>
-      <xs:documentation>positiveInteger positiveInteger</xs:documentation>
+      <xs:documentation>non-negative-integer non-negative-integer</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
     </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="gain">
+    <xs:annotation>
+      <xs:documentation>number</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>   
   </xs:simpleType>
   <xs:simpleType name="inferProcessorProfileMethod">
     <xs:restriction base="xs:token">
@@ -306,7 +324,7 @@
           | "." fraction
 
         whole, fraction
-          : digit+
+          : non-negative-integer
 
         comma
           : ","
@@ -329,7 +347,7 @@
           | "." fraction
 
         whole, fraction
-          : digit+
+          : non-negative-integer
 
         lwsp
           : ( ' ' | '\t' | '\n' | '\r' )+
@@ -440,12 +458,31 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
+  <xs:simpleType name="pan">
+    <xs:annotation>
+      <xs:documentation>number</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
   <xs:simpleType name="permitFeatureNarrowingOrWidening">
     <xs:restriction base="xs:boolean"/>
   </xs:simpleType>
+  <xs:simpleType name="pitch">
+    <xs:annotation>
+      <xs:documentation>
+        pitch
+          : percentage
+          | number pitch-units?
+
+        pitch-units
+          : "hz" | "st"
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
   <xs:simpleType name="pixelAspectRatio">
     <xs:annotation>
-      <xs:documentation>positiveInteger:positiveInteger</xs:documentation>
+      <xs:documentation>non-negative-integer non-negative-integer</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="\p{Nd}+\s+\p{Nd}+"/>
@@ -481,7 +518,7 @@
     <xs:annotation>
       <xs:documentation>
         repeatCount
-          : count                          // value > 0
+          : count                          // value &gt; 0
           | "indefinite"
 
         count:
@@ -490,7 +527,7 @@
           | "." fraction
 
         whole, fraction
-          : digit+
+          : non-negative-integer
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
@@ -562,8 +599,29 @@
       <xs:enumeration value="whenActive"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="size">
+    <xs:annotation>
+      <xs:documentation>non-negative-integer</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="speak">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="fast"/>
+      <xs:enumeration value="slow"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="subFrameRate">
-    <xs:restriction base="xs:positiveInteger"/>
+    <xs:annotation>
+      <xs:documentation>non-negative-integer</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="textAlign">
     <xs:restriction base="xs:token">
@@ -685,7 +743,12 @@
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="tickRate">
-    <xs:restriction base="xs:positiveInteger"/>
+    <xs:annotation>
+      <xs:documentation>non-negative-integer</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+"/>
+    </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="timeBase">
     <xs:restriction base="xs:token">
@@ -734,6 +797,16 @@
       <xs:enumeration value="ignore"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="version">
+    <xs:annotation>
+      <xs:documentation>
+        non-negative-integer               // value &gt; 0
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\p{Nd}+"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="visibility">
     <xs:restriction base="xs:token">
       <xs:enumeration value="hidden"/>
@@ -762,22 +835,5 @@
       <xs:documentation>auto | integer</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
-  </xs:simpleType>
-  <xs:simpleType name="gain">
-    <xs:restriction base="xs:string"/>   
-  </xs:simpleType>
-  <xs:simpleType name="pan">
-    <xs:restriction base="xs:string"/>
-  </xs:simpleType>
-  <xs:simpleType name="pitch">
-    <xs:restriction base="xs:string"/>
-  </xs:simpleType>
-  <xs:simpleType name="speak">
-    <xs:restriction base="xs:token">
-      <xs:enumeration value="none"/>
-      <xs:enumeration value="normal"/>
-      <xs:enumeration value="fast"/>
-      <xs:enumeration value="slow"/>
-    </xs:restriction>
   </xs:simpleType>
 </xs:schema>

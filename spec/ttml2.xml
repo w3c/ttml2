@@ -14751,6 +14751,78 @@ that defined by <bibref ref="ssml"/> &sect;3.2.4 where the equivalent of a <code
 element with a <code>rate</code> attribute equal to the computed value is applied to the spoken
 character content.</p>
 </note>
+<div4 id="style-attribute-speak-special-semantics">
+<head>Special Semantics of Speak</head>
+<p>If the computed value of <code>tta:speak</code> on some <loc href="#content-vocabulary-span"><el>span</el></loc> element or
+<loc href="#terms-anonymous-span">anonymous span</loc> <emph>S</emph> is not <code>none</code> and no ancestor of <emph>S</emph> is an
+<loc href="#terms-audio-generating-element">audio generating element</loc> for which a referenced
+<loc href="#terms-audio-resource">audio resource</loc> source is the <loc href="#terms-speech-data-resource">speech data resource</loc>, then</p>
+<olist>
+<item><p>if no child of <emph>S</emph> is an <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element, then a child
+<loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element that references the
+<loc href="#terms-speech-data-resource">speech data resource</loc> with a <loc href="#terms-reference-data-embedding">reference data embedding</loc>
+is implied;</p></item>
+<item><p>otherwise, i.e., if <emph>S</emph> has a child <loc href="#embedded-content-vocabulary-audio"><el>audio</el></loc> element <emph>A</emph>,
+and if <emph>A</emph> does not reference any source <loc href="#terms-audio-resource">audio resource</loc> by means of either
+<loc href="#terms-reference-data-embedding">reference data embedding</loc> or <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>,
+then a reference to the <loc href="#terms-speech-data-resource">speech data resource</loc> with a
+<loc href="#terms-reference-data-embedding">reference data embedding</loc> is implied.</p></item>
+</olist>
+<p>The following example illustrates the first of the above cases.</p>
+<table id="audio-style-attribute-speak-example-2" role="example">
+<caption>Example Fragment &ndash; Speak without Explicit Audio</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;span <phrase role="strong">tta:speak="normal"</phrase>&gt;
+  spoken text
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The following example shows the second of the above cases.</p>
+<table id="audio-style-attribute-speak-example-3" role="example">
+<caption>Example Fragment &ndash; Speak with Explicit Unsourced Audio</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;span <phrase role="strong">tta:speak="normal"</phrase>&gt;
+  &lt;audio/&gt;
+  spoken text
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<note role="clarification">
+<p>In this second example, no attribute is specified on the <el>audio</el> element, such as, e.g., a <att>tta:gain</att> attribute;
+however, provided no source is referenced by the <el>audio</el> element using either
+<loc href="#terms-reference-data-embedding">reference data embedding</loc> or <loc href="#terms-sourced-data-embedding">sourced data embedding</loc>,
+the above second rule applies even if other attributes (or children) were present on the <el>audio</el> element.</p>
+</note>
+<p>The following fragment shows the equivalent result that would obtain from applying the above special semantics to each of the two prior examples,
+where, for illustrative purposes, additional whitespace has been introduced as needed to aid formatting.</p>
+<table id="audio-style-attribute-speak-example-equivalence" role="example">
+<caption>Example Fragment &ndash; Equivalent Speak</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;span <phrase role="strong">tta:speak="normal"</phrase>&gt;
+  &lt;audio src="http://www.w3.org/ns/ttml/resource/#speech"/&gt;
+  spoken text
+&lt;/span&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+</div4>
 </div3>
 </div2> <!-- styling-attribute-vocabulary -->
 <div2 id="styling-style-value-expressions">

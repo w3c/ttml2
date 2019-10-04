@@ -2229,6 +2229,8 @@ value syntax, no whitespace is permitted unless explicitly marked in a value syn
 <p>The phrase &quot;and (or)&quot; denotes an <emph>inclusive disjunction</emph> (<emph>p&lor;q</emph>), while the syntax
 &quot;either&hellip;or&hellip;&quot; denotes an <emph>exclusive disjunction</emph> (<emph>p&xor;q</emph>). Otherwise, the sense of &quot;or&quot; is
 implied by its context of use.</p>
+<p>Unless stated to the contrary, all procedures (algorithms) that appear in the form of an ordered (numbered) list of rules, steps, or sub-steps
+are intended to be performed in the specified order.</p>
 <p>All content of this specification that is not explicitly marked as
 non-normative is considered to be normative. If a section or appendix
 header contains the expression "Non-Normative", then the entirety
@@ -4208,7 +4210,7 @@ of the <el>ttp:profile</el> element must be considered to be
 the empty (null) profile, i.e., an undesignated profile definition containing no
 feature or extension specifications.</p>
 <p>The <loc href="#semantics-profile-state-combined-profile-specification-set">combined profile specification set</loc> <emph>CPSS</emph> of features and extensions of a profile <emph>P</emph>
-is determined according to the following ordered rules, where merging a specification <emph>S</emph>
+is determined according to the following, where merging a specification <emph>S</emph>
 into <emph>CPSS</emph> entails applying a combination method in accordance with the specified
 (or default) value of the <att>combine</att> attribute, and where merging a <loc href="#semantics-profile-state-combined-profile-specification-set">combined profile specification set</loc> <emph>CPSS&apos;&nbsp;</emph> into
 <emph>CPSS</emph> entails merging each ordered specification of <emph>CPSS&apos;&nbsp;</emph> into <emph>CPSS</emph>:</p>
@@ -6252,10 +6254,10 @@ descendant <loc href="#terms-content-element">content elements</loc>.</p>
 a <el>p</el> element, then it must be interpreted as having
 <emph>parallel</emph> time containment semantics.</p>
 <p>If a sequence of children of a <el>p</el> element
-consists solely of <loc href="#terms-character-information-item">character information items</loc>, then that sequence must
-be considered to be an <loc href="#terms-anonymous-span">anonymous span</loc> for the purpose of
-applying style properties that apply to <el>span</el> elements, for details about which, see the
-<phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> procedure.</p>
+consists solely of <loc href="#terms-character-information-item">character information items</loc>, then that sequence
+is subject to <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> processing,
+which may result in their being wrapped in an <loc href="#terms-anonymous-span">anonymous span</loc> for the purpose of
+applying style properties that apply to <el>span</el> elements.</p>
 <note role="elaboration"><p>The presentation semantics of TTML effectively
 implies that a <el>p</el> element constitutes a line break. In particular,
 it is associated with a block-stacking constraint both before the first
@@ -6341,10 +6343,10 @@ is merely one possible implementation of the semantics of <code>none</code>.</p>
 <p>If a <el>span</el> element specifies an <att>xlink:href</att> attribute, then a nested <el>span</el> element descendant must not specify
 an <att>xlink:href</att> attribute, and, if it does, then the latter must be ignored for the purpose of presentation or activation processing.</p>
 <p>If a sequence of children of a <el>span</el> element
-consists solely of <loc href="#terms-character-information-item">character information items</loc>, then that sequence must
-be considered to be an <loc href="#terms-anonymous-span">anonymous span</loc> for the purpose of
-applying style properties that apply to <el>span</el> elements, for details about which, see the
-<phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> procedure.</p>
+consists solely of <loc href="#terms-character-information-item">character information items</loc>, then that sequence
+is subject to <phrase role="strong"><loc href="#procedure-construct-anonymous-spans">[construct anonymous spans]</loc></phrase> processing,
+which may result in their being wrapped in an <loc href="#terms-anonymous-span">anonymous span</loc> for the purpose of
+applying style properties that apply to <el>span</el> elements.</p>
 </div3>
 <div3 id="content-vocabulary-br">
 <head>br</head>
@@ -9709,7 +9711,7 @@ The title of the book is
 <head>Special Semantics of Direction</head>
 <p>When performing style resolution processing (see <specref ref="semantics-style-resolution-processing"/>),
 the resolution of the computed value of <att>tts:direction</att> on a <loc href="#layout-vocabulary-region"><el>region</el></loc> element
-<emph><code>R</code></emph> is determined according to the following ordered rules, where the first applicable rule applies:</p>
+<emph><code>R</code></emph> is determined according to the following, where the first applicable rule applies:</p>
 <olist>
   <item><p>if a <att>tts:direction</att> attribute is specified on <emph><code>R</code></emph>, then the computed value
   <att>tts:direction</att> is the specified value;</p></item>
@@ -16924,8 +16926,7 @@ follows: for each <loc href="#semantics-style-property">style property</loc> <em
 <head>Specified Style Set Processing</head>
 <p>The specified style set <emph>SSS</emph> of an element or
 <loc href="#terms-anonymous-span">anonymous span</loc> <emph>E</emph>,
-<emph>SSS(E)</emph>, is determined according to the following ordered
-rules:</p>
+<emph>SSS(E)</emph>, is determined according to the following:</p>
 <olist>
 <!-- 1. [initialization] -->
 <item><p><phrase role="strong">[initialization]</phrase> initialize
@@ -16970,7 +16971,7 @@ merge the <loc href="#terms-animatable-style">animatable styles</loc> of the spe
 element type of <emph>E</emph> is not animation element type <el>animate</el> or <el>set</el>
 and is not styling element type <el>style</el>,
 then for each <loc href="#semantics-style-property">style property</loc> <emph>P</emph> interned (instantiated) from a 
-<loc href="#terms-styling-attribute">styling attribute</loc>, perform the following ordered sub-steps:</p>
+<loc href="#terms-styling-attribute">styling attribute</loc>, perform the following:</p>
 <olist>
 <!-- (a) -->
 <item>
@@ -17021,8 +17022,7 @@ element defines the initial value for <emph>P</emph>, then use that value;</p></
 <head>Computed Style Set Processing</head>
 <p>The computed style set <emph>CSS</emph> of an element or
 <loc href="#terms-anonymous-span">anonymous span</loc> <emph>E</emph>,
-<emph>CSS(E)</emph>, is determined according to the following ordered
-rules:</p>
+<emph>CSS(E)</emph>, is determined according to the following:</p>
 <olist>
 <item><p><phrase role="strong">[resolve specified styles]</phrase>
 determine (obtain) the specified style set <emph>SSS</emph> of
@@ -17039,8 +17039,7 @@ further resolution; otherwise, continue with the next rule;</p></item>
 <item>
 <p><phrase role="strong">[relative value resolution]</phrase> for each
 <loc href="#semantics-style-property">style property</loc> <emph>P</emph> in <emph>CSS(E)</emph>, where the value
-type of <emph>P</emph> is relative, perform the following ordered
-sub-steps:</p>
+type of <emph>P</emph> is relative, perform the following:</p>
 <olist>
 <item><p>if possible, replace the relative value of <emph>P</emph> with an
 equivalent, non-relative (computed) value;</p></item>
@@ -17070,8 +17069,7 @@ when resolution cannot occur until layout or presentation time, further resoluti
 <p>The top-level style resolution process is defined as follows: using
 a preorder traversal of each element and <loc href="#terms-anonymous-span">anonymous span</loc>,
 <emph>E</emph>, of an intermediate synchronic document,
-<emph>DOC<sub>inter</sub></emph>&thinsp;, perform the following ordered
-sub-steps:</p>
+<emph>DOC<sub>inter</sub></emph>&thinsp;, perform the following:</p>
 <olist>
 <item><p><phrase role="strong">[filter]</phrase> if <emph>E</emph>
 is not one of the following, then continue to the next element in the preorder traversal, i.e.,
@@ -17580,7 +17578,7 @@ if a <loc href="#terms-content-element">content element</loc> specifies a <loc h
 <p></p>
 <p>For each <loc href="#terms-content-element">content element</loc> <emph>B</emph>
 in the <loc href="#element-vocab-group-block">Block.class</loc> element group,
-perform the following ordered steps:</p>
+perform the following:</p>
 <olist>
 <item>
 <p>if the <code>[attributes]</code> information item property of <emph>B</emph> contains a
@@ -17765,7 +17763,7 @@ where each such interval consists of a sequential pair of the time coordinates <
 that is, <code>(T<sub>0</sub>,T<sub>1</sub>)</code>, <code>(T<sub>1</sub>,T<sub>2</sub>)</code>, &hellip;, map the current
 <loc href="#terms-document-instance">document instance</loc> from its original, source form,
 <emph>DOC<sub>source</sub></emph>&thinsp;, to an intermediate synchronic document form, <emph>DOC<sub>inter</sub></emph>&thinsp;, according to the
-following ordered steps:</p>
+following:</p>
 <olist>
 <item>
 <p>invoke procedure <phrase role="strong"><loc href="#procedure-process-inline-regions">[process inline regions]</loc></phrase>;</p>
@@ -17817,7 +17815,7 @@ more about which see step (2) of the <loc href="#procedure-flow-transformation">
 <def>
 <p></p>
 <p>A <loc href="#terms-content-element">content element</loc> is associated with a region according
-to the following ordered rules, where the first rule satisfied
+to the following, where the first rule satisfied
 is used and remaining rules are skipped:</p>
 <olist>
 <item><p>if the element specifies a <loc
@@ -17977,7 +17975,7 @@ reference to the related <loc href="#terms-image-resource">image resource</loc>;
 <item>
 <p>for the resulting <el>fo:block</el> formatting object
 produced in the previous step that corresponds to the <el>body</el>
-element, invoke the following ordered sub-steps:</p>
+element, invoke the following:</p>
 <olist>
 <item>
 <p>if the <att>display-align</att> style property of this <el>fo:block</el>
@@ -24892,7 +24890,7 @@ express minimum compliance for transformation processing.</p>
 <p>The following sub-sections specify how these aspect ratios are resolved according to which (ratios) are specified in a document.</p>
 <div3 id="root-container-region-semantics-0-aspect-ratio">
 <head>No Aspect Ratio</head>
-<p>If none of the three aspect ratios is specified, then the three aspect ratios are determined according to the following ordered steps:</p>
+<p>If none of the three aspect ratios is specified, then the three aspect ratios are determined according to the following:</p>
 <olist>
 <item><p>if a <loc href="#terms-related-media-object">related media object</loc> exists and has a defined <code>DAR</code>,
 then the resolved value of <code>DAR</code> is the display aspect ratio of the <loc href="#terms-related-media-object">related media object</loc>;

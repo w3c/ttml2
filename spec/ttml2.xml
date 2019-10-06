@@ -2946,7 +2946,7 @@ default XMLNS binding on the <el>profile</el> element to the TT Parameter Namesp
 <div3 id="vocabulary-profile-designators">
 <head>Profile Designators</head>
 <p>A profile is referenced in one of two ways according to whether the profile is defined externally to the referring document or
-is defined inline within the referring document. When defined externally, a profile is referenced by means of an
+is defined internally (inline) within the referring document. When defined externally, a profile is referenced by means of an
 <loc href="#content-value-absolute-profile-designator">&lt;absolute-profile-designator&gt;</loc> or
 <loc href="#content-value-relative-profile-designator">&lt;relative-profile-designator&gt;</loc> expression.
 When defined internally (inline), a profile is referenced either implicitly
@@ -3125,6 +3125,13 @@ denoting a profile that serves as the baseline profile for this profile.</p>
 <p>If profile is a <loc href="#terms-nesting-profile">nesting profile</loc>, then an ordered list of
 <loc href="#content-value-fragment-profile-designator">&lt;fragment-profile-designator&gt;</loc> expressions, where each designator denotes a
 constituent <loc href="#terms-nested-profile">nested profile</loc>; otherwise, <code>null</code>.</p>
+<note role="explanation">
+<p>If a <loc href="#terms-nested-profile">nested profile</loc> specifies
+an <loc href="#content-attribute-xml-id"><att>xml:id</att></loc> attribute, then that identifer may be used in
+the <loc href="#semantics-profile-state-profile-constituents">constituents</loc>
+<loc href="#terms-component">component</loc>; otherwise, the <loc href="#terms-processor">processor</loc> implementation is expected to
+use an internally synthesized identifier.</p>
+</note>
 </def>
 </gitem>
 <gitem id="semantics-profile-state-profile-specifications">
@@ -3502,7 +3509,7 @@ of these associated schemas based upon the requirements of the <loc href="#terms
 </olist>
 <note role="elaboration">
 <p>The determination of what constitutes an <emph>appropriate</emph> set of schemas is not formally defined by this specification; nevertheless,
-it is expected that the selection process will make use of (1) the types of schemas available to and supported by the implementation and
+it is expected that the selection process will make use of (1) the types of schemas available to and supported by the <loc href="#terms-processor">processor</loc> implementation and
 (2) as a heuristic, the maximum version number associated with a required or optional feature as determined by the
 <loc href="#terms-effective-validation-profile">effective validation profile</loc>.</p>
 </note>
@@ -6946,7 +6953,7 @@ parenthesis &apos;<code>(</code>&apos; character of the following <loc href="#co
 </div3>
 <div3 id="content-value-fragment-profile-designator">
 <head>&lt;fragment-profile-designator&gt;</head>
-<p>A &lt;fragment-profile-designator&gt; value expression is used to designate a local profile by reference.</p>
+<p>A &lt;fragment-profile-designator&gt; value expression is used to designate a local, i.e., an internally defined (inlined), profile by reference.</p>
 <table id="fragment-profile-designator-value-expression-syntax" role="syntax">
 <caption>Syntax Representation &ndash; &lt;fragment-profile-designator&gt;</caption>
 <tbody>
@@ -7028,6 +7035,9 @@ or for the purpose of referencing a defined profile.</p>
 </tr>
 </tbody>
 </table>
+<p>If a &lt;profile-designator&gt; takes the form of a <loc href="#content-value-fragment-profile-designator">&lt;fragment-profile-designator&gt;</loc>,
+then it must refer to a <loc href="#terms-top-level-profile">top-level profile</loc>, which is to say, it must not refer to a
+<loc href="#terms-nested-profile">nested profile</loc>.</p>
 </div3>
 <div3 id="content-value-parameter-function">
 <head>&lt;parameter-function&gt;</head>
@@ -17855,7 +17865,7 @@ then the element is associated with the default region;</p></item>
 adjacent synchronic <loc href="#terms-document-instance">document instances</loc>,
 <emph>DOC<sub><phrase>inter<sub>N</sub></phrase></sub></emph>
 <emph>DOC<sub><phrase>inter<sub>N&minus;1</sub></phrase></sub></emph>&thinsp;,
-then the implementation can apply processing to make the transition between
+then the <loc href="#terms-processor">processor</loc> implementation can apply processing to make the transition between
 presenting the two instances as smooth as possible, e.g., as described
 by <bibref ref="cta608e"/>, &sect;C.3, and <bibref ref="ccreq"/>.</p>
 </note>
@@ -20115,7 +20125,7 @@ feature means supporting its use with any <loc href="#style-value-length">&lt;le
 be prohibited.</p>
 </note>
 <note role="interoperability">
-<p>If an implementation of a TTML processor does not support the semantics of some feature and the
+<p>If a <loc href="#terms-processor">processor</loc> implementation does not support the semantics of some feature and the
 syntactic expression of that feature is known to the implementation, then it is recommended that the
 implementation be able to parse the expression but ignore the semantics of the unsupported <loc href="#terms-component">components</loc> of the expression.</p>
 <p>For example, if <loc href="#feature-textEmphasis-minimal"><code>#textEmphasis-minimal</code></loc> is

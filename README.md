@@ -16,7 +16,7 @@ This branch was automatically built by Travis CI. <b>DO NOT EDIT</b>.
  Pull request: [#1179](https://github.com/w3c/ttml2/pull/1179)
 
 
- Commit: [ee9c43f4b62b643d74b9c023d2841a53839a14f6](https://github.com/w3c/ttml2/commit/ee9c43f4b62b643d74b9c023d2841a53839a14f6)
+ Commit: [4453b9dd2acfb057781b14ae20e09ff90fd0f91b](https://github.com/w3c/ttml2/commit/4453b9dd2acfb057781b14ae20e09ff90fd0f91b)
 
 Pull request specification can be previewed at https://rawgit.com/w3c/ttml2/issue-1139-anonymous-span-build/index.html
 

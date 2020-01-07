@@ -547,7 +547,7 @@ width: 100%;
       </xsl:when>
       <xsl:otherwise>
         <p class="copyright">
-          <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
+          <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
             <xsl:text>Copyright</xsl:text>
           </a>
           <xsl:text>&#xa0;&#xa9;&#xa0;</xsl:text>

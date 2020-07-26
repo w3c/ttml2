@@ -16,7 +16,7 @@ This branch was automatically built by Travis CI. <b>DO NOT EDIT</b>.
  Pull request: [#1207](https://github.com/w3c/ttml2/pull/1207)
 
 
- Commit: [21e49933e99f178edfdfc9ddbebffcadbe9652c9](https://github.com/w3c/ttml2/commit/21e49933e99f178edfdfc9ddbebffcadbe9652c9)
+ Commit: [bd4014005a2172325a213b2b917eb0628b7bf7c1](https://github.com/w3c/ttml2/commit/bd4014005a2172325a213b2b917eb0628b7bf7c1)
 
 Pull request specification can be previewed at https://rawgit.com/w3c/ttml2/issue-1204-positioning-example-build/index.html
 

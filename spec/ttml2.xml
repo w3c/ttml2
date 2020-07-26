@@ -228,8 +228,15 @@ display by a user agent.</p>
 </table>
 <p></p>
 </div2> <!-- model -->
-<div2 id="example">
-<head>Document Example</head>
+<div2 id="examples">
+<head>Document Examples</head>
+<p>The following sections describe simple examples of a TTML <loc href="#terms-document-instance">document instance</loc>:</p>
+<ulist>
+<item><p><specref ref="single-region-example"/></p></item>
+<item><p><specref ref="multiple-region-example"/></p></item>
+</ulist>
+<div3 id="single-region-example">
+<head>Single Region Example</head>
 <p>A TTML <loc href="#terms-document-instance">document instance</loc> consists of a <el>tt</el> document element that contains
 a header and a body, where the header specifies document level metadata, styling
 definitions and layout definitions, and the body specifies text content intermixed
@@ -302,7 +309,7 @@ are defined, with one set serving as a collection of default styles.</p>
 </tbody>
 </table>
 <p>Layout information defines one or more regions into which content
-is intended to be presented. A region definition may reference one or
+is intended to be presented &mdash; here we define a single region. A region definition may reference one or
 more sets of style specifications in order to permit content flowed in the
 region to inherit from these styles.
 In <specref ref="ttml-example-layout"/>, the region definition makes
@@ -427,6 +434,20 @@ the intended meaning. For instance, this example could be written to use
 timing on <el>span</el> elements in order to preserve the integrity of
 semantic paragraphs.</p>
 </note>
+<note role="elaboration">
+<p>In this example, the <att>region</att> attribute is
+specified on the <el>body</el> element.
+The presentational effect would be the same if it were specified on the <el>div</el>
+element instead, or indeed on each individual <el>p</el> element. In typical usage
+the <att>region</att> would be specified at an appropriate part of the document
+hierarchy to allow for ease of expression while limiting verbosity.</p>
+<p>Note also that one effect of placing <att>region</att> on <el>body</el>
+is to prevent any descendant element from being presented in a <emph>different</emph>
+region. This is because any such descendant would be pruned from presentation,
+as a consequence of the 
+<loc href="#procedure-construct-intermediate-document"><phrase role="strong">[construct intermediate document]</phrase></loc>
+procedure.</p>
+</note>
 <table id="ttml-example-subtitle-1" role="example-images">
 <caption>Subtitle 1 &ndash; Time Interval [0.76, 3.45)</caption>
 <tbody>
@@ -523,12 +544,124 @@ elements as they appear in the content hierarchy.</p>
 </tr>
 </tbody>
 </table>
+</div3> <!-- single-region-example -->
+<div3 id="multiple-region-example">
+<head>Multiple Region Example</head>
+<p>The above example demonstrates the temporal and lexical flow of content
+into a single region.
+This concept can be extended to multiple regions,
+with different parts of the content flowed into each region
+at independent times.
+For example, in <specref ref="ttml-example-complex-layout"/>, there are two
+subtitle paragraphs, each positioned in a different region. The second one
+becomes visible before the first one is removed from view,
+and remains visible afterwards, so that there
+are progressively one, two, and then one subtitle(s) visible.</p>
+<table id="ttml-example-complex-layout" role="example">
+<caption>Example Document &ndash; TTML Layout in Multiple Regions</caption>
+<tbody>
+<tr>
+<td>
+<eg xml:space="preserve">
+&lt;tt xml:lang="en" xmlns="http://www.w3.org/ns/ttml"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+  &lt;head&gt;
+    &lt;styling xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+      &lt;style xml:id="pStyle"
+        tts:backgroundColor="cyan"
+        tts:textAlign="center"
+        tts:fontSize="6.7rh"/&gt;
+      &lt;style xml:id="spanStyle"
+        tts:color="white"
+        tts:backgroundColor="black"
+        tts:fontFamily="proportionalSansSerif"/&gt;
+    &lt;/styling&gt;
+    &lt;layout xmlns:tts="http://www.w3.org/ns/ttml#styling"&gt;
+      &lt;region xml:id="topCenterArea"
+        tts:position="center top 10% "
+        tts:extent="80% 20%"
+        tts:displayAlign="before"
+        tts:backgroundColor="purple"
+        tts:showBackground="whenActive"/&gt;
+      &lt;region xml:id="bottomLeftArea"
+        tts:position="left 10% bottom 10% "
+        tts:extent="60% 20%"
+        tts:displayAlign="after"
+        tts:backgroundColor="green"
+        tts:showBackground="whenActive"/&gt;
+    &lt;/layout&gt;  
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;p xml:id="subtitle1" begin="00:00:00.500" end="00:00:01.500"
+         region="topCenterArea" style="pStyle"&gt;
+        &lt;span style="spanStyle"&gt;I shall ask our Physiological Lecturer why&lt;br/&gt;
+        he never gave us that exquisite Theory!&lt;/span&gt;
+      &lt;/p&gt;
+      &lt;p xml:id="subtitle2" begin="00:00:01" end="00:00:02"
+         region="bottomLeftArea" style="pStyle"&gt;
+        &lt;span style="spanStyle"&gt;I&apos;d give something to be present&lt;br/&gt;
+        when the question is asked!&lt;/span&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;    
+  &lt;/body&gt;
+&lt;/tt&gt;
+</eg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This example contains two subtitles that overlap in time.
+It produces three distinct intervals between 0.5s and 2s.
+In the document, times are expressed in the hh:mm:ss format.
+Each region and paragraph is specified to have a larger size than its contents,
+and is shown with a contrasting background color
+so that its position and the position of its descendants are more clearly visible.
+The top region is purple, the bottom one green.
+Each p is cyan and each span is black with white text.
+</p>
+<table id="ttml-example-complex-layout-1" role="example-images">
+<caption>Subtitle 1 &ndash; Time Interval [0.5, 1.0)</caption>
+<tbody>
+<tr>
+<td><graphic source="images/example-complex-layout_0.5.png" alt="Complex Layout Subtitle 1" css="width: 790px;"/></td>
+</tr>
+</tbody>
+</table>
+<p>In the first interval, 0.5 to 1.0 seconds, two lines are presented,
+aligned to the before edge of the top center region.
+The unoccupied part of the region is therefore visible as purple color <emph>beneath</emph> the text.
+Likewise, the unoccupied part of the p element is visible as cyan color
+around the black background showing the space occupied by the span element.</p>
+<table id="ttml-example-complex-layout-2" role="example-images">
+<caption>Subtitles 1 and 2 &ndash; Time Interval [1.0, 1.5)</caption>
+<tbody>
+<tr>
+<td><graphic source="images/example-complex-layout_1.png" alt="Complex Layout Subtitle 2" css="width: 790px;"/></td>
+</tr>
+</tbody>
+</table>
+<p>In the second interval, 1.0 to 1.5 seconds, the first subtitle remains visible,
+and a second subtitle consisting of two lines is presented in the bottom left region.
+The new text is aligned to the after edge of its region,
+so the unoccupied part of the region is visible as green color <emph>above</emph> the text.</p>
+<table id="ttml-example-complex-layout-3" role="example-images">
+<caption>Subtitle 2 &ndash; Time Interval [1.0, 1.5)</caption>
+<tbody>
+<tr>
+<td><graphic source="images/example-complex-layout_1.5.png" alt="Complex Layout Subtitle 3" css="width: 790px;"/></td>
+</tr>
+</tbody>
+</table>
+<p>In the third interval, 1.5 to 2.0 seconds, the first subtitle is no longer
+presented.</p>
 <p>The examples shown above demonstrate the primary types of information that may
 be authored using TTML: metadata, styling, layout, timing, and content. In typical cases,
 styling and layout information are separately specified in a <loc href="#terms-document-instance">document instance</loc>. Content information
 is expressed in a hierarchical fashion that embodies the organization of both spatial (flow) and
 timing information. Content makes direct or indirect references to styling and layout information
 and may specify inline overrides to styling.</p>
+</div3> <!-- multiple-region-example -->
 </div2> <!-- example -->
 </div1> <!-- intro -->
 <div1 id="definitions">

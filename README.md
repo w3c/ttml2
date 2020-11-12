@@ -16,7 +16,7 @@ This branch was automatically built by Travis CI. <b>DO NOT EDIT</b>.
  Pull request: [#1214](https://github.com/w3c/ttml2/pull/1214)
 
 
- Commit: [ceb3a3f985aa18938c49c07cbd65c019fe87c823](https://github.com/w3c/ttml2/commit/ceb3a3f985aa18938c49c07cbd65c019fe87c823)
+ Commit: [18e8bf0ca7552d4ccc9774670372bb87aaac012a](https://github.com/w3c/ttml2/commit/18e8bf0ca7552d4ccc9774670372bb87aaac012a)
 
 Pull request specification can be previewed at https://rawgit.com/w3c/ttml2/issues/1213-applicability-of-direction-on-p-build/index.html
 

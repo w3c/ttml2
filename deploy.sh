@@ -10,19 +10,19 @@ echo "[TRACE] TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 SOURCE_BRANCH="$TRAVIS_PULL_REQUEST_BRANCH"
 TARGET_BRANCH="$TRAVIS_PULL_REQUEST_BRANCH-build"
 
-if [ "$TRAVIS_PULL_REQUEST" != "false" -a "$TRAVIS_PULL_REQUEST_BRANCH" = "master" ]; then
-   echo "[ERROR] We're in a pull request but we're in the master branch?!?!"
+if [ "$TRAVIS_PULL_REQUEST" != "false" -a "$TRAVIS_PULL_REQUEST_BRANCH" = "main" ]; then
+   echo "[ERROR] We're in a pull request but we're in the main branch?!?!"
    echo " This shouldn't happen..."
    exit 1
 fi
 
-if [ "$TRAVIS_PULL_REQUEST" = "false"  -a "$TRAVIS_BRANCH" = "master" ]; then
-  SOURCE_BRANCH="master"
+if [ "$TRAVIS_PULL_REQUEST" = "false"  -a "$TRAVIS_BRANCH" = "main" ]; then
+  SOURCE_BRANCH="main"
   TARGET_BRANCH="gh-pages"
 fi  
   
-if [ "$TRAVIS_PULL_REQUEST" = "false"  -a "$TRAVIS_BRANCH" != "master" ]; then
-   echo "[ABORT] We're in a push build (not in master nor in a pull request), so exiting. "
+if [ "$TRAVIS_PULL_REQUEST" = "false"  -a "$TRAVIS_BRANCH" != "main" ]; then
+   echo "[ABORT] We're in a push build (not in main nor in a pull request), so exiting. "
    exit 0
 fi
 

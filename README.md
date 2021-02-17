@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/w3c/ttml2.svg?branch=master)](https://travis-ci.com/w3c/ttml2)
+[![Build Status](https://travis-ci.com/w3c/ttml2.svg?branch=main)](https://travis-ci.com/w3c/ttml2)
 
 # Timed Text Markup Language 2 (TTML2) Specification
 

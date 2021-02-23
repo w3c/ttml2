@@ -526,6 +526,7 @@ width: 100%;
       <xsl:apply-templates select="latestloc"/>
       <xsl:apply-templates select="latestrec"/>
       <xsl:apply-templates select="prevlocs"/>
+      <xsl:apply-templates select="implreport"/>
       <xsl:apply-templates select="authlist"/>
     </dl>
 
@@ -599,6 +600,31 @@ width: 100%;
     </xsl:when>
     <xsl:otherwise>
       <dt>Latest editor's draft:</dt>
+      <dd>
+        <xsl:apply-templates/>
+      </dd>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- implreport: implementation report for this spec -->
+<!-- called in a <dl> context from header -->
+<xsl:template match="implreport">
+  <xsl:choose>
+    <xsl:when test="count(loc) &gt; 1">
+      <xsl:for-each select="loc">
+        <dt>
+          <xsl:apply-templates select="node()"/>
+        </dt>
+        <dd>
+          <a href="{@href}">
+            <xsl:value-of select="@href"/>
+          </a>
+        </dd>
+      </xsl:for-each>
+    </xsl:when>
+    <xsl:otherwise>
+      <dt>Implementation report:</dt>
       <dd>
         <xsl:apply-templates/>
       </dd>

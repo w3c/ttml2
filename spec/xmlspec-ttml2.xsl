@@ -478,12 +478,6 @@ width: 100%;
     </xsl:if>
     <xsl:text>&#10;</xsl:text>
     <h1>
-      <xsl:call-template name="anchor">
-        <xsl:with-param name="node" select="title[1]"/>
-        <xsl:with-param name="conditional" select="0"/>
-        <xsl:with-param name="default.id" select="'title'"/>
-      </xsl:call-template>
-
       <xsl:apply-templates select="title"/>
       <xsl:if test="version">
         <xsl:text> </xsl:text>

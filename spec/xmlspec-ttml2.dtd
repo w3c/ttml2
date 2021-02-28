@@ -14,7 +14,7 @@ PURPOSE:
 <!-- parameter entity overrides -->
 <!ENTITY % header.mdl
         "title, subtitle?, version?, w3c-designation, w3c-doctype,
-        pubdate, notice*, publoc, altlocs?, latestedloc?, latestloc?, latestrec?, prevlocs?,
+        pubdate, notice*, publoc, altlocs?, latestedloc?, implreploc?, ghrepoloc?, latestloc?, latestrec?, prevlocs?,
         authlist+, errataloc?, preverrataloc?,
         translationloc?, copyright?,
         ((status, abstract) | (abstract, status)), pubstmt?,
@@ -83,6 +83,42 @@ PURPOSE:
 <!ENTITY % latestedloc.attlist "INCLUDE">
 <![%latestedloc.attlist;[
 <!ATTLIST latestedloc %common.att;>
+]]>
+
+<!-- new elements -->
+<!ENTITY % implreploc.element "INCLUDE">
+<![%implreploc.element;[
+<!ELEMENT implreploc (loc+)>
+]]>
+<!ENTITY % implreploc.attlist "INCLUDE">
+<![%implreploc.attlist;[
+<!ATTLIST implreploc %common.att;>
+]]>
+
+<!ENTITY % ghloc-req.att
+        'repo                   CDATA           #REQUIRED 
+         branch                 CDATA           #REQUIRED '>
+<!ENTITY % ghloc.element "INCLUDE">
+<![%ghloc.element;[
+<!ELEMENT ghloc (#PCDATA|phrase)*>
+]]>
+<!ENTITY % ghloc.attlist "INCLUDE">
+<![%ghloc.attlist;[
+<!ATTLIST ghloc
+        %common.att;
+        %simple-xlink.att;
+        %ghloc-req.att;
+        %user-replace.att;>
+]]>
+
+<!-- new elements -->
+<!ENTITY % ghrepoloc.element "INCLUDE">
+<![%ghrepoloc.element;[
+<!ELEMENT ghrepoloc (ghloc+)>
+]]>
+<!ENTITY % ghrepoloc.attlist "INCLUDE">
+<![%ghrepoloc.attlist;[
+<!ATTLIST ghrepoloc %common.att;>
 ]]>
 
 <!ENTITY % latestrec.element "INCLUDE">

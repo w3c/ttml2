@@ -67,7 +67,7 @@
 	  </dl>
 	</div>
       </xsl:if>
-      <p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to top">↑</abbr></a></p>
+      <p role="navigation" id="back-to-top"><a href="#title"><abbr title="Back to top">↑</abbr></a></p>
       <script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
     </body>
   </html>

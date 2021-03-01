@@ -477,7 +477,7 @@ width: 100%;
       </p>
     </xsl:if>
     <xsl:text>&#10;</xsl:text>
-    <h1>
+    <h1 id="title">
       <xsl:apply-templates select="title"/>
       <xsl:if test="version">
         <xsl:text> </xsl:text>

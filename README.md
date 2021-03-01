@@ -16,7 +16,7 @@ This branch was automatically built by Travis CI. <b>DO NOT EDIT</b>.
  Pull request: [#1222](https://github.com/w3c/ttml2/pull/1222)
 
 
- Commit: [4a6a4ec784958e81686490d42b54c07de5f0fad4](https://github.com/w3c/ttml2/commit/4a6a4ec784958e81686490d42b54c07de5f0fad4)
+ Commit: [e420a853bd82a623c3b2c46308fdd7af8365fc6b](https://github.com/w3c/ttml2/commit/e420a853bd82a623c3b2c46308fdd7af8365fc6b)
 
 Pull request specification can be previewed at https://rawgit.com/w3c/ttml2/issue-1220-cr2-publishing-package-build/index.html
 

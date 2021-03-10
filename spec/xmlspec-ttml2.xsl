@@ -67,7 +67,7 @@
 	  </dl>
 	</div>
       </xsl:if>
-      <p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to top">↑</abbr></a></p>
+      <p role="navigation" id="back-to-top"><a href="#title"><abbr title="Back to top">↑</abbr></a></p>
       <script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
     </body>
   </html>
@@ -477,13 +477,7 @@ width: 100%;
       </p>
     </xsl:if>
     <xsl:text>&#10;</xsl:text>
-    <h1>
-      <xsl:call-template name="anchor">
-        <xsl:with-param name="node" select="title[1]"/>
-        <xsl:with-param name="conditional" select="0"/>
-        <xsl:with-param name="default.id" select="'title'"/>
-      </xsl:call-template>
-
+    <h1 id="title">
       <xsl:apply-templates select="title"/>
       <xsl:if test="version">
         <xsl:text> </xsl:text>
@@ -532,7 +526,9 @@ width: 100%;
       <xsl:apply-templates select="latestloc"/>
       <xsl:apply-templates select="latestrec"/>
       <xsl:apply-templates select="prevlocs"/>
+      <xsl:apply-templates select="implreploc"/>
       <xsl:apply-templates select="authlist"/>
+      <xsl:apply-templates select="ghrepoloc"/>
     </dl>
 
     <!-- output the errataloc and altlocs -->
@@ -610,6 +606,44 @@ width: 100%;
       </dd>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<!-- implreploc: implementation report for this spec -->
+<!-- called in a <dl> context from header -->
+<xsl:template match="implreploc">
+  <xsl:choose>
+    <xsl:when test="count(loc) &gt; 1">
+      <xsl:for-each select="loc">
+        <dt>
+          <xsl:apply-templates select="node()"/>
+        </dt>
+        <dd>
+          <a href="{@href}">
+            <xsl:value-of select="@href"/>
+          </a>
+        </dd>
+      </xsl:for-each>
+    </xsl:when>
+    <xsl:otherwise>
+      <dt>Implementation report:</dt>
+      <dd>
+        <xsl:apply-templates/>
+      </dd>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- ghrepoloc: participate section -->
+<!-- called in a <dl> content from header -->
+<xsl:template match="ghrepoloc">
+  <xsl:apply-templates/>
+</xsl:template>
+<xsl:template match="ghloc">
+  <dt>Participate:</dt>
+  <dd><a href="https://github.com/{@repo}/">GitHub <xsl:value-of select="@repo"/></a></dd>
+  <dd><a href="https://github.com/{@repo}/issues/">File a bug</a></dd>
+  <dd><a href="https://github.com/{@repo}/commits/{@branch}">Commit history</a></dd>
+  <dd><a href="https://github.com/{@repo}/pulls/">Pull requests</a></dd>
 </xsl:template>
 
 <!-- latestrec: latest location for this spec -->

@@ -641,7 +641,8 @@ width: 100%;
 <xsl:template match="ghloc">
   <dt>Participate:</dt>
   <dd><a href="https://github.com/{@repo}/">GitHub <xsl:value-of select="@repo"/></a></dd>
-  <dd><a href="https://github.com/{@repo}/issues/">File a bug</a></dd>
+  <dd><a href="https://github.com/{@repo}/issues/new">File a bug</a>
+     (<a href="https://github.com/{@repo}/issues/">open bugs</a>)</dd>
   <dd><a href="https://github.com/{@repo}/commits/{@branch}">Commit history</a></dd>
   <dd><a href="https://github.com/{@repo}/pulls/">Pull requests</a></dd>
 </xsl:template>

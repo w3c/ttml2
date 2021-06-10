@@ -29544,17 +29544,24 @@ The fetching of such resources as well as fetching the concrete representation o
 is under full control of the <loc href="#terms-content-processor">content processor</loc>. As such,
 any controls designed to allow or restrict access to such resources are also outside the scope of this specification.</p>
 <p> When fetching external resources, content processors should determine if performing
-  <phrase role="strong">create a potential-CORS request</phrase> as defined 
-  in <bibref ref="html"/> &sect;2.6, <emph>Fetching resources</emph>, is needed.</p>
+<phrase role="strong">create a potential-CORS request</phrase> as defined 
+in <bibref ref="html"/> &sect;2.6, <emph>Fetching resources</emph>, is needed.</p>
 <p>If the fetching of such resources is prevented by the <loc href="#terms-content-processor">content processor</loc>,
 then the entire document or portions of the document may not be processed as intended, and, therefore, some or all of a document&apos;s
 content may not be available for presentation processing.</p>
-<p>A <loc href="#terms-content-processor">content processor</loc> that downloads external resources during media playback indicates to the origin server of the resource the progress of the user&apos;s 
-  media consumption. In many cases such media progress information is available to the origin server of the media via other mechanisms, for example 
-  by scripting or by monitoring streaming media requests.</p>
+<p>A <loc href="#terms-content-processor">content processor</loc> that downloads external resources during media playback
+indicates to the origin server of the resource the progress of the user&apos;s 
+media consumption.
+In many cases such media progress information is available to the origin server of the media via other mechanisms,
+for example by scripting or by monitoring streaming media requests.
+The time when such requests are made can also increase the fingerprinting surface.
+For example, if the <loc href="#parameter-attribute-timeBase"><att>ttp:timeBase</att></loc> is set to <code>clock</code>,
+any skew in the user's local clock could be observable by the origin server.
+Additionally, if the <loc href="#parameter-attribute-clockMode"><att>clockMode</att></loc> is set to <code>local</code>,
+the user's local time zone could be revealed.</p>
 <p><loc href="#terms-content-processor">Content processors</loc> that do not enforce cross origin policies when downloading external resources expose such media progress information and potentially 
-  other user tracking information to other origins without the consent of the web site serving the media and without the consent of the user. This 
-  specification defines no APIs and makes no statement on how implementations are expected to obtain referenced resources.</p>
+other user tracking information to other origins without the consent of the web site serving the media and without the consent of the user. This 
+specification defines no APIs and makes no statement on how implementations are expected to obtain referenced resources.</p>
 </div2>
 <div2>
 <head>Caching of Resources or Processing State</head>
@@ -29579,6 +29586,16 @@ may take into account certain processing state, including a user language prefer
 whether forced captions are enabled or not, and whether a media query expression is satisfied or not.
 However, direct access to this state is not provided to TTML content; rather the <loc href="#terms-content-processor">content processor</loc>
 accesses this state and make a binary (yes or no) determination of whether a condition is satisfied or not.</p>
+<p>If use of the <loc href="#content-attribute-condition">condition</loc> mechanism controls the selection
+of external resources, and the conditions depend on user preferences or device attributes,
+the origin could observe which resources are requested,
+and deduce those user preferences or device attributes,
+thereby increasing the fingerprinting surface .</p>
+<p>The media queries supported in this specification are defined by reference to <bibref ref="media-queries"/>.
+If additional media queries are added to a future version of that specification,
+and are implemented in a <loc href="#terms-content-processor">content processor</loc>,
+then any additional fingerprinting surface exposed by such additional queries should be noted
+by content providers and implementers.</p>
 </div2>
 <div2>
 <head>Hyperlinking Mechanisms</head>

@@ -16,7 +16,7 @@ This branch was automatically built by Travis CI. <b>DO NOT EDIT</b>.
  Pull request: [#1233](https://github.com/w3c/ttml2/pull/1233)
 
 
- Commit: [20edb57481e1a729d333afdf8230aaf4869e36c2](https://github.com/w3c/ttml2/commit/20edb57481e1a729d333afdf8230aaf4869e36c2)
+ Commit: [46e3beac0a711b024937785fa2a8a873d09b72f1](https://github.com/w3c/ttml2/commit/46e3beac0a711b024937785fa2a8a873d09b72f1)
 
 Pull request specification can be previewed at https://rawgit.com/w3c/ttml2/issue-1232-clarify-isd-construction-build/index.html
 

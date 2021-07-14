@@ -1,0 +1,37 @@
+name: Build and deploy
+on: [ push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: set head as env
+        run: |
+          C_HEAD=$(echo ${{ github.ref }} | sed -e "s#refs/heads/##g")
+          echo "CURRENT=$C_HEAD" >> $GITHUB_ENV
+          echo ${{github.event.repository.master_branch}}
+      - name: set target output
+        if: env.CURRENT != github.event.repository.default_branch
+        run: echo "TARGET_BRANCH=${CURRENT}-build" >> $GITHUB_ENV
+      - name: set target as gh-pages for main
+        if: env.CURRENT == github.event.repository.default_branch
+        run: echo "TARGET_BRANCH=gh-pages" >> $GITHUB_ENV
+      - name: build with ant
+        working-directory: ./spec
+        run: ant build
+      - name: git push
+        working-directory: ./spec/build
+        run: |
+          cp -a ../../.git ./
+          git symbolic-ref HEAD refs/heads/${{ env.TARGET_BRANCH }}
+          git fetch origin ${{ env.TARGET_BRANCH }} && git reset origin/${{ env.TARGET_BRANCH }}
+          git config user.name "CI (${{ github.actor }})"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          git commit -m "Deploy ${{ env.TARGET_BRANCH }}: ${{ github.sha }}"
+          git push --set-upstream origin ${{ env.TARGET_BRANCH }}

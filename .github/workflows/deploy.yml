@@ -1,5 +1,11 @@
 name: Build and deploy
-on: [ push ]
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,16 +16,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: set head as env
-        run: |
-          C_HEAD=$(echo ${{ github.ref }} | sed -e "s#refs/heads/##g")
-          echo "CURRENT=$C_HEAD" >> $GITHUB_ENV
-          echo ${{github.event.repository.master_branch}}
       - name: set target output
-        if: env.CURRENT != github.event.repository.default_branch
-        run: echo "TARGET_BRANCH=${CURRENT}-build" >> $GITHUB_ENV
+        if: ${{ github.event_name == 'pull_request' }}
+        run: echo "TARGET_BRANCH=${{ github.event.pull_request.head.ref }}-build" >> $GITHUB_ENV
       - name: set target as gh-pages for main
-        if: env.CURRENT == github.event.repository.default_branch
+        if: ${{ github.event_name == 'push' }}
         run: echo "TARGET_BRANCH=gh-pages" >> $GITHUB_ENV
       - name: build with ant
         working-directory: ./spec
@@ -35,3 +36,15 @@ jobs:
           git add -A .
           git commit -m "Deploy ${{ env.TARGET_BRANCH }}: ${{ github.sha }}"
           git push --set-upstream origin ${{ env.TARGET_BRANCH }}
+      - name: push comment
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+              body: "Preview: ${{ github.server_url }}/${{ github.repository }}/tree/${{ env.TARGET_BRANCH }}"
+            })
+

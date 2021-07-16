@@ -30,6 +30,10 @@ jobs:
       - name: build with ant
         working-directory: ./spec
         run: ant build
+      - name: set target output
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: ./spec/build
+        run: wget -O diff.html "https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue)"
       - name: git push
         working-directory: ./spec/build
         run: |
@@ -50,6 +54,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ github.event.pull_request.number }},
-              body: "[Preview](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/index.html) | [diff](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue)"
+              body: "[Preview](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/index.html) | [diff](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/diff.html)"
             })
 

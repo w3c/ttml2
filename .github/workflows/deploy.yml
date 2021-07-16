@@ -18,7 +18,12 @@ jobs:
           distribution: 'adopt'
       - name: set target output
         if: ${{ github.event_name == 'pull_request' }}
-        run: echo "TARGET_BRANCH=${{ github.event.pull_request.head.ref }}-build" >> $GITHUB_ENV
+        run: |
+          echo "TARGET_BRANCH=${{ github.event.pull_request.head.ref }}-build" >> $GITHUB_ENV
+          GH_LINK="${{ github.server_url }}/${{ github.repository }}/blob/${{ github.event.pull_request.head.ref }}-build/"
+          GH_LINK="${GH_LINK//':'/'%3A'}"
+          GH_LINK="${GH_LINK//'/'/'%2F'}"
+          echo "GH_LINK=${GH_LINK}" >> $GITHUB_ENV
       - name: set target as gh-pages for main
         if: ${{ github.event_name == 'push' }}
         run: echo "TARGET_BRANCH=gh-pages" >> $GITHUB_ENV
@@ -45,6 +50,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ github.event.pull_request.number }},
-              body: "Preview: ${{ github.server_url }}/${{ github.repository }}/tree/${{ env.TARGET_BRANCH }}"
+              body: "[Preview](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/index.html) | [diff](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue)"
             })
 

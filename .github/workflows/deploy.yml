@@ -46,6 +46,7 @@ jobs:
         working-directory: ./spec/build
         run: wget -O diff.html "https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue"
       - name: push diff
+        if: ${{ github.event_name == 'pull_request' }}
         working-directory: ./spec/build
         run: |
           git add diff.html

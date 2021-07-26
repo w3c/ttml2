@@ -30,10 +30,6 @@ jobs:
       - name: build with ant
         working-directory: ./spec
         run: ant build
-      - name: set target output
-        if: ${{ github.event_name == 'pull_request' }}
-        working-directory: ./spec/build
-        run: wget -O diff.html "https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue)"
       - name: git push
         working-directory: ./spec/build
         run: |
@@ -45,6 +41,16 @@ jobs:
           git add -A .
           git commit -m "Deploy ${{ env.TARGET_BRANCH }}: ${{ github.sha }}"
           git push --set-upstream origin ${{ env.TARGET_BRANCH }}
+      - name: set target output
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: ./spec/build
+        run: wget -O diff.html "https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue"
+      - name: push diff
+        working-directory: ./spec/build
+        run: |
+          git add diff.html
+          git commit -m "Added diff: ${{ github.sha }}"
+          git push
       - name: push comment
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/github-script@v4

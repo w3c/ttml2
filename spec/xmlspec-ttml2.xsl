@@ -610,7 +610,10 @@ width: 100%;
 <xsl:template match="historyloc">
   <dt>History:</dt>
   <dd>
-    <a class="u-url" href="https://www.w3.org/standards/history/{@shortname}"><xsl:value-of select="@shortname"/></a>
+    <a class="u-url" href="https://www.w3.org/standards/history/{@shortname}">
+      <xsl:text>https://www.w3.org/standards/history/</xsl:text>
+      <xsl:value-of select="@shortname"/>
+    </a>
   </dd>
 </xsl:template>
 

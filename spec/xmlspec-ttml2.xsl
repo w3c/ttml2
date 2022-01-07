@@ -420,7 +420,7 @@ width: 100%;
   </style>
   <link rel="stylesheet" type="text/css">
     <xsl:attribute name="href">
-      <xsl:text>https://www.w3.org/StyleSheets/TR/2016/</xsl:text>
+      <xsl:text>https://www.w3.org/StyleSheets/TR/2021/</xsl:text>
       <xsl:choose>
         <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
         <xsl:otherwise>
@@ -451,6 +451,7 @@ width: 100%;
       <xsl:value-of select="/spec/@canonical-url"/>
     </xsl:attribute>
   </link>
+  <script src="//www.w3.org/scripts/TR/2021/fixup.js"></script>
 </xsl:template>
 
 <!-- header: metadata about the spec -->
@@ -459,7 +460,7 @@ width: 100%;
   <div class="head">
     <xsl:if test="not(/spec/@role='editors-copy')">
       <p>
-        <a href="https://www.w3.org/"><img height="48" width="72" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C"/></a>
+        <a href="https://www.w3.org/"><img height="48" width="72" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C"/></a>
         <xsl:choose>
           <xsl:when test="/spec/@w3c-doctype='memsub'">
             <a href='http://www.w3.org/Submission/'>
@@ -508,7 +509,10 @@ width: 100%;
           <xsl:text>Editor's Draft</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="w3c-doctype[1]"/>
+          <xsl:call-template name="w3cstatuslink">
+            <xsl:with-param name="status" select="w3c-ustatus" />
+            <xsl:with-param name="doctype" select="w3c-doctype[1]"/>
+          </xsl:call-template>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:text>, </xsl:text>
@@ -1448,6 +1452,10 @@ width: 100%;
   <a id="{@id}" title="{@term}">
     <xsl:apply-templates/>
   </a>
+</xsl:template>
+
+<xsl:template match="w3cstatuslink">
+  <a href="https://www.w3.org/standards/types#{@status}">{@doctype}</a>
 </xsl:template>
 
 </xsl:stylesheet>

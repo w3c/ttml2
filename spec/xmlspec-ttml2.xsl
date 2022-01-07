@@ -486,17 +486,17 @@ width: 100%;
     </h1>
     <xsl:if test="subtitle">
       <xsl:text>&#10;</xsl:text>
-      <h2>
+      <p id="w3c-state">
         <xsl:call-template name="anchor">
           <xsl:with-param name="node" select="subtitle[1]"/>
           <xsl:with-param name="conditional" select="0"/>
           <xsl:with-param name="default.id" select="'subtitle'"/>
         </xsl:call-template>
         <xsl:apply-templates select="subtitle"/>
-      </h2>
+      </p>
     </xsl:if>
     <xsl:text>&#10;</xsl:text>
-    <h2>
+    <p id="w3c-state">
       <xsl:call-template name="anchor">
         <xsl:with-param name="node" select="w3c-doctype[1]"/>
         <xsl:with-param name="conditional" select="0"/>
@@ -511,7 +511,7 @@ width: 100%;
           <xsl:value-of select="w3c-doctype[1]"/>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:text> </xsl:text>
+      <xsl:text>, </xsl:text>
       <xsl:if test="pubdate/day">
         <xsl:apply-templates select="pubdate/day"/>
         <xsl:text> </xsl:text>
@@ -519,7 +519,9 @@ width: 100%;
       <xsl:apply-templates select="pubdate/month"/>
       <xsl:text> </xsl:text>
       <xsl:apply-templates select="pubdate/year"/>
-    </h2>
+    </p>
+    <details open>
+    <summary><xsl:text>More details about this document</xsl:text></summary>
     <dl>
       <xsl:apply-templates select="publoc"/>
       <xsl:apply-templates select="latestedloc"/>
@@ -530,6 +532,7 @@ width: 100%;
       <xsl:apply-templates select="authlist"/>
       <xsl:apply-templates select="ghrepoloc"/>
     </dl>
+    </details>
 
     <!-- output the errataloc and altlocs -->
     <xsl:apply-templates select="errataloc"/>

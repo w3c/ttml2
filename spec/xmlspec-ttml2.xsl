@@ -509,10 +509,7 @@ width: 100%;
           <xsl:text>Editor's Draft</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:call-template name="w3cstatuslink">
-            <xsl:with-param name="status" select="w3c-ustatus" />
-            <xsl:with-param name="doctype" select="w3c-doctype[1]"/>
-          </xsl:call-template>
+          <xsl:apply-templates select="w3c-doctype" />
         </xsl:otherwise>
       </xsl:choose>
       <xsl:text>, </xsl:text>
@@ -1454,8 +1451,8 @@ width: 100%;
   </a>
 </xsl:template>
 
-<xsl:template match="w3cstatuslink">
-  <a href="https://www.w3.org/standards/types#{@status}">{@doctype}</a>
+<xsl:template match="w3c-doctype">
+  <a href="https://www.w3.org/standards/types#{@ustatus}">{@doctype}</a>
 </xsl:template>
 
 </xsl:stylesheet>

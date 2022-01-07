@@ -621,7 +621,7 @@ width: 100%;
 <xsl:template match="feedbackloc">
   <dt>Feedback:</dt>
   <dd>
-    <a class="u-url" href="https://github.com/w3c/{@ghrepo}/issues/">
+    <a class="u-url" href="https://github.com/{@ghrepo}/issues/">
       <xsl:text>GitHub</xsl:text>
     </a>
   </dd>

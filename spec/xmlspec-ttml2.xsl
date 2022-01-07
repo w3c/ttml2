@@ -498,12 +498,6 @@ width: 100%;
     </xsl:if>
     <xsl:text>&#10;</xsl:text>
     <p id="w3c-state">
-      <xsl:call-template name="anchor">
-        <xsl:with-param name="node" select="w3c-doctype[1]"/>
-        <xsl:with-param name="conditional" select="0"/>
-        <xsl:with-param name="default.id" select="'w3c-doctype'"/>
-      </xsl:call-template>
-
       <xsl:choose>
         <xsl:when test="/spec/@w3c-doctype = 'review'">
           <xsl:text>Editor's Draft</xsl:text>

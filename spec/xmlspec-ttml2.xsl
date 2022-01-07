@@ -523,6 +523,7 @@ width: 100%;
       <xsl:apply-templates select="latestloc"/>
       <xsl:apply-templates select="latestrec"/>
       <xsl:apply-templates select="prevlocs"/>
+      <xsl:apply-templates select="historyloc"/>
       <xsl:apply-templates select="implreploc"/>
       <xsl:apply-templates select="authlist"/>
       <xsl:apply-templates select="ghrepoloc"/>
@@ -604,6 +605,13 @@ width: 100%;
       </dd>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template match="historyloc">
+  <dt>History:</dt>
+  <dd>
+    <a class="u-url" href="https://www.w3.org/standards/history/{@shortname}"><xsl:value-of select="@shortname"/></a>
+  </dd>
 </xsl:template>
 
 <!-- implreploc: implementation report for this spec -->

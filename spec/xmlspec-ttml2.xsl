@@ -509,7 +509,7 @@ width: 100%;
           <xsl:text>Editor's Draft</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="w3c-doctype" />
+          <xsl:apply-templates select="w3c-doctype-link" />
         </xsl:otherwise>
       </xsl:choose>
       <xsl:text>, </xsl:text>
@@ -1451,7 +1451,7 @@ width: 100%;
   </a>
 </xsl:template>
 
-<xsl:template match="w3c-doctype">
+<xsl:template match="w3c-doctype-link">
   <a href="https://www.w3.org/standards/types#{@ustatus}">{@doctype}</a>
 </xsl:template>
 

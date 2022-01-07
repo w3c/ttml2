@@ -524,6 +524,7 @@ width: 100%;
       <xsl:apply-templates select="latestrec"/>
       <xsl:apply-templates select="prevlocs"/>
       <xsl:apply-templates select="historyloc"/>
+      <xsl:apply-templates select="feedbackloc"/>
       <xsl:apply-templates select="implreploc"/>
       <xsl:apply-templates select="authlist"/>
       <xsl:apply-templates select="ghrepoloc"/>
@@ -613,6 +614,15 @@ width: 100%;
     <a class="u-url" href="https://www.w3.org/standards/history/{@shortname}">
       <xsl:text>https://www.w3.org/standards/history/</xsl:text>
       <xsl:value-of select="@shortname"/>
+    </a>
+  </dd>
+</xsl:template>
+
+<xsl:template match="feedbackloc">
+  <dt>Feedback:</dt>
+  <dd>
+    <a class="u-url" href="https://github.com/w3c/{@ghrepo}/issues/">
+      <xsl:text>GitHub</xsl:text>
     </a>
   </dd>
 </xsl:template>

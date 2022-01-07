@@ -1452,7 +1452,7 @@ width: 100%;
 </xsl:template>
 
 <xsl:template match="w3c-doctype-link">
-  <a href="https://www.w3.org/standards/types#{@ustatus}">{@doctype}</a>
+  <a href="https://www.w3.org/standards/types#{@ustatus}"><xsl:value-of select="@doctype"/></a>
 </xsl:template>
 
 </xsl:stylesheet>

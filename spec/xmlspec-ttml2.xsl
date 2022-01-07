@@ -520,7 +520,7 @@ width: 100%;
       <xsl:text> </xsl:text>
       <xsl:apply-templates select="pubdate/year"/>
     </p>
-    <details open>
+    <details open="open">
     <summary><xsl:text>More details about this document</xsl:text></summary>
     <dl>
       <xsl:apply-templates select="publoc"/>

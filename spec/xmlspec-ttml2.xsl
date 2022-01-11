@@ -527,7 +527,6 @@ width: 100%;
       <xsl:apply-templates select="feedbackloc"/>
       <xsl:apply-templates select="implreploc"/>
       <xsl:apply-templates select="authlist"/>
-      <xsl:apply-templates select="ghrepoloc"/>
     </dl>
     </details>
 
@@ -625,6 +624,10 @@ width: 100%;
       <xsl:text>GitHub</xsl:text>
     </a>
   </dd>
+  <dd><a href="https://github.com/{@ghrepo}/issues/new">File a bug</a>
+     (<a href="https://github.com/{@ghrepo}/issues/">open bugs</a>)</dd>
+  <dd><a href="https://github.com/{@ghrepo}/commits/{@branch}">Commit history</a></dd>
+  <dd><a href="https://github.com/{@ghrepo}/pulls/">Pull requests</a></dd>
 </xsl:template>
 
 <!-- implreploc: implementation report for this spec -->

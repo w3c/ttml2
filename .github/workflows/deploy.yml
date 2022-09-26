@@ -35,12 +35,13 @@ jobs:
         run: |
           cp -a ../../.git ./
           git symbolic-ref HEAD refs/heads/${{ env.TARGET_BRANCH }}
-          git fetch origin ${{ env.TARGET_BRANCH }} && git reset origin/${{ env.TARGET_BRANCH }}
+          git remote add target "${{github.event.pull_request.head.repo.html_url}}"
+          git fetch target ${{ env.TARGET_BRANCH }} && git reset target/${{ env.TARGET_BRANCH }}
           git config user.name "CI (${{ github.actor }})"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A .
           git commit -m "Deploy ${{ env.TARGET_BRANCH }}: ${{ github.sha }}"
-          git push --set-upstream origin ${{ env.TARGET_BRANCH }}
+          git push --set-upstream target ${{ env.TARGET_BRANCH }}
       - name: set target output
         if: ${{ github.event_name == 'pull_request' }}
         working-directory: ./spec/build

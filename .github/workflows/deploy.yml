@@ -56,7 +56,7 @@ jobs:
           git add diff.html
           git commit -m "Added diff: ${{ github.sha }}"
           git push
-      - name: push comment
+      - name: push comment for built
         if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
         uses: actions/github-script@v4
         with:
@@ -66,5 +66,16 @@ jobs:
               repo: context.repo.repo,
               issue_number: ${{ github.event.pull_request.number }},
               body: "[Preview](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/index.html) | [diff](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/diff.html)"
+            })
+      - name: push comment for forked
+        if: env.TARGET_BRANCH == ''
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+              body: "No build nor diff for ${{ github.event.pull_request.head.sha }} from forked repository"
             })
 

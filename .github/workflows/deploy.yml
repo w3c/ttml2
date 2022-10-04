@@ -27,15 +27,11 @@ jobs:
       - name: set target as gh-pages for main
         if: ${{ github.event_name == 'push' }}
         run: echo "TARGET_BRANCH=gh-pages" >> $GITHUB_ENV
-      - name: no push target if forked
-        if: github.event.pull_request.base.label != github.event.pull_request.head.label
-        run: echo "TARGET_BRANCH=" >> $GITHUB_ENV
       - name: build with ant
         working-directory: ./spec
         run: ant build
       - name: git push
         working-directory: ./spec/build
-        if: env.TARGET_BRANCH != ''
         run: |
           cp -a ../../.git ./
           git symbolic-ref HEAD refs/heads/${{ env.TARGET_BRANCH }}
@@ -46,20 +42,20 @@ jobs:
           git commit -m "Deploy ${{ env.TARGET_BRANCH }}: ${{ github.sha }}"
           git push --set-upstream origin ${{ env.TARGET_BRANCH }}
       - name: set target output
-        if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
+        if: ${{ github.event_name == 'pull_request' }}
         working-directory: ./spec/build
         run: |
           wget -O diff.html "https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue"
           echo "<script src=\"https://raw.githubusercontent.com/w3c/htmldiff-nav/main/index.js\"></script>" >> diff.html
       - name: push diff
-        if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
+        if: ${{ github.event_name == 'pull_request' }}
         working-directory: ./spec/build
         run: |
           git add diff.html
           git commit -m "Added diff: ${{ github.sha }}"
           git push
-      - name: push comment for built
-        if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
+      - name: push comment
+        if: ${{ github.event_name == 'pull_request' }}
         uses: actions/github-script@v4
         with:
           script: |

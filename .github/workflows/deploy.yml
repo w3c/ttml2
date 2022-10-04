@@ -28,10 +28,8 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: echo "TARGET_BRANCH=gh-pages" >> $GITHUB_ENV
       - name: no push target if forked
-        if: github.event.pull_request.base.label != github.event.pull_request.head.label
-        run: |
-          echo "TARGET_BRANCH=" >> $GITHUB_ENV
-          echo "${{toJson(github)}}"
+        if: github.event.pull_request.base.repo.clone_url != github.event.pull_request.head.repo.clone_url
+        run: echo "TARGET_BRANCH=" >> $GITHUB_ENV
       - name: build with ant
         working-directory: ./spec
         run: ant build

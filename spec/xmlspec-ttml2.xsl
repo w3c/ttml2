@@ -420,7 +420,7 @@ width: 100%;
   </style>
   <link rel="stylesheet" type="text/css">
     <xsl:attribute name="href">
-      <xsl:text>https://www.w3.org/StyleSheets/TR/2016/</xsl:text>
+      <xsl:text>https://www.w3.org/StyleSheets/TR/2021/</xsl:text>
       <xsl:choose>
         <xsl:when test="/spec/@role='editors-copy'">W3C-ED</xsl:when>
         <xsl:otherwise>
@@ -451,6 +451,7 @@ width: 100%;
       <xsl:value-of select="/spec/@canonical-url"/>
     </xsl:attribute>
   </link>
+  <script src="//www.w3.org/scripts/TR/2021/fixup.js"></script>
 </xsl:template>
 
 <!-- header: metadata about the spec -->
@@ -459,7 +460,7 @@ width: 100%;
   <div class="head">
     <xsl:if test="not(/spec/@role='editors-copy')">
       <p>
-        <a href="https://www.w3.org/"><img height="48" width="72" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C"/></a>
+        <a href="https://www.w3.org/"><img height="48" width="72" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C"/></a>
         <xsl:choose>
           <xsl:when test="/spec/@w3c-doctype='memsub'">
             <a href='http://www.w3.org/Submission/'>
@@ -486,32 +487,26 @@ width: 100%;
     </h1>
     <xsl:if test="subtitle">
       <xsl:text>&#10;</xsl:text>
-      <h2>
+      <p id="w3c-state">
         <xsl:call-template name="anchor">
           <xsl:with-param name="node" select="subtitle[1]"/>
           <xsl:with-param name="conditional" select="0"/>
           <xsl:with-param name="default.id" select="'subtitle'"/>
         </xsl:call-template>
         <xsl:apply-templates select="subtitle"/>
-      </h2>
+      </p>
     </xsl:if>
     <xsl:text>&#10;</xsl:text>
-    <h2>
-      <xsl:call-template name="anchor">
-        <xsl:with-param name="node" select="w3c-doctype[1]"/>
-        <xsl:with-param name="conditional" select="0"/>
-        <xsl:with-param name="default.id" select="'w3c-doctype'"/>
-      </xsl:call-template>
-
+    <p id="w3c-state">
       <xsl:choose>
         <xsl:when test="/spec/@w3c-doctype = 'review'">
           <xsl:text>Editor's Draft</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="w3c-doctype[1]"/>
+          <xsl:apply-templates select="w3c-doctype-link" />
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:text> </xsl:text>
+      <xsl:text>, </xsl:text>
       <xsl:if test="pubdate/day">
         <xsl:apply-templates select="pubdate/day"/>
         <xsl:text> </xsl:text>
@@ -519,17 +514,21 @@ width: 100%;
       <xsl:apply-templates select="pubdate/month"/>
       <xsl:text> </xsl:text>
       <xsl:apply-templates select="pubdate/year"/>
-    </h2>
+    </p>
+    <details open="open">
+    <summary><xsl:text>More details about this document</xsl:text></summary>
     <dl>
       <xsl:apply-templates select="publoc"/>
       <xsl:apply-templates select="latestedloc"/>
       <xsl:apply-templates select="latestloc"/>
       <xsl:apply-templates select="latestrec"/>
       <xsl:apply-templates select="prevlocs"/>
+      <xsl:apply-templates select="historyloc"/>
+      <xsl:apply-templates select="feedbackloc"/>
       <xsl:apply-templates select="implreploc"/>
       <xsl:apply-templates select="authlist"/>
-      <xsl:apply-templates select="ghrepoloc"/>
     </dl>
+    </details>
 
     <!-- output the errataloc and altlocs -->
     <xsl:apply-templates select="errataloc"/>
@@ -606,6 +605,29 @@ width: 100%;
       </dd>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template match="historyloc">
+  <dt>History:</dt>
+  <dd>
+    <a class="u-url" href="https://www.w3.org/standards/history/{@shortname}">
+      <xsl:text>https://www.w3.org/standards/history/</xsl:text>
+      <xsl:value-of select="@shortname"/>
+    </a>
+  </dd>
+</xsl:template>
+
+<xsl:template match="feedbackloc">
+  <dt>Feedback:</dt>
+  <dd>
+    <a class="u-url" href="https://github.com/{@ghrepo}/issues/">
+      <xsl:text>GitHub</xsl:text>
+    </a>
+  </dd>
+  <dd><a href="https://github.com/{@ghrepo}/issues/new">File a bug</a>
+     (<a href="https://github.com/{@ghrepo}/issues/">open bugs</a>)</dd>
+  <dd><a href="https://github.com/{@ghrepo}/commits/{@branch}">Commit history</a></dd>
+  <dd><a href="https://github.com/{@ghrepo}/pulls/">Pull requests</a></dd>
 </xsl:template>
 
 <!-- implreploc: implementation report for this spec -->
@@ -1445,6 +1467,10 @@ width: 100%;
   <a id="{@id}" title="{@term}">
     <xsl:apply-templates/>
   </a>
+</xsl:template>
+
+<xsl:template match="w3c-doctype-link">
+  <a href="https://www.w3.org/standards/types#{@ustatus}"><xsl:value-of select="@doctype"/></a>
 </xsl:template>
 
 </xsl:stylesheet>

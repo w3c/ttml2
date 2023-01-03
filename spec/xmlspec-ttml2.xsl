@@ -548,8 +548,9 @@ width: 100%;
           <xsl:text>&#xa0;&#xa9;&#xa0;</xsl:text>
           <xsl:apply-templates select="pubdate/year"/>
           <xsl:text>&#xa0;</xsl:text>
-          <a href="https://www.w3.org/">World Wide Web Consortium, Inc.</a>.
+          <a href="https://www.w3.org/">World Wide Web Consortium</a>.
           <abbr title="World Wide Web Consortium">W3C</abbr><sup>&#xae;</sup>
+          <xsl:text> </xsl:text>
           <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
           <xsl:text>, </xsl:text>
           <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>

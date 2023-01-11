@@ -1117,7 +1117,7 @@
             <xsl:text>, </xsl:text>
             <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>
             <xsl:text> and </xsl:text>
-            <a href="https://www.w3.org/Consortium/Legal/copyright-software">permissive document license</a>
+            <a href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
             <xsl:text> rules apply.</xsl:text>
           </p>
         </xsl:otherwise>

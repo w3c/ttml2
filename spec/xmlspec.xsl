@@ -1111,23 +1111,8 @@
             <xsl:text>&#xa0;&#xa9;&#xa0;</xsl:text>
             <xsl:apply-templates select="pubdate/year"/>
             <xsl:text>&#xa0;</xsl:text>
-            <a href="https://www.w3.org/">
-              <acronym title="World Wide Web Consortium">W3C</acronym>
-            </a>
-            <sup>&#xae;</sup>
-            <xsl:text> (</xsl:text>
-            <a href="https://www.csail.mit.edu/">
-              <acronym title="Massachusetts Institute of Technology">MIT</acronym>
-            </a>
-            <xsl:text>, </xsl:text>
-            <a href="https://www.ercim.eu/">
-              <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
-            </a>
-            <xsl:text>, </xsl:text>
-            <a href="https://www.keio.ac.jp/">Keio</a>
-            <xsl:text>, </xsl:text>
-            <a href="http://ev.buaa.edu.cn/">Beihang</a>
-            <xsl:text>). W3C </xsl:text>
+            <a href="https://www.w3.org/">World Wide Web Consortium, Inc.</a>. 
+            <abbr title="World Wide Web Consortium">W3C</abbr><sup>&#xae;</sup>
             <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>
             <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>

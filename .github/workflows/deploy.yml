@@ -24,6 +24,21 @@ jobs:
         working-directory: ./spec
         run: |
           find . -type f -name '*.xml' -exec sh -c 'sed -f escape.sed "$0" > "$0.esc"' {} \;
+      - name: setup build dirctory
+        working-directory: ./spec
+        run: |
+          mkdir -p build
+      - name: setup gh-pages branch
+        working-directory: ./spec/build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp -a ../../.git ./
+          git remote set-url origin "https://github-actions:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git symbolic-ref HEAD refs/heads/gh-pages
+          git fetch origin gh-pages && git reset origin/gh-pages
       - name: build spec with saxon and copy assets
         working-directory: ./spec
         run: |
@@ -42,12 +57,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp -a ../../.git ./
-          git symbolic-ref HEAD refs/heads/gh-pages
-          git fetch origin gh-pages && git reset origin/gh-pages
-          git remote set-url origin "https://github-actions:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A pr-preview-files/*
-          git commit -m "Deploy PR preview build for ${GH_FHEAD}"
+          git add -A images/*
+          git add -A rnc/*
+          git add -A xsd/*
+          git add index.html
+          git commit -m "Deploy PR preview build for ${{ github.event.pull_request.head.ref }}"
           git push --set-upstream origin gh-pages

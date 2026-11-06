@@ -160,48 +160,8 @@
         </java>    
     </target>
 
-    <target name="kwexpand">
-      <echo message="Expanding keywords."/>
-      <exec executable="git" resultproperty="ttml2.diff" failonerror="false">
-        <arg value="diff"/>
-        <arg value="--quiet"/>
-        <arg value="ttml2.xml"/>
-      </exec>
-      <condition property="ttml2.dirty">
-        <equals arg1="${ttml2.diff}" arg2="1"/>
-      </condition>
-      <echo message="Warning ttml2.xml has uncommitted modifications." if:set="ttml2.dirty"/>
-      <tstamp>
-        <format property="today.mm" pattern="MM"/>
-      </tstamp>
-      <tstamp>
-        <format property="today.month" pattern="MMMM"/>
-      </tstamp>
-      <tstamp>
-        <format property="today.dd" pattern="dd"/>
-      </tstamp>
-      <tstamp>
-        <format property="today.day" pattern="EEEE"/>
-      </tstamp>
-      <tstamp>
-        <format property="today.year" pattern="yyyy"/>
-      </tstamp>
-      <exec executable="git" outputproperty="dateHash" failonerror="false">
-        <arg value="log"/>
-        <arg value="--quiet"/>
-        <arg value="-1"/>
-        <arg value="--oneline"/>
-      </exec>
-      <replace file="${html.dir}/${html.name}" token="$Date$" value="${dateHash}"/>
-      <replace file="${html.dir}/${html.name}" token="$dateMM$" value="${today.mm}"/>
-      <replace file="${html.dir}/${html.name}" token="$dateMonth$" value="${today.month}"/>
-      <replace file="${html.dir}/${html.name}" token="$dateDD$" value="${today.dd}"/>
-      <replace file="${html.dir}/${html.name}" token="$dateDay$" value="${today.dd}"/>
-      <replace file="${html.dir}/${html.name}" token="$dateYear$" value="${today.year}"/>
-    </target>
-
     <target name="generate" description="Generate the specification without updating escaped entities."
-	    depends="generate-schema-archives,validate,html,kwexpand">
+	    depends="generate-schema-archives,validate,html">
     </target>
     
     <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
@@ -209,7 +169,7 @@
     </target>
 
     <target name="rg" description="Regenerate using shortened generation and expands keywords."
-      depends="sg, kwexpand">
+      depends="sg">
     </target>
 
     <target name="build" description="Build the specification for publication" depends="generate">

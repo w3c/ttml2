@@ -1,0 +1,23 @@
+name: Validate spec and resources
+on: 
+  push:
+  pull_request:
+
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Install Jing
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jing
+      - name: validate using ant build.xml
+        working-directory: ./spec
+        run: ant validate

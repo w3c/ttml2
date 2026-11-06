@@ -2,9 +2,6 @@
 <!-- Apache Ant script to build spec. Philippe Le Hegaret, W3C -->
       
 <project name="TimedText" default="generate" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
-    <path id="saxon8.classpath">
-        <pathelement location="saxon8/saxon8.jar"/>
-    </path>
     <path id="xml-commons-resolver.classpath"><pathelement location="/usr/share/java/xml-commons-resolver.jar"/></path>
     <property name="html.dir" value="${basedir}"/>
     <property name="html.name" value="ttml2.html"/>
@@ -33,39 +30,6 @@
       <include name="examples/*.esc"/>
       <include name="profiles/*.esc"/>
     </patternset>
-
-    <target name="clean-escapes" description="Clean escaped entites.">
-      <delete quiet="true">
-	<fileset dir="${basedir}">
-	  <patternset refid="escaped"/>
-	</fileset>
-      </delete>
-    </target>
-
-    <target name="clean" depends="clean-escapes">
-        <delete quiet="true" file="${html.name}"/>
-    </target>
-
-    <!-- removing  depends="validate-schema-rnc", only run jing for validation -->
-    <target name="generate-schema-archive-rnc" description="Generate DFXP's RNC Schema archive.">
-        <zip destfile="${rnc.dir}/schema.zip">
-            <fileset dir="${rnc.dir}">
-                <include name="*.rnc"/>
-            </fileset>
-        </zip>
-    </target>
-
-    <!-- removing depends="validate-schema-xsd", just used for validation (compiled .java are not used) -->
-    <target name="generate-schema-archive-xsd" description="Generate DFXP's XSD Schema archive.">
-        <zip destfile="${xsd.dir}/schema.zip">
-            <fileset dir="${xsd.dir}">
-                <include name="*.xsd"/>
-            </fileset>
-        </zip>
-    </target>
-
-
-    <target name="generate-schema-archives" description="Generate DFXP schema archives" depends="generate-schema-archive-rnc, generate-schema-archive-xsd"/>
 
     <target name="validate-example-1" description="Validates Example 1.">
         <!-- validate using RNC schema -->
@@ -142,55 +106,6 @@
     <target name="validate-examples"
 	    depends="validate-example-1, validate-example-3, validate-example-4, validate-example-4-overflow"/>
 
-
-
-    <target name="validate-tt-specs-dont-build-escapes" description="Validates all Timed Text spec files.">
-        <xmlvalidate lenient="false" warn="yes" file="ttml2.xml"/>
-    </target>
-
-    <target name="html" description="Transforms xml into html.">
-        <echo>Generating ttml2.html</echo>
-        <java fork="true" classname="net.sf.saxon.Transform">
-            <classpath refid="saxon8.classpath"/>
-            <arg value="-o"/>
-            <arg value="${html.dir}/${html.name}"/>
-            <arg value="ttml2.xml"/>
-            <arg value="${stylesheet}"/>
-            <arg value="showAssertions=true"/>
-        </java>    
-    </target>
-
-    <target name="generate" description="Generate the specification without updating escaped entities."
-	    depends="generate-schema-archives,validate,html">
-    </target>
-    
-    <target name="sg" description="Shortened generation of the specification without updating changelog and acknowledgments sections, but without rebuilding escapes."
-	    depends="generate-schema-archives,validate-tt-specs-dont-build-escapes,html">
-    </target>
-
-    <target name="rg" description="Regenerate using shortened generation and expands keywords."
-      depends="sg">
-    </target>
-
-    <target name="build" description="Build the specification for publication" depends="generate">
-      <delete includeemptydirs="true" quiet="true">
-        <fileset dir="${build.dir}"/>
-      </delete>
-      <mkdir dir="${build.dir}"/>
-      <mkdir dir="${build.dir}/images"/>
-      <mkdir dir="${build.dir}/rnc"/>
-      <mkdir dir="${build.dir}/xsd"/>
-      <copy file="${html.dir}/${html.name}" tofile="${build.dir}/index.html"/>
-      <copy file="${html.dir}/ttml2-changes.html" tofile="${build.dir}/ttml2-changes.html"/>
-      <copy file="${html.dir}/ttml2-errata.html" tofile="${build.dir}/ttml2-errata.html"/>
-      <copy todir="${build.dir}/images">
-        <fileset dir="${basedir}/images" includes="*.png"/>
-        <fileset dir="${basedir}/images" includes="*.svg"/>
-      </copy>
-      <copy file="${rnc.dir}/schema.zip" todir="${build.dir}/rnc"/>
-      <copy file="${xsd.dir}/schema.zip" todir="${build.dir}/xsd"/>
-    </target>
-
   <!-- 2026/11 new : validate depended from generate, sg -->
   <target name="validate" description="Validates spec and resources"
     depends="validate-schemas,validate-examples,validate-xsl,validate-svg,validate-tt-specs,validate-profiles" />
@@ -260,9 +175,4 @@
   </target>
   <target name="validate-profiles" depends="validate-profile-transformation,validate-profile-presentation,validate-profile-full"/>
 
-
-<!--
-    <target name="validate" 
-    depends="validate-schemas,validate-examples,validate-xsl,validate-svg,validate-tt-specs,validate-schema-rnc,validate-profiles"/>
--->
 </project>

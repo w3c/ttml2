@@ -3,71 +3,63 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adopt'
-      - name: set target output
-        if: ${{ github.event_name == 'pull_request' }}
+          distribution: 'temurin'
+      - name: Install Saxon (libsaxonb-java v9)
         run: |
-          echo "TARGET_BRANCH=${{ github.event.pull_request.head.ref }}-build" >> $GITHUB_ENV
-          GH_LINK="${{ github.server_url }}/${{ github.repository }}/blob/${{ github.event.pull_request.head.ref }}-build/"
-          GH_LINK="${GH_LINK//':'/'%3A'}"
-          GH_LINK="${GH_LINK//'/'/'%2F'}"
-          echo "GH_LINK=${GH_LINK}" >> $GITHUB_ENV
-      - name: set target as gh-pages for main
-        if: ${{ github.event_name == 'push' }}
-        run: echo "TARGET_BRANCH=gh-pages" >> $GITHUB_ENV
-      - name: no push target if forked
-        if: github.event.pull_request.base.repo.clone_url != github.event.pull_request.head.repo.clone_url
-        run: echo "TARGET_BRANCH=" >> $GITHUB_ENV
-      - name: build with ant
+          sudo apt-get update
+          sudo apt-get install -y libsaxonb-java
+      - name: run sed for .esc
         working-directory: ./spec
-        run: ant build
-      - name: git push
+        run: |
+          find . -type f -name '*.xml' -exec sh -c 'sed -f escape.sed "$0" > "$0.esc"' {} \;
+      - name: setup build dirctory
+        working-directory: ./spec
+        run: |
+          mkdir -p build
+      - name: setup gh-pages branch
         working-directory: ./spec/build
-        if: env.TARGET_BRANCH != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp -a ../../.git ./
-          git symbolic-ref HEAD refs/heads/${{ env.TARGET_BRANCH }}
-          git fetch origin ${{ env.TARGET_BRANCH }} && git reset origin/${{ env.TARGET_BRANCH }}
-          git config user.name "CI (${{ github.actor }})"
+          git remote set-url origin "https://github-actions:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A .
-          git commit -m "Deploy ${{ env.TARGET_BRANCH }}: ${{ github.sha }}"
-          git push --set-upstream origin ${{ env.TARGET_BRANCH }}
-#      - name: set target output
-#        if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
-#        working-directory: ./spec/build
-#        run: |
-#          wget -O diff.html "https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fw3c.github.io%2Fttml2%2F&doc2=${{ env.GH_LINK }}index.html%3Fraw%3Dtrue"
-#          echo "<script src=\"https://raw.githubusercontent.com/w3c/htmldiff-nav/main/index.js\"></script>" >> diff.html
-#      - name: push diff
-#        if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
-#        working-directory: ./spec/build
-#        run: |
-#          git add diff.html
-#          git commit -m "Added diff: ${{ github.sha }}"
-#          git push
-      - name: push comment for built
-        if: github.event_name == 'pull_request' && env.TARGET_BRANCH != ''
-        uses: actions/github-script@v4
-        with:
-          script: |
-            github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.pull_request.number }},
-              body: "[Preview](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/index.html)"
-            })
-# ORIG for body, before blob raw behavior changed
-#              body: "[Preview](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/index.html) | [diff](https://htmlpreview.github.io/?${{ github.server_url }}/${{ github.repository }}/blob/${{ env.TARGET_BRANCH }}/diff.html) for ${{ github.event.pull_request.head.sha }}"
+          git symbolic-ref HEAD refs/heads/gh-pages
+          git fetch origin gh-pages && git reset origin/gh-pages
+      - name: build spec with saxon and copy assets
+        working-directory: ./spec
+        run: |
+          mkdir -p build/images/
+          mkdir -p build/rnc/
+          mkdir -p build/xsd/
+          saxonb-xslt -s:ttml2.xml -xsl:xmlspec-ttml2.xsl -o:build/index.html
+          cp -a images/*.png build/images/
+          cp -a images/*.svg build/images/
+          cp ttml2-changes.html build/ttml2-changes.html
+          cp ttml2-errata.html build/ttml2-errata.html
+          zip -j build/rnc/schema.zip rnc/*.rnc
+          zip -j build/xsd/schema.zip xsd/*.xsd
+      - name: git push
+        working-directory: ./spec/build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add -A images/*
+          git add -A rnc/*
+          git add -A xsd/*
+          git add index.html
+          git commit -m "Deploy PR preview build for ${{ github.event.pull_request.head.ref }}"
+          git push --set-upstream origin gh-pages

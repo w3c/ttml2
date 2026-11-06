@@ -1,0 +1,61 @@
+name: Build asset on PR
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  buildpr:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: set target filename
+        run: |
+          GH_FHEAD="${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}"
+          GH_FHEAD="${GH_FHEAD//\//-}"
+          echo "GH_FHEAD=${GH_FHEAD:0:-33}" >> $GITHUB_ENV
+      - name: Install Saxon (libsaxonb-java v9)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsaxonb-java
+      - name: run sed for .esc
+        working-directory: ./spec
+        run: |
+          find . -type f -name '*.xml' -exec sh -c 'sed -f escape.sed "$0" > "$0.esc"' {} \;
+      - name: build spec with saxon
+        working-directory: ./spec
+        run: |
+          mkdir -p build/pr-preview-files
+          saxonb-xslt -s:ttml2.xml -xsl:xmlspec-ttml2.xsl -o:build/pr-preview-files/${GH_FHEAD}-built.html
+      - name: git push
+        working-directory: ./spec/build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp -a ../../.git ./
+          git symbolic-ref HEAD refs/heads/gh-pages
+          git fetch origin gh-pages && git reset origin/gh-pages
+          git remote set-url origin "https://github-actions:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A pr-preview-files/*
+          git commit -m "Deploy PR preview build for ${GH_FHEAD}"
+          git push --set-upstream origin gh-pages
+      - name: push comment for built
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+              body: "[Preview](https://w3c.github.io/ttml2/pr-preview-files/${{ env.GH_FHEAD }}-built.html) | [Diff](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fwww.w3.org%2FTR%2F2021%2FCR-ttml2-20210309%2F&doc2=https%3A%2F%2Fw3c.github.io%2Fttml2%2Fpr-preview-files%2F${{ env.GH_FHEAD }}-built.html)"
+            })
